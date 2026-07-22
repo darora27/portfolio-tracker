@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase/client";
 import { getDashboardData } from "@/lib/dashboard-data";
 import { HeadlineStats } from "@/components/dashboard/HeadlineStats";
@@ -9,6 +10,13 @@ import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
 // Public, read-only, no login. Reflects live DB state, so never static.
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Portfolio — Share View",
+  description: "A read-only look at portfolio performance.",
+  // Public by direct link only — not meant to show up in search results.
+  robots: { index: false, follow: false },
+};
 
 export default async function SharePage() {
   const [data, { data: setting }] = await Promise.all([

@@ -1,14 +1,20 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
+import type { Metadata } from "next";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { supabase } from "@/lib/supabase/client";
-import { LoginForm } from "@/components/trades/LoginForm";
+import { LoginForm } from "@/components/auth/LoginForm";
 import { AddTradeForm } from "@/components/trades/AddTradeForm";
-import { LogoutButton } from "@/components/trades/LogoutButton";
+import { LogoutButton } from "@/components/auth/LogoutButton";
 import { TradeLogTable } from "@/components/trades/TradeLogTable";
 import { ShareSettingsToggle } from "@/components/trades/ShareSettingsToggle";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Trade Log — Portfolio Tracker",
+  robots: { index: false, follow: false },
+};
 
 export default async function TradesPage() {
   const ownerPassword = process.env.OWNER_PASSWORD;
@@ -19,8 +25,8 @@ export default async function TradesPage() {
   if (!authenticated) {
     return (
       <div className="mx-auto max-w-sm px-4 py-16">
-        <Link href="/" className="text-sm text-zinc-500 hover:underline">
-          &larr; Dashboard
+        <Link href="/share" className="text-sm text-zinc-500 hover:underline">
+          View public share page
         </Link>
         <h1 className="mt-3 text-xl font-semibold">Trade log</h1>
         <p className="mt-1 text-sm text-zinc-500">Sign in to view and add trades.</p>
