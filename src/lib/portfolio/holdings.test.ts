@@ -4,6 +4,7 @@ import {
   computeHoldings,
   concentration,
   latestKnownPrices,
+  mergePrices,
   topWinnersLosers,
   type Trade,
 } from "./holdings";
@@ -76,6 +77,24 @@ describe("latestKnownPrices", () => {
       { ticker: "AAA", closePrice: 105, date: "2026-01-03" },
     ]);
     expect(prices.get("AAA")).toEqual({ price: 110, date: "2026-01-05" });
+  });
+});
+
+describe("mergePrices", () => {
+  it("prefers a live quote over the fallback for the same ticker", () => {
+    const live = new Map([["AAA", { price: 150, date: "2026-07-22" }]]);
+    const fallback = new Map([["AAA", { price: 140, date: "2026-07-21" }]]);
+    expect(mergePrices(live, fallback).get("AAA")).toEqual({ price: 150, date: "2026-07-22" });
+  });
+
+  it("falls back to the stale price when a ticker has no live quote", () => {
+    const live = new Map<string, { price: number; date: string }>();
+    const fallback = new Map([["AAA", { price: 140, date: "2026-07-21" }]]);
+    expect(mergePrices(live, fallback).get("AAA")).toEqual({ price: 140, date: "2026-07-21" });
+  });
+
+  it("has no price at all for a ticker present in neither map", () => {
+    expect(mergePrices(new Map(), new Map()).get("AAA")).toBeUndefined();
   });
 });
 

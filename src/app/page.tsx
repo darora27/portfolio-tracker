@@ -1,17 +1,19 @@
 import { supabase } from "@/lib/supabase/client";
+import { getQuotes } from "@/lib/finnhub";
 import { dailyReturns } from "@/lib/math/returns";
 import { twr } from "@/lib/math/twr";
 import { drawdown } from "@/lib/math/drawdown";
 import { annualizedVolatility } from "@/lib/math/volatility";
 import { sharpeRatio } from "@/lib/math/sharpe";
 import { xirr } from "@/lib/math/xirr";
-import { daysBetween } from "@/lib/date";
+import { daysBetween, todayInTimeZone } from "@/lib/date";
 import {
   buildXirrCashFlows,
   computeHoldings,
   concentration,
   latestKnownPrices,
   latestPriceDate,
+  mergePrices,
   topWinnersLosers,
 } from "@/lib/portfolio/holdings";
 import { HeadlineStats } from "@/components/dashboard/HeadlineStats";
@@ -39,6 +41,8 @@ export default async function Home() {
   if (snapshotsError) throw snapshotsError;
   if (positionsError) throw positionsError;
 
+  const today = todayInTimeZone("America/New_York");
+
   // Current holdings are derived from trades, never read from a stored table.
   const snapshotDateById = new Map((snapshots ?? []).map((s) => [s.id, s.date]));
   const priceRows = (snapshotPositions ?? [])
@@ -47,8 +51,17 @@ export default async function Home() {
       return date ? { ticker: row.ticker, closePrice: row.close_price, date } : null;
     })
     .filter((row): row is { ticker: string; closePrice: number; date: string } => row !== null);
+  const fallbackPrices = latestKnownPrices(priceRows);
 
-  const prices = latestKnownPrices(priceRows);
+  // Live quotes take priority; if Finnhub is down or rate-limited for a
+  // ticker, mergePrices falls back to its last known snapshot price rather
+  // than showing no price (or $0) at all.
+  const heldTickers = computeHoldings(trades ?? [], new Map()).map((p) => p.ticker);
+  const liveQuotes = await getQuotes(heldTickers);
+  const livePrices = new Map(
+    [...liveQuotes.entries()].map(([ticker, quote]) => [ticker, { price: quote.price, date: today }]),
+  );
+  const prices = mergePrices(livePrices, fallbackPrices);
   const positions = computeHoldings(trades ?? [], prices);
 
   const totalValue = positions.reduce((sum, p) => sum + p.value, 0);
@@ -89,7 +102,6 @@ export default async function Home() {
       ? dailyChange / prevSnapshot.totalValue
       : 0;
 
-  const today = new Date().toISOString().slice(0, 10);
   const cashFlows = buildXirrCashFlows(trades ?? [], totalValue, today);
   const xirrPct = cashFlows.length >= 2 ? xirr(cashFlows) : 0;
   const historyDays = mathSnapshots[0] ? daysBetween(mathSnapshots[0].date, today) : 0;

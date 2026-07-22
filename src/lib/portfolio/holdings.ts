@@ -90,6 +90,20 @@ export function topWinnersLosers(positions: Position[], n = 3) {
   return { winners, losers };
 }
 
+/**
+ * Combines live quotes with a last-known-price fallback: live wins per
+ * ticker when available, otherwise the fallback carries that ticker so a
+ * down/rate-limited Finnhub degrades to stale prices instead of no price.
+ */
+export function mergePrices(
+  live: Map<string, PricePoint>,
+  fallback: Map<string, PricePoint>,
+): Map<string, PricePoint> {
+  const merged = new Map(fallback);
+  for (const [ticker, price] of live) merged.set(ticker, price);
+  return merged;
+}
+
 /** The most recent priceAsOf date across all priced positions, or null if none are priced. */
 export function latestPriceDate(positions: Position[]): string | null {
   const dates = positions.map((p) => p.priceAsOf).filter((d): d is string => d !== null);
