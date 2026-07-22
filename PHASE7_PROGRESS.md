@@ -10,7 +10,7 @@ Read this file first at the start of every session. Work only unchecked items.
 - [x] §3. Three-way benchmark comparison
 - [x] §4. Sector & industry classification
 - [x] §5. AI-exposure classification
-- [ ] §6. Correlation matrix
+- [x] §6. Correlation matrix
 - [ ] §7. Composition donut + realized/unrealized split
 - [ ] §8. Final integration pass
 - [ ] §9. Final summary
@@ -145,3 +145,25 @@ Read this file first at the start of every session. Work only unchecked items.
   Low 0.3% — bars render with graded opacity, sums to 100%.
 - `npm run lint`, `npm test` (75/75 — no new tests needed, `classificationWeights` already covers the
   grouping logic and the JSON is static data), `npm run build` all pass.
+
+### §6. Correlation matrix
+- `correlationMatrix()` in `src/lib/math/correlation.ts`, matching the spec's exact signature. All 5
+  required fixtures pass exactly (`corr(A,A)=1.0`, `corr([1,2,3,4],[2,4,6,8])=1.0`,
+  `corr([1,2,3],[3,2,1])=-1.0`, `corr([1,2,3],[1,3,2])=0.5`, `minOverlap` cutoff → null), plus extra
+  tests for the pairwise-date-alignment case (two tickers with only partially overlapping history)
+  and a constant/zero-variance series → null.
+  - New `priceReturns()` in `src/lib/math/returns.ts` (unit tested) converts a ticker's own
+    close-price history into simple day-over-day returns — deliberately NOT `dailyReturns()`, which is
+    net-of-portfolio-cash-flow and meaningless for a single security's own price series.
+  - `dashboard-data.ts` groups the existing `priceRows` (already fetched for `latestKnownPrices`) by
+    currently-held ticker, runs `priceReturns` per ticker, and feeds the result to
+    `correlationMatrix()` at the default `minOverlap = 5`.
+- New `CorrelationHeatmap` component: lower-triangular grid, diverging background via CSS
+  `color-mix()` (loss-tinted for negative, accent-tinted for positive, plain surface at/near 0), mono
+  cell values, hover tooltip with the precise 3-decimal value, nulls rendered as a muted "—".
+  Rendered on both `/` and `/share` (§2: full on both, no privacy restriction).
+  - Verified visually on the live dev server against real portfolio data: diagonal is exactly 1.00,
+    the COST row/column (bought same-day, per PHASE7.md) is entirely "—" with no crash, and the
+    positive/negative color split reads correctly (e.g. ASML×CRM strongly negative → red-tinted,
+    ASML×INTC strongly positive → purple-tinted).
+- `npm run lint`, `npm test` (86/86), `npm run build` all pass.

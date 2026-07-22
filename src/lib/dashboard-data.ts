@@ -1,7 +1,8 @@
 import { supabase } from "@/lib/supabase/client";
 import { getQuotes, getUpcomingEarnings } from "@/lib/finnhub";
 import type { EarningsEvent } from "@/lib/finnhub-earnings";
-import { dailyReturns } from "@/lib/math/returns";
+import { dailyReturns, priceReturns } from "@/lib/math/returns";
+import { correlationMatrix } from "@/lib/math/correlation";
 import { twr } from "@/lib/math/twr";
 import { drawdown } from "@/lib/math/drawdown";
 import { annualizedVolatility } from "@/lib/math/volatility";
@@ -60,6 +61,8 @@ export type DashboardData = {
   benchmarkComparisons: BenchmarkComparison[];
   sectorWeights: ClassificationWeight[];
   aiExposureWeights: ClassificationWeight[];
+  correlationTickers: string[];
+  correlationCells: (number | null)[][];
 };
 
 /**
@@ -141,6 +144,23 @@ export async function getDashboardData(): Promise<DashboardData> {
 
   const aiExposureByTickerMap = new Map(Object.entries(aiExposureByTicker));
   const aiExposureWeights = classificationWeights(positions, aiExposureByTickerMap);
+
+  // Correlation between current holdings, from each ticker's own close-price
+  // history (not the portfolio's net-of-flow returns — a single ticker has
+  // no cash flows of its own). Overlap windows differ per pair (holdings
+  // were bought on different days), which correlationMatrix handles itself.
+  const heldTickerSet = new Set(positions.map((p) => p.ticker));
+  const pricesByHeldTicker = new Map<string, { date: string; price: number }[]>();
+  for (const row of priceRows) {
+    if (!heldTickerSet.has(row.ticker)) continue;
+    const list = pricesByHeldTicker.get(row.ticker) ?? [];
+    list.push({ date: row.date, price: row.closePrice });
+    pricesByHeldTicker.set(row.ticker, list);
+  }
+  const returnsByTicker = Object.fromEntries(
+    positions.map((p) => [p.ticker, priceReturns(pricesByHeldTicker.get(p.ticker) ?? [])]),
+  );
+  const correlation = correlationMatrix(returnsByTicker);
 
   // Performance history from daily snapshots, net of cash flows. Drop any
   // leading zero-value snapshots (days before the first investment) since
@@ -234,5 +254,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     benchmarkComparisons,
     sectorWeights,
     aiExposureWeights,
+    correlationTickers: correlation.tickers,
+    correlationCells: correlation.matrix,
   };
 }

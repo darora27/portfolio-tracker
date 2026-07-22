@@ -13,6 +13,7 @@ import { RiskPanel } from "@/components/dashboard/RiskPanel";
 import { BetaTable } from "@/components/dashboard/BetaTable";
 import { ExcessReturns } from "@/components/dashboard/ExcessReturns";
 import { ClassificationBarList } from "@/components/dashboard/ClassificationBarList";
+import { CorrelationHeatmap } from "@/components/dashboard/CorrelationHeatmap";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
 // This dashboard reflects live DB state (trades can be added any time), so
@@ -78,6 +79,8 @@ export default async function Home() {
           <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
 
           <ClassificationBarList title="AI exposure" items={data.aiExposureWeights} />
+
+          <CorrelationHeatmap tickers={data.correlationTickers} matrix={data.correlationCells} />
 
           <WinnersLosers winners={data.winners} losers={data.losers} />
 

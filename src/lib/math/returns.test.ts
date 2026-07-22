@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dailyReturns } from "./returns";
+import { dailyReturns, priceReturns } from "./returns";
 
 describe("dailyReturns", () => {
   it("computes r_t = (V_t - F_t) / V_{t-1} - 1 net of cash flows", () => {
@@ -33,5 +33,37 @@ describe("dailyReturns", () => {
     ];
 
     expect(dailyReturns(snapshots)[0]).toBeCloseTo(0.05, 10);
+  });
+});
+
+describe("priceReturns", () => {
+  it("computes simple close-to-close returns, no cash-flow adjustment", () => {
+    const prices = [
+      { date: "2026-01-01", price: 100 },
+      { date: "2026-01-02", price: 110 },
+      { date: "2026-01-03", price: 99 },
+    ];
+    const returns = priceReturns(prices);
+    expect(returns).toHaveLength(2);
+    expect(returns[0].date).toBe("2026-01-02");
+    expect(returns[0].r).toBeCloseTo(0.1, 10);
+    expect(returns[1].date).toBe("2026-01-03");
+    expect(returns[1].r).toBeCloseTo(-0.1, 10);
+  });
+
+  it("sorts unsorted input by date before computing returns", () => {
+    const prices = [
+      { date: "2026-01-02", price: 110 },
+      { date: "2026-01-01", price: 100 },
+    ];
+    const returns = priceReturns(prices);
+    expect(returns).toHaveLength(1);
+    expect(returns[0].date).toBe("2026-01-02");
+    expect(returns[0].r).toBeCloseTo(0.1, 10);
+  });
+
+  it("returns an empty array for fewer than 2 prices", () => {
+    expect(priceReturns([{ date: "2026-01-01", price: 100 }])).toEqual([]);
+    expect(priceReturns([])).toEqual([]);
   });
 });

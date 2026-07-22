@@ -16,3 +16,22 @@ export function dailyReturns(snapshots: DailySnapshot[]): number[] {
   }
   return returns;
 }
+
+/**
+ * Simple close-to-close price returns for a single ticker — no cash-flow
+ * adjustment, since a single security's own price history has no "flows"
+ * of its own. Input need not be pre-sorted. Fewer than 2 prices produces
+ * no returns.
+ */
+export function priceReturns(
+  prices: { date: string; price: number }[],
+): { date: string; r: number }[] {
+  const sorted = [...prices].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  const returns: { date: string; r: number }[] = [];
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = sorted[i - 1].price;
+    if (prev === 0) continue;
+    returns.push({ date: sorted[i].date, r: sorted[i].price / prev - 1 });
+  }
+  return returns;
+}

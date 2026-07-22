@@ -10,6 +10,7 @@ import { RiskPanel } from "@/components/dashboard/RiskPanel";
 import { BetaTable } from "@/components/dashboard/BetaTable";
 import { ExcessReturns } from "@/components/dashboard/ExcessReturns";
 import { ClassificationBarList } from "@/components/dashboard/ClassificationBarList";
+import { CorrelationHeatmap } from "@/components/dashboard/CorrelationHeatmap";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
 // Public, read-only, no login. Reflects live DB state, so never static.
@@ -61,6 +62,8 @@ export default async function SharePage() {
           <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
 
           <ClassificationBarList title="AI exposure" items={data.aiExposureWeights} />
+
+          <CorrelationHeatmap tickers={data.correlationTickers} matrix={data.correlationCells} />
 
           <WinnersLosers winners={data.winners} losers={data.losers} />
 
