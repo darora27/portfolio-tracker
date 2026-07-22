@@ -14,6 +14,8 @@ import { BetaTable } from "@/components/dashboard/BetaTable";
 import { ExcessReturns } from "@/components/dashboard/ExcessReturns";
 import { ClassificationBarList } from "@/components/dashboard/ClassificationBarList";
 import { CorrelationHeatmap } from "@/components/dashboard/CorrelationHeatmap";
+import { CompositionDonut } from "@/components/dashboard/CompositionDonut";
+import { RealizedUnrealized } from "@/components/dashboard/RealizedUnrealized";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
 // This dashboard reflects live DB state (trades can be added any time), so
@@ -75,6 +77,14 @@ export default async function Home() {
           <ExcessReturns comparisons={data.benchmarkComparisons} />
 
           <PositionsTable positions={data.positionRows} />
+
+          <RealizedUnrealized
+            realizedGain={data.realizedGain}
+            unrealizedGain={data.unrealizedGain}
+            totalCost={data.totalCost}
+          />
+
+          <CompositionDonut slices={data.donutSlices} />
 
           <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
 

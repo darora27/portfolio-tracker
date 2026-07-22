@@ -63,6 +63,9 @@ export type DashboardData = {
   aiExposureWeights: ClassificationWeight[];
   correlationTickers: string[];
   correlationCells: (number | null)[][];
+  realizedGain: number;
+  unrealizedGain: number;
+  donutSlices: { ticker: string; weight: number; value: number }[];
 };
 
 /**
@@ -162,6 +165,14 @@ export async function getDashboardData(): Promise<DashboardData> {
   );
   const correlation = correlationMatrix(returnsByTicker);
 
+  // Realized gain is already computed per-sell in trade entry (average-cost
+  // basis); unrealized is the existing mark-to-market gain on current
+  // holdings — these are additive, distinct totals, not two views of the
+  // same number.
+  const realizedGain = (trades ?? []).reduce((sum, t) => sum + (t.realized_gain ?? 0), 0);
+  const unrealizedGain = totalValue - totalCost;
+  const donutSlices = positions.map((p) => ({ ticker: p.ticker, weight: p.weight, value: p.value }));
+
   // Performance history from daily snapshots, net of cash flows. Drop any
   // leading zero-value snapshots (days before the first investment) since
   // the return formula divides by the prior day's value.
@@ -256,5 +267,8 @@ export async function getDashboardData(): Promise<DashboardData> {
     aiExposureWeights,
     correlationTickers: correlation.tickers,
     correlationCells: correlation.matrix,
+    realizedGain,
+    unrealizedGain,
+    donutSlices,
   };
 }

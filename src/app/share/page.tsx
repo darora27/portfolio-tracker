@@ -11,6 +11,8 @@ import { BetaTable } from "@/components/dashboard/BetaTable";
 import { ExcessReturns } from "@/components/dashboard/ExcessReturns";
 import { ClassificationBarList } from "@/components/dashboard/ClassificationBarList";
 import { CorrelationHeatmap } from "@/components/dashboard/CorrelationHeatmap";
+import { CompositionDonut } from "@/components/dashboard/CompositionDonut";
+import { RealizedUnrealized } from "@/components/dashboard/RealizedUnrealized";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
 // Public, read-only, no login. Reflects live DB state, so never static.
@@ -58,6 +60,15 @@ export default async function SharePage() {
           <ExcessReturns comparisons={data.benchmarkComparisons} />
 
           <PositionsTable positions={data.positionRows} hideDollars={hideDollars} />
+
+          <RealizedUnrealized
+            realizedGain={data.realizedGain}
+            unrealizedGain={data.unrealizedGain}
+            totalCost={data.totalCost}
+            hideDollars={hideDollars}
+          />
+
+          <CompositionDonut slices={data.donutSlices} hideDollars={hideDollars} />
 
           <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
 

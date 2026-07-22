@@ -11,7 +11,7 @@ Read this file first at the start of every session. Work only unchecked items.
 - [x] §4. Sector & industry classification
 - [x] §5. AI-exposure classification
 - [x] §6. Correlation matrix
-- [ ] §7. Composition donut + realized/unrealized split
+- [x] §7. Composition donut + realized/unrealized split
 - [ ] §8. Final integration pass
 - [ ] §9. Final summary
 
@@ -167,3 +167,35 @@ Read this file first at the start of every session. Work only unchecked items.
     positive/negative color split reads correctly (e.g. ASML×CRM strongly negative → red-tinted,
     ASML×INTC strongly positive → purple-tinted).
 - `npm run lint`, `npm test` (86/86), `npm run build` all pass.
+
+### §7. Composition donut + realized/unrealized split
+- **Judgment call on the donut's original meaning (flagged for the §9 summary too):** the old sheet
+  export was text-only, so "what the original pie was sliced by" isn't recoverable. Went with
+  weight-by-ticker (the standard reading) as the spec allows; a swap to weight-by-sector would be a
+  one-line change (`donutSlices` in `dashboard-data.ts` already groups by ticker/value/weight — same
+  shape either way).
+- **Palette judgment call, made with the `dataviz` skill, not by eyeballing:** the spec mandates 13
+  distinct slices with no folding into "Other." Ran `scripts/validate_palette.js` from that skill
+  against candidate 13-hue rotations (anchored on the `--accent` purple) at `--pairs all --mode dark`
+  against our actual `--surface` (#14141C) — confirmed the skill's own documented ceiling: no ordering
+  of even 8 hues clears all-pairs CVD, let alone 13, so a fully accessible 13-slot categorical palette
+  is not mathematically achievable at that surface/mode, this isn't a fixable authoring mistake. Given
+  the spec's explicit slice count, shipped a harmonious 13-hue rotation (passes chroma-floor and
+  contrast-vs-surface; fails the CVD/lightness-band checks at high slot counts, as expected) and leaned
+  on the deeper, always-true rule instead: identity is carried by the legend/tooltip **text** (ticker +
+  weight%), never by hue alone — every slice is directly labeled, so no viewer needs to distinguish two
+  similar hues to know which position they're looking at.
+- `CompositionDonut`: Recharts `Pie` at 60%/90% inner/outer radius, sorted descending by weight, center
+  label "13 positions" (count-only, privacy-safe on both pages per §2), legend to the right on desktop
+  / below on mobile (`flex-col sm:flex-row`), custom tooltip showing `$value (weight%)` privately vs
+  weight% only on `/share`. No per-slice labels drawn (thin slices would collide) — legend carries them
+  all, per spec.
+- `RealizedUnrealized`: realized gain sums `trades.realized_gain` (already computed per-sell at trade
+  entry, average-cost basis); unrealized is the existing mark-to-market `totalValue - totalCost` — two
+  distinct, additive totals, not two views of the same number. Two `<StatCard>`s + a combined-total text
+  line beneath. On `/share`: percent-of-invested (`gain / totalCost`) instead of dollars, per §2.
+- Verified visually on both `/` and `/share`: donut renders with the correct center label, legend
+  percentages, and sort order; `/share`'s Realized/Unrealized cards show `0.00%` / `-5.06%` with no
+  dollar figures, matching the privacy matrix exactly.
+- `npm run lint`, `npm test` (86/86 — no new pure-math functions needed beyond what §4/§6 already
+  cover), `npm run build` all pass.
