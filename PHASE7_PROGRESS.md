@@ -13,7 +13,7 @@ Read this file first at the start of every session. Work only unchecked items.
 - [x] §6. Correlation matrix
 - [x] §7. Composition donut + realized/unrealized split
 - [x] §8. Final integration pass
-- [ ] §9. Final summary
+- [x] §9. Final summary
 
 ## Notes
 
@@ -246,3 +246,8 @@ Read this file first at the start of every session. Work only unchecked items.
 - Screenshots captured for all three pages at desktop and 390px into `docs/screenshots/`
   (`{dashboard,trades,share}-{desktop,mobile-390}.jpg`).
 - `npm run lint`, `npm test` (86/86), `npm run build` all pass after every fix in this section.
+
+### §9. Final summary
+All of §0–§8 completed in this run; nothing deferred to a future session. See the final chat response
+for the full summary (probe results, judgment-call list, test counts, open question on price
+targets/exit levels — not built this pass, per instruction).
