@@ -1,7 +1,9 @@
 import "server-only";
 import { parseQuoteResponse, type Quote } from "./finnhub-quote";
+import { parseEarningsCalendarResponse, type EarningsEvent } from "./finnhub-earnings";
+import { addDays, todayInTimeZone } from "./date";
 
-export type { Quote };
+export type { Quote, EarningsEvent };
 
 const FINNHUB_BASE_URL = "https://finnhub.io/api/v1";
 
@@ -31,4 +33,40 @@ export async function getQuotes(symbols: string[]): Promise<Map<string, Quote>> 
     if (quote) quotes.set(symbol, quote);
   }
   return quotes;
+}
+
+/**
+ * Upcoming earnings for the given tickers over the next `daysAhead` days,
+ * sorted by date. Queried per-ticker (not a single unfiltered calendar
+ * fetch self-filtered by symbol) because Finnhub resolves dual-class
+ * tickers correctly this way — e.g. `symbol=GOOG` returns Alphabet's
+ * earnings even though the unfiltered calendar only ever lists it under
+ * "GOOGL". A ticker that fails or has nothing scheduled just contributes
+ * no events, same never-throws contract as getQuote.
+ */
+export async function getUpcomingEarnings(
+  tickers: string[],
+  daysAhead = 90,
+): Promise<EarningsEvent[]> {
+  const apiKey = process.env.FINNHUB_API_KEY;
+  if (!apiKey) return [];
+  const from = todayInTimeZone("America/New_York");
+  const to = addDays(from, daysAhead);
+
+  const results = await Promise.all(
+    tickers.map(async (ticker) => {
+      try {
+        const res = await fetch(
+          `${FINNHUB_BASE_URL}/calendar/earnings?from=${from}&to=${to}&symbol=${encodeURIComponent(ticker)}&token=${apiKey}`,
+          { cache: "no-store" },
+        );
+        if (!res.ok) return [];
+        return parseEarningsCalendarResponse(await res.json());
+      } catch {
+        return [];
+      }
+    }),
+  );
+
+  return results.flat().sort((a, b) => (a.date < b.date ? -1 : 1));
 }

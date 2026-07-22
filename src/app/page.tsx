@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
-import { getQuotes } from "@/lib/finnhub";
+import { getQuotes, getUpcomingEarnings } from "@/lib/finnhub";
 import { dailyReturns } from "@/lib/math/returns";
 import { twr } from "@/lib/math/twr";
 import { drawdown } from "@/lib/math/drawdown";
@@ -22,6 +23,7 @@ import { PositionsTable, type PositionRow } from "@/components/dashboard/Positio
 import { WinnersLosers } from "@/components/dashboard/WinnersLosers";
 import { ValueChart, type ChartPoint } from "@/components/dashboard/ValueChart";
 import { RiskPanel } from "@/components/dashboard/RiskPanel";
+import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
 // This dashboard reflects live DB state (trades can be added any time), so
 // it must never be baked into a static build.
@@ -61,7 +63,10 @@ export default async function Home() {
   // ticker, mergePrices falls back to its last known snapshot price rather
   // than showing no price (or $0) at all.
   const heldTickers = computeHoldings(trades ?? [], new Map()).map((p) => p.ticker);
-  const liveQuotes = await getQuotes(heldTickers);
+  const [liveQuotes, upcomingEarnings] = await Promise.all([
+    getQuotes(heldTickers),
+    getUpcomingEarnings(heldTickers),
+  ]);
   const livePrices = new Map(
     [...liveQuotes.entries()].map(([ticker, quote]) => [ticker, { price: quote.price, date: today }]),
   );
@@ -148,7 +153,15 @@ export default async function Home() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-      <h1 className="text-2xl font-semibold">Portfolio Tracker</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Portfolio Tracker</h1>
+        <Link
+          href="/trades"
+          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
+        >
+          Trade log
+        </Link>
+      </div>
 
       <div className="mt-8 space-y-10">
         <HeadlineStats
@@ -169,6 +182,8 @@ export default async function Home() {
         <PositionsTable positions={positionRows} />
 
         <WinnersLosers winners={winners} losers={losers} />
+
+        <EarningsCalendar events={upcomingEarnings} />
 
         <RiskPanel
           volatilityPct={volatilityPct}
