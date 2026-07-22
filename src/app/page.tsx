@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { LogoutButton } from "@/components/auth/LogoutButton";
+import { NavBar } from "@/components/layout/NavBar";
 import { HeadlineStats } from "@/components/dashboard/HeadlineStats";
 import { PositionsTable } from "@/components/dashboard/PositionsTable";
 import { WinnersLosers } from "@/components/dashboard/WinnersLosers";
@@ -34,11 +34,11 @@ export default async function Home() {
   if (!authenticated) {
     return (
       <div className="mx-auto max-w-sm px-4 py-16">
-        <Link href="/share" className="text-sm text-zinc-500 hover:underline">
+        <Link href="/share" className="text-sm text-text-secondary hover:text-text-primary hover:underline">
           View public share page
         </Link>
-        <h1 className="mt-3 text-xl font-semibold">Portfolio Tracker</h1>
-        <p className="mt-1 text-sm text-zinc-500">Sign in to view the private dashboard.</p>
+        <h1 className="mt-3 text-xl font-semibold text-text-primary">Portfolio Tracker</h1>
+        <p className="mt-1 text-sm text-text-secondary">Sign in to view the private dashboard.</p>
         <LoginForm />
       </div>
     );
@@ -47,57 +47,41 @@ export default async function Home() {
   const data = await getDashboardData();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Portfolio Tracker</h1>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/share"
-            className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
-          >
-            Share view
-          </Link>
-          <Link
-            href="/trades"
-            className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
-          >
-            Trade log
-          </Link>
-          <LogoutButton />
+    <>
+      <NavBar variant="private" active="dashboard" />
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="space-y-8">
+          <HeadlineStats
+            totalValue={data.totalValue}
+            totalCost={data.totalCost}
+            simpleReturnPct={data.simpleReturnPct}
+            dailyChange={data.dailyChange}
+            dailyChangePct={data.dailyChangePct}
+            dailyChangeAsOf={data.dailyChangeAsOf}
+            twrPct={data.twrPct}
+            xirrPct={data.xirrPct}
+            historyDays={data.historyDays}
+            pricesAsOf={data.pricesAsOf}
+          />
+
+          <ValueChart data={data.chartData} />
+
+          <PositionsTable positions={data.positionRows} />
+
+          <WinnersLosers winners={data.winners} losers={data.losers} />
+
+          <EarningsCalendar events={data.upcomingEarnings} />
+
+          <RiskPanel
+            volatilityPct={data.volatilityPct}
+            maxDrawdownPct={data.maxDrawdown}
+            sharpe={data.sharpe}
+            betaVsVoo={data.betaVsVoo}
+            top2ConcentrationPct={data.top2ConcentrationPct}
+            hhi={data.hhi}
+          />
         </div>
       </div>
-
-      <div className="mt-8 space-y-10">
-        <HeadlineStats
-          totalValue={data.totalValue}
-          totalCost={data.totalCost}
-          simpleReturnPct={data.simpleReturnPct}
-          dailyChange={data.dailyChange}
-          dailyChangePct={data.dailyChangePct}
-          dailyChangeAsOf={data.dailyChangeAsOf}
-          twrPct={data.twrPct}
-          xirrPct={data.xirrPct}
-          historyDays={data.historyDays}
-          pricesAsOf={data.pricesAsOf}
-        />
-
-        <ValueChart data={data.chartData} />
-
-        <PositionsTable positions={data.positionRows} />
-
-        <WinnersLosers winners={data.winners} losers={data.losers} />
-
-        <EarningsCalendar events={data.upcomingEarnings} />
-
-        <RiskPanel
-          volatilityPct={data.volatilityPct}
-          maxDrawdownPct={data.maxDrawdown}
-          sharpe={data.sharpe}
-          betaVsVoo={data.betaVsVoo}
-          top2ConcentrationPct={data.top2ConcentrationPct}
-          hhi={data.hhi}
-        />
-      </div>
-    </div>
+    </>
   );
 }

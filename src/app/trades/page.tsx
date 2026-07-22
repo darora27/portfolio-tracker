@@ -5,7 +5,7 @@ import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { supabase } from "@/lib/supabase/client";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { AddTradeForm } from "@/components/trades/AddTradeForm";
-import { LogoutButton } from "@/components/auth/LogoutButton";
+import { NavBar } from "@/components/layout/NavBar";
 import { TradeLogTable } from "@/components/trades/TradeLogTable";
 import { ShareSettingsToggle } from "@/components/trades/ShareSettingsToggle";
 
@@ -25,11 +25,11 @@ export default async function TradesPage() {
   if (!authenticated) {
     return (
       <div className="mx-auto max-w-sm px-4 py-16">
-        <Link href="/share" className="text-sm text-zinc-500 hover:underline">
+        <Link href="/share" className="text-sm text-text-secondary hover:text-text-primary hover:underline">
           View public share page
         </Link>
-        <h1 className="mt-3 text-xl font-semibold">Trade log</h1>
-        <p className="mt-1 text-sm text-zinc-500">Sign in to view and add trades.</p>
+        <h1 className="mt-3 text-xl font-semibold text-text-primary">Trade log</h1>
+        <p className="mt-1 text-sm text-text-secondary">Sign in to view and add trades.</p>
         <LoginForm />
       </div>
     );
@@ -42,25 +42,22 @@ export default async function TradesPage() {
   if (error) throw error;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <Link href="/" className="text-sm text-zinc-500 hover:underline">
-            &larr; Dashboard
-          </Link>
-          <h1 className="mt-1 text-2xl font-semibold">Trade log</h1>
+    <>
+      <NavBar variant="private" active="trades" />
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="space-y-8">
+          <div>
+            <h1 className="text-2xl font-semibold text-text-primary">Trade log</h1>
+          </div>
+
+          <div className="space-y-4">
+            <ShareSettingsToggle initialHideDollars={setting?.value ?? true} />
+            <AddTradeForm />
+          </div>
+
+          <TradeLogTable trades={trades ?? []} />
         </div>
-        <LogoutButton />
       </div>
-
-      <div className="mt-8 space-y-4">
-        <ShareSettingsToggle initialHideDollars={setting?.value ?? true} />
-        <AddTradeForm />
-      </div>
-
-      <div className="mt-10">
-        <TradeLogTable trades={trades ?? []} />
-      </div>
-    </div>
+    </>
   );
 }

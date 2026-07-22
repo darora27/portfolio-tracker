@@ -1,26 +1,71 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0a0a0f;
+  --surface: #14141c;
+  --surface-hover: #1b1b26;
+  --border: #26262f;
+  --border-strong: #34343f;
+  --text-primary: #f2f2f5;
+  --text-secondary: #9494a3;
+  --text-muted: #5f5f6b;
+  --accent: #7c6fff;
+  --accent-glow: rgba(124, 111, 255, 0.35);
+  --gain: #22d3a5;
+  --gain-bg: rgba(34, 211, 165, 0.12);
+  --loss: #ff5c7a;
+  --loss-bg: rgba(255, 92, 122, 0.12);
+
+  /* Chart series colors — used only for chart series, nowhere else. */
+  --chart-portfolio: #7c6fff;
+  --chart-voo: #22d3a5;
+  --chart-vti: #ffb84d;
+  --chart-xlk: #4dd0ff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-gain: var(--gain);
+  --color-gain-bg: var(--gain-bg);
+  --color-loss: var(--loss);
+  --color-loss-bg: var(--loss-bg);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  position: relative;
+}
+
+/* Fixed, non-interactive radial glow at the top of the page — atmosphere,
+   not a spotlight. Behind all content, ignores clicks. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(600px at 50% -100px, rgba(124, 111, 255, 0.07), transparent),
+    var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

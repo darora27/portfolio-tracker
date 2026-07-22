@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { supabase } from "@/lib/supabase/client";
 import { getDashboardData } from "@/lib/dashboard-data";
+import { NavBar } from "@/components/layout/NavBar";
 import { HeadlineStats } from "@/components/dashboard/HeadlineStats";
 import { PositionsTable } from "@/components/dashboard/PositionsTable";
 import { WinnersLosers } from "@/components/dashboard/WinnersLosers";
@@ -28,44 +29,42 @@ export default async function SharePage() {
   const hideDollars = setting?.value ?? true;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Portfolio Tracker</h1>
-        <span className="text-xs text-zinc-500">Read-only share view</span>
+    <>
+      <NavBar variant="share" />
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="space-y-8">
+          <HeadlineStats
+            totalValue={data.totalValue}
+            totalCost={data.totalCost}
+            simpleReturnPct={data.simpleReturnPct}
+            dailyChange={data.dailyChange}
+            dailyChangePct={data.dailyChangePct}
+            dailyChangeAsOf={data.dailyChangeAsOf}
+            twrPct={data.twrPct}
+            xirrPct={data.xirrPct}
+            historyDays={data.historyDays}
+            pricesAsOf={data.pricesAsOf}
+            hideDollars={hideDollars}
+          />
+
+          <ValueChart data={data.chartData} />
+
+          <PositionsTable positions={data.positionRows} hideDollars={hideDollars} />
+
+          <WinnersLosers winners={data.winners} losers={data.losers} />
+
+          <EarningsCalendar events={data.upcomingEarnings} />
+
+          <RiskPanel
+            volatilityPct={data.volatilityPct}
+            maxDrawdownPct={data.maxDrawdown}
+            sharpe={data.sharpe}
+            betaVsVoo={data.betaVsVoo}
+            top2ConcentrationPct={data.top2ConcentrationPct}
+            hhi={data.hhi}
+          />
+        </div>
       </div>
-
-      <div className="mt-8 space-y-10">
-        <HeadlineStats
-          totalValue={data.totalValue}
-          totalCost={data.totalCost}
-          simpleReturnPct={data.simpleReturnPct}
-          dailyChange={data.dailyChange}
-          dailyChangePct={data.dailyChangePct}
-          dailyChangeAsOf={data.dailyChangeAsOf}
-          twrPct={data.twrPct}
-          xirrPct={data.xirrPct}
-          historyDays={data.historyDays}
-          pricesAsOf={data.pricesAsOf}
-          hideDollars={hideDollars}
-        />
-
-        <ValueChart data={data.chartData} />
-
-        <PositionsTable positions={data.positionRows} hideDollars={hideDollars} />
-
-        <WinnersLosers winners={data.winners} losers={data.losers} />
-
-        <EarningsCalendar events={data.upcomingEarnings} />
-
-        <RiskPanel
-          volatilityPct={data.volatilityPct}
-          maxDrawdownPct={data.maxDrawdown}
-          sharpe={data.sharpe}
-          betaVsVoo={data.betaVsVoo}
-          top2ConcentrationPct={data.top2ConcentrationPct}
-          hhi={data.hhi}
-        />
-      </div>
-    </div>
+    </>
   );
 }
