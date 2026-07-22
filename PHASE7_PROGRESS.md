@@ -7,7 +7,7 @@ Read this file first at the start of every session. Work only unchecked items.
 - [x] §0. Preflight
 - [x] §1. Design system
 - [ ] §2. Privacy matrix (re-verified in §8, applied throughout §3-§7)
-- [ ] §3. Three-way benchmark comparison
+- [x] §3. Three-way benchmark comparison
 - [ ] §4. Sector & industry classification
 - [ ] §5. AI-exposure classification
 - [ ] §6. Correlation matrix
@@ -60,3 +60,38 @@ Read this file first at the start of every session. Work only unchecked items.
   §7 touches the donut/realized-unrealized split) with a final `toFixed(`/`toLocaleString(` grep sweep
   in §8.
 - `npm run lint`, `npm test` (65/65), `npm run build` all pass.
+
+### §3. Three-way benchmark comparison
+- New pure function `computeBenchmarkComparison` in `src/lib/portfolio/benchmark-comparison.ts`
+  (unit-tested: complete-history case with hand-computed TWR/excess-return, missing-date →
+  unavailable, no-history → unavailable). Reuses the existing `beta()` and `twr()` functions
+  unchanged, per the spec's "do not fork the math."
+- `dashboard-data.ts` now fetches all three benchmark tickers in one query (`.in("ticker", [...])`)
+  instead of VOO alone, and loops `computeBenchmarkComparison` over VOO/VTI/XLK. `betaVsVoo` (used by
+  the existing `RiskPanel`) is now derived from the same computed array instead of a separate
+  calculation, so there's exactly one code path for benchmark beta.
+- `ValueChart` rewritten: 4 series (portfolio + 3 benchmarks) with the exact colors/dashes from §1a,
+  a toggleable pill-chip legend (click to hide/show a benchmark; portfolio always visible), a custom
+  dark tooltip component (replacing Recharts' default white tooltip), CartesianGrid/axis styling per
+  §1f. New `BetaTable` (3-row DataTable) and `ExcessReturns` (3 DeltaChips) components, both rendered
+  on `/` and `/share` per the §2 privacy matrix ("full" on both).
+  - Added `formatNumber(value, digits)` to `format.ts` and switched `RiskPanel`'s raw `toFixed(` calls
+    (sharpe, beta, HHI) to route through it — one instance of the §1c cleanup pulled forward instead
+    of deferred to §8, since I was already touching that file.
+  - Added `usePrefersReducedMotion` (`src/components/ui/`), built on `useSyncExternalStore` rather
+    than `useState`+`useEffect` (the latter trips the `react-hooks/set-state-in-effect` lint rule and
+    is the wrong tool for subscribing to external browser state) — wired into `ValueChart`'s line
+    animations and refactored `useCountUp` to share it instead of its own inline `matchMedia` check.
+  - **Bug caught via live dev-server + browser check, not just build/tests:** passing a `formatValue`
+    function prop from a server-component page into the `"use client"` `StatCard` threw
+    `Functions cannot be passed directly to Client Components` — Next's RSC boundary can't serialize
+    functions. Fixed in §1's `StatCard` (see that section's notes); resurfaced here as a reminder to
+    keep checking new client-component props against that boundary as pages pass data down.
+  - Also chased what looked like a broken chart (only a tiny stub rendered, full width empty) through
+    the DOM/computed-styles/SVG clip-path — turned out to be Recharts' default line-draw-in animation
+    caught mid-frame by the screenshot, confirmed by re-screenshotting a beat later. Not a bug, but
+    worth having wired reduced-motion support regardless.
+  - Verified visually on `/` (authenticated) and `/share`: 4-series chart renders and the legend
+    toggle correctly hides/shows a benchmark line; beta table and excess-return chips appear on both
+    pages with full values (no privacy restriction, per §2).
+- `npm run lint`, `npm test` (68/68), `npm run build` all pass.

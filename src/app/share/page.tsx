@@ -7,6 +7,8 @@ import { PositionsTable } from "@/components/dashboard/PositionsTable";
 import { WinnersLosers } from "@/components/dashboard/WinnersLosers";
 import { ValueChart } from "@/components/dashboard/ValueChart";
 import { RiskPanel } from "@/components/dashboard/RiskPanel";
+import { BetaTable } from "@/components/dashboard/BetaTable";
+import { ExcessReturns } from "@/components/dashboard/ExcessReturns";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
 // Public, read-only, no login. Reflects live DB state, so never static.
@@ -48,6 +50,10 @@ export default async function SharePage() {
           />
 
           <ValueChart data={data.chartData} />
+
+          <BetaTable comparisons={data.benchmarkComparisons} />
+
+          <ExcessReturns comparisons={data.benchmarkComparisons} />
 
           <PositionsTable positions={data.positionRows} hideDollars={hideDollars} />
 

@@ -1,18 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePrefersReducedMotion } from "./usePrefersReducedMotion";
 
 /** Animates numeric value changes over ~durationMs; snaps instantly under prefers-reduced-motion. */
 export function useCountUp(value: number, durationMs = 400): number {
   const [display, setDisplay] = useState(value);
   const prevValue = useRef(value);
   const frameRef = useRef<number | undefined>(undefined);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
-    const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
     if (prefersReducedMotion || prevValue.current === value) {
       setDisplay(value);
       prevValue.current = value;
@@ -38,7 +36,7 @@ export function useCountUp(value: number, durationMs = 400): number {
     return () => {
       if (frameRef.current !== undefined) cancelAnimationFrame(frameRef.current);
     };
-  }, [value, durationMs]);
+  }, [value, durationMs, prefersReducedMotion]);
 
   return display;
 }

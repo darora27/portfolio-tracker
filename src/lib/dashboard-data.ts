@@ -6,7 +6,6 @@ import { twr } from "@/lib/math/twr";
 import { drawdown } from "@/lib/math/drawdown";
 import { annualizedVolatility } from "@/lib/math/volatility";
 import { sharpeRatio } from "@/lib/math/sharpe";
-import { beta } from "@/lib/math/beta";
 import { xirr } from "@/lib/math/xirr";
 import { daysBetween, todayInTimeZone } from "@/lib/date";
 import {
@@ -19,8 +18,20 @@ import {
   topWinnersLosers,
   type Position,
 } from "@/lib/portfolio/holdings";
+import {
+  computeBenchmarkComparison,
+  type BenchmarkComparison,
+  type BenchmarkTicker,
+} from "@/lib/portfolio/benchmark-comparison";
 import type { ChartPoint } from "@/components/dashboard/ValueChart";
 import type { PositionRow } from "@/components/dashboard/PositionsTable";
+
+const BENCHMARK_TICKERS: BenchmarkTicker[] = ["VOO", "VTI", "XLK"];
+const BENCHMARK_CHART_KEYS: Record<BenchmarkTicker, "vooIndex" | "vtiIndex" | "xlkIndex"> = {
+  VOO: "vooIndex",
+  VTI: "vtiIndex",
+  XLK: "xlkIndex",
+};
 
 export type DashboardData = {
   totalValue: number;
@@ -44,6 +55,7 @@ export type DashboardData = {
   betaVsVoo: number | null;
   top2ConcentrationPct: number;
   hhi: number;
+  benchmarkComparisons: BenchmarkComparison[];
 };
 
 /**
@@ -56,12 +68,12 @@ export async function getDashboardData(): Promise<DashboardData> {
     { data: trades, error: tradesError },
     { data: snapshots, error: snapshotsError },
     { data: snapshotPositions, error: positionsError },
-    { data: vooBenchmarks, error: benchmarksError },
+    { data: benchmarkRows, error: benchmarksError },
   ] = await Promise.all([
     supabase.from("trades").select("*").order("date", { ascending: true }),
     supabase.from("snapshots").select("*").order("date", { ascending: true }),
     supabase.from("snapshot_positions").select("snapshot_id, ticker, close_price"),
-    supabase.from("benchmarks").select("date, close").eq("ticker", "VOO"),
+    supabase.from("benchmarks").select("date, close, ticker").in("ticker", BENCHMARK_TICKERS),
   ]);
 
   if (tradesError) throw tradesError;
@@ -127,29 +139,30 @@ export async function getDashboardData(): Promise<DashboardData> {
   const volatilityPct = annualizedVolatility(returns);
   const sharpe = sharpeRatio(returns);
 
-  // Benchmark (VOO) daily returns, aligned to the exact same dates as the
-  // portfolio's funded history — beta and the chart comparison are only
-  // meaningful over an identical date range. Both series start indexed at
-  // 100 on the same first funded date (neither has a "return" for that
-  // first day itself), so no separate anchor day is needed here. Falls
-  // back to unavailable (rather than a partial/misaligned comparison) if
-  // any date is missing.
+  // Benchmark daily returns, aligned to the exact same dates as the
+  // portfolio's funded history — beta, TWR, and the chart comparison are
+  // only meaningful over an identical date range. Both series start
+  // indexed at 100 on the same first funded date (neither has a "return"
+  // for that first day itself), so no separate anchor day is needed here.
+  // Falls back to unavailable (rather than a partial/misaligned
+  // comparison) per benchmark if any date is missing for it.
   const benchmarkDates = mathSnapshots.map((s) => s.date);
-  const vooCloseByDate = new Map((vooBenchmarks ?? []).map((b) => [b.date, b.close]));
-  const hasCompleteBenchmarkHistory =
-    benchmarkDates.length > 0 && benchmarkDates.every((d) => vooCloseByDate.has(d));
-
-  let benchmarkReturns: number[] = [];
-  let betaVsVoo: number | null = null;
-  if (hasCompleteBenchmarkHistory) {
-    const benchmarkSnapshots = benchmarkDates.map((date) => ({
-      date,
-      totalCost: 0, // VOO itself has no cash flows; this reduces dailyReturns to a plain % change
-      totalValue: vooCloseByDate.get(date)!,
-    }));
-    benchmarkReturns = dailyReturns(benchmarkSnapshots);
-    betaVsVoo = beta(returns, benchmarkReturns);
+  const closeByDateByTicker = new Map<BenchmarkTicker, Map<string, number>>(
+    BENCHMARK_TICKERS.map((ticker) => [ticker, new Map<string, number>()]),
+  );
+  for (const row of benchmarkRows ?? []) {
+    closeByDateByTicker.get(row.ticker as BenchmarkTicker)?.set(row.date, row.close);
   }
+  const benchmarkComparisons: BenchmarkComparison[] = BENCHMARK_TICKERS.map((ticker) =>
+    computeBenchmarkComparison(
+      ticker,
+      closeByDateByTicker.get(ticker)!,
+      benchmarkDates,
+      returns,
+      twrPct,
+    ),
+  );
+  const betaVsVoo = benchmarkComparisons.find((b) => b.ticker === "VOO")?.beta ?? null;
 
   const lastSnapshot = mathSnapshots.at(-1);
   const prevSnapshot = mathSnapshots.at(-2);
@@ -167,13 +180,14 @@ export async function getDashboardData(): Promise<DashboardData> {
   const chartData: ChartPoint[] = [];
   if (mathSnapshots.length > 0) {
     let index = 100;
-    let benchmarkIndex = hasCompleteBenchmarkHistory ? 100 : undefined;
-    chartData.push({ date: mathSnapshots[0].date, portfolioIndex: index, benchmarkIndex });
-    returns.forEach((r, i) => {
-      index *= 1 + r;
-      if (benchmarkIndex !== undefined) benchmarkIndex *= 1 + benchmarkReturns[i];
-      chartData.push({ date: mathSnapshots[i + 1].date, portfolioIndex: index, benchmarkIndex });
-    });
+    const portfolioChartIndex = [index, ...returns.map((r) => (index *= 1 + r))];
+    for (let i = 0; i < mathSnapshots.length; i++) {
+      const point: ChartPoint = { date: mathSnapshots[i].date, portfolioIndex: portfolioChartIndex[i] };
+      for (const comparison of benchmarkComparisons) {
+        if (comparison.available) point[BENCHMARK_CHART_KEYS[comparison.ticker]] = comparison.chartIndex[i];
+      }
+      chartData.push(point);
+    }
   }
 
   return {
@@ -198,5 +212,6 @@ export async function getDashboardData(): Promise<DashboardData> {
     betaVsVoo,
     top2ConcentrationPct: top2,
     hhi,
+    benchmarkComparisons,
   };
 }

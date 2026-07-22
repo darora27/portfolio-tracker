@@ -27,6 +27,10 @@ export function formatSignedCurrency(value: number): string {
   return `${sign}${formatCurrency(Math.abs(value))}`;
 }
 
+export function formatNumber(value: number, digits = 2): string {
+  return value.toFixed(digits);
+}
+
 export function formatDate(isoDate: string): string {
   const [year, month, day] = isoDate.split("-").map(Number);
   return new Date(Date.UTC(year, month - 1, day)).toLocaleDateString("en-US", {
