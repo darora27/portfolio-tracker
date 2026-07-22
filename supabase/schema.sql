@@ -39,6 +39,16 @@ create table benchmarks (
   unique (date, ticker)
 );
 
+-- Owner-controlled site settings, e.g. whether the public /share view
+-- hides dollar amounts. A single row per key, written only via the
+-- owner-gated /api/settings route.
+create table settings (
+  key text primary key,
+  value boolean not null
+);
+
+insert into settings (key, value) values ('share_hide_dollars', true);
+
 create index trades_date_idx on trades (date);
 create index trades_ticker_idx on trades (ticker);
 create index snapshot_positions_snapshot_id_idx on snapshot_positions (snapshot_id);
@@ -46,13 +56,15 @@ create index benchmarks_date_idx on benchmarks (date);
 
 -- RLS: anon (public share view) can read everything, write nothing.
 -- All writes go through the service role key (import script, cron job,
--- trade-entry route), which bypasses RLS entirely.
+-- trade-entry route, settings route), which bypasses RLS entirely.
 alter table trades enable row level security;
 alter table snapshots enable row level security;
 alter table snapshot_positions enable row level security;
 alter table benchmarks enable row level security;
+alter table settings enable row level security;
 
 create policy "public read trades" on trades for select using (true);
 create policy "public read snapshots" on snapshots for select using (true);
 create policy "public read snapshot_positions" on snapshot_positions for select using (true);
 create policy "public read benchmarks" on benchmarks for select using (true);
+create policy "public read settings" on settings for select using (true);

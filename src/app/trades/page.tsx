@@ -6,6 +6,7 @@ import { LoginForm } from "@/components/trades/LoginForm";
 import { AddTradeForm } from "@/components/trades/AddTradeForm";
 import { LogoutButton } from "@/components/trades/LogoutButton";
 import { TradeLogTable } from "@/components/trades/TradeLogTable";
+import { ShareSettingsToggle } from "@/components/trades/ShareSettingsToggle";
 
 export const dynamic = "force-dynamic";
 
@@ -28,10 +29,10 @@ export default async function TradesPage() {
     );
   }
 
-  const { data: trades, error } = await supabase
-    .from("trades")
-    .select("*")
-    .order("date", { ascending: false });
+  const [{ data: trades, error }, { data: setting }] = await Promise.all([
+    supabase.from("trades").select("*").order("date", { ascending: false }),
+    supabase.from("settings").select("value").eq("key", "share_hide_dollars").maybeSingle(),
+  ]);
   if (error) throw error;
 
   return (
@@ -46,7 +47,8 @@ export default async function TradesPage() {
         <LogoutButton />
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 space-y-4">
+        <ShareSettingsToggle initialHideDollars={setting?.value ?? true} />
         <AddTradeForm />
       </div>
 

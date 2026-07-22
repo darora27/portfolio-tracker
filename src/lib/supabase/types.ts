@@ -64,6 +64,15 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["benchmarks"]["Insert"]>;
         Relationships: [];
       };
+      settings: {
+        Row: {
+          key: string;
+          value: boolean;
+        };
+        Insert: Database["public"]["Tables"]["settings"]["Row"];
+        Update: Partial<Database["public"]["Tables"]["settings"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

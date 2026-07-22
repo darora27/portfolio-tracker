@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { supabase } from "@/lib/supabase/client";
 import { getDashboardData } from "@/lib/dashboard-data";
 import { HeadlineStats } from "@/components/dashboard/HeadlineStats";
 import { PositionsTable } from "@/components/dashboard/PositionsTable";
@@ -7,31 +7,23 @@ import { ValueChart } from "@/components/dashboard/ValueChart";
 import { RiskPanel } from "@/components/dashboard/RiskPanel";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
-// This dashboard reflects live DB state (trades can be added any time), so
-// it must never be baked into a static build.
+// Public, read-only, no login. Reflects live DB state, so never static.
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const data = await getDashboardData();
+export default async function SharePage() {
+  const [data, { data: setting }] = await Promise.all([
+    getDashboardData(),
+    supabase.from("settings").select("value").eq("key", "share_hide_dollars").maybeSingle(),
+  ]);
+  // Default to hidden if the settings row is ever missing — fail toward
+  // privacy, not toward accidentally exposing dollar amounts.
+  const hideDollars = setting?.value ?? true;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Portfolio Tracker</h1>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/share"
-            className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
-          >
-            Share view
-          </Link>
-          <Link
-            href="/trades"
-            className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-900"
-          >
-            Trade log
-          </Link>
-        </div>
+        <span className="text-xs text-zinc-500">Read-only share view</span>
       </div>
 
       <div className="mt-8 space-y-10">
@@ -46,11 +38,12 @@ export default async function Home() {
           xirrPct={data.xirrPct}
           historyDays={data.historyDays}
           pricesAsOf={data.pricesAsOf}
+          hideDollars={hideDollars}
         />
 
         <ValueChart data={data.chartData} />
 
-        <PositionsTable positions={data.positionRows} />
+        <PositionsTable positions={data.positionRows} hideDollars={hideDollars} />
 
         <WinnersLosers winners={data.winners} losers={data.losers} />
 

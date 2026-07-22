@@ -35,6 +35,7 @@ export function HeadlineStats({
   xirrPct,
   historyDays,
   pricesAsOf,
+  hideDollars = false,
 }: {
   totalValue: number;
   totalCost: number;
@@ -46,6 +47,7 @@ export function HeadlineStats({
   xirrPct: number;
   historyDays: number;
   pricesAsOf: string | null;
+  hideDollars?: boolean;
 }) {
   const gain = totalValue - totalCost;
   const deemphasizeXirr = historyDays < 90;
@@ -53,21 +55,35 @@ export function HeadlineStats({
   return (
     <section>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        {!hideDollars && (
+          <>
+            <StatCard
+              label="Total value"
+              value={formatCurrency(totalValue)}
+              sub={pricesAsOf ? `Prices as of ${formatDate(pricesAsOf)}` : "Prices unavailable"}
+            />
+            <StatCard label="Invested" value={formatCurrency(totalCost)} />
+          </>
+        )}
         <StatCard
-          label="Total value"
-          value={formatCurrency(totalValue)}
-          sub={pricesAsOf ? `Prices as of ${formatDate(pricesAsOf)}` : "Prices unavailable"}
-        />
-        <StatCard label="Invested" value={formatCurrency(totalCost)} />
-        <StatCard
-          label="Gain / loss"
-          value={formatSignedCurrency(gain)}
-          sub={`Simple return: ${formatSignedPercent(simpleReturnPct)}`}
+          label={hideDollars ? "Simple return" : "Gain / loss"}
+          value={
+            hideDollars
+              ? formatSignedPercent(simpleReturnPct)
+              : formatSignedCurrency(gain)
+          }
+          sub={hideDollars ? undefined : `Simple return: ${formatSignedPercent(simpleReturnPct)}`}
         />
         <StatCard
           label="Daily change"
-          value={formatSignedCurrency(dailyChange)}
-          sub={`${formatSignedPercent(dailyChangePct)} — as of ${formatDate(dailyChangeAsOf)}`}
+          value={
+            hideDollars ? formatSignedPercent(dailyChangePct) : formatSignedCurrency(dailyChange)
+          }
+          sub={
+            hideDollars
+              ? `As of ${formatDate(dailyChangeAsOf)}`
+              : `${formatSignedPercent(dailyChangePct)} — as of ${formatDate(dailyChangeAsOf)}`
+          }
         />
         <StatCard label="TWR (time-weighted)" value={formatSignedPercent(twrPct)} />
         <StatCard
