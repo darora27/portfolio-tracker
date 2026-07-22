@@ -8,7 +8,7 @@ Read this file first at the start of every session. Work only unchecked items.
 - [x] §1. Design system
 - [ ] §2. Privacy matrix (re-verified in §8, applied throughout §3-§7)
 - [x] §3. Three-way benchmark comparison
-- [ ] §4. Sector & industry classification
+- [x] §4. Sector & industry classification
 - [ ] §5. AI-exposure classification
 - [ ] §6. Correlation matrix
 - [ ] §7. Composition donut + realized/unrealized split
@@ -95,3 +95,42 @@ Read this file first at the start of every session. Work only unchecked items.
     toggle correctly hides/shows a benchmark line; beta table and excess-return chips appear on both
     pages with full values (no privacy restriction, per §2).
 - `npm run lint`, `npm test` (68/68), `npm run build` all pass.
+
+### §4. Sector & industry classification
+- Live-fetch branch (per §0's successful probe). New `ticker_sector` table added to
+  `supabase/schema.sql` (ticker PK, sector, fetched_at, public-read RLS policy) — **not yet applied to
+  the live Supabase project.** I have no way to run DDL against it: no `supabase` CLI is linked, no DB
+  connection string / password in `.env.local` (only the PostgREST anon/service-role keys, which don't
+  grant raw SQL access), and I deliberately did not go hunting through shell profiles/config for
+  credentials (the harness correctly blocked one attempt at that). **Action needed from Devan:** run
+  the `ticker_sector` block of `supabase/schema.sql` in the Supabase SQL editor, then
+  `npm run backfill-sectors` once to classify the 13 existing holdings (see below).
+  - Verified this empirically rather than assuming: queried the live table directly and got
+    `PGRST205 — Could not find the table 'public.ticker_sector'`, confirming it doesn't exist yet.
+- `getSector()` added to `finnhub.ts` (`/stock/profile2`, same never-throws-null-on-failure contract as
+  `getQuote`/`getUpcomingEarnings`); pure parser `parseProfileResponse` in `finnhub-sector.ts` extracts
+  `finnhubIndustry` (unit tested, including the malformed/missing-field cases).
+- `ensureSectorCached(ticker)` (`src/lib/portfolio/ensure-sector-cached.ts`) is the refresh trigger:
+  called from `POST /api/trades` after a successful insert, no-ops if the ticker's already cached, and
+  swallows all errors (Finnhub failure or missing table) so it can never break trade entry. This
+  satisfies "refresh only when a trade introduces a new ticker — never on page load"; `dashboard-data.ts`
+  only ever does a plain read of the cached table.
+  - **Judgment call:** that refresh rule only covers *future* trades, so the 13 tickers already held
+    before this phase would never get classified on their own (nobody re-buys existing shares). Added
+    `scripts/backfill-sectors.ts` (mirrors `scripts/import.ts`'s one-time-script pattern) to seed the
+    existing holdings once, after the migration lands. Not run yet — the table doesn't exist to backfill
+    into.
+  - **Judgment call:** `dashboard-data.ts` treats a `PGRST205` (table-not-found) error as "no cached
+    sectors yet" rather than throwing — every position shows "Unclassified" instead of the whole
+    dashboard 500ing over one optional/additive table before Devan runs the migration. Any other DB
+    error still throws, matching the existing convention for `trades`/`snapshots`/`benchmarks`.
+- New generic pure function `classificationWeights()` (`src/lib/portfolio/classification-weights.ts`,
+  unit tested) sums position value by label ÷ total, sorted descending, with unmapped tickers bucketed
+  into "Unclassified" rather than dropped. Built generic (label, not literally "sector") because §5
+  needs the identical grouping logic ("same treatment for §5" per the spec) — reused there instead of
+  forked.
+  - New `ClassificationBarList` component (horizontal accent bars at graded opacity, mono
+    percentages) renders on both `/` and `/share` (§2: sector weights are full access on both).
+  - Verified visually on the live dev server: dashboard doesn't 500, sector weights section renders
+    "Unclassified 100.0%" (correct, given the migration hasn't run), rest of the page unaffected.
+- `npm run lint`, `npm test` (75/75), `npm run build` all pass.

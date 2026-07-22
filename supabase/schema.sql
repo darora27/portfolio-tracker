@@ -39,6 +39,17 @@ create table benchmarks (
   unique (date, ticker)
 );
 
+-- Sector/industry classification per ticker, cached from Finnhub's
+-- /stock/profile2 (finnhubIndustry field). Refreshed only when a trade
+-- introduces a ticker not already in this table — never on dashboard page
+-- load — so the dashboard read path is always a plain table read, zero
+-- Finnhub calls.
+create table ticker_sector (
+  ticker text primary key,
+  sector text not null,
+  fetched_at timestamptz not null default now()
+);
+
 -- Owner-controlled site settings, e.g. whether the public /share view
 -- hides dollar amounts. A single row per key, written only via the
 -- owner-gated /api/settings route.
@@ -62,9 +73,11 @@ alter table snapshots enable row level security;
 alter table snapshot_positions enable row level security;
 alter table benchmarks enable row level security;
 alter table settings enable row level security;
+alter table ticker_sector enable row level security;
 
 create policy "public read trades" on trades for select using (true);
 create policy "public read snapshots" on snapshots for select using (true);
 create policy "public read snapshot_positions" on snapshot_positions for select using (true);
 create policy "public read benchmarks" on benchmarks for select using (true);
 create policy "public read settings" on settings for select using (true);
+create policy "public read ticker_sector" on ticker_sector for select using (true);

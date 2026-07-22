@@ -73,6 +73,16 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["settings"]["Insert"]>;
         Relationships: [];
       };
+      ticker_sector: {
+        Row: {
+          ticker: string;
+          sector: string;
+          fetched_at: string;
+        };
+        Insert: Database["public"]["Tables"]["ticker_sector"]["Row"];
+        Update: Partial<Database["public"]["Tables"]["ticker_sector"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

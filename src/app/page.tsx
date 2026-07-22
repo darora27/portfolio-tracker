@@ -12,6 +12,7 @@ import { ValueChart } from "@/components/dashboard/ValueChart";
 import { RiskPanel } from "@/components/dashboard/RiskPanel";
 import { BetaTable } from "@/components/dashboard/BetaTable";
 import { ExcessReturns } from "@/components/dashboard/ExcessReturns";
+import { ClassificationBarList } from "@/components/dashboard/ClassificationBarList";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
 // This dashboard reflects live DB state (trades can be added any time), so
@@ -73,6 +74,8 @@ export default async function Home() {
           <ExcessReturns comparisons={data.benchmarkComparisons} />
 
           <PositionsTable positions={data.positionRows} />
+
+          <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
 
           <WinnersLosers winners={data.winners} losers={data.losers} />
 

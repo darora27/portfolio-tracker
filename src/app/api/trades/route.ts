@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { TradeValidationError, validateNewTrade } from "@/lib/portfolio/trade-entry";
+import { ensureSectorCached } from "@/lib/portfolio/ensure-sector-cached";
 
 export async function POST(request: Request) {
   const ownerPassword = process.env.OWNER_PASSWORD;
@@ -59,6 +60,8 @@ export async function POST(request: Request) {
   if (insertError) {
     return NextResponse.json({ error: insertError.message }, { status: 500 });
   }
+
+  await ensureSectorCached(validated.ticker);
 
   revalidatePath("/");
   revalidatePath("/trades");

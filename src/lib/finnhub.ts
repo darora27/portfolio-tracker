@@ -1,6 +1,7 @@
 import "server-only";
 import { parseQuoteResponse, type Quote } from "./finnhub-quote";
 import { parseEarningsCalendarResponse, type EarningsEvent } from "./finnhub-earnings";
+import { parseProfileResponse } from "./finnhub-sector";
 import { addDays, todayInTimeZone } from "./date";
 
 export type { Quote, EarningsEvent };
@@ -33,6 +34,22 @@ export async function getQuotes(symbols: string[]): Promise<Map<string, Quote>> 
     if (quote) quotes.set(symbol, quote);
   }
   return quotes;
+}
+
+/** Sector/industry for one ticker, or null on any failure — never throws. */
+export async function getSector(ticker: string): Promise<string | null> {
+  const apiKey = process.env.FINNHUB_API_KEY;
+  if (!apiKey) return null;
+  try {
+    const res = await fetch(
+      `${FINNHUB_BASE_URL}/stock/profile2?symbol=${encodeURIComponent(ticker)}&token=${apiKey}`,
+      { cache: "no-store" },
+    );
+    if (!res.ok) return null;
+    return parseProfileResponse(await res.json())?.sector ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**

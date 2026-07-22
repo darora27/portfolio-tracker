@@ -23,6 +23,7 @@ import {
   type BenchmarkComparison,
   type BenchmarkTicker,
 } from "@/lib/portfolio/benchmark-comparison";
+import { classificationWeights, type ClassificationWeight } from "@/lib/portfolio/classification-weights";
 import type { ChartPoint } from "@/components/dashboard/ValueChart";
 import type { PositionRow } from "@/components/dashboard/PositionsTable";
 
@@ -56,6 +57,7 @@ export type DashboardData = {
   top2ConcentrationPct: number;
   hhi: number;
   benchmarkComparisons: BenchmarkComparison[];
+  sectorWeights: ClassificationWeight[];
 };
 
 /**
@@ -69,17 +71,26 @@ export async function getDashboardData(): Promise<DashboardData> {
     { data: snapshots, error: snapshotsError },
     { data: snapshotPositions, error: positionsError },
     { data: benchmarkRows, error: benchmarksError },
+    { data: sectorRows, error: sectorError },
   ] = await Promise.all([
     supabase.from("trades").select("*").order("date", { ascending: true }),
     supabase.from("snapshots").select("*").order("date", { ascending: true }),
     supabase.from("snapshot_positions").select("snapshot_id, ticker, close_price"),
     supabase.from("benchmarks").select("date, close, ticker").in("ticker", BENCHMARK_TICKERS),
+    // Cached sector classification only — never a live Finnhub call from the
+    // page-load path. Refreshed exclusively by ensureSectorCached at trade entry.
+    supabase.from("ticker_sector").select("ticker, sector"),
   ]);
 
   if (tradesError) throw tradesError;
   if (snapshotsError) throw snapshotsError;
   if (positionsError) throw positionsError;
   if (benchmarksError) throw benchmarksError;
+  // PGRST205 = "table not found in schema cache" — the ticker_sector migration
+  // (supabase/schema.sql) hasn't been applied to this Supabase project yet.
+  // Degrade to "no cached sectors" (everything shows Unclassified) instead of
+  // a hard 500 for the whole dashboard over one optional, additive table.
+  if (sectorError && sectorError.code !== "PGRST205") throw sectorError;
 
   const today = todayInTimeZone("America/New_York");
 
@@ -122,6 +133,9 @@ export async function getDashboardData(): Promise<DashboardData> {
 
   const { winners, losers } = topWinnersLosers(positions, 3);
   const { top2, hhi } = concentration(positions);
+
+  const sectorByTicker = new Map((sectorRows ?? []).map((r) => [r.ticker, r.sector]));
+  const sectorWeights = classificationWeights(positions, sectorByTicker);
 
   // Performance history from daily snapshots, net of cash flows. Drop any
   // leading zero-value snapshots (days before the first investment) since
@@ -213,5 +227,6 @@ export async function getDashboardData(): Promise<DashboardData> {
     top2ConcentrationPct: top2,
     hhi,
     benchmarkComparisons,
+    sectorWeights,
   };
 }
