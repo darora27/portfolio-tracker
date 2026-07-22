@@ -24,6 +24,7 @@ import {
   type BenchmarkTicker,
 } from "@/lib/portfolio/benchmark-comparison";
 import { classificationWeights, type ClassificationWeight } from "@/lib/portfolio/classification-weights";
+import aiExposureByTicker from "../../data/ai-exposure.json";
 import type { ChartPoint } from "@/components/dashboard/ValueChart";
 import type { PositionRow } from "@/components/dashboard/PositionsTable";
 
@@ -58,6 +59,7 @@ export type DashboardData = {
   hhi: number;
   benchmarkComparisons: BenchmarkComparison[];
   sectorWeights: ClassificationWeight[];
+  aiExposureWeights: ClassificationWeight[];
 };
 
 /**
@@ -136,6 +138,9 @@ export async function getDashboardData(): Promise<DashboardData> {
 
   const sectorByTicker = new Map((sectorRows ?? []).map((r) => [r.ticker, r.sector]));
   const sectorWeights = classificationWeights(positions, sectorByTicker);
+
+  const aiExposureByTickerMap = new Map(Object.entries(aiExposureByTicker));
+  const aiExposureWeights = classificationWeights(positions, aiExposureByTickerMap);
 
   // Performance history from daily snapshots, net of cash flows. Drop any
   // leading zero-value snapshots (days before the first investment) since
@@ -228,5 +233,6 @@ export async function getDashboardData(): Promise<DashboardData> {
     hhi,
     benchmarkComparisons,
     sectorWeights,
+    aiExposureWeights,
   };
 }

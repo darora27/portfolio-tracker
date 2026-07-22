@@ -60,6 +60,8 @@ export default async function SharePage() {
 
           <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
 
+          <ClassificationBarList title="AI exposure" items={data.aiExposureWeights} />
+
           <WinnersLosers winners={data.winners} losers={data.losers} />
 
           <EarningsCalendar events={data.upcomingEarnings} />

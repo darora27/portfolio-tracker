@@ -9,7 +9,7 @@ Read this file first at the start of every session. Work only unchecked items.
 - [ ] §2. Privacy matrix (re-verified in §8, applied throughout §3-§7)
 - [x] §3. Three-way benchmark comparison
 - [x] §4. Sector & industry classification
-- [ ] §5. AI-exposure classification
+- [x] §5. AI-exposure classification
 - [ ] §6. Correlation matrix
 - [ ] §7. Composition donut + realized/unrealized split
 - [ ] §8. Final integration pass
@@ -134,3 +134,14 @@ Read this file first at the start of every session. Work only unchecked items.
   - Verified visually on the live dev server: dashboard doesn't 500, sector weights section renders
     "Unclassified 100.0%" (correct, given the migration hasn't run), rest of the page unaffected.
 - `npm run lint`, `npm test` (75/75), `npm run build` all pass.
+
+### §5. AI-exposure classification
+- `data/ai-exposure.json` created exactly as specified. Reused §4's generic `classificationWeights()`
+  unchanged (no fork) — `dashboard-data.ts` imports the JSON directly (`resolveJsonModule` already on
+  in `tsconfig.json`) and runs the same grouping function against it, with unmapped tickers falling
+  into "Unclassified" the same way. `ClassificationBarList` reused as-is for the "AI exposure" section
+  on both `/` and `/share`.
+- Verified visually on the live dev server: High 67.3%, Medium 17.8%, None 12.3%, Medium-High 2.3%,
+  Low 0.3% — bars render with graded opacity, sums to 100%.
+- `npm run lint`, `npm test` (75/75 — no new tests needed, `classificationWeights` already covers the
+  grouping logic and the JSON is static data), `npm run build` all pass.
