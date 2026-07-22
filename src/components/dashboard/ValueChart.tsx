@@ -1,21 +1,24 @@
 "use client";
 
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { formatDate } from "@/lib/format";
 
 export type ChartPoint = {
   date: string;
   portfolioIndex: number;
+  benchmarkIndex?: number;
 };
 
 export function ValueChart({ data }: { data: ChartPoint[] }) {
+  const hasBenchmark = data.some((d) => d.benchmarkIndex !== undefined);
+
   return (
     <section>
       <h2 className="text-lg font-medium">Value over time</h2>
       <p className="mt-1 text-xs text-zinc-500">
-        Indexed to 100 at the first snapshot, net of cash flows — a fair basis for a benchmark
-        comparison later. VOO will appear here once the daily snapshot job backfills benchmark
-        prices (Phase 4).
+        {hasBenchmark
+          ? "Both series indexed to 100 at the same start date, net of cash flows — a fair same-period comparison against VOO."
+          : "Indexed to 100 at the first snapshot, net of cash flows. VOO comparison needs a full-history benchmark match — it'll appear once that's available."}
       </p>
       <div className="mt-3 h-64 rounded-lg border border-zinc-200 p-2 dark:border-zinc-800">
         <ResponsiveContainer width="100%" height="100%">
@@ -34,8 +37,9 @@ export function ValueChart({ data }: { data: ChartPoint[] }) {
             />
             <Tooltip
               labelFormatter={(d) => (typeof d === "string" ? formatDate(d) : d)}
-              formatter={(value) => [typeof value === "number" ? value.toFixed(2) : value, "Portfolio"]}
+              formatter={(value, name) => [typeof value === "number" ? value.toFixed(2) : value, name]}
             />
+            {hasBenchmark && <Legend wrapperStyle={{ fontSize: 12 }} />}
             <Line
               type="monotone"
               dataKey="portfolioIndex"
@@ -44,6 +48,17 @@ export function ValueChart({ data }: { data: ChartPoint[] }) {
               dot={false}
               name="Portfolio"
             />
+            {hasBenchmark && (
+              <Line
+                type="monotone"
+                dataKey="benchmarkIndex"
+                stroke="#9ca3af"
+                strokeWidth={2}
+                strokeDasharray="4 3"
+                dot={false}
+                name="VOO"
+              />
+            )}
           </LineChart>
         </ResponsiveContainer>
       </div>

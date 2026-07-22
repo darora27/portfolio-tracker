@@ -22,12 +22,14 @@ export function RiskPanel({
   volatilityPct,
   maxDrawdownPct,
   sharpe,
+  betaVsVoo,
   top2ConcentrationPct,
   hhi,
 }: {
   volatilityPct: number;
   maxDrawdownPct: number;
   sharpe: number;
+  betaVsVoo: number | null;
   top2ConcentrationPct: number;
   hhi: number;
 }) {
@@ -40,8 +42,8 @@ export function RiskPanel({
         <Metric label="Sharpe" value={sharpe.toFixed(2)} />
         <Metric
           label="Beta vs VOO"
-          value="—"
-          sub="Needs benchmark daily prices (Phase 4)"
+          value={betaVsVoo !== null ? betaVsVoo.toFixed(2) : "—"}
+          sub={betaVsVoo === null ? "Needs a full-history VOO benchmark match" : undefined}
         />
         <Metric label="Top-2 concentration" value={formatPercent(top2ConcentrationPct, 1)} />
         <Metric label="HHI" value={hhi.toFixed(0)} sub="0-10000; higher = more concentrated" />

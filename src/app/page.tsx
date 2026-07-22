@@ -5,6 +5,7 @@ import { twr } from "@/lib/math/twr";
 import { drawdown } from "@/lib/math/drawdown";
 import { annualizedVolatility } from "@/lib/math/volatility";
 import { sharpeRatio } from "@/lib/math/sharpe";
+import { beta } from "@/lib/math/beta";
 import { xirr } from "@/lib/math/xirr";
 import { daysBetween, todayInTimeZone } from "@/lib/date";
 import {
@@ -31,15 +32,18 @@ export default async function Home() {
     { data: trades, error: tradesError },
     { data: snapshots, error: snapshotsError },
     { data: snapshotPositions, error: positionsError },
+    { data: vooBenchmarks, error: benchmarksError },
   ] = await Promise.all([
     supabase.from("trades").select("*").order("date", { ascending: true }),
     supabase.from("snapshots").select("*").order("date", { ascending: true }),
     supabase.from("snapshot_positions").select("snapshot_id, ticker, close_price"),
+    supabase.from("benchmarks").select("date, close").eq("ticker", "VOO"),
   ]);
 
   if (tradesError) throw tradesError;
   if (snapshotsError) throw snapshotsError;
   if (positionsError) throw positionsError;
+  if (benchmarksError) throw benchmarksError;
 
   const today = todayInTimeZone("America/New_York");
 
@@ -93,6 +97,30 @@ export default async function Home() {
   const volatilityPct = annualizedVolatility(returns);
   const sharpe = sharpeRatio(returns);
 
+  // Benchmark (VOO) daily returns, aligned to the exact same dates as the
+  // portfolio's funded history — beta and the chart comparison are only
+  // meaningful over an identical date range. Both series start indexed at
+  // 100 on the same first funded date (neither has a "return" for that
+  // first day itself), so no separate anchor day is needed here. Falls
+  // back to unavailable (rather than a partial/misaligned comparison) if
+  // any date is missing.
+  const benchmarkDates = mathSnapshots.map((s) => s.date);
+  const vooCloseByDate = new Map((vooBenchmarks ?? []).map((b) => [b.date, b.close]));
+  const hasCompleteBenchmarkHistory =
+    benchmarkDates.length > 0 && benchmarkDates.every((d) => vooCloseByDate.has(d));
+
+  let benchmarkReturns: number[] = [];
+  let betaVsVoo: number | null = null;
+  if (hasCompleteBenchmarkHistory) {
+    const benchmarkSnapshots = benchmarkDates.map((date) => ({
+      date,
+      totalCost: 0, // VOO itself has no cash flows; this reduces dailyReturns to a plain % change
+      totalValue: vooCloseByDate.get(date)!,
+    }));
+    benchmarkReturns = dailyReturns(benchmarkSnapshots);
+    betaVsVoo = beta(returns, benchmarkReturns);
+  }
+
   const lastSnapshot = mathSnapshots.at(-1);
   const prevSnapshot = mathSnapshots.at(-2);
   const dailyChange =
@@ -109,10 +137,12 @@ export default async function Home() {
   const chartData: ChartPoint[] = [];
   if (mathSnapshots.length > 0) {
     let index = 100;
-    chartData.push({ date: mathSnapshots[0].date, portfolioIndex: index });
+    let benchmarkIndex = hasCompleteBenchmarkHistory ? 100 : undefined;
+    chartData.push({ date: mathSnapshots[0].date, portfolioIndex: index, benchmarkIndex });
     returns.forEach((r, i) => {
       index *= 1 + r;
-      chartData.push({ date: mathSnapshots[i + 1].date, portfolioIndex: index });
+      if (benchmarkIndex !== undefined) benchmarkIndex *= 1 + benchmarkReturns[i];
+      chartData.push({ date: mathSnapshots[i + 1].date, portfolioIndex: index, benchmarkIndex });
     });
   }
 
@@ -144,6 +174,7 @@ export default async function Home() {
           volatilityPct={volatilityPct}
           maxDrawdownPct={maxDrawdown}
           sharpe={sharpe}
+          betaVsVoo={betaVsVoo}
           top2ConcentrationPct={top2}
           hhi={hhi}
         />
