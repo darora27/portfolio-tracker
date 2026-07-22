@@ -1,28 +1,5 @@
-import { formatCurrency, formatDate, formatSignedCurrency, formatSignedPercent } from "@/lib/format";
-
-function StatCard({
-  label,
-  value,
-  sub,
-  muted = false,
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-  muted?: boolean;
-}) {
-  return (
-    <div
-      className={`rounded-lg border border-zinc-200 p-4 dark:border-zinc-800 ${
-        muted ? "opacity-60" : ""
-      }`}
-    >
-      <div className="text-xs font-medium uppercase tracking-wide text-zinc-500">{label}</div>
-      <div className="mt-1 text-2xl font-semibold tabular-nums">{value}</div>
-      {sub && <div className="mt-0.5 text-xs text-zinc-500">{sub}</div>}
-    </div>
-  );
-}
+import { StatCard } from "@/components/ui/StatCard";
+import { formatDate, formatSignedPercent } from "@/lib/format";
 
 export function HeadlineStats({
   totalValue,
@@ -59,37 +36,35 @@ export function HeadlineStats({
           <>
             <StatCard
               label="Total value"
-              value={formatCurrency(totalValue)}
-              sub={pricesAsOf ? `Prices as of ${formatDate(pricesAsOf)}` : "Prices unavailable"}
+              value={totalValue}
+              format="usd"
+              sublabel={pricesAsOf ? `Prices as of ${formatDate(pricesAsOf)}` : "Prices unavailable"}
             />
-            <StatCard label="Invested" value={formatCurrency(totalCost)} />
+            <StatCard label="Invested" value={totalCost} format="usd" />
           </>
         )}
         <StatCard
           label={hideDollars ? "Simple return" : "Gain / loss"}
-          value={
-            hideDollars
-              ? formatSignedPercent(simpleReturnPct)
-              : formatSignedCurrency(gain)
-          }
-          sub={hideDollars ? undefined : `Simple return: ${formatSignedPercent(simpleReturnPct)}`}
+          value={hideDollars ? simpleReturnPct : gain}
+          format={hideDollars ? "signedPct" : "signedUsd"}
+          sublabel={hideDollars ? undefined : `Simple return: ${formatSignedPercent(simpleReturnPct)}`}
         />
         <StatCard
           label="Daily change"
-          value={
-            hideDollars ? formatSignedPercent(dailyChangePct) : formatSignedCurrency(dailyChange)
-          }
-          sub={
+          value={hideDollars ? dailyChangePct : dailyChange}
+          format={hideDollars ? "signedPct" : "signedUsd"}
+          sublabel={
             hideDollars
               ? `As of ${formatDate(dailyChangeAsOf)}`
               : `${formatSignedPercent(dailyChangePct)} — as of ${formatDate(dailyChangeAsOf)}`
           }
         />
-        <StatCard label="TWR (time-weighted)" value={formatSignedPercent(twrPct)} />
+        <StatCard label="TWR (time-weighted)" value={twrPct} format="signedPct" />
         <StatCard
           label="XIRR (annualized)"
-          value={formatSignedPercent(xirrPct)}
-          sub={deemphasizeXirr ? `Only ${historyDays}d of history — noisy` : undefined}
+          value={xirrPct}
+          format="signedPct"
+          sublabel={deemphasizeXirr ? `Only ${historyDays}d of history — noisy` : undefined}
           muted={deemphasizeXirr}
         />
       </div>

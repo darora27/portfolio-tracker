@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Card } from "@/components/ui/Card";
 
 export function ShareSettingsToggle({ initialHideDollars }: { initialHideDollars: boolean }) {
   const [hideDollars, setHideDollars] = useState(initialHideDollars);
@@ -19,10 +20,10 @@ export function ShareSettingsToggle({ initialHideDollars }: { initialHideDollars
   }
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+    <Card className="flex items-center justify-between gap-4">
       <div>
-        <h3 className="text-sm font-medium">Share view: hide dollar amounts</h3>
-        <p className="mt-0.5 text-xs text-zinc-500">
+        <h3 className="text-sm font-medium text-text-primary">Share view: hide dollar amounts</h3>
+        <p className="mt-0.5 text-xs text-text-secondary">
           When on, /share shows percentages and weights only — no total value, invested amount,
           or dollar gains.
         </p>
@@ -35,15 +36,15 @@ export function ShareSettingsToggle({ initialHideDollars }: { initialHideDollars
         aria-checked={hideDollars}
         aria-label="Hide dollar amounts on share view"
         className={`relative h-6 w-11 shrink-0 rounded-full transition-colors disabled:opacity-50 ${
-          hideDollars ? "bg-zinc-900 dark:bg-zinc-100" : "bg-zinc-300 dark:bg-zinc-700"
+          hideDollars ? "bg-accent" : "bg-surface-hover"
         }`}
       >
         <span
-          className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform dark:bg-zinc-900 ${
+          className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
             hideDollars ? "translate-x-5" : "translate-x-0.5"
           }`}
         />
       </button>
-    </div>
+    </Card>
   );
 }

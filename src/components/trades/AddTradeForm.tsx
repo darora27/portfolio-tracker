@@ -2,9 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-
 const inputClass =
-  "mt-1 w-full rounded-md border border-zinc-300 px-2 py-1.5 text-sm dark:border-zinc-700 dark:bg-zinc-900";
+  "mt-1 w-full rounded-md border border-border bg-surface-hover px-2 py-1.5 text-sm text-text-primary focus:border-accent focus:outline-none";
 
 export function AddTradeForm() {
   const router = useRouter();
@@ -48,11 +47,13 @@ export function AddTradeForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+      className="rounded-xl border border-border bg-surface p-6 transition-[border-color,box-shadow] duration-150 ease-out hover:border-border-strong"
     >
-      <h2 className="text-sm font-medium">Add trade</h2>
+      <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+        Add trade
+      </h2>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <label className="text-xs text-zinc-500">
+        <label className="text-xs text-text-secondary">
           Date
           <input
             type="date"
@@ -62,7 +63,7 @@ export function AddTradeForm() {
             className={inputClass}
           />
         </label>
-        <label className="text-xs text-zinc-500">
+        <label className="text-xs text-text-secondary">
           Ticker
           <input
             type="text"
@@ -72,7 +73,7 @@ export function AddTradeForm() {
             className={`${inputClass} uppercase`}
           />
         </label>
-        <label className="text-xs text-zinc-500">
+        <label className="text-xs text-text-secondary">
           Action
           <select
             value={form.action}
@@ -83,7 +84,7 @@ export function AddTradeForm() {
             <option value="sell">Sell</option>
           </select>
         </label>
-        <label className="text-xs text-zinc-500">
+        <label className="text-xs text-text-secondary">
           Shares
           <input
             type="number"
@@ -95,7 +96,7 @@ export function AddTradeForm() {
             className={inputClass}
           />
         </label>
-        <label className="text-xs text-zinc-500">
+        <label className="text-xs text-text-secondary">
           Price
           <input
             type="number"
@@ -107,7 +108,7 @@ export function AddTradeForm() {
             className={inputClass}
           />
         </label>
-        <label className="text-xs text-zinc-500 sm:col-span-3">
+        <label className="text-xs text-text-secondary sm:col-span-3">
           Reason (optional)
           <input
             type="text"
@@ -117,11 +118,11 @@ export function AddTradeForm() {
           />
         </label>
       </div>
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-loss">{error}</p>}
       <button
         type="submit"
         disabled={submitting}
-        className="mt-3 rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900"
+        className="mt-3 rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-white hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? "Adding..." : "Add trade"}
       </button>

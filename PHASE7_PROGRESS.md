@@ -12,7 +12,7 @@ Read this file first at the start of every session. Work only unchecked items.
 - [x] §5. AI-exposure classification
 - [x] §6. Correlation matrix
 - [x] §7. Composition donut + realized/unrealized split
-- [ ] §8. Final integration pass
+- [x] §8. Final integration pass
 - [ ] §9. Final summary
 
 ## Notes
@@ -199,3 +199,50 @@ Read this file first at the start of every session. Work only unchecked items.
   dollar figures, matching the privacy matrix exactly.
 - `npm run lint`, `npm test` (86/86 — no new pure-math functions needed beyond what §4/§6 already
   cover), `npm run build` all pass.
+
+### §8. Final integration pass
+- Grep swept clean: no `zinc-*`, no hardcoded `text-blue`/`text-emerald`/`text-red-6*` classes remain
+  anywhere in `src/components`/`src/app`. Migrated every remaining old-styled component to the design
+  system: `HeadlineStats`, `PositionsTable`, `WinnersLosers`, `EarningsCalendar`, `TradeLogTable`,
+  `AddTradeForm`, `LoginForm`, `ShareSettingsToggle` all now use `Card`/`StatCard`/`DeltaChip`/
+  `DataTable` primitives and `--token` colors. Fixed `EarningsCalendar`'s raw `Est. EPS $X.XX`
+  `toFixed(2)` to route through `formatCurrency`. Left two `toFixed(` calls in `ValueChart` (the
+  tooltip's raw index value and the Y-axis tick formatter) — deliberately not routed through
+  `format.ts`, since they format a chart index value, not a dollar/percent/date domain quantity.
+  - **Regression caught and fixed within this section:** first pass gave every `HeadlineStats` card
+    `headline` (the `text-4xl` treatment from §1). In the real 6-column dense grid this overflowed —
+    "$25,341.75" clipped past its card edge. `headline`/`text-4xl` is for a genuinely prominent
+    standalone figure, not a 6-up grid; reverted those six cards to the default `text-2xl` size (same
+    as the working pre-migration layout) and confirmed no clipping afterward.
+  - **A second, more significant regression, also caught and fixed here, not shipped:** testing at a
+    true 390px viewport (see below) surfaced that `body` had `flex flex-col` (present since Phase 1,
+    inherited from the Next.js starter template — nothing in the app actually depends on it, no
+    `flex-1`/`flex-grow`/`mt-auto` anywhere). Flex-item children default to `min-width: auto`, i.e.
+    their content's min-content size — so any table's `min-width` (480px/640px) silently forced the
+    *entire page* to ~770px wide inside a 390px viewport, even though each individual table already had
+    its own `overflow-x-auto` wrapper. Removed `flex flex-col` from `body` in `layout.tsx` (nothing
+    relies on it); confirmed `document.documentElement.scrollWidth` drops from 769px to 387px (no page
+    overflow) on `/`, `/share`, and `/trades` alike. This was a **pre-existing bug all the way back to
+    Phase 1** that had simply never been tested at mobile width before — §8 is the first time this
+    project's mobile layout was actually verified in a real (390px) viewport rather than assumed.
+  - **How the 390px viewport was actually achieved:** the browser tool's `resize_window` has an
+    apparent floor around ~682px on this machine (requests for 390px were silently clamped), which is
+    still above Tailwind's `sm` breakpoint (640px) and would have hidden exactly this bug. Worked around
+    it with a temporary `/dev-mobile-test` scratch route (deleted before commit, like §1's) embedding
+    each real page in a `width={390}` iframe — iframes get an exact, independent CSS viewport
+    regardless of the outer window, confirmed via `iframe.contentWindow.innerWidth`.
+- Mobile (390px, real iframe viewport) verified for `/`, `/trades`, and `/share`: nav wordmark + links
+  (or the "Read-only" chip) fit on one line without wrapping; the stat-card grid is a clean 2-up;
+  `PositionsTable`/`TradeLogTable` scroll horizontally within their own `overflow-x-auto` box rather
+  than stretching the page (sticky first column confirmed via inspection); the composition donut's
+  legend stacks in a 2-column grid below the chart instead of beside it; the correlation heatmap
+  and sector/AI-exposure bar lists render without any page-level horizontal scroll.
+- Privacy matrix re-checked end-to-end on `/share`: dollar StatCards hidden, Positions table drops
+  Shares/Price/Value/Cost-basis columns, Realized/Unrealized shows percent-of-invested only, donut
+  legend shows weight% (dollar amounts only appear in the private-dashboard tooltip) — matches §2
+  exactly.
+- Confirmed logged-out `/` shows only the sign-in gate (screenshot: no nav, no data, just the
+  password form) — the exact regression class flagged as "be paranoid about" in the ground rules.
+- Screenshots captured for all three pages at desktop and 390px into `docs/screenshots/`
+  (`{dashboard,trades,share}-{desktop,mobile-390}.jpg`).
+- `npm run lint`, `npm test` (86/86), `npm run build` all pass after every fix in this section.
