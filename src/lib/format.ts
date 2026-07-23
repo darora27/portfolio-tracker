@@ -31,6 +31,12 @@ export function formatNumber(value: number, digits = 2): string {
   return value.toFixed(digits);
 }
 
+/** Signed integer count (e.g. a net insider-transaction badge): "+3", "-2", "0". */
+export function formatSignedNumber(value: number, digits = 0): string {
+  const sign = value > 0 ? "+" : value < 0 ? "-" : "";
+  return `${sign}${formatNumber(Math.abs(value), digits)}`;
+}
+
 export function formatDate(isoDate: string): string {
   const [year, month, day] = isoDate.split("-").map(Number);
   return new Date(Date.UTC(year, month - 1, day)).toLocaleDateString("en-US", {

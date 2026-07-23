@@ -11,7 +11,7 @@ export function NavBar({
   active,
 }: {
   variant: "private" | "share";
-  active?: "dashboard" | "history" | "trades";
+  active?: "dashboard" | "history" | "trades" | "research";
 }) {
   return (
     <header
@@ -41,6 +41,9 @@ export function NavBar({
             </Link>
             <Link href="/trades" className={linkClass(active === "trades")}>
               Trades
+            </Link>
+            <Link href="/research" className={linkClass(active === "research")}>
+              Research
             </Link>
             <LogoutButton />
           </nav>

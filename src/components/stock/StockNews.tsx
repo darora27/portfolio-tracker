@@ -2,11 +2,11 @@ import type { NewsItem } from "@/lib/finnhub-news";
 import { Card } from "@/components/ui/Card";
 import { formatRelativeOrDate } from "@/lib/format";
 
-/** Recent news for one ticker. Omitted entirely (by the caller) when there's nothing to show. */
-export function StockNews({ items }: { items: NewsItem[] }) {
+/** Recent news (per-ticker, or general market news via `title`). Omitted entirely (by the caller) when there's nothing to show. */
+export function StockNews({ items, title = "Recent news" }: { items: NewsItem[]; title?: string }) {
   return (
     <section>
-      <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">Recent news</h2>
+      <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">{title}</h2>
       <Card padding="p-0" className="mt-3 divide-y divide-border overflow-hidden">
         {items.map((item, i) => (
           <a

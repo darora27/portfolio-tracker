@@ -1,5 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { formatMarketCap, formatMonthYear, formatRelativeOrDate } from "./format";
+import { formatMarketCap, formatMonthYear, formatRelativeOrDate, formatSignedNumber } from "./format";
+
+describe("formatSignedNumber", () => {
+  it("prefixes a sign for positive and negative values, none for zero", () => {
+    expect(formatSignedNumber(3)).toBe("+3");
+    expect(formatSignedNumber(-2)).toBe("-2");
+    expect(formatSignedNumber(0)).toBe("0");
+  });
+
+  it("honors a digits override", () => {
+    expect(formatSignedNumber(1.5, 1)).toBe("+1.5");
+  });
+});
 
 describe("formatMarketCap", () => {
   it("shows billions once the raw millions figure crosses 1000", () => {

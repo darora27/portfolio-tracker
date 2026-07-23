@@ -5,10 +5,11 @@ import { parseProfileResponse } from "./finnhub-sector";
 import { parseMetricResponse, type CompanyMetric } from "./finnhub-metric";
 import { parseRecommendationResponse, type RecommendationTrend } from "./finnhub-recommendation";
 import { parseNewsResponse, type NewsItem } from "./finnhub-news";
+import { parseInsiderTransactionsResponse, type InsiderTransaction } from "./finnhub-insider";
 import { addDays, todayInTimeZone } from "./date";
-import { getOrFetch, FINNHUB_TTL } from "./server/finnhub-cache";
+import { getOrFetch, FINNHUB_TTL, RESEARCH_TTL } from "./server/api-cache";
 
-export type { Quote, EarningsEvent, CompanyMetric, RecommendationTrend, NewsItem };
+export type { Quote, EarningsEvent, CompanyMetric, RecommendationTrend, NewsItem, InsiderTransaction };
 
 const FINNHUB_BASE_URL = "https://finnhub.io/api/v1";
 
@@ -152,4 +153,40 @@ export async function getCompanyNews(ticker: string, daysBack = 14): Promise<New
     }
   });
   return (items ?? []).map((item) => ({ ...item, ticker }));
+}
+
+/** General market news (not ticker-specific), top `maxItems`, newest first. Never throws — empty array on any failure. */
+export async function getMarketNews(maxItems = 12): Promise<NewsItem[]> {
+  const apiKey = process.env.FINNHUB_API_KEY;
+  if (!apiKey) return [];
+  const items = await getOrFetch("news:general", RESEARCH_TTL.marketNews, async () => {
+    try {
+      const res = await fetch(`${FINNHUB_BASE_URL}/news?category=general&token=${apiKey}`, { cache: "no-store" });
+      if (!res.ok) return null;
+      return parseNewsResponse(await res.json(), maxItems);
+    } catch {
+      return null;
+    }
+  });
+  return items ?? [];
+}
+
+/** Insider (SEC Form 4) transactions for one ticker over the last `daysBack` days, newest first. Never throws — empty array on any failure or if the ticker has no filings (common for foreign private issuers). */
+export async function getInsiderTransactions(ticker: string, daysBack = 90): Promise<InsiderTransaction[]> {
+  const apiKey = process.env.FINNHUB_API_KEY;
+  if (!apiKey) return [];
+  const sinceDate = addDays(todayInTimeZone("America/New_York"), -daysBack);
+  const items = await getOrFetch(`insider:${ticker}`, RESEARCH_TTL.insiderTransactions, async () => {
+    try {
+      const res = await fetch(
+        `${FINNHUB_BASE_URL}/stock/insider-transactions?symbol=${encodeURIComponent(ticker)}&token=${apiKey}`,
+        { cache: "no-store" },
+      );
+      if (!res.ok) return null;
+      return parseInsiderTransactionsResponse(await res.json(), sinceDate);
+    } catch {
+      return null;
+    }
+  });
+  return items ?? [];
 }

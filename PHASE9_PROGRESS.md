@@ -292,28 +292,89 @@ not committed, no secrets logged, status codes and field-presence only.
 ---
 
 ## §4. `/research` — owner-gated
-- [ ] Cache module renamed to `src/lib/server/api-cache.ts`, re-exported
-  from old path so no import breaks
-- [ ] General market news block (12 items, 30min TTL) — or graceful
-  omission if §0 probe failed (probe succeeded, so build full block)
-- [ ] Company news block (reuse Phase 8 per-ticker fetch, 24h TTL)
-- [ ] Insider transactions block ("Insider filings (SEC Form 4)"), 24h
+- [x] Cache module renamed to `src/lib/server/api-cache.ts`; old path
+  (`finnhub-cache.ts`) kept as a one-line re-export shim so the existing
+  `finnhub-cache.test.ts` needed zero edits — done by claude-code/sonnet-5
+- [x] General market news block (12 items, 30min TTL) — §0 probe
+  succeeded, full block built (`getMarketNews` in `finnhub.ts`, reuses
+  `parseNewsResponse` — the general-news shape matches company-news
+  exactly, no new parser needed) — done by claude-code/sonnet-5
+- [x] Company news block (reuse Phase 8 per-ticker `getCompanyNews`
+  as-is, 24h TTL; the research page's "24h count" filters its results by
+  `datetime` rather than doing a second fetch with a shorter window) —
+  done by claude-code/sonnet-5
+- [x] Insider transactions block ("Insider filings (SEC Form 4)"), 24h
   TTL, last 90 days, required verbatim subtitle copy, per-ticker net
-  count badge
-- [ ] Reddit mentions block, capability-flagged off (env vars absent) —
-  render the "Reddit integration pending" card; full counting-rule logic
-  built and unit-tested even though flagged off
-- [ ] Reddit counting-rule fixture test (GOOG=2, COST=1, MEI=1)
-- [ ] Sentiment lexicon + fixture tests (ASML +2 positive, IBM −2
-  negative, GOOG 0 neutral)
-- [ ] Cross-source table (News / Reddit / Insider net columns, accent
-  ring when news+Reddit lean agree and nonzero)
-- [ ] General Market News list + per-ticker insider filings (collapsed)
-- [ ] Verbatim footer line present
-- [ ] §2 banned-words test extended to this page's static copy
-- [ ] `npm test` + `npm run build` green
-- [ ] Commit: `phase9(§4): /research — news, insider filings, Reddit
-  (flagged), sentiment`
+  count badge — new `getInsiderTransactions` in `finnhub.ts` +
+  `parseInsiderTransactionsResponse`/`netInsiderCount` in
+  `finnhub-insider.ts` — done by claude-code/sonnet-5
+- [x] Reddit mentions block, capability-flagged off (env vars confirmed
+  absent) — renders the "Reddit integration pending" card; full
+  counting-rule logic (`src/lib/research/reddit-mentions.ts`) and OAuth2
+  fetch logic (`src/lib/server/reddit.ts`) built and unit-tested even
+  though flagged off — done by claude-code/sonnet-5
+- [x] Reddit counting-rule fixture test (GOOG=2, COST=1, MEI=1) — done by
+  claude-code/sonnet-5
+- [x] Sentiment lexicon + fixture tests (ASML +2 positive, IBM −2
+  negative, GOOG 0 neutral) — done by claude-code/sonnet-5
+- [x] Cross-source table (News / Reddit / Insider net columns, accent
+  ring when news+Reddit lean agree and nonzero) — done by
+  claude-code/sonnet-5
+- [x] General Market News list + per-ticker insider filings (collapsed,
+  native `<details>`) — done by claude-code/sonnet-5
+- [x] Verbatim footer line present — done by claude-code/sonnet-5
+- [x] §2 banned-words test extended to this page's static copy — static
+  strings pulled into `src/lib/research-copy.ts` specifically so
+  `research-copy.test.ts` could check them with the same
+  `containsBannedLanguage()` helper from §2 — done by claude-code/sonnet-5
+- [x] Live-browser verification with real data: cross-source table shows
+  real varying news/sentiment counts per ticker (e.g. NBIS "Positive"),
+  General Market News list renders real headlines, and one insider
+  filing panel (KYMR, 165 filings/90d) expanded to show real filer
+  names, buy/sell direction (color + text, never color alone), share
+  counts, and dates — done by claude-code/sonnet-5
+- [x] `npm test` (229/229) + `npm run build` green — done by
+  claude-code/sonnet-5
+- [x] Commit: `phase9(§4): /research — news, insider filings, Reddit
+  (flagged), sentiment` — done by claude-code/sonnet-5
+
+**Notes / judgment calls:**
+- Added a "Research" link to the private `NavBar` (between Trades and
+  Sign out) — PHASE9.md §3 already referred to "existing
+  Dashboard/History/Trades/Research links" when describing the Overview
+  nav addition, implying Research's own nav entry was expected to land
+  in this section.
+- Insider transaction direction is derived from the sign of Finnhub's
+  `change` field (shares acquired vs. disposed), not from the SEC
+  transaction code (`A`=award, `F`=tax withholding, `S`=open-market
+  sale, `P`=open-market purchase, etc.) — a deliberate simplification
+  documented in `finnhub-insider.ts`. Real data confirmed this schema
+  via a one-off inspection script (not committed, no secrets) against
+  MSFT, since ASML (the §0 probe ticker) happened to return zero
+  transactions — a real, valid response for a foreign private issuer
+  with no SEC Form 4 filings, not a bug.
+- "Today" — no per-ticker news/reddit item is guaranteed within any
+  given day, so `newsLean`/`redditLean` default to `"neutral"` when
+  there are zero qualifying items for a ticker, not `null` — keeps the
+  table's icon+label pairing simple and always renders something
+  (`Minus` / "Neutral") rather than a blank cell.
+- Added `formatSignedNumber` to `src/lib/format.ts` (mirrors the
+  existing `formatSignedCurrency`/`formatSignedPercent` pattern) for the
+  insider net-count badge, rather than inlining sign logic in the
+  component — keeps format.ts as the single source of truth per the
+  existing §1c/§7 grep rule.
+- `StockNews` (deep-tier, Phase 8) gained an additive `title` prop
+  (default `"Recent news"`, zero behavior change for `/stock/[ticker]`)
+  so `/research` could reuse it verbatim for "General market news"
+  instead of duplicating the card/link/clamp markup.
+- One live-browser check briefly showed the General Market News section
+  missing entirely; a moment later (and in every repeated `curl` check
+  afterward) it rendered correctly with real headlines. This matches
+  `getOrFetch`'s documented contract exactly — a failed/slow fetch on
+  the very first (cold, uncached) request to `news:general` isn't
+  cached, so the next request just tries again — rather than a real
+  defect; not fixed further since re-fetching itself is the resilience
+  mechanism already in place from Phase 8.
 
 ---
 
