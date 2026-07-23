@@ -508,24 +508,77 @@ not committed, no secrets logged, status codes and field-presence only.
 ---
 
 ## §7. Integration pass
-- [ ] Grep for stray `toFixed(`/`toLocaleString(` outside `format.ts` —
-  none in new code
-- [ ] Grep `#` (hardcoded hex) in `src/components/surface/` and new
-  pages — none
-- [ ] 390px audit: both surfaces (`/`, `/share`), `/research`,
-  `/compare`
-- [ ] **Approved addition:** Portfolio Orrery responsive, accessibility,
-  reduced-motion, and visual audit (desktop/tablet/390px, coarse pointer,
-  keyboard, aria-hidden correctness, no horizontal overflow) — documented
-  here, including any simplification made
-- [ ] Logged-out gating pass: `/` gates; `/dashboard`, `/research`,
-  `/compare`, `/history`, `/stock/*` gate; `/share` and `/share/full`
-  serve; export routes still 401
-- [ ] Reduced-motion pass on every new animation
-- [ ] Screenshots to `docs/screenshots/` if a browser tool exists; skip
-  silently if not
-- [ ] `npm test` + `npm run build` green
-- [ ] Commit: `phase9(§7): integration pass + Portfolio Orrery audit`
+- [x] Grep for stray `toFixed(`/`toLocaleString(` outside `format.ts` —
+  swept every file changed since Phase 9 started (43 non-test files);
+  none remain (two were caught and fixed mid-section: `SurfaceGrowthChart`
+  and `CompareChart` tooltips) — done by claude-code/sonnet-5
+- [x] Grep `#` (hardcoded hex) in `src/components/surface/` and new
+  pages, extended to all 43 changed files — two matches, both expected
+  and pre-existing: `globals.css` (where surface tokens are *defined*,
+  which is the point) and `CompositionDonut.tsx`'s `DONUT_COLORS` array
+  (Phase 7 code, confirmed untouched by the §3 `compact` diff via
+  `git diff` on just the matching lines) — done by claude-code/sonnet-5
+- [x] Logged-out gating pass: `/`, `/dashboard`, `/research`, `/compare`,
+  `/history`, `/stock/ASML`, `/trades` all render the sign-in form
+  (checked by content, not just the 200 status code, since every gated
+  route also returns 200); `/share` and `/share/full` serve real data;
+  both CSV export routes 401 — done by claude-code/sonnet-5
+- [x] Reduced-motion pass on every new animation — FlipCard, DepthPull,
+  CountUpSettle, PortfolioOrrery all unit-tested with a matchMedia mock
+  (§1); `SurfaceGrowthChart` never animates at all
+  (`isAnimationActive={false}` unconditionally — a stricter-than-required
+  choice for Act 2's restrained motion budget); `CompareChart` ties
+  `isAnimationActive` to `!prefersReducedMotion`, matching the existing
+  deep-tier `ValueChart` convention — done by claude-code/sonnet-5
+- [x] Live-browser keyboard/focus pass on the surface home page:
+  Tab-navigated through the Act 2 chart, all three FlipCards (visible
+  violet focus ring per card), the conditionally-tabbable "See more"
+  link, and the primary DepthPull button; pressed Enter on a FlipCard
+  (flipped) and on the DepthPull button (played the cover→wipe
+  transition into `/dashboard`) — confirms real keyboard operability,
+  not just semantic HTML that ought to work — done by claude-code/sonnet-5
+- [x] Screenshots captured to `docs/screenshots/` (browser tool exists
+  and was used all session): `surface-home-desktop.jpg`,
+  `surface-share-desktop.jpg`, `research-desktop.jpg`,
+  `compare-desktop.jpg` — done by claude-code/sonnet-5
+- [ ] **390px audit — genuinely blocked, not skipped silently:** the
+  browser tool's `resize_window` had no effect in this environment for
+  the entire session (confirmed repeatedly, including one final retry
+  in §7 with `window.innerWidth`/`outerWidth` read back via
+  `javascript_tool` immediately after a resize call — still 1430px).
+  This is a real capability gap for THIS session, not a "skip if
+  unavailable" case — the browser tool otherwise works (proven by every
+  other live check in §1/§3/§4/§5/§7) — so per "never fabricate a visual
+  audit," no 390px screenshots exist for the four new surfaces. What was
+  done instead: (1) a full code-level audit for anything that could
+  overflow at 390px — no fixed pixel widths wider than 390px outside an
+  `overflow-x-auto` wrapper across all 43 changed files; (2) hand-verified
+  the `PortfolioOrrery`'s own geometry can't exceed a ~358px-wide
+  container even in its simplified/narrow branch (max radius 194px ×
+  0.45 scale + half the largest form's width ≈ 118px from center, well
+  under half of a 390px viewport); (3) every new page reuses the
+  `mx-auto max-w-6xl px-4 sm:px-6` / `DataTable`'s `overflow-x-auto`
+  container patterns already proven at exactly 390px in the *existing*
+  `docs/screenshots/*-mobile-390.jpg` files from Phases 7-8. This is a
+  reasoned judgment that mobile layout is very likely correct, not a
+  verified one — flagged to Devan in §8 as something worth a real-device
+  or working-`resize_window` check before shipping.
+- [x] **Approved addition:** Portfolio Orrery audit — reduced-motion
+  (static composition, verified by unit test), coarse-pointer/narrow
+  simplification (verified by unit test: `finePointer: false` or
+  `narrow: true` each independently suppress the `.orrery-spin` ambient
+  class), `aria-hidden="true"` + `pointer-events-none` (verified by unit
+  test), no hardcoded hex (verified by unit test — every form's
+  `background` matches `var(--...)`), geometric no-overflow bound
+  (hand-verified above, see the 390px note). Desktop visual confirmed
+  live in the browser (§1, §3) — small paper-toned forms with one violet
+  focal glow, fading out before Act 2. No simplification beyond what was
+  already built into the original design was needed — done by
+  claude-code/sonnet-5
+- [x] `npm test` (239/239) + `npm run build` green — done by
+  claude-code/sonnet-5
+- [x] Commit: `phase9(§7): integration pass + Portfolio Orrery audit` —
+  done by claude-code/sonnet-5
 
 ---
 
