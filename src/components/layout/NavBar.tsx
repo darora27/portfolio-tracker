@@ -30,7 +30,10 @@ export function NavBar({
           </span>
         ) : (
           <nav className="flex h-full items-center gap-5 text-sm">
-            <Link href="/" className={linkClass(active === "dashboard")}>
+            <Link href="/" className={linkClass(false)}>
+              Overview
+            </Link>
+            <Link href="/dashboard" className={linkClass(active === "dashboard")}>
               Dashboard
             </Link>
             <Link href="/history" className={linkClass(active === "history")}>

@@ -20,6 +20,7 @@ import {
   type Streak,
 } from "@/lib/math/daily-stats";
 import { fromAllTimeHigh, type AllTimeHighInfo } from "@/lib/math/all-time-high";
+import { trailingReturn } from "@/lib/portfolio/trailing-return";
 import { daysBetween, todayInTimeZone } from "@/lib/date";
 import {
   buildXirrCashFlows,
@@ -98,6 +99,9 @@ export type DashboardData = {
   prevSnapshotValue: number | null;
   holdingsPerformance: HoldingsPerformanceSeries;
   holdingRisks: HoldingRisk[];
+  /** Trailing 7-calendar-day return, for the surface tier's weeklySubline. Null when history isn't old enough yet. */
+  twr7d: number | null;
+  voo7d: number | null;
 };
 
 /**
@@ -355,6 +359,15 @@ export async function getDashboardData(): Promise<DashboardData> {
     return point;
   });
 
+  // Same series the Act 2 surface chart renders, reused (not re-derived)
+  // for the surface tier's weeklySubline.
+  const portfolioIndexSeries = chartData.map((d) => ({ date: d.date, index: d.portfolioIndex }));
+  const vooIndexSeries = chartData
+    .filter((d): d is typeof d & { vooIndex: number } => d.vooIndex !== undefined)
+    .map((d) => ({ date: d.date, index: d.vooIndex }));
+  const twr7d = trailingReturn(portfolioIndexSeries, 7);
+  const voo7d = trailingReturn(vooIndexSeries, 7);
+
   return {
     totalValue,
     totalCost,
@@ -397,5 +410,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     prevSnapshotValue: prevSnapshot?.totalValue ?? null,
     holdingsPerformance,
     holdingRisks,
+    twr7d,
+    voo7d,
   };
 }

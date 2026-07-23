@@ -4,31 +4,16 @@ import type { Metadata } from "next";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { NavBar } from "@/components/layout/NavBar";
-import { LiveQuotesProvider } from "@/components/dashboard/LiveQuotesProvider";
-import { LiveHeadlineStats } from "@/components/dashboard/LiveHeadlineStats";
-import { LivePositionsTable } from "@/components/dashboard/LivePositionsTable";
-import { LiveWinnersLosers } from "@/components/dashboard/LiveWinnersLosers";
-import { ValueChart } from "@/components/dashboard/ValueChart";
-import { RiskPanel } from "@/components/dashboard/RiskPanel";
-import { BetaTable } from "@/components/dashboard/BetaTable";
-import { ExcessReturns } from "@/components/dashboard/ExcessReturns";
-import { ClassificationBarList } from "@/components/dashboard/ClassificationBarList";
-import { CorrelationHeatmap } from "@/components/dashboard/CorrelationHeatmap";
-import { CompositionDonut } from "@/components/dashboard/CompositionDonut";
-import { RealizedUnrealized } from "@/components/dashboard/RealizedUnrealized";
-import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
-import { LatestNews } from "@/components/dashboard/LatestNews";
-import { HoldingsPerformanceChart } from "@/components/dashboard/HoldingsPerformanceChart";
-import { HoldingRiskTable } from "@/components/dashboard/HoldingRiskTable";
-import { ContributionChart } from "@/components/dashboard/ContributionChart";
+import { SurfaceHeader } from "@/components/surface/SurfaceHeader";
+import { SurfaceActs } from "@/components/surface/SurfaceActs";
+import { weeklySubline, todayLine, riskLine } from "@/lib/surface-copy";
 
-// This dashboard reflects live DB state (trades can be added any time), so
-// it must never be baked into a static build.
+// Same reason as the moved /dashboard page: reflects live DB state, so it
+// must never be baked into a static build.
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Dashboard — Portfolio Tracker",
+  title: "Portfolio Tracker",
   robots: { index: false, follow: false },
 };
 
@@ -38,10 +23,6 @@ export default async function Home() {
   const session = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   const authenticated = ownerPassword ? isValidSession(session, ownerPassword) : false;
 
-  // This is the owner's full-detail private view (always shows dollar
-  // amounts) — the public link to hand out is /share, which respects the
-  // hide-dollars setting. Unauthenticated visitors get bounced here, not
-  // shown the real numbers.
   if (!authenticated) {
     return (
       <div className="mx-auto max-w-sm px-4 py-16">
@@ -56,80 +37,34 @@ export default async function Home() {
   }
 
   const data = await getDashboardData();
+  // donutSlices mirrors `positions`, already sorted descending by
+  // weight (see dashboard-data.ts) — the first entry is the top holding.
+  const topHolding = data.donutSlices[0] ?? null;
 
   return (
     <>
-      <NavBar variant="private" active="dashboard" />
-      <LiveQuotesProvider initialPositions={data.positionRows}>
-        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-          <div className="space-y-8">
-            <LiveHeadlineStats
-              totalCost={data.totalCost}
-              simpleReturnPct={data.simpleReturnPct}
-              dailyChangeAsOf={data.dailyChangeAsOf}
-              twrPct={data.twrPct}
-              xirrPct={data.xirrPct}
-              historyDays={data.historyDays}
-              pricesAsOf={data.pricesAsOf}
-              allTimeHigh={data.allTimeHigh}
-              netFlowsToday={data.netFlowsToday}
-              prevSnapshotValue={data.prevSnapshotValue}
-            />
-
-            <ValueChart data={data.chartData} />
-
-            <HoldingsPerformanceChart data={data.holdingsPerformance} />
-
-            <BetaTable comparisons={data.benchmarkComparisons} />
-
-            <ExcessReturns comparisons={data.benchmarkComparisons} />
-
-            <LivePositionsTable />
-
-            <RealizedUnrealized
-              realizedGain={data.realizedGain}
-              unrealizedGain={data.unrealizedGain}
-              totalCost={data.totalCost}
-            />
-
-            <CompositionDonut slices={data.donutSlices} />
-
-            <ContributionChart
-              entries={data.positionRows
-                .filter((p) => p.contribution !== null)
-                .map((p) => ({ ticker: p.ticker, contribution: p.contribution! }))}
-            />
-
-            <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
-
-            <ClassificationBarList title="AI exposure" items={data.aiExposureWeights} />
-
-            <CorrelationHeatmap tickers={data.correlationTickers} matrix={data.correlationCells} />
-
-            <LiveWinnersLosers winners={data.winners} losers={data.losers} />
-
-            <EarningsCalendar events={data.upcomingEarnings} />
-
-            {data.latestNews.length > 0 && <LatestNews items={data.latestNews} />}
-
-            <RiskPanel
-              volatilityPct={data.volatilityPct}
-              maxDrawdownPct={data.maxDrawdown}
-              sharpe={data.sharpe}
-              betaVsVoo={data.betaVsVoo}
-              top2ConcentrationPct={data.top2ConcentrationPct}
-              hhi={data.hhi}
-              sortinoRatio={data.sortinoRatio}
-              bestDay={data.bestDay}
-              worstDay={data.worstDay}
-              winRatePct={data.winRatePct}
-              currentStreak={data.currentStreak}
-            />
-
-            <HoldingRiskTable risks={data.holdingRisks} />
-          </div>
-        </div>
-      </LiveQuotesProvider>
+      <SurfaceHeader variant="private" />
+      <SurfaceActs
+        mode="private"
+        ownerLabel="Devan’s portfolio"
+        heroValue={data.totalValue}
+        weeklySublineText={
+          data.twr7d !== null && data.voo7d !== null
+            ? weeklySubline({ twr7d: data.twr7d, voo7d: data.voo7d })
+            : "Building this week’s picture."
+        }
+        chartData={data.chartData}
+        positionsCount={data.positionRows.length}
+        topHoldingTicker={topHolding?.ticker ?? null}
+        donutSlices={data.donutSlices}
+        hhi={data.hhi}
+        riskLineText={riskLine(data.hhi)}
+        todayLineText={todayLine({ dayReturn: data.dailyChangePct })}
+        topMover={data.movers[0] ?? null}
+        primaryHref="/dashboard"
+        primaryLabel="Open the full dashboard"
+        orreryWeights={data.donutSlices.slice(0, 5).map((s) => s.weight)}
+      />
     </>
   );
 }

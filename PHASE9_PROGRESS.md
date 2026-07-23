@@ -184,33 +184,110 @@ not committed, no secrets logged, status codes and field-presence only.
 ---
 
 ## §3. Surface pages + routing
-- [ ] Route move: dense private dashboard `/` → `/dashboard`, unchanged
-- [ ] Route move: dense share page `/share` → `/share/full`, unchanged
-- [ ] New surface page takes over `/` (owner-gated)
-- [ ] New surface page takes over `/share` (public)
-- [ ] Deep-page nav gains "Overview" (→ surface) as first item;
-  Dashboard/History/Trades/Research links unchanged
-- [ ] Act 1 (The number): Instrument Serif label, hero (private = $
+- [x] Route move: dense private dashboard `/` → `/dashboard`, unchanged
+  (`git mv`, content untouched) — done by claude-code/sonnet-5
+- [x] Route move: dense share page `/share` → `/share/full`, unchanged
+  (`git mv`, content untouched) — done by claude-code/sonnet-5
+- [x] New surface page takes over `/` (owner-gated) — done by
+  claude-code/sonnet-5
+- [x] New surface page takes over `/share` (public) — done by
+  claude-code/sonnet-5
+- [x] Deep-page nav gains "Overview" (→ surface) as first item;
+  Dashboard/History/Trades links unchanged, Dashboard href updated to
+  `/dashboard` — done by claude-code/sonnet-5
+- [x] Act 1 (The number): Instrument Serif label, hero (private = $
   total value, share = same-period TWR % only), `weeklySubline`,
-  `<CountUpSettle>`
-- [ ] **Approved addition:** `<PortfolioOrrery>` integrated into Act 1 of
-  both `/` and `/share`, fading/receding before Act 2
-- [ ] Act 2 (The shape): surface area chart of TWR growth index, "vs the
-  market" toggle chip adds dashed VOO line
-- [ ] Act 3 (The doors): three FlipCards ("What I own", "How risky is
+  `<CountUpSettle>` — done by claude-code/sonnet-5
+- [x] **Approved addition:** `<PortfolioOrrery>` integrated into Act 1 of
+  both `/` and `/share`, mask-image fade before Act 2 — done by
+  claude-code/sonnet-5
+- [x] Act 2 (The shape): new `<SurfaceGrowthChart>` — surface area chart
+  of the TWR growth index (no gridlines, 3px accent line, gradient fill,
+  first/last date labels only), "vs the market" toggle chip adds dashed
+  VOO line — done by claude-code/sonnet-5
+- [x] Act 3 (The doors): three FlipCards ("What I own", "How risky is
   it", "Today") + one primary DepthPull button into `/dashboard`
-  (share: `/share/full`)
-- [ ] Surface header: wordmark; private adds "Full dashboard" link + Sign
-  out; share adds "Read-only" chip
-- [ ] `/share` keeps `export const revalidate = 300`
-- [ ] Privacy matrix (surface additions) verified — no dollars anywhere
-  on `/share`
-- [ ] All 170+ existing tests still green after the route moves
-- [ ] Logged-out `/` gates; `/share` serves; both surfaces hold at 390px;
-  every reveal works by keyboard
-- [ ] `npm test` + `npm run build` green
-- [ ] Commit: `phase9(§3): surface pages (Act 1–3) + route moves +
-  Portfolio Orrery integration`
+  (share: `/share/full`) — done by claude-code/sonnet-5
+- [x] Surface header (`<SurfaceHeader>`): wordmark; private adds "Full
+  dashboard" link + Sign out; share adds "Read-only" chip — done by
+  claude-code/sonnet-5
+- [x] `/share` keeps `export const revalidate = 300` — done by
+  claude-code/sonnet-5
+- [x] Privacy matrix (surface additions) verified — grepped the rendered
+  `/share` HTML for `$` currency patterns: zero matches; private `/`
+  confirmed to show dollars — done by claude-code/sonnet-5
+- [x] All existing tests still green after the route moves (204/204) —
+  done by claude-code/sonnet-5
+- [x] Logged-out `/`, `/history`, `/trades`, `/stock/ASML` all gate to
+  sign-in (verified by content, not just status code — all return 200
+  but render the sign-in form); `/share` and `/share/full` serve real
+  data; export routes still 401 — done by claude-code/sonnet-5
+- [x] Live-browser pass on `/share` and `/`: hero count-up, "vs the
+  market" toggle, all three FlipCard flips (incl. real reused deep
+  components on the backs), DepthPull cover→push→wipe into both
+  `/share/full` and `/dashboard` with real content (no more 404, unlike
+  the §1 scratch-page check against a not-yet-existing route), Overview
+  nav round-trip — all confirmed working, zero console errors — done by
+  claude-code/sonnet-5
+- [ ] 390px keyboard/touch audit — blocked again by the browser tool's
+  `resize_window` not changing the actual viewport in this environment
+  (see §1 note); deferred to §7 same as §1
+- [x] `npm test` (204/204) + `npm run build` green — done by
+  claude-code/sonnet-5
+- [x] Commit: `phase9(§3): surface pages (Act 1–3) + route moves +
+  Portfolio Orrery integration` — done by claude-code/sonnet-5
+
+**Notes / judgment calls:**
+- **Bug found and fixed via live browser testing:** `<SurfaceHeader>`
+  had no explicit background, so the deep tier's global `body { background:
+  var(--bg) }` (dark) showed through behind it — the header rendered as a
+  dark bar with near-invisible text above the paper-colored content.
+  Fixed by adding `bg-paper` to the header, and `min-h-screen` to
+  `SurfaceActs`' outer wrapper as insurance against any other short-
+  content/overscroll gap. This is exactly the kind of thing the prompt's
+  "visual verification" requirement is for — it would not have been
+  caught by `npm run build` or the unit tests.
+- **Deep-tier component touched, with justification:** `CompositionDonut`
+  gained an additive `compact?: boolean` prop (default `false`, zero
+  behavior change for every existing caller) because PHASE9.md's own
+  spec names the FlipCard back content "a **mini** composition donut" —
+  the full-size donut (256px + full 13-row legend) does not fit a
+  FlipCard's back face and was visually breaking (donut clipped, "See
+  more" link overlapping the legend) in the live browser check. This is
+  additive, not a restyle of the existing deep rendering, and is in
+  direct service of a FlipCard back-face integration the spec explicitly
+  describes — the narrow reading of "do not restyle existing deep-tier
+  components" that still allows this.
+- `LogoutButton` (deep-tier, hardcoded `--text-secondary`/`--text-primary`)
+  is reused as-is inside `<SurfaceHeader>` per "back face: EXISTING deep
+  component reused as-is" logic extended to the header's sign-out
+  control. Its text color is overridden from the *outside* via a
+  Tailwind descendant selector (`[&>button]:text-ink-soft`) rather than
+  editing `LogoutButton.tsx` — zero changes to the file itself, so its
+  appearance on the actual deep pages (Trades) is untouched.
+- "Today" FlipCard back-face content (top mover) has no named existing
+  component in PHASE9.md (unlike the other two backs, which name
+  "concentration meter" and "mini composition donut" explicitly) — built
+  a minimal snippet reusing the existing `<Card>` and `<DeltaChip>`
+  deep-tier primitives rather than inventing a new one-off component.
+- `weeklySubline`/`todayLine` need `twr7d`, `voo7d`, and `dayReturn`
+  inputs not previously exposed by `dashboard-data.ts`. Added
+  `src/lib/portfolio/trailing-return.ts` (pure, tested) and two new
+  `DashboardData` fields (`twr7d`, `voo7d`, both `number | null`),
+  computed by re-slicing the already-built `chartData` series rather
+  than re-deriving the growth index separately. `dailyChangePct`
+  (already existed, already flow-adjusted) is reused directly for
+  `todayLine`'s `dayReturn` input.
+- When `twr7d`/`voo7d` are null (not enough history yet — never happens
+  with the real ~29-day dataset, but is reachable on a brand-new
+  portfolio), the surface pages fall back to "Building this week's
+  picture." — not specified anywhere in PHASE9.md, smallest reasonable
+  call.
+- All three FlipCard "See more" links point at the same primary
+  destination (`/dashboard` or `/share/full`) rather than per-card
+  anchors — PHASE9.md doesn't specify distinct anchors and the primary
+  CTA below already goes to the same place, so distinct anchors would
+  be a fragile, unrequested addition.
 
 ---
 

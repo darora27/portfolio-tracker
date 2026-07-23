@@ -49,19 +49,25 @@ function DonutTooltip({
 export function CompositionDonut({
   slices,
   hideDollars = false,
+  compact = false,
 }: {
   slices: DonutSlice[];
   hideDollars?: boolean;
+  /** Small footprint for tight spaces (e.g. a FlipCard back face): smaller donut, top-5 legend only, no section heading. Same data/colors, nothing hidden — just condensed. */
+  compact?: boolean;
 }) {
   const sorted = [...slices].sort((a, b) => b.weight - a.weight);
+  const legendSlices = compact ? sorted.slice(0, 5) : sorted;
 
   return (
     <section>
-      <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
-        Composition
-      </h2>
-      <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center">
-        <div className="relative h-64 w-full shrink-0 sm:w-64">
+      {!compact && (
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Composition
+        </h2>
+      )}
+      <div className={`flex flex-col gap-4 ${compact ? "items-center" : "mt-3 sm:flex-row sm:items-center"}`}>
+        <div className={`relative w-full shrink-0 ${compact ? "h-24 w-24" : "h-64 sm:w-64"}`}>
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -82,25 +88,42 @@ export function CompositionDonut({
             </PieChart>
           </ResponsiveContainer>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-mono text-lg font-bold text-text-primary">{sorted.length}</span>
-            <span className="text-xs text-text-secondary">positions</span>
+            <span className={`font-mono font-bold text-text-primary ${compact ? "text-sm" : "text-lg"}`}>
+              {sorted.length}
+            </span>
+            {!compact && <span className="text-xs text-text-secondary">positions</span>}
           </div>
         </div>
 
-        <div className="grid flex-1 grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-1">
-          {sorted.map((slice, i) => (
-            <div key={slice.ticker} className="flex items-center gap-2 text-sm">
-              <span
-                className="h-2.5 w-2.5 shrink-0 rounded-full"
-                style={{ background: DONUT_COLORS[i % DONUT_COLORS.length] }}
-              />
-              <span className="text-text-primary">{slice.ticker}</span>
-              <span className="ml-auto font-mono text-xs text-text-secondary">
-                {formatPercent(slice.weight, 1)}
-              </span>
-            </div>
-          ))}
-        </div>
+        {compact ? (
+          <div className="w-full max-w-[180px] space-y-1">
+            {legendSlices.map((slice, i) => (
+              <div key={slice.ticker} className="flex items-center gap-2 text-xs">
+                <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: DONUT_COLORS[i % DONUT_COLORS.length] }} />
+                <span className="text-text-primary">{slice.ticker}</span>
+                <span className="ml-auto shrink-0 font-mono text-text-secondary">{formatPercent(slice.weight, 1)}</span>
+              </div>
+            ))}
+            {sorted.length > legendSlices.length && (
+              <p className="text-xs text-text-muted">+{sorted.length - legendSlices.length} more</p>
+            )}
+          </div>
+        ) : (
+          <div className="grid flex-1 grid-cols-2 gap-x-4 gap-y-1.5 sm:grid-cols-1">
+            {sorted.map((slice, i) => (
+              <div key={slice.ticker} className="flex items-center gap-2 text-sm">
+                <span
+                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{ background: DONUT_COLORS[i % DONUT_COLORS.length] }}
+                />
+                <span className="text-text-primary">{slice.ticker}</span>
+                <span className="ml-auto font-mono text-xs text-text-secondary">
+                  {formatPercent(slice.weight, 1)}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
