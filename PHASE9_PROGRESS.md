@@ -461,21 +461,49 @@ not committed, no secrets logged, status codes and field-presence only.
 ---
 
 ## §6. `scripts/agent-relay.sh`
-- [ ] ~60-line bash loop with header comment (convenience, not
+- [x] ~60-line bash loop with header comment (convenience, not
   infrastructure; both CLIs must already be locally authenticated in
   unattended/full-permission mode; no secrets passed; no network calls
-  from the script itself)
-- [ ] Inspected actual `--help` output of installed Claude Code and
-  Codex CLIs before choosing command syntax
-- [ ] Tool A/B commands + rate-limit-detection strings as editable
-  variables at the top
-- [ ] Alternates on rate-limit signal; sleeps 20 min + loops if both
+  from the script itself) — 53 non-comment/non-blank lines — done by
+  claude-code/sonnet-5
+- [x] Inspected actual `--help` output of installed Claude Code and
+  Codex CLIs before choosing command syntax — `claude --help` (v2.1.218,
+  installed at `~/.local/bin/claude`) and the npm-installed
+  `@openai/codex@0.145.0`'s `codex exec --help` (resolved via `npm root
+  -g`, symlinked at `~/.local/node/bin/codex` — not on PATH by that
+  name, which is itself a useful finding for the owner) — done by
+  claude-code/sonnet-5
+- [x] Tool A/B commands + rate-limit-detection strings as editable
+  variables at the top — done by claude-code/sonnet-5
+- [x] Alternates on rate-limit signal; sleeps 20 min + loops if both
   limited; logs every attempt with timestamps to `agent-relay.log`;
-  exits cleanly on Ctrl-C
-- [ ] Documents manual alternation as the reliable fallback
-- [ ] `npm test` + `npm run build` green (script doesn't affect app code,
-  but re-confirm repo state)
-- [ ] Commit: `phase9(§6): scripts/agent-relay.sh`
+  exits cleanly on Ctrl-C — functionally smoke-tested with fake
+  fast-executing stand-in commands (tool A forced to fail with a
+  simulated "429", tool B forced to succeed) to verify the detection,
+  fallback, and logging logic end-to-end before wiring in the real CLI
+  invocations — done by claude-code/sonnet-5
+- [x] Documents manual alternation as the reliable fallback — done by
+  claude-code/sonnet-5
+- [x] `npm test` (239/239) + `npm run build` green (script doesn't
+  affect app code, re-confirmed repo state) — done by claude-code/sonnet-5
+- [x] Commit: `phase9(§6): scripts/agent-relay.sh` — done by
+  claude-code/sonnet-5
+
+**Notes / judgment calls:**
+- `codex` is not on the default shell `PATH` in this environment despite
+  being installed (`@openai/codex@0.145.0` via npm global, resolved
+  through `npm root -g`) — the script invokes it by bare name
+  (`command -v codex`), so if the owner's actual shell also doesn't have
+  it on `PATH`, the script will log "command not found" and fall through
+  to sleep-and-retry rather than silently hanging. Documented as a
+  reasonable owner-environment assumption, not fixed further since the
+  commands are explicitly meant to be owner-edited anyway.
+- Both CLI commands use their respective "skip all permission prompts"
+  flags (`--dangerously-skip-permissions` for Claude Code,
+  `--dangerously-bypass-approvals-and-sandbox` for Codex) since §6's own
+  premise is unattended relay between two already-trusted, pre-configured
+  CLIs — the header comment calls out that this is only as safe as
+  whatever confinement the owner has already set up.
 
 ---
 
