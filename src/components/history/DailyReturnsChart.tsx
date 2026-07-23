@@ -1,7 +1,7 @@
 "use client";
 
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { formatDate, formatSignedPercent } from "@/lib/format";
+import { formatDate, formatPercent, formatSignedPercent } from "@/lib/format";
 import { usePrefersReducedMotion } from "@/components/ui/usePrefersReducedMotion";
 
 function ChartTooltip({
@@ -46,7 +46,7 @@ export function DailyReturnsChart({ data }: { data: { date: string; return: numb
               axisLine={false}
               tickLine={false}
               width={48}
-              tickFormatter={(v: number) => `${(v * 100).toFixed(0)}%`}
+              tickFormatter={(v: number) => formatPercent(v, 0)}
             />
             <Tooltip content={<ChartTooltip />} cursor={{ fill: "var(--surface-hover)" }} />
             <Bar dataKey="return" isAnimationActive={!prefersReducedMotion}>

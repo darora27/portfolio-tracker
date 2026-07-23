@@ -1,7 +1,7 @@
 "use client";
 
 import { Area, AreaChart, CartesianGrid, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { formatDate, formatSignedPercent } from "@/lib/format";
+import { formatDate, formatPercent, formatSignedPercent } from "@/lib/format";
 import { usePrefersReducedMotion } from "@/components/ui/usePrefersReducedMotion";
 
 function ChartTooltip({
@@ -53,7 +53,7 @@ export function DrawdownChart({ data }: { data: { date: string; drawdown: number
               tickLine={false}
               width={48}
               domain={["auto", 0]}
-              tickFormatter={(v: number) => `${(v * 100).toFixed(0)}%`}
+              tickFormatter={(v: number) => formatPercent(v, 0)}
             />
             <Tooltip content={<ChartTooltip />} />
             <Area

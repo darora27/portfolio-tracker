@@ -16,7 +16,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [x] §7 CSV export
 - [x] §8 Finnhub data layer (cache module)
 - [x] §9 Privacy matrix re-verification
-- [ ] §10 Integration pass
+- [x] §10 Integration pass
 - [ ] §11 Final summary
 
 ## §0 Preflight results
@@ -346,3 +346,46 @@ Also confirmed: `curl` logged-out `/` and `/trades` → HTTP 200 with the
 same gate text (pre-existing behavior, re-verified as part of this pass);
 `/share` logged-out → HTTP 200, serves normally (no gate — it's public
 by design).
+
+## §10 Integration pass results
+
+- `grep`'d for stray `toFixed(`/`toLocaleString(` outside `format.ts`.
+  Found and fixed two in this session's own new code:
+  `DailyReturnsChart.tsx` and `DrawdownChart.tsx` were doing
+  `` `${(v*100).toFixed(0)}%` `` for Y-axis tick labels — replaced both
+  with `formatPercent(v, 0)`. Left three pre-existing instances alone
+  (all in `ValueChart.tsx`, from Phase 7, not touched this session) and
+  the CSV export routes' `.toFixed(2)` calls (intentional — CSV output
+  is raw numeric text for spreadsheets, not UI display, so it
+  deliberately doesn't go through the `$`/`%`-decorating format
+  functions; documented as a judgment call in §7).
+- `grep`'d all new Phase 8 component files for stray hex colors (`#...`)
+  — none found. Everything uses the existing `--gain`/`--loss`/`--accent`/
+  `--text-*`/`--border*` CSS custom properties.
+- 390px mobile audit: `resize_window` didn't actually resize the
+  existing tab in this environment (confirmed via `window.innerWidth` —
+  stayed at 1293px after two attempts), but a **freshly created** tab
+  resized to 514×667 successfully — still safely below Tailwind's `sm`
+  (640px) breakpoint, so every `sm:`-gated responsive class exercises
+  its mobile path. (Phase 7's own `*-mobile-390.jpg` screenshots are
+  682px wide per `file`, not literally 390 — same tool limitation
+  applies to that prior session too, so this isn't a Phase-8-only gap.)
+  Verified and screenshotted at that width:
+  - Positions table: sticky Ticker column confirmed by scrolling the
+    table horizontally — Ticker stayed pinned while Weight/Cost
+    basis/Gain/Contribution/Trend scrolled underneath.
+    `docs/screenshots/positions-sticky-mobile.jpg`.
+  - `/stock/ASML`: header wraps cleanly, 4 StatCards go 2×2, price chart
+    resizes, Fundamentals row stacks to a single column (grid-cols-1
+    below `sm`), Analyst Consensus bar and News list both readable.
+    `docs/screenshots/stock-mobile.jpg`,
+    `docs/screenshots/stock-fundamentals-mobile.jpg`.
+  - `/history`: header + Export CSV button fit side by side even at
+    this width, both charts resize correctly, table has its own
+    horizontal scroll with a sticky Date column.
+    `docs/screenshots/history-mobile.jpg`.
+- Logged-out checks (`/`, `/history`, `/stock/ASML` gate;
+  `/share` serves; export routes 401): already fully verified in §9,
+  re-confirmed here as part of the same pass, not re-run twice.
+- Screenshots captured into `docs/screenshots/` per the phase doc's
+  instruction (the browser tool was available, so this wasn't skipped).
