@@ -14,6 +14,8 @@ import { CorrelationHeatmap } from "@/components/dashboard/CorrelationHeatmap";
 import { CompositionDonut } from "@/components/dashboard/CompositionDonut";
 import { RealizedUnrealized } from "@/components/dashboard/RealizedUnrealized";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
+import { HoldingsPerformanceChart } from "@/components/dashboard/HoldingsPerformanceChart";
+import { HoldingRiskTable } from "@/components/dashboard/HoldingRiskTable";
 
 // Public, read-only, no login, no client-side polling (unlike the private
 // dashboard). Statically served and regenerated at most every 5 minutes —
@@ -60,6 +62,8 @@ export default async function SharePage() {
 
           <ValueChart data={data.chartData} />
 
+          <HoldingsPerformanceChart data={data.holdingsPerformance} />
+
           <BetaTable comparisons={data.benchmarkComparisons} />
 
           <ExcessReturns comparisons={data.benchmarkComparisons} />
@@ -103,6 +107,8 @@ export default async function SharePage() {
             winRatePct={data.winRatePct}
             currentStreak={data.currentStreak}
           />
+
+          <HoldingRiskTable risks={data.holdingRisks} />
         </div>
       </div>
     </>

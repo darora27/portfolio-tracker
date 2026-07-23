@@ -21,6 +21,20 @@
   --chart-voo: #22d3a5;
   --chart-vti: #ffb84d;
   --chart-xlk: #4dd0ff;
+
+  /* Categorical palette for per-holding charts (up to 8 named series +
+     "Other"). Fixed hue order, validated against this app's --surface
+     (#14141c) for the dark-mode CVD/contrast checks — never reorder or
+     cycle; a 9th holding folds into --series-other instead of a new hue. */
+  --series-1: #3987e5; /* blue */
+  --series-2: #d95926; /* orange */
+  --series-3: #199e70; /* aqua */
+  --series-4: #c98500; /* yellow */
+  --series-5: #d55181; /* magenta */
+  --series-6: #008300; /* green */
+  --series-7: #9085e9; /* violet */
+  --series-8: #e66767; /* red */
+  --series-other: #6b6b78; /* muted neutral — folded remainder, not a hue slot */
 }
 
 @theme inline {

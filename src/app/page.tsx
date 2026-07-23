@@ -19,6 +19,8 @@ import { CompositionDonut } from "@/components/dashboard/CompositionDonut";
 import { RealizedUnrealized } from "@/components/dashboard/RealizedUnrealized";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 import { LatestNews } from "@/components/dashboard/LatestNews";
+import { HoldingsPerformanceChart } from "@/components/dashboard/HoldingsPerformanceChart";
+import { HoldingRiskTable } from "@/components/dashboard/HoldingRiskTable";
 
 // This dashboard reflects live DB state (trades can be added any time), so
 // it must never be baked into a static build.
@@ -75,6 +77,8 @@ export default async function Home() {
 
             <ValueChart data={data.chartData} />
 
+            <HoldingsPerformanceChart data={data.holdingsPerformance} />
+
             <BetaTable comparisons={data.benchmarkComparisons} />
 
             <ExcessReturns comparisons={data.benchmarkComparisons} />
@@ -114,6 +118,8 @@ export default async function Home() {
               winRatePct={data.winRatePct}
               currentStreak={data.currentStreak}
             />
+
+            <HoldingRiskTable risks={data.holdingRisks} />
           </div>
         </div>
       </LiveQuotesProvider>

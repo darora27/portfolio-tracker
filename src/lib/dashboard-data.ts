@@ -39,6 +39,8 @@ import {
   type BenchmarkTicker,
 } from "@/lib/portfolio/benchmark-comparison";
 import { classificationWeights, type ClassificationWeight } from "@/lib/portfolio/classification-weights";
+import { buildHoldingsPerformance, type HoldingsPerformanceSeries } from "@/lib/portfolio/holdings-performance";
+import { perHoldingRisk, type HoldingRisk } from "@/lib/portfolio/per-holding-risk";
 import aiExposureByTicker from "../../data/ai-exposure.json";
 import type { ChartPoint } from "@/components/dashboard/ValueChart";
 import type { PositionRow } from "@/components/dashboard/PositionsTable";
@@ -94,6 +96,8 @@ export type DashboardData = {
   /** Ingredients for client-side Daily Change recomputation as new live quotes arrive (§6). */
   netFlowsToday: number;
   prevSnapshotValue: number | null;
+  holdingsPerformance: HoldingsPerformanceSeries;
+  holdingRisks: HoldingRisk[];
 };
 
 /**
@@ -306,6 +310,24 @@ export async function getDashboardData(): Promise<DashboardData> {
   );
   const betaVsVoo = benchmarkComparisons.find((b) => b.ticker === "VOO")?.beta ?? null;
 
+  // Since-purchase performance line per holding (top 8 by weight, smaller
+  // ones folded into "Other") — positions is already sorted by value/weight
+  // descending from computeHoldings, so no extra sort is needed here.
+  const holdingsPerformance = buildHoldingsPerformance(
+    positions.map((p) => ({ ticker: p.ticker, weight: p.weight })),
+    pricesByTicker,
+  );
+
+  // Per-holding volatility/beta, using VOO's own close-price returns
+  // (already fetched for the portfolio-level benchmark comparison above)
+  // as the alignment target.
+  const vooCloses = [...(closeByDateByTicker.get("VOO") ?? new Map())].map(([date, price]) => ({
+    date,
+    price,
+  }));
+  const vooReturns = priceReturns(vooCloses);
+  const holdingRisks = perHoldingRisk(returnsByTicker, vooReturns);
+
   // The daily-change headline compares LIVE current value (totalValue,
   // already computed above from live quotes) against the most recent
   // CLOSED day strictly before today — never today's own snapshot, which
@@ -373,5 +395,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     currentStreak: currentStreakResult,
     netFlowsToday,
     prevSnapshotValue: prevSnapshot?.totalValue ?? null,
+    holdingsPerformance,
+    holdingRisks,
   };
 }
