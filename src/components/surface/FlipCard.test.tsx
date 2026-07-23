@@ -56,6 +56,7 @@ describe("FlipCard", () => {
     const link = screen.getByRole("link");
     expect(link.getAttribute("aria-hidden")).toBe("false");
     expect(link.hasAttribute("tabindex")).toBe(false);
+    expect(link.className).toContain("min-h-[44px]");
   });
 
   it("flips back to front on a second click", () => {

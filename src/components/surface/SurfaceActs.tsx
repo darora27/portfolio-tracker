@@ -85,7 +85,7 @@ export function SurfaceActs({
 
       {/* Act 3 — the doors */}
       <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
-        <p className="font-display text-2xl italic text-ink-soft">A closer look</p>
+        <p className="font-display text-[28px] italic text-ink-soft">A closer look</p>
 
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <FlipCard
@@ -97,7 +97,11 @@ export function SurfaceActs({
                 {topHoldingTicker ? ` — largest: ${topHoldingTicker}` : ""}
               </FlipFront>
             }
-            back={<CompositionDonut slices={donutSlices} hideDollars={hideDollars} compact />}
+            back={
+              <div className="rounded-lg border border-border bg-surface p-3">
+                <CompositionDonut slices={donutSlices} hideDollars={hideDollars} compact />
+              </div>
+            }
           />
           <FlipCard
             ariaLabel="Flip: How risky is it"

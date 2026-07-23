@@ -19,7 +19,7 @@ export function NavBar({
       style={{ background: "rgba(10,10,15,0.8)" }}
     >
       <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href={variant === "share" ? "/share" : "/"} className="flex items-center gap-2">
+        <Link href={variant === "share" ? "/share" : "/"} className="hidden items-center gap-2 sm:flex">
           <span className="h-2 w-2 rounded-sm bg-accent" />
           <span className="text-sm font-semibold text-text-primary">Portfolio Tracker</span>
         </Link>
@@ -29,7 +29,7 @@ export function NavBar({
             Read-only
           </span>
         ) : (
-          <nav className="flex h-full items-center gap-5 text-sm">
+          <nav className="flex h-full w-full items-center justify-between text-xs sm:w-auto sm:gap-5 sm:text-sm [&>button]:min-h-[44px]">
             <Link href="/" className={linkClass(false)}>
               Overview
             </Link>

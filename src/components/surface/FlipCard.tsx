@@ -42,7 +42,7 @@ export function FlipCard({
 
   return (
     <div
-      className={`relative min-h-[280px] rounded-xl border border-line bg-paper-raised ${className}`}
+      className={`relative min-h-[340px] rounded-xl border border-line bg-paper-raised ${className}`}
       style={{ perspective: reducedMotion ? undefined : "1200px" }}
     >
       <span
@@ -104,7 +104,7 @@ export function FlipCard({
         href={seeMoreHref}
         aria-hidden={!flipped}
         tabIndex={flipped ? undefined : -1}
-        className={`absolute bottom-6 right-8 z-10 text-sm font-medium text-accent-ink underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+        className={`absolute bottom-4 right-6 z-10 inline-flex min-h-[44px] items-center px-2 text-sm font-medium text-accent-ink underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
           flipped ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >

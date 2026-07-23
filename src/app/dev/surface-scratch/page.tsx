@@ -50,7 +50,7 @@ export default async function SurfaceScratchPage() {
         </div>
 
         <section className="relative isolate space-y-4">
-          <h2 className="font-display text-2xl italic text-ink-soft">CountUpSettle</h2>
+          <h2 className="font-display text-[28px] italic text-ink-soft">CountUpSettle</h2>
           <div className="relative rounded-xl border border-line bg-paper-raised p-8">
             <PortfolioOrrery className="absolute inset-0" />
             <div className="relative font-mono text-6xl font-bold text-ink">
@@ -63,7 +63,7 @@ export default async function SurfaceScratchPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-display text-2xl italic text-ink-soft">FlipCard</h2>
+          <h2 className="font-display text-[28px] italic text-ink-soft">FlipCard</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <FlipCard
               ariaLabel="Flip: What I own"
@@ -117,7 +117,7 @@ export default async function SurfaceScratchPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-display text-2xl italic text-ink-soft">DepthPull</h2>
+          <h2 className="font-display text-[28px] italic text-ink-soft">DepthPull</h2>
           <DepthPull
             href="/dashboard"
             className="inline-block rounded-full bg-accent px-6 py-3 text-base font-medium text-white"

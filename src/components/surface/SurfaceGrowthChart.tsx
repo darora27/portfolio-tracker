@@ -58,6 +58,7 @@ export function SurfaceGrowthChart({ data }: { data: ChartPoint[] }) {
               dataKey="date"
               type="category"
               ticks={firstDate && lastDate ? [firstDate, lastDate] : undefined}
+              padding={{ left: 32, right: 32 }}
               tickFormatter={(d: string) => formatDate(d)}
               tick={{ fontSize: 12, fill: "var(--ink-faint)", fontFamily: "var(--font-mono)" }}
               axisLine={{ stroke: "var(--line)" }}

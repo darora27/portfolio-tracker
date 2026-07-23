@@ -68,6 +68,7 @@ export function CompareChart({ data }: { data: CompareChartPoint[] }) {
             <CartesianGrid stroke="var(--border)" vertical={false} />
             <XAxis
               dataKey="date"
+              padding={{ left: 32, right: 32 }}
               tickFormatter={(d: string) => formatDate(d)}
               tick={{ fontSize: 11, fill: "var(--text-muted)", fontFamily: "var(--font-mono)" }}
               axisLine={{ stroke: "var(--border)" }}

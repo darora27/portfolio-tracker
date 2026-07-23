@@ -26,10 +26,13 @@ export function SurfaceHeader({ variant }: { variant: "private" | "share" }) {
           </span>
         ) : (
           <div className="flex items-center gap-4 text-sm">
-            <Link href="/dashboard" className="font-medium text-accent-ink hover:underline">
+            <Link
+              href="/dashboard"
+              className="inline-flex min-h-[44px] items-center font-medium text-accent-ink hover:underline"
+            >
               Full dashboard
             </Link>
-            <span className="[&>button]:text-ink-soft [&>button]:hover:text-ink">
+            <span className="[&>button]:inline-flex [&>button]:min-h-[44px] [&>button]:items-center [&>button]:text-ink-soft [&>button]:hover:text-ink">
               <LogoutButton />
             </span>
           </div>

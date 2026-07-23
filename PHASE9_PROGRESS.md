@@ -64,7 +64,7 @@ not committed, no secrets logged, status codes and field-presence only.
   claude-code/sonnet-5
 - [x] Instrument Serif (400 + italic) wired via `next/font/google` in
   `layout.tsx` as `--font-instrument-serif` -> `font-display` utility;
-  surface-only, display moments only (used at 24-30px+ in the scratch
+  surface-only, display moments only (used at 28-30px+ in the scratch
   page/labels), never for numbers, never in the deep tier — done by
   claude-code/sonnet-5
 - [x] Motion tokens added (`--ease-flip`, `--ease-depth`, `--dur-flip`,
@@ -229,9 +229,11 @@ not committed, no secrets logged, status codes and field-presence only.
   the §1 scratch-page check against a not-yet-existing route), Overview
   nav round-trip — all confirmed working, zero console errors — done by
   claude-code/sonnet-5
-- [ ] 390px keyboard/touch audit — blocked again by the browser tool's
-  `resize_window` not changing the actual viewport in this environment
-  (see §1 note); deferred to §7 same as §1
+- [x] 390px keyboard/touch audit — completed with a real 390×844
+  viewport override; `/` and `/share` have no page overflow, FlipCards
+  operate by touch and retain native button keyboard semantics, and all
+  visible surface actions now meet the 44px minimum target — done by
+  codex/gpt-5
 - [x] `npm test` (204/204) + `npm run build` green — done by
   claude-code/sonnet-5
 - [x] Commit: `phase9(§3): surface pages (Act 1–3) + route moves +
@@ -541,28 +543,16 @@ not committed, no secrets logged, status codes and field-presence only.
   and was used all session): `surface-home-desktop.jpg`,
   `surface-share-desktop.jpg`, `research-desktop.jpg`,
   `compare-desktop.jpg` — done by claude-code/sonnet-5
-- [ ] **390px audit — genuinely blocked, not skipped silently:** the
-  browser tool's `resize_window` had no effect in this environment for
-  the entire session (confirmed repeatedly, including one final retry
-  in §7 with `window.innerWidth`/`outerWidth` read back via
-  `javascript_tool` immediately after a resize call — still 1430px).
-  This is a real capability gap for THIS session, not a "skip if
-  unavailable" case — the browser tool otherwise works (proven by every
-  other live check in §1/§3/§4/§5/§7) — so per "never fabricate a visual
-  audit," no 390px screenshots exist for the four new surfaces. What was
-  done instead: (1) a full code-level audit for anything that could
-  overflow at 390px — no fixed pixel widths wider than 390px outside an
-  `overflow-x-auto` wrapper across all 43 changed files; (2) hand-verified
-  the `PortfolioOrrery`'s own geometry can't exceed a ~358px-wide
-  container even in its simplified/narrow branch (max radius 194px ×
-  0.45 scale + half the largest form's width ≈ 118px from center, well
-  under half of a 390px viewport); (3) every new page reuses the
-  `mx-auto max-w-6xl px-4 sm:px-6` / `DataTable`'s `overflow-x-auto`
-  container patterns already proven at exactly 390px in the *existing*
-  `docs/screenshots/*-mobile-390.jpg` files from Phases 7-8. This is a
-  reasoned judgment that mobile layout is very likely correct, not a
-  verified one — flagged to Devan in §8 as something worth a real-device
-  or working-`resize_window` check before shipping.
+- [x] **390px audit:** completed with a real 390×844 viewport override
+  across `/`, `/share`, `/dashboard`, `/research`, and `/compare`.
+  Found and fixed four concrete responsive/accessibility issues: clipped
+  right-edge chart dates on the surface and comparison charts; unreadable
+  deep-token text on the light composition back; 20px-high surface links
+  that missed the 44px touch target; and the Phase 9-expanded deep nav
+  causing 508px page-level overflow. Re-check confirmed 390px document
+  width on every route, fully visible endpoint labels, readable reveal
+  content, 44px targets, and zero browser console warnings/errors — done
+  by codex/gpt-5
 - [x] **Approved addition:** Portfolio Orrery audit — reduced-motion
   (static composition, verified by unit test), coarse-pointer/narrow
   simplification (verified by unit test: `finePointer: false` or
@@ -587,21 +577,22 @@ not committed, no secrets logged, status codes and field-presence only.
   done, 100% by claude-code/sonnet-5 (8/8 commits; no Codex CLI session
   ever ran against this repo this pass — confirmed at start via `ps`/
   `lsof` and re-confirmed the only running Codex process had `cwd: /`
-  with zero open files in this repo)
+  with zero open files in this repo) — done by claude-code/sonnet-5
 - [x] §0 probe results + any blocks omitted — both probes succeeded
   (200s, expected fields present); Reddit confirmed unconfigured as
   expected, built flagged-off; nothing was omitted that PHASE9.md
-  expected to be built
-- [x] Test count before → after — 170 → 239 (+69)
+  expected to be built — done by claude-code/sonnet-5
+- [x] Test count before → after — 170 → 239 (+69) — done by
+  claude-code/sonnet-5
 - [x] Every judgment call made during the run — recorded inline in each
-  section's Notes above
+  section's Notes above — done by claude-code/sonnet-5
 - [x] Confirmation the Steady Market identity fixture passes — yes,
   `src/lib/math/sim-portfolio.test.ts`, "Identity fixture" describe
-  block, within 1e-9
+  block, within 1e-9 — done by claude-code/sonnet-5
 - [x] The "Flags for Devan" list surfaced verbatim — see final chat
-  response
-- [x] Only remaining gap: the 390px audit (§7) — genuinely blocked by
-  the browser tool's `resize_window` in this environment, not skipped
-  silently. See §7 notes.
+  response — done by claude-code/sonnet-5
+- [x] Previously remaining 390px audit gap (§7) completed in a follow-up
+  Codex session; responsive bugs found were fixed and re-verified — done
+  by codex/gpt-5
 - Repo confirmed green and committed (§0-§7, 8 commits) before writing
   this summary.
