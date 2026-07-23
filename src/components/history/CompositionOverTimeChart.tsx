@@ -122,7 +122,7 @@ export function CompositionOverTimeChart({ data }: { data: CompositionHistorySer
               width={44}
               domain={[0, 100]}
               ticks={[0, 25, 50, 75, 100]}
-              tickFormatter={(v: number) => `${v}%`}
+              tickFormatter={(v: number) => formatPercent(v / 100, 0)}
             />
             <Tooltip content={<ChartTooltip />} />
             {allKeys.map((key) =>

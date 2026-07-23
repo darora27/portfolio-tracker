@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { HoldingsPerformanceSeries } from "@/lib/portfolio/holdings-performance";
-import { formatDate, formatSignedPercent } from "@/lib/format";
+import { formatDate, formatPercent, formatSignedPercent } from "@/lib/format";
 import { usePrefersReducedMotion } from "@/components/ui/usePrefersReducedMotion";
 
 // Fixed hue order (validated against this app's --surface for the dark-mode
@@ -131,7 +131,7 @@ export function HoldingsPerformanceChart({ data }: { data: HoldingsPerformanceSe
               axisLine={false}
               tickLine={false}
               width={52}
-              tickFormatter={(v: number) => `${v.toFixed(0)}%`}
+              tickFormatter={(v: number) => formatPercent(v / 100, 0)}
             />
             <Tooltip content={<ChartTooltip />} />
             {allKeys.map((key) =>
