@@ -17,7 +17,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [x] §8 Finnhub data layer (cache module)
 - [x] §9 Privacy matrix re-verification
 - [x] §10 Integration pass
-- [ ] §11 Final summary
+- [x] §11 Final summary
 
 ## §0 Preflight results
 
@@ -389,3 +389,85 @@ by design).
   re-confirmed here as part of the same pass, not re-run twice.
 - Screenshots captured into `docs/screenshots/` per the phase doc's
   instruction (the browser tool was available, so this wasn't skipped).
+
+## §11. Final summary
+
+**Sections done vs remaining:** All 11 sections (§0–§10) complete; this
+is the required §11 closing summary. Nothing remains unchecked.
+
+**§0 preflight probe results, and blocks omitted because of them:** All
+three Finnhub endpoints (`/company-news`, `/stock/recommendation`,
+`/stock/metric`) returned **200** with the expected fields for a live
+symbol (ASML) — free-tier access confirmed for all of them. **No UI
+block was omitted** for a probe failure; §3's fundamentals/analyst-
+consensus/news and §5's Latest News all shipped fully wired. The only
+times those sections rendered empty during this session were transient
+50-calls/min budget exhaustion from my own repeated manual testing —
+confirmed by waiting for the window to reset and reloading (see the
+§3/§5 judgment-call entries above) — not a structural gap.
+
+**Test count:** 86 tests / 18 files (baseline, §0) → **152 tests / 29
+files** (final). Every new pure function has fixture-level unit tests;
+`npm run build` is clean at every commit in this session (11 commits,
+one per section, `phase8(§N): ...`).
+
+**Daily Change fixture confirmation:** The exact §1 fixture
+(`V_now=25341.75, V_prev=22834.10, netFlowsToday=2775.00 → Day $
+= -$267.35, Day % ≈ -1.171%`) is asserted directly in
+`src/lib/math/daily-change.test.ts` and passes. The identical numbers
+are asserted again in `src/lib/portfolio/history.test.ts` for the
+History table's Day $/% columns, which reuse the same
+`dailyChangeAmount`/`dailyChangePercent` functions via a cost-basis-delta
+input instead of live trades. Both pass. (Live production data has since
+moved past the exact hypothetical in the phase doc — real 2026-07-22
+closed at $25,418.86, not $25,341.75 — so the *live* dashboard/History
+page now shows $-190.24/-0.83% for that date instead; this is expected
+data drift between when the fixture was written and when the EOD cron
+actually ran, not a discrepancy in the implementation. See the §1 and
+§4 session notes.)
+
+**Every judgment call:** all individually logged above under "Judgment
+calls log", organized by section. Highlights, in case only this summary
+is read:
+1. No literal "GOOG→GOOGL resolver" module existed; implemented the
+   equivalent convention (query by held ticker, surface Finnhub's own
+   resolved symbol only where it differs).
+2. `src/lib/server/finnhub-cache.ts` intentionally has no `server-only`
+   tag, so it stays directly unit-testable.
+3. §8 (Finnhub cache) was built right after §1, out of numeric order,
+   per its own note that later sections depend on it.
+4. Found and fixed a real bug via live browser testing that no type
+   check caught: a single-data-point sparkline rendered nothing (fixed
+   with a tested `sparklineGeometry()` helper).
+5. `/api/quotes` client-side polling is implemented and code-reviewed
+   correct, but the natural 60s interval firing wasn't directly observed
+   live in the automated browser session (tab visibility + dev-server
+   HMR resets got in the way) — recommend Devan do one real manual check
+   (Network tab open for ~90s on the live dashboard).
+6. `/share`'s `export const revalidate = 300` does not actually achieve
+   static/ISR serving today, because every Finnhub fetch uses
+   `cache: "no-store"`, which forces Next to render the whole route
+   dynamically regardless. The no-client-polling half of §6 is fully
+   achieved on `/share`; the ISR half is not, given the current
+   architecture — confirmed via the build's route table.
+7. **Operational risk worth flagging directly:** two ordinary page loads
+   within the same 60 seconds (not stress-testing — completely normal
+   browsing) can exhaust the 50-calls/min Finnhub budget, because
+   earnings calls are never cached (TTL 0, per spec) at 13 calls each.
+   When that happens, the Latest News and Upcoming Earnings sections
+   render fully empty (gracefully — no crash, no error banner) for up to
+   a minute. This is what the phase doc's own instructions produce, not
+   a bug, but it's the one thing in this phase most likely to look like
+   a bug to a family member refreshing the share page a few times.
+
+**Manual steps that remain Devan's:**
+1. Review locally: `npm run dev`, click through `/`, `/history`,
+   `/stock/<a ticker>`, `/trades` (Export CSV on both `/trades` and
+   `/history`), and `/share` with both hide-dollars settings. Specifically
+   worth a manual look: the live-quotes polling on `/` (open DevTools
+   Network tab, wait ~90s, confirm an `/api/quotes` request fires and
+   Total Value/Daily Change/Day columns update without a reload) and the
+   two operational notes above (Finnhub budget exhaustion; `/share`'s
+   actual dynamic-not-static rendering).
+2. Ship: `vercel --prod` to deploy Phases 7 and 8 together. (Never run by
+   this session, per the ground rules.)
