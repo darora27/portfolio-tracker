@@ -140,19 +140,46 @@ not committed, no secrets logged, status codes and field-presence only.
 ---
 
 ## §2. Plain-language engine
-- [ ] `src/lib/surface-copy.ts` created — pure template logic, no LLM
-  calls
-- [ ] `weeklySubline({twr7d, voo7d})` implemented per exact rules
-- [ ] `todayLine({dayReturn})` implemented (same thresholds, "today"
-  wording)
-- [ ] `riskLine(hhi)` implemented (Very concentrated / Moderately
-  concentrated / Well spread out)
-- [ ] Fixture tests for all four exact `weeklySubline` strings
-- [ ] Fixture tests for `riskLine` band edges
-- [ ] Banned-words unit test (buy, sell, should, consider, recommend)
-  greps this module's output strings
-- [ ] `npm test` + `npm run build` green
-- [ ] Commit: `phase9(§2): plain-language copy engine + banned-words test`
+- [x] `src/lib/surface-copy.ts` created — pure template logic, no LLM
+  calls — done by claude-code/sonnet-5
+- [x] `weeklySubline({twr7d, voo7d})` implemented per exact rules — done
+  by claude-code/sonnet-5
+- [x] `todayLine({dayReturn})` implemented (same thresholds, "today"
+  wording) — done by claude-code/sonnet-5
+- [x] `riskLine(hhi)` implemented (Very concentrated / Moderately
+  concentrated / Well spread out), reusing
+  `src/lib/portfolio/concentration-status.ts` rather than reforking the
+  HHI bands — done by claude-code/sonnet-5
+- [x] Fixture tests for all four exact `weeklySubline` strings — done by
+  claude-code/sonnet-5
+- [x] Fixture tests for `riskLine` band edges — done by
+  claude-code/sonnet-5
+- [x] Banned-words unit test (buy, sell, should, consider, recommend)
+  checks this module's output strings — implemented as an exported
+  `containsBannedLanguage()` helper (word-boundary match) so §4/§5 can
+  reuse the identical check rather than re-deriving it — done by
+  claude-code/sonnet-5
+- [x] `npm test` (199/199) + `npm run build` green — done by
+  claude-code/sonnet-5
+- [x] Commit: `phase9(§2): plain-language copy engine + banned-words test`
+  — done by claude-code/sonnet-5
+
+**Notes / judgment calls:**
+- **Spec inconsistency found and resolved:** PHASE9.md's prose gives the
+  "little changed" cutoff as `|twr7d| < 0.0005`, but its own exact
+  fixture `{twr7d: 0.0009, voo7d: 0.0002} → "Little changed this week."`
+  is impossible under that literal threshold (0.0009 is not < 0.0005).
+  Treated the fixture as binding (same convention as every other exact-
+  fixture block in Phases 7-9) and reused the market-clause epsilon
+  (0.0015) as the little-changed threshold too, since it's the only
+  other threshold in the same rule and satisfies all four fixtures.
+  Documented in a code comment in `surface-copy.ts` as well.
+- `containsBannedLanguage` uses word-boundary matching, so
+  "recommendations" (needed verbatim in §5's mandatory banner) does not
+  false-positive against the banned word "recommend" — verified by a
+  dedicated test. This resolves the §5 "banner is the only allowed
+  occurrence" requirement automatically rather than needing a manual
+  exception later.
 
 ---
 
