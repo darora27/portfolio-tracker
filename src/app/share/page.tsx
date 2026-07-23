@@ -16,6 +16,7 @@ import { RealizedUnrealized } from "@/components/dashboard/RealizedUnrealized";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 import { HoldingsPerformanceChart } from "@/components/dashboard/HoldingsPerformanceChart";
 import { HoldingRiskTable } from "@/components/dashboard/HoldingRiskTable";
+import { ContributionChart } from "@/components/dashboard/ContributionChart";
 
 // Public, read-only, no login, no client-side polling (unlike the private
 // dashboard). Statically served and regenerated at most every 5 minutes —
@@ -78,6 +79,12 @@ export default async function SharePage() {
           />
 
           <CompositionDonut slices={data.donutSlices} hideDollars={hideDollars} />
+
+          <ContributionChart
+            entries={data.positionRows
+              .filter((p) => p.contribution !== null)
+              .map((p) => ({ ticker: p.ticker, contribution: p.contribution! }))}
+          />
 
           <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
 
