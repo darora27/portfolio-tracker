@@ -9,7 +9,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [x] §0 Preflight
 - [x] §1 Correctness fix — Daily Change net of cash flows
 - [x] §2 Positions table upgrade (day columns, sparklines, clickable rows)
-- [ ] §3 Position detail page `/stock/[ticker]`
+- [x] §3 Position detail page `/stock/[ticker]`
 - [ ] §4 History page `/history`
 - [ ] §5 Dashboard additions (news, ATH chip, risk extensions)
 - [ ] §6 Live quotes + auto-refresh
@@ -111,6 +111,40 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   (would require the owner password) — covered by code review instead;
   worth a manual click-through by Devan.
 
+- §3: `getStockDetailData()` (new `src/lib/stock-data.ts`) reuses the full
+  `getDashboardData()` computation rather than re-deriving weight,
+  contribution, day-change, or correlation independently — one source of
+  truth for those, at the cost of recomputing the whole dashboard for a
+  single-ticker page. Accepted given the app's scale (single owner,
+  family-sized traffic); flagged here in case Vercel Hobby function
+  duration ever becomes a concern.
+- §3: discovered by live testing (not by type-checking) that the
+  fundamentals/analyst-consensus/news sections can all disappear at once
+  — not a bug, but the §8 budget guard doing exactly its job. Loading
+  `/share` and `/` repeatedly while testing §2, then loading `/stock/ASML`
+  immediately after, burned through the 50-calls/min budget (13 tickers ×
+  earnings-TTL-0 alone is 13 calls per dashboard load, since "earnings
+  unchanged" per §8 means never cached). Confirmed by waiting 65s for the
+  window to reset and reloading — all three sections reappeared with real
+  data. Worth flagging to Devan: a family member refreshing `/share` a
+  few times within a minute could hit this same budget wall and briefly
+  see the news/earnings sections empty. This is what the phase doc's own
+  "earnings unchanged" instruction produces; not deviated from, but noted
+  as a real operational characteristic rather than a hypothetical one.
+- §3: StatCards render a literal "—" (not "$0.00" muted) when
+  gain/day/contribution is null (no live price yet) — showing a zero
+  dollar amount for genuinely unknown data would be the exact "never show
+  zeros as if they were real" mistake CLAUDE.md calls out for the API
+  failure case.
+- §3: verified live end-to-end using the dev server's already-authenticated
+  browser session (a prior owner login had persisted its cookie — did not
+  read or type `OWNER_PASSWORD` to get there). Confirmed: unauthenticated
+  gate, unknown-ticker 404, row-click navigation from `/` landing
+  correctly on `/stock/[ticker]`, and — by chance, since the click
+  navigated to COST — the exact single-data-point chart edge case the
+  phase doc calls out (bought-today position, one snapshot close so far):
+  it renders one dot plus the dashed cost-basis reference line, no crash.
+
 ## Session notes
 
 - Session 1 (2026-07-23): §0 complete.
@@ -139,3 +173,10 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   landing next in this session), and a "Today's Movers" card added to
   WinnersLosers. Found and fixed a real single-point-sparkline rendering
   bug via live browser verification. 119/119 tests pass, build clean.
+- Session 1 (2026-07-23): §3 complete. New `/stock/[ticker]` page (owner-
+  gated) with header, 4 StatCards, price-since-purchase chart w/ cost
+  basis reference line, fundamentals row, analyst consensus bar, recent
+  news, and a correlation row. New `formatMarketCap`/`formatMonthYear`/
+  `formatRelativeOrDate` in format.ts (tested). Verified live in browser
+  including the COST single-point chart edge case. 125/125 tests pass,
+  build clean.
