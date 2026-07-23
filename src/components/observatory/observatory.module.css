@@ -1,0 +1,360 @@
+/* Phase 10 Observatory shell — CSS 3D approach, chosen over bounded R3F in
+   §1 (see docs/phase10-spike-section-1/DECISION.md). Local, provisional
+   tokens: PRODUCT_DIRECTION.md leaves exact color values open until later
+   sections; these are scoped to .shell so they never leak into or collide
+   with the Phase 9 "Daylight"/deep-tier token systems in globals.css. */
+
+.shell {
+  --obs-bg: #0b0b0e;
+  --obs-ink: #f5f2ea;
+  --obs-ink-soft: #b9b4a8;
+  --obs-ink-faint: #726d63;
+  --obs-line: #2a2a30;
+  --obs-evidence: #4fd1c5;
+  --obs-loss: #e2725b;
+  --obs-accent: #7c6fff;
+
+  position: relative;
+  background: var(--obs-bg);
+  color: var(--obs-ink);
+  padding: 2.5rem 1.25rem 3.5rem;
+}
+
+.h1 {
+  font-size: clamp(1.375rem, 3.4vw, 1.875rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.metaRow {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--obs-ink-soft);
+}
+
+.freshness {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.freshnessLabel {
+  color: var(--obs-ink-faint);
+}
+
+.freshnessStale {
+  color: var(--obs-loss);
+}
+
+.readOnlyBadge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--obs-line);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--obs-ink-soft);
+}
+
+/* ---- Orbit / chapter nav ---- */
+
+.orbitWrap {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  height: 420px;
+  margin: 2.5rem auto 0;
+  perspective: 1400px;
+}
+
+.orbit {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  animation: obs-enter 500ms ease-out both;
+}
+
+.inspector {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 15rem;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 1.25rem;
+  border: 1px solid var(--obs-line);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+}
+
+.inspectorNumber {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--obs-evidence);
+  letter-spacing: 0.08em;
+}
+
+.inspectorLabel {
+  margin-top: 0.25rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.inspectorQuestion {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--obs-ink-soft);
+}
+
+.bodyItem {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+
+/* Desktop/orbit default: number + label both visible, stacked, in a
+   circle — the "labels discoverable without hovering" requirement applies
+   here too, not only in the fallback strip. */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  height: 96px;
+  width: 96px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--obs-line);
+  background: rgba(20, 20, 26, 0.85);
+  color: var(--obs-ink-soft);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    transform 300ms ease-out,
+    background 200ms ease-out,
+    color 200ms ease-out,
+    border-color 200ms ease-out;
+}
+
+.body span:last-child {
+  font-family: var(--font-sans, inherit);
+  font-size: 0.7rem;
+}
+
+.body:focus-visible {
+  outline: 2px solid var(--obs-accent);
+  outline-offset: 3px;
+}
+
+.body[aria-current="page"] {
+  border-color: var(--obs-evidence);
+  color: var(--obs-ink);
+  background: rgba(79, 209, 197, 0.12);
+}
+
+.bodyItem[data-index="0"] .body {
+  transform: translate3d(-190px, -70px, 40px) translate(-50%, -50%);
+}
+.bodyItem[data-index="1"] .body {
+  transform: translate3d(60px, -170px, -20px) translate(-50%, -50%);
+}
+.bodyItem[data-index="2"] .body {
+  transform: translate3d(220px, -10px, 30px) translate(-50%, -50%);
+}
+.bodyItem[data-index="3"] .body {
+  transform: translate3d(120px, 150px, -30px) translate(-50%, -50%);
+}
+.bodyItem[data-index="4"] .body {
+  transform: translate3d(-140px, 130px, 10px) translate(-50%, -50%);
+}
+
+.bodyItem[data-index="0"] .body[aria-current="page"] {
+  transform: translate3d(-190px, -70px, 90px) translate(-50%, -50%) scale(1.08);
+}
+.bodyItem[data-index="1"] .body[aria-current="page"] {
+  transform: translate3d(60px, -170px, 90px) translate(-50%, -50%) scale(1.08);
+}
+.bodyItem[data-index="2"] .body[aria-current="page"] {
+  transform: translate3d(220px, -10px, 90px) translate(-50%, -50%) scale(1.08);
+}
+.bodyItem[data-index="3"] .body[aria-current="page"] {
+  transform: translate3d(120px, 150px, 90px) translate(-50%, -50%) scale(1.08);
+}
+.bodyItem[data-index="4"] .body[aria-current="page"] {
+  transform: translate3d(-140px, 130px, 90px) translate(-50%, -50%) scale(1.08);
+}
+
+/* Static concentric fallback: narrow viewport, forced no-3D, or reduced
+   motion all collapse to the same flat numbered strip — pure CSS, works
+   with JavaScript disabled since it's a media-query / attribute-selector
+   degrade of the same server-rendered links. */
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .orbitWrap {
+    height: auto;
+    perspective: none;
+  }
+  .orbit {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    animation: none;
+  }
+  .inspector {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: none;
+  }
+  .bodyItem {
+    position: static;
+  }
+  .body {
+    flex-direction: row;
+    width: 100%;
+    height: 44px;
+    border-radius: 0.5rem;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 0 1rem;
+    text-align: left;
+    transform: none !important;
+  }
+  .body span:last-child {
+    font-size: 0.85rem;
+  }
+}
+
+[data-force-no-3d="true"] .orbitWrap {
+  height: auto;
+  perspective: none;
+}
+[data-force-no-3d="true"] .orbit {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+  animation: none;
+}
+[data-force-no-3d="true"] .inspector {
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: none;
+}
+[data-force-no-3d="true"] .bodyItem {
+  position: static;
+}
+[data-force-no-3d="true"] .body {
+  flex-direction: row;
+  width: 100%;
+  height: 44px;
+  border-radius: 0.5rem;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  padding: 0 1rem;
+  text-align: left;
+  transform: none !important;
+}
+[data-force-no-3d="true"] .body span:last-child {
+  font-size: 0.85rem;
+}
+
+.bodyNumber {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Chapter plate ---- */
+
+.plateWrap {
+  position: relative;
+  max-width: 34rem;
+  margin: 3rem auto 0;
+}
+
+/* Decorative stacked-plate depth cue — the "observation-plate chapter
+   stack." Purely visual (aria-hidden); the four other chapters are always
+   fully represented by the real nav above, never only by this offset. */
+.plateEdge {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--obs-line);
+  border-radius: 0.75rem;
+  pointer-events: none;
+}
+.plateEdge:nth-of-type(1) {
+  transform: translate(6px, 6px);
+  opacity: 0.35;
+}
+.plateEdge:nth-of-type(2) {
+  transform: translate(12px, 12px);
+  opacity: 0.2;
+}
+
+.plate {
+  position: relative;
+  padding: 1.75rem;
+  border: 1px solid var(--obs-line);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.plateHeading {
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 0.25rem;
+}
+
+.plateHeading:focus-visible {
+  outline: 2px solid var(--obs-accent);
+  outline-offset: 4px;
+}
+
+.plateBody {
+  margin-top: 0.75rem;
+  color: var(--obs-ink-soft);
+  font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plateWrap {
+    transition: none;
+  }
+}
+
+/* ---- Owner utility slot (private mode only) ---- */
+
+.ownerSlot {
+  max-width: 34rem;
+  margin: 1.5rem auto 0;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--obs-line);
+  border-radius: 0.75rem;
+  color: var(--obs-ink-soft);
+  font-size: 0.85rem;
+}
+
+@keyframes obs-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

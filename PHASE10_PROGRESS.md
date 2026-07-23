@@ -92,7 +92,64 @@ one green commit per section: `phase10(§N): <summary>`.
 
 ## §1. Selected direction technical spike and semantic shell
 
-Status: not started. Next role: Claude Builder.
+Status: builder work complete, awaiting Codex Critic review. Next role: Codex
+Critic.
 
-Do not start without Devan's explicit instruction and a clean-worktree/process
-check.
+- [x] Confirmed the recorded Field Journal structural base and exact Night
+  Orbit borrowed parts against `PRODUCT_DIRECTION.md` and
+  `docs/phase10-design-options/field-journal/README.md` before touching any
+  file — done by claude-code/sonnet-5
+- [x] Confirmed a clean green base at commit `f25e271` and checked for a
+  competing Claude/Codex process (found an idle Codex sandbox scoped to this
+  repo; Devan confirmed idle before proceeding) — done by claude-code/sonnet-5
+- [x] Built isolated CSS 3D and bounded R3F first-viewport spikes
+  (`/dev/phase10-spike-css`, since-removed `/dev/phase10-spike-r3f`) with
+  identical synthetic semantic content, reduced-motion/forced-WebGL-failure
+  states, and measured bundle/behavioral evidence — done by
+  claude-code/sonnet-5
+- [x] Recorded the CSS-vs-R3F decision with evidence: CSS 3D selected; no
+  production Three.js/R3F dependency —
+  `docs/phase10-spike-section-1/DECISION.md` — done by claude-code/sonnet-5
+- [x] Removed the R3F spike route and the temporary `three` /
+  `@react-three/fiber` / `@types/three` dependencies after recording the
+  decision; confirmed absent from `package.json`, `package-lock.json`, and
+  `node_modules` — done by claude-code/sonnet-5
+- [x] Built the production five-chapter semantic Observatory shell
+  (`src/lib/observatory/chapters.ts`,
+  `src/components/observatory/{ObservatoryShell,ChapterOrbit,ChapterFocusManager}.tsx`)
+  with URL state, focus restoration, public/private modes, a freshness slot,
+  reduced motion, and a complete 2D/no-3D fallback — proven via the
+  owner-gated `/dev/observatory-shell` preview route, not yet wired into
+  `/share` or `/` (that is §2/§4's job) — done by claude-code/sonnet-5
+- [x] Added unit/integration tests covering URL state, keyboard controls,
+  reduced-motion/no-3D fallback parity, and public/private shell modes (+39
+  tests across 5 new files) — done by claude-code/sonnet-5
+- [x] Captured 1440×900 evidence for the spike decision and the shell
+  (public/private/forced-fallback states); captured the narrowest reachable
+  real viewport (614×667, below the 767px breakpoint) as mobile-equivalent
+  evidence and documented the environment's ~614px window-resize floor
+  rather than claiming an unperformed 390px/320px capture — done by
+  claude-code/sonnet-5
+- [x] Verified no page-level horizontal overflow at the narrow width reached
+  — done by claude-code/sonnet-5
+- [x] Verified both new routes (`/dev/observatory-shell`,
+  `/dev/phase10-spike-css`) remain owner-gated when logged out, with zero
+  dollar-currency patterns in their unauthenticated HTML — done by
+  claude-code/sonnet-5
+- [x] `npm test`: 278/278 passed across 51 test files (was 239/46 at §0) —
+  done by claude-code/sonnet-5
+- [x] `npm run build`: Next.js 16.2.11 production build compiled
+  successfully; 16 route tasks generated — done by claude-code/sonnet-5
+- [x] No `.env*` contents read, printed, edited, staged, or committed; no
+  `vercel --prod` run; no deploy — done by claude-code/sonnet-5
+- [x] Commit: `phase10(§1): CSS 3D technical spike and production
+  Observatory shell` — done by claude-code/sonnet-5
+
+### §1 evidence
+
+- Evidence report: `docs/phase10-baseline/section-1/README.md`
+- CSS vs. R3F decision: `docs/phase10-spike-section-1/DECISION.md`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `verification`)
+
+Do not begin §2 without Devan's explicit instruction; §1 stops here for
+Codex Critic review per `docs/PHASE10_AGENT_WORKFLOW.md`.

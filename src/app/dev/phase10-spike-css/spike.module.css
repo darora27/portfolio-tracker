@@ -1,0 +1,249 @@
+/* Phase 10 §1 spike — CSS 3D approach. Isolated, non-production styling;
+   intentionally NOT shared with the production Observatory shell so this
+   file stays a clean measurement artifact of "the CSS 3D approach" on its
+   own, independent of later shell refactors. */
+
+.stage {
+  --obs-bg: #0b0b0e;
+  --obs-ink: #f5f2ea;
+  --obs-ink-soft: #b9b4a8;
+  --obs-line: #2a2a30;
+  --obs-evidence: #4fd1c5;
+  --obs-loss: #e2725b;
+  --obs-accent: #7c6fff;
+
+  position: relative;
+  min-height: 100vh;
+  background: var(--obs-bg);
+  color: var(--obs-ink);
+  overflow: hidden;
+  padding: 3rem 1.5rem;
+}
+
+.lead {
+  max-width: 46rem;
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
+.leadHeading {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.leadSub {
+  margin-top: 0.5rem;
+  color: var(--obs-ink-soft);
+  font-size: 0.95rem;
+}
+
+.orbitWrap {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  height: 460px;
+  margin: 0 auto;
+  perspective: 1400px;
+}
+
+.orbit {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: obs-enter 500ms ease-out both;
+}
+
+.inspector {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 15rem;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 1.25rem;
+  border: 1px solid var(--obs-line);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.inspectorNumber {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  color: var(--obs-evidence);
+  letter-spacing: 0.08em;
+}
+
+.inspectorLabel {
+  margin-top: 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.inspectorQuestion {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--obs-ink-soft);
+}
+
+.body {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  height: 84px;
+  width: 84px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--obs-line);
+  background: rgba(20, 20, 26, 0.85);
+  color: var(--obs-ink-soft);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition:
+    transform 300ms ease-out,
+    background 200ms ease-out,
+    color 200ms ease-out;
+}
+
+.body:focus-visible {
+  outline: 2px solid var(--obs-accent);
+  outline-offset: 3px;
+}
+
+.body[aria-current="page"] {
+  border-color: var(--obs-evidence);
+  color: var(--obs-ink);
+  background: rgba(79, 209, 197, 0.12);
+}
+
+.body[data-index="0"] {
+  transform: translate3d(-190px, -70px, 40px) translate(-50%, -50%);
+}
+.body[data-index="1"] {
+  transform: translate3d(60px, -170px, -20px) translate(-50%, -50%);
+}
+.body[data-index="2"] {
+  transform: translate3d(220px, -10px, 30px) translate(-50%, -50%);
+}
+.body[data-index="3"] {
+  transform: translate3d(120px, 150px, -30px) translate(-50%, -50%);
+}
+.body[data-index="4"] {
+  transform: translate3d(-140px, 130px, 10px) translate(-50%, -50%);
+}
+
+.body[aria-current="page"][data-index="0"] {
+  transform: translate3d(-190px, -70px, 90px) translate(-50%, -50%) scale(1.08);
+}
+.body[aria-current="page"][data-index="1"] {
+  transform: translate3d(60px, -170px, 90px) translate(-50%, -50%) scale(1.08);
+}
+.body[aria-current="page"][data-index="2"] {
+  transform: translate3d(220px, -10px, 90px) translate(-50%, -50%) scale(1.08);
+}
+.body[aria-current="page"][data-index="3"] {
+  transform: translate3d(120px, 150px, 90px) translate(-50%, -50%) scale(1.08);
+}
+.body[aria-current="page"][data-index="4"] {
+  transform: translate3d(-140px, 130px, 90px) translate(-50%, -50%) scale(1.08);
+}
+
+.plate {
+  max-width: 32rem;
+  margin: 2.5rem auto 0;
+  padding: 1.5rem;
+  border: 1px solid var(--obs-line);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.plateFinding {
+  font-size: 1rem;
+  color: var(--obs-ink);
+}
+
+.plateEvidence {
+  margin-top: 0.5rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(90deg, var(--obs-evidence) 0%, transparent 60%);
+  opacity: 0.25;
+}
+
+/* Static concentric fallback: narrow viewport, forced no-3D, or reduced
+   motion all collapse to the same flat numbered strip. No JS required —
+   this is a pure media-query / attribute-selector degrade. */
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .orbitWrap {
+    height: auto;
+    perspective: none;
+  }
+  .orbit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    animation: none;
+  }
+  .inspector {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 22rem;
+  }
+  .body {
+    position: static;
+    transform: none !important;
+    width: 100%;
+    max-width: 22rem;
+    height: 44px;
+    border-radius: 0.5rem;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding: 0 1rem;
+  }
+}
+
+[data-force-no-3d="true"] .orbitWrap {
+  height: auto;
+  perspective: none;
+}
+[data-force-no-3d="true"] .orbit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: none;
+}
+[data-force-no-3d="true"] .inspector {
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: 22rem;
+}
+[data-force-no-3d="true"] .body {
+  position: static;
+  transform: none !important;
+  width: 100%;
+  max-width: 22rem;
+  height: 44px;
+  border-radius: 0.5rem;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  padding: 0 1rem;
+}
+
+@keyframes obs-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

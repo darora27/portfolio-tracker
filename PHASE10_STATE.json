@@ -2,9 +2,9 @@
   "schema_version": 1,
   "phase": 10,
   "current_section": "§1",
-  "role": "claude_builder",
-  "status": "ready",
-  "next_agent": "claude",
+  "role": "codex_critic",
+  "status": "awaiting_critic",
+  "next_agent": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -31,98 +31,70 @@
     "commit_subject": "phase10(§0): baseline selected Field Journal orbital hybrid",
     "production_ui_changed": false
   },
-  "last_green_commit": "0e71fc3a6bbbc64f0382c7642f9dfcb5212bd950",
-  "last_green_commit_note": "The executable source tree is unchanged from this commit. Resolve the latest HEAD to obtain the documentation-only §0 commit before beginning §1.",
+  "section_1": {
+    "status": "awaiting_critic",
+    "completed_by": "claude-code/sonnet-5",
+    "completed_at": "2026-07-23T19:30:00-07:00",
+    "evidence_report": "docs/phase10-baseline/section-1/README.md",
+    "css_vs_r3f_decision": "docs/phase10-spike-section-1/DECISION.md",
+    "commit_subject": "phase10(§1): CSS 3D technical spike and production Observatory shell",
+    "css_vs_r3f_result": "CSS 3D selected; no production Three.js/R3F dependency",
+    "production_ui_changed": false,
+    "shell_wired_into_share_or_home": false,
+    "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 deliberately did not widen scope to do that here."
+  },
+  "last_green_commit": "f25e271277c0063a22dd81a2059aa968cbfd1815",
+  "last_green_commit_note": "This is the pre-§1 HEAD (the §0 baseline commit). §1's own commit (subject: phase10(§1): CSS 3D technical spike and production Observatory shell) sits on top of it — resolve the latest HEAD to obtain that commit before the Codex Critic review begins.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "46 test files passed; 239 of 239 tests passed.",
-      "finished_at": "2026-07-23T22:47:58Z"
+      "summary": "51 test files passed; 278 of 278 tests passed (was 46 files / 239 tests at §0; +5 files / +39 tests for §1: chapters.test.ts, ChapterOrbit.test.tsx, ObservatoryShell.test.tsx, ChapterFocusManager.test.tsx, observatory-fallback.test.ts).",
+      "finished_at": "2026-07-23T19:27:14-07:00"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Next.js 16.2.11 compiled successfully; TypeScript passed; 14 static-page tasks generated.",
-      "finished_at": "2026-07-23T22:47:58Z",
-      "font_network_behavior": "src/app/layout.tsx imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. The normal build passed, but the source remains build-time network-dependent; no offline build was claimed."
+      "summary": "Next.js 16.2.11 compiled successfully; TypeScript passed; 16 route tasks generated (was 14 at §0; /dev/observatory-shell and /dev/phase10-spike-css are new; /dev/phase10-spike-r3f was added and removed within this section).",
+      "finished_at": "2026-07-23T19:28:00-07:00",
+      "font_network_behavior": "Unchanged from §0: src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. Not silently absorbed into §1 — remains §13 work.",
+      "r3f_dependency_absent": "Confirmed by direct inspection: three, @react-three/fiber, and @types/three are absent from package.json, package-lock.json, and node_modules at the final commit."
     },
     "visual": {
       "required": true,
       "status": "pass",
-      "desktop_screenshot": "docs/phase10-baseline/section-0/desktop/share-1440x900.png",
-      "mobile_screenshot": "docs/phase10-baseline/section-0/mobile/share-390x844.png",
-      "desktop": {
-        "/share": "docs/phase10-baseline/section-0/desktop/share-1440x900.png",
-        "/": "docs/phase10-baseline/section-0/desktop/home-1440x900.png",
-        "/dashboard": "docs/phase10-baseline/section-0/desktop/dashboard-1440x900.png",
-        "/compare": "docs/phase10-baseline/section-0/desktop/compare-1440x900.png",
-        "/research": "docs/phase10-baseline/section-0/desktop/research-1440x900.png",
-        "/history": "docs/phase10-baseline/section-0/desktop/history-1440x900.png",
-        "/trades": "docs/phase10-baseline/section-0/desktop/trades-1440x900.png"
-      },
-      "mobile": {
-        "/share": "docs/phase10-baseline/section-0/mobile/share-390x844.png",
-        "/": "docs/phase10-baseline/section-0/mobile/home-390x844.png",
-        "/dashboard": "docs/phase10-baseline/section-0/mobile/dashboard-390x844.png",
-        "/compare": "docs/phase10-baseline/section-0/mobile/compare-390x844.png",
-        "/research": "docs/phase10-baseline/section-0/mobile/research-390x844.png",
-        "/history": "docs/phase10-baseline/section-0/mobile/history-390x844.png",
-        "/trades": "docs/phase10-baseline/section-0/mobile/trades-390x844.png"
-      },
+      "desktop_screenshot": "docs/phase10-baseline/section-1/desktop/observatory-shell-public-1440x900.jpg",
+      "mobile_screenshot": "docs/phase10-baseline/section-1/mobile/observatory-shell-614x667-organic-fallback.jpg",
+      "note": "Full screenshot index (spike + shell, public/private/fallback states) is in docs/phase10-baseline/section-1/README.md. §0's desktop/mobile screenshots remain valid at their original paths and are unchanged by §1.",
       "console": {
         "warnings": 0,
         "errors": 0
       },
-      "mobile_overflow": {
-        "/share": false,
-        "/": false,
-        "/dashboard": false,
-        "/compare": false,
-        "/research": false,
-        "/history": false,
-        "/trades": false
-      }
+      "mobile_capture_limitation": "This session's browser automation could not resize below ~614 CSS px (vs. the required 390/320 targets). The 614px capture exercises the same max-width:767px rule 390/320 would hit — see docs/phase10-baseline/section-1/README.md 'Mobile capture limitation' for the full explanation and mitigations (forced-fallback screenshots + a CSS-source invariant test). No 390px/320px screenshot is claimed."
     },
     "accessibility": {
       "status": "recorded",
-      "chapter_navigation": "No Phase 10 chapter navigation exists in the production baseline.",
-      "focus": "The public FlipCard received a visible 2px solid violet focus outline with 2px offset. Existing route navigation uses semantic links/buttons.",
-      "headings": "No h1 was present on /share, /, or /dashboard; /compare, /research, /history, and /trades each exposed an h1.",
-      "reduced_motion": "The live browser preference was no-preference. Existing animation components retain Phase 9 reduced-motion source/tests; §0 did not claim a live emulated reduced-motion pass.",
+      "chapter_navigation": "ObservatoryShell/ChapterOrbit now provide real five-chapter semantic navigation (one <nav>, one real link per chapter, aria-current on the active one) with a working static/no-3D fallback — the §0 gap this section exists to close. Not yet wired into /share, /, or /dashboard (§2/§4/§6 do that).",
+      "focus": "The active chapter's h2 (tabIndex=-1) receives a visible :focus-visible outline and is the focus-restoration target after a client-side chapter change (verified live in-browser and by ChapterFocusManager.test.tsx).",
+      "headings": "Each ObservatoryShell instance renders exactly one h1 (verified by test). Still not present on the live /share, /, or /dashboard routes until §2/§4/§6 wire the shell in.",
+      "reduced_motion": "Implemented as pure CSS (@media (prefers-reduced-motion: reduce)), not JS-driven — verified structurally by observatory-fallback.test.ts, which asserts the reduced-motion query and the forced-no-3D test hook stay wired to the same classes and both disable the entry animation and 3D transform.",
       "known_issues": [
-        "No five-chapter semantic or spatial navigation exists before §1.",
-        "Missing h1 elements on /share, /, and /dashboard.",
-        "Mobile research/history/trades retain dense table/chart presentations even though page-level overflow is contained."
+        "The shell is proven at /dev/observatory-shell only; production routes still lack it until later sections wire it in.",
+        "390px/320px screenshots were not captured live — see mobile_capture_limitation."
       ]
     },
     "privacy": {
       "status": "pass",
-      "public_share_visible_currency_patterns": 0,
-      "public_share_raw_strict_currency_patterns": 0,
-      "public_share_raw_comma_currency_patterns": 0,
-      "public_share_forbidden_owner_markers": 0,
-      "private_routes_gated_when_logged_out": [
-        "/",
-        "/dashboard",
-        "/compare",
-        "/research",
-        "/history",
-        "/trades"
-      ],
-      "public_routes_confirmed": [
-        "/share"
-      ],
-      "logged_out_exports": {
-        "/api/export/history.csv": 401,
-        "/api/export/trades.csv": 401
-      },
+      "new_routes_owner_gated": ["/dev/observatory-shell", "/dev/phase10-spike-css"],
+      "logged_out_check": "Both new routes render the sign-in form with zero authentication cookie present (curl, no cookie jar).",
+      "public_dollar_leak_check": "No $<digits>.<digits> pattern found in either route's unauthenticated HTML — the shell holds no portfolio data of its own by construction.",
+      "shell_cross_render_check": "ObservatoryShell.test.tsx asserts the owner slot is never rendered in mode=\"public\", even when one is passed — defensive, not just absence-of-data.",
       "env_contents_accessed_or_output": false,
-      "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override; no environment-file contents were read."
+      "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override for live screenshot capture; no environment-file contents were read."
     },
     "process_check": {
       "status": "pass",
-      "summary": "No Claude Code or Codex CLI execution was active against the repository. Idle desktop/browser helper processes were present and made no worktree changes."
+      "summary": "A Codex CLI sandbox process with --working-dir scoped to this repo was found running; Devan confirmed it was idle before work began. No Claude or Codex process made worktree changes during this session other than this one."
     }
   },
   "review": {
@@ -143,6 +115,6 @@
     "maximum": 3
   },
   "stop_reason": null,
-  "handoff_reason": "§0 is complete. Stop before §1 as requested; Claude is the next builder only after Devan explicitly starts that section.",
-  "updated_at": "2026-07-23T22:48:01Z"
+  "handoff_reason": "§1 builder work is complete and committed. Handing off to the read-only Codex Critic per docs/PHASE10_AGENT_WORKFLOW.md — do not begin §2 until the critic (and refiner, if needed) accept §1.",
+  "updated_at": "2026-07-23T19:30:00-07:00"
 }

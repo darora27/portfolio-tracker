@@ -2,7 +2,8 @@
 
 Status: implementation active
 
-Implementation status: §0 baseline complete; §1 not started
+Implementation status: §0 baseline complete; §1 builder work complete,
+awaiting Codex Critic review
 
 Selected direction: Field Journal structural base with Night Orbit orbital
 chapter navigation, selected-body inspector, and static concentric fallback
