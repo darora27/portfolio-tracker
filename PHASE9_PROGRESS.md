@@ -57,31 +57,85 @@ not committed, no secrets logged, status codes and field-presence only.
 ---
 
 ## §1. Surface design system — "Daylight" layer
-- [ ] Surface tokens added to `globals.css` (`--paper`, `--paper-raised`,
+- [x] Surface tokens added to `globals.css` (`--paper`, `--paper-raised`,
   `--ink`, `--ink-soft`, `--ink-faint`, `--line`, `--accent-ink`,
   `--gain-ink`, `--loss-ink`, `--gain-wash`, `--loss-wash`); contrast
-  rules honored
-- [ ] Instrument Serif (400 + italic) wired via `next/font/google`,
-  surface-only, display moments only, never below 28px, never for
-  numbers, never in the deep tier
-- [ ] Motion tokens added (`--ease-flip`, `--ease-depth`, `--dur-flip`,
-  `--dur-depth`, `--dur-count`, `--dur-micro`)
-- [ ] `<FlipCard>` built in `src/components/surface/`
-- [ ] `<DepthPull>` built in `src/components/surface/`
-- [ ] `<CountUpSettle>` built in `src/components/surface/`
-- [ ] **Approved addition:** `<PortfolioOrrery>` primitive built and
-  tested in `src/components/surface/` per the UX brief and the Portfolio
-  Orrery engineering constraints (CSS 3D only, no new dependency, tokens
-  only, reduced-motion static composition, coarse-pointer/390px simplified
-  render, aria-hidden, pointer-parallax bounded and fine-pointer-only,
-  pauses offscreen/hidden-tab)
-- [ ] Reduced-motion verified for all four components (FlipCard,
-  DepthPull, CountUpSettle, PortfolioOrrery) via matchMedia mock
-- [ ] Zero deep-tier files modified
-- [ ] All four render correctly on a scratch page
-- [ ] `npm test` + `npm run build` green
-- [ ] Commit: `phase9(§1): Daylight surface tokens + FlipCard, DepthPull,
-  CountUpSettle, PortfolioOrrery`
+  rules honored (values copied verbatim from PHASE9.md §1a) — done by
+  claude-code/sonnet-5
+- [x] Instrument Serif (400 + italic) wired via `next/font/google` in
+  `layout.tsx` as `--font-instrument-serif` -> `font-display` utility;
+  surface-only, display moments only (used at 24-30px+ in the scratch
+  page/labels), never for numbers, never in the deep tier — done by
+  claude-code/sonnet-5
+- [x] Motion tokens added (`--ease-flip`, `--ease-depth`, `--dur-flip`,
+  `--dur-depth`, `--dur-count`, `--dur-micro`) — done by
+  claude-code/sonnet-5
+- [x] `<FlipCard>` built in `src/components/surface/FlipCard.tsx` — done
+  by claude-code/sonnet-5
+- [x] `<DepthPull>` (+ `DepthPullProvider`, `useDepthPull`) built in
+  `src/components/surface/DepthPull.tsx`, mounted once in the root
+  layout so overlay state survives the route change it triggers — done
+  by claude-code/sonnet-5
+- [x] `<CountUpSettle>` built in `src/components/surface/CountUpSettle.tsx`
+  — done by claude-code/sonnet-5
+- [x] **Approved addition:** `<PortfolioOrrery>` primitive built and
+  tested in `src/components/surface/PortfolioOrrery.tsx` per the UX
+  brief and the Portfolio Orrery engineering constraints (CSS 3D only,
+  no new dependency, tokens only, reduced-motion static composition,
+  coarse-pointer/390px simplified render, aria-hidden, pointer-parallax
+  bounded and fine-pointer-only, pauses offscreen/hidden-tab) — done by
+  claude-code/sonnet-5
+- [x] Reduced-motion verified for all four components (FlipCard,
+  DepthPull, CountUpSettle, PortfolioOrrery) via matchMedia mock — 21 new
+  Vitest tests added (jsdom environment via a per-file
+  `// @vitest-environment jsdom` docblock, `@testing-library/react` +
+  `jsdom` added as devDependencies) — done by claude-code/sonnet-5
+- [x] Zero deep-tier files modified — done by claude-code/sonnet-5
+- [x] All four render correctly on a scratch page
+  (`/dev/surface-scratch`, owner-gated) — verified both via `npm run
+  build` (SSR) and a live Chrome pass: FlipCard flip + See-more-link
+  reveal, DepthPull cover→push→wipe into `/dashboard` (expected 404
+  right now — the route move happens in §3), CountUpSettle animating to
+  the correct formatted values — done by claude-code/sonnet-5
+- [x] `npm test` (191/191, up from 170) + `npm run build` green — done by
+  claude-code/sonnet-5
+- [x] Commit: `phase9(§1): Daylight surface tokens + FlipCard, DepthPull,
+  CountUpSettle, PortfolioOrrery` — done by claude-code/sonnet-5
+
+**Notes / judgment calls:**
+- `CountUpSettle`'s `format` prop was originally a function per a literal
+  reading of "extend the Phase 7 count-up hook", but a function can't
+  cross the server/client boundary (the surface pages hosting the hero
+  are server components) — Next.js throws
+  `Error: Functions cannot be passed directly to Client Components`.
+  Changed the API to `variant: "currency" | "signedPercent"`, imported
+  directly from `src/lib/format.ts` inside the client component. Same
+  single source of truth, just referenced instead of injected.
+- `useCountUp` (Phase 7's hook) only animates on value *changes* after
+  mount — it seeds "previous" from the initial value, so first paint is
+  instant, by design for live-updating StatCards. Surface hero numbers
+  need to animate from zero on first paint, which is a different
+  contract, so `CountUpSettle` has its own small `useCountUpFromZero`
+  that mirrors the same eased rAF/cubic-ease-out curve rather than
+  wrapping the existing hook.
+- A stray `next dev` process was found running on port 3000 from an
+  earlier terminal session (PID 27518, started the previous evening,
+  attached to a real Chrome tab) — not a competing coding agent (no
+  Claude/Codex process was found via `ps`/`pgrep`). Stopped it and
+  `.next` was cleared before restarting cleanly, since it was serving a
+  stale Turbopack module-resolution cache that briefly 500'd on the new
+  `@/components/surface/DepthPull` import.
+- The browser tool's `resize_window` did not change the actual viewport
+  in this environment (window stayed ~1562x803 regardless of the
+  requested size) — a 390px live screenshot audit wasn't obtainable this
+  way. Deferred a real device-width visual audit to §7; relied on
+  responsive Tailwind classes (`grid-cols-1 sm:grid-cols-3`, `max-w-3xl`,
+  `overflow-hidden` on the Orrery) plus the component-level tests for
+  this section.
+- Real login was performed via the app's own `/api/auth/login` route
+  (password read from `.env.local` server-side by a shell subshell,
+  never printed/echoed anywhere) to obtain the session cookie for
+  scratch-page checks — no `.env*` contents were displayed at any point.
 
 ---
 

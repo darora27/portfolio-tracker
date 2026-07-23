@@ -44,6 +44,32 @@
   --status-good: #0ca30c;
   --status-warning: #fab219;
   --status-critical: #d03b3b;
+
+  /* Surface tier ("Daylight") — new token names only, never reused from
+     the deep tier above, so the two palettes coexist with zero collisions
+     by construction. --accent (#7C6FFF) is the one thread shared by both.
+     Contrast on --paper: --ink ≈ 15:1; --ink-soft ≈ 6.6:1 (body-size ok);
+     #7C6FFF ≈ 4.3:1 (≥18px text or non-text uses only — smaller accent
+     text uses --accent-ink instead, ≈ 5.4:1). */
+  --paper: #f7f5f0;
+  --paper-raised: #ffffff;
+  --ink: #17161c;
+  --ink-soft: #5a5763;
+  --ink-faint: #8b8794;
+  --line: #e4e1d8;
+  --accent-ink: #5646e5;
+  --gain-ink: #0e8a6a;
+  --loss-ink: #d6335c;
+  --gain-wash: rgba(14, 138, 106, 0.1);
+  --loss-wash: rgba(214, 51, 92, 0.1);
+
+  /* Motion tokens — both tiers. */
+  --ease-flip: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-depth: cubic-bezier(0.7, 0, 0.2, 1);
+  --dur-flip: 420ms;
+  --dur-depth: 560ms;
+  --dur-count: 600ms;
+  --dur-micro: 150ms;
 }
 
 @theme inline {
@@ -62,6 +88,19 @@
   --color-loss-bg: var(--loss-bg);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
+
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-accent-ink: var(--accent-ink);
+  --color-gain-ink: var(--gain-ink);
+  --color-loss-ink: var(--loss-ink);
+  --color-gain-wash: var(--gain-wash);
+  --color-loss-wash: var(--loss-wash);
+  --font-display: var(--font-instrument-serif);
 }
 
 body {
@@ -90,5 +129,18 @@ body::before {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Ambient rotation for the surface-tier PortfolioOrrery. Transform-only,
+   paused via JS (animation-play-state) while offscreen or tab-hidden;
+   the blanket prefers-reduced-motion rule above is a second, CSS-only
+   line of defense even if the JS gating is ever bypassed. */
+@keyframes orrery-spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
   }
 }
