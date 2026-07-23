@@ -22,6 +22,7 @@ import { LatestNews } from "@/components/dashboard/LatestNews";
 import { HoldingsPerformanceChart } from "@/components/dashboard/HoldingsPerformanceChart";
 import { HoldingRiskTable } from "@/components/dashboard/HoldingRiskTable";
 import { ContributionChart } from "@/components/dashboard/ContributionChart";
+import { CompareEntryPoint } from "@/components/compare/CompareEntryPoint";
 
 // This dashboard reflects live DB state (trades can be added any time), so
 // it must never be baked into a static build.
@@ -77,6 +78,8 @@ export default async function Home() {
             />
 
             <ValueChart data={data.chartData} />
+
+            <CompareEntryPoint />
 
             <HoldingsPerformanceChart data={data.holdingsPerformance} />
 

@@ -379,29 +379,84 @@ not committed, no secrets logged, status codes and field-presence only.
 ---
 
 ## §5. Comparison simulations — `/compare`, owner-gated
-- [ ] `src/lib/math/sim-portfolio.ts` created — pure functions, zero new
-  external calls
-- [ ] "Steady Market" sim (100% VOO, buy and hold)
-- [ ] "Tech Tilt" sim (50/50 VOO/XLK, rebalanced monthly)
-- [ ] "AI Concentrate" sim (equal-weight held ∩ High AI-exposure,
-  re-formed monthly, skip/renormalize/VOO-fallback rules)
-- [ ] Sim trade log with plain-text reasons
-- [ ] Identity fixture: Steady Market TWR == dashboard VOO return within
-  1e-9
-- [ ] Tech Tilt synthetic fixture: exactly 0.00%
-- [ ] AI Concentrate synthetic fixture: exactly +2.50%
-- [ ] `/compare` UI: 4-line chart (real + 3 sims, indexed to 100), stats
-  table, per-sim collapsible trade log
-- [ ] Mandatory verbatim SIMULATIONS banner on every view rendering sim
-  data
-- [ ] Banned-words test covers this page (banner's "recommendations" is
-  the sanctioned exception)
-- [ ] FlipCard-sized entry point on `/dashboard` only (not on any share
-  surface)
-- [ ] Privacy: nothing sim-related on `/share` or `/share/full`
-- [ ] `npm test` + `npm run build` green
-- [ ] Commit: `phase9(§5): /compare — Steady Market, Tech Tilt, AI
-  Concentrate simulations`
+- [x] `src/lib/math/sim-portfolio.ts` created — pure functions, zero new
+  external calls — done by claude-code/sonnet-5
+- [x] "Steady Market" sim (100% VOO, buy and hold) — deliberately NOT
+  built on the shared rebalance engine, to keep it algebraically
+  identical to the dashboard's own VOO calculation for the Identity
+  fixture — done by claude-code/sonnet-5
+- [x] "Tech Tilt" sim (50/50 VOO/XLK, rebalanced monthly) — done by
+  claude-code/sonnet-5
+- [x] "AI Concentrate" sim (equal-weight held ∩ High AI-exposure,
+  re-formed monthly, skip/renormalize/VOO-fallback rules) — done by
+  claude-code/sonnet-5
+- [x] Sim trade log with plain-text reasons — done by claude-code/sonnet-5
+- [x] Identity fixture: Steady Market TWR == dashboard VOO return within
+  1e-9 — passes (verified both by unit test and reasoning about why
+  `dailyReturns`' flow term is bit-identically 0 either way) — done by
+  claude-code/sonnet-5
+- [x] Tech Tilt synthetic fixture: exactly 0.00% — passes (`toBe(0)`,
+  not just closeTo — the fixture's numbers are exact) — done by
+  claude-code/sonnet-5
+- [x] AI Concentrate synthetic fixture: exactly +2.50% — passes — done by
+  claude-code/sonnet-5
+- [x] `/compare` UI: 4-line chart (real + 3 sims, indexed to 100), stats
+  table, per-sim collapsible trade log — done by claude-code/sonnet-5
+- [x] Mandatory verbatim SIMULATIONS banner on every view rendering sim
+  data — done by claude-code/sonnet-5
+- [x] Banned-words test covers this page (banner's "recommendations" is
+  the sanctioned exception — verified by a dedicated test, same
+  word-boundary mechanism as §2/§4) — done by claude-code/sonnet-5
+- [x] FlipCard-sized entry point on `/dashboard` only (not on any share
+  surface) — done by claude-code/sonnet-5
+- [x] Privacy: nothing sim-related on `/share` or `/share/full` — grepped
+  the rendered `/share` HTML for "compare"/"simulat" — none found — done
+  by claude-code/sonnet-5
+- [x] Live-browser verification with real data: chart renders all 4
+  lines with coherent relative volatility (AI Concentrate's dashed line
+  has visibly the widest swings, matching its 53.7% vol / -12.09% max
+  drawdown stat), stats table populated, all three trade logs expand
+  with correct counts (1/4/9 trades) and correct reason text ("initial
+  purchase: equal-weight High-AI holdings"), dashboard entry point card
+  navigates to `/compare` — done by claude-code/sonnet-5
+- [x] `npm test` (239/239) + `npm run build` green — done by
+  claude-code/sonnet-5
+- [x] Commit: `phase9(§5): /compare — Steady Market, Tech Tilt, AI
+  Concentrate simulations` — done by claude-code/sonnet-5
+
+**Notes / judgment calls:**
+- **Bug found and fixed before it ever rendered:** the real portfolio's
+  chart line was first implemented as a raw dollar-value ratio
+  (`value_t / value_t0`), which is exactly the anti-pattern Phase 8 §1
+  fixed for the Daily Change card — a deposit like the $2,775 COST
+  purchase would show up as investment "gain." Rewrote it to reuse the
+  same TWR growth-index convention as `dashboard-data.ts` (daily
+  net-of-flow returns, chained), re-based to 100 at `SIM_INCEPTION_DATE`
+  specifically since that may differ from the portfolio's own
+  first-funded day.
+- The AI Concentrate synthetic fixture (`{A:100→110, B:200→190}` with
+  exactly 2 tickers) tests the shared rebalance engine's equal-weight
+  math directly via the now-exported `simulateRebalanced`, bypassing
+  `aiConcentrate()`'s own "fewer than 3 qualifying → VOO" business rule
+  — the fixture is clearly about the rebalancing mechanics (2 tickers,
+  no fallback triggered), so the two concerns are tested separately:
+  the engine's math via the fixture, the `<3` fallback via its own
+  dedicated test.
+- A one-time browser screenshot showed the compare chart as a single
+  dot near the first date — inspecting the actual SVG `<path>` data via
+  `javascript_tool` confirmed the full multi-point line was already
+  there; a second screenshot after Recharts' default line-draw
+  animation finished showed all four lines correctly. Not a defect —
+  same category as the CountUpSettle mid-animation captures earlier in
+  this run.
+- The stats table shows TWR/vol/max-drawdown for the three sims only
+  (not the real portfolio), matching PHASE9.md's literal "a small table
+  ... per sim" wording — the chart itself already carries the real
+  portfolio in context.
+- `/compare`'s `<NavBar>` call passes no `active` prop (not
+  `active="dashboard"`) since `/compare` isn't one of the four main nav
+  tabs — highlighting "Dashboard" while actually on `/compare` would
+  have been misleading.
 
 ---
 
