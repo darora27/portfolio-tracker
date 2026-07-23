@@ -1,5 +1,9 @@
 # Portfolio Tracker Platform — Project Spec
 
+> Read `AGENTS.md` before any Phase 9+ work — it has the multi-agent
+> protocol (progress log, one-commit-per-section, owner-gating) that
+> applies regardless of which coding-agent CLI is running.
+
 ## What this is
 A web-based investment portfolio tracker replacing a Google Sheets system.
 Owner: Devan. This is a portfolio/resume project AND a real daily-use tool,
