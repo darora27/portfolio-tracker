@@ -25,6 +25,26 @@ describe("parseEarningsCalendarResponse", () => {
     expect(parseEarningsCalendarResponse({ earningsCalendar: "not-an-array" })).toEqual([]);
   });
 
+  it("displays the queried (held) ticker, keeping Finnhub's resolved symbol separately", () => {
+    const json = {
+      earningsCalendar: [
+        { symbol: "GOOGL", date: "2026-07-22", hour: "amc", epsEstimate: 2.9753 },
+      ],
+    };
+    expect(parseEarningsCalendarResponse(json, "GOOG")).toEqual([
+      { ticker: "GOOG", date: "2026-07-22", hour: "amc", epsEstimate: 2.9753, resolvedSymbol: "GOOGL" },
+    ]);
+  });
+
+  it("omits resolvedSymbol when the queried ticker already matches Finnhub's symbol", () => {
+    const json = {
+      earningsCalendar: [{ symbol: "MSFT", date: "2026-07-22", hour: "bmo", epsEstimate: 1 }],
+    };
+    expect(parseEarningsCalendarResponse(json, "MSFT")).toEqual([
+      { ticker: "MSFT", date: "2026-07-22", hour: "bmo", epsEstimate: 1 },
+    ]);
+  });
+
   it("skips individual malformed entries without dropping the whole list", () => {
     const json = {
       earningsCalendar: [

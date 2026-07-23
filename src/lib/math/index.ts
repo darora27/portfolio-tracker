@@ -6,3 +6,4 @@ export * from "./volatility";
 export * from "./beta";
 export * from "./sharpe";
 export * from "./xirr";
+export * from "./daily-change";

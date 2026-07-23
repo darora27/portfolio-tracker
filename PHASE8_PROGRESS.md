@@ -7,7 +7,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 ## Checklist
 
 - [x] §0 Preflight
-- [ ] §1 Correctness fix — Daily Change net of cash flows
+- [x] §1 Correctness fix — Daily Change net of cash flows
 - [ ] §2 Positions table upgrade (day columns, sparklines, clickable rows)
 - [ ] §3 Position detail page `/stock/[ticker]`
 - [ ] §4 History page `/history`
@@ -54,6 +54,32 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   echoes a resolved symbol (earnings), keep that resolved symbol as a
   muted sublabel rather than the primary display.
 
+- §1: `dailyChangeAsOf` is now `pricesAsOf ?? today` rather than the last
+  stored snapshot's date. Rationale: the change itself now compares LIVE
+  totalValue against the last CLOSED day before today, so the "as of"
+  label should reflect the live price staleness (matching the existing
+  "Prices as of" badge convention), not a stored snapshot date that may
+  lag behind what's actually being compared.
+- §1: `prevSnapshot` is picked as the most recent snapshot with
+  `date < today` (NOT simply `mathSnapshots.at(-2)`), so the fix is
+  correct both intraday (today's snapshot doesn't exist yet) and after
+  the EOD cron has already run for today (today's snapshot exists but
+  must still be excluded — "yesterday" stays yesterday either way).
+
 ## Session notes
 
 - Session 1 (2026-07-23): §0 complete.
+- Session 1 (2026-07-23): §1 complete. New `src/lib/math/daily-change.ts`
+  (netFlowsForDate, dailyChangeAmount, dailyChangePercent) with the two
+  required fixtures unit-tested exactly (−267.35/−1.171% and
+  +669.44/+3.02%). Wired into `dashboard-data.ts` — single source of
+  truth shared by `/` and `/share`, so no separate share-page fix needed.
+  Also fixed the earnings-ticker display bug: `parseEarningsCalendarResponse`
+  now accepts an optional `queriedTicker` and returns the held ticker as
+  `ticker` with Finnhub's own resolved symbol (when different) as
+  `resolvedSymbol`, rendered as a muted sublabel in `EarningsCalendar.tsx`.
+  Existing tests untouched and still pass (backward-compatible optional
+  param). Verified netFlowsToday logic against live Supabase data (real
+  "today" has since rolled to 2026-07-23 with no trades, so the exact
+  fixture is covered by unit tests, not live reproduction). 93/93 tests
+  pass, build clean.

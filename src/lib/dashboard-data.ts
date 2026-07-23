@@ -8,6 +8,7 @@ import { drawdown } from "@/lib/math/drawdown";
 import { annualizedVolatility } from "@/lib/math/volatility";
 import { sharpeRatio } from "@/lib/math/sharpe";
 import { xirr } from "@/lib/math/xirr";
+import { dailyChangeAmount, dailyChangePercent, netFlowsForDate } from "@/lib/math/daily-change";
 import { daysBetween, todayInTimeZone } from "@/lib/date";
 import {
   buildXirrCashFlows,
@@ -214,14 +215,20 @@ export async function getDashboardData(): Promise<DashboardData> {
   );
   const betaVsVoo = benchmarkComparisons.find((b) => b.ticker === "VOO")?.beta ?? null;
 
-  const lastSnapshot = mathSnapshots.at(-1);
-  const prevSnapshot = mathSnapshots.at(-2);
-  const dailyChange =
-    lastSnapshot && prevSnapshot ? lastSnapshot.totalValue - prevSnapshot.totalValue : 0;
-  const dailyChangePct =
-    lastSnapshot && prevSnapshot && prevSnapshot.totalValue !== 0
-      ? dailyChange / prevSnapshot.totalValue
-      : 0;
+  // The daily-change headline compares LIVE current value (totalValue,
+  // already computed above from live quotes) against the most recent
+  // CLOSED day strictly before today — never today's own snapshot, which
+  // may or may not exist yet depending on whether the EOD cron has run.
+  // Cash flows are read straight from `trades` (not snapshot cost deltas)
+  // because today's snapshot doesn't exist yet intraday.
+  const prevSnapshot = [...mathSnapshots].reverse().find((s) => s.date < today);
+  const netFlowsToday = netFlowsForDate(trades ?? [], today);
+  const dailyChange = prevSnapshot
+    ? dailyChangeAmount(totalValue, prevSnapshot.totalValue, netFlowsToday)
+    : 0;
+  const dailyChangePct = prevSnapshot
+    ? dailyChangePercent(totalValue, prevSnapshot.totalValue, netFlowsToday)
+    : 0;
 
   const cashFlows = buildXirrCashFlows(trades ?? [], totalValue, today);
   const xirrPct = cashFlows.length >= 2 ? xirr(cashFlows) : 0;
@@ -246,7 +253,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     simpleReturnPct,
     dailyChange,
     dailyChangePct,
-    dailyChangeAsOf: lastSnapshot?.date ?? today,
+    dailyChangeAsOf: pricesAsOf ?? today,
     twrPct,
     xirrPct,
     historyDays,

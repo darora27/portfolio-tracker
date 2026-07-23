@@ -28,6 +28,9 @@ export function EarningsCalendar({ events }: { events: EarningsEvent[] }) {
             >
               <div>
                 <span className="font-medium text-text-primary">{e.ticker}</span>
+                {e.resolvedSymbol && (
+                  <span className="ml-1.5 text-xs text-text-muted">({e.resolvedSymbol})</span>
+                )}
                 <span className="ml-2 text-text-secondary">{HOUR_LABELS[e.hour]}</span>
               </div>
               <div className="flex items-center gap-3 text-text-secondary">

@@ -78,7 +78,7 @@ export async function getUpcomingEarnings(
           { cache: "no-store" },
         );
         if (!res.ok) return [];
-        return parseEarningsCalendarResponse(await res.json());
+        return parseEarningsCalendarResponse(await res.json(), ticker);
       } catch {
         return [];
       }
