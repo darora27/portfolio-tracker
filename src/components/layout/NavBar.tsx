@@ -11,7 +11,7 @@ export function NavBar({
   active,
 }: {
   variant: "private" | "share";
-  active?: "dashboard" | "trades";
+  active?: "dashboard" | "history" | "trades";
 }) {
   return (
     <header
@@ -32,6 +32,9 @@ export function NavBar({
           <nav className="flex h-full items-center gap-5 text-sm">
             <Link href="/" className={linkClass(active === "dashboard")}>
               Dashboard
+            </Link>
+            <Link href="/history" className={linkClass(active === "history")}>
+              History
             </Link>
             <Link href="/trades" className={linkClass(active === "trades")}>
               Trades

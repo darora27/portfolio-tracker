@@ -10,7 +10,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [x] §1 Correctness fix — Daily Change net of cash flows
 - [x] §2 Positions table upgrade (day columns, sparklines, clickable rows)
 - [x] §3 Position detail page `/stock/[ticker]`
-- [ ] §4 History page `/history`
+- [x] §4 History page `/history`
 - [ ] §5 Dashboard additions (news, ATH chip, risk extensions)
 - [ ] §6 Live quotes + auto-refresh
 - [ ] §7 CSV export
@@ -145,6 +145,30 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   phase doc calls out (bought-today position, one snapshot close so far):
   it renders one dot plus the dashed cost-basis reference line, no crash.
 
+- §4: recognized that §4's "Day $ is flow-adjusted (V_t − V_{t−1} − F_t)"
+  is mathematically identical to §1's `dailyChangeAmount`/
+  `dailyChangePercent` — just fed a cost-basis delta between two closed
+  snapshots instead of today's live trades. Reused those functions
+  directly rather than writing new ones, and confirmed the §4 sanity
+  fixture (`Day $ = -$267.35`) passes through the shared code path
+  (`src/lib/portfolio/history.test.ts`) — it's the exact same numbers as
+  the §1 fixture, applied via the historical-row code path instead of the
+  live-dashboard one.
+- §4: `buildHistoryRows` (the pure per-row math) had to live in a
+  separate file (`src/lib/portfolio/history.ts`) from `getHistoryData`
+  (`src/lib/history-data.ts`, which does the Supabase fetch) — importing
+  `@/lib/supabase/client` at module scope throws immediately under
+  Vitest (no env vars loaded there), so any file that imports it can
+  never be unit-tested directly. This is the same reason `dashboard-data.ts`
+  itself has never had a test file; matched that existing convention by
+  splitting pure math out rather than trying to test the I/O wrapper.
+- §4: verified live in browser — Daily Returns bars, Drawdown area chart,
+  and the History table all render with real data; the top table row
+  (2026-07-22) independently reproduces the exact −$190.24/−0.83% figures
+  implied by the actual stored snapshot values (differs from the phase
+  doc's illustrative −$267.35 only because the real EOD close moved past
+  where that hypothetical was written, per the §1 session note).
+
 ## Session notes
 
 - Session 1 (2026-07-23): §0 complete.
@@ -180,3 +204,9 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   `formatRelativeOrDate` in format.ts (tested). Verified live in browser
   including the COST single-point chart edge case. 125/125 tests pass,
   build clean.
+- Session 1 (2026-07-23): §4 complete. New `/history` page (owner-gated,
+  new NavBar entry) with a daily-returns bar chart, a drawdown area
+  chart, and the full snapshot history table. Reused §1's daily-change
+  functions for the table's Day $/% columns. Export CSV button wired to
+  the not-yet-built `/api/export/history.csv` (lands in §7, next).
+  129/129 tests pass, build clean.
