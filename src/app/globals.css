@@ -35,6 +35,15 @@
   --series-7: #9085e9; /* violet */
   --series-8: #e66767; /* red */
   --series-other: #6b6b78; /* muted neutral — folded remainder, not a hue slot */
+
+  /* Status palette (fixed — never themed, never reused for series
+     identity). Reserved for meters/badges that represent a state, always
+     paired with an icon + label, never color alone. Contrast-checked
+     against this app's --surface (#14141c): good 5.46:1, warning 9.98:1,
+     critical 3.81:1 — all clear 3:1. */
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-critical: #d03b3b;
 }
 
 @theme inline {

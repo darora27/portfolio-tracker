@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/Card";
+import { ConcentrationMeter } from "@/components/dashboard/ConcentrationMeter";
 import { formatDate, formatNumber, formatPercent, formatSignedPercent } from "@/lib/format";
 import type { DatedReturn, Streak } from "@/lib/math/daily-stats";
 
@@ -50,7 +51,7 @@ export function RiskPanel({
           sub={betaVsVoo === null ? "Needs a full-history VOO benchmark match" : undefined}
         />
         <Metric label="Top-2 concentration" value={formatPercent(top2ConcentrationPct, 1)} />
-        <Metric label="HHI" value={formatNumber(hhi, 0)} sub="0-10000; higher = more concentrated" />
+        <ConcentrationMeter hhi={hhi} />
         <Metric label="Sortino" value={sortinoRatio !== null ? formatNumber(sortinoRatio) : "—"} />
         <Metric
           label="Best day"
