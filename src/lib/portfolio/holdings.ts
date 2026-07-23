@@ -119,6 +119,43 @@ export function concentration(positions: Position[]) {
 }
 
 /**
+ * The reference price for "today's change": the most recent snapshot
+ * close strictly before today, or — if this ticker's first trade IS
+ * today — the price it was bought at. Rationale: the holder's actual day
+ * P&L starts at purchase, not at yesterday's close for shares they didn't
+ * own yet.
+ */
+export function resolvePrevClose(
+  firstTradeDate: string | undefined,
+  firstTradePrice: number | undefined,
+  priorClose: PricePoint | undefined,
+  today: string,
+): { prevClose: number | null; boughtToday: boolean } {
+  if (firstTradeDate === today) {
+    return { prevClose: firstTradePrice ?? null, boughtToday: true };
+  }
+  return { prevClose: priorClose?.price ?? null, boughtToday: false };
+}
+
+export type DayChange = {
+  day: number | null;
+  dayPct: number | null;
+};
+
+/**
+ * Today's dollar/percent change for a single position: day$ = shares *
+ * (livePrice - prevClose), day% = livePrice/prevClose - 1. Null when
+ * either price is unavailable rather than dividing by a missing price.
+ */
+export function dayChange(shares: number, livePrice: number | null, prevClose: number | null): DayChange {
+  if (livePrice === null || prevClose === null) return { day: null, dayPct: null };
+  return {
+    day: shares * (livePrice - prevClose),
+    dayPct: prevClose !== 0 ? livePrice / prevClose - 1 : null,
+  };
+}
+
+/**
  * Signed cash flows for XIRR: buys negative, sells positive, plus the
  * current total value as a final positive flow as of today.
  */

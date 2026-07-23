@@ -24,8 +24,32 @@ export function DataTableBody({ children }: { children: ReactNode }) {
   return <tbody>{children}</tbody>;
 }
 
-export function DataTableRow({ children }: { children: ReactNode }) {
-  return <tr className="border-b border-border last:border-0 hover:bg-surface-hover">{children}</tr>;
+export function DataTableRow({
+  children,
+  onClick,
+  className = "",
+}: {
+  children: ReactNode;
+  onClick?: () => void;
+  className?: string;
+}) {
+  return (
+    <tr
+      onClick={onClick}
+      role={onClick ? "link" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === "Enter") onClick();
+            }
+          : undefined
+      }
+      className={`border-b border-border last:border-0 hover:bg-surface-hover ${className}`}
+    >
+      {children}
+    </tr>
+  );
 }
 
 export function Th({

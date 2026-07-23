@@ -59,7 +59,7 @@ export default async function SharePage() {
 
           <ExcessReturns comparisons={data.benchmarkComparisons} />
 
-          <PositionsTable positions={data.positionRows} hideDollars={hideDollars} />
+          <PositionsTable positions={data.positionRows} hideDollars={hideDollars} linkRows={false} />
 
           <RealizedUnrealized
             realizedGain={data.realizedGain}
@@ -76,7 +76,12 @@ export default async function SharePage() {
 
           <CorrelationHeatmap tickers={data.correlationTickers} matrix={data.correlationCells} />
 
-          <WinnersLosers winners={data.winners} losers={data.losers} />
+          <WinnersLosers
+            winners={data.winners}
+            losers={data.losers}
+            movers={data.movers}
+            hideDollars={hideDollars}
+          />
 
           <EarningsCalendar events={data.upcomingEarnings} />
 

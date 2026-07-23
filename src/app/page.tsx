@@ -92,7 +92,7 @@ export default async function Home() {
 
           <CorrelationHeatmap tickers={data.correlationTickers} matrix={data.correlationCells} />
 
-          <WinnersLosers winners={data.winners} losers={data.losers} />
+          <WinnersLosers winners={data.winners} losers={data.losers} movers={data.movers} />
 
           <EarningsCalendar events={data.upcomingEarnings} />
 

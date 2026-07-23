@@ -3,8 +3,10 @@ import {
   buildXirrCashFlows,
   computeHoldings,
   concentration,
+  dayChange,
   latestKnownPrices,
   mergePrices,
+  resolvePrevClose,
   topWinnersLosers,
   type Trade,
 } from "./holdings";
@@ -126,6 +128,43 @@ describe("concentration", () => {
     const result = concentration([{ weight: 1 }] as never);
     expect(result.top2).toBe(1);
     expect(result.hhi).toBe(10000);
+  });
+});
+
+describe("dayChange", () => {
+  // Real 2026-07-22 data.
+  it("COST: bought today, prevClose is the purchase price", () => {
+    const result = dayChange(3, 927.31, 925.0);
+    expect(result.day).toBeCloseTo(6.93, 2);
+    expect(result.dayPct).toBeCloseTo(0.0025, 4);
+  });
+
+  it("INTC: a losing day against yesterday's close", () => {
+    const result = dayChange(20, 102.62, 105.45);
+    expect(result.day).toBeCloseTo(-56.6, 2);
+    expect(result.dayPct).toBeCloseTo(-0.0268, 4);
+  });
+
+  it("is null when either price is unavailable", () => {
+    expect(dayChange(10, null, 100)).toEqual({ day: null, dayPct: null });
+    expect(dayChange(10, 100, null)).toEqual({ day: null, dayPct: null });
+  });
+});
+
+describe("resolvePrevClose", () => {
+  it("uses the purchase price when the first trade is today", () => {
+    const result = resolvePrevClose("2026-07-22", 925.0, { price: 900, date: "2026-07-21" }, "2026-07-22");
+    expect(result).toEqual({ prevClose: 925.0, boughtToday: true });
+  });
+
+  it("uses the prior snapshot close otherwise", () => {
+    const result = resolvePrevClose("2026-06-01", 500, { price: 105.45, date: "2026-07-21" }, "2026-07-22");
+    expect(result).toEqual({ prevClose: 105.45, boughtToday: false });
+  });
+
+  it("has no prevClose when neither a today-trade price nor a prior close exists", () => {
+    const result = resolvePrevClose(undefined, undefined, undefined, "2026-07-22");
+    expect(result).toEqual({ prevClose: null, boughtToday: false });
   });
 });
 

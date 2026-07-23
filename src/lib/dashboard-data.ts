@@ -14,9 +14,11 @@ import {
   buildXirrCashFlows,
   computeHoldings,
   concentration,
+  dayChange,
   latestKnownPrices,
   latestPriceDate,
   mergePrices,
+  resolvePrevClose,
   topWinnersLosers,
   type Position,
 } from "@/lib/portfolio/holdings";
@@ -29,6 +31,9 @@ import { classificationWeights, type ClassificationWeight } from "@/lib/portfoli
 import aiExposureByTicker from "../../data/ai-exposure.json";
 import type { ChartPoint } from "@/components/dashboard/ValueChart";
 import type { PositionRow } from "@/components/dashboard/PositionsTable";
+import type { Mover } from "@/components/dashboard/WinnersLosers";
+
+const SPARKLINE_POINTS = 30;
 
 const BENCHMARK_TICKERS: BenchmarkTicker[] = ["VOO", "VTI", "XLK"];
 const BENCHMARK_CHART_KEYS: Record<BenchmarkTicker, "vooIndex" | "vtiIndex" | "xlkIndex"> = {
@@ -52,6 +57,7 @@ export type DashboardData = {
   positionRows: PositionRow[];
   winners: (Position & { gainPct: number })[];
   losers: (Position & { gainPct: number })[];
+  movers: Mover[];
   upcomingEarnings: EarningsEvent[];
   volatilityPct: number;
   maxDrawdown: number;
@@ -113,6 +119,34 @@ export async function getDashboardData(): Promise<DashboardData> {
     .filter((row): row is { ticker: string; closePrice: number; date: string } => row !== null);
   const fallbackPrices = latestKnownPrices(priceRows);
 
+  // Grouped by ticker once, sorted ascending by date, so both the
+  // sparkline column and the correlation matrix below can slice/derive
+  // from the same source instead of re-scanning priceRows twice.
+  const pricesByTicker = new Map<string, { date: string; price: number }[]>();
+  for (const row of priceRows) {
+    const list = pricesByTicker.get(row.ticker) ?? [];
+    list.push({ date: row.date, price: row.closePrice });
+    pricesByTicker.set(row.ticker, list);
+  }
+  for (const list of pricesByTicker.values()) {
+    list.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  }
+
+  // For the Day $/Day % columns: the most recent close strictly before
+  // today, per ticker (never today's own not-yet-existing snapshot).
+  const priorCloseByTicker = latestKnownPrices(priceRows.filter((r) => r.date < today));
+
+  // A ticker's first-ever trade date/price, to special-case "bought
+  // today" positions (their day P&L starts at purchase, not at a close
+  // for shares they didn't own yet).
+  const firstTradeByTicker = new Map<string, { date: string; price: number }>();
+  for (const t of trades ?? []) {
+    const existing = firstTradeByTicker.get(t.ticker);
+    if (!existing || t.date < existing.date) {
+      firstTradeByTicker.set(t.ticker, { date: t.date, price: t.price });
+    }
+  }
+
   // Live quotes take priority; if Finnhub is down or rate-limited for a
   // ticker, mergePrices falls back to its last known snapshot price rather
   // than showing no price (or $0) at all.
@@ -135,10 +169,32 @@ export async function getDashboardData(): Promise<DashboardData> {
   const simpleReturnPct = totalCost !== 0 ? (totalValue - totalCost) / totalCost : 0;
   const pricesAsOf = latestPriceDate(positions);
 
-  const positionRows: PositionRow[] = positions.map((p) => ({
-    ...p,
-    contribution: p.gain !== null && totalCost !== 0 ? p.gain / totalCost : null,
-  }));
+  const positionRows: PositionRow[] = positions.map((p) => {
+    const firstTrade = firstTradeByTicker.get(p.ticker);
+    const { prevClose } = resolvePrevClose(
+      firstTrade?.date,
+      firstTrade?.price,
+      priorCloseByTicker.get(p.ticker),
+      today,
+    );
+    const boughtToday = firstTrade?.date === today;
+    const { day, dayPct } = dayChange(p.shares, p.price, prevClose);
+    return {
+      ...p,
+      contribution: p.gain !== null && totalCost !== 0 ? p.gain / totalCost : null,
+      day,
+      dayPct,
+      isNewToday: boughtToday,
+      sparkline: (pricesByTicker.get(p.ticker) ?? []).slice(-SPARKLINE_POINTS).map((pt) => pt.price),
+    };
+  });
+
+  // Top 3 by |day %|, today only — distinct from since-purchase Winners/Losers.
+  const movers: Mover[] = [...positionRows]
+    .filter((p): p is PositionRow & { day: number; dayPct: number } => p.day !== null && p.dayPct !== null)
+    .sort((a, b) => Math.abs(b.dayPct) - Math.abs(a.dayPct))
+    .slice(0, 3)
+    .map((p) => ({ ticker: p.ticker, day: p.day, dayPct: p.dayPct }));
 
   const { winners, losers } = topWinnersLosers(positions, 3);
   const { top2, hhi } = concentration(positions);
@@ -153,16 +209,8 @@ export async function getDashboardData(): Promise<DashboardData> {
   // history (not the portfolio's net-of-flow returns — a single ticker has
   // no cash flows of its own). Overlap windows differ per pair (holdings
   // were bought on different days), which correlationMatrix handles itself.
-  const heldTickerSet = new Set(positions.map((p) => p.ticker));
-  const pricesByHeldTicker = new Map<string, { date: string; price: number }[]>();
-  for (const row of priceRows) {
-    if (!heldTickerSet.has(row.ticker)) continue;
-    const list = pricesByHeldTicker.get(row.ticker) ?? [];
-    list.push({ date: row.date, price: row.closePrice });
-    pricesByHeldTicker.set(row.ticker, list);
-  }
   const returnsByTicker = Object.fromEntries(
-    positions.map((p) => [p.ticker, priceReturns(pricesByHeldTicker.get(p.ticker) ?? [])]),
+    positions.map((p) => [p.ticker, priceReturns(pricesByTicker.get(p.ticker) ?? [])]),
   );
   const correlation = correlationMatrix(returnsByTicker);
 
@@ -262,6 +310,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     positionRows,
     winners,
     losers,
+    movers,
     upcomingEarnings,
     volatilityPct,
     maxDrawdown,

@@ -8,7 +8,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 
 - [x] §0 Preflight
 - [x] §1 Correctness fix — Daily Change net of cash flows
-- [ ] §2 Positions table upgrade (day columns, sparklines, clickable rows)
+- [x] §2 Positions table upgrade (day columns, sparklines, clickable rows)
 - [ ] §3 Position detail page `/stock/[ticker]`
 - [ ] §4 History page `/history`
 - [ ] §5 Dashboard additions (news, ATH chip, risk extensions)
@@ -87,6 +87,30 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   newest-period-first from Finnhub itself (parser's own sort is
   idempotent with that); news returns 247 items for the 14-day window.
 
+- §2: rows navigate via `router.push` in a client `PositionsTable` (not a
+  real `<a>`, since `<tr>` can't validly contain one) — a `role="link"`
+  + `tabIndex`/Enter-key handler on the row covers keyboard access. A new
+  `linkRows` prop (default true) is explicitly set false on `/share`,
+  since §9's privacy matrix keeps `/stock/[ticker]` entirely absent from
+  the public view — `hideDollars` alone wasn't a safe proxy for "is this
+  the share page" (it's a settings toggle, not a route identity).
+- §2: found and fixed a real bug via browser verification (not caught by
+  any type check): a single-point sparkline (COST, bought same-day) built
+  a `<polyline>` with exactly one coordinate pair, which SVG renders as
+  nothing. Extracted the coordinate math into a pure, tested
+  `sparklineGeometry()` (`src/lib/sparkline.ts`) that draws a full-width
+  flat line for both the single-point and genuinely-flat-series cases.
+  Regression test asserts the exact coordinate string for a 1-point input.
+- §2: verified live against the running dev server via `/share` (no
+  login needed) rather than typing `OWNER_PASSWORD` into the browser —
+  confirmed Day %, the flat COST sparkline, colored trend lines, and
+  Today's Movers all render correctly, and confirmed via
+  `document.querySelectorAll('tr[role="link"]').length === 0` on
+  `/share` that rows are correctly non-clickable there. Did not
+  browser-verify the private dashboard's row-click-to-`/stock` behavior
+  (would require the owner password) — covered by code review instead;
+  worth a manual click-through by Devan.
+
 ## Session notes
 
 - Session 1 (2026-07-23): §0 complete.
@@ -108,3 +132,10 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   log). New cache/budget module + metric/recommendation/news parsers and
   fetchers, existing quote/earnings calls migrated onto it. 109/109 tests
   pass, build clean.
+- Session 1 (2026-07-23): §2 complete. Day $/Day % columns (new
+  `dayChange`/`resolvePrevClose` in holdings.ts), sparkline column (new
+  `Sparkline` component + `sparklineGeometry` pure helper), clickable
+  rows to `/stock/[ticker]` (route doesn't exist until §3 — expected,
+  landing next in this session), and a "Today's Movers" card added to
+  WinnersLosers. Found and fixed a real single-point-sparkline rendering
+  bug via live browser verification. 119/119 tests pass, build clean.
