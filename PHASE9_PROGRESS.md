@@ -583,9 +583,25 @@ not committed, no secrets logged, status codes and field-presence only.
 ---
 
 ## §8. Required closing summary
-- [ ] Sections done vs remaining, executor-column totals
-- [ ] §0 probe results + any blocks omitted
-- [ ] Test count before → after
-- [ ] Every judgment call made during the run
-- [ ] Confirmation the Steady Market identity fixture passes
-- [ ] The "Flags for Devan" list surfaced verbatim
+- [x] Sections done vs remaining, executor-column totals — §0-§7 all
+  done, 100% by claude-code/sonnet-5 (8/8 commits; no Codex CLI session
+  ever ran against this repo this pass — confirmed at start via `ps`/
+  `lsof` and re-confirmed the only running Codex process had `cwd: /`
+  with zero open files in this repo)
+- [x] §0 probe results + any blocks omitted — both probes succeeded
+  (200s, expected fields present); Reddit confirmed unconfigured as
+  expected, built flagged-off; nothing was omitted that PHASE9.md
+  expected to be built
+- [x] Test count before → after — 170 → 239 (+69)
+- [x] Every judgment call made during the run — recorded inline in each
+  section's Notes above
+- [x] Confirmation the Steady Market identity fixture passes — yes,
+  `src/lib/math/sim-portfolio.test.ts`, "Identity fixture" describe
+  block, within 1e-9
+- [x] The "Flags for Devan" list surfaced verbatim — see final chat
+  response
+- [x] Only remaining gap: the 390px audit (§7) — genuinely blocked by
+  the browser tool's `resize_window` in this environment, not skipped
+  silently. See §7 notes.
+- Repo confirmed green and committed (§0-§7, 8 commits) before writing
+  this summary.
