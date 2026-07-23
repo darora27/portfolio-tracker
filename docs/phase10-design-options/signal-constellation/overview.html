@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signal Constellation — Phase 10 concept</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --field: #07090d;
+      --field-2: #0d1117;
+      --field-3: #121820;
+      --ink: #eff3f4;
+      --soft: #97a4ad;
+      --faint: #52606c;
+      --line: rgba(167, 189, 203, .17);
+      --cyan: #69d9ff;
+      --cyan-soft: rgba(105, 217, 255, .12);
+      --coral: #ff7f72;
+      --green: #75dfae;
+      --amber: #e9bb68;
+      --sans: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+      --display: "Trebuchet MS", "Avenir Next", sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--field); }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 55% 46%, rgba(105,217,255,.06), transparent 34%),
+        var(--field);
+    }
+
+    .app { min-height: 100vh; display: grid; grid-template-rows: 64px 1fr; }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3.5vw;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7,9,13,.8);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 13px; letter-spacing: .07em; }
+    .brand-glyph { width: 18px; height: 18px; position: relative; }
+    .brand-glyph i { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); }
+    .brand-glyph i:nth-child(1) { left: 0; top: 7px; }
+    .brand-glyph i:nth-child(2) { right: 0; top: 0; }
+    .brand-glyph i:nth-child(3) { right: 2px; bottom: 0; background: var(--coral); }
+    .brand-glyph::before, .brand-glyph::after { content: ""; position: absolute; left: 4px; top: 8px; width: 13px; height: 1px; background: var(--line); transform-origin: left; transform: rotate(-32deg); }
+    .brand-glyph::after { transform: rotate(29deg); }
+
+    .freshness { color: var(--soft); font: 9px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .freshness b { color: var(--green); font-weight: 500; }
+
+    main {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(220px, 22fr) minmax(620px, 56fr) minmax(260px, 22fr);
+      gap: 0;
+      padding: 26px 2.8vw 32px;
+    }
+
+    .rail {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 28px 14px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .rail-label { color: var(--faint); font: 9px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+
+    .questions { display: grid; gap: 5px; margin-top: 18px; }
+    .question {
+      min-height: 68px;
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 8px;
+      align-items: center;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+      color: var(--soft);
+      text-align: left;
+      font-family: var(--sans);
+    }
+    .question .num { color: var(--faint); font: 9px/1 var(--mono); }
+    .question .name { display: block; color: var(--ink); font-size: 13px; }
+    .question .sub { display: block; margin-top: 4px; color: var(--faint); font-size: 9px; }
+    .question.active { background: linear-gradient(90deg, var(--cyan-soft), transparent); }
+    .question.active .num, .question.active .name { color: var(--cyan); }
+
+    .legend { display: grid; gap: 8px; color: var(--soft); font: 9px/1.2 var(--mono); text-transform: uppercase; }
+    .legend span { display: flex; align-items: center; gap: 8px; }
+    .legend i { display: inline-block; width: 16px; height: 1px; background: var(--cyan); }
+    .legend .neg i { background: var(--coral); }
+    .legend .context i { background: transparent; border-top: 1px dashed var(--faint); }
+
+    .map {
+      min-width: 0;
+      position: relative;
+      overflow: hidden;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
+    }
+
+    .map-title {
+      position: absolute;
+      z-index: 3;
+      left: 5%;
+      top: 2%;
+      max-width: 500px;
+    }
+    .map-title .eyebrow { color: var(--cyan); font: 9px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    .map-title h1 { margin: 12px 0 0; font: 500 clamp(33px, 3.3vw, 52px)/1.03 var(--display); letter-spacing: -.035em; }
+
+    .network { position: absolute; inset: 13% 2% 4%; }
+    .network-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .link { fill: none; stroke: var(--line); stroke-width: 1; }
+    .link.hot { stroke: rgba(255,127,114,.65); stroke-width: 2; }
+    .link.good { stroke: rgba(117,223,174,.55); stroke-width: 1.5; }
+    .link.context { stroke: rgba(105,217,255,.5); stroke-dasharray: 5 6; }
+
+    .node {
+      position: absolute;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      min-width: 66px;
+      min-height: 66px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: radial-gradient(circle at 36% 28%, #222e39, var(--field-2) 66%);
+      color: var(--ink);
+      text-align: center;
+      box-shadow: 0 20px 34px rgba(0,0,0,.38);
+    }
+    .node b { display: block; font: 500 12px/1 var(--mono); }
+    .node small { display: block; margin-top: 6px; color: var(--soft); font: 8px/1 var(--mono); }
+    .node.hub { width: 130px; height: 130px; border-color: var(--cyan); background: radial-gradient(circle at 40% 30%, rgba(105,217,255,.24), #0e151c 64%); box-shadow: 0 0 52px rgba(105,217,255,.11); }
+    .node.hub b { color: var(--cyan); font-size: 17px; }
+    .node.loss { border-color: rgba(255,127,114,.5); }
+    .node.loss small { color: var(--coral); }
+    .node.gain { border-color: rgba(117,223,174,.45); }
+    .node.gain small { color: var(--green); }
+    .node.question-node { border-radius: 16px; min-width: 106px; min-height: 55px; border-style: dashed; background: rgba(13,17,23,.82); }
+    .node.question-node b { color: var(--soft); font-family: var(--sans); }
+
+    .n-hub { left: 42%; top: 40%; }
+    .n-asml { left: 16%; top: 26%; width: 93px; height: 93px; }
+    .n-goog { left: 26%; top: 63%; width: 82px; height: 82px; }
+    .n-ibm { left: 65%; top: 18%; }
+    .n-intc { left: 76%; top: 46%; width: 75px; height: 75px; }
+    .n-msft { left: 61%; top: 72%; }
+    .n-risk { left: 4%; top: 57%; }
+    .n-research { right: 2%; top: 74%; }
+    .n-method { right: 2%; top: 5%; }
+
+    .map-foot {
+      position: absolute;
+      left: 5%;
+      right: 5%;
+      bottom: 1%;
+      display: flex;
+      justify-content: space-between;
+      color: var(--faint);
+      font: 8px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .inspector {
+      align-self: stretch;
+      padding: 20px 0 14px 28px;
+      border-left: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .inspector .label { color: var(--cyan); font: 9px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    .inspector h2 { margin: 16px 0 12px; max-width: 265px; font: 500 29px/1.05 var(--display); letter-spacing: -.025em; }
+    .inspector > div > p { margin: 0; max-width: 260px; color: var(--soft); font-size: 14px; line-height: 1.5; }
+    .inspector strong { color: var(--ink); font-weight: 500; }
+
+    .signal-list { display: grid; gap: 0; margin-top: 28px; border-top: 1px solid var(--line); }
+    .signal {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .signal .name { color: var(--soft); font-size: 11px; }
+    .signal .why { display: block; margin-top: 5px; color: var(--faint); font-size: 9px; }
+    .signal .value { font: 500 12px/1 var(--mono); }
+    .signal .value.loss { color: var(--coral); }
+    .signal .value.good { color: var(--green); }
+
+    .inspect-action {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--cyan);
+      background: var(--cyan-soft);
+      color: var(--ink);
+      font-family: var(--sans);
+      text-align: left;
+      padding: 0 14px;
+    }
+    .inspect-action span { float: right; color: var(--cyan); }
+
+    .mobile-trail { display: none; }
+
+    @media (max-width: 780px) {
+      .app { grid-template-rows: 60px auto; }
+      header { padding: 0 16px; }
+      .brand { font-size: 11px; }
+      .freshness { max-width: 130px; font-size: 7px; text-align: right; line-height: 1.35; }
+
+      main { display: flex; flex-direction: column; padding: 22px 17px 28px; }
+      .rail { border: 0; padding: 0; display: block; }
+      .rail-label, .questions, .legend { display: none; }
+      .map { min-height: auto; overflow: visible; mask-image: none; background: none; order: 1; }
+      .map-title { position: static; max-width: none; }
+      .map-title .eyebrow { font-size: 8px; }
+      .map-title h1 { margin-top: 10px; max-width: 340px; font-size: clamp(35px, 10.5vw, 44px); line-height: 1; }
+      .network, .map-foot { display: none; }
+
+      .inspector {
+        order: 2;
+        border: 0;
+        padding: 18px 0 0;
+        display: block;
+      }
+      .inspector .label { font-size: 8px; }
+      .inspector h2 { margin: 9px 0 8px; max-width: 340px; font-size: 23px; }
+      .inspector > div > p { max-width: 350px; font-size: 12px; line-height: 1.4; }
+      .signal-list { margin-top: 14px; }
+      .signal { padding: 10px 0; }
+      .signal .name { font-size: 10px; }
+      .signal .why { font-size: 8px; }
+      .signal .value { font-size: 10px; }
+      .inspect-action { margin-top: 15px; min-height: 44px; font-size: 11px; }
+
+      .mobile-trail {
+        order: 3;
+        display: block;
+        margin-top: 18px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+      .mobile-trail .trail-label { color: var(--faint); font: 8px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+      .trail {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        margin-top: 13px;
+      }
+      .trail::before { content: ""; position: absolute; left: 8%; right: 8%; top: 10px; height: 1px; background: var(--line); }
+      .trail button { z-index: 1; border: 0; background: transparent; color: var(--soft); font: 8px/1.2 var(--sans); text-align: center; padding: 0 1px; }
+      .trail button::before { content: ""; display: block; width: 19px; height: 19px; margin: 0 auto 8px; border: 1px solid var(--faint); border-radius: 50%; background: var(--field); }
+      .trail button.active { color: var(--cyan); }
+      .trail button.active::before { border-color: var(--cyan); background: var(--cyan-soft); box-shadow: 0 0 0 4px rgba(105,217,255,.06); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <span class="brand-glyph" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Signal Constellation</span>
+      </div>
+      <div class="freshness"><b>13 holdings observed</b> · Jul 23 close · public</div>
+    </header>
+
+    <main>
+      <aside class="rail" aria-label="Portfolio questions">
+        <div>
+          <div class="rail-label">Navigate by question</div>
+          <nav class="questions">
+            <button class="question active" type="button" aria-current="page"><span class="num">01</span><span><span class="name">Pulse</span><span class="sub">What deserves attention?</span></span></button>
+            <button class="question" type="button"><span class="num">02</span><span><span class="name">Drivers</span><span class="sub">What moved the result?</span></span></button>
+            <button class="question" type="button"><span class="num">03</span><span><span class="name">Risk</span><span class="sub">Where is exposure?</span></span></button>
+            <button class="question" type="button"><span class="num">04</span><span><span class="name">Research</span><span class="sub">What new evidence exists?</span></span></button>
+            <button class="question" type="button"><span class="num">05</span><span><span class="name">Method</span><span class="sub">How was this derived?</span></span></button>
+          </nav>
+        </div>
+        <div class="legend" aria-label="Relationship legend">
+          <span><i></i> selected relationship</span>
+          <span class="neg"><i></i> negative contribution</span>
+          <span class="context"><i></i> context or method</span>
+        </div>
+      </aside>
+
+      <section class="map" aria-labelledby="constellation-title">
+        <div class="map-title">
+          <div class="eyebrow">Pulse · relationship view</div>
+          <h1 id="constellation-title">The shortfall is concentrated in a few connected positions.</h1>
+        </div>
+
+        <div class="network" aria-hidden="true">
+          <svg class="network-lines" viewBox="0 0 800 610" preserveAspectRatio="none">
+            <path class="link context" d="M430 330 C330 220 250 190 178 188"/>
+            <path class="link hot" d="M430 330 C545 238 590 166 610 142"/>
+            <path class="link hot" d="M430 330 C570 330 650 345 690 370"/>
+            <path class="link good" d="M430 330 C525 450 570 500 595 506"/>
+            <path class="link hot" d="M430 330 C335 430 275 470 245 490"/>
+            <path class="link context" d="M178 188 C98 265 85 340 98 395"/>
+            <path class="link context" d="M690 370 C740 430 747 492 718 520"/>
+            <path class="link context" d="M610 142 C682 92 730 78 742 80"/>
+          </svg>
+          <div class="node hub n-hub"><span><b>−4.6 pts</b><small>vs VOO</small></span></div>
+          <div class="node n-asml"><span><b>ASML</b><small>28.9% weight</small></span></div>
+          <div class="node loss n-goog"><span><b>GOOG</b><small>−7.43% today</small></span></div>
+          <div class="node loss n-ibm"><span><b>IBM</b><small>−2.2 pt contrib.</small></span></div>
+          <div class="node loss n-intc"><span><b>INTC</b><small>−2.1 pt contrib.</small></span></div>
+          <div class="node gain n-msft"><span><b>MSFT</b><small>+0.4 pt offset</small></span></div>
+          <div class="node question-node n-risk"><span><b>Moderate concentration</b><small>Top two 48.1%</small></span></div>
+          <div class="node question-node n-research"><span><b>Research</b><small>new filings →</small></span></div>
+          <div class="node question-node n-method"><span><b>TWR method</b><small>cash-flow neutral</small></span></div>
+        </div>
+
+        <div class="map-foot">
+          <span>Line weight = relationship relevance, not prediction</span>
+          <span>Open any labeled node</span>
+        </div>
+      </section>
+
+      <aside class="inspector" aria-label="Selected portfolio signal">
+        <div>
+          <div class="label">What deserves attention</div>
+          <h2>GOOG is today's sharpest move, but it is not the whole story.</h2>
+          <p>
+            Today's <strong>−7.43%</strong> move deserves context. Over the full
+            period, <strong>IBM and INTC</strong> explain more of the gap with
+            VOO.
+          </p>
+
+          <div class="signal-list">
+            <div class="signal">
+              <div><span class="name">Today</span><span class="why">largest held-ticker move</span></div>
+              <span class="value loss">GOOG −7.43%</span>
+            </div>
+            <div class="signal">
+              <div><span class="name">Since inception</span><span class="why">portfolio vs VOO</span></div>
+              <span class="value loss">−4.6 pts</span>
+            </div>
+            <div class="signal">
+              <div><span class="name">Offset</span><span class="why">contribution to return</span></div>
+              <span class="value good">MSFT +0.4 pt</span>
+            </div>
+          </div>
+        </div>
+        <button class="inspect-action" type="button">Trace the drivers <span>→</span></button>
+      </aside>
+
+      <section class="mobile-trail" aria-label="Mobile signal trail">
+        <div class="trail-label">Continue through the evidence</div>
+        <nav class="trail">
+          <button class="active" type="button" aria-current="page">Pulse</button>
+          <button type="button">Drivers</button>
+          <button type="button">Risk</button>
+          <button type="button">Research</button>
+          <button type="button">Method</button>
+        </nav>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
