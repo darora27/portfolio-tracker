@@ -7,6 +7,7 @@ import { LoginForm } from "@/components/auth/LoginForm";
 import { NavBar } from "@/components/layout/NavBar";
 import { DailyReturnsChart } from "@/components/history/DailyReturnsChart";
 import { DrawdownChart } from "@/components/history/DrawdownChart";
+import { CompositionOverTimeChart } from "@/components/history/CompositionOverTimeChart";
 import { DataTable, DataTableHead, DataTableBody, DataTableRow, Th, Td } from "@/components/ui/DataTable";
 import { formatCurrency, formatDate, formatSignedCurrency, formatSignedPercent } from "@/lib/format";
 
@@ -38,7 +39,7 @@ export default async function HistoryPage() {
     );
   }
 
-  const { rows, dailyReturnBars, drawdownSeries } = await getHistoryData();
+  const { rows, dailyReturnBars, drawdownSeries, compositionHistory } = await getHistoryData();
 
   return (
     <>
@@ -57,6 +58,7 @@ export default async function HistoryPage() {
 
           <DailyReturnsChart data={dailyReturnBars} />
           <DrawdownChart data={drawdownSeries} />
+          <CompositionOverTimeChart data={compositionHistory} />
 
           <section>
             <DataTable minWidth="640px">
