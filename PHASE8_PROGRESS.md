@@ -15,7 +15,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [x] §6 Live quotes + auto-refresh
 - [x] §7 CSV export
 - [x] §8 Finnhub data layer (cache module)
-- [ ] §9 Privacy matrix re-verification
+- [x] §9 Privacy matrix re-verification
 - [ ] §10 Integration pass
 - [ ] §11 Final summary
 
@@ -326,3 +326,23 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   Almost certainly a Next dev-server Fast-Refresh hiccup from this
   session's heavy file-editing cadence, not a code issue; not chased
   further given curl's consistent success.
+
+## §9 Privacy matrix re-verification results
+
+Every row checked against the actual code/live behavior, not just re-read:
+
+| Element | Private dashboard | /share | Verified how |
+|---|---|---|---|
+| Day $ / Day % columns | both shown | % only, no Day $ column | Read `PositionsTable.tsx`: Day $ `<Th>`/`<Td>` wrapped in `!hideDollars`, Day % unconditional |
+| Sparklines | yes | yes (shape only) | Same component, no `hideDollars` gate on the Trend column at all |
+| Today's movers | $ + % | % only | `WinnersLosers.tsx`'s `MoversList` branches on `hideDollars` |
+| News section | yes | absent | `grep`'d `share/page.tsx` — no `LatestNews` import at all |
+| History page | yes | absent, route stays gated | `curl` logged-out `/history` → HTTP 200 with "Sign in to view" gate text |
+| /stock/[ticker] pages | yes | absent, gated | `curl` logged-out `/stock/ASML` → HTTP 200 gate text; `linkRows={false}` on `/share`'s PositionsTable means no link ever points there from the public view either |
+| New risk stats (Sortino, streaks, win rate, ATH chip) | yes | yes (all %) | `share/page.tsx` passes the same 5 props to `RiskPanel`; none of those stats have a dollar representation to hide in the first place |
+| CSV exports | owner only | 401 | `curl` logged-out both export routes → HTTP 401; authenticated (session-cookie) → HTTP 200 with correct data |
+
+Also confirmed: `curl` logged-out `/` and `/trades` → HTTP 200 with the
+same gate text (pre-existing behavior, re-verified as part of this pass);
+`/share` logged-out → HTTP 200, serves normally (no gate — it's public
+by design).
