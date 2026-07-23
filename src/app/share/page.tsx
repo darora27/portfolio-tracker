@@ -50,6 +50,7 @@ export default async function SharePage() {
             xirrPct={data.xirrPct}
             historyDays={data.historyDays}
             pricesAsOf={data.pricesAsOf}
+            allTimeHigh={data.allTimeHigh}
             hideDollars={hideDollars}
           />
 
@@ -92,6 +93,11 @@ export default async function SharePage() {
             betaVsVoo={data.betaVsVoo}
             top2ConcentrationPct={data.top2ConcentrationPct}
             hhi={data.hhi}
+            sortinoRatio={data.sortinoRatio}
+            bestDay={data.bestDay}
+            worstDay={data.worstDay}
+            winRatePct={data.winRatePct}
+            currentStreak={data.currentStreak}
           />
         </div>
       </div>

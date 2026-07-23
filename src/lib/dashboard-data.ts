@@ -1,6 +1,7 @@
 import { supabase } from "@/lib/supabase/client";
-import { getQuotes, getUpcomingEarnings } from "@/lib/finnhub";
+import { getQuotes, getUpcomingEarnings, getCompanyNews } from "@/lib/finnhub";
 import type { EarningsEvent } from "@/lib/finnhub-earnings";
+import type { NewsItem } from "@/lib/finnhub-news";
 import { dailyReturns, priceReturns } from "@/lib/math/returns";
 import { correlationMatrix } from "@/lib/math/correlation";
 import { twr } from "@/lib/math/twr";
@@ -9,6 +10,16 @@ import { annualizedVolatility } from "@/lib/math/volatility";
 import { sharpeRatio } from "@/lib/math/sharpe";
 import { xirr } from "@/lib/math/xirr";
 import { dailyChangeAmount, dailyChangePercent, netFlowsForDate } from "@/lib/math/daily-change";
+import {
+  bestDay,
+  currentStreak,
+  sortino,
+  winRate,
+  worstDay,
+  type DatedReturn,
+  type Streak,
+} from "@/lib/math/daily-stats";
+import { fromAllTimeHigh, type AllTimeHighInfo } from "@/lib/math/all-time-high";
 import { daysBetween, todayInTimeZone } from "@/lib/date";
 import {
   buildXirrCashFlows,
@@ -73,6 +84,13 @@ export type DashboardData = {
   realizedGain: number;
   unrealizedGain: number;
   donutSlices: { ticker: string; weight: number; value: number }[];
+  latestNews: NewsItem[];
+  allTimeHigh: AllTimeHighInfo | null;
+  sortinoRatio: number | null;
+  bestDay: DatedReturn | null;
+  worstDay: DatedReturn | null;
+  winRatePct: number;
+  currentStreak: Streak | null;
 };
 
 /**
@@ -151,10 +169,14 @@ export async function getDashboardData(): Promise<DashboardData> {
   // ticker, mergePrices falls back to its last known snapshot price rather
   // than showing no price (or $0) at all.
   const heldTickers = computeHoldings(trades ?? [], new Map()).map((p) => p.ticker);
-  const [liveQuotes, upcomingEarnings] = await Promise.all([
+  const [liveQuotes, upcomingEarnings, newsByTicker] = await Promise.all([
     getQuotes(heldTickers),
     getUpcomingEarnings(heldTickers),
+    Promise.all(heldTickers.map((ticker) => getCompanyNews(ticker))),
   ]);
+  // Top 6 headlines across all holdings, newest first — each item already
+  // carries its own ticker (tagged by getCompanyNews) for the chip.
+  const latestNews = newsByTicker.flat().sort((a, b) => b.datetime - a.datetime).slice(0, 6);
   const livePrices = new Map(
     [...liveQuotes.entries()].map(([ticker, quote]) => [
       ticker,
@@ -238,6 +260,23 @@ export async function getDashboardData(): Promise<DashboardData> {
   const volatilityPct = annualizedVolatility(returns);
   const sharpe = sharpeRatio(returns);
 
+  // returns[i] is the return realized ON mathSnapshots[i + 1] (day 0 has no
+  // prior day to return against) — this is the same offset dailyReturns
+  // itself documents.
+  const returnsWithDates: DatedReturn[] = returns.map((r, i) => ({ date: mathSnapshots[i + 1].date, r }));
+  const sortinoRatio = sortino(returns);
+  const bestDayResult = bestDay(returnsWithDates);
+  const worstDayResult = worstDay(returnsWithDates);
+  const winRatePct = winRate(returns);
+  const currentStreakResult = currentStreak(returns);
+
+  let growthIndexValue = 1;
+  const growthIndexSeries = mathSnapshots.map((s, i) => ({
+    date: s.date,
+    index: i === 0 ? growthIndexValue : (growthIndexValue *= 1 + returns[i - 1]),
+  }));
+  const allTimeHigh = fromAllTimeHigh(growthIndexSeries);
+
   // Benchmark daily returns, aligned to the exact same dates as the
   // portfolio's funded history — beta, TWR, and the chart comparison are
   // only meaningful over an identical date range. Both series start
@@ -282,18 +321,13 @@ export async function getDashboardData(): Promise<DashboardData> {
   const xirrPct = cashFlows.length >= 2 ? xirr(cashFlows) : 0;
   const historyDays = mathSnapshots[0] ? daysBetween(mathSnapshots[0].date, today) : 0;
 
-  const chartData: ChartPoint[] = [];
-  if (mathSnapshots.length > 0) {
-    let index = 100;
-    const portfolioChartIndex = [index, ...returns.map((r) => (index *= 1 + r))];
-    for (let i = 0; i < mathSnapshots.length; i++) {
-      const point: ChartPoint = { date: mathSnapshots[i].date, portfolioIndex: portfolioChartIndex[i] };
-      for (const comparison of benchmarkComparisons) {
-        if (comparison.available) point[BENCHMARK_CHART_KEYS[comparison.ticker]] = comparison.chartIndex[i];
-      }
-      chartData.push(point);
+  const chartData: ChartPoint[] = growthIndexSeries.map((g, i) => {
+    const point: ChartPoint = { date: g.date, portfolioIndex: g.index * 100 };
+    for (const comparison of benchmarkComparisons) {
+      if (comparison.available) point[BENCHMARK_CHART_KEYS[comparison.ticker]] = comparison.chartIndex[i];
     }
-  }
+    return point;
+  });
 
   return {
     totalValue,
@@ -326,5 +360,12 @@ export async function getDashboardData(): Promise<DashboardData> {
     realizedGain,
     unrealizedGain,
     donutSlices,
+    latestNews,
+    allTimeHigh,
+    sortinoRatio,
+    bestDay: bestDayResult,
+    worstDay: worstDayResult,
+    winRatePct,
+    currentStreak: currentStreakResult,
   };
 }

@@ -17,6 +17,7 @@ import { CorrelationHeatmap } from "@/components/dashboard/CorrelationHeatmap";
 import { CompositionDonut } from "@/components/dashboard/CompositionDonut";
 import { RealizedUnrealized } from "@/components/dashboard/RealizedUnrealized";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
+import { LatestNews } from "@/components/dashboard/LatestNews";
 
 // This dashboard reflects live DB state (trades can be added any time), so
 // it must never be baked into a static build.
@@ -68,6 +69,7 @@ export default async function Home() {
             xirrPct={data.xirrPct}
             historyDays={data.historyDays}
             pricesAsOf={data.pricesAsOf}
+            allTimeHigh={data.allTimeHigh}
           />
 
           <ValueChart data={data.chartData} />
@@ -96,6 +98,8 @@ export default async function Home() {
 
           <EarningsCalendar events={data.upcomingEarnings} />
 
+          {data.latestNews.length > 0 && <LatestNews items={data.latestNews} />}
+
           <RiskPanel
             volatilityPct={data.volatilityPct}
             maxDrawdownPct={data.maxDrawdown}
@@ -103,6 +107,11 @@ export default async function Home() {
             betaVsVoo={data.betaVsVoo}
             top2ConcentrationPct={data.top2ConcentrationPct}
             hhi={data.hhi}
+            sortinoRatio={data.sortinoRatio}
+            bestDay={data.bestDay}
+            worstDay={data.worstDay}
+            winRatePct={data.winRatePct}
+            currentStreak={data.currentStreak}
           />
         </div>
       </div>

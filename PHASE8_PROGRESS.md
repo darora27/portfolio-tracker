@@ -11,7 +11,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [x] §2 Positions table upgrade (day columns, sparklines, clickable rows)
 - [x] §3 Position detail page `/stock/[ticker]`
 - [x] §4 History page `/history`
-- [ ] §5 Dashboard additions (news, ATH chip, risk extensions)
+- [x] §5 Dashboard additions (news, ATH chip, risk extensions)
 - [ ] §6 Live quotes + auto-refresh
 - [ ] §7 CSV export
 - [x] §8 Finnhub data layer (cache module)
@@ -169,6 +169,35 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   doc's illustrative −$267.35 only because the real EOD close moved past
   where that hypothetical was written, per the §1 session note).
 
+- §5: reconfirmed the §3 budget-exhaustion finding, now for the dashboard
+  itself — the "Latest News" and "Upcoming Earnings" sections both
+  render fully empty when the 50/min Finnhub budget is exhausted (which
+  my own repeated testing did twice this session), then both repopulate
+  correctly once the window resets. Math it out: one cold-cache dashboard
+  load alone is already 13 quotes + 13 earnings (never cached, TTL 0) +
+  13 news (cached 24h after the first hit) = up to 39 calls; a second
+  load within the same 60s adds another 13 (earnings again) = 52 > 50.
+  **This means two ordinary page loads within a minute — not unusual
+  browsing, no stress-testing required — can trip the budget wall and
+  show the family an empty news/earnings section for up to a minute.**
+  Not a bug relative to the spec (this is what "earnings unchanged" i.e.
+  uncached literally produces once routed through a shared budget), but
+  worth Devan's attention before shipping — flagged again in §11.
+- §5: `From all-time high` chip renders as a plain colored `<Card>` (own
+  `text-gain`/`text-loss` on the value), not a `<StatCard>` — `StatCard`
+  never color-codes its value by sign (every existing usage relies on the
+  +/- prefix alone), but the phase doc explicitly calls for `--gain`/
+  `--loss` text here specifically. Verified live: shows "−10.1% · Jun 30,
+  2026 peak", matching the phase doc's "roughly −9% to −10%" sanity check.
+  Kept always-visible (not gated by `hideDollars`) per §9's privacy
+  matrix ("ATT chip | yes | yes (all %)") — it's a pure percentage, no
+  dollar amount to hide either way.
+- §5: verified live in browser (after the budget reset above) — ATH chip,
+  Latest News (6 items, ticker chips, relative timestamps), and all 5 new
+  Risk cards (Sortino, Best/Worst day with dates, Win rate, Current
+  streak) all render with real data matching their computed fixtures'
+  shape.
+
 ## Session notes
 
 - Session 1 (2026-07-23): §0 complete.
@@ -210,3 +239,9 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   functions for the table's Day $/% columns. Export CSV button wired to
   the not-yet-built `/api/export/history.csv` (lands in §7, next).
   129/129 tests pass, build clean.
+- Session 1 (2026-07-23): §5 complete. New "From all-time high" chip,
+  "Latest News" section (private only), and 5 new Risk cards (Sortino,
+  Best/Worst day, Win rate, Current streak) via new
+  `src/lib/math/daily-stats.ts` and `all-time-high.ts` (both fully
+  fixture-tested). Confirmed the Finnhub-budget interaction noted above.
+  146/146 tests pass, build clean.

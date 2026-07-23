@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/Card";
-import { formatNumber, formatPercent, formatSignedPercent } from "@/lib/format";
+import { formatDate, formatNumber, formatPercent, formatSignedPercent } from "@/lib/format";
+import type { DatedReturn, Streak } from "@/lib/math/daily-stats";
 
 function Metric({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
@@ -18,6 +19,11 @@ export function RiskPanel({
   betaVsVoo,
   top2ConcentrationPct,
   hhi,
+  sortinoRatio,
+  bestDay,
+  worstDay,
+  winRatePct,
+  currentStreak,
 }: {
   volatilityPct: number;
   maxDrawdownPct: number;
@@ -25,6 +31,11 @@ export function RiskPanel({
   betaVsVoo: number | null;
   top2ConcentrationPct: number;
   hhi: number;
+  sortinoRatio: number | null;
+  bestDay: DatedReturn | null;
+  worstDay: DatedReturn | null;
+  winRatePct: number;
+  currentStreak: Streak | null;
 }) {
   return (
     <section>
@@ -40,6 +51,23 @@ export function RiskPanel({
         />
         <Metric label="Top-2 concentration" value={formatPercent(top2ConcentrationPct, 1)} />
         <Metric label="HHI" value={formatNumber(hhi, 0)} sub="0-10000; higher = more concentrated" />
+        <Metric label="Sortino" value={sortinoRatio !== null ? formatNumber(sortinoRatio) : "—"} />
+        <Metric
+          label="Best day"
+          value={bestDay !== null ? formatSignedPercent(bestDay.r, 2) : "—"}
+          sub={bestDay !== null ? formatDate(bestDay.date) : undefined}
+        />
+        <Metric
+          label="Worst day"
+          value={worstDay !== null ? formatSignedPercent(worstDay.r, 2) : "—"}
+          sub={worstDay !== null ? formatDate(worstDay.date) : undefined}
+        />
+        <Metric label="Win rate" value={formatPercent(winRatePct, 1)} />
+        <Metric
+          label="Current streak"
+          value={currentStreak !== null ? `${currentStreak.n} ${currentStreak.dir}` : "—"}
+          sub={currentStreak !== null ? `${currentStreak.n === 1 ? "day" : "days"} in a row` : undefined}
+        />
       </div>
     </section>
   );

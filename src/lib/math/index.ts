@@ -7,3 +7,5 @@ export * from "./beta";
 export * from "./sharpe";
 export * from "./xirr";
 export * from "./daily-change";
+export * from "./daily-stats";
+export * from "./all-time-high";

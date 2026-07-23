@@ -1,5 +1,7 @@
 import { StatCard } from "@/components/ui/StatCard";
+import { Card } from "@/components/ui/Card";
 import { formatDate, formatSignedPercent } from "@/lib/format";
+import type { AllTimeHighInfo } from "@/lib/math/all-time-high";
 
 export function HeadlineStats({
   totalValue,
@@ -12,6 +14,7 @@ export function HeadlineStats({
   xirrPct,
   historyDays,
   pricesAsOf,
+  allTimeHigh,
   hideDollars = false,
 }: {
   totalValue: number;
@@ -24,10 +27,12 @@ export function HeadlineStats({
   xirrPct: number;
   historyDays: number;
   pricesAsOf: string | null;
+  allTimeHigh: AllTimeHighInfo | null;
   hideDollars?: boolean;
 }) {
   const gain = totalValue - totalCost;
   const deemphasizeXirr = historyDays < 90;
+  const atHigh = allTimeHigh !== null && allTimeHigh.pct === 0;
 
   return (
     <section>
@@ -67,6 +72,19 @@ export function HeadlineStats({
           sublabel={deemphasizeXirr ? `Only ${historyDays}d of history — noisy` : undefined}
           muted={deemphasizeXirr}
         />
+        {allTimeHigh && (
+          <Card>
+            <div className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+              From all-time high
+            </div>
+            <div className={`mt-1 font-mono text-2xl font-bold ${atHigh ? "text-gain" : "text-loss"}`}>
+              {atHigh ? "At all-time high" : formatSignedPercent(allTimeHigh.pct, 1)}
+            </div>
+            {!atHigh && (
+              <div className="mt-1.5 text-xs text-text-secondary">{formatDate(allTimeHigh.peakDate)} peak</div>
+            )}
+          </Card>
+        )}
       </div>
     </section>
   );
