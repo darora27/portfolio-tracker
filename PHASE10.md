@@ -2,7 +2,10 @@
 
 Status: planning specification only
 
-Implementation status: blocked on §0 design selection
+Implementation status: direction selected; §0 baseline not started
+
+Selected direction: Field Journal structural base with Night Orbit orbital
+chapter navigation, selected-body inspector, and static concentric fallback
 
 Primary authority: `PRODUCT_DIRECTION.md`
 

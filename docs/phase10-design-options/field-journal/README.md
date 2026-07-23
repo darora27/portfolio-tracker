@@ -8,9 +8,29 @@ plate proves it, and marginal notes explain why it matters. Five layered
 observation plates provide dimensional navigation without asking a recruiter to
 decode a spatial scene.
 
-This option is the most polished/professional of the three. Its playfulness
-comes from composition, numbered plates, depth, and annotation—not from a
-literal orbit.
+This option is the most polished/professional of the three. Following Devan's
+selection, its playfulness also gains a restrained orbital instrument: the orbit
+selects an observation plate, then the plate does the explanatory work.
+
+## Selected hybrid
+
+Field Journal is the structural base. It retains all four of its named parts:
+
+- editorial market-relative lead;
+- observation-plate chapter stack;
+- evidence marginalia;
+- annotated divergence ribbon.
+
+It borrows these exact Night Orbit parts:
+
+- orbital chapter navigation;
+- selected-body inspector;
+- static concentric fallback.
+
+The orbit is an index, not a second content system. Selecting a body brings the
+corresponding observation plate forward and updates its inspector. The normal
+numbered index remains the semantic, keyboard, touch, reduced-motion, and
+no-3D path.
 
 ## Typography approach
 
@@ -33,9 +53,12 @@ Mockup values are illustrative, not production tokens.
 
 ## Navigation and disclosure model
 
-- Five numbered plates: Observation, Drivers, Structure, History, Method.
+- Five orbital bodies map one-to-one to five numbered plates: Observation,
+  Drivers, Structure, History, Method.
 - The active plate is frontmost; the edges of deeper plates remain visible.
-- A horizontal index and previous/next controls make the model explicit.
+- A selected-body inspector names the active question and evidence plate.
+- A horizontal index and previous/next controls mirror the orbit and make the
+  model explicit.
 - Each plate contains one finding, one evidence visual, and optional marginalia.
 - Advanced formulas open from Method rather than appearing beside the lead.
 
@@ -43,28 +66,34 @@ Mockup values are illustrative, not production tokens.
 
 - Depth comes from stacked translucent planes, edge offsets, crop marks, and
   controlled overlap.
-- The “orrery” becomes an observation instrument: each layer is a lens on the
-  same portfolio.
+- The orrery becomes an observation instrument: each orbital body selects a
+  lens/plate on the same portfolio.
+- The dimensional scene stays shallow and bounded; vastness comes from
+  negative space, distant orbital arcs, and layered depth rather than a busy
+  universe.
 - All content stays in semantic DOM; CSS transforms can supply the full effect.
 
 ## Motion plan
 
-1. One entry moment slides the first plate into focus and draws the evidence
-   line.
-2. Chapter changes lift the next plate forward with a short depth shift.
+1. One entry moment resolves distant orbital bodies into the selected
+   observation plate, then draws the evidence line.
+2. Chapter changes move the selected body and lift its plate forward with one
+   short, coordinated depth shift.
 
 No ambient motion or pointer parallax is needed.
 
 ## Mobile adaptation
 
-- Flatten the plate stack into a numbered chapter strip and one active article.
+- Replace the 3D orbit with the static concentric fallback, a numbered chapter
+  strip, and one active article.
 - Preserve the editorial lead and one evidence ribbon within the first screen.
 - Move marginal notes below the primary visual in source order.
 - Use inline disclosures for method and limitations.
 
 ## Accessibility fallback
 
-- The enhanced plate stack is a semantic tablist or navigation plus article.
+- The enhanced orbit and plate stack share one semantic tablist/navigation plus
+  article; they are never duplicate focus stops.
 - Without transforms, it renders as a dark editorial page with numbered links.
 - Reduced motion replaces plate movement with a short crossfade.
 - Type remains readable at zoom; annotations are not the only place a fact

@@ -17,6 +17,40 @@ The typography, color values, and component mechanics in these mockups are
 illustrative. Selecting a direction chooses its hierarchy, spatial grammar, and
 disclosure model—not immutable tokens or a 3D library.
 
+## Selection recorded — July 23, 2026
+
+**Structural base:** Field Journal
+
+**Field Journal parts retained:**
+
+- editorial market-relative lead;
+- observation-plate chapter stack;
+- evidence marginalia;
+- annotated divergence ribbon.
+
+**Night Orbit parts borrowed:**
+
+- orbital chapter navigation;
+- selected-body inspector;
+- static concentric fallback.
+
+**Interaction contract:** the orbit selects a numbered observation plate; it
+does not become a second competing information system. The selected-body
+inspector explains the active chapter, and the concentric fallback carries the
+same state when 3D or motion is unavailable.
+
+**Desired first viewport, recorded from Devan:**
+
+> Wow the user interface of this website is incredibly unique with a sense of
+> vastness and simpleness to use without traditional remnants of artificial
+> intelligence work product. I feel that the person who made this website is
+> incredibly creative with a strong interest in space and extraterrestrials,
+> but very aware of the market and economic status of the world.
+
+The selected direction removes the design-choice blocker. Production work is
+not authorized or started by this record; Phase 10 §0 baseline and state setup
+remain the next implementation step.
+
 ## At a glance
 
 | Direction | First-viewport immersion | Spatial navigation | Information progression | Editorial ↔ technical | Motion posture | Primary strength | Primary risk |
@@ -76,9 +110,9 @@ Named parts available to combine:
 - contribution links;
 - mobile signal trail.
 
-## How to choose
+## Selection rationale
 
-Choose exactly one structural base:
+The selection followed this decision rule:
 
 1. **Night Orbit** if the signature should be entering and navigating a spatial
    Observatory.
@@ -87,19 +121,12 @@ Choose exactly one structural base:
 3. **Signal Constellation** if relationships among holdings, drivers, and
    methods should be the signature.
 
-Optionally borrow one or two named parts from another direction. Do not choose
-“all three”; that would remove the hierarchy the options are designed to test.
+Borrowed parts remain intentionally bounded. Signal Constellation is not folded
+into the selected direction; its graph model would compete with the editorial
+plates and orbital index.
 
-Record the choice in this form:
-
-> Structural base: **[direction]**
->
-> Borrowed named parts: **[none, or exact parts]**
->
-> What I want the first viewport to feel like: **[one sentence]**
-
-Implementation remains blocked until Devan provides that choice and it is
-recorded in the Phase 10 handoff state.
+The selection above is now recorded. Phase 10 implementation still begins only
+through §0 baseline and handoff-state setup.
 
 ## Prototype files
 

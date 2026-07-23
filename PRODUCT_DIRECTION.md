@@ -15,8 +15,25 @@ and data-integrity rules remain binding. A visual or interaction decision never
 overrides an honest number, a privacy boundary, or a reliability requirement.
 
 Exact fonts, color values, motion curves, component mechanics, and the choice
-between CSS 3D and a bounded WebGL layer remain open until Devan selects a
-direction and the Phase 10 technical spikes are complete.
+between CSS 3D and a bounded WebGL layer remain open until the Phase 10
+technical spikes are complete.
+
+## Selected Phase 10 direction
+
+Recorded July 23, 2026:
+
+- **Structural base:** Field Journal.
+- **Field Journal parts retained:** editorial market-relative lead,
+  observation-plate chapter stack, evidence marginalia, and annotated
+  divergence ribbon.
+- **Night Orbit parts borrowed:** orbital chapter navigation, selected-body
+  inspector, and static concentric fallback.
+
+The orbit is the spatial index for the editorial plates, not a competing
+navigation model. It should create a sense of vastness, space, and
+extraterrestrial curiosity while the lead observation keeps the product firmly
+aware of market and economic reality. The interface should feel singular and
+human-authored, yet simple to understand.
 
 ## Product purpose
 

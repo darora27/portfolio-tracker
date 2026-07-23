@@ -125,7 +125,24 @@
     .index .active { background: linear-gradient(180deg, rgba(139,231,197,.09), transparent); }
     .index .active .num, .index .active .name { color: var(--mint); }
 
-    .plates { align-self: center; position: relative; min-height: 680px; perspective: 1300px; }
+    .plates { align-self: center; position: relative; min-height: 680px; perspective: 1300px; overflow: hidden; }
+
+    .plates::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      width: 610px;
+      height: 610px;
+      right: -13%;
+      top: -22%;
+      border: 1px solid rgba(139,231,197,.12);
+      border-radius: 50%;
+      transform: rotateX(72deg) rotateZ(-11deg);
+      box-shadow:
+        0 0 0 72px rgba(139,231,197,.025),
+        0 0 0 146px rgba(239,141,113,.018);
+      pointer-events: none;
+    }
 
     .plate-shadow {
       position: absolute;
@@ -171,10 +188,88 @@
     .plate-head { display: flex; justify-content: space-between; align-items: start; color: var(--faint); font: 9px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
     .plate-head strong { color: var(--mint); font-weight: 500; }
 
+    .orbit-instrument {
+      position: relative;
+      height: 122px;
+      margin: 18px 0 4px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      left: 2%;
+      top: 3px;
+      width: 260px;
+      height: 114px;
+      border: 1px solid rgba(139,231,197,.28);
+      border-radius: 50%;
+      transform: rotate(-8deg) scaleY(.42);
+    }
+
+    .orbit-ring.second {
+      left: 55px;
+      top: 26px;
+      width: 165px;
+      height: 70px;
+      border-color: rgba(210,189,122,.22);
+    }
+
+    .orbit-ring.third {
+      left: 98px;
+      top: 43px;
+      width: 78px;
+      height: 35px;
+      border-color: rgba(239,141,113,.34);
+    }
+
+    .orbit-body {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--faint);
+      border-radius: 50%;
+      background: var(--paper-2);
+      color: var(--faint);
+      font: 7px/1 var(--mono);
+      box-shadow: 0 9px 18px rgba(0,0,0,.38);
+    }
+
+    .orbit-body.active {
+      width: 28px;
+      height: 28px;
+      border-color: var(--mint);
+      color: var(--mint);
+      background: radial-gradient(circle at 35% 25%, rgba(139,231,197,.32), var(--paper-2) 65%);
+      box-shadow: 0 0 26px rgba(139,231,197,.18);
+    }
+
+    .body-1 { left: 91px; top: 23px; }
+    .body-2 { left: 226px; top: 58px; }
+    .body-3 { left: 170px; top: 94px; }
+    .body-4 { left: 35px; top: 75px; }
+    .body-5 { left: 18px; top: 31px; }
+
+    .selected-body {
+      position: absolute;
+      right: 0;
+      top: 18px;
+      width: 190px;
+      padding-top: 10px;
+      border-top: 1px solid var(--mint);
+    }
+
+    .selected-body .label { color: var(--mint); font: 8px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+    .selected-body strong { display: block; margin-top: 8px; color: var(--ink); font: 500 16px/1.1 var(--serif); }
+    .selected-body p { margin: 6px 0 0; color: var(--soft); font-size: 9px; line-height: 1.4; }
+
     .chart {
       position: relative;
-      height: 310px;
-      margin: 40px 0 26px;
+      height: 238px;
+      margin: 18px 0 20px;
       border-left: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
     }
@@ -263,14 +358,30 @@
       .index .name { font-size: 7px; }
 
       .plates { align-self: stretch; width: 100%; min-height: 300px; height: 300px; margin-top: 18px; }
+      .plates::before { display: none; }
       .plate-shadow { display: none; }
       .plate { inset: 0; padding: 18px 18px 16px; transform: none; }
       .plate-head { font-size: 7px; }
-      .chart { height: 142px; margin: 19px 5px 14px 18px; }
+      .orbit-instrument { height: 62px; margin: 10px 0 2px; }
+      .orbit-ring { left: -7px; top: -4px; width: 150px; height: 66px; }
+      .orbit-ring.second { left: 25px; top: 12px; width: 96px; height: 40px; }
+      .orbit-ring.third { left: 53px; top: 22px; width: 42px; height: 18px; }
+      .orbit-body { width: 10px; height: 10px; font-size: 0; }
+      .orbit-body.active { width: 17px; height: 17px; font-size: 5px; }
+      .body-1 { left: 47px; top: 10px; }
+      .body-2 { left: 125px; top: 29px; }
+      .body-3 { left: 94px; top: 48px; }
+      .body-4 { left: 16px; top: 38px; }
+      .body-5 { left: 5px; top: 14px; }
+      .selected-body { right: 0; top: 8px; width: 145px; padding-top: 6px; }
+      .selected-body .label { font-size: 6px; }
+      .selected-body strong { margin-top: 4px; font-size: 11px; }
+      .selected-body p { display: none; }
+      .chart { height: 82px; margin: 8px 5px 10px 18px; }
       .axis-label { font-size: 6px; }
       .annotation { right: 0; top: 39%; width: 112px; padding-left: 8px; font-size: 7px; }
       .annotation b { font-size: 8px; }
-      .plate-notes { gap: 12px; padding-top: 11px; }
+      .plate-notes { gap: 12px; padding-top: 8px; }
       .note-label { font-size: 7px; }
       .note-copy { margin-top: 4px; font-size: 8px; line-height: 1.35; }
       .plate-footer { display: none; }
@@ -321,6 +432,22 @@
           <div class="plate-head">
             <span><strong>Plate 01</strong> · same-period paths</span>
             <span>Indexed to 100 · Jun 24</span>
+          </div>
+
+          <div class="orbit-instrument" aria-label="Static concept of orbital chapter navigation">
+            <div class="orbit-ring" aria-hidden="true"></div>
+            <div class="orbit-ring second" aria-hidden="true"></div>
+            <div class="orbit-ring third" aria-hidden="true"></div>
+            <span class="orbit-body active body-1" aria-hidden="true">01</span>
+            <span class="orbit-body body-2" aria-hidden="true">02</span>
+            <span class="orbit-body body-3" aria-hidden="true">03</span>
+            <span class="orbit-body body-4" aria-hidden="true">04</span>
+            <span class="orbit-body body-5" aria-hidden="true">05</span>
+            <div class="selected-body">
+              <span class="label">Selected body · 01</span>
+              <strong>Observation</strong>
+              <p>Market-relative pulse · one evidence plate in focus.</p>
+            </div>
           </div>
 
           <div class="chart" aria-label="Illustrative indexed trajectory: VOO ends above the portfolio">
