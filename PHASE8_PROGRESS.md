@@ -14,7 +14,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [ ] §5 Dashboard additions (news, ATH chip, risk extensions)
 - [ ] §6 Live quotes + auto-refresh
 - [ ] §7 CSV export
-- [ ] §8 Finnhub data layer (cache module)
+- [x] §8 Finnhub data layer (cache module)
 - [ ] §9 Privacy matrix re-verification
 - [ ] §10 Integration pass
 - [ ] §11 Final summary
@@ -66,6 +66,27 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   the EOD cron has already run for today (today's snapshot exists but
   must still be excluded — "yesterday" stays yesterday either way).
 
+- §8 done out of numeric order, per its own note that §3/§5/§6 depend on
+  it — built right after §1 so later sections can use it immediately.
+- `src/lib/server/finnhub-cache.ts` deliberately does NOT carry the
+  `server-only` tag (unlike every other Finnhub-touching file). It holds
+  no secrets itself — just a generic cache/budget Map — and needs to be
+  importable from plain Vitest, which chokes on `server-only` outside a
+  Next.js server bundle (confirmed: every other `server-only`-tagged file
+  in the repo has zero direct tests, only their pure parser counterparts
+  are tested — same reasoning applied here, just inverted: drop the tag
+  instead of skipping the test).
+- Also added `getCompanyMetric`, `getRecommendationTrend`, and
+  `getCompanyNews` (+ their pure parsers: finnhub-metric.ts,
+  finnhub-recommendation.ts, finnhub-news.ts) as part of §8 rather than
+  deferring to §3, since the phase doc's own §8 TTL table already names
+  metric/news/recommendation — building them alongside the cache module
+  they depend on avoided splitting one cohesive unit across two commits.
+  Verified all three against live Finnhub responses for ASML: metric
+  returns peTTM/marketCap as expected; recommendation already arrives
+  newest-period-first from Finnhub itself (parser's own sort is
+  idempotent with that); news returns 247 items for the 14-day window.
+
 ## Session notes
 
 - Session 1 (2026-07-23): §0 complete.
@@ -82,4 +103,8 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   param). Verified netFlowsToday logic against live Supabase data (real
   "today" has since rolled to 2026-07-23 with no trades, so the exact
   fixture is covered by unit tests, not live reproduction). 93/93 tests
+  pass, build clean.
+- Session 1 (2026-07-23): §8 complete (done early, see judgment calls
+  log). New cache/budget module + metric/recommendation/news parsers and
+  fetchers, existing quote/earnings calls migrated onto it. 109/109 tests
   pass, build clean.
