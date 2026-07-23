@@ -1,8 +1,8 @@
 # Phase 10 — Portfolio Observatory Product Realignment
 
-Status: planning specification only
+Status: implementation active
 
-Implementation status: direction selected; §0 baseline not started
+Implementation status: §0 baseline complete; §1 not started
 
 Selected direction: Field Journal structural base with Night Orbit orbital
 chapter navigation, selected-body inspector, and static concentric fallback

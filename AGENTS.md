@@ -4,7 +4,7 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-# Multi-agent protocol (Phase 9)
+# Multi-agent protocol (Phase 10)
 
 This repo is worked on by two different coding-agent CLIs (Claude Code and
 OpenAI Codex CLI) across sessions, never simultaneously. Codex CLI reads
@@ -12,13 +12,15 @@ this file (`AGENTS.md`) natively; Claude Code is pointed here by one line
 in `CLAUDE.md`. Do not duplicate this protocol there.
 
 Before doing anything:
-1. Read the current `PHASE*_PROGRESS.md` (currently `PHASE9_PROGRESS.md`)
+1. Read the current `PHASE*_PROGRESS.md` (currently `PHASE10_PROGRESS.md`)
    before doing anything else.
-2. For any UI-bearing Phase 9 work, also read `docs/PHASE9_UX_BRIEF.md`
-   first — it carries the project-specific UX intent that generic
-   frontend-design advice must not override.
+2. For any Phase 10 work, also read `PRODUCT_DIRECTION.md`,
+   `docs/PHASE10_UX_ARCHITECTURE.md`, `docs/PHASE10_AGENT_WORKFLOW.md`,
+   `PHASE10.md`, and `PHASE10_STATE.json`. These carry the selected product
+   direction and role-specific workflow that generic frontend advice must not
+   override.
 3. Work sections in order; one commit per section
-   (`phase9(§N): <summary>`); `npm test` and `npm run build` must be green
+   (`phase10(§N): <summary>`); `npm test` and `npm run build` must be green
    before every commit.
 4. Append your tool/model name to every checklist item you complete
    (e.g. `— done by claude-code/sonnet-5`, `— done by codex/<model>`).

@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "current_section": "§1",
+  "role": "claude_builder",
+  "status": "ready",
+  "next_agent": "claude",
+  "selected_direction": {
+    "name": "Field Journal",
+    "recorded_by": "Devan",
+    "recorded_at": "2026-07-23T22:22:12Z",
+    "structural_base": "Field Journal",
+    "retained_parts": [
+      "Field Journal editorial market-relative lead",
+      "Field Journal observation-plate chapter stack",
+      "Field Journal evidence marginalia",
+      "Field Journal annotated divergence ribbon"
+    ],
+    "combined_parts": [
+      "Night Orbit orbital chapter navigation",
+      "Night Orbit selected-body inspector",
+      "Night Orbit static concentric fallback"
+    ]
+  },
+  "section_0": {
+    "status": "complete",
+    "completed_by": "codex/gpt-5",
+    "completed_at": "2026-07-23T22:48:01Z",
+    "baseline_report": "docs/phase10-baseline/section-0/README.md",
+    "handoff": "docs/phase10-handoffs/2026-07-23-section-0-codex-to-claude.md",
+    "commit_subject": "phase10(§0): baseline selected Field Journal orbital hybrid",
+    "production_ui_changed": false
+  },
+  "last_green_commit": "0e71fc3a6bbbc64f0382c7642f9dfcb5212bd950",
+  "last_green_commit_note": "The executable source tree is unchanged from this commit. Resolve the latest HEAD to obtain the documentation-only §0 commit before beginning §1.",
+  "verification": {
+    "tests": {
+      "command": "npm test",
+      "status": "pass",
+      "summary": "46 test files passed; 239 of 239 tests passed.",
+      "finished_at": "2026-07-23T22:47:58Z"
+    },
+    "build": {
+      "command": "npm run build",
+      "status": "pass",
+      "summary": "Next.js 16.2.11 compiled successfully; TypeScript passed; 14 static-page tasks generated.",
+      "finished_at": "2026-07-23T22:47:58Z",
+      "font_network_behavior": "src/app/layout.tsx imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. The normal build passed, but the source remains build-time network-dependent; no offline build was claimed."
+    },
+    "visual": {
+      "required": true,
+      "status": "pass",
+      "desktop_screenshot": "docs/phase10-baseline/section-0/desktop/share-1440x900.png",
+      "mobile_screenshot": "docs/phase10-baseline/section-0/mobile/share-390x844.png",
+      "desktop": {
+        "/share": "docs/phase10-baseline/section-0/desktop/share-1440x900.png",
+        "/": "docs/phase10-baseline/section-0/desktop/home-1440x900.png",
+        "/dashboard": "docs/phase10-baseline/section-0/desktop/dashboard-1440x900.png",
+        "/compare": "docs/phase10-baseline/section-0/desktop/compare-1440x900.png",
+        "/research": "docs/phase10-baseline/section-0/desktop/research-1440x900.png",
+        "/history": "docs/phase10-baseline/section-0/desktop/history-1440x900.png",
+        "/trades": "docs/phase10-baseline/section-0/desktop/trades-1440x900.png"
+      },
+      "mobile": {
+        "/share": "docs/phase10-baseline/section-0/mobile/share-390x844.png",
+        "/": "docs/phase10-baseline/section-0/mobile/home-390x844.png",
+        "/dashboard": "docs/phase10-baseline/section-0/mobile/dashboard-390x844.png",
+        "/compare": "docs/phase10-baseline/section-0/mobile/compare-390x844.png",
+        "/research": "docs/phase10-baseline/section-0/mobile/research-390x844.png",
+        "/history": "docs/phase10-baseline/section-0/mobile/history-390x844.png",
+        "/trades": "docs/phase10-baseline/section-0/mobile/trades-390x844.png"
+      },
+      "console": {
+        "warnings": 0,
+        "errors": 0
+      },
+      "mobile_overflow": {
+        "/share": false,
+        "/": false,
+        "/dashboard": false,
+        "/compare": false,
+        "/research": false,
+        "/history": false,
+        "/trades": false
+      }
+    },
+    "accessibility": {
+      "status": "recorded",
+      "chapter_navigation": "No Phase 10 chapter navigation exists in the production baseline.",
+      "focus": "The public FlipCard received a visible 2px solid violet focus outline with 2px offset. Existing route navigation uses semantic links/buttons.",
+      "headings": "No h1 was present on /share, /, or /dashboard; /compare, /research, /history, and /trades each exposed an h1.",
+      "reduced_motion": "The live browser preference was no-preference. Existing animation components retain Phase 9 reduced-motion source/tests; §0 did not claim a live emulated reduced-motion pass.",
+      "known_issues": [
+        "No five-chapter semantic or spatial navigation exists before §1.",
+        "Missing h1 elements on /share, /, and /dashboard.",
+        "Mobile research/history/trades retain dense table/chart presentations even though page-level overflow is contained."
+      ]
+    },
+    "privacy": {
+      "status": "pass",
+      "public_share_visible_currency_patterns": 0,
+      "public_share_raw_strict_currency_patterns": 0,
+      "public_share_raw_comma_currency_patterns": 0,
+      "public_share_forbidden_owner_markers": 0,
+      "private_routes_gated_when_logged_out": [
+        "/",
+        "/dashboard",
+        "/compare",
+        "/research",
+        "/history",
+        "/trades"
+      ],
+      "public_routes_confirmed": [
+        "/share"
+      ],
+      "logged_out_exports": {
+        "/api/export/history.csv": 401,
+        "/api/export/trades.csv": 401
+      },
+      "env_contents_accessed_or_output": false,
+      "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override; no environment-file contents were read."
+    },
+    "process_check": {
+      "status": "pass",
+      "summary": "No Claude Code or Codex CLI execution was active against the repository. Idle desktop/browser helper processes were present and made no worktree changes."
+    }
+  },
+  "review": {
+    "result": "not_run",
+    "reviewer": null,
+    "scorecard": {
+      "product_alignment": "not_run",
+      "hierarchy": "not_run",
+      "usefulness": "not_run",
+      "originality": "not_run",
+      "accessibility_mobile": "not_run",
+      "engineering_reliability": "not_run"
+    },
+    "failures": []
+  },
+  "failure_count": {
+    "consecutive": 0,
+    "maximum": 3
+  },
+  "stop_reason": null,
+  "handoff_reason": "§0 is complete. Stop before §1 as requested; Claude is the next builder only after Devan explicitly starts that section.",
+  "updated_at": "2026-07-23T22:48:01Z"
+}
