@@ -92,8 +92,8 @@ one green commit per section: `phase10(§N): <summary>`.
 
 ## §1. Selected direction technical spike and semantic shell
 
-Status: builder work complete, awaiting Codex Critic review. Next role: Codex
-Critic.
+Status: Codex Critic review failed with five bounded findings. Next role:
+Claude Refiner. §2 is not started.
 
 - [x] Confirmed the recorded Field Journal structural base and exact Night
   Orbit borrowed parts against `PRODUCT_DIRECTION.md` and
@@ -152,4 +152,43 @@ Critic.
 - Machine state: `PHASE10_STATE.json` (`section_1`, `verification`)
 
 Do not begin §2 without Devan's explicit instruction; §1 stops here for
-Codex Critic review per `docs/PHASE10_AGENT_WORKFLOW.md`.
+Claude refinement and Codex acceptance per
+`docs/PHASE10_AGENT_WORKFLOW.md`.
+
+### §1 Codex Critic review
+
+- [x] Confirmed Claude Code was closed, the worktree was clean, and the
+  reviewed builder candidate was `507265d` — done by codex/gpt-5
+- [x] Reviewed the complete §1 diff, source, tests, selected Field Journal
+  hybrid, acceptance criteria, decision record, and all committed screenshots
+  without editing implementation files — done by codex/gpt-5
+- [x] Independently exercised the shell at true 1440×900, 390×844, and
+  320×844; both phone widths had no horizontal overflow and all five chapter
+  targets were 44px tall — done by codex/gpt-5
+- [x] Independently verified click/back/forward focus restoration, semantic
+  current state, owner gating, logged-out currency/private-marker isolation,
+  zero retained-route console warnings/errors, and final R3F dependency
+  absence — done by codex/gpt-5
+- [x] Independently re-ran `npm test`: 51 files and 278/278 tests passed —
+  done by codex/gpt-5
+- [x] Independently re-ran `npm run build`: Next.js 16.2.11 compiled,
+  TypeScript passed, and 16 static-page tasks generated — done by codex/gpt-5
+- [x] Recorded scorecard: Product alignment FAIL; Hierarchy PASS; Usefulness
+  FAIL; Originality PASS; Accessibility/mobile FAIL; Engineering reliability
+  FAIL — done by codex/gpt-5
+- [x] Recorded five bounded findings: incomplete/mislabeled spike evidence,
+  query-state loss, dead R3F route link, freshness-label contrast, and missing
+  static concentric fallback — done by codex/gpt-5
+- [x] Prepared the Claude Refiner handoff and stopped without implementation
+  fixes or §2 work — done by codex/gpt-5
+- [x] Critic-only commit:
+  `phase10(review §1): fail with bounded refiner handoff` — done by
+  codex/gpt-5
+
+### §1 critic evidence
+
+- Critic report:
+  `docs/phase10-reviews/2026-07-23-section-1-codex-critic.md`
+- Claude Refiner handoff:
+  `docs/phase10-handoffs/2026-07-23-section-1-codex-to-claude-refiner.md`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_refiner`)

@@ -2,9 +2,9 @@
   "schema_version": 1,
   "phase": 10,
   "current_section": "§1",
-  "role": "codex_critic",
-  "status": "awaiting_critic",
-  "next_agent": "codex",
+  "role": "claude_refiner",
+  "status": "awaiting_refiner",
+  "next_agent": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -32,40 +32,44 @@
     "production_ui_changed": false
   },
   "section_1": {
-    "status": "awaiting_critic",
+    "status": "awaiting_refiner",
     "completed_by": "claude-code/sonnet-5",
     "completed_at": "2026-07-23T19:30:00-07:00",
+    "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
     "evidence_report": "docs/phase10-baseline/section-1/README.md",
     "css_vs_r3f_decision": "docs/phase10-spike-section-1/DECISION.md",
+    "critic_report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
+    "refiner_handoff": "docs/phase10-handoffs/2026-07-23-section-1-codex-to-claude-refiner.md",
     "commit_subject": "phase10(§1): CSS 3D technical spike and production Observatory shell",
     "css_vs_r3f_result": "CSS 3D selected; no production Three.js/R3F dependency",
     "production_ui_changed": false,
     "shell_wired_into_share_or_home": false,
     "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 deliberately did not widen scope to do that here."
   },
-  "last_green_commit": "f25e271277c0063a22dd81a2059aa968cbfd1815",
-  "last_green_commit_note": "This is the pre-§1 HEAD (the §0 baseline commit). §1's own commit (subject: phase10(§1): CSS 3D technical spike and production Observatory shell) sits on top of it — resolve the latest HEAD to obtain that commit before the Codex Critic review begins.",
+  "last_green_commit": "507265d6e3427a414f2e2844d8513243ef348198",
+  "last_green_commit_note": "Exact §1 builder candidate. Codex Critic independently re-ran the full tests and production build against this executable source; the critic commit changes review/state documentation only.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "51 test files passed; 278 of 278 tests passed (was 46 files / 239 tests at §0; +5 files / +39 tests for §1: chapters.test.ts, ChapterOrbit.test.tsx, ObservatoryShell.test.tsx, ChapterFocusManager.test.tsx, observatory-fallback.test.ts).",
-      "finished_at": "2026-07-23T19:27:14-07:00"
+      "summary": "Codex Critic independently re-ran the suite: 51 test files passed; 278 of 278 tests passed (was 46 files / 239 tests at §0).",
+      "finished_at": "2026-07-23T23:48:29Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Next.js 16.2.11 compiled successfully; TypeScript passed; 16 route tasks generated (was 14 at §0; /dev/observatory-shell and /dev/phase10-spike-css are new; /dev/phase10-spike-r3f was added and removed within this section).",
-      "finished_at": "2026-07-23T19:28:00-07:00",
+      "summary": "Codex Critic independently re-ran the Next.js 16.2.11 production build: compilation and TypeScript passed; 16 static-page tasks generated.",
+      "finished_at": "2026-07-23T23:48:29Z",
       "font_network_behavior": "Unchanged from §0: src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. Not silently absorbed into §1 — remains §13 work.",
       "r3f_dependency_absent": "Confirmed by direct inspection: three, @react-three/fiber, and @types/three are absent from package.json, package-lock.json, and node_modules at the final commit."
     },
     "visual": {
       "required": true,
-      "status": "pass",
+      "status": "fail",
       "desktop_screenshot": "docs/phase10-baseline/section-1/desktop/observatory-shell-public-1440x900.jpg",
       "mobile_screenshot": "docs/phase10-baseline/section-1/mobile/observatory-shell-614x667-organic-fallback.jpg",
-      "note": "Full screenshot index (spike + shell, public/private/fallback states) is in docs/phase10-baseline/section-1/README.md. §0's desktop/mobile screenshots remain valid at their original paths and are unchanged by §1.",
+      "note": "Critic inspection found that the shell public file labeled 1440x900 is 892x779; the other desktop files labeled 1440x900 are 991x865; the committed mobile files are 614x667. Genuine required target screenshots are absent.",
+      "critic_live_check": "The final CSS shell was independently rendered at true 1440x900, 390x844, and 320x844. Both phone widths matched document/client width with no horizontal overflow; five chapter targets were exactly 44px tall.",
       "console": {
         "warnings": 0,
         "errors": 0
@@ -73,14 +77,18 @@
       "mobile_capture_limitation": "This session's browser automation could not resize below ~614 CSS px (vs. the required 390/320 targets). The 614px capture exercises the same max-width:767px rule 390/320 would hit — see docs/phase10-baseline/section-1/README.md 'Mobile capture limitation' for the full explanation and mitigations (forced-fallback screenshots + a CSS-source invariant test). No 390px/320px screenshot is claimed."
     },
     "accessibility": {
-      "status": "recorded",
+      "status": "fail",
       "chapter_navigation": "ObservatoryShell/ChapterOrbit now provide real five-chapter semantic navigation (one <nav>, one real link per chapter, aria-current on the active one) with a working static/no-3D fallback — the §0 gap this section exists to close. Not yet wired into /share, /, or /dashboard (§2/§4/§6 do that).",
       "focus": "The active chapter's h2 (tabIndex=-1) receives a visible :focus-visible outline and is the focus-restoration target after a client-side chapter change (verified live in-browser and by ChapterFocusManager.test.tsx).",
       "headings": "Each ObservatoryShell instance renders exactly one h1 (verified by test). Still not present on the live /share, /, or /dashboard routes until §2/§4/§6 wire the shell in.",
       "reduced_motion": "Implemented as pure CSS (@media (prefers-reduced-motion: reduce)), not JS-driven — verified structurally by observatory-fallback.test.ts, which asserts the reduced-motion query and the forced-no-3D test hook stay wired to the same classes and both disable the entry animation and 3D transform.",
+      "critic_mobile_check": "True 390x844 and 320x844 layouts fit without horizontal overflow; click navigation and browser back/forward restored focus to the active h2; mobile chapter links were 44px tall.",
+      "contrast": "FAIL: .freshnessLabel computed to rgb(114,109,99) over rgb(11,11,14), 3.82:1 at 12.8px/400.",
       "known_issues": [
         "The shell is proven at /dev/observatory-shell only; production routes still lack it until later sections wire it in.",
-        "390px/320px screenshots were not captured live — see mobile_capture_limitation."
+        "Required durable 390x844/320px screenshots are absent.",
+        "Freshness-label contrast is below 4.5:1.",
+        "The selected static concentric fallback is not represented; the fallback is a rectangular vertical list."
       ]
     },
     "privacy": {
@@ -94,27 +102,70 @@
     },
     "process_check": {
       "status": "pass",
-      "summary": "A Codex CLI sandbox process with --working-dir scoped to this repo was found running; Devan confirmed it was idle before work began. No Claude or Codex process made worktree changes during this session other than this one."
+      "summary": "Before the critic review, the Claude Code CLI process was confirmed closed. Only the active Codex desktop review operated against the repository; the temporary local review server was stopped before verification/commit."
     }
   },
   "review": {
-    "result": "not_run",
-    "reviewer": null,
+    "result": "fail",
+    "reviewer": "codex/gpt-5",
+    "reviewed_commit": "507265d6e3427a414f2e2844d8513243ef348198",
+    "report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
     "scorecard": {
-      "product_alignment": "not_run",
-      "hierarchy": "not_run",
-      "usefulness": "not_run",
-      "originality": "not_run",
-      "accessibility_mobile": "not_run",
-      "engineering_reliability": "not_run"
+      "product_alignment": "fail",
+      "hierarchy": "pass",
+      "usefulness": "fail",
+      "originality": "pass",
+      "accessibility_mobile": "fail",
+      "engineering_reliability": "fail"
     },
-    "failures": []
+    "failures": [
+      {
+        "category": "engineering_reliability",
+        "criterion": "required measured and dimensionally accurate technical-spike evidence",
+        "evidence": "The decision omits measured load time, long tasks, frame stability, memory, and phone interaction latency. Files labeled 1440x900 are 892x779 or 991x865; committed mobile files are 614x667.",
+        "impact": "The CSS-versus-R3F decision and visual acceptance cannot be reproduced against the required protocol and target viewports.",
+        "required_change": "Recreate both spikes long enough to record every required runtime metric and genuine 1440x900/390x844 evidence, verify dimensions, then remove R3F code/dependencies before commit.",
+        "verification": "Record the measurement protocol and values; run sips over every indexed screenshot; re-run tests/build after cleanup."
+      },
+      {
+        "category": "usefulness",
+        "criterion": "stable URL state across chapter navigation",
+        "evidence": "Chapter hrefs replace the query with only chapter. Clicking Forces from mode=private changed the preview to public; no3d=1 is also dropped.",
+        "impact": "A chapter action silently changes the user's shell/fallback mode.",
+        "required_change": "Preserve route-relevant query state while replacing only chapter.",
+        "verification": "Add private, no3d, ordinary public, click, and back/forward URL/focus tests."
+      },
+      {
+        "category": "usefulness",
+        "criterion": "retained evidence controls lead to valid destinations",
+        "evidence": "The retained CSS spike links to removed /dev/phase10-spike-r3f; the critic activated it and received 404.",
+        "impact": "The durable spike sends reviewers to an error.",
+        "required_change": "Link to durable R3F evidence/decision documentation or render historical context without a dead route link.",
+        "verification": "Assert no link points at the removed route and manually activate retained evidence links."
+      },
+      {
+        "category": "accessibility_mobile",
+        "criterion": "normal text contrast meets 4.5:1",
+        "evidence": "The freshness label computed to 3.82:1 at 12.8px/400.",
+        "impact": "First-class reliability context is below an accessible reading threshold.",
+        "required_change": "Raise freshness-label contrast to at least 4.5:1 while retaining hierarchy.",
+        "verification": "Record computed normal/stale colors and ratios at desktop and 390px."
+      },
+      {
+        "category": "product_alignment",
+        "criterion": "the exact selected Night Orbit static concentric fallback is present",
+        "evidence": "Forced, reduced-motion, and mobile fallback CSS produces only a rectangular vertical link strip and inspector; no static concentric map or equivalent spatial index exists.",
+        "impact": "The fallback loses an exact owner-selected part and becomes conventional stacked navigation.",
+        "required_change": "Add a restrained static concentric map sharing the existing semantic state and single link set without overflow or duplicate focus stops.",
+        "verification": "Capture forced/reduced-motion desktop, 390x844, and 320px states and verify one semantic navigation/five links."
+      }
+    ]
   },
   "failure_count": {
-    "consecutive": 0,
+    "consecutive": 1,
     "maximum": 3
   },
-  "stop_reason": null,
-  "handoff_reason": "§1 builder work is complete and committed. Handing off to the read-only Codex Critic per docs/PHASE10_AGENT_WORKFLOW.md — do not begin §2 until the critic (and refiner, if needed) accept §1.",
-  "updated_at": "2026-07-23T19:30:00-07:00"
+  "stop_reason": "Codex Critic completed with five blocking §1 findings. Awaiting Claude Refiner; §2 has not started.",
+  "handoff_reason": "Route §1 to Claude Refiner to address only the five recorded failures, then return to Codex acceptance review.",
+  "updated_at": "2026-07-23T23:48:29Z"
 }
