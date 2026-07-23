@@ -13,7 +13,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [x] §4 History page `/history`
 - [x] §5 Dashboard additions (news, ATH chip, risk extensions)
 - [x] §6 Live quotes + auto-refresh
-- [ ] §7 CSV export
+- [x] §7 CSV export
 - [x] §8 Finnhub data layer (cache module)
 - [ ] §9 Privacy matrix re-verification
 - [ ] §10 Integration pass
@@ -297,3 +297,32 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   math the poller calls, this is strong-but-not-fully-live confirmation —
   recommend Devan do one real manual check (open the dashboard, watch the
   Network tab for ~90s) before relying on this in production.
+
+## §7 notes
+
+- No dependency added for RFC-4180 quoting, per the phase doc's own
+  suggestion — `src/lib/csv.ts` is ~15 lines (`csvField` + `toCsv`),
+  unit-tested including the comma/quote/newline/null cases.
+- CSV values are raw numbers, not the UI's display-formatted strings (no
+  `$`, no `%`, no thousands separators) — a judgment call, since the
+  phase doc didn't specify. Percentages (Day %, Cumulative TWR) are
+  exported as percentage points (e.g. `-0.83` for -0.83%), matching what
+  the History table itself shows, rather than raw decimal fractions —
+  chosen so the CSV reads the same as the table without needing
+  spreadsheet-side percentage formatting.
+- Both routes verified for real: 401 with no session (curl, no cookie);
+  200 with `Content-Type: text/csv` and the correct
+  `Content-Disposition: attachment; filename=...` plus correct data when
+  given a valid session cookie (computed the HMAC session token from
+  `OWNER_PASSWORD` inside a throwaway script — never printed the
+  password itself, consistent with "never print .env* contents"). The
+  History CSV's first data row independently reproduces the exact
+  `-190.24 / -0.83%` figures already seen in the `/history` UI table,
+  cross-checking the export against the page it mirrors.
+- One transient 503 was observed on a single `/api/export/history.csv`
+  request during browser-based testing (immediately preceded by an
+  aborted fetch attempt that the browser tool blocked for touching
+  cookie data). Retried via curl immediately after — consistently 200.
+  Almost certainly a Next dev-server Fast-Refresh hiccup from this
+  session's heavy file-editing cadence, not a code issue; not chased
+  further given curl's consistent success.

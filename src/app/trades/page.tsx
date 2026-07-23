@@ -46,8 +46,14 @@ export default async function TradesPage() {
       <NavBar variant="private" active="trades" />
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="space-y-8">
-          <div>
+          <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-text-primary">Trade log</h1>
+            <a
+              href="/api/export/trades.csv"
+              className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-text-secondary hover:border-border-strong hover:text-text-primary"
+            >
+              Export CSV
+            </a>
           </div>
 
           <div className="space-y-4">
