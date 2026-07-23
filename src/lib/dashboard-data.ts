@@ -91,6 +91,9 @@ export type DashboardData = {
   worstDay: DatedReturn | null;
   winRatePct: number;
   currentStreak: Streak | null;
+  /** Ingredients for client-side Daily Change recomputation as new live quotes arrive (§6). */
+  netFlowsToday: number;
+  prevSnapshotValue: number | null;
 };
 
 /**
@@ -208,6 +211,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       dayPct,
       isNewToday: boughtToday,
       sparkline: (pricesByTicker.get(p.ticker) ?? []).slice(-SPARKLINE_POINTS).map((pt) => pt.price),
+      prevClose,
     };
   });
 
@@ -367,5 +371,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     worstDay: worstDayResult,
     winRatePct,
     currentStreak: currentStreakResult,
+    netFlowsToday,
+    prevSnapshotValue: prevSnapshot?.totalValue ?? null,
   };
 }

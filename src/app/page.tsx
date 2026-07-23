@@ -5,9 +5,10 @@ import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { NavBar } from "@/components/layout/NavBar";
-import { HeadlineStats } from "@/components/dashboard/HeadlineStats";
-import { PositionsTable } from "@/components/dashboard/PositionsTable";
-import { WinnersLosers } from "@/components/dashboard/WinnersLosers";
+import { LiveQuotesProvider } from "@/components/dashboard/LiveQuotesProvider";
+import { LiveHeadlineStats } from "@/components/dashboard/LiveHeadlineStats";
+import { LivePositionsTable } from "@/components/dashboard/LivePositionsTable";
+import { LiveWinnersLosers } from "@/components/dashboard/LiveWinnersLosers";
 import { ValueChart } from "@/components/dashboard/ValueChart";
 import { RiskPanel } from "@/components/dashboard/RiskPanel";
 import { BetaTable } from "@/components/dashboard/BetaTable";
@@ -56,65 +57,66 @@ export default async function Home() {
   return (
     <>
       <NavBar variant="private" active="dashboard" />
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="space-y-8">
-          <HeadlineStats
-            totalValue={data.totalValue}
-            totalCost={data.totalCost}
-            simpleReturnPct={data.simpleReturnPct}
-            dailyChange={data.dailyChange}
-            dailyChangePct={data.dailyChangePct}
-            dailyChangeAsOf={data.dailyChangeAsOf}
-            twrPct={data.twrPct}
-            xirrPct={data.xirrPct}
-            historyDays={data.historyDays}
-            pricesAsOf={data.pricesAsOf}
-            allTimeHigh={data.allTimeHigh}
-          />
+      <LiveQuotesProvider initialPositions={data.positionRows}>
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+          <div className="space-y-8">
+            <LiveHeadlineStats
+              totalCost={data.totalCost}
+              simpleReturnPct={data.simpleReturnPct}
+              dailyChangeAsOf={data.dailyChangeAsOf}
+              twrPct={data.twrPct}
+              xirrPct={data.xirrPct}
+              historyDays={data.historyDays}
+              pricesAsOf={data.pricesAsOf}
+              allTimeHigh={data.allTimeHigh}
+              netFlowsToday={data.netFlowsToday}
+              prevSnapshotValue={data.prevSnapshotValue}
+            />
 
-          <ValueChart data={data.chartData} />
+            <ValueChart data={data.chartData} />
 
-          <BetaTable comparisons={data.benchmarkComparisons} />
+            <BetaTable comparisons={data.benchmarkComparisons} />
 
-          <ExcessReturns comparisons={data.benchmarkComparisons} />
+            <ExcessReturns comparisons={data.benchmarkComparisons} />
 
-          <PositionsTable positions={data.positionRows} />
+            <LivePositionsTable />
 
-          <RealizedUnrealized
-            realizedGain={data.realizedGain}
-            unrealizedGain={data.unrealizedGain}
-            totalCost={data.totalCost}
-          />
+            <RealizedUnrealized
+              realizedGain={data.realizedGain}
+              unrealizedGain={data.unrealizedGain}
+              totalCost={data.totalCost}
+            />
 
-          <CompositionDonut slices={data.donutSlices} />
+            <CompositionDonut slices={data.donutSlices} />
 
-          <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
+            <ClassificationBarList title="Sector weights" items={data.sectorWeights} />
 
-          <ClassificationBarList title="AI exposure" items={data.aiExposureWeights} />
+            <ClassificationBarList title="AI exposure" items={data.aiExposureWeights} />
 
-          <CorrelationHeatmap tickers={data.correlationTickers} matrix={data.correlationCells} />
+            <CorrelationHeatmap tickers={data.correlationTickers} matrix={data.correlationCells} />
 
-          <WinnersLosers winners={data.winners} losers={data.losers} movers={data.movers} />
+            <LiveWinnersLosers winners={data.winners} losers={data.losers} />
 
-          <EarningsCalendar events={data.upcomingEarnings} />
+            <EarningsCalendar events={data.upcomingEarnings} />
 
-          {data.latestNews.length > 0 && <LatestNews items={data.latestNews} />}
+            {data.latestNews.length > 0 && <LatestNews items={data.latestNews} />}
 
-          <RiskPanel
-            volatilityPct={data.volatilityPct}
-            maxDrawdownPct={data.maxDrawdown}
-            sharpe={data.sharpe}
-            betaVsVoo={data.betaVsVoo}
-            top2ConcentrationPct={data.top2ConcentrationPct}
-            hhi={data.hhi}
-            sortinoRatio={data.sortinoRatio}
-            bestDay={data.bestDay}
-            worstDay={data.worstDay}
-            winRatePct={data.winRatePct}
-            currentStreak={data.currentStreak}
-          />
+            <RiskPanel
+              volatilityPct={data.volatilityPct}
+              maxDrawdownPct={data.maxDrawdown}
+              sharpe={data.sharpe}
+              betaVsVoo={data.betaVsVoo}
+              top2ConcentrationPct={data.top2ConcentrationPct}
+              hhi={data.hhi}
+              sortinoRatio={data.sortinoRatio}
+              bestDay={data.bestDay}
+              worstDay={data.worstDay}
+              winRatePct={data.winRatePct}
+              currentStreak={data.currentStreak}
+            />
+          </div>
         </div>
-      </div>
+      </LiveQuotesProvider>
     </>
   );
 }

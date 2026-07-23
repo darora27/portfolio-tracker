@@ -15,8 +15,12 @@ import { CompositionDonut } from "@/components/dashboard/CompositionDonut";
 import { RealizedUnrealized } from "@/components/dashboard/RealizedUnrealized";
 import { EarningsCalendar } from "@/components/dashboard/EarningsCalendar";
 
-// Public, read-only, no login. Reflects live DB state, so never static.
-export const dynamic = "force-dynamic";
+// Public, read-only, no login, no client-side polling (unlike the private
+// dashboard). Statically served and regenerated at most every 5 minutes —
+// "prices as of" staleness on this page is measured in minutes, not
+// seconds, which is fine for a read-only view nobody is actively trading
+// off of.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Portfolio — Share View",

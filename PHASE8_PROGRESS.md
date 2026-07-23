@@ -12,7 +12,7 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
 - [x] §3 Position detail page `/stock/[ticker]`
 - [x] §4 History page `/history`
 - [x] §5 Dashboard additions (news, ATH chip, risk extensions)
-- [ ] §6 Live quotes + auto-refresh
+- [x] §6 Live quotes + auto-refresh
 - [ ] §7 CSV export
 - [x] §8 Finnhub data layer (cache module)
 - [ ] §9 Privacy matrix re-verification
@@ -245,3 +245,55 @@ top to bottom. Commit after each section (`phase8(§N): <summary>`) with
   `src/lib/math/daily-stats.ts` and `all-time-high.ts` (both fully
   fixture-tested). Confirmed the Finnhub-budget interaction noted above.
   146/146 tests pass, build clean.
+
+## §6 notes
+
+- Live updates use a React Context provider (`LiveQuotesProvider`) rather
+  than one monolithic client component, because the three sections §6
+  names as live ("Positions day columns, Daily Change, Total Value, and
+  movers") are NOT adjacent in the page — ValueChart/Beta/Excess Returns/
+  Realized-Unrealized/Composition/Sector/AI/Correlation sit between
+  HeadlineStats and PositionsTable, and Earnings sits between
+  PositionsTable and WinnersLosers. The provider wraps the whole page
+  body; three thin client wrappers (`LiveHeadlineStats`,
+  `LivePositionsTable`, `LiveWinnersLosers`) consume it via `useLiveQuotes()`
+  in their normal JSX positions, so `page.tsx`'s rendering order is
+  untouched. `/share` doesn't use any of these — it keeps the plain
+  static components, matching "does NOT poll."
+- Scope of what updates live is deliberately narrow, per the phase doc's
+  own list: only `price`, `value` (needed so Total Value = sum of
+  position values stays internally consistent), `day`, and `dayPct` are
+  recomputed per position on each poll tick. `gain`/`gainPct`/`weight`/
+  `contribution` and the since-purchase Winners/Losers stay frozen at
+  their server-rendered values — those aren't in scope and freezing them
+  avoids inventing update semantics the phase doc never specified.
+- `export const revalidate = 300` was added to `/share` as instructed,
+  but it does NOT actually make the route statically served in practice:
+  Next.js opts a route into full dynamic rendering wherever it contains
+  a `fetch` with `cache: "no-store"`, and every Finnhub call in
+  `finnhub.ts` intentionally uses `no-store` (so Next's own fetch cache
+  never fights with the custom §8 TTL/budget cache). Confirmed via
+  `npm run build`'s route table — `/share` is still marked `ƒ` (dynamic)
+  before and after this change. The half of §6 that matters more (no
+  client-side polling from `/share`, unlike `/`) is fully achieved; the
+  ISR/static half is not, given the current Finnhub-fetch architecture.
+  Recorded here rather than silently claiming something the build output
+  contradicts.
+- Verified: `/api/quotes` returns `{quotes, marketOpen}` with real prices
+  (curl'd directly). In the browser, `document.visibilityState` reported
+  `"hidden"` for the whole automated tab session — confirmed the poll
+  correctly skips fetching while hidden (matches the spec exactly).
+  Forcing `document.visibilityState` to `"visible"` via
+  `Object.defineProperty` and waiting through further 60s windows did not
+  produce an observed `/api/quotes` request in the network log, most
+  likely because this session's heavy file-editing triggered repeated
+  Next.js Fast-Refresh/HMR reconnects that reset component state/timers
+  mid-wait (5 `[HMR] connected` events logged in the same second during
+  one of the waits) — not something a real user's session would
+  experience. Manually executing the exact fetch the poller performs,
+  from the page's own JS context, succeeded and returned the exact shape
+  `LiveQuotesProvider` expects. Combined with code review and the
+  already-unit-tested `dayChange`/`dailyChangeAmount`/`dailyChangePercent`
+  math the poller calls, this is strong-but-not-fully-live confirmation —
+  recommend Devan do one real manual check (open the dashboard, watch the
+  Network tab for ~90s) before relying on this in production.

@@ -12,6 +12,8 @@ export type PositionRow = Position & {
   dayPct: number | null;
   isNewToday: boolean;
   sparkline: number[];
+  /** The reference price day/dayPct were computed against — needed to recompute both client-side as new live quotes arrive. */
+  prevClose: number | null;
 };
 
 function DayCell({
