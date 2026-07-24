@@ -36,11 +36,11 @@
     "completed_by": "claude-code/sonnet-5",
     "completed_at": "2026-07-23T19:30:00-07:00",
     "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
-    "critic_commit": "bb57bd8",
+    "critic_commit": "bb57bd8eb26ea1c1889e34a961575e839aee57fe",
     "refiner_completed_by": "claude-code/sonnet-5",
     "refiner_completed_at": "2026-07-24T00:30:00Z",
-    "refiner_commit": null,
-    "refiner_commit_note": "Recorded in the immediate follow-up bookkeeping commit `phase10(§1): record refiner commit for acceptance handoff` once the refinement commit's own hash is known (a state file committed inside a commit cannot contain that same commit's hash) — the same non-self-referential pattern the critic's own state-only commit already used relative to the builder commit.",
+    "refiner_commit": "3887bed60aea9ee82bae0a8f3c58f627a5d6e1d0",
+    "refiner_commit_note": "Recorded in this immediate follow-up bookkeeping commit once the refinement commit's own hash was known (a state file committed inside a commit cannot contain that same commit's hash) — the same non-self-referential pattern the critic's own state-only commit already used relative to the builder commit.",
     "evidence_report": "docs/phase10-baseline/section-1/README.md",
     "css_vs_r3f_decision": "docs/phase10-spike-section-1/DECISION.md",
     "critic_report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
@@ -53,8 +53,8 @@
     "shell_wired_into_share_or_home": false,
     "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 (builder and refiner) deliberately did not widen scope to do that here."
   },
-  "last_green_commit": null,
-  "last_green_commit_note": "Recorded in the follow-up bookkeeping commit (see section_1.refiner_commit_note) — will equal the `phase10(§1): refine critic findings` commit hash. Tests (291/291, 53 files) and production build (16 routes) were run by the Claude Refiner against that commit's exact working-tree content before committing.",
+  "last_green_commit": "3887bed60aea9ee82bae0a8f3c58f627a5d6e1d0",
+  "last_green_commit_note": "The `phase10(§1): refine critic findings` commit. Tests (291/291, 53 files) and production build (16 routes) were run by the Claude Refiner against that commit's exact working-tree content before committing; this bookkeeping-only follow-up commit records the resulting hash (see section_1.refiner_commit_note for why it couldn't be included in the refinement commit itself).",
   "verification": {
     "tests": {
       "command": "npm test",
