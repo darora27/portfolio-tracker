@@ -92,8 +92,8 @@ one green commit per section: `phase10(§N): <summary>`.
 
 ## §1. Selected direction technical spike and semantic shell
 
-Status: Codex Critic review failed with five bounded findings. Next role:
-Claude Refiner. §2 is not started.
+Status: Claude Refiner addressed all five bounded critic findings. Next
+role: Codex acceptance review. §2 is not started.
 
 - [x] Confirmed the recorded Field Journal structural base and exact Night
   Orbit borrowed parts against `PRODUCT_DIRECTION.md` and
@@ -191,4 +191,86 @@ Claude refinement and Codex acceptance per
   `docs/phase10-reviews/2026-07-23-section-1-codex-critic.md`
 - Claude Refiner handoff:
   `docs/phase10-handoffs/2026-07-23-section-1-codex-to-claude-refiner.md`
-- Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_refiner`)
+- Machine state: `PHASE10_STATE.json` (`section_1`, was `awaiting_refiner`,
+  now `awaiting_acceptance`)
+
+### §1 Claude Refiner
+
+- [x] Read the critic report, the current `PHASE10_STATE.json`, and every
+  §1 evidence document before touching any file — done by
+  claude-code/sonnet-5
+- [x] Fixed finding 2 (usefulness): `observatoryChapterHref()` now accepts
+  an optional `preservedQuery` map; `ChapterOrbit` and `ObservatoryShell`
+  thread it through; `/dev/observatory-shell` preserves `mode`/`no3d`
+  across chapter links. Verified live end-to-end against a rebuilt
+  production server, not just in unit tests — done by claude-code/sonnet-5
+- [x] Fixed finding 3 (usefulness): the retained CSS spike no longer links
+  to the removed `/dev/phase10-spike-r3f`; it names the path as
+  historical, non-interactive text pointing to `DECISION.md`, with a
+  regression test asserting no dead `href` exists — done by
+  claude-code/sonnet-5
+- [x] Fixed finding 4 (accessibility/mobile): `--obs-ink-faint` raised
+  from `#726d63` (3.82:1) to `#847e73` (4.88:1, computed via the standard
+  WCAG relative-luminance formula), with a regression test computing the
+  ratio from source tokens directly — done by claude-code/sonnet-5
+- [x] Fixed finding 5 (product alignment): added a decorative,
+  `aria-hidden` static concentric-rings map to the fallback layout
+  (narrow viewport / reduced motion / forced no-3D), highlighting the
+  active chapter's ring, with zero focusable elements inside it (no
+  duplicate focus stops) and the five real chapter links unchanged as the
+  only controls — done by claude-code/sonnet-5
+- [x] Fixed finding 1 (engineering reliability): temporarily recreated
+  `/dev/phase10-spike-r3f` and its dependencies (allowed only inside §1
+  per the refiner handoff), measured load time, long tasks, frame
+  stability, memory, and interaction latency with headless Playwright
+  against a real production server, recaptured all 13 desktop/mobile
+  screenshots at genuine, `sips`-verified 1440×900/390×844/320×844
+  dimensions, then removed R3F and the temporary Playwright tooling again
+  — confirmed absent via `git diff --quiet package.json
+  package-lock.json` and direct `node_modules` inspection — done by
+  claude-code/sonnet-5
+- [x] Discovered and fixed a genuine engineering-reliability risk while
+  measuring: `@react-three/fiber`'s `<Canvas>` sets its own wrapper's
+  inline `pointerEvents` to `"auto"` by default, silently overriding the
+  ancestor's `pointer-events: none` and blocking the semantic nav beneath
+  it; fixed by passing an explicit `pointerEvents: "none"` override and
+  recorded as new corroborating evidence for the CSS 3D decision — done by
+  claude-code/sonnet-5
+- [x] Preserved every passed behavior: five semantic links, one navigation
+  landmark, one active article, `aria-current`, focus restoration,
+  browser history, no-JS anchor behavior, single-DOM fallback with no
+  duplicate focus stops, 44px mobile targets, no 390/320px overflow,
+  public/private render isolation, owner gating, dollar privacy, and CSS
+  3D as the recorded production decision with zero final R3F dependency —
+  done by claude-code/sonnet-5
+- [x] Did not wire the shell into `/share` or `/`; did not begin §2 — done
+  by claude-code/sonnet-5
+- [x] `npm test`: 291/291 passed across 53 test files (was 278/51 at the
+  reviewed builder commit) — done by claude-code/sonnet-5
+- [x] `npm run build`: Next.js 16.2.11 production build compiled
+  successfully; 16 route tasks generated (R3F route absent again) — done
+  by claude-code/sonnet-5
+- [x] Re-verified privacy live against a rebuilt production server:
+  `/dev/observatory-shell` and `/dev/phase10-spike-css` gate when
+  logged out with zero dollar-currency patterns; `/dev/phase10-spike-r3f`
+  returns a genuine 404 after cleanup — done by claude-code/sonnet-5
+- [x] No `.env*` contents read, printed, edited, staged, or committed; no
+  `vercel --prod` run; no deploy; no other Claude/Codex process was active
+  against the repository during this pass — done by claude-code/sonnet-5
+- [x] Updated `docs/phase10-spike-section-1/DECISION.md` and
+  `docs/phase10-baseline/section-1/README.md` with the recreated
+  measurements, corrected screenshot index, and a dated summary of every
+  refiner change — done by claude-code/sonnet-5
+- [x] Prepared the Codex acceptance handoff and stopped without beginning
+  §2 — done by claude-code/sonnet-5
+- [x] Commit: `phase10(§1): refine critic findings` — done by
+  claude-code/sonnet-5
+
+### §1 refiner evidence
+
+- Refiner-updated evidence report: `docs/phase10-baseline/section-1/README.md`
+  (see "§1 refiner changes" section)
+- Refiner-updated decision record: `docs/phase10-spike-section-1/DECISION.md`
+- Codex acceptance handoff:
+  `docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance.md`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_acceptance`)

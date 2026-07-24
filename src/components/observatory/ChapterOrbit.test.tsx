@@ -44,6 +44,58 @@ describe("ChapterOrbit", () => {
     expect(screen.getByText(OBSERVATORY_CHAPTERS[0].question)).toBeTruthy();
   });
 
+  it("preserves preservedQuery (e.g. mode=private) on every chapter link, not just the current one", () => {
+    render(
+      <ChapterOrbit
+        basePath="/dev/observatory-shell"
+        chapters={OBSERVATORY_CHAPTERS}
+        activeChapterId="structure"
+        preservedQuery={{ mode: "private" }}
+      />,
+    );
+    for (const chapter of OBSERVATORY_CHAPTERS) {
+      const link = screen.getByRole("link", { name: new RegExp(chapter.label) });
+      const params = new URLSearchParams(link.getAttribute("href")?.split("?")[1]);
+      expect(params.get("mode")).toBe("private");
+      expect(params.get("chapter")).toBe(chapter.id);
+    }
+  });
+
+  it("preserves forced-no-3d state (no3d=1) alongside mode across chapter navigation", () => {
+    render(
+      <ChapterOrbit
+        basePath="/dev/observatory-shell"
+        chapters={OBSERVATORY_CHAPTERS}
+        activeChapterId="pulse"
+        preservedQuery={{ mode: "private", no3d: "1" }}
+      />,
+    );
+    const link = screen.getByRole("link", { name: /Forces/ });
+    const params = new URLSearchParams(link.getAttribute("href")?.split("?")[1]);
+    expect(params.get("no3d")).toBe("1");
+    expect(params.get("mode")).toBe("private");
+  });
+
+  it("renders a single aria-hidden concentric map with one ring per chapter and no additional focusable elements", () => {
+    const { container } = render(
+      <ChapterOrbit basePath="/share" chapters={OBSERVATORY_CHAPTERS} activeChapterId="structure" />,
+    );
+    const map = container.querySelector('[aria-hidden="true"]');
+    expect(map).toBeTruthy();
+    expect(map?.querySelectorAll("a, button, [tabindex]").length).toBe(0);
+    expect(container.querySelectorAll('[class*="concentricRing"]').length).toBe(OBSERVATORY_CHAPTERS.length);
+    // Real controls remain exactly the five chapter links — the map adds no duplicate focus stops.
+    expect(screen.getAllByRole("link")).toHaveLength(OBSERVATORY_CHAPTERS.length);
+  });
+
+  it("marks only the active chapter's ring as active in the concentric map", () => {
+    const { container } = render(
+      <ChapterOrbit basePath="/share" chapters={OBSERVATORY_CHAPTERS} activeChapterId="timeline" />,
+    );
+    const activeRings = container.querySelectorAll('[class*="concentricRing"][data-active="true"]');
+    expect(activeRings).toHaveLength(1);
+  });
+
   it("every chapter link is natively keyboard-operable — no tabindex removed, no click-only handler required", () => {
     render(<ChapterOrbit basePath="/share" chapters={OBSERVATORY_CHAPTERS} activeChapterId="pulse" />);
     for (const link of screen.getAllByRole("link")) {

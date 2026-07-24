@@ -47,4 +47,29 @@ describe("observatoryChapterHref", () => {
     expect(observatoryChapterHref("/share", "timeline")).toBe("/share?chapter=timeline");
     expect(observatoryChapterHref("/", "lab")).toBe("/?chapter=lab");
   });
+
+  it("preserves caller-supplied query state (e.g. mode) alongside the new chapter", () => {
+    const href = observatoryChapterHref("/dev/observatory-shell", "forces", { mode: "private" });
+    const params = new URLSearchParams(href.split("?")[1]);
+    expect(params.get("mode")).toBe("private");
+    expect(params.get("chapter")).toBe("forces");
+  });
+
+  it("preserves multiple caller-supplied query params (e.g. mode and no3d) across a chapter change", () => {
+    const href = observatoryChapterHref("/dev/observatory-shell", "structure", {
+      mode: "private",
+      no3d: "1",
+    });
+    const params = new URLSearchParams(href.split("?")[1]);
+    expect(params.get("mode")).toBe("private");
+    expect(params.get("no3d")).toBe("1");
+    expect(params.get("chapter")).toBe("structure");
+  });
+
+  it("replaces only chapter when preservedQuery itself already contains a chapter key", () => {
+    const href = observatoryChapterHref("/share", "lab", { chapter: "pulse", mode: "private" });
+    const params = new URLSearchParams(href.split("?")[1]);
+    expect(params.get("chapter")).toBe("lab");
+    expect(params.get("mode")).toBe("private");
+  });
 });

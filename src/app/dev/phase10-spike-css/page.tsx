@@ -48,11 +48,13 @@ export default async function CssSpikePage({
       <div className={styles.lead}>
         <h1 className={styles.leadHeading}>Phase 10 §1 spike — CSS 3D</h1>
         <p className={styles.leadSub}>
-          Isolated prototype. Synthetic content only — no portfolio data. Compare with{" "}
-          <a href="/dev/phase10-spike-r3f" style={{ color: "var(--obs-evidence)" }}>
-            the R3F spike
-          </a>
-          . Append <code>?no3d=1</code> to force the static fallback.
+          Isolated prototype. Synthetic content only — no portfolio data. The
+          bounded React Three Fiber comparison spike (
+          <code>/dev/phase10-spike-r3f</code>) was removed from the tree
+          after the CSS-vs-R3F decision was recorded; its retained
+          measurements and screenshots live in{" "}
+          <code>docs/phase10-spike-section-1/DECISION.md</code>. Append{" "}
+          <code>?no3d=1</code> to force the static fallback.
         </p>
       </div>
 

@@ -20,6 +20,8 @@ type Props = {
   /** Route this shell is mounted at, e.g. "/share" or "/" — drives chapter link hrefs. */
   basePath: string;
   activeChapterId: ObservatoryChapterId;
+  /** Route-relevant query state (e.g. mode, no3d) preserved on every chapter link. */
+  preservedQuery?: Record<string, string>;
   /** Product/route name for the route's one h1 (accessibility contract). */
   title: string;
   freshness: ObservatoryFreshness | null;
@@ -44,6 +46,7 @@ export function ObservatoryShell({
   mode,
   basePath,
   activeChapterId,
+  preservedQuery,
   title,
   freshness,
   ownerSlot,
@@ -70,7 +73,12 @@ export function ObservatoryShell({
         {mode === "public" && <span className={styles.readOnlyBadge}>Read-only</span>}
       </div>
 
-      <ChapterOrbit basePath={basePath} chapters={OBSERVATORY_CHAPTERS} activeChapterId={active.id} />
+      <ChapterOrbit
+        basePath={basePath}
+        chapters={OBSERVATORY_CHAPTERS}
+        activeChapterId={active.id}
+        preservedQuery={preservedQuery}
+      />
 
       <div className={styles.plateWrap}>
         <div className={styles.plateEdge} aria-hidden="true" />

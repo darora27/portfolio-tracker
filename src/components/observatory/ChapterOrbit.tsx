@@ -7,6 +7,8 @@ type Props = {
   basePath: string;
   chapters: readonly ObservatoryChapter[];
   activeChapterId: ObservatoryChapterId;
+  /** Route-relevant query state (e.g. mode, no3d) to keep on every chapter link. */
+  preservedQuery?: Record<string, string>;
 };
 
 /**
@@ -22,16 +24,36 @@ type Props = {
  * focus-restoration actually engage instead of every click forcing a full
  * document reload.
  */
-export function ChapterOrbit({ basePath, chapters, activeChapterId }: Props) {
+export function ChapterOrbit({ basePath, chapters, activeChapterId, preservedQuery }: Props) {
   const active = chapters.find((c) => c.id === activeChapterId) ?? chapters[0];
 
   return (
     <div className={styles.orbitWrap}>
+      {/*
+        Static concentric map (Night Orbit's borrowed "static concentric
+        fallback"): a decorative, aria-hidden ring-per-chapter diagram shown
+        only in the fallback layout (narrow viewport / reduced motion /
+        forced no-3D — see the matching selectors in observatory.module.css).
+        It is purely additive: the five real links below remain the only
+        chapter controls, so this never introduces a duplicate focus stop or
+        changes reading order for assistive tech.
+      */}
+      <div className={styles.concentricMap} aria-hidden="true">
+        {chapters.map((chapter) => (
+          <span
+            key={chapter.id}
+            className={styles.concentricRing}
+            data-ring={chapter.index}
+            data-active={chapter.id === activeChapterId ? "true" : undefined}
+          />
+        ))}
+        <span className={styles.concentricCenter} />
+      </div>
       <nav aria-label="Observatory chapters" className={styles.orbit}>
         {chapters.map((chapter) => (
           <div key={chapter.id} className={styles.bodyItem} data-index={chapter.index}>
             <Link
-              href={observatoryChapterHref(basePath, chapter.id)}
+              href={observatoryChapterHref(basePath, chapter.id, preservedQuery)}
               aria-current={chapter.id === activeChapterId ? "page" : undefined}
               className={styles.body}
               scroll={false}

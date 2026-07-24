@@ -8,7 +8,9 @@
   --obs-bg: #0b0b0e;
   --obs-ink: #f5f2ea;
   --obs-ink-soft: #b9b4a8;
-  --obs-ink-faint: #726d63;
+  /* #847e73 over #0b0b0e = 4.88:1 at normal weight — the critic measured
+     the prior #726d63 at 3.82:1, below the 4.5:1 normal-text minimum. */
+  --obs-ink-faint: #847e73;
   --obs-line: #2a2a30;
   --obs-evidence: #4fd1c5;
   --obs-loss: #e2725b;
@@ -124,6 +126,69 @@
   top: 50%;
 }
 
+/* Static concentric map (Night Orbit's borrowed "static concentric
+   fallback"): a decorative ring-per-chapter diagram, aria-hidden and
+   pointer-events:none, shown only in the fallback layout below. It carries
+   the active-chapter state (the matching ring is highlighted) without
+   adding any focusable element — the five real chapter links remain the
+   only controls and the only thing screen readers encounter. Hidden by
+   default; the fallback media query and the forced-no-3d hook both flip it
+   to display:block, matching every other element that degrades there. */
+.concentricMap {
+  display: none;
+  position: relative;
+  width: 100%;
+  max-width: 11rem;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 1.25rem;
+}
+
+.concentricRing {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border: 1px solid var(--obs-line);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.concentricRing[data-ring="0"] {
+  width: 22%;
+  height: 22%;
+}
+.concentricRing[data-ring="1"] {
+  width: 42%;
+  height: 42%;
+}
+.concentricRing[data-ring="2"] {
+  width: 62%;
+  height: 62%;
+}
+.concentricRing[data-ring="3"] {
+  width: 82%;
+  height: 82%;
+}
+.concentricRing[data-ring="4"] {
+  width: 100%;
+  height: 100%;
+}
+
+.concentricRing[data-active="true"] {
+  border-color: var(--obs-evidence);
+  border-width: 2px;
+}
+
+.concentricCenter {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 8%;
+  height: 8%;
+  border-radius: 50%;
+  background: var(--obs-evidence);
+  pointer-events: none;
+}
+
 /* Desktop/orbit default: number + label both visible, stacked, in a
    circle — the "labels discoverable without hovering" requirement applies
    here too, not only in the fallback strip. */
@@ -203,6 +268,9 @@
    with JavaScript disabled since it's a media-query / attribute-selector
    degrade of the same server-rendered links. */
 @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .concentricMap {
+    display: block;
+  }
   .orbitWrap {
     height: auto;
     perspective: none;
@@ -242,6 +310,9 @@
 [data-force-no-3d="true"] .orbitWrap {
   height: auto;
   perspective: none;
+}
+[data-force-no-3d="true"] .concentricMap {
+  display: block;
 }
 [data-force-no-3d="true"] .orbit {
   display: flex;

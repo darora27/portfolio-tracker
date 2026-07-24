@@ -20,7 +20,7 @@ const FORCED_MARKER = '[data-force-no-3d="true"] .orbitWrap';
 const reducedMotionBlock = css.slice(css.indexOf(REDUCED_MOTION_MARKER), css.indexOf(FORCED_MARKER));
 const forcedBlock = css.slice(css.indexOf(FORCED_MARKER));
 
-const FALLBACK_CLASSES = [".orbitWrap", ".orbit", ".inspector", ".bodyItem", ".body"];
+const FALLBACK_CLASSES = [".orbitWrap", ".orbit", ".inspector", ".bodyItem", ".body", ".concentricMap"];
 
 describe("observatory.module.css — reduced-motion / no-3D fallback parity", () => {
   it("both blocks exist and are non-empty", () => {
@@ -44,5 +44,15 @@ describe("observatory.module.css — reduced-motion / no-3D fallback parity", ()
     expect(forcedBlock).toMatch(/perspective:\s*none/);
     expect(reducedMotionBlock).toMatch(/transform:\s*none\s*!important/);
     expect(forcedBlock).toMatch(/transform:\s*none\s*!important/);
+  });
+
+  it("reveals the static concentric map (Night Orbit's borrowed static concentric fallback) under both fallback paths", () => {
+    expect(reducedMotionBlock).toMatch(/\.concentricMap\s*{\s*display:\s*block;\s*}/);
+    expect(forcedBlock).toMatch(/\.concentricMap\s*{\s*display:\s*block;\s*}/);
+  });
+
+  it("the concentric map is hidden by default (only the fallback layout shows it)", () => {
+    const baseDeclaration = css.slice(css.indexOf(".concentricMap {"), css.indexOf(REDUCED_MOTION_MARKER));
+    expect(baseDeclaration).toMatch(/display:\s*none/);
   });
 });

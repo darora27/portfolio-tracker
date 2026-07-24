@@ -71,6 +71,18 @@ export function resolveObservatoryChapter(raw: string | string[] | undefined): O
   return OBSERVATORY_CHAPTERS[0];
 }
 
-export function observatoryChapterHref(basePath: string, id: ObservatoryChapterId): string {
-  return `${basePath}?chapter=${id}`;
+/**
+ * Builds a chapter href off `basePath`, preserving any caller-supplied
+ * query state (e.g. `mode`, `no3d`) and replacing only `chapter`. Callers
+ * decide which params are route-relevant and worth preserving — this stays
+ * a generic contract rather than baking preview-only params into it.
+ */
+export function observatoryChapterHref(
+  basePath: string,
+  id: ObservatoryChapterId,
+  preservedQuery?: Record<string, string>,
+): string {
+  const params = new URLSearchParams(preservedQuery);
+  params.set("chapter", id);
+  return `${basePath}?${params.toString()}`;
 }

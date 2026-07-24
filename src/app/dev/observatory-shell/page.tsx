@@ -42,12 +42,19 @@ export default async function ObservatoryShellPreviewPage({
   const mode = params.mode === "private" ? "private" : "public";
   const forceNo3d = params.no3d === "1";
   const basePath = "/dev/observatory-shell";
+  // This preview route's own query-driven mode/no3d switches are not
+  // production behavior — the shell only knows to preserve whatever the
+  // caller tells it to. This page tells it to keep both.
+  const preservedQuery: Record<string, string> = {};
+  if (params.mode) preservedQuery.mode = params.mode;
+  if (params.no3d) preservedQuery.no3d = params.no3d;
 
   return (
     <ObservatoryShell
       mode={mode}
       basePath={basePath}
       activeChapterId={active.id}
+      preservedQuery={preservedQuery}
       title="Portfolio Observatory"
       freshness={{ label: "Freshness —", value: "not yet connected (§4 wires live data)" }}
       forceNo3d={forceNo3d}
