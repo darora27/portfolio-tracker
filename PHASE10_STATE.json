@@ -3,8 +3,8 @@
   "phase": 10,
   "current_section": "§1",
   "role": "claude_refiner",
-  "status": "awaiting_refiner",
-  "next_agent": "claude",
+  "status": "stopped",
+  "next_agent": "devan",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -69,10 +69,17 @@
     "acceptance_remediation_2_commit": "487f66ec6dfc1901d6e9db5f54f8984cccc2e34e",
     "acceptance_remediation_2_commit_note": "This hash is a best-effort record written in this immediate bookkeeping-only follow-up commit, since a commit cannot contain its own hash. Confirm against `git log` for the exact `phase10(§1): correct long-task and frame-stability measurement methodology` commit.",
     "acceptance_remediation_2_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
-    "acceptance_remediation_2_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-2-to-claude-refiner.md"
+    "acceptance_remediation_2_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-2-to-claude-refiner.md",
+    "acceptance_remediation_3_completed_by": "claude-code/sonnet-5",
+    "acceptance_remediation_3_completed_at": "2026-07-24T00:30:00-07:00",
+    "acceptance_remediation_3_summary": "Implemented the directed root-cause fix (no baseline subtraction, 50ms absolute boundary unchanged): removed DepthPullProvider from the unconditional src/app/layout.tsx path and scoped it to only /, /share, /dev/surface-scratch via a new src/app/(depth-pull)/ route group + nested layout. Verified via grep that these are the only real consumers, and confirmed no regression via tsc --noEmit, focused tests (DepthPull.test.tsx + observatory-fallback.test.ts, 14/14), full npm test (310/310, 54 files), npm run build (16 routes, unchanged route list), and curl 200-status checks on the affected and unaffected routes against a rebuilt production server. Re-measured /dev/phase10-spike-css on the same Moto G4 + CPU 4x + Slow 4G phone profile, 5 authenticated repetitions, grading every individual longtask entry against the unchanged absolute 50ms boundary: all 5 runs still failed (66-72ms tasks; run 1 has an additional 57ms task). Attribution evidence shows the task correlates with react-dom's hydrateRoot/createRoot chunk (3hdj40qmts5sf.js), which still loads on this route even though its authenticated render branch (the only branch measured) has zero client components of its own post-fix -- meaning the round-2 root-cause finding was incomplete: DepthPullProvider was a real but not the sole source of this cost. Did not attempt baseline subtraction, threshold changes, or further unscoped investigation (e.g. Next.js/Turbopack chunk-splitting internals). Reported directly to Devan rather than resubmitted to Codex Acceptance, since the finding is not resolved and choosing a further strategy is a scope decision outside this pass's authorization. See docs/phase10-spike-section-1/DECISION.md 'Provider-placement root-cause fix, and why the long-task gate still fails (round 3)'.",
+    "acceptance_remediation_3_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md",
+    "acceptance_remediation_3_evidence": "docs/phase10-spike-section-1/raw/css-longtask-final.json",
+    "acceptance_remediation_3_script": "docs/phase10-spike-section-1/measure-css-longtask-final.mjs",
+    "acceptance_remediation_3_result": "long-task gate still fails on 5/5 runs; provider-placement fix retained as a genuine improvement but does not close the finding; awaiting Devan decision on how to proceed"
   },
-  "last_green_commit": "487f66ec6dfc1901d6e9db5f54f8984cccc2e34e",
-  "last_green_commit_note": "The `phase10(§1): correct long-task and frame-stability measurement methodology` commit (round-2 acceptance remediation). Tests (310/310, 54 files) and production build (16 routes) were run by the Claude Refiner against that commit's exact working-tree content before committing; this bookkeeping-only follow-up commit records the resulting hash, per the same non-self-referential pattern used throughout this section.",
+  "last_green_commit": "0d80762",
+  "last_green_commit_note": "The `phase10(§1): scope DepthPullProvider to its actual consumers; long-task gate still fails` commit (acceptance remediation round 3). Full npm test (310/310, 54 files) and npm run build (16 routes) were run against this commit's exact working-tree content before committing; this bookkeeping-only follow-up commit records the resulting short hash, per the same non-self-referential pattern used throughout this section. This is green on tests/build only -- the §1 long-task acceptance criterion itself is still failing; see stop_reason and section_1.acceptance_remediation_3_result.",
   "verification": {
     "tests": {
       "command": "npm test",
@@ -210,10 +217,11 @@
     }
   },
   "failure_count": {
-    "consecutive": 3,
-    "maximum": 3
+    "consecutive": 4,
+    "maximum": 3,
+    "note": "This exceeds the configured maximum (per docs/PHASE10_AGENT_WORKFLOW.md §7 item 14, the automated relay stops at 3). This pass was run manually by Devan, outside the automated relay, specifically to attempt the bounded provider-relocation fix Codex's round-2 review implied. It failed the acceptance criterion again (see acceptance_remediation_3_result in section_1) and was intentionally NOT resubmitted to Codex Acceptance for a 4th costly review cycle. Do not auto-resume the relay for §1 without a human decision on how to proceed."
   },
-  "stop_reason": "Codex Acceptance final re-review accepted the corrected frame evidence, phone throttling, R3F cleanup, tests, build, and §2 non-start, but rejected the long-task PASS because its baseline is a different unauthenticated client tree, aggregate-duration subtraction does not evaluate an individual 50ms task gate, the claimed attribution trace is not retained, and the replacement predicate was not prospectively auditable. §1 remains unaccepted; §2 is not started.",
-  "handoff_reason": "Route one bounded Engineering Reliability finding back to Claude Refiner: establish a prospectively committed, causally isolated long-task gate using equivalent render conditions or retained task attribution; keep the 50ms per-task boundary; preserve every other passed §1 result; then return to Codex Acceptance. See docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-2-to-claude-refiner.md.",
-  "updated_at": "2026-07-24T03:53:18Z"
+  "stop_reason": "Round 3 (acceptance_remediation_3): implemented the exact directed fix -- removed DepthPullProvider from the unconditional root layout, scoped it to only /, /share, /dev/surface-scratch via a route group -- with no baseline subtraction and the 50ms absolute boundary unchanged. Verified the fix is correctly scoped (grep, tsc, focused tests, full tests, build, route checks) but the phone-profile long-task measurement still fails on all 5 /dev/phase10-spike-css runs (66-72ms tasks, correlated with react-dom's hydrateRoot/createRoot chunk, which loads on this route even though its authenticated branch renders zero client components post-fix). The round-2 root-cause finding was therefore incomplete. Stopped and reported to Devan rather than looping further, since further strategy (deeper Next.js-internals investigation, or reconsidering whether this gate is achievable for an App Router route at all) is a scope decision outside this pass's authorization. See docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md.",
+  "handoff_reason": "Blocked on a decision only Devan can make: how to proceed given the directed root-cause fix does not close the long-task finding. Options and full evidence are in docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md and docs/phase10-spike-section-1/DECISION.md ('Provider-placement root-cause fix, and why the long-task gate still fails (round 3)'). Not routed to Codex Acceptance this pass.",
+  "updated_at": "2026-07-24T00:30:00-07:00"
 }
