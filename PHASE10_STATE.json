@@ -3,7 +3,7 @@
   "phase": 10,
   "current_section": "§3",
   "role": "claude_lead",
-  "stage": "review",
+  "stage": "accept",
   "status": "ready",
   "next_actor": "claude",
   "selected_direction": {
@@ -28,19 +28,10 @@
     "title": "`/share` Forces, Structure, Timeline, and Method chapters",
     "spec_doc": "docs/phase10-workflow/specs/section-3.md",
     "implementation_commit": "b6313514305587b35261cb8f58689f033282d5da",
-    "review_result": "fail",
-    "findings": [
-      {
-        "category": "accessibility_mobile",
-        "criterion": "Timeline's marker ribbon does not rely on color alone — shape/text must distinguish capital-added/withdrawn/buy/sell in the rendered markup (spec §3.3 and acceptance criterion 14)",
-        "evidence": "Live 1440×900 and 390×844 screenshots of the Timeline chapter against real production data (docs/phase10-baseline/section-3/after/desktop/timeline-1440x900.png, after/mobile/timeline-390x844.png) show multiple ribbon markers positioned close in time rendering as superimposed, illegible marker-label text (e.g. three trades within a few days collapse into overlapping ‘Bought <ticker>’ labels). TimelineChapter.tsx positions each .marker independently by a raw computed left percentage with no minimum-spacing or collision handling between adjacent labels; timeline-chapter.module.css's .markerLabel only truncates its own text, it does not avoid overlapping a neighboring marker's label.",
-        "impact": "The dominant visual's marker ribbon becomes unreadable text mush at realistic marker density, defeating the shape/text distinguishability the spec requires in the rendered result, not just in the abstract DOM.",
-        "required_change": "In TimelineChapter.tsx / timeline-chapter.module.css only (no change to timeline-data.ts, the 24-marker cap, or the sampling rule): when two or more ribbon markers' computed positions are closer than a minimum readable spacing, keep every rendered label legible — e.g. suppress/collapse colliding labels while keeping distinguishable glyphs and the existing title tooltip plus the uncapped <details> table, or stagger overlapping labels so none overlap — verified legible at both 1440×900 and 390×844 with the current real marker density.",
-        "verification": "Claude Lead will re-render /share?chapter=timeline at 1440×900 and 390×844 against real data with a live browser and confirm no two marker labels visually overlap, then rerun npm test and npm run build."
-      }
-    ],
+    "review_result": "pass",
+    "findings": [],
     "remediation_commits": [
-      "Codex §3 timeline-label remediation commit; hash to be filled by the next actor via git log -1."
+      "a9b675e0a098e99965ec35976007eebe605993e0"
     ],
     "accepted_commit": null,
     "accepted_at": null
@@ -64,24 +55,24 @@
       "accepted_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5"
     }
   ],
-  "prev_actor_commit": "10f1a2f8c9e830bb1c9916aeaca1563de5512f6b",
-  "last_green_commit": "b6313514305587b35261cb8f58689f033282d5da",
+  "prev_actor_commit": "976bdabd2676314217e6e00c265b94f11ddd3d3b",
+  "last_green_commit": "a9b675e0a098e99965ec35976007eebe605993e0",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex remediation reran the full Vitest suite: 59 test files passed; 343 of 343 tests passed.",
-      "finished_at": "2026-07-24T19:31:07Z"
+      "summary": "Claude Lead re-review independently reran the full Vitest suite against the remediation commit: 59 test files passed; 343 of 343 tests passed.",
+      "finished_at": "2026-07-24T19:41:02Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex remediation reran the Next.js 16.2.11 production build: compilation and TypeScript passed; 16 static-page tasks generated and the existing route set remained intact.",
-      "finished_at": "2026-07-24T19:31:19Z"
+      "summary": "Claude Lead re-review independently reran the Next.js 16.2.11 production build: compilation and TypeScript passed; 16 static-page tasks generated and the existing route set remained intact.",
+      "finished_at": "2026-07-24T19:41:30Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T19:31:24Z",
+  "updated_at": "2026-07-24T19:46:19Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

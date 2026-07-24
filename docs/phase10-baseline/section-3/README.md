@@ -61,13 +61,30 @@ For all five chapters (Pulse + this section's four) at both 1440×900 and
 - Lab's copy matches the spec's exact required strings (lead sentence,
   definition-list rows, and the `"View the complete public dataset"`
   continuation link) verbatim.
-- **Finding (see review doc):** Timeline's marker ribbon renders overlapping,
-  illegible marker labels wherever two or more flow/trade events fall close
-  together in time against the current real production data (e.g. three
-  trades within a few days produce three superimposed `Bought <ticker>`
-  labels). See
-  `docs/phase10-workflow/reviews/section-3-review.md` for the bounded
-  finding and required change.
+- **Finding (see review doc) — remediated:** Timeline's marker ribbon
+  originally rendered overlapping, illegible marker labels wherever two or
+  more flow/trade events fell close together in time (e.g. three trades
+  within a few days produced three superimposed `Bought <ticker>` labels).
+  Codex's remediation (`phase10(§3): remediate timeline marker labels`)
+  added a 12%-of-ribbon minimum-gap rule in `TimelineChapter.tsx`: markers
+  closer than that gap keep their glyph, dated `title`, and an explicit
+  `aria-label`, but their colliding visual label is omitted. Re-verified
+  live by Claude Lead against the same real production data at both
+  1440×900 and 390×844 (`after/desktop/timeline-1440x900.png`,
+  `after/mobile/timeline-390x844.png`, recaptured — both re-`sips`-verified
+  at their labeled dimensions): the four still-visible desktop labels no
+  longer overlap; the three clustered buy markers show distinguishable
+  triangle glyphs with no label shown for any of them (all three are the
+  same "buy" kind, so glyph-only is not a same-kind distinguishability
+  regression — criterion 14 concerns capital-added/withdrawn/buy/sell kind
+  distinction, not per-trade identity). Mobile hides all ribbon labels via
+  a pre-existing `@media (max-width: 767px) { .markerLabel { display: none;
+  } }` rule unrelated to and unchanged by this remediation, so mobile has
+  zero visible labels and therefore zero label overlap by construction, on
+  both the pre- and post-remediation commit. See
+  `docs/phase10-workflow/reviews/section-3-review.md` and
+  `docs/phase10-workflow/reviews/section-3-review-2.md` for the original
+  bounded finding and this pass's PASS re-review.
 - **Non-blocking observation, out of §3's scope:** at 1440×900, selecting
   the Structure chapter specifically (not Forces/Timeline/Lab) shows the
   orbit navigation's `data-index="2"` node body rendering behind/overlapping
@@ -104,6 +121,24 @@ For all five chapters (Pulse + this section's four) at both 1440×900 and
   `date, total_cost` and `date, ticker, action`; its public DTO forwards
   only flow markers, trade markers, and composition history.
 - Existing reduced-motion/no-3D Observatory fallback tests pass unmodified.
+
+## Remediation re-verification (Claude Lead, second `review` pass)
+
+- `npm test`: PASS — reran independently — 59 files, 343/343 tests
+  (unchanged count from the first review pass; no test file touched by the
+  remediation).
+- `npm run build`: PASS — reran independently — Next.js 16.2.11 compiled,
+  TypeScript passed, 16 route tasks generated (unchanged route list).
+- Live re-render of `/share?chapter=timeline` against a rebuilt real
+  production server (port 3200, temporary `playwright@1.49.1` via `npm
+  install --no-save`, matching the first review pass's own precedent;
+  confirmed `git diff --quiet package.json package-lock.json` before
+  installing and after uninstalling): zero visible-label bounding-box
+  overlaps at 1440×900 (4 visible labels, all pairwise non-overlapping) and
+  at 390×844 (0 visible labels — mobile hides `.markerLabel` unconditionally
+  via existing CSS, unchanged by this remediation), zero console
+  warnings/errors, `scrollWidth === clientWidth` at 390px (no new
+  horizontal overflow).
 
 ## Implementation and accessibility notes
 
