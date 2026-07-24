@@ -31,6 +31,7 @@ const CHART_WIDTH = 720;
 const CHART_HEIGHT = 185;
 const CHART_PADDING = 16;
 const MAX_RIBBON_MARKERS = 24;
+const MIN_LABEL_SPACING_PERCENT = 12;
 
 function timelinePaths(data: TimelinePoint[]): {
   portfolio: string | null;
@@ -105,6 +106,18 @@ export function TimelineChapter({
   const firstTime = firstDate ? Date.parse(`${firstDate}T00:00:00Z`) : 0;
   const lastTime = lastDate ? Date.parse(`${lastDate}T00:00:00Z`) : firstTime;
   const dateRange = Math.max(lastTime - firstTime, 1);
+  let lastVisibleLabelPosition = Number.NEGATIVE_INFINITY;
+  const positionedMarkers = ribbonMarkers.map((marker) => {
+    const markerTime = Date.parse(`${marker.date}T00:00:00Z`);
+    const left = Math.min(
+      Math.max(((markerTime - firstTime) / dateRange) * 100, 0),
+      100,
+    );
+    const showLabel =
+      left - lastVisibleLabelPosition >= MIN_LABEL_SPACING_PERCENT;
+    if (showLabel) lastVisibleLabelPosition = left;
+    return { marker, left, showLabel };
+  });
   const compositionLabels = [
     ...compositionHistory.tickers,
     ...(compositionHistory.hasOther ? ["Other"] : []),
@@ -133,12 +146,8 @@ export function TimelineChapter({
               <path d={paths.portfolio} className={styles.portfolioLine} />
             </svg>
             <div className={styles.ribbon} aria-label="Sampled public timeline markers">
-              {ribbonMarkers.map((marker, index) => {
-                const markerTime = Date.parse(`${marker.date}T00:00:00Z`);
-                const left = Math.min(
-                  Math.max(((markerTime - firstTime) / dateRange) * 100, 0),
-                  100,
-                );
+              {positionedMarkers.map(({ marker, left, showLabel }, index) => {
+                const text = markerText(marker);
                 return (
                   <span
                     key={`${marker.kind}-${marker.date}-${index}`}
@@ -146,10 +155,15 @@ export function TimelineChapter({
                       marker.kind === "flow" ? styles.flowMarker : styles.tradeMarker
                     }`}
                     style={{ left: `${left}%` }}
-                    title={`${formatDate(marker.date)} — ${markerText(marker)}`}
+                    aria-label={`${formatDate(marker.date)} — ${text}`}
+                    title={`${formatDate(marker.date)} — ${text}`}
                   >
                     <b aria-hidden="true">{markerGlyph(marker)}</b>
-                    <span className={styles.markerLabel}>{markerText(marker)}</span>
+                    {showLabel ? (
+                      <span className={styles.markerLabel} aria-hidden="true">
+                        {text}
+                      </span>
+                    ) : null}
                   </span>
                 );
               })}
