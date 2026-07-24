@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§3",
-  "role": "claude_lead",
-  "stage": "specify",
+  "role": "codex_implementation",
+  "stage": "implement",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -26,7 +26,7 @@
   "section": {
     "id": "§3",
     "title": "`/share` Forces, Structure, Timeline, and Method chapters",
-    "spec_doc": null,
+    "spec_doc": "docs/phase10-workflow/specs/section-3.md",
     "implementation_commit": null,
     "review_result": null,
     "findings": [],
@@ -53,7 +53,7 @@
       "accepted_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5"
     }
   ],
-  "prev_actor_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5",
+  "prev_actor_commit": "0315ce9684ee8f7aea5009d2bec44293b9840dc1",
   "last_green_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5",
   "verification": {
     "tests": {
@@ -70,7 +70,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T18:45:00Z",
+  "updated_at": "2026-07-24T19:20:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
