@@ -994,10 +994,10 @@ trap release_lock EXIT INT TERM
 
 echo "Starting Codex Implementation turn. Log: $LOG_FILE"
 if [ -n "$CODEX_MODEL" ]; then
-  codex exec -C "$(pwd)" -s workspace-write -a never -m "$CODEX_MODEL" - \
+  codex -a never exec -C "$(pwd)" -s workspace-write -m "$CODEX_MODEL" - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
 else
-  codex exec -C "$(pwd)" -s workspace-write -a never - \
+  codex -a never exec -C "$(pwd)" -s workspace-write - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
 fi
 
@@ -1337,4 +1337,3 @@ real turn:
 6. **§2's actual product content is entirely undecided by this spec**,
    deliberately — per this task's explicit instruction not to begin §2
    work.
-
