@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
   "phase": 10,
-  "current_section": "§3",
+  "current_section": "§4",
   "role": "claude_lead",
-  "stage": "accept",
+  "stage": "specify",
   "status": "ready",
   "next_actor": "claude",
   "selected_direction": {
@@ -24,15 +24,13 @@
     ]
   },
   "section": {
-    "id": "§3",
-    "title": "`/share` Forces, Structure, Timeline, and Method chapters",
-    "spec_doc": "docs/phase10-workflow/specs/section-3.md",
-    "implementation_commit": "b6313514305587b35261cb8f58689f033282d5da",
-    "review_result": "pass",
+    "id": "§4",
+    "title": "Private `/` owner briefing",
+    "spec_doc": null,
+    "implementation_commit": null,
+    "review_result": null,
     "findings": [],
-    "remediation_commits": [
-      "a9b675e0a098e99965ec35976007eebe605993e0"
-    ],
+    "remediation_commits": [],
     "accepted_commit": null,
     "accepted_at": null
   },
@@ -53,26 +51,32 @@
       "id": "§2",
       "status": "complete",
       "accepted_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5"
+    },
+    {
+      "id": "§3",
+      "status": "complete",
+      "accepted_commit": "b47a5e6f9dc5db463d6c4f8d3dccf7b99212c7d8",
+      "note": "One remediation round (criterion 14, Timeline marker-label overlap) before pass. See docs/phase10-workflow/reviews/section-3-accepted.md."
     }
   ],
-  "prev_actor_commit": "976bdabd2676314217e6e00c265b94f11ddd3d3b",
-  "last_green_commit": "a9b675e0a098e99965ec35976007eebe605993e0",
+  "prev_actor_commit": "b47a5e6f9dc5db463d6c4f8d3dccf7b99212c7d8",
+  "last_green_commit": "b47a5e6f9dc5db463d6c4f8d3dccf7b99212c7d8",
   "verification": {
     "tests": {
       "command": "npm test",
-      "status": "pass",
-      "summary": "Claude Lead re-review independently reran the full Vitest suite against the remediation commit: 59 test files passed; 343 of 343 tests passed.",
-      "finished_at": "2026-07-24T19:41:02Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     },
     "build": {
       "command": "npm run build",
-      "status": "pass",
-      "summary": "Claude Lead re-review independently reran the Next.js 16.2.11 production build: compilation and TypeScript passed; 16 static-page tasks generated and the existing route set remained intact.",
-      "finished_at": "2026-07-24T19:41:30Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T19:46:19Z",
+  "updated_at": "2026-07-24T19:52:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
