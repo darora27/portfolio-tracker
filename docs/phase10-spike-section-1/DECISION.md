@@ -789,3 +789,124 @@ simplest fallback."
 - No `.env*` file was read, printed, edited, staged, or committed at any
   point in this pass; `OWNER_PASSWORD` was a temporary literal passed on
   the process command line, matching the precedent from both prior passes.
+
+## Provider-placement root-cause fix, and why the long-task gate still fails (round 3)
+
+Prepared July 24, 2026 by `claude-code/sonnet-5` (Phase 10 Claude Refiner,
+§1) in direct response to
+`docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md`,
+which correctly rejected round 2's aggregate-duration baseline subtraction
+as not a per-task RAIL measurement. This pass does not use baseline
+subtraction anywhere and does not change the 50 ms absolute per-task
+boundary.
+
+### The fix
+
+`DepthPullProvider` (`src/components/surface/DepthPull.tsx`, `"use
+client"`) was removed from the unconditional path in `src/app/layout.tsx`
+and is now mounted only in a new nested layout,
+`src/app/(depth-pull)/layout.tsx`, applied via a Next.js route group to
+exactly the three routes confirmed (by a repository-wide grep for
+`useDepthPull`/`<DepthPull`/`DepthPullProvider`) to render it: `/`,
+`/share`, and `/dev/surface-scratch`. Those three `page.tsx` files moved
+into the group folder (`git mv`, no content changes beyond the move); every
+other route, including `/share/full` and every `/dev/*` route, is outside
+the group and no longer includes this provider or its client boundary at
+all. `src/app/layout.tsx` now renders only `{children}` in `<body>` — zero
+`"use client"` imports of its own.
+
+This is a real, verified improvement: it was root-caused correctly (the
+provider was genuinely unconditional before), it is scoped to exactly the
+confirmed consumers, and it measurably removes that specific client
+boundary from every non-consuming route's server-rendered tree and RSC
+payload.
+
+### It does not resolve the long-task finding
+
+Re-running the phone profile (Moto G4 device descriptor + CDP CPU 4x +
+Slow 4G, unchanged) against `/dev/phase10-spike-css`, authenticated, 5
+repetitions, grading every individual `PerformanceObserver` `"longtask"`
+entry against the unchanged absolute 50 ms boundary (script:
+`docs/phase10-spike-section-1/measure-css-longtask-final.mjs`, raw output:
+`docs/phase10-spike-section-1/raw/css-longtask-final.json`) — **all 5 runs
+still contain at least one task over 50 ms** (66–72 ms range; run 1
+additionally shows a second, smaller 57 ms task). All 5 runs FAIL the
+declared absolute predicate.
+
+Attribution evidence (retained in full in the raw JSON, `longTasks[].
+attribution` and `correlatedResources`) shows the long task's window
+overlaps the network response of `_next/static/chunks/3hdj40qmts5sf.js`
+(71,312 bytes transferred), which `grep` confirms contains React DOM's
+`hydrateRoot`/`createRoot` entry points — the same chunk implicated in
+round 2. In run 1, the task's `startTime` (1720.6 ms) falls essentially
+exactly at that chunk's `resource.responseEnd` (1719.4 ms).
+
+The difference from round 2: `/dev/phase10-spike-css`'s authenticated
+branch (the branch every measurement run actually exercises — see
+`src/app/dev/phase10-spike-css/page.tsx`) renders **zero** client
+components. `LoginForm` (the page's only `"use client"` import) renders
+only on the unauthenticated fallback branch, which these runs never take.
+With `DepthPullProvider` now removed from this route's tree entirely, this
+route has no application-level client boundary left to remove — yet the
+same `hydrateRoot`/`createRoot` chunk still downloads and still produces
+the same-magnitude long task.
+
+That means the round-2 root-cause finding was incomplete: `DepthPullProvider`
+was *a* source of unnecessary client hydration weight (correctly fixed
+here), but it was not *the* cause of this specific long task on this
+specific route. The chunk is Next.js/React's own App Router client runtime
+bootstrap, which this build loads on this route independent of any
+component the route or its layouts render. Confirming *why* Next.js loads
+it here (shared/common chunk-splitting behavior vs. an App-Router-inherent
+per-navigation bootstrap) would require instrumenting Next's own
+build/runtime internals — out of this remediation's bounded scope (fix the
+identified DepthPullProvider placement; do not investigate unrelated
+issues).
+
+### Disposition
+
+This bounded remediation implemented exactly the directed fix, verified it
+is correctly scoped and does not regress `/`, `/share`, or
+`/dev/surface-scratch` (tests, build, and manual route checks below), and
+produced clean, non-baseline-subtracted, attribution-backed evidence that
+the fix — while a genuine improvement — does not make the CSS 3D route
+pass the declared absolute long-task gate on this phone profile. See
+`PHASE10_STATE.json` for how this is recorded; this finding is reported
+back to Devan rather than re-submitted to Codex Acceptance as a claimed
+pass, since the acceptance criterion is not met and further remediation
+strategy (e.g. whether an App-Router-inherent cost can legitimately be
+excluded from this gate) is a scope decision this pass is not authorized to
+make unilaterally.
+
+### Verification performed this pass
+
+- `grep -rn "DepthPullProvider\|useDepthPull\|<DepthPull"` across `src`
+  confirmed the only consumers are `src/app/(depth-pull)/page.tsx`,
+  `src/app/(depth-pull)/share/page.tsx`, and
+  `src/app/(depth-pull)/dev/surface-scratch/page.tsx` (via `SurfaceActs`
+  for the first two, directly for the third).
+- `npx tsc --noEmit` clean after the move (stale `.next/**/validator.ts`
+  errors cleared once `.next` was removed and rebuilt).
+- `npx vitest run` on `DepthPull.test.tsx` and
+  `observatory-fallback.test.ts`: 14/14 pass, unchanged behavior.
+- `npm run build`: 16 routes generated, same route list as before this
+  pass, including `/`, `/share`, `/share/full`, `/dev/surface-scratch`.
+- `curl` 200s confirmed for `/`, `/share`, `/dev/surface-scratch`,
+  `/dev/phase10-spike-css`, and `/dashboard` against the rebuilt
+  production server.
+- Chunk list comparison (`grep -o 'src="/_next/static/chunks/[^"]*"'` on
+  the served HTML) confirms `/dev/phase10-spike-css` and `/share` differ in
+  chunk count/content as expected from the route-group split.
+- `npm install --no-save playwright` (temporary, matching prior-pass
+  precedent) + `npx playwright install chromium`; after measurement,
+  `npm uninstall playwright` and `git diff --quiet package.json
+  package-lock.json` confirmed clean.
+- Full `npm test` (310/310, 54 files) and `npm run build` (16 routes) run
+  once at the end against the final working tree.
+- No `.env*` file was read, printed, edited, staged, or committed.
+  `OWNER_PASSWORD` was a temporary random literal generated and passed on
+  the process command line, never derived from or logged alongside any
+  real value.
+- Confirmed no other Claude/Codex process was active against this
+  repository before this pass began; the temporary production server
+  (port 3100) was stopped and confirmed via `lsof` before finishing.
