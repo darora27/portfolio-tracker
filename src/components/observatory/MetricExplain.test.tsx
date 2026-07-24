@@ -50,7 +50,16 @@ describe("MetricExplain", () => {
         .getByRole("link", { name: "Link to this explanation" })
         .getAttribute("href"),
     ).toBe("/share?chapter=lab&explain=xirr");
-    expect(screen.getByText("Limited:")).not.toBeNull();
+    const statusLine = screen.getByText((_, element) => {
+      return (
+        element?.tagName === "P" &&
+        element.textContent ===
+          "Limited: Unlike TWR, XIRR is sensitive to when money was added or withdrawn — a large recent deposit can swing it sharply even if the underlying investments haven't moved much."
+      );
+    });
+    expect(statusLine.textContent).toBe(
+      "Limited: Unlike TWR, XIRR is sensitive to when money was added or withdrawn — a large recent deposit can swing it sharply even if the underlying investments haven't moved much.",
+    );
   });
 
   it.each(["Enter", " "])(

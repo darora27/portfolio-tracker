@@ -88,9 +88,11 @@ export function MetricExplain({
                   ? "Limited: "
                   : "Unavailable: "}
               </strong>
+              {explanation.interpretation.summary}
             </p>
-          ) : null}
-          <p>{explanation.interpretation.summary}</p>
+          ) : (
+            <p>{explanation.interpretation.summary}</p>
+          )}
           {explanation.interpretation.evidence.length > 0 ? (
             <ul>
               {explanation.interpretation.evidence.map((item) => (
