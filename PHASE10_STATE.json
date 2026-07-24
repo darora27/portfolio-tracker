@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§4",
-  "role": "claude_lead",
-  "stage": "specify",
+  "role": "codex_implementation",
+  "stage": "implement",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -26,7 +26,7 @@
   "section": {
     "id": "§4",
     "title": "Private `/` owner briefing",
-    "spec_doc": null,
+    "spec_doc": "docs/phase10-workflow/specs/section-4.md",
     "implementation_commit": null,
     "review_result": null,
     "findings": [],
@@ -59,8 +59,8 @@
       "note": "One remediation round (criterion 14, Timeline marker-label overlap) before pass. See docs/phase10-workflow/reviews/section-3-accepted.md."
     }
   ],
-  "prev_actor_commit": "b47a5e6f9dc5db463d6c4f8d3dccf7b99212c7d8",
-  "last_green_commit": "b47a5e6f9dc5db463d6c4f8d3dccf7b99212c7d8",
+  "prev_actor_commit": "ef4e51b99f6163b2dad056ae07fec9488a7c822e",
+  "last_green_commit": "ef4e51b99f6163b2dad056ae07fec9488a7c822e",
   "verification": {
     "tests": {
       "command": "npm test",
@@ -76,7 +76,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T19:52:00Z",
+  "updated_at": "2026-07-24T19:59:41Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
