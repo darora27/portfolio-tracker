@@ -1,0 +1,124 @@
+.chapter {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.eyebrow {
+  color: var(--obs-evidence);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 29ch;
+  color: var(--obs-ink);
+  font-size: clamp(1.45rem, 2.7vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.driver {
+  max-width: 55ch;
+  color: var(--obs-ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.attention {
+  margin-top: 0.35rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--obs-line);
+}
+
+.attentionHeading {
+  color: var(--obs-ink-soft);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.attentionList {
+  display: grid;
+  gap: 0;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.annotation {
+  border-bottom: 1px solid var(--obs-line);
+}
+
+.annotation a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--obs-ink-soft);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.annotation a:hover {
+  color: var(--obs-ink);
+}
+
+.severity {
+  color: var(--obs-evidence);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+}
+
+.clearState {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--obs-ink-soft);
+  font-size: 0.82rem;
+}
+
+.continuation {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.1rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--obs-evidence);
+  border-radius: 0.45rem;
+  color: var(--obs-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.annotation a:focus-visible,
+.continuation:focus-visible {
+  outline: 2px solid var(--obs-accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .chapter {
+    gap: 0.55rem;
+  }
+
+  .lead {
+    font-size: clamp(1.25rem, 6.3vw, 1.55rem);
+  }
+
+  .driver {
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+
+  .attention {
+    padding-top: 0.55rem;
+  }
+}
