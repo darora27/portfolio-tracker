@@ -1,10 +1,17 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const getDashboardData = vi.fn();
+const { getDashboardData, getPublicTimelineData } = vi.hoisted(() => ({
+  getDashboardData: vi.fn(),
+  getPublicTimelineData: vi.fn(),
+}));
 
 vi.mock("@/lib/dashboard-data", () => ({
   getDashboardData,
+}));
+
+vi.mock("@/lib/observatory/timeline-data", () => ({
+  getPublicTimelineData,
 }));
 
 const publicFixture = {
@@ -26,9 +33,20 @@ const publicFixture = {
       price: 222.22,
       day: 333.33,
       prevClose: 444.44,
+      weight: 0.42,
     },
-    { ticker: "MSFT", contribution: 0.011 },
+    { ticker: "MSFT", contribution: 0.011, weight: 0.31 },
   ],
+  movers: [{ ticker: "IBM", day: 12345.67, dayPct: -0.021 }],
+  top2ConcentrationPct: 0.73,
+  hhi: 2100,
+  sectorWeights: [{ label: "Technology", weight: 0.61 }],
+  aiExposureWeights: [{ label: "High", weight: 0.44 }],
+  correlationTickers: ["IBM", "MSFT"],
+  correlationCells: [[1, 0.72], [0.72, 1]],
+  allTimeHigh: { pct: -0.046, peakDate: "2026-07-01" },
+  bestDay: { date: "2026-07-05", r: 0.023 },
+  worstDay: { date: "2026-07-18", r: -0.031 },
   benchmarkComparisons: [
     {
       ticker: "VOO",
@@ -45,6 +63,16 @@ const publicFixture = {
   trades: [{ reason: "PRIVATE_TRADE_REASON" }],
 };
 
+const timelineFixture = {
+  flowMarkers: [{ date: "2026-07-02", direction: "in" as const }],
+  tradeMarkers: [{ date: "2026-07-03", ticker: "IBM", action: "buy" as const }],
+  compositionHistory: {
+    tickers: ["IBM", "MSFT"],
+    hasOther: false,
+    points: [{ date: "2026-07-03", IBM: 60, MSFT: 40 }],
+  },
+};
+
 async function renderShare(chapter?: string) {
   const { default: SharePage } = await import("./page");
   const element = await SharePage({
@@ -55,6 +83,7 @@ async function renderShare(chapter?: string) {
 
 beforeEach(() => {
   getDashboardData.mockResolvedValue(publicFixture);
+  getPublicTimelineData.mockResolvedValue(timelineFixture);
 });
 
 describe("/share Pulse rendered output", () => {
@@ -72,23 +101,76 @@ describe("/share Pulse rendered output", () => {
     expect(html).toContain("View trajectory data");
   });
 
-  it("renders only the shell placeholder for an unfinished chapter", async () => {
+  it("renders Forces from real contribution and mover data", async () => {
     const html = await renderShare("forces");
 
     expect(html).toContain("02 — Forces");
-    expect(html).toContain("This chapter&#x27;s content ships in a later Phase 10 section.");
+    expect(html).toContain("Every holding&#x27;s share of the portfolio&#x27;s total return, ranked.");
+    expect(html).toContain("MSFT contributed the most to total return");
+    expect(html).toContain("IBM moved the most today");
+    expect(html).toContain('href="/share?chapter=structure"');
     expect(html).not.toContain("Market-relative observation");
   });
 
-  it("keeps strict currency and owner-only poison fields out of public HTML", async () => {
-    const html = await renderShare();
+  it.each(["pulse", "forces", "structure", "timeline", "lab"])(
+    "keeps strict currency and owner-only poison fields out of the %s chapter",
+    async (chapter) => {
+      const html = await renderShare(chapter);
 
-    expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
-    expect(html).not.toContain("PRIVATE_RESEARCH_MARKER");
-    expect(html).not.toContain("PRIVATE_SIMULATION_MARKER");
-    expect(html).not.toContain("PRIVATE_TRADE_REASON");
-    expect(html).not.toContain("999999.99");
-    expect(html).not.toContain("ownerSlot");
+      expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
+      expect(html).not.toContain("PRIVATE_RESEARCH_MARKER");
+      expect(html).not.toContain("PRIVATE_SIMULATION_MARKER");
+      expect(html).not.toContain("PRIVATE_TRADE_REASON");
+      expect(html).not.toContain("999999.99");
+      expect(html).not.toContain("ownerSlot");
+    },
+  );
+
+  it("renders Structure, Timeline, and Lab as complete standalone chapters", async () => {
+    const structure = await renderShare("structure");
+    expect(structure).toContain("The top two holdings make up 73.0%");
+    expect(structure).toContain("IBM and MSFT are the most correlated holdings");
+    expect(structure).toContain("View the correlation matrix");
+
+    const timeline = await renderShare("timeline");
+    expect(timeline).toContain("Annotated divergence ribbon");
+    expect(timeline).toContain("Capital added");
+    expect(timeline).toContain("Bought IBM");
+    expect(timeline).toContain("View composition over time");
+
+    const lab = await renderShare("lab");
+    expect(lab).toContain("time-weighted return (TWR)");
+    expect(lab).toContain("same-day deposit");
+    expect(lab).toContain('href="/share/full"');
+  });
+
+  it("keeps every new chapter useful with sparse public history", async () => {
+    getDashboardData.mockResolvedValue({
+      ...publicFixture,
+      historyDays: 1,
+      chartData: [],
+      positionRows: [],
+      movers: [],
+      sectorWeights: [],
+      aiExposureWeights: [],
+      correlationTickers: [],
+      correlationCells: [],
+      allTimeHigh: null,
+      bestDay: null,
+      worstDay: null,
+    });
+    getPublicTimelineData.mockResolvedValue({
+      flowMarkers: [],
+      tradeMarkers: [],
+      compositionHistory: { tickers: [], hasOther: false, points: [] },
+    });
+
+    for (const chapter of ["forces", "structure", "timeline", "lab"]) {
+      const html = await renderShare(chapter);
+      expect(html).not.toContain("NaN");
+      expect(html).not.toContain("This chapter&#x27;s content ships");
+      expect(html).toMatch(/href="\/share(?:\/full|\?chapter=)/);
+    }
   });
 
   it("renders the exact useful fallback without driver copy when history is insufficient", async () => {

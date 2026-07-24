@@ -1,0 +1,270 @@
+.chapter {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.eyebrow {
+  color: var(--obs-evidence);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 34ch;
+  color: var(--obs-ink);
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.timeline {
+  margin: 0.1rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--obs-line);
+}
+
+.timeline figcaption {
+  color: var(--obs-ink-soft);
+  font-size: 0.73rem;
+  line-height: 1.4;
+}
+
+.chart {
+  display: block;
+  width: 100%;
+  height: 8.5rem;
+  margin-top: 0.35rem;
+  overflow: visible;
+}
+
+.portfolioLine,
+.peakLine {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.portfolioLine {
+  stroke: var(--obs-evidence);
+  stroke-width: 3;
+}
+
+.peakLine {
+  stroke: var(--obs-ink-faint);
+  stroke-width: 1.3;
+  stroke-dasharray: 4 4;
+}
+
+.ribbon {
+  position: relative;
+  height: 3.3rem;
+  margin: -0.1rem 0 0;
+  border-top: 1px solid var(--obs-line);
+}
+
+.marker {
+  position: absolute;
+  top: 0;
+  display: grid;
+  justify-items: center;
+  transform: translateX(-50%);
+  color: var(--obs-ink-soft);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.58rem;
+}
+
+.marker b {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: grid;
+  place-items: center;
+  margin-top: -0.65rem;
+  border: 1px solid currentColor;
+  background: var(--obs-bg);
+  font-size: 0.65rem;
+}
+
+.flowMarker {
+  color: var(--obs-evidence);
+}
+
+.tradeMarker b {
+  border-radius: 50%;
+  color: var(--obs-accent);
+}
+
+.markerLabel {
+  max-width: 4.5rem;
+  margin-top: 0.15rem;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty {
+  min-height: 5rem;
+  display: grid;
+  place-items: center;
+  color: var(--obs-ink-faint);
+  font-size: 0.8rem;
+}
+
+.facts {
+  display: grid;
+  gap: 0.25rem;
+  padding-left: 1.1rem;
+  color: var(--obs-ink-soft);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.details {
+  border-top: 1px solid var(--obs-line);
+  border-bottom: 1px solid var(--obs-line);
+}
+
+.details + .details {
+  border-top: 0;
+}
+
+.details summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--obs-ink-soft);
+  font-size: 0.78rem;
+}
+
+.details summary:focus-visible,
+.continuation:focus-visible {
+  outline: 2px solid var(--obs-accent);
+  outline-offset: 3px;
+}
+
+.tableScroll {
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+}
+
+.tableScroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.66rem;
+}
+
+.tableScroll caption {
+  margin-bottom: 0.55rem;
+  color: var(--obs-ink-faint);
+  font-family: var(--font-sans, inherit);
+  text-align: left;
+}
+
+.tableScroll th,
+.tableScroll td {
+  padding: 0.38rem;
+  border-bottom: 1px solid var(--obs-line);
+  text-align: left;
+}
+
+.composition {
+  padding-bottom: 0.75rem;
+}
+
+.composition > p {
+  color: var(--obs-ink-faint);
+  font-size: 0.7rem;
+}
+
+.compositionLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  margin: 0.45rem 0;
+  color: var(--obs-ink-soft);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  list-style: none;
+}
+
+.composition > ol {
+  display: grid;
+  gap: 0.3rem;
+  list-style: none;
+}
+
+.composition > ol > li {
+  display: grid;
+  grid-template-columns: 5.8rem 1fr;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6rem;
+}
+
+.stack {
+  display: flex;
+  height: 0.6rem;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--obs-line);
+}
+
+.stack i {
+  min-width: 0;
+  background: hsl(calc(174deg + var(--composition-index) * 31deg) 52% 56%);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.continuation {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--obs-evidence);
+  border-radius: 0.45rem;
+  color: var(--obs-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .chapter {
+    gap: 0.55rem;
+  }
+
+  .lead {
+    font-size: 1.3rem;
+  }
+
+  .chart {
+    height: 7rem;
+  }
+
+  .markerLabel {
+    display: none;
+  }
+
+  .ribbon {
+    height: 1.2rem;
+  }
+}

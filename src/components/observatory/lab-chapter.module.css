@@ -1,0 +1,98 @@
+.chapter {
+  display: grid;
+  gap: 0.78rem;
+}
+
+.eyebrow {
+  color: var(--obs-evidence);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 38ch;
+  color: var(--obs-ink);
+  font-size: clamp(1.25rem, 2.3vw, 1.8rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.13;
+}
+
+.method {
+  display: grid;
+  margin-top: 0.1rem;
+  border-top: 1px solid var(--obs-line);
+}
+
+.method > div {
+  display: grid;
+  grid-template-columns: 8.7rem 1fr;
+  gap: 0.8rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--obs-line);
+}
+
+.method dt {
+  color: var(--obs-evidence);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.method dd {
+  color: var(--obs-ink-soft);
+  font-size: 0.76rem;
+  line-height: 1.42;
+}
+
+.method .current dd {
+  color: var(--obs-ink);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.9rem;
+}
+
+.annotation {
+  padding: 0.65rem 0 0.65rem 0.8rem;
+  border-left: 2px solid var(--obs-evidence);
+  color: var(--obs-ink-soft);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.continuation {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--obs-evidence);
+  border-radius: 0.45rem;
+  color: var(--obs-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.continuation:focus-visible {
+  outline: 2px solid var(--obs-accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .chapter {
+    gap: 0.55rem;
+  }
+
+  .lead {
+    font-size: 1.25rem;
+  }
+
+  .method > div {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+    padding: 0.45rem 0;
+  }
+}

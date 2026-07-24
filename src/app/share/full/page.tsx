@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase/client";
 import { getDashboardData } from "@/lib/dashboard-data";
 import { NavBar } from "@/components/layout/NavBar";
@@ -45,6 +46,12 @@ export default async function SharePage() {
     <>
       <NavBar variant="share" />
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <Link
+          href="/share"
+          className="mb-6 inline-flex min-h-11 items-center text-sm text-text-secondary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+        >
+          ← Back to Observatory
+        </Link>
         <div className="space-y-8">
           <HeadlineStats
             totalValue={data.totalValue}

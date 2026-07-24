@@ -1,0 +1,157 @@
+.chapter {
+  display: grid;
+  gap: 0.72rem;
+}
+
+.eyebrow {
+  color: var(--obs-evidence);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 36ch;
+  color: var(--obs-ink);
+  font-size: clamp(1.25rem, 2.25vw, 1.8rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+.weights {
+  margin: 0.1rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--obs-line);
+}
+
+.weights figcaption {
+  color: var(--obs-ink-soft);
+  font-size: 0.75rem;
+}
+
+.weights ol {
+  display: grid;
+  gap: 0.32rem;
+  margin-top: 0.55rem;
+  list-style: none;
+}
+
+.weights li {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(6rem, 1fr) 3.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 1.25rem;
+  color: var(--obs-ink-soft);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.66rem;
+}
+
+.weights i {
+  display: block;
+  height: 0.55rem;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--obs-evidence), var(--obs-accent));
+}
+
+.weights strong {
+  color: var(--obs-ink);
+  font-weight: 500;
+  text-align: right;
+}
+
+.empty {
+  min-height: 3.5rem;
+  display: grid;
+  place-items: center;
+  color: var(--obs-ink-faint);
+  font-size: 0.8rem;
+}
+
+.facts {
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.65rem 0 0.65rem 1.55rem;
+  border-top: 1px solid var(--obs-line);
+  border-bottom: 1px solid var(--obs-line);
+  color: var(--obs-ink-soft);
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.details {
+  border-bottom: 1px solid var(--obs-line);
+}
+
+.details summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--obs-ink-soft);
+  font-size: 0.78rem;
+}
+
+.details summary:focus-visible,
+.continuation:focus-visible {
+  outline: 2px solid var(--obs-accent);
+  outline-offset: 3px;
+}
+
+.tableScroll {
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+}
+
+.tableScroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.64rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tableScroll caption {
+  margin-bottom: 0.55rem;
+  color: var(--obs-ink-faint);
+  font-family: var(--font-sans, inherit);
+  text-align: left;
+}
+
+.tableScroll th,
+.tableScroll td {
+  padding: 0.35rem;
+  border-bottom: 1px solid var(--obs-line);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tableScroll th:first-child {
+  text-align: left;
+}
+
+.continuation {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--obs-evidence);
+  border-radius: 0.45rem;
+  color: var(--obs-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .chapter {
+    gap: 0.55rem;
+  }
+
+  .lead {
+    font-size: 1.25rem;
+  }
+}

@@ -1,0 +1,165 @@
+.chapter {
+  display: grid;
+  gap: 0.78rem;
+}
+
+.eyebrow {
+  color: var(--obs-evidence);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 31ch;
+  color: var(--obs-ink);
+  font-size: clamp(1.35rem, 2.5vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.contributions {
+  margin: 0.15rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--obs-line);
+}
+
+.contributions figcaption {
+  color: var(--obs-ink-soft);
+  font-size: 0.75rem;
+}
+
+.barList {
+  display: grid;
+  gap: 0.28rem;
+  margin-top: 0.5rem;
+  list-style: none;
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(3.3rem, auto) minmax(8rem, 1fr) 3.4rem;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 1.35rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.67rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.ticker {
+  color: var(--obs-ink-soft);
+}
+
+.barTrack {
+  position: relative;
+  height: 0.55rem;
+  background: linear-gradient(
+    to right,
+    transparent calc(50% - 0.5px),
+    var(--obs-line) calc(50% - 0.5px),
+    var(--obs-line) calc(50% + 0.5px),
+    transparent calc(50% + 0.5px)
+  );
+}
+
+.barTrack i {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  min-width: 2px;
+  border-radius: 2px;
+}
+
+.positiveBar {
+  left: 50%;
+  background: var(--obs-evidence);
+}
+
+.negativeBar {
+  right: 50%;
+  background: var(--obs-loss);
+}
+
+.value {
+  color: var(--obs-ink);
+  text-align: right;
+}
+
+.empty {
+  min-height: 4rem;
+  display: grid;
+  place-items: center;
+  color: var(--obs-ink-faint);
+  font-size: 0.8rem;
+}
+
+.marginalia {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.7rem;
+  padding: 0.65rem 0 0.65rem 0.8rem;
+  border-left: 2px solid var(--obs-evidence);
+}
+
+.marginalia span {
+  color: var(--obs-evidence);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.marginalia p,
+.facts {
+  color: var(--obs-ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.facts {
+  display: grid;
+  gap: 0.25rem;
+  padding-left: 1.1rem;
+}
+
+.continuation {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--obs-evidence);
+  border-radius: 0.45rem;
+  color: var(--obs-ink);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.continuation:focus-visible {
+  outline: 2px solid var(--obs-accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .chapter {
+    gap: 0.58rem;
+  }
+
+  .lead {
+    font-size: 1.35rem;
+  }
+
+  .barRow {
+    grid-template-columns: 3.4rem minmax(6rem, 1fr) 3rem;
+    gap: 0.35rem;
+  }
+
+  .marginalia {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}
