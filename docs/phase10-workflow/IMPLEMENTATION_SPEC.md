@@ -992,14 +992,14 @@ release_lock() {
 }
 trap release_lock EXIT INT TERM
 
-MODEL_ARGS=()
-if [ -n "$CODEX_MODEL" ]; then
-  MODEL_ARGS=(-m "$CODEX_MODEL")
-fi
-
 echo "Starting Codex Implementation turn. Log: $LOG_FILE"
-codex exec -C "$(pwd)" -s workspace-write -a never "${MODEL_ARGS[@]}" - \
-  < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+if [ -n "$CODEX_MODEL" ]; then
+  codex exec -C "$(pwd)" -s workspace-write -a never -m "$CODEX_MODEL" - \
+    < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+else
+  codex exec -C "$(pwd)" -s workspace-write -a never - \
+    < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+fi
 
 echo ""
 echo "Codex Implementation turn finished. Run 'git log -1' and check"
@@ -1337,5 +1337,4 @@ real turn:
 6. **§2's actual product content is entirely undecided by this spec**,
    deliberately — per this task's explicit instruction not to begin §2
    work.
-
 
