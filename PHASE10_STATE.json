@@ -2,8 +2,8 @@
   "schema_version": 1,
   "phase": 10,
   "current_section": "§1",
-  "role": "claude_refiner",
-  "status": "stopped",
+  "role": "codex_acceptance",
+  "status": "complete",
   "next_agent": "devan",
   "selected_direction": {
     "name": "Field Journal",
@@ -32,7 +32,7 @@
     "production_ui_changed": false
   },
   "section_1": {
-    "status": "awaiting_refiner",
+    "status": "complete",
     "completed_by": "claude-code/sonnet-5",
     "completed_at": "2026-07-23T19:30:00-07:00",
     "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
@@ -76,25 +76,39 @@
     "acceptance_remediation_3_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md",
     "acceptance_remediation_3_evidence": "docs/phase10-spike-section-1/raw/css-longtask-final.json",
     "acceptance_remediation_3_script": "docs/phase10-spike-section-1/measure-css-longtask-final.mjs",
-    "acceptance_remediation_3_result": "long-task gate still fails on 5/5 runs; provider-placement fix retained as a genuine improvement but does not close the finding; awaiting Devan decision on how to proceed"
+    "acceptance_remediation_3_result": "The absolute zero-task predicate fails honestly on 5/5 runs. Devan subsequently approved a documented §1-only exception because retained build/timing evidence attributes the repeated 66-72ms task to the shared Next.js/React root bootstrap rather than the route-owned CSS layer.",
+    "accepted_by": "codex/gpt-5",
+    "accepted_at": "2026-07-24T04:38:53Z",
+    "accepted_reviewed_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
+    "accepted_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md",
+    "owner_exception": {
+      "approved_by": "Devan",
+      "scope": "Phase 10 §1 CSS-vs-R3F decision only",
+      "absolute_boundary_ms": 50,
+      "absolute_result": "FAIL in all five retained runs; observed tasks remain recorded without subtraction or concealment",
+      "reason": "The absolute zero-long-task whole-page budget is an invalid proxy for this App Router architecture. Retained build/timing evidence identifies the repeated task with the shared Next.js/React root bootstrap chunk, while the authenticated CSS branch has no route-owned client hydration.",
+      "replacement_gate": "CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration.",
+      "replacement_gate_result": "PASS",
+      "future_audits": "No precedent. Do not generalize this exception to future production performance audits."
+    }
   },
-  "last_green_commit": "0d80762",
-  "last_green_commit_note": "The `phase10(§1): scope DepthPullProvider to its actual consumers; long-task gate still fails` commit (acceptance remediation round 3). Full npm test (310/310, 54 files) and npm run build (16 routes) were run against this commit's exact working-tree content before committing; this bookkeeping-only follow-up commit records the resulting short hash, per the same non-self-referential pattern used throughout this section. This is green on tests/build only -- the §1 long-task acceptance criterion itself is still failing; see stop_reason and section_1.acceptance_remediation_3_result.",
+  "last_green_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
+  "last_green_commit_note": "Codex Acceptance reviewed the complete round-3 implementation at f8001ad and ran full tests/build against its executable source plus documentation-only acceptance bookkeeping. The acceptance commit changes no executable source; use git log for its non-self-referential commit hash.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex Acceptance independently re-ran the current-HEAD suite after reviewing round-2 remediation and cleanup: 54 test files passed; 310 of 310 tests passed.",
-      "finished_at": "2026-07-24T03:52:57Z"
+      "summary": "Codex Acceptance independently ran the full suite for final §1 acceptance: 54 test files passed; 310 of 310 tests passed.",
+      "finished_at": "2026-07-24T04:41:34Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex Acceptance independently re-ran the Next.js 16.2.11 production build at current HEAD: compilation and TypeScript passed; 16 static-page tasks generated and /dev/phase10-spike-r3f remained absent.",
-      "finished_at": "2026-07-24T03:53:12Z",
+      "summary": "Codex Acceptance independently ran the Next.js 16.2.11 production build for final §1 acceptance: compilation and TypeScript passed; 16 route tasks generated and /dev/phase10-spike-r3f remained absent.",
+      "finished_at": "2026-07-24T04:41:34Z",
       "font_network_behavior": "Unchanged from §0/§1: src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. Remains §13 work.",
       "r3f_dependency_absent": "Confirmed by direct inspection and `git diff --quiet package.json package-lock.json` (no diff at all — --no-save was used for this pass's temporary installs, so the manifest files were never touched): three, @react-three/fiber, @types/three, and the temporary measurement tool (playwright) are all absent from package.json, package-lock.json, and node_modules at the final commit.",
-      "performance_bundle_budget_result": "Codex Acceptance final re-review: corrected frame evidence passes (all 20 runs retain exactly 60 deltas; 0 values >33.4ms; maximum 16.8ms), but long-task acceptance still fails. All five CSS content runs contain one absolute 67-80ms task. The claimed hydration attribution trace is not retained, the unauthenticated LoginForm baseline is not an equivalent render with only the spatial layer removed, subtracting independent aggregate durations does not evaluate an individual 50ms task gate, and the replacement predicate first appears in Git with its passing results. Raw paired aggregate deltas are CSS [13,3,0,-1,0]ms and R3F [120,118,121,119,122]ms (120ms median, not the documented 119ms). R3F also remains 4.7x over the bundle budget. Full review: docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md."
+      "performance_bundle_budget_result": "ACCEPTED WITH OWNER-APPROVED §1-ONLY EXCEPTION. The 50ms classification boundary remains unchanged and raw/css-longtask-final.json honestly records FAIL in all five runs (57/72ms, 68ms, 71ms, 67ms, 66ms). The absolute zero-task whole-page budget is invalid as the §1 CSS-vs-R3F proxy because the repeated 66-72ms task aligns with a React DOM hydrateRoot/createRoot chunk classified as a rootMainFile and shared by every built App Router route. The authenticated CSS branch renders no route-owned client component and has no route-owned hydration; no long task is attributable to its CSS spatial layer. §1 replacement gate: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration — PASS. This exception is not precedent for future production audits. R3F remains 4.7x over its bundle budget and absent from production."
     },
     "visual": {
       "required": true,
@@ -138,10 +152,13 @@
     }
   },
   "review": {
-    "result": "fail",
+    "result": "pass",
     "reviewer": "codex/gpt-5",
-    "reviewed_commit": "919e8e8f93cabec403e758ea5ad2bc3bd1c773e9",
-    "report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
+    "reviewed_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
+    "report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md",
+    "owner_exception": "For §1 only, the absolute zero-task whole-page budget is replaced by: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration. The 50ms boundary and all absolute observations remain unchanged. Do not generalize to future production audits.",
+    "prior_final_remediation_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
+    "prior_final_remediation_reviewed_commit": "919e8e8f93cabec403e758ea5ad2bc3bd1c773e9",
     "prior_acceptance_remediation_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
     "prior_acceptance_remediation_reviewed_commit": "dfb654d8993541bab1a863b084689b303ea839f1",
     "prior_acceptance_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
@@ -152,18 +169,9 @@
       "usefulness": "pass",
       "originality": "pass",
       "accessibility_mobile": "pass",
-      "engineering_reliability": "fail"
+      "engineering_reliability": "pass"
     },
-    "failures": [
-      {
-        "category": "engineering_reliability",
-        "criterion": "the selected CSS path meets a prospectively declared 50 ms long-task gate with independently reproducible causal evidence",
-        "evidence": "All five CSS content runs retain one 67-80ms task. The claimed hydration attribution/resource diagnostic was deleted and is absent from the retained script/raw JSON. The substitute baseline renders a different unauthenticated client LoginForm tree, and subtracting its independent aggregate long-task total from the content page's aggregate total does not evaluate whether an individual task exceeds 50ms. The replacement differential predicate and its passing results first enter Git together in 487f66e. Raw R3F paired deltas have a 120ms median, not the documented 119ms.",
-        "impact": "The comparison continues to show R3F is more expensive, but it does not prove that CSS meets the recorded long-task release gate. Accepting §1 would approve a post-result metric change that is neither causally isolated nor independently auditable.",
-        "required_change": "Commit the exact graded long-task predicate before measuring; keep authentication, route payload, semantic DOM, and client boundaries constant while toggling only the spatial layer, or retain a sanitized trace that causally separates shared hydration from layer work; grade individual tasks against the unchanged 50ms boundary and define any incremental metric separately; retain attribution/raw/calculation evidence; correct the R3F median; then remove temporary R3F code/dependencies and rerun tests/build.",
-        "verification": "A reviewer can rerun the retained method, reproduce attribution and PASS without changing the predicate after seeing data, verify every CSS run against the recorded gate, and confirm R3F cleanup plus green tests/build."
-      }
-    ],
+    "failures": [],
     "prior_critic_review": {
       "result": "fail",
       "reviewer": "codex/gpt-5",
@@ -217,11 +225,11 @@
     }
   },
   "failure_count": {
-    "consecutive": 4,
+    "consecutive": 0,
     "maximum": 3,
-    "note": "This exceeds the configured maximum (per docs/PHASE10_AGENT_WORKFLOW.md §7 item 14, the automated relay stops at 3). This pass was run manually by Devan, outside the automated relay, specifically to attempt the bounded provider-relocation fix Codex's round-2 review implied. It failed the acceptance criterion again (see acceptance_remediation_3_result in section_1) and was intentionally NOT resubmitted to Codex Acceptance for a 4th costly review cycle. Do not auto-resume the relay for §1 without a human decision on how to proceed."
+    "note": "Reset after Devan made the required human scope decision and Codex accepted §1 with the documented, non-generalizable exception."
   },
-  "stop_reason": "Round 3 (acceptance_remediation_3): implemented the exact directed fix -- removed DepthPullProvider from the unconditional root layout, scoped it to only /, /share, /dev/surface-scratch via a route group -- with no baseline subtraction and the 50ms absolute boundary unchanged. Verified the fix is correctly scoped (grep, tsc, focused tests, full tests, build, route checks) but the phone-profile long-task measurement still fails on all 5 /dev/phase10-spike-css runs (66-72ms tasks, correlated with react-dom's hydrateRoot/createRoot chunk, which loads on this route even though its authenticated branch renders zero client components post-fix). The round-2 root-cause finding was therefore incomplete. Stopped and reported to Devan rather than looping further, since further strategy (deeper Next.js-internals investigation, or reconsidering whether this gate is achievable for an App Router route at all) is a scope decision outside this pass's authorization. See docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md.",
-  "handoff_reason": "Blocked on a decision only Devan can make: how to proceed given the directed root-cause fix does not close the long-task finding. Options and full evidence are in docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md and docs/phase10-spike-section-1/DECISION.md ('Provider-placement root-cause fix, and why the long-task gate still fails (round 3)'). Not routed to Codex Acceptance this pass.",
-  "updated_at": "2026-07-24T00:30:00-07:00"
+  "stop_reason": null,
+  "handoff_reason": "§1 accepted and complete with Devan's explicit long-task exception. §2 remains unstarted and requires Devan's explicit instruction.",
+  "updated_at": "2026-07-24T04:41:34Z"
 }

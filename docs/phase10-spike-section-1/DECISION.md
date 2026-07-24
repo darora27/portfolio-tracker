@@ -910,3 +910,43 @@ make unilaterally.
 - Confirmed no other Claude/Codex process was active against this
   repository before this pass began; the temporary production server
   (port 3100) was stopped and confirmed via `lsof` before finishing.
+
+## Owner-approved §1 acceptance exception
+
+Recorded July 24, 2026 by Devan and verified by `codex/gpt-5`.
+
+The absolute evidence is not changed or hidden. The long-task
+classification boundary remains 50 ms, and
+`raw/css-longtask-final.json` continues to record a FAIL in all five
+authenticated phone-profile runs: run 1 contains 57 ms and 72 ms tasks;
+runs 2–5 contain 68 ms, 71 ms, 67 ms, and 66 ms tasks respectively.
+
+For this architecture, the absolute “zero tasks over 50 ms” whole-page
+budget is an invalid proxy for the narrow §1 CSS-vs-R3F decision. The
+retained build identifies `3hdj40qmts5sf.js` as a Next.js
+`rootMainFile` shared by every built App Router route, including the CSS
+spike, the 404 route, and routes outside §1. The chunk contains React
+DOM's `hydrateRoot`/`createRoot` entry points. In the retained run with
+resource timing, the repeated 72 ms task begins 1.2 ms after that shared
+chunk completes. The Long Tasks API reports only `window`/`self`, so this
+is a build-and-timing attribution, not a claim that the API supplies a
+route-specific call stack.
+
+The measured authenticated CSS branch renders server DOM and CSS only.
+Its `LoginForm` client component belongs solely to the unauthenticated
+branch and is not rendered or hydrated in these runs. The root layout no
+longer imports `DepthPullProvider`; that provider is scoped to `/`,
+`/share`, and `/dev/surface-scratch`, the only three consumers. No
+route-owned client boundary remains in the measured CSS branch, and no
+observed long task is attributable to the route-owned CSS spatial layer.
+
+Accordingly, the §1-only replacement gate is:
+
+> CSS 3D must introduce no attributable route-owned long task and no
+> route-owned client hydration.
+
+CSS 3D passes that gate. This exception does not lower the 50 ms
+classification boundary, subtract or conceal any observed task, excuse
+the shared bootstrap cost, or generalize to future production performance
+audits. Later audits must set and evaluate their own whole-page and
+route-owned budgets against production behavior.

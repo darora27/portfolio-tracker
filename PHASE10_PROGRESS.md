@@ -603,3 +603,62 @@ Codex Acceptance re-review per `docs/PHASE10_AGENT_WORKFLOW.md`.
 
 Do not begin §2. §1 returns only the bounded long-task Engineering Reliability
 finding above to Claude Refiner.
+
+### §1 Claude Refiner (acceptance remediation round 3)
+
+- [x] Removed `DepthPullProvider` from the root layout and scoped it only to
+  `/`, `/share`, and `/dev/surface-scratch`, the three confirmed consumers —
+  done by claude-code/sonnet-5
+- [x] Retained the 50 ms boundary and measured every absolute task without
+  subtraction; all five CSS runs still failed with observed 66–72 ms tasks,
+  plus a 57 ms task in run 1 — done by claude-code/sonnet-5
+- [x] Retained raw long-task/resource evidence and the exact measurement
+  script, confirmed green tests/build, and stopped for an owner decision
+  without beginning §2 — done by claude-code/sonnet-5
+- [x] Commits: `0d80762`, `04df89a`, and `f8001ad` contain the scoped provider
+  fix, evidence, state bookkeeping, and omitted root-layout/decision files —
+  done by claude-code/sonnet-5
+
+### §1 Codex Acceptance with owner-approved exception
+
+- [x] Confirmed the clean reviewed HEAD was `f8001ad` and no competing
+  Claude/Codex process was active against this repository — done by
+  codex/gpt-5
+- [x] Verified all observed absolute tasks remain recorded and classified
+  against the unchanged 50 ms boundary; no task was concealed or subtracted —
+  done by codex/gpt-5
+- [x] Verified the repeated 66–72 ms task is attributable by retained
+  build/timing evidence to the shared Next.js/React root bootstrap chunk, while
+  the Long Tasks API itself exposes only `window`/`self` attribution — done by
+  codex/gpt-5
+- [x] Verified the root layout contains no `DepthPullProvider`, the provider is
+  scoped to exactly the three intended routes, and the authenticated CSS route
+  has no route-owned client hydration or attributable route-owned long task —
+  done by codex/gpt-5
+- [x] Verified R3F/Three.js production source and direct dependencies remain
+  absent; `/` and `/share` page contents are byte-identical across the move and
+  §2 remains untouched — done by codex/gpt-5
+- [x] Recorded Devan’s §1-only exception: the absolute zero-task whole-page
+  budget is an invalid proxy for this CSS-vs-R3F decision; the replacement gate
+  is no attributable route-owned long task and no route-owned client hydration;
+  the exception does not generalize to future production audits — done by
+  codex/gpt-5
+- [x] Recorded all six scorecard categories PASS, with Engineering Reliability
+  passing under the explicit owner-approved exception — done by codex/gpt-5
+- [x] `npm test`: 310/310 passed across 54 test files — done by codex/gpt-5
+- [x] `npm run build`: Next.js 16.2.11 compiled successfully and generated all
+  16 route tasks; R3F remained absent — done by codex/gpt-5
+- [x] §1 accepted and complete; stopped without beginning §2, accessing
+  `.env*`, deploying, or investigating unrelated issues — done by codex/gpt-5
+
+### §1 final acceptance evidence
+
+- Acceptance report:
+  `docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md`
+- Owner-approved exception and retained absolute results:
+  `docs/phase10-spike-section-1/DECISION.md`
+- Raw absolute tasks:
+  `docs/phase10-spike-section-1/raw/css-longtask-final.json`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `complete`)
+
+Do not begin §2 without Devan's explicit instruction.

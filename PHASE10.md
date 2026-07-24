@@ -2,10 +2,11 @@
 
 Status: implementation active
 
-Implementation status: §0 baseline complete; §1 Codex Acceptance final
-re-review accepted the corrected frame evidence but rejected the long-task
-baseline/threshold method as non-equivalent and not prospectively auditable;
-returned to Claude Refiner
+Implementation status: §0 baseline complete; §1 accepted by Codex with an
+explicit owner-approved exception to the absolute zero-long-task budget. The
+50 ms classification boundary and all observed absolute tasks remain recorded;
+for §1 only, the accepted gate is no attributable route-owned long task and no
+route-owned client hydration. §2 is not started.
 
 Selected direction: Field Journal structural base with Night Orbit orbital
 chapter navigation, selected-body inspector, and static concentric fallback
