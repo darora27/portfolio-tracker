@@ -26,27 +26,54 @@ weekly sentence. They are historical baseline images rather than a
 same-turn recapture; the live pre-change recapture could not be made for the
 runner limitation below.
 
-## After screenshot and live-browser limitation
+## After screenshots
 
-The managed Codex runner could not capture the required after screenshots:
+The managed Codex runner could not capture the required after screenshots
+(`npm run dev -- --port 3104` and a `127.0.0.1:3104` retry both failed to bind
+with `EPERM`; the in-app browser runtime reported no available backend). Per
+the browser-control contract, Codex did not substitute standalone Playwright
+or claim unperformed checks, and handed the remaining live evidence to Claude
+Lead's `review` stage.
 
-- `npm run dev -- --port 3104` failed to bind `0.0.0.0:3104` with `EPERM`.
-- Retrying with `--hostname 127.0.0.1` failed to bind
-  `127.0.0.1:3104` with `EPERM`.
-- The required in-app browser runtime reported no available browser backend
-  after its documented availability check.
+Claude Lead captured the required pair during review, July 24, 2026, against a
+real `next start` production server (temporary `playwright@1.61.1` installed
+via `npm install --no-save`, confirmed absent from `package.json`/
+`package-lock.json` before and after, and uninstalled again before this
+commit):
 
-Per the browser-control contract, Codex did not substitute standalone
-Playwright or claim unperformed viewport, console, keyboard, or visual checks.
-These exact files remain for Claude Lead to capture during bounded review:
+- `after/desktop/home-1440x900.png` — 1440×900, authenticated, chapter
+  `pulse` (default) — `BriefingChapter` leads with "Down 2.1% today.", the
+  driver sentence, four "Notice:" attention items, and the Forces
+  continuation; `OwnerUtilityStrip` renders below in small muted type with no
+  card/border box.
+- `after/mobile/home-390x844.png` — 390×844, same authenticated view;
+  `document.documentElement.scrollWidth === clientWidth` (390 === 390, no
+  horizontal overflow).
 
-- `after/desktop/home-1440x900.png`
-- `after/mobile/home-390x844.png`
+### Live checks performed during review
 
-The following live-only checks also remain for review: 390px
-`scrollWidth === clientWidth`, console warning/error count, visual
-subordination of the utility strip, focus visibility and Tab/Enter operation,
-and measured 44×44 CSS-pixel targets.
+- **Logged-out `/`:** HTTP 200, password field present, zero occurrences of
+  `Portfolio Observatory` or a `$<digits>.<digits>` pattern in the rendered
+  HTML — confirms owner gating and zero dollar leakage on the unauthenticated
+  branch.
+- **Authenticated `/`:** exactly one `<h1>`; `"Owner briefing"` appears before
+  `"Total value"` in document order.
+- **Target sizes:** every `OwnerUtilityStrip` action link and every
+  attention-item link measured exactly 44px tall (245–579px wide on desktop,
+  324–332px wide on mobile) at both viewports — all meet the 44×44 CSS-pixel
+  minimum.
+- **Visual subordination:** computed font size of the chapter lead is 36px
+  versus 12.16px for an `OwnerUtilityStrip` stat value — confirms the utility
+  strip is subordinate by type scale, not merely DOM order.
+- **Keyboard/focus:** Tab reaches an anchor first; tabbing to an attention-item
+  link shows a visible `outline: solid 2px` (the shell's existing
+  focus-visible pattern, unmodified by this section).
+- **Console:** zero warning/error/pageerror messages captured across the
+  logged-out load and the authenticated desktop/mobile renders.
+- **Mobile layout order (full-page capture, not committed):** briefing plate,
+  concentric orbit fallback, five-chapter nav list, then `OwnerUtilityStrip`
+  at the bottom — confirms the utility strip does not crowd chapter
+  navigation on narrow viewports.
 
 ## Implemented evidence
 
