@@ -52,6 +52,14 @@ assume you already know; a prior turn may have changed things.
 Lead behaviors below applies. `current_section` tells you which
 `PHASE10.md` section you are working.
 
+Before any `specify` or `review` work for a section that changes or evaluates
+user-facing UI, invoke the project `portfolio-ux` skill. Apply it beneath the
+authority order in `PRODUCT_DIRECTION.md` and beneath the current section's
+bounded scope. During review it cannot create new criteria or advisory
+findings. If skill discovery is unavailable, read
+`.claude/skills/portfolio-ux/SKILL.md` directly and record that fallback in the
+turn summary.
+
 ### If `stage` is `specify`
 
 - Read `PHASE10.md`'s section for `current_section`, `PRODUCT_DIRECTION.md`,
