@@ -8,6 +8,7 @@ import { PulseChapter } from "@/components/observatory/PulseChapter";
 import { StructureChapter } from "@/components/observatory/StructureChapter";
 import { TimelineChapter } from "@/components/observatory/TimelineChapter";
 import { resolveObservatoryChapter } from "@/lib/observatory/chapters";
+import { resolveExplainParam } from "@/lib/observatory/metric-explanations";
 import { getPublicTimelineData } from "@/lib/observatory/timeline-data";
 
 // Public, read-only, no login — same staleness posture as /share/full.
@@ -22,7 +23,10 @@ export const metadata: Metadata = {
 export default async function SharePage({
   searchParams,
 }: {
-  searchParams: Promise<{ chapter?: string | string[] }>;
+  searchParams: Promise<{
+    chapter?: string | string[];
+    explain?: string | string[];
+  }>;
 }) {
   const [data, timeline] = await Promise.all([
     getDashboardData(),
@@ -30,6 +34,10 @@ export default async function SharePage({
   ]);
   const params = await searchParams;
   const active = resolveObservatoryChapter(params.chapter);
+  const explainOpenId = resolveExplainParam(params.explain);
+  const preservedQuery = explainOpenId
+    ? { explain: explainOpenId }
+    : undefined;
   const voo = data.benchmarkComparisons.find((comparison) => comparison.ticker === "VOO") ?? {
     available: false,
     twrPct: null,
@@ -40,6 +48,7 @@ export default async function SharePage({
     <ObservatoryShell
       mode="public"
       basePath="/share"
+      preservedQuery={preservedQuery}
       activeChapterId={active.id}
       title="Portfolio Observatory"
       freshness={{
@@ -79,6 +88,13 @@ export default async function SharePage({
         ),
         structure: (
           <StructureChapter
+            basePath="/share"
+            preservedQuery={preservedQuery}
+            explainOpenId={
+              active.id === "structure" ? explainOpenId : undefined
+            }
+            pricesAsOf={data.pricesAsOf}
+            dailyChangeAsOf={data.dailyChangeAsOf}
             hhi={data.hhi}
             top2ConcentrationPct={data.top2ConcentrationPct}
             positions={data.positionRows.map(({ ticker, weight }) => ({
@@ -113,11 +129,15 @@ export default async function SharePage({
         ),
         lab: (
           <LabChapter
+            basePath="/share"
+            preservedQuery={preservedQuery}
+            explainOpenId={active.id === "lab" ? explainOpenId : undefined}
             historyDays={data.historyDays}
             firstFundedDate={data.chartData[0]?.date ?? null}
             pricesAsOf={data.pricesAsOf}
             dailyChangeAsOf={data.dailyChangeAsOf}
             twrPct={data.twrPct}
+            xirrPct={data.xirrPct}
             benchmark={{
               available: voo.available,
               twrPct: voo.twrPct,

@@ -17,6 +17,7 @@ vi.mock("@/lib/observatory/timeline-data", () => ({
 const publicFixture = {
   historyDays: 30,
   twrPct: -0.029,
+  xirrPct: 0.1234,
   pricesAsOf: "2026-07-23",
   dailyChangeAsOf: "2026-07-23",
   chartData: [
@@ -73,10 +74,16 @@ const timelineFixture = {
   },
 };
 
-async function renderShare(chapter?: string) {
+async function renderShare(
+  chapter?: string,
+  explain?: string,
+) {
   const { default: SharePage } = await import("./page");
   const element = await SharePage({
-    searchParams: Promise.resolve(chapter ? { chapter } : {}),
+    searchParams: Promise.resolve({
+      ...(chapter ? { chapter } : {}),
+      ...(explain ? { explain } : {}),
+    }),
   });
   return renderToStaticMarkup(element);
 }
@@ -140,8 +147,30 @@ describe("/share Pulse rendered output", () => {
 
     const lab = await renderShare("lab");
     expect(lab).toContain("time-weighted return (TWR)");
-    expect(lab).toContain("same-day deposit");
+    expect(lab).toContain("Explain TWR");
+    expect(lab).toContain("Explain XIRR");
     expect(lab).toContain('href="/share/full"');
+  });
+
+  it("pre-opens only a valid explanation in its home chapter and passes XIRR through", async () => {
+    const twr = await renderShare("lab", "twr");
+    expect(twr).toContain("Time-weighted return");
+    expect((twr.match(/aria-expanded="true"/g) ?? [])).toHaveLength(1);
+
+    const xirr = await renderShare("lab", "xirr");
+    expect(xirr).toContain("XIRR (annualized return)");
+    expect(xirr).toContain("+12.34%");
+
+    const hhi = await renderShare("structure", "hhi");
+    expect(hhi).toContain("Herfindahl-Hirschman Index");
+    expect((hhi.match(/aria-expanded="true"/g) ?? [])).toHaveLength(1);
+
+    expect(await renderShare("structure", "twr")).not.toContain(
+      'aria-expanded="true"',
+    );
+    expect(await renderShare("lab", "alpha")).not.toContain(
+      'aria-expanded="true"',
+    );
   });
 
   it("keeps every new chapter useful with sparse public history", async () => {

@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { MetricExplain } from "@/components/observatory/MetricExplain";
 import { formatNumber, formatPercent } from "@/lib/format";
 import { observatoryChapterHref } from "@/lib/observatory/chapters";
+import {
+  hhiExplanation,
+  type MetricExplanationId,
+} from "@/lib/observatory/metric-explanations";
 import {
   mostCorrelatedPair,
   structureConcentrationCopy,
@@ -10,6 +15,11 @@ import styles from "./structure-chapter.module.css";
 type Weight = { label: string; weight: number };
 
 export type StructureChapterProps = {
+  basePath: string;
+  preservedQuery?: Record<string, string>;
+  explainOpenId?: MetricExplanationId;
+  pricesAsOf: string | null;
+  dailyChangeAsOf: string;
   hhi: number;
   top2ConcentrationPct: number;
   positions: { ticker: string; weight: number }[];
@@ -20,6 +30,11 @@ export type StructureChapterProps = {
 };
 
 export function StructureChapter({
+  basePath,
+  preservedQuery,
+  explainOpenId,
+  pricesAsOf,
+  dailyChangeAsOf,
   hhi,
   top2ConcentrationPct,
   positions,
@@ -43,6 +58,21 @@ export function StructureChapter({
       <p className={styles.lead}>
         {structureConcentrationCopy(hhi, top2ConcentrationPct)}
       </p>
+
+      <MetricExplain
+        explanation={hhiExplanation({
+          hhi,
+          top2ConcentrationPct,
+          positions,
+          pricesAsOf,
+          dailyChangeAsOf,
+        })}
+        permalink={observatoryChapterHref(basePath, "structure", {
+          ...preservedQuery,
+          explain: "hhi",
+        })}
+        initiallyOpen={explainOpenId === "hhi"}
+      />
 
       <figure className={styles.weights}>
         <figcaption>Portfolio weight by holding, largest first</figcaption>
@@ -125,7 +155,7 @@ export function StructureChapter({
 
       <Link
         className={styles.continuation}
-        href={observatoryChapterHref("/share", "timeline")}
+        href={observatoryChapterHref(basePath, "timeline", preservedQuery)}
       >
         Open Timeline
         <span aria-hidden="true">→</span>

@@ -1,14 +1,23 @@
 import Link from "next/link";
-import { formatDate, formatSignedPercent } from "@/lib/format";
-import { windowLabel } from "@/lib/surface-copy";
+import { MetricExplain } from "@/components/observatory/MetricExplain";
+import { observatoryChapterHref } from "@/lib/observatory/chapters";
+import {
+  twrExplanation,
+  xirrExplanation,
+  type MetricExplanationId,
+} from "@/lib/observatory/metric-explanations";
 import styles from "./lab-chapter.module.css";
 
 export type LabChapterProps = {
+  basePath: string;
+  preservedQuery?: Record<string, string>;
+  explainOpenId?: MetricExplanationId;
   historyDays: number;
   firstFundedDate: string | null;
   pricesAsOf: string | null;
   dailyChangeAsOf: string;
   twrPct: number;
+  xirrPct: number;
   benchmark: {
     available: boolean;
     twrPct: number | null;
@@ -17,16 +26,31 @@ export type LabChapterProps = {
 };
 
 export function LabChapter({
+  basePath,
+  preservedQuery,
+  explainOpenId,
   historyDays,
   firstFundedDate,
   pricesAsOf,
   dailyChangeAsOf,
   twrPct,
+  xirrPct,
   benchmark,
 }: LabChapterProps) {
-  const period = firstFundedDate
-    ? windowLabel(firstFundedDate)
-    : "since the first funded snapshot";
+  const twr = twrExplanation({
+    twrPct,
+    historyDays,
+    firstFundedDate,
+    pricesAsOf,
+    dailyChangeAsOf,
+    benchmark,
+  });
+  const xirr = xirrExplanation({
+    xirrPct,
+    historyDays,
+    pricesAsOf,
+    dailyChangeAsOf,
+  });
 
   return (
     <div className={styles.chapter}>
@@ -36,45 +60,24 @@ export function LabChapter({
         which removes the effect of deposits and withdrawals.
       </p>
 
-      <dl className={styles.method}>
-        <div>
-          <dt>What it measures</dt>
-          <dd>TWR chains each funded day&apos;s return into one portfolio result.</dd>
-        </div>
-        <div className={styles.current}>
-          <dt>Current value</dt>
-          <dd>{formatSignedPercent(twrPct, 2)} {period}.</dd>
-        </div>
-        <div>
-          <dt>Why deposits are removed</dt>
-          <dd>
-            A same-day deposit would otherwise look like investment performance,
-            even though it is new capital rather than a gain.
-          </dd>
-        </div>
-        <div>
-          <dt>Benchmark method</dt>
-          <dd>
-            {benchmark.available && benchmark.twrPct !== null
-              ? `Portfolio TWR is compared with VOO TWR over the identical funded-history window; VOO is currently available at ${formatSignedPercent(benchmark.twrPct, 2)}.`
-              : "Portfolio TWR is compared with VOO TWR only over an identical funded-history window; VOO is currently unavailable for a complete same-period comparison."}
-          </dd>
-        </div>
-        <div>
-          <dt>Limitations</dt>
-          <dd>
-            TWR-versus-benchmark comparisons under 14 days of history are
-            unreliable. This view currently has {historyDays} days of history.
-          </dd>
-        </div>
-        <div>
-          <dt>Freshness</dt>
-          <dd>
-            Prices as of {formatDate(dailyChangeAsOf)}.
-            {pricesAsOf === null ? " The latest source is currently stale." : ""}
-          </dd>
-        </div>
-      </dl>
+      <div className={styles.metrics}>
+        <MetricExplain
+          explanation={twr}
+          permalink={observatoryChapterHref(basePath, "lab", {
+            ...preservedQuery,
+            explain: "twr",
+          })}
+          initiallyOpen={explainOpenId === "twr"}
+        />
+        <MetricExplain
+          explanation={xirr}
+          permalink={observatoryChapterHref(basePath, "lab", {
+            ...preservedQuery,
+            explain: "xirr",
+          })}
+          initiallyOpen={explainOpenId === "xirr"}
+        />
+      </div>
 
       <p className={styles.annotation}>
         Method keeps deposits separate from performance and compares both paths

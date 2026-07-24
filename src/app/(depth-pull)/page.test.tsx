@@ -27,6 +27,7 @@ vi.mock("@/lib/observatory/timeline-data", () => ({ getPublicTimelineData }));
 const dashboardFixture = {
   historyDays: 30,
   twrPct: -0.029,
+  xirrPct: 0.1234,
   pricesAsOf: "2026-07-23",
   dailyChangeAsOf: "2026-07-23",
   dailyChangePct: -0.042,
@@ -72,10 +73,13 @@ const timelineFixture = {
   },
 };
 
-async function renderHome(chapter?: string) {
+async function renderHome(chapter?: string, explain?: string) {
   const { default: Home } = await import("./page");
   const element = await Home({
-    searchParams: Promise.resolve(chapter ? { chapter } : {}),
+    searchParams: Promise.resolve({
+      ...(chapter ? { chapter } : {}),
+      ...(explain ? { explain } : {}),
+    }),
   });
   return renderToStaticMarkup(element);
 }
@@ -145,7 +149,26 @@ describe("private / owner briefing", () => {
 
     const lab = await renderHome("lab");
     expect(lab).toContain("time-weighted return (TWR)");
-    expect(lab).toContain("same-day deposit");
+    expect(lab).toContain("Explain TWR");
+    expect(lab).toContain("Explain XIRR");
+  });
+
+  it("wires validated direct explanation links only into their home chapter", async () => {
+    const xirr = await renderHome("lab", "xirr");
+    expect(xirr).toContain("XIRR (annualized return)");
+    expect(xirr).toContain("+12.34%");
+    expect((xirr.match(/aria-expanded="true"/g) ?? [])).toHaveLength(1);
+
+    const hhi = await renderHome("structure", "hhi");
+    expect(hhi).toContain("Herfindahl-Hirschman Index");
+    expect((hhi.match(/aria-expanded="true"/g) ?? [])).toHaveLength(1);
+
+    expect(await renderHome("structure", "xirr")).not.toContain(
+      'aria-expanded="true"',
+    );
+    expect(await renderHome("lab", "unknown")).not.toContain(
+      'aria-expanded="true"',
+    );
   });
 
   it("renders the exact no-attention fallback", async () => {

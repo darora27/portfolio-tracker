@@ -14,6 +14,7 @@ import { TimelineChapter } from "@/components/observatory/TimelineChapter";
 import { todayInTimeZone } from "@/lib/date";
 import { formatDate } from "@/lib/format";
 import { resolveObservatoryChapter } from "@/lib/observatory/chapters";
+import { resolveExplainParam } from "@/lib/observatory/metric-explanations";
 import { getPublicTimelineData } from "@/lib/observatory/timeline-data";
 
 // Same reason as the moved /dashboard page: reflects live DB state, so it
@@ -28,7 +29,10 @@ export const metadata: Metadata = {
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ chapter?: string | string[] }>;
+  searchParams: Promise<{
+    chapter?: string | string[];
+    explain?: string | string[];
+  }>;
 }) {
   const ownerPassword = process.env.OWNER_PASSWORD;
   const cookieStore = await cookies();
@@ -54,6 +58,10 @@ export default async function Home({
     searchParams,
   ]);
   const active = resolveObservatoryChapter(params.chapter);
+  const explainOpenId = resolveExplainParam(params.explain);
+  const preservedQuery = explainOpenId
+    ? { explain: explainOpenId }
+    : undefined;
   const today = todayInTimeZone("America/New_York");
   const voo = data.benchmarkComparisons.find((comparison) => comparison.ticker === "VOO") ?? {
     available: false,
@@ -65,6 +73,7 @@ export default async function Home({
     <ObservatoryShell
       mode="private"
       basePath="/"
+      preservedQuery={preservedQuery}
       activeChapterId={active.id}
       title="Portfolio Observatory"
       freshness={{
@@ -104,6 +113,13 @@ export default async function Home({
         ),
         structure: (
           <StructureChapter
+            basePath="/"
+            preservedQuery={preservedQuery}
+            explainOpenId={
+              active.id === "structure" ? explainOpenId : undefined
+            }
+            pricesAsOf={data.pricesAsOf}
+            dailyChangeAsOf={data.dailyChangeAsOf}
             hhi={data.hhi}
             top2ConcentrationPct={data.top2ConcentrationPct}
             positions={data.positionRows.map(({ ticker, weight }) => ({
@@ -138,11 +154,15 @@ export default async function Home({
         ),
         lab: (
           <LabChapter
+            basePath="/"
+            preservedQuery={preservedQuery}
+            explainOpenId={active.id === "lab" ? explainOpenId : undefined}
             historyDays={data.historyDays}
             firstFundedDate={data.chartData[0]?.date ?? null}
             pricesAsOf={data.pricesAsOf}
             dailyChangeAsOf={data.dailyChangeAsOf}
             twrPct={data.twrPct}
+            xirrPct={data.xirrPct}
             benchmark={{
               available: voo.available,
               twrPct: voo.twrPct,
