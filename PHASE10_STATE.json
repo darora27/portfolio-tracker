@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§5",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -27,9 +27,18 @@
     "id": "§5",
     "title": "Metric explainability primitive and core metrics",
     "spec_doc": "docs/phase10-workflow/specs/section-5.md",
-    "implementation_commit": null,
-    "review_result": null,
-    "findings": [],
+    "implementation_commit": "25a8fbfd8a68ca26cbf13057edc1ff8659e3eeb0",
+    "review_result": "fail",
+    "findings": [
+      {
+        "category": "visual",
+        "criterion": "MetricExplain's expanded panel must read as a guided layer, not a flat list of labeled fields resembling a tooltip (acceptance criterion 7); the status line must match the shell's existing 'Critical: '/'Notice: ' text-label convention (spec §4 requirement 4), which always prefixes real content",
+        "evidence": "MetricExplain.tsx:84-92 renders a <p> containing only the literal 'Limited: ' or 'Unavailable: ' prefix with no status content following it in the same line, unlike BriefingChapter.tsx:52's identical prefix convention which always prefixes {item.text}. Live-captured on /share?chapter=lab&explain=xirr (30 days of history, under the 90-day METRIC_SHORT_HISTORY_DAYS threshold): the panel renders a bolded 'Limited:' as its own isolated line, then a gap, then the unrelated interpretation summary sentence on the next line. MetricExplain.test.tsx:53 only asserts the bare fragment ('Limited:') exists, which is why this shipped green.",
+        "impact": "Any metric that is short-history or unavailable (Beta/Sharpe/Sortino/Volatility/XIRR when applicable) renders a broken-looking sentence fragment in its expanded panel, undermining the guided-layer requirement this section exists to satisfy.",
+        "required_change": "Make the status line one complete sentence naming what is limited or unavailable, e.g. by prefixing the existing interpretation.summary paragraph itself (mirroring BriefingChapter's {prefix}{item.text} pattern exactly) or another single-sentence formulation that keeps the prefix attached to real content. Update MetricExplain.test.tsx to assert complete rendered text, not just the bare prefix.",
+        "verification": "Claude Lead will re-render /share?chapter=lab&explain=xirr (or any short-history/unavailable fixture) at 1440x900 with a live browser and confirm the status line reads as one complete sentence, then rerun npm test and npm run build."
+      }
+    ],
     "remediation_commits": [],
     "accepted_commit": null,
     "accepted_at": null
@@ -65,24 +74,24 @@
       "note": "Zero findings on first review. See docs/phase10-workflow/reviews/section-4-review.md."
     }
   ],
-  "prev_actor_commit": "3bf23e94ff4a03cf2eac5464756298384a75dbf9",
-  "last_green_commit": "3c90409f3c74248faae9a98952f190e43660edb7",
+  "prev_actor_commit": "25a8fbfd8a68ca26cbf13057edc1ff8659e3eeb0",
+  "last_green_commit": "25a8fbfd8a68ca26cbf13057edc1ff8659e3eeb0",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "65 test files passed; 379 of 379 tests passed, including 36 focused metric-model, disclosure, chapter, and route tests.",
-      "finished_at": "2026-07-24T22:17:42Z"
+      "summary": "Claude Lead independently reran the full Vitest suite against 25a8fbf: 65 test files passed; 379 of 379 tests passed (matches Codex's recorded result).",
+      "finished_at": "2026-07-24T22:24:10Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Next.js 16.2.11 production build compiled successfully, TypeScript passed, and 16 static-page tasks generated with no new dependency.",
-      "finished_at": "2026-07-24T22:17:42Z"
+      "summary": "Claude Lead independently reran the Next.js 16.2.11 production build against 25a8fbf: compilation and TypeScript passed; 16 static-page tasks generated and the existing route set remained intact.",
+      "finished_at": "2026-07-24T22:24:45Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T22:17:42Z",
+  "updated_at": "2026-07-24T22:26:28Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
