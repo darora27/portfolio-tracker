@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { getDashboardData } from "@/lib/dashboard-data";
-import { SurfaceHeader } from "@/components/surface/SurfaceHeader";
-import { SurfaceActs } from "@/components/surface/SurfaceActs";
-import { weeklySubline, todayLine, riskLine } from "@/lib/surface-copy";
+import { formatDate } from "@/lib/format";
+import { ObservatoryShell } from "@/components/observatory/ObservatoryShell";
+import { PulseChapter } from "@/components/observatory/PulseChapter";
+import { resolveObservatoryChapter } from "@/lib/observatory/chapters";
 
 // Public, read-only, no login — same staleness posture as /share/full.
 export const revalidate = 300;
@@ -13,35 +14,50 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function SharePage() {
+export default async function SharePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ chapter?: string | string[] }>;
+}) {
   const data = await getDashboardData();
-  const topHolding = data.donutSlices[0] ?? null;
+  const params = await searchParams;
+  const active = resolveObservatoryChapter(params.chapter);
+  const voo = data.benchmarkComparisons.find((comparison) => comparison.ticker === "VOO") ?? {
+    available: false,
+    twrPct: null,
+    excessReturnPct: null,
+  };
 
   return (
-    <>
-      <SurfaceHeader variant="share" />
-      <SurfaceActs
-        mode="share"
-        ownerLabel="The portfolio"
-        // Share hero is the same-period TWR percent — never dollars.
-        heroValue={data.twrPct}
-        weeklySublineText={
-          data.twr7d !== null && data.voo7d !== null
-            ? weeklySubline({ twr7d: data.twr7d, voo7d: data.voo7d })
-            : "Building this week’s picture."
-        }
-        chartData={data.chartData}
-        positionsCount={data.positionRows.length}
-        topHoldingTicker={topHolding?.ticker ?? null}
-        donutSlices={data.donutSlices}
-        hhi={data.hhi}
-        riskLineText={riskLine(data.hhi)}
-        todayLineText={todayLine({ dayReturn: data.dailyChangePct })}
-        topMover={data.movers[0] ?? null}
-        primaryHref="/share/full"
-        primaryLabel="See the full breakdown"
-        orreryWeights={data.donutSlices.slice(0, 5).map((s) => s.weight)}
-      />
-    </>
+    <ObservatoryShell
+      mode="public"
+      basePath="/share"
+      activeChapterId={active.id}
+      title="Portfolio Observatory"
+      freshness={{
+        label: "Prices as of",
+        value: formatDate(data.dailyChangeAsOf),
+        stale: data.pricesAsOf === null,
+      }}
+      chapterContent={{
+        pulse: (
+          <PulseChapter
+            historyDays={data.historyDays}
+            portfolioTwrPct={data.twrPct}
+            benchmark={{
+              available: voo.available,
+              twrPct: voo.twrPct,
+              excessReturnPct: voo.excessReturnPct,
+            }}
+            chartData={data.chartData.map(({ date, portfolioIndex, vooIndex }) => ({
+              date,
+              portfolioIndex,
+              vooIndex,
+            }))}
+            positions={data.positionRows.map(({ ticker, contribution }) => ({ ticker, contribution }))}
+          />
+        ),
+      }}
+    />
   );
 }

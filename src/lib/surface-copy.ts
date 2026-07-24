@@ -1,4 +1,4 @@
-import { formatPercent } from "./format";
+import { formatDate, formatPercent } from "./format";
 import { concentrationStatus } from "./portfolio/concentration-status";
 
 // Deterministic template copy for the surface tier — no LLM calls, so it's
@@ -15,6 +15,7 @@ import { concentrationStatus } from "./portfolio/concentration-status";
 // PHASE9_PROGRESS.md §2.
 const LITTLE_CHANGED_THRESHOLD = 0.0015;
 const MARKET_CLAUSE_THRESHOLD = 0.0015;
+export const PULSE_MATERIALITY_THRESHOLD = MARKET_CLAUSE_THRESHOLD;
 
 function directionWord(value: number): "Up" | "Down" {
   return value > 0 ? "Up" : "Down";
@@ -22,6 +23,10 @@ function directionWord(value: number): "Up" | "Down" {
 
 function magnitude(value: number): string {
   return formatPercent(Math.abs(value), 1);
+}
+
+function pointMagnitude(value: number): string {
+  return magnitude(value).replace(/%$/, "");
 }
 
 export type WeeklySublineInput = { twr7d: number; voo7d: number };
@@ -58,6 +63,96 @@ export function riskLine(hhi: number): string {
   if (tier === "critical") return "Very concentrated — a few stocks drive most of the movement.";
   if (tier === "warning") return "Moderately concentrated.";
   return "Well spread out.";
+}
+
+export function windowLabel(firstFundedDate: string): string {
+  return `since ${formatDate(firstFundedDate)}`;
+}
+
+export type PulseLeadInput = {
+  historyDays: number;
+  portfolioTwrPct: number;
+  benchmark: {
+    available: boolean;
+    twrPct: number | null;
+    excessReturnPct: number | null;
+  };
+  windowLabel: string;
+};
+
+export function pulseLeadCopy({
+  historyDays,
+  portfolioTwrPct,
+  benchmark,
+  windowLabel: label,
+}: PulseLeadInput): string {
+  if (
+    historyDays < 14 ||
+    !benchmark.available ||
+    benchmark.twrPct === null ||
+    benchmark.excessReturnPct === null
+  ) {
+    return "Building the market-relative picture — a full comparison needs more trading history.";
+  }
+
+  const period = label.replace(/^since\s+/i, "");
+  const gapPct = benchmark.excessReturnPct;
+  if (Math.abs(gapPct) < PULSE_MATERIALITY_THRESHOLD) {
+    return `Since ${period}, the portfolio is ${directionWord(portfolioTwrPct)} ${magnitude(portfolioTwrPct)}, about even with VOO.`;
+  }
+
+  const gapWord =
+    gapPct > 0
+      ? `a ${pointMagnitude(gapPct)}-point lead over`
+      : `a ${pointMagnitude(gapPct)}-point gap behind`;
+  return `Since ${period}, the portfolio is ${directionWord(portfolioTwrPct)} ${magnitude(portfolioTwrPct)} while VOO is ${directionWord(benchmark.twrPct)} ${magnitude(benchmark.twrPct)} — ${gapWord} the market.`;
+}
+
+export type PulseDriverInput = {
+  historyDays: number;
+  benchmarkAvailable: boolean;
+  gapPct: number | null;
+  positions: { ticker: string; contribution: number | null }[];
+};
+
+export function pulseDriverCopy({
+  historyDays,
+  benchmarkAvailable,
+  gapPct,
+  positions,
+}: PulseDriverInput): string | null {
+  if (historyDays < 14 || !benchmarkAvailable || gapPct === null) return null;
+
+  const drags = positions
+    .filter(
+      (position): position is { ticker: string; contribution: number } =>
+        position.contribution !== null && position.contribution <= -PULSE_MATERIALITY_THRESHOLD,
+    )
+    .sort((a, b) => a.contribution - b.contribution);
+  const boosts = positions
+    .filter(
+      (position): position is { ticker: string; contribution: number } =>
+        position.contribution !== null && position.contribution >= PULSE_MATERIALITY_THRESHOLD,
+    )
+    .sort((a, b) => b.contribution - a.contribution);
+
+  if (drags.length === 0 && boosts.length === 0) return "No single holding drove most of the result.";
+
+  if (gapPct <= 0) {
+    if (drags.length === 0) return "No single holding drove most of the result.";
+    const cause =
+      drags.length === 1
+        ? `The largest drag came from ${drags[0].ticker}.`
+        : `Most of the shortfall came from ${drags[0].ticker} and ${drags[1].ticker}.`;
+    return boosts.length > 0 ? `${cause} ${boosts[0].ticker} offset part of it.` : cause;
+  }
+
+  if (boosts.length === 0) return "No single holding drove most of the result.";
+  const cause =
+    boosts.length === 1
+      ? `The largest gain came from ${boosts[0].ticker}.`
+      : `Most of the lead came from ${boosts[0].ticker} and ${boosts[1].ticker}.`;
+  return drags.length > 0 ? `${cause} ${drags[0].ticker} offset part of it.` : cause;
 }
 
 /**

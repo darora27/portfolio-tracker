@@ -67,12 +67,22 @@
 
 /* ---- Orbit / chapter nav ---- */
 
+.stage {
+  width: 100%;
+  max-width: 76rem;
+  margin: 1.75rem auto 0;
+  display: grid;
+  grid-template-columns: minmax(27rem, 0.9fr) minmax(32rem, 1.1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+}
+
 .orbitWrap {
   position: relative;
   width: 100%;
   max-width: 640px;
   height: 420px;
-  margin: 2.5rem auto 0;
+  margin: 0 auto;
   perspective: 1400px;
 }
 
@@ -353,8 +363,9 @@
 
 .plateWrap {
   position: relative;
-  max-width: 34rem;
-  margin: 3rem auto 0;
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
 }
 
 /* Decorative stacked-plate depth cue — the "observation-plate chapter
@@ -404,6 +415,46 @@
 @media (prefers-reduced-motion: reduce) {
   .plateWrap {
     transition: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .stage {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.25rem;
+  }
+
+  .plateWrap {
+    order: -1;
+    max-width: 42rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .shell {
+    padding: 1rem 0.75rem 2.5rem;
+  }
+
+  .metaRow {
+    margin-top: 0.45rem;
+  }
+
+  .stage {
+    gap: 2rem;
+    margin-top: 0.7rem;
+  }
+
+  .plate {
+    padding: 1rem;
+  }
+
+  .plateBody {
+    margin-top: 0.45rem;
+  }
+
+  .orbitWrap {
+    margin-top: 0;
   }
 }
 

@@ -73,22 +73,24 @@ export function ObservatoryShell({
         {mode === "public" && <span className={styles.readOnlyBadge}>Read-only</span>}
       </div>
 
-      <ChapterOrbit
-        basePath={basePath}
-        chapters={OBSERVATORY_CHAPTERS}
-        activeChapterId={active.id}
-        preservedQuery={preservedQuery}
-      />
+      <div className={styles.stage}>
+        <ChapterOrbit
+          basePath={basePath}
+          chapters={OBSERVATORY_CHAPTERS}
+          activeChapterId={active.id}
+          preservedQuery={preservedQuery}
+        />
 
-      <div className={styles.plateWrap}>
-        <div className={styles.plateEdge} aria-hidden="true" />
-        <div className={styles.plateEdge} aria-hidden="true" />
-        <article className={styles.plate} aria-labelledby={headingId}>
-          <h2 id={headingId} tabIndex={-1} className={styles.plateHeading}>
-            {active.number} — {active.label}
-          </h2>
-          <div className={styles.plateBody}>{content}</div>
-        </article>
+        <div className={styles.plateWrap}>
+          <div className={styles.plateEdge} aria-hidden="true" />
+          <div className={styles.plateEdge} aria-hidden="true" />
+          <article className={styles.plate} aria-labelledby={headingId}>
+            <h2 id={headingId} tabIndex={-1} className={styles.plateHeading}>
+              {active.number} — {active.label}
+            </h2>
+            <div className={styles.plateBody}>{content}</div>
+          </article>
+        </div>
       </div>
 
       {mode === "private" && ownerSlot ? <div className={styles.ownerSlot}>{ownerSlot}</div> : null}
