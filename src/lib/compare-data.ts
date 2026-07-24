@@ -16,7 +16,7 @@ import aiExposureByTicker from "../../data/ai-exposure.json";
 export type CompareRow = {
   name: string;
   twrPct: number;
-  volatilityPct: number;
+  volatilityPct: number | null;
   maxDrawdown: number;
 };
 

@@ -1,6 +1,5 @@
 import { annualizedVolatility } from "@/lib/math/volatility";
 import { beta } from "@/lib/math/beta";
-import { sampleVariance } from "@/lib/math/stats";
 import type { ReturnPoint } from "@/lib/math/correlation";
 
 export type HoldingRisk = {
@@ -17,8 +16,9 @@ const MIN_OVERLAP = 5;
  * only" approach as correlationMatrix — holdings were bought on
  * different days so each ticker's overlap with VOO differs) for every
  * currently-held ticker. Either figure is null when there isn't enough
- * history yet (fewer than 2 returns for volatility, fewer than
- * MIN_OVERLAP shared trading days or zero VOO variance for beta) rather
+ * history yet — annualizedVolatility/beta self-guard fewer than 2
+ * observations or zero variance, and this function additionally requires
+ * MIN_OVERLAP shared trading days before even attempting beta — rather
  * than a divide-by-zero NaN.
  */
 export function perHoldingRisk(
@@ -29,16 +29,14 @@ export function perHoldingRisk(
 
   return Object.entries(returnsByTicker).map(([ticker, points]) => {
     const returns = points.map((p) => p.r);
-    const volatilityPct = returns.length >= 2 ? annualizedVolatility(returns) : null;
+    const volatilityPct = annualizedVolatility(returns);
 
     const sharedDates = points.filter((p) => vooByDate.has(p.date));
     let betaVsVoo: number | null = null;
     if (sharedDates.length >= MIN_OVERLAP) {
       const a = sharedDates.map((p) => p.r);
       const b = sharedDates.map((p) => vooByDate.get(p.date)!);
-      if (sampleVariance(b) !== 0) {
-        betaVsVoo = beta(a, b);
-      }
+      betaVsVoo = beta(a, b);
     }
 
     return { ticker, volatilityPct, betaVsVoo };

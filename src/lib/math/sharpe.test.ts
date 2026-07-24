@@ -20,6 +20,14 @@ describe("sharpeRatio", () => {
     const withoutRf = sharpeRatio([0.03, 0.01]);
     const withRf = sharpeRatio([0.03, 0.01], 1.0);
     // annualized return is 5.04; subtracting rf=1.0 shifts the numerator by 1.0
-    expect(withRf).toBeCloseTo(withoutRf - 1.0 / 0.224499443206437, 6);
+    expect(withRf).toBeCloseTo(withoutRf! - 1.0 / 0.224499443206437, 6);
+  });
+
+  it("is null (not NaN) for a single daily return — annualizedVolatility has nothing to divide by", () => {
+    expect(sharpeRatio([0.02])).toBeNull();
+  });
+
+  it("is null (not Infinity) for a constant return series — zero volatility has nothing to divide excess return by", () => {
+    expect(sharpeRatio([0.01, 0.01, 0.01])).toBeNull();
   });
 });

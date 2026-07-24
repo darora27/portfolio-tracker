@@ -13,4 +13,12 @@ describe("annualizedVolatility", () => {
   it("is 0 for a constant return series", () => {
     expect(annualizedVolatility([0.01, 0.01, 0.01])).toBe(0);
   });
+
+  it("is null (not NaN) for a single daily return — a brand-new portfolio's day-2 state", () => {
+    expect(annualizedVolatility([0.01])).toBeNull();
+  });
+
+  it("is null (not NaN) for an empty return series", () => {
+    expect(annualizedVolatility([])).toBeNull();
+  });
 });

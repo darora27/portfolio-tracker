@@ -30,7 +30,10 @@ export function correlationMatrix(
       const b = sharedDates.map((d) => mapB.get(d)!);
       const varA = sampleVariance(a);
       const varB = sampleVariance(b);
-      if (varA === 0 || varB === 0) return null;
+      // varA/varB are only null below `minOverlap` observations, which the
+      // sharedDates.length check above already excludes — the null checks
+      // here are for TypeScript, not a reachable runtime case.
+      if (varA === null || varB === null || varA === 0 || varB === 0) return null;
 
       return covariance(a, b) / Math.sqrt(varA * varB);
     });

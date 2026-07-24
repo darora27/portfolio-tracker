@@ -68,7 +68,13 @@ export default async function ComparePage() {
                         <span className="font-medium text-text-primary">{row.name}</span>
                       </Td>
                       <Td numeric>{formatSignedPercent(row.twrPct)}</Td>
-                      <Td numeric>{formatPercent(row.volatilityPct, 1)}</Td>
+                      <Td numeric>
+                        {row.volatilityPct !== null ? (
+                          formatPercent(row.volatilityPct, 1)
+                        ) : (
+                          <span className="text-text-muted">—</span>
+                        )}
+                      </Td>
                       <Td numeric>{formatSignedPercent(row.maxDrawdown)}</Td>
                     </DataTableRow>
                   ))}

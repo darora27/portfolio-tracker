@@ -73,9 +73,9 @@ export type DashboardData = {
   losers: (Position & { gainPct: number })[];
   movers: Mover[];
   upcomingEarnings: EarningsEvent[];
-  volatilityPct: number;
+  volatilityPct: number | null;
   maxDrawdown: number;
-  sharpe: number;
+  sharpe: number | null;
   betaVsVoo: number | null;
   top2ConcentrationPct: number;
   hhi: number;

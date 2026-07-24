@@ -27,4 +27,14 @@ describe("beta", () => {
   it("throws if the arrays are different lengths", () => {
     expect(() => beta([0.01], [0.01, 0.02])).toThrow();
   });
+
+  it("is null (not NaN) when the benchmark has a single return — nothing to compute benchmark variance from", () => {
+    expect(beta([0.02], [0.01])).toBeNull();
+  });
+
+  it("is null (not NaN) when the benchmark is a constant series — zero variance, nothing to regress against", () => {
+    const benchmark = [0.01, 0.01, 0.01];
+    const portfolio = [0.02, -0.01, 0.03];
+    expect(beta(portfolio, benchmark)).toBeNull();
+  });
 });

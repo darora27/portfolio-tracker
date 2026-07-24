@@ -26,9 +26,9 @@ export function RiskPanel({
   winRatePct,
   currentStreak,
 }: {
-  volatilityPct: number;
+  volatilityPct: number | null;
   maxDrawdownPct: number;
-  sharpe: number;
+  sharpe: number | null;
   betaVsVoo: number | null;
   top2ConcentrationPct: number;
   hhi: number;
@@ -42,9 +42,17 @@ export function RiskPanel({
     <section>
       <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">Risk</h2>
       <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <Metric label="Volatility (ann.)" value={formatPercent(volatilityPct, 1)} />
+        <Metric
+          label="Volatility (ann.)"
+          value={volatilityPct !== null ? formatPercent(volatilityPct, 1) : "—"}
+          sub={volatilityPct === null ? "Needs at least 2 daily returns" : undefined}
+        />
         <Metric label="Max drawdown" value={formatSignedPercent(maxDrawdownPct, 1)} />
-        <Metric label="Sharpe" value={formatNumber(sharpe)} />
+        <Metric
+          label="Sharpe"
+          value={sharpe !== null ? formatNumber(sharpe) : "—"}
+          sub={sharpe === null ? "Needs at least 2 daily returns" : undefined}
+        />
         <Metric
           label="Beta vs VOO"
           value={betaVsVoo !== null ? formatNumber(betaVsVoo) : "—"}
