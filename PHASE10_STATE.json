@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§5",
-  "role": "claude_lead",
-  "stage": "specify",
+  "role": "codex_implementation",
+  "stage": "implement",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -26,7 +26,7 @@
   "section": {
     "id": "§5",
     "title": "Metric explainability primitive and core metrics",
-    "spec_doc": null,
+    "spec_doc": "docs/phase10-workflow/specs/section-5.md",
     "implementation_commit": null,
     "review_result": null,
     "findings": [],
@@ -65,8 +65,8 @@
       "note": "Zero findings on first review. See docs/phase10-workflow/reviews/section-4-review.md."
     }
   ],
-  "prev_actor_commit": "b6950a8a1be3f732c29527b36153d0ad53a05a3b",
-  "last_green_commit": "b6950a8a1be3f732c29527b36153d0ad53a05a3b",
+  "prev_actor_commit": "3c90409f3c74248faae9a98952f190e43660edb7",
+  "last_green_commit": "3c90409f3c74248faae9a98952f190e43660edb7",
   "verification": {
     "tests": {
       "command": "npm test",
@@ -82,7 +82,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T20:20:00Z",
+  "updated_at": "2026-07-24T20:52:43Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
