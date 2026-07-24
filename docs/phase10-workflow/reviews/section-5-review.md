@@ -165,8 +165,65 @@ tests, plus before-screenshots and the evidence doc/handoff. No file from
 `OwnerUtilityStrip.tsx`, `src/lib/dashboard-data.ts`, `src/lib/math/*`) was
 touched.
 
-## Conclusion
+## Conclusion (initial pass)
 
 29 of 30 acceptance criteria pass on independent re-verification. One
 bounded finding (criterion 7 / §4's status-line requirement) remains.
 Routed to Codex Implementation for `remediate`.
+
+## Remediation re-review
+
+Reviewed by: `claude-code/sonnet-5` (Claude Lead, `review` stage, remediation
+round)
+
+Reviewed commit: `aa35daa440de31fe1132767b254ef2f7efc4f772`
+(`phase10(§5): remediate metric status sentence`), diffed against
+`prev_actor_commit` `60a6208e41b17a48e77a1f738ecc35726329b5f5`.
+
+### Result: PASS — Finding 1 resolved, no new findings
+
+### Independent verification performed
+
+- `npm test`: reran myself — 65 files, 379/379 passed (matches Codex's
+  reported count).
+- `npm run build`: reran myself — Next.js 16.2.11 compiled, TypeScript
+  passed, 16 route tasks generated (unchanged route list).
+- Read `MetricExplain.tsx:84-95`: the `"Limited: "`/`"Unavailable: "`
+  `<strong>` prefix now sits directly inside the same `<p>` as
+  `{explanation.interpretation.summary}`, immediately followed by it — one
+  complete sentence, matching `BriefingChapter`'s `{prefix}{item.text}`
+  convention exactly. The `"contextual"` branch is unchanged
+  (`<p>{explanation.interpretation.summary}</p>` alone, no prefix).
+- Read `MetricExplain.test.tsx:50-61`: now asserts the complete rendered
+  sentence text (`"Limited: Unlike TWR, XIRR is sensitive to when money was
+  added or withdrawn — a large recent deposit can swing it sharply even if
+  the underlying investments haven't moved much."`) rather than the bare
+  `"Limited:"` fragment.
+- Live re-render: started a production server (`npm run build` +
+  `npm run start -- -p 3100`) and fetched
+  `/share?chapter=lab&explain=xirr` (30 days of history, under the 90-day
+  `METRIC_SHORT_HISTORY_DAYS` threshold). The server-rendered HTML contains
+  exactly one `<p class="...status">` element:
+  `<strong>Limited: </strong>Unlike TWR, XIRR is sensitive to when money was
+  added or withdrawn — a large recent deposit can swing it sharply even if
+  the underlying investments haven't moved much.` — one complete sentence,
+  no isolated fragment, no blank-line gap. Confirmed no `$<digits>` dollar
+  pattern anywhere in the fetched HTML (the only `$`-prefixed tokens present
+  are React Server Components serialization markers such as `$undefined`
+  and `$1`, unrelated to currency). Stopped the temporary server afterward
+  (confirmed port 3100 clear via `lsof`).
+- Confirmed the diff since `prev_actor_commit` touches only
+  `PHASE10_STATE.json`, the remediation handoff doc,
+  `MetricExplain.tsx`, and `MetricExplain.test.tsx` — no file outside this
+  one finding's scope.
+
+### Scope confirmation
+
+Bounded to Finding 1 only, as required — no new criteria introduced, no
+other file touched.
+
+### Conclusion
+
+All 30 acceptance criteria now pass. `section.review_result` → `"pass"`.
+Routing to `accept` stage (this Claude Lead turn stops here per protocol;
+acceptance is a separate, later turn).
