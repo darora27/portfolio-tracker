@@ -2,9 +2,9 @@
   "schema_version": 1,
   "phase": 10,
   "current_section": "§1",
-  "role": "claude_refiner",
-  "status": "awaiting_refiner",
-  "next_agent": "claude",
+  "role": "codex_acceptance",
+  "status": "awaiting_acceptance",
+  "next_agent": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -32,7 +32,7 @@
     "production_ui_changed": false
   },
   "section_1": {
-    "status": "awaiting_refiner",
+    "status": "awaiting_acceptance",
     "completed_by": "claude-code/sonnet-5",
     "completed_at": "2026-07-23T19:30:00-07:00",
     "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
@@ -40,7 +40,7 @@
     "refiner_completed_by": "claude-code/sonnet-5",
     "refiner_completed_at": "2026-07-24T00:30:00Z",
     "refiner_commit": "3887bed60aea9ee82bae0a8f3c58f627a5d6e1d0",
-    "refiner_commit_note": "Recorded in this immediate follow-up bookkeeping commit once the refinement commit's own hash was known (a state file committed inside a commit cannot contain that same commit's hash) — the same non-self-referential pattern the critic's own state-only commit already used relative to the builder commit.",
+    "refiner_commit_note": "Recorded in an immediate follow-up bookkeeping commit (6f92aaa) once the refinement commit's own hash was known (a state file committed inside a commit cannot contain that same commit's hash) — the same non-self-referential pattern the critic's own state-only commit already used relative to the builder commit.",
     "evidence_report": "docs/phase10-baseline/section-1/README.md",
     "css_vs_r3f_decision": "docs/phase10-spike-section-1/DECISION.md",
     "critic_report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
@@ -50,27 +50,34 @@
     "acceptance_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-to-claude-refiner.md",
     "commit_subject": "phase10(§1): CSS 3D technical spike and production Observatory shell",
     "refiner_commit_subject": "phase10(§1): refine critic findings",
-    "css_vs_r3f_result": "CSS 3D selected; no production Three.js/R3F dependency (reconfirmed by the refiner pass, including recreated measurements)",
+    "css_vs_r3f_result": "CSS 3D selected; no production Three.js/R3F dependency (reconfirmed by two refiner passes, including a representative-phone-profile measurement recreation)",
     "production_ui_changed": false,
     "shell_wired_into_share_or_home": false,
-    "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 (builder and refiner) deliberately did not widen scope to do that here."
+    "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 (builder and refiner) deliberately did not widen scope to do that here.",
+    "acceptance_remediation_completed_by": "claude-code/sonnet-5",
+    "acceptance_remediation_completed_at": "2026-07-24T03:15:00Z",
+    "acceptance_remediation_commit": "PENDING — recorded in an immediate follow-up bookkeeping commit once this commit's own hash is known, same non-self-referential pattern as refiner_commit above",
+    "acceptance_remediation_commit_subject": "phase10(§1): representative-phone performance evidence for acceptance remediation",
+    "acceptance_remediation_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md",
+    "acceptance_remediation_summary": "Addressed the single bounded engineering-reliability finding from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md: declared explicit pass/fail thresholds before measuring, recreated both spikes and measured them on Playwright's 'Moto G4' device profile with CDP CPU 4x / Slow-4G-network throttling (5 repetitions per route), retained sanitized raw results and non-executing reproduction material (r3f-spike.patch, measure-phone.mjs), then removed the R3F route and all temporary dependencies again. See docs/phase10-spike-section-1/DECISION.md 'Phone-profile measurement recreation (acceptance remediation)'."
   },
-  "last_green_commit": "3887bed60aea9ee82bae0a8f3c58f627a5d6e1d0",
-  "last_green_commit_note": "The `phase10(§1): refine critic findings` commit. Tests (291/291, 53 files) and production build (16 routes) were run by the Claude Refiner against that commit's exact working-tree content before committing; this bookkeeping-only follow-up commit records the resulting hash (see section_1.refiner_commit_note for why it couldn't be included in the refinement commit itself).",
+  "last_green_commit": "PENDING — recorded in an immediate follow-up bookkeeping commit, same as section_1.acceptance_remediation_commit",
+  "last_green_commit_note": "The `phase10(§1): representative-phone performance evidence for acceptance remediation` commit. Tests (310/310, 54 files) and production build (16 routes) were run by the Claude Refiner against that commit's exact working-tree content before committing; a bookkeeping-only follow-up commit records the resulting hash.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Claude Refiner ran the suite after all five findings were addressed and R3F/Playwright were removed again: 53 test files passed; 291 of 291 tests passed (was 51 files / 278 tests at the reviewed builder commit; +2 files / +13 tests: page.test.ts, observatory-contrast.test.ts, plus new cases in chapters.test.ts, ChapterOrbit.test.tsx, and observatory-fallback.test.ts).",
-      "finished_at": "2026-07-24T00:15:23Z"
+      "summary": "Claude Refiner re-ran the suite after the phone-profile measurement pass and cleanup, at current HEAD (which also includes the two unrelated, out-of-scope post-handoff commits 9cf4ee3 and bf98491 that acceptance already excluded from §1 credit): 54 test files passed; 310 of 310 tests passed. No test file was added, removed, or modified by this remediation pass — the count is unchanged from Codex Acceptance's own current-HEAD run in docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md.",
+      "finished_at": "2026-07-24T03:05:00Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Claude Refiner ran the Next.js 16.2.11 production build after cleanup: compilation and TypeScript passed; 16 static-page tasks generated (same route count as the reviewed builder commit — /dev/phase10-spike-r3f was recreated for measurement and removed again before this build).",
-      "finished_at": "2026-07-24T00:15:52Z",
+      "summary": "Claude Refiner re-ran the Next.js 16.2.11 production build after the phone-profile measurement pass and cleanup: compilation and TypeScript passed; 16 static-page tasks generated (same route count as the prior refiner commit — /dev/phase10-spike-r3f was recreated for measurement and removed again before this build).",
+      "finished_at": "2026-07-24T03:10:00Z",
       "font_network_behavior": "Unchanged from §0/§1: src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. Remains §13 work.",
-      "r3f_dependency_absent": "Confirmed by direct inspection and `git diff --quiet package.json package-lock.json` (byte-identical to the pre-refiner commit): three, @react-three/fiber, @types/three, and the refiner's temporary measurement tool (playwright) are all absent from package.json, package-lock.json, and node_modules at the final commit."
+      "r3f_dependency_absent": "Confirmed by direct inspection and `git diff --quiet package.json package-lock.json` (no diff at all — --no-save was used for this pass's temporary installs, so the manifest files were never touched): three, @react-three/fiber, @types/three, and the temporary measurement tool (playwright) are all absent from package.json, package-lock.json, and node_modules at the final commit.",
+      "performance_bundle_budget_result": "Explicit thresholds declared and checked against a representative phone profile (Moto G4 + CPU 4x + Slow 4G) this pass: CSS 3D passes every declared threshold (bundle, load, frame stability, memory, interaction latency) except the strict 0-long-tasks budget, which the shared app shell narrowly fails on phone-class CPU for both routes; R3F additionally fails the bundle budget by 4.7x (232,976B vs 50KB). Full table and raw per-run data: docs/phase10-spike-section-1/DECISION.md 'Phone-profile measurement recreation (acceptance remediation)' and docs/phase10-spike-section-1/raw/phone-measurements.json."
     },
     "visual": {
       "required": true,
@@ -100,16 +107,17 @@
     "privacy": {
       "status": "pass",
       "new_routes_owner_gated": ["/dev/observatory-shell", "/dev/phase10-spike-css"],
-      "logged_out_check": "Both routes render the sign-in form with zero authentication cookie present (curl, no cookie jar) against the refiner's rebuilt production server. /dev/phase10-spike-r3f (recreated temporarily for measurement) returns a genuine 404 after cleanup — confirmed via curl.",
+      "logged_out_check": "Both routes render the sign-in form with zero authentication cookie present (curl, no cookie jar) against this pass's rebuilt production server. /dev/phase10-spike-r3f (recreated temporarily for phone-profile measurement) returns a genuine 404 after cleanup — confirmed via curl.",
       "public_dollar_leak_check": "No $<digits>.<digits> pattern found in either retained route's unauthenticated HTML.",
       "shell_cross_render_check": "Unchanged: ObservatoryShell.test.tsx asserts the owner slot is never rendered in mode=\"public\".",
-      "query_preservation_privacy_note": "The new preservedQuery mechanism (fix for finding 2) only echoes back query keys the caller explicitly names (mode, no3d on the preview route) — verified live end-to-end against the rebuilt server (mode=private&no3d=1 survives all five chapter links) — it cannot smuggle unvetted query state into a link and carries no portfolio data.",
+      "query_preservation_privacy_note": "Unchanged from the prior refiner pass: preservedQuery only echoes back caller-named query keys and carries no portfolio data.",
+      "raw_measurement_data_privacy_note": "docs/phase10-spike-section-1/raw/phone-measurements.json was checked with a direct grep for the temporary OWNER_PASSWORD value and the word 'password' before being committed — neither is present. It contains only performance timings/byte counts and the named phone-profile descriptor.",
       "env_contents_accessed_or_output": false,
-      "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override for the refiner's live screenshot/measurement capture and end-to-end privacy re-check; no environment-file contents were read at any point."
+      "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override for this pass's live measurement capture and end-to-end privacy re-check; no environment-file contents were read at any point."
     },
     "process_check": {
       "status": "pass",
-      "summary": "Confirmed no other Claude/Codex process was active against this repository before the refiner pass began. All temporary local processes started for measurement (the production server on :3100) were stopped (verified via lsof) before the final commit."
+      "summary": "Confirmed no other Claude/Codex process was active against this repository before this refiner pass began (the prior pass's server had already been stopped). The temporary production server (port 3100) started for phone-profile measurement was stopped (verified via lsof) before the final commit."
     }
   },
   "review": {
@@ -132,7 +140,8 @@
         "evidence": "DECISION.md records unthrottled headless desktop Chromium and explicitly disclaims a physical phone, touch, mobile GPU, and device pixel ratio. It provides no concrete load, interaction, memory, or bundle pass thresholds. The temporary R3F source, measurement script, and raw JSON were removed, while the table reports ranges without retained per-run values/sample mapping.",
         "impact": "The CSS decision remains plausible and all implementation checks pass, but §1 cannot prove representative-phone performance or that the chosen approach meets recorded performance/bundle budgets, and the reported comparison cannot be independently rerun.",
         "required_change": "Recreate both spikes only long enough to declare explicit thresholds and rerun all required metrics on a documented representative phone environment; retain sanitized raw results plus sufficient non-production reproduction material; then remove the live R3F route/dependencies again and rerun tests, build, privacy, and cleanup checks.",
-        "verification": "An independent reviewer can rerun the retained procedure, see sample counts and pass/fail results for every threshold on the named phone profile, and confirm all R3F/temporary dependencies remain absent from the production package and build."
+        "verification": "An independent reviewer can rerun the retained procedure, see sample counts and pass/fail results for every threshold on the named phone profile, and confirm all R3F/temporary dependencies remain absent from the production package and build.",
+        "refiner_response": "Declared six explicit pass/fail thresholds (bundle, load, long tasks, frame stability, memory, interaction latency) in DECISION.md before measuring. Recreated both spikes (R3F source did not exist in git history — rebuilt from DECISION.md's own description) and measured 5 repetitions per route on Playwright's built-in 'Moto G4' device profile (the historical Lighthouse representative mid-tier phone) with CDP CPU 4x throttling and Slow-4G network throttling (150ms RTT, 1.6Mbps down, 750Kbps up). Found and fixed a methodology gap mid-pass: performance.memory quantized both used/total heap identically for both routes in this Chromium build, so memory was re-measured via CDP Performance.getMetrics instead, which produced real, distinguishing values. R3F fails the bundle threshold (232,976B vs 50KB budget); both routes fail the strict 0-long-tasks threshold under phone-class CPU throttling (a new finding invisible on unthrottled desktop), with R3F costing ~2.8x more main-thread blocking time than CSS. Retained sanitized raw per-run JSON (docs/phase10-spike-section-1/raw/phone-measurements.json), a non-executing copy of the measurement script (docs/phase10-spike-section-1/measure-phone.mjs), and a git-diff patch of the exact recreated R3F source (docs/phase10-spike-section-1/r3f-spike.patch) for independent reproduction. Removed the R3F route and ran `npm uninstall three @react-three/fiber @types/three playwright` again; confirmed package.json/package-lock.json byte-identical via `git diff --quiet` and all four packages absent from node_modules/npm ls. Did not recapture screenshots (visuals unchanged, per the acceptance handoff's explicit instruction). Did not begin §2."
       }
     ],
     "prior_critic_review": {
@@ -191,7 +200,7 @@
     "consecutive": 1,
     "maximum": 3
   },
-  "stop_reason": "Codex Acceptance verified the refined implementation and four functional findings, but original finding 1 remains incomplete because the runtime comparison lacks representative-phone measurements, explicit performance/bundle thresholds, and sufficient retained reproduction evidence. Awaiting Claude Refiner; §2 has not started.",
-  "handoff_reason": "Route §1 back to Claude Refiner for only the one bounded engineering-evidence finding recorded in docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md.",
-  "updated_at": "2026-07-24T02:06:49Z"
+  "stop_reason": "Claude Refiner addressed the one remaining bounded engineering-reliability finding (representative-phone, budgeted, reproducible performance evidence) and stopped per its handoff prompt, without beginning §2. Awaiting Codex Acceptance re-review.",
+  "handoff_reason": "Route §1 back to Codex Acceptance to independently verify the representative-phone measurement evidence, declared thresholds, and retained reproduction material described in docs/phase10-spike-section-1/DECISION.md and docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md, alongside the previously-passing dimensions which were not touched by this pass.",
+  "updated_at": "2026-07-24T03:15:00Z"
 }

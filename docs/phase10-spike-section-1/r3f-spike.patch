@@ -1,0 +1,525 @@
+diff --git a/src/app/dev/phase10-spike-r3f/CanvasBodies.tsx b/src/app/dev/phase10-spike-r3f/CanvasBodies.tsx
+new file mode 100644
+index 0000000..8a2a9a4
+--- /dev/null
++++ b/src/app/dev/phase10-spike-r3f/CanvasBodies.tsx
+@@ -0,0 +1,32 @@
++"use client";
++
++/**
++ * TEMPORARY reproduction for the acceptance-required representative-phone
++ * measurement rerun only (see docs/phase10-spike-section-1/DECISION.md).
++ * Five static spheres, no post-processing, no physics, no orbit controls —
++ * matches the §1 architecture spike limits in docs/PHASE10_UX_ARCHITECTURE.md §8.
++ */
++
++const POSITIONS: [number, number, number][] = [
++  [-2.1, -0.6, 0.4],
++  [0.6, -1.7, -0.2],
++  [2.2, -0.1, 0.3],
++  [1.2, 1.5, -0.3],
++  [-1.4, 1.3, 0.1],
++];
++
++export function CanvasBodies({ activeIndex }: { activeIndex: number }) {
++  return (
++    <>
++      {POSITIONS.map((position, i) => (
++        <mesh key={i} position={position} scale={i === activeIndex ? 1.15 : 1}>
++          <sphereGeometry args={[0.42, 24, 24]} />
++          <meshStandardMaterial
++            color={i === activeIndex ? "#4fd1c5" : "#3a3a42"}
++            emissive={i === activeIndex ? "#1c6b63" : "#000000"}
++          />
++        </mesh>
++      ))}
++    </>
++  );
++}
+diff --git a/src/app/dev/phase10-spike-r3f/R3fScene.tsx b/src/app/dev/phase10-spike-r3f/R3fScene.tsx
+new file mode 100644
+index 0000000..92848e4
+--- /dev/null
++++ b/src/app/dev/phase10-spike-r3f/R3fScene.tsx
+@@ -0,0 +1,32 @@
++"use client";
++
++import { Canvas } from "@react-three/fiber";
++import { CanvasBodies } from "./CanvasBodies";
++
++/**
++ * TEMPORARY reproduction for the acceptance-required representative-phone
++ * measurement rerun only (see docs/phase10-spike-section-1/DECISION.md).
++ *
++ * `style={{ pointerEvents: "none" }}` is required here, not merely on an
++ * ancestor: @react-three/fiber's <Canvas> sets its own wrapper's inline
++ * pointerEvents style ("auto" by default), which silently overrides any
++ * ancestor `pointer-events: none` from CSS regardless of specificity,
++ * because inheritance only applies when no value is set at all. This was
++ * the concrete engineering-reliability risk the original §1 refiner pass
++ * found and documented — reproduced here so it stays fixed in this
++ * temporary spike too.
++ */
++export default function R3fScene({ activeIndex }: { activeIndex: number }) {
++  return (
++    <Canvas
++      style={{ pointerEvents: "none" }}
++      dpr={1}
++      camera={{ position: [0, 0, 6], fov: 45 }}
++      gl={{ antialias: true }}
++    >
++      <ambientLight intensity={0.6} />
++      <pointLight position={[5, 5, 5]} intensity={0.8} />
++      <CanvasBodies activeIndex={activeIndex} />
++    </Canvas>
++  );
++}
+diff --git a/src/app/dev/phase10-spike-r3f/R3fSceneLoader.tsx b/src/app/dev/phase10-spike-r3f/R3fSceneLoader.tsx
+new file mode 100644
+index 0000000..e1f0652
+--- /dev/null
++++ b/src/app/dev/phase10-spike-r3f/R3fSceneLoader.tsx
+@@ -0,0 +1,44 @@
++"use client";
++
++import { useEffect, useState } from "react";
++import dynamic from "next/dynamic";
++import styles from "./spike.module.css";
++
++const R3fScene = dynamic(() => import("./R3fScene"), { ssr: false });
++
++/**
++ * TEMPORARY reproduction for the acceptance-required representative-phone
++ * measurement rerun only (see docs/phase10-spike-section-1/DECISION.md).
++ *
++ * Server-rendered HTML (and any no-JS client) is stuck on `supported ===
++ * null` until this client-side WebGL capability check resolves — there is
++ * no way to reach the correct fallback text without JS executing. This is
++ * the JS-dependent fallback gap CSS 3D never exhibits (its fallback is a
++ * pure CSS media-query re-flow of the same server-rendered DOM).
++ */
++export function R3fSceneLoader({
++  activeIndex,
++  forceFail,
++}: {
++  activeIndex: number;
++  forceFail: boolean;
++}) {
++  const [supported, setSupported] = useState<boolean | null>(forceFail ? false : null);
++
++  useEffect(() => {
++    if (forceFail) return;
++    const canvas = document.createElement("canvas");
++    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
++    setSupported(Boolean(gl));
++  }, [forceFail]);
++
++  if (supported === null) {
++    return <div className={styles.canvasStatus}>Checking WebGL support…</div>;
++  }
++
++  if (supported === false) {
++    return null;
++  }
++
++  return <R3fScene activeIndex={activeIndex} />;
++}
+diff --git a/src/app/dev/phase10-spike-r3f/page.tsx b/src/app/dev/phase10-spike-r3f/page.tsx
+new file mode 100644
+index 0000000..609cb4a
+--- /dev/null
++++ b/src/app/dev/phase10-spike-r3f/page.tsx
+@@ -0,0 +1,103 @@
++import { cookies } from "next/headers";
++import type { Metadata } from "next";
++import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
++import { LoginForm } from "@/components/auth/LoginForm";
++import { OBSERVATORY_CHAPTERS, resolveObservatoryChapter } from "@/lib/observatory/chapters";
++import { R3fSceneLoader } from "./R3fSceneLoader";
++import styles from "./spike.module.css";
++
++export const metadata: Metadata = {
++  title: "Phase 10 §1 spike — R3F (temporary)",
++  robots: { index: false, follow: false },
++};
++
++/**
++ * TEMPORARY, non-committed reproduction of the Phase 10 §1 R3F spike,
++ * recreated only for the acceptance-required representative-phone
++ * performance rerun (see docs/phase10-spike-section-1/DECISION.md,
++ * "Phone-profile measurement recreation (acceptance remediation)"). Not
++ * part of production; removed again, along with three/@react-three/fiber/
++ * @types/three, before the refiner's final commit — see
++ * docs/phase10-spike-section-1/r3f-spike.patch for the retained,
++ * non-executing reproduction copy of this exact source.
++ *
++ * Same isolated-spike contract as the original builder/refiner passes:
++ * owner-gated, synthetic content only (no portfolio data, no network
++ * requests), five spatial objects max, no post-processing/physics/orbit
++ * controls, real `<a href>` chapter navigation duplicated beneath the
++ * decorative canvas so it stays keyboard-, touch-, screen-reader-, and
++ * no-JS-operable. Append ?forceFail=1 to force the WebGL-failure fallback.
++ */
++export default async function R3fSpikePage({
++  searchParams,
++}: {
++  searchParams: Promise<{ chapter?: string; forceFail?: string }>;
++}) {
++  const ownerPassword = process.env.OWNER_PASSWORD;
++  const cookieStore = await cookies();
++  const session = cookieStore.get(SESSION_COOKIE_NAME)?.value;
++  const authenticated = ownerPassword ? isValidSession(session, ownerPassword) : false;
++
++  if (!authenticated) {
++    return (
++      <div className="mx-auto max-w-sm px-4 py-16">
++        <h1 className="mt-3 text-xl font-semibold text-text-primary">Phase 10 §1 spike — R3F</h1>
++        <p className="mt-1 text-sm text-text-secondary">Sign in to view.</p>
++        <LoginForm />
++      </div>
++    );
++  }
++
++  const params = await searchParams;
++  const active = resolveObservatoryChapter(params.chapter);
++  const forceFail = params.forceFail === "1";
++
++  return (
++    <div className={styles.stage} data-force-no-3d={forceFail ? "true" : "false"}>
++      <div className={styles.lead}>
++        <h1 className={styles.leadHeading}>Phase 10 §1 spike — R3F</h1>
++        <p className={styles.leadSub}>
++          Isolated prototype, temporarily recreated only for the
++          representative-phone performance rerun required by Codex
++          Acceptance. Synthetic content only — no portfolio data. Append{" "}
++          <code>?forceFail=1</code> to force the WebGL failure fallback.
++        </p>
++      </div>
++
++      <div className={styles.orbitWrap}>
++        <div className={styles.canvasLayer} aria-hidden="true">
++          <R3fSceneLoader activeIndex={active.index} forceFail={forceFail} />
++        </div>
++        <nav aria-label="Observatory chapters (spike)" className={styles.orbit}>
++          {OBSERVATORY_CHAPTERS.map((chapter) => (
++            <a
++              key={chapter.id}
++              href={`/dev/phase10-spike-r3f?chapter=${chapter.id}${forceFail ? "&forceFail=1" : ""}`}
++              data-index={chapter.index}
++              aria-current={chapter.id === active.id ? "page" : undefined}
++              className={styles.body}
++            >
++              <span aria-hidden="true">{chapter.number}</span>
++              <span className="sr-only">{chapter.label}</span>
++            </a>
++          ))}
++          <div className={styles.inspector} aria-live="off">
++            <p className={styles.inspectorNumber}>{active.number}</p>
++            <p className={styles.inspectorLabel}>{active.label}</p>
++            <p className={styles.inspectorQuestion}>{active.question}</p>
++          </div>
++        </nav>
++      </div>
++
++      <article className={styles.plate} aria-labelledby="spike-plate-heading">
++        <h2 id="spike-plate-heading" className="sr-only">
++          {active.label} plate
++        </h2>
++        <p className={styles.plateFinding}>
++          Synthetic finding for &ldquo;{active.label}&rdquo; — evidence plate placeholder.
++        </p>
++        <div className={styles.plateEvidence} aria-hidden="true" />
++      </article>
++    </div>
++  );
++}
+diff --git a/src/app/dev/phase10-spike-r3f/spike.module.css b/src/app/dev/phase10-spike-r3f/spike.module.css
+new file mode 100644
+index 0000000..9149523
+--- /dev/null
++++ b/src/app/dev/phase10-spike-r3f/spike.module.css
+@@ -0,0 +1,284 @@
++/* Phase 10 §1 spike — bounded R3F approach. TEMPORARY reproduction for the
++   acceptance-required representative-phone measurement rerun only (see
++   docs/phase10-spike-section-1/DECISION.md). Isolated, non-production
++   styling — intentionally NOT shared with the CSS 3D spike or the
++   production Observatory shell so each stays a clean, independent
++   measurement artifact. Not committed to the tree; removed again before
++   the refiner's final commit. */
++
++.stage {
++  --obs-bg: #0b0b0e;
++  --obs-ink: #f5f2ea;
++  --obs-ink-soft: #b9b4a8;
++  --obs-line: #2a2a30;
++  --obs-evidence: #4fd1c5;
++  --obs-loss: #e2725b;
++  --obs-accent: #7c6fff;
++
++  position: relative;
++  min-height: 100vh;
++  background: var(--obs-bg);
++  color: var(--obs-ink);
++  overflow: hidden;
++  padding: 3rem 1.5rem;
++}
++
++.lead {
++  max-width: 46rem;
++  margin: 0 auto 3rem;
++  text-align: center;
++}
++
++.leadHeading {
++  font-size: clamp(1.5rem, 4vw, 2.25rem);
++  font-weight: 600;
++  letter-spacing: -0.01em;
++}
++
++.leadSub {
++  margin-top: 0.5rem;
++  color: var(--obs-ink-soft);
++  font-size: 0.95rem;
++}
++
++.orbitWrap {
++  position: relative;
++  width: 100%;
++  max-width: 640px;
++  height: 460px;
++  margin: 0 auto;
++  perspective: 1400px;
++}
++
++.canvasLayer {
++  position: absolute;
++  inset: 0;
++  pointer-events: none;
++  z-index: 0;
++}
++
++.canvasLayer canvas {
++  width: 100% !important;
++  height: 100% !important;
++  display: block;
++}
++
++.canvasStatus {
++  display: flex;
++  height: 100%;
++  align-items: center;
++  justify-content: center;
++  color: var(--obs-ink-soft);
++  font-family: var(--font-mono, monospace);
++  font-size: 0.75rem;
++}
++
++[data-force-no-3d="true"] .canvasLayer {
++  display: none;
++}
++
++.orbit {
++  position: relative;
++  z-index: 1;
++  width: 100%;
++  height: 100%;
++  transform-style: preserve-3d;
++  animation: obs-enter 500ms ease-out both;
++}
++
++.inspector {
++  position: absolute;
++  left: 50%;
++  top: 50%;
++  width: 15rem;
++  transform: translate(-50%, -50%);
++  text-align: center;
++  padding: 1.25rem;
++  border: 1px solid var(--obs-line);
++  border-radius: 0.75rem;
++  background: rgba(255, 255, 255, 0.03);
++}
++
++.inspectorNumber {
++  font-family: var(--font-mono, monospace);
++  font-size: 0.75rem;
++  color: var(--obs-evidence);
++  letter-spacing: 0.08em;
++}
++
++.inspectorLabel {
++  margin-top: 0.25rem;
++  font-size: 1.25rem;
++  font-weight: 600;
++}
++
++.inspectorQuestion {
++  margin-top: 0.5rem;
++  font-size: 0.8rem;
++  color: var(--obs-ink-soft);
++}
++
++.body {
++  position: absolute;
++  left: 50%;
++  top: 50%;
++  display: flex;
++  height: 84px;
++  width: 84px;
++  align-items: center;
++  justify-content: center;
++  border-radius: 999px;
++  border: 1px solid var(--obs-line);
++  background: rgba(20, 20, 26, 0.85);
++  color: var(--obs-ink-soft);
++  font-family: var(--font-mono, monospace);
++  font-size: 0.85rem;
++  text-decoration: none;
++  transition:
++    transform 300ms ease-out,
++    background 200ms ease-out,
++    color 200ms ease-out;
++}
++
++.body:focus-visible {
++  outline: 2px solid var(--obs-accent);
++  outline-offset: 3px;
++}
++
++.body[aria-current="page"] {
++  border-color: var(--obs-evidence);
++  color: var(--obs-ink);
++  background: rgba(79, 209, 197, 0.12);
++}
++
++.body[data-index="0"] {
++  transform: translate3d(-190px, -70px, 40px) translate(-50%, -50%);
++}
++.body[data-index="1"] {
++  transform: translate3d(60px, -170px, -20px) translate(-50%, -50%);
++}
++.body[data-index="2"] {
++  transform: translate3d(220px, -10px, 30px) translate(-50%, -50%);
++}
++.body[data-index="3"] {
++  transform: translate3d(120px, 150px, -30px) translate(-50%, -50%);
++}
++.body[data-index="4"] {
++  transform: translate3d(-140px, 130px, 10px) translate(-50%, -50%);
++}
++
++.body[aria-current="page"][data-index="0"] {
++  transform: translate3d(-190px, -70px, 90px) translate(-50%, -50%) scale(1.08);
++}
++.body[aria-current="page"][data-index="1"] {
++  transform: translate3d(60px, -170px, 90px) translate(-50%, -50%) scale(1.08);
++}
++.body[aria-current="page"][data-index="2"] {
++  transform: translate3d(220px, -10px, 90px) translate(-50%, -50%) scale(1.08);
++}
++.body[aria-current="page"][data-index="3"] {
++  transform: translate3d(120px, 150px, 90px) translate(-50%, -50%) scale(1.08);
++}
++.body[aria-current="page"][data-index="4"] {
++  transform: translate3d(-140px, 130px, 90px) translate(-50%, -50%) scale(1.08);
++}
++
++.plate {
++  max-width: 32rem;
++  margin: 2.5rem auto 0;
++  padding: 1.5rem;
++  border: 1px solid var(--obs-line);
++  border-radius: 0.75rem;
++  background: rgba(255, 255, 255, 0.02);
++}
++
++.plateFinding {
++  font-size: 1rem;
++  color: var(--obs-ink);
++}
++
++.plateEvidence {
++  margin-top: 0.5rem;
++  height: 3rem;
++  border-radius: 0.5rem;
++  background: linear-gradient(90deg, var(--obs-evidence) 0%, transparent 60%);
++  opacity: 0.25;
++}
++
++/* Static concentric fallback: narrow viewport, forced no-3D, or reduced
++   motion all collapse to the same flat numbered strip, and the decorative
++   canvas hides itself entirely — it has nothing correct to show once the
++   layout is already flat. No JS required for the layout collapse itself. */
++@media (max-width: 767px), (prefers-reduced-motion: reduce) {
++  .canvasLayer {
++    display: none;
++  }
++  .orbitWrap {
++    height: auto;
++    perspective: none;
++  }
++  .orbit {
++    display: flex;
++    flex-direction: column;
++    align-items: center;
++    gap: 0.75rem;
++    animation: none;
++  }
++  .inspector {
++    position: static;
++    transform: none;
++    width: 100%;
++    max-width: 22rem;
++  }
++  .body {
++    position: static;
++    transform: none !important;
++    width: 100%;
++    max-width: 22rem;
++    height: 44px;
++    border-radius: 0.5rem;
++    justify-content: flex-start;
++    gap: 0.75rem;
++    padding: 0 1rem;
++  }
++}
++
++[data-force-no-3d="true"] .orbitWrap {
++  height: auto;
++  perspective: none;
++}
++[data-force-no-3d="true"] .orbit {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  gap: 0.75rem;
++  animation: none;
++}
++[data-force-no-3d="true"] .inspector {
++  position: static;
++  transform: none;
++  width: 100%;
++  max-width: 22rem;
++}
++[data-force-no-3d="true"] .body {
++  position: static;
++  transform: none !important;
++  width: 100%;
++  max-width: 22rem;
++  height: 44px;
++  border-radius: 0.5rem;
++  justify-content: flex-start;
++  gap: 0.75rem;
++  padding: 0 1rem;
++}
++
++@keyframes obs-enter {
++  from {
++    opacity: 0;
++    transform: scale(0.96);
++  }
++  to {
++    opacity: 1;
++    transform: scale(1);
++  }
++}

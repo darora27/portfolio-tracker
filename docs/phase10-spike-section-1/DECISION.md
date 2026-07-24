@@ -11,6 +11,23 @@ revision replaces every screenshot and adds the missing runtime
 measurements, all captured genuinely (see "Measurement protocol" below) and
 dimension-verified with `sips` before being documented.
 
+Runtime measurements recreated a second time July 24, 2026 by
+`claude-code/sonnet-5` (Phase 10 Claude Refiner, §1, acceptance
+remediation) in response to Codex Acceptance's single bounded finding
+(`docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md`): the
+prior runtime pass measured unthrottled desktop Chromium, declared no
+concrete pass/fail thresholds, and deleted its script/raw output, so the
+comparison could not be independently reproduced or checked against a
+representative phone. See "Phone-profile measurement recreation
+(acceptance remediation)" below for the explicit thresholds, the
+representative-phone methodology, per-run results, and the retained
+reproduction material. The desktop-only measurements above are left
+in place as a secondary data point (per the acceptance handoff:
+"Do not recapture the already-valid screenshots unless the prototype
+visuals change" — none did) but are no longer the basis for the
+performance/bundle-budget claim in `PHASE10.md` §1's Build acceptance
+criterion; the phone-profile section below is.
+
 ## Decision
 
 **CSS 3D.** No production Three.js/React Three Fiber dependency is added.
@@ -262,6 +279,198 @@ suite (`ObservatoryShell.test.tsx`, `observatory-fallback.test.ts`) still
 carries the independent, viewport-agnostic assertions on the fallback
 class/layout logic that this doesn't replace.
 
+## Phone-profile measurement recreation (acceptance remediation)
+
+Prepared July 24, 2026 by `claude-code/sonnet-5` (Phase 10 Claude Refiner,
+§1) in direct response to Codex Acceptance's single bounded finding
+(`docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md`): the
+prior runtime pass ("Measurements (recreated)" above) ran on unthrottled
+desktop Chromium, declared no concrete pass/fail thresholds, and deleted
+its measurement script and raw output. This section fixes all three gaps.
+It does **not** change the decision (CSS 3D, unchanged) and does not
+recapture any screenshot — none of the recreated prototypes' visuals
+changed, only the runtime measurement method.
+
+### Thresholds, declared before this run
+
+These budgets were written down before the phone-profile run below was
+executed, based on well-documented, citable mobile-performance guidance
+(Google's RAIL model and Lighthouse's historical mobile-throttling
+defaults), not fitted to the result:
+
+| Metric | Threshold | Basis |
+|---|---|---|
+| Bundle: added gzip JS for the decorative/comparison layer over the CSS 3D baseline | ≤ 50 KB | An order-of-magnitude budget for a purely decorative, non-essential visual layer (`aria-hidden`, contributes no unique information) against this app's existing route weights. |
+| Load (wall-clock, `goto` → `networkidle`) on the phone profile | ≤ 5000 ms | RAIL guidance for a "reasonably fast" load on a constrained mobile network; generous enough to separate a real regression from ordinary throttled-network variance. |
+| Long tasks during load | 0 tasks > 50 ms | RAIL's "Response" guideline: no single task should block the main thread for more than 50 ms. |
+| Frame stability (1 s sample, idle, post-settle) | ≥ 55 of 60 frames ≤ 16.7 ms (≤ 5 dropped, i.e. > 33.4 ms) | RAIL's "Animation" 60fps guideline, with a small allowance for ordinary scheduler jitter. |
+| Memory: added CDP `JSHeapTotalSize` over the CSS 3D baseline | ≤ 5 MB | A conservative headroom budget for a decorative layer on RAM-constrained mid-tier phones. |
+| Interaction latency (click → `aria-current` settles) on the phone profile | ≤ 2000 ms | RAIL's response guidance extended to a full document navigation (both spikes use plain `<a href>` per the §1 no-JS-operability requirement) under constrained mobile network conditions. |
+
+### Representative phone profile
+
+Playwright's built-in **"Moto G4"** device descriptor — the same
+mid-tier-Android emulation profile Lighthouse used as its default
+"representative phone" for years — combined with CDP-level throttling
+matching Lighthouse's classic "Slow 4G" mobile profile:
+
+| Property | Value |
+|---|---|
+| Device | Moto G4 (`playwright.devices["Moto G4"]`) |
+| Viewport | 360×640 CSS px |
+| Device scale factor | 3 |
+| `isMobile` / `hasTouch` | true / true |
+| User agent | `Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) ... Mobile Safari/537.36` |
+| CPU throttling | 4× slowdown (`Emulation.setCPUThrottlingRate`) |
+| Network throttling | 150 ms RTT, 1.6 Mbps down, 750 Kbps up (`Network.emulateNetworkConditions`) |
+
+This is still emulated hardware/network throttling on desktop Chromium,
+not a physical device — no real mobile GPU, thermal behavior, or battery
+state. That limitation is disclosed, not hidden: it's a documented,
+named, reproducible profile in place of the previous pass's fully
+unthrottled desktop run, which is the specific gap Acceptance identified.
+
+### Method
+
+- **Repetitions:** 5 full page loads per route (`REPETITIONS = 5` in the
+  script), each in a fresh browser context (no shared cache/session state
+  between runs), matching the phone profile and throttling above.
+- **Script:** `scripts/tmp-phase10-measure-phone.mjs` (temporary, deleted
+  after this pass — a non-executing copy is retained at
+  `docs/phase10-spike-section-1/measure-phone.mjs` for independent
+  review/rerun).
+- **Server:** the same `npm run build && npm run start -p 3100` production
+  server, with a temporary, localhost-only `OWNER_PASSWORD` process
+  override (never a value read from `.env*`) — unchanged from the prior
+  pass's precedent.
+- **Auth:** the session cookie was computed directly from `sessionToken()`
+  in `src/lib/auth.ts` against the temporary password and injected via
+  `context.addCookies()` — no login form scripted, no `.env*` read.
+- **Load:** `performance.getEntriesByType("navigation")[0].duration` plus
+  wall-clock `Date.now()` around `page.goto(..., { waitUntil: "networkidle" })`.
+- **Long tasks:** a `PerformanceObserver` for `"longtask"`, registered via
+  `page.addInitScript()` so it's active from first paint.
+- **Frame stability:** 1000 ms of `requestAnimationFrame` deltas collected
+  after the page settles (600 ms after load, plus — for the R3F route
+  only — waiting for the `<canvas>` element to exist, since 4× CPU
+  throttling can leave the dynamically-imported `<Canvas>` still mounting
+  at the 600 ms mark; see "Memory: a methodology correction" below for why
+  this mattered).
+- **Memory:** CDP `Performance.getMetrics` → `JSHeapUsedSize` /
+  `JSHeapTotalSize`, not `performance.memory` (see the same section).
+- **Interaction latency:** click the "Forces" chapter link; wall-clock
+  `Date.now()` from click to the new link showing `aria-current="page"`.
+  Both routes use full document navigation (plain `<a href>`), same as the
+  desktop pass.
+- **Bundle:** unchanged method from the desktop pass — actual
+  `Content-Encoding: gzip` wire bytes via `curl`, measured directly
+  against the running production server. Bundle weight is a static
+  build-asset property, not a phone-runtime property, so it isn't repeated
+  per phone run.
+
+### Memory: a methodology correction found during this pass
+
+The first phone-profile run reported an **identical** `10,000,000` B for
+both `usedJSHeapSize` and `totalJSHeapSize` on both routes via
+`performance.memory` — even though a direct check confirmed WebGL was
+supported and the R3F `<canvas>` element was genuinely present and
+rendering. Chrome's `performance.memory.usedJSHeapSize` is known to
+quantize into coarse buckets as a fingerprinting mitigation (documented in
+the desktop pass above); this build's Chromium (131.0.6778.33) applies the
+same quantization to `totalJSHeapSize`, making the in-page API
+uninformative for this comparison. Switching to CDP's
+`Performance.getMetrics` — the same underlying V8 heap counters, read via
+the debugging protocol instead of the page's own (quantized) JS API —
+produced real, distinguishing values (see the table below). This is
+recorded here because it's a concrete, reusable finding for any future
+phone-profile measurement in this repository, not only this pass's result.
+
+### Results (5 runs per route; phone profile above)
+
+| Metric | Threshold | CSS 3D (min / median / max) | R3F (min / median / max) | CSS 3D | R3F |
+|---|---|---|---|---|---|
+| Bundle: added gzip JS | ≤ 50 KB | 0 B (no new chunk) | 232,976 B (233 KB) | **PASS** | **FAIL** |
+| Load (wall-clock) | ≤ 5000 ms | 2212 / 2219 / 2224 ms | 3606 / 3622 / 3629 ms | **PASS** | **PASS** |
+| Long tasks during load | 0 tasks > 50 ms | 1 task, 66–70 ms total | 2 tasks, 185–193 ms total | **FAIL** | **FAIL** |
+| Frame stability (1 s, idle) | ≥55/60 frames ≤16.7ms | 61 frames, 0 dropped | 61 frames, 0 dropped | **PASS** | **PASS** |
+| Memory: added `JSHeapTotalSize` vs. CSS baseline | ≤ 5 MB added | — (baseline) | +4.57 MB median (4,767,744 → 9,338,880 B) | **PASS** | **PASS (near budget)** |
+| Interaction latency (click → settle) | ≤ 2000 ms | 316 / 320 / 331 ms | 329 / 339 / 345 ms | **PASS** | **PASS** |
+
+Raw per-run values (all 5 repetitions, both routes, full CDP memory
+readings, navigation timing, and the phone-profile descriptor) are
+retained at `docs/phase10-spike-section-1/raw/phone-measurements.json` —
+sanitized (no cookie value, no password, no PII) and sufficient to recompute
+every min/median/max above independently.
+
+**Reading these results honestly:**
+
+- **Bundle is the decisive, unambiguous failure for R3F** — 233 KB is
+  4.7× the declared 50 KB budget, and this is the same order-of-magnitude
+  gap the original desktop-only pass found (~232 KB then too), now
+  measured against an explicit threshold instead of reported as a bare
+  number.
+- **Long tasks are a genuinely new finding this pass could not have made
+  on unthrottled desktop.** The original desktop measurement found zero
+  long tasks on both routes; under realistic phone-class CPU throttling,
+  both routes now show measurable main-thread blocking during load (CSS:
+  ~68 ms median; R3F: ~189 ms median — R3F blocks the main thread about
+  2.8× longer). Both fail the strict "0 tasks > 50 ms" budget, which is a
+  real, disclosed limitation of the current shared app shell on
+  phone-class hardware, independent of the CSS-vs-R3F choice — but the
+  gap between the two approaches corroborates the same direction as the
+  bundle finding: CSS 3D costs less main-thread time under phone-class
+  constraints, not more.
+- **Load and interaction latency remain close between the two routes**,
+  for the same reason identified in the desktop pass: both use full-page
+  `<a href>` navigation, so the shared app shell dominates the timing, not
+  the decorative layer. This is not a measurement of "R3F canvas mount
+  cost" in isolation.
+- **Memory now shows a real, non-quantized gap** (unlike the desktop
+  pass's identical, uninformative reading): R3F's added heap sits near but
+  under the declared 5 MB budget. This is consistent with — and now
+  quantifies — the "larger live object graph" reasoning in "Why CSS 3D"
+  below.
+- **Frame stability is identical and still uninformative for the same
+  reason as the desktop pass**: R3F's default `frameloop="always"` render
+  loop is real ongoing cost, but five static spheres fit inside the 16.7 ms
+  frame budget on this hardware, so a frame-delta sample can't see it
+  directly. The bundle and long-task findings above are the metrics that
+  actually surface this cost.
+
+### Reproduction material retained for independent review
+
+Per the acceptance finding's required change ("retain sanitized raw output
+plus sufficient reproduction material... without importing R3F into
+production or leaving its dependencies installed"), the following are
+committed as **non-executing, non-production** artifacts — none of them
+are referenced by `package.json` scripts, imported by any file under
+`src/`, or included in the production build:
+
+- `docs/phase10-spike-section-1/raw/phone-measurements.json` — the exact
+  raw output transcribed into the results table above.
+- `docs/phase10-spike-section-1/measure-phone.mjs` — a copy of the
+  measurement script used to produce that output (the working copy at
+  `scripts/tmp-phase10-measure-phone.mjs` is deleted; this one stays as
+  documentation/reproduction material, requiring a local
+  `npm install --no-save playwright@1.49.1` to actually run).
+- `docs/phase10-spike-section-1/r3f-spike.patch` — a `git diff` patch of
+  the exact recreated R3F spike source
+  (`src/app/dev/phase10-spike-r3f/{page.tsx,R3fScene.tsx,R3fSceneLoader.tsx,CanvasBodies.tsx,spike.module.css}`)
+  used for this measurement pass, as a plain-text patch rather than live
+  source — applying it (`git apply docs/phase10-spike-section-1/r3f-spike.patch`)
+  after `npm install --no-save three@0.185.1 @react-three/fiber@^9
+  @types/three@0.185.1` reproduces the exact route measured above. This
+  keeps the R3F source out of the committed application tree (it is not
+  under `src/` at the final commit) while keeping it fully recoverable.
+
+An independent reviewer can: apply the patch, install the three temporary
+dependencies with `--no-save`, rebuild (`npm run build`), start the
+production server, install `playwright@1.49.1` with `--no-save`, run
+`docs/phase10-spike-section-1/measure-phone.mjs`, and get the same class of
+results — then revert with `git apply -R` and `npm uninstall three
+@react-three/fiber @types/three playwright`, confirming
+`git diff --quiet package.json package-lock.json` afterward.
+
 ## Why CSS 3D
 
 1. **Fallback resilience.** CSS 3D's no-JS/no-WebGL/reduced-motion state is
@@ -310,7 +519,7 @@ simplest fallback."
   `src/app/dev/surface-scratch/` precedent (an owner-gated, non-indexed
   dev route, not part of the public IA).
 
-### §1 refiner pass (this measurement recreation)
+### §1 refiner pass (desktop measurement recreation, July 23)
 
 - Recreated `src/app/dev/phase10-spike-r3f/` (`page.tsx`, `R3fScene.tsx`,
   `R3fSceneLoader.tsx`, `CanvasBodies.tsx`, `spike.module.css`) and
@@ -337,3 +546,47 @@ simplest fallback."
 - Re-ran `npm test` (291/291 passing, up from 278 before this pass — see
   the refiner's added test coverage) and `npm run build` (16 routes
   generated, matching the pre-R3F-recreation route count) after cleanup.
+
+### §1 refiner pass (phone-profile measurement recreation, acceptance remediation, July 24)
+
+- Recreated `src/app/dev/phase10-spike-r3f/` (`page.tsx`, `R3fScene.tsx`,
+  `R3fSceneLoader.tsx`, `CanvasBodies.tsx`, `spike.module.css`) — this
+  source did not exist anywhere in git history (both prior passes removed
+  it before their own commits), so it was rebuilt from this document's own
+  description of the original spike (same semantic content/controls,
+  five-sphere `<Canvas>`, `aria-hidden` decorative layer, explicit
+  `pointerEvents: "none"` fix, `?forceFail=1` forced-fallback param) — and
+  reinstalled `three@0.185.1`, `@react-three/fiber@^9`, and
+  `@types/three@0.185.1` with `npm install --no-save` (so `package.json`/
+  `package-lock.json` are never touched) solely to capture the
+  representative-phone measurements above.
+- Installed `playwright@1.49.1` with `npm install --no-save` (reusing the
+  Chromium browser binary already cached outside the repo at
+  `~/Library/Caches/ms-playwright` from the prior pass).
+- Generated `docs/phase10-spike-section-1/r3f-spike.patch` (a `git diff`
+  of the recreated R3F spike source, produced via `git add -N` +
+  `git diff` + `git reset`, never actually staged/committed) as the
+  retained, non-executing reproduction copy required by the acceptance
+  finding.
+- Copied the working measurement script to
+  `docs/phase10-spike-section-1/measure-phone.mjs` and the sanitized raw
+  output to `docs/phase10-spike-section-1/raw/phone-measurements.json`
+  (verified to contain no cookie value, password, or other secret via
+  direct grep) before deleting the working copies.
+- Removed `src/app/dev/phase10-spike-r3f/` again and ran
+  `npm uninstall three @react-three/fiber @types/three playwright`.
+  Confirmed via `git diff --quiet package.json package-lock.json` that
+  both files are unchanged, and confirmed directly that `three`,
+  `@react-three/fiber`, `@types/three`, and `playwright` are absent from
+  `node_modules` and from `npm ls --depth=0`.
+- Deleted `scripts/tmp-phase10-measure-phone.mjs` and
+  `scripts/tmp-phase10-phone-measurements.json`; confirmed neither is
+  tracked or present in the working tree (only the retained copies under
+  `docs/phase10-spike-section-1/` remain).
+- Stopped the temporary production server (port 3100) and confirmed via
+  `lsof` that nothing is still listening on it.
+- Re-ran `npm test` and `npm run build` after cleanup (see
+  `PHASE10_STATE.json` for the exact counts recorded for this pass).
+- No `.env*` file was read, printed, edited, staged, or committed at any
+  point in this pass; `OWNER_PASSWORD` was a temporary literal passed on
+  the process command line, matching the precedent from both prior passes.

@@ -333,3 +333,86 @@ Claude refinement and Codex acceptance per
 - Claude Refiner handoff:
   `docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-to-claude-refiner.md`
 - Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_refiner`)
+
+### §1 Claude Refiner (acceptance remediation)
+
+- [x] Read the acceptance report, the acceptance-to-refiner handoff, and
+  the current `PHASE10_STATE.json` before touching any file — done by
+  claude-code/sonnet-5
+- [x] Declared six explicit pass/fail thresholds (bundle, load, long
+  tasks, frame stability, memory, interaction latency), each with a cited
+  basis (RAIL model / Lighthouse mobile-throttling defaults), in
+  `docs/phase10-spike-section-1/DECISION.md` before running any
+  measurement — done by claude-code/sonnet-5
+- [x] Recreated the R3F spike source (it existed in no git commit — both
+  prior passes removed it before their own commits — so it was rebuilt
+  from DECISION.md's own description of the original spike) and
+  reinstalled `three@0.185.1`, `@react-three/fiber@^9`,
+  `@types/three@0.185.1`, and `playwright@1.49.1` with `npm install
+  --no-save` so `package.json`/`package-lock.json` are provably untouched
+  — done by claude-code/sonnet-5
+- [x] Measured both spikes 5 times each on Playwright's built-in "Moto G4"
+  device profile (Lighthouse's long-standing representative mid-tier
+  phone) with CDP CPU 4x throttling and Slow-4G network throttling (150ms
+  RTT, 1.6Mbps down, 750Kbps up) against a real production server — done
+  by claude-code/sonnet-5
+- [x] Found and fixed a measurement bug mid-pass: `performance.memory`
+  quantized both used/total heap identically for both routes in this
+  Chromium build (uninformative); switched to CDP
+  `Performance.getMetrics`, which produced real, distinguishing memory
+  readings — done by claude-code/sonnet-5
+- [x] Recorded per-run min/median/max and an explicit PASS/FAIL against
+  each threshold for both routes in DECISION.md's "Results" table; R3F
+  fails the bundle threshold by 4.7x (232,976B vs. 50KB), and both routes
+  newly fail the strict 0-long-tasks threshold under phone-class CPU
+  (invisible on the prior unthrottled desktop pass), with R3F costing
+  ~2.8x more main-thread blocking time — done by claude-code/sonnet-5
+- [x] Retained sanitized raw per-run output
+  (`docs/phase10-spike-section-1/raw/phone-measurements.json`, checked for
+  secrets before commit), a non-executing copy of the measurement script
+  (`docs/phase10-spike-section-1/measure-phone.mjs`), and a `git diff`
+  patch of the exact recreated R3F source
+  (`docs/phase10-spike-section-1/r3f-spike.patch`) for independent
+  reproduction — done by claude-code/sonnet-5
+- [x] Removed `src/app/dev/phase10-spike-r3f/` again and ran `npm
+  uninstall three @react-three/fiber @types/three playwright`; confirmed
+  `git diff --quiet package.json package-lock.json` shows no diff at all,
+  and all four packages are absent from `node_modules` and `npm ls` —
+  done by claude-code/sonnet-5
+- [x] Did not recapture any screenshot (prototype visuals unchanged, per
+  the acceptance handoff's explicit instruction); did not touch any
+  previously-passing implementation behavior; did not begin §2 — done by
+  claude-code/sonnet-5
+- [x] `npm test`: 310/310 passed, 54 files (current HEAD, unchanged count
+  — no test file touched by this pass) — done by claude-code/sonnet-5
+- [x] `npm run build`: Next.js 16.2.11 production build compiled
+  successfully; 16 route tasks generated (R3F route absent again) — done
+  by claude-code/sonnet-5
+- [x] Re-verified privacy live against the rebuilt production server:
+  `/dev/observatory-shell` and `/dev/phase10-spike-css` gate when logged
+  out with zero dollar-currency patterns; `/dev/phase10-spike-r3f` returns
+  a genuine 404 after cleanup — done by claude-code/sonnet-5
+- [x] No `.env*` contents read, printed, edited, staged, or committed; no
+  `vercel --prod` run; no deploy; the temporary production server (port
+  3100) was confirmed stopped via `lsof` before the final commit — done
+  by claude-code/sonnet-5
+- [x] Prepared the Codex Acceptance re-review handoff and stopped without
+  beginning §2 — done by claude-code/sonnet-5
+- [x] Commit: `phase10(§1): representative-phone performance evidence for
+  acceptance remediation` — done by claude-code/sonnet-5
+
+### §1 refiner (acceptance remediation) evidence
+
+- Updated decision record:
+  `docs/phase10-spike-section-1/DECISION.md` (see "Phone-profile
+  measurement recreation (acceptance remediation)")
+- Raw measurement data: `docs/phase10-spike-section-1/raw/phone-measurements.json`
+- Retained reproduction material:
+  `docs/phase10-spike-section-1/measure-phone.mjs`,
+  `docs/phase10-spike-section-1/r3f-spike.patch`
+- Codex Acceptance re-review handoff:
+  `docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_acceptance`)
+
+Do not begin §2 without Devan's explicit instruction; §1 stops here for
+Codex Acceptance re-review per `docs/PHASE10_AGENT_WORKFLOW.md`.

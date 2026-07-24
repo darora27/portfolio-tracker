@@ -1,0 +1,289 @@
+{
+  "measuredAt": "2026-07-24T02:57:48.962Z",
+  "phoneProfile": {
+    "device": "Moto G4 (Playwright built-in descriptor)",
+    "viewport": {
+      "width": 360,
+      "height": 640
+    },
+    "deviceScaleFactor": 3,
+    "isMobile": true,
+    "hasTouch": true,
+    "userAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.33 Mobile Safari/537.36",
+    "cpuThrottleRate": 4,
+    "network": {
+      "offline": false,
+      "downloadThroughput": 209715.2,
+      "uploadThroughput": 96000,
+      "latency": 150
+    }
+  },
+  "repetitions": 5,
+  "css": [
+    {
+      "run": 1,
+      "load": {
+        "wallLoadMs": 2224,
+        "nav": {
+          "domContentLoadedEventEnd": 557.2000000476837,
+          "loadEventEnd": 1800.8000001907349,
+          "duration": 1800.8000001907349
+        },
+        "longTaskCount": 1,
+        "longTaskTotalMs": 70,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.6672131147541,
+        "maxFrameMs": 16.800000000000182,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 3184144,
+          "JSHeapTotalSize": 4767744
+        }
+      },
+      "interactionMs": 331
+    },
+    {
+      "run": 2,
+      "load": {
+        "wallLoadMs": 2219,
+        "nav": {
+          "domContentLoadedEventEnd": 551.8999998569489,
+          "loadEventEnd": 1793.5,
+          "duration": 1793.5
+        },
+        "longTaskCount": 1,
+        "longTaskTotalMs": 68,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.667213114754095,
+        "maxFrameMs": 16.799999999999727,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 3184304,
+          "JSHeapTotalSize": 4767744
+        }
+      },
+      "interactionMs": 317
+    },
+    {
+      "run": 3,
+      "load": {
+        "wallLoadMs": 2217,
+        "nav": {
+          "domContentLoadedEventEnd": 549.9000000953674,
+          "loadEventEnd": 1791.4000000953674,
+          "duration": 1791.4000000953674
+        },
+        "longTaskCount": 1,
+        "longTaskTotalMs": 68,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.66393442622951,
+        "maxFrameMs": 16.800000000000182,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 3184708,
+          "JSHeapTotalSize": 4767744
+        }
+      },
+      "interactionMs": 316
+    },
+    {
+      "run": 4,
+      "load": {
+        "wallLoadMs": 2212,
+        "nav": {
+          "domContentLoadedEventEnd": 553,
+          "loadEventEnd": 1787.2000000476837,
+          "duration": 1787.2000000476837
+        },
+        "longTaskCount": 1,
+        "longTaskTotalMs": 68,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.6655737704918,
+        "maxFrameMs": 16.800000000000182,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 3183644,
+          "JSHeapTotalSize": 4767744
+        }
+      },
+      "interactionMs": 321
+    },
+    {
+      "run": 5,
+      "load": {
+        "wallLoadMs": 2222,
+        "nav": {
+          "domContentLoadedEventEnd": 560.1000001430511,
+          "loadEventEnd": 1795.1000001430511,
+          "duration": 1795.1000001430511
+        },
+        "longTaskCount": 1,
+        "longTaskTotalMs": 66,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.6655737704918,
+        "maxFrameMs": 16.800000000000182,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 3185112,
+          "JSHeapTotalSize": 4767744
+        }
+      },
+      "interactionMs": 320
+    }
+  ],
+  "r3f": [
+    {
+      "run": 1,
+      "load": {
+        "wallLoadMs": 3606,
+        "nav": {
+          "domContentLoadedEventEnd": 551.8000001907349,
+          "loadEventEnd": 1795.3000001907349,
+          "duration": 1795.3000001907349
+        },
+        "longTaskCount": 2,
+        "longTaskTotalMs": 189,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.66557377049181,
+        "maxFrameMs": 16.799999999999272,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 5229392,
+          "JSHeapTotalSize": 9601024
+        }
+      },
+      "interactionMs": 345
+    },
+    {
+      "run": 2,
+      "load": {
+        "wallLoadMs": 3622,
+        "nav": {
+          "domContentLoadedEventEnd": 557.2000000476837,
+          "loadEventEnd": 1805.1000001430511,
+          "duration": 1805.1000001430511
+        },
+        "longTaskCount": 2,
+        "longTaskTotalMs": 185,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.66393442622951,
+        "maxFrameMs": 16.80000000000109,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 5220192,
+          "JSHeapTotalSize": 9338880
+        }
+      },
+      "interactionMs": 329
+    },
+    {
+      "run": 3,
+      "load": {
+        "wallLoadMs": 3629,
+        "nav": {
+          "domContentLoadedEventEnd": 557.6000001430511,
+          "loadEventEnd": 1806.7999999523163,
+          "duration": 1806.7999999523163
+        },
+        "longTaskCount": 2,
+        "longTaskTotalMs": 188,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.66557377049181,
+        "maxFrameMs": 16.80000000000109,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 5237812,
+          "JSHeapTotalSize": 9076736
+        }
+      },
+      "interactionMs": 332
+    },
+    {
+      "run": 4,
+      "load": {
+        "wallLoadMs": 3611,
+        "nav": {
+          "domContentLoadedEventEnd": 552.2000000476837,
+          "loadEventEnd": 1800.5,
+          "duration": 1800.5
+        },
+        "longTaskCount": 2,
+        "longTaskTotalMs": 193,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.66721311475411,
+        "maxFrameMs": 16.799999999999272,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 5241008,
+          "JSHeapTotalSize": 9338880
+        }
+      },
+      "interactionMs": 339
+    },
+    {
+      "run": 5,
+      "load": {
+        "wallLoadMs": 3627,
+        "nav": {
+          "domContentLoadedEventEnd": 558.9000000953674,
+          "loadEventEnd": 1807.2000000476837,
+          "duration": 1807.2000000476837
+        },
+        "longTaskCount": 2,
+        "longTaskTotalMs": 191,
+        "frameSampleCount": 61,
+        "avgFrameMs": 16.66557377049181,
+        "maxFrameMs": 16.799999999999272,
+        "droppedFrames": 0,
+        "domMemory": {
+          "usedJSHeapSize": 10000000,
+          "totalJSHeapSize": 10000000
+        },
+        "cdpMemory": {
+          "JSHeapUsedSize": 5237968,
+          "JSHeapTotalSize": 9601024
+        }
+      },
+      "interactionMs": 340
+    }
+  ],
+  "bundleCheck": {
+    "note": "Route-chunk gzip wire bytes measured separately via curl (see DECISION.md); this fetch call only confirms both routes are reachable under the phone-profile session cookie."
+  }
+}

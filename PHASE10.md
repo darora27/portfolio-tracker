@@ -2,8 +2,9 @@
 
 Status: implementation active
 
-Implementation status: §0 baseline complete; §1 Codex Acceptance review failed
-with one bounded engineering-evidence finding, awaiting Claude Refiner
+Implementation status: §0 baseline complete; §1 Claude Refiner addressed the
+one bounded engineering-evidence finding from Codex Acceptance, awaiting
+Codex Acceptance re-review
 
 Selected direction: Field Journal structural base with Night Orbit orbital
 chapter navigation, selected-body inspector, and static concentric fallback
