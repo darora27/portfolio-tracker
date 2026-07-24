@@ -2,9 +2,9 @@
 
 Status: implementation active
 
-Implementation status: §0 baseline complete; §1 Claude Refiner addressed the
-one bounded engineering-evidence finding from Codex Acceptance, awaiting
-Codex Acceptance re-review
+Implementation status: §0 baseline complete; §1 Codex Acceptance re-review
+verified the phone-profile artifacts but found the chosen CSS path fails its
+declared long-task budget, returned to Claude Refiner
 
 Selected direction: Field Journal structural base with Night Orbit orbital
 chapter navigation, selected-body inspector, and static concentric fallback

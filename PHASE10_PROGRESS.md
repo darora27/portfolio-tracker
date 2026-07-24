@@ -92,9 +92,9 @@ one green commit per section: `phase10(§N): <summary>`.
 
 ## §1. Selected direction technical spike and semantic shell
 
-Status: Codex Acceptance verified the refined implementation but found one
-remaining bounded engineering-evidence failure in original finding 1. Next
-role: Claude Refiner. §2 is not started.
+Status: Codex Acceptance re-review verified the representative-phone
+remediation but found the selected CSS path fails its own declared long-task
+budget. Next role: Claude Refiner. §2 is not started.
 
 - [x] Confirmed the recorded Field Journal structural base and exact Night
   Orbit borrowed parts against `PRODUCT_DIRECTION.md` and
@@ -416,3 +416,58 @@ Claude refinement and Codex acceptance per
 
 Do not begin §2 without Devan's explicit instruction; §1 stops here for
 Codex Acceptance re-review per `docs/PHASE10_AGENT_WORKFLOW.md`.
+
+### §1 Codex Acceptance re-review (acceptance remediation)
+
+- [x] Confirmed no competing Claude/Codex coding process was active, the
+  worktree was clean, and the scoped chain ends at `dfb654d` — done by
+  codex/gpt-5
+- [x] Excluded `9cf4ee3` and the repository's actual `bf98491` commit from
+  §1 credit; the prompt's `bfb8491` does not resolve — done by
+  codex/gpt-5
+- [x] Verified six explicit thresholds are present; recorded that their
+  claimed pre-run chronology is attested in the handoff but not independently
+  timestamped because thresholds and results first enter Git together —
+  done by codex/gpt-5
+- [x] Verified the named Moto G4 profile, 360×640 viewport, DPR 3, mobile UA,
+  touch, 4× CPU slowdown, Slow 4G throttling, five fresh-context runs per
+  route, and disclosed desktop-emulation limitation — done by codex/gpt-5
+- [x] Independently recomputed the raw per-run load, long-task, memory, and
+  interaction summaries; verified the retained script and that the R3F patch
+  passes `git apply --check` — done by codex/gpt-5
+- [x] Verified §1 production source and package manifests are unchanged from
+  `6f92aaa`, the R3F route is absent/404, and direct `three`,
+  `@react-three/fiber`, `@types/three`, and `playwright` installs are absent —
+  done by codex/gpt-5
+- [x] Re-verified all 13 screenshot dimensions and visually inspected the
+  desktop, phone, forced-fallback, public, and private states — done by
+  codex/gpt-5
+- [x] Re-verified live 390×844 and 320×844 layouts, zero page overflow,
+  44px targets, query preservation, click/back/forward focus restoration,
+  public/private isolation, concentric fallback, and zero retained-route
+  console warnings/errors — done by codex/gpt-5
+- [x] Re-verified logged-out gating, zero strict currency values/private
+  markers in unauthenticated HTML, and no environment-file contents accessed
+  or output — done by codex/gpt-5
+- [x] `npm test`: 54 files and 310/310 tests passed — done by codex/gpt-5
+- [x] `npm run build`: Next.js 16.2.11 compiled, TypeScript passed, and 16
+  route tasks generated — done by codex/gpt-5
+- [x] Recorded scorecard: Product alignment PASS; Hierarchy PASS; Usefulness
+  PASS; Originality PASS; Accessibility/mobile PASS; Engineering reliability
+  FAIL — done by codex/gpt-5
+- [x] Returned one smallest complete failure: CSS fails the declared
+  zero-long-task threshold in all five phone runs, and the frame PASS uses a
+  different predicate from the declared threshold — done by codex/gpt-5
+- [x] Stopped the temporary review server, changed no implementation source,
+  and did not begin §2 or deploy — done by codex/gpt-5
+
+### §1 Codex Acceptance re-review evidence
+
+- Re-review:
+  `docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md`
+- Claude Refiner handoff:
+  `docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-to-claude-refiner.md`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_refiner`)
+
+Do not begin §2. §1 returns only the bounded Engineering Reliability finding
+above to Claude Refiner.

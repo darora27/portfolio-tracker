@@ -2,9 +2,9 @@
   "schema_version": 1,
   "phase": 10,
   "current_section": "§1",
-  "role": "codex_acceptance",
-  "status": "awaiting_acceptance",
-  "next_agent": "codex",
+  "role": "claude_refiner",
+  "status": "awaiting_refiner",
+  "next_agent": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -32,7 +32,7 @@
     "production_ui_changed": false
   },
   "section_1": {
-    "status": "awaiting_acceptance",
+    "status": "awaiting_refiner",
     "completed_by": "claude-code/sonnet-5",
     "completed_at": "2026-07-23T19:30:00-07:00",
     "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
@@ -59,7 +59,9 @@
     "acceptance_remediation_commit": "290ce5f5416394786cf1d34516e9d8de301e1ea0",
     "acceptance_remediation_commit_subject": "phase10(§1): representative-phone performance evidence for acceptance remediation",
     "acceptance_remediation_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md",
-    "acceptance_remediation_summary": "Addressed the single bounded engineering-reliability finding from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md: declared explicit pass/fail thresholds before measuring, recreated both spikes and measured them on Playwright's 'Moto G4' device profile with CDP CPU 4x / Slow-4G-network throttling (5 repetitions per route), retained sanitized raw results and non-executing reproduction material (r3f-spike.patch, measure-phone.mjs), then removed the R3F route and all temporary dependencies again. See docs/phase10-spike-section-1/DECISION.md 'Phone-profile measurement recreation (acceptance remediation)'."
+    "acceptance_remediation_summary": "Addressed the single bounded engineering-reliability finding from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md: declared explicit pass/fail thresholds before measuring, recreated both spikes and measured them on Playwright's 'Moto G4' device profile with CDP CPU 4x / Slow-4G-network throttling (5 repetitions per route), retained sanitized raw results and non-executing reproduction material (r3f-spike.patch, measure-phone.mjs), then removed the R3F route and all temporary dependencies again. See docs/phase10-spike-section-1/DECISION.md 'Phone-profile measurement recreation (acceptance remediation)'.",
+    "acceptance_remediation_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
+    "acceptance_remediation_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-to-claude-refiner.md"
   },
   "last_green_commit": "290ce5f5416394786cf1d34516e9d8de301e1ea0",
   "last_green_commit_note": "The `phase10(§1): representative-phone performance evidence for acceptance remediation` commit. Tests (310/310, 54 files) and production build (16 routes) were run by the Claude Refiner against that commit's exact working-tree content before committing; a bookkeeping-only follow-up commit records the resulting hash.",
@@ -123,8 +125,10 @@
   "review": {
     "result": "fail",
     "reviewer": "codex/gpt-5",
-    "reviewed_commit": "6f92aaa3ce0425efc02aaa7e60dbc477905fb751",
-    "report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
+    "reviewed_commit": "dfb654d8993541bab1a863b084689b303ea839f1",
+    "report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
+    "prior_acceptance_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
+    "prior_acceptance_reviewed_commit": "6f92aaa3ce0425efc02aaa7e60dbc477905fb751",
     "scorecard": {
       "product_alignment": "pass",
       "hierarchy": "pass",
@@ -136,12 +140,11 @@
     "failures": [
       {
         "category": "engineering_reliability",
-        "criterion": "representative-phone, budgeted, independently reproducible CSS-vs-R3F performance evidence",
-        "evidence": "DECISION.md records unthrottled headless desktop Chromium and explicitly disclaims a physical phone, touch, mobile GPU, and device pixel ratio. It provides no concrete load, interaction, memory, or bundle pass thresholds. The temporary R3F source, measurement script, and raw JSON were removed, while the table reports ranges without retained per-run values/sample mapping.",
-        "impact": "The CSS decision remains plausible and all implementation checks pass, but §1 cannot prove representative-phone performance or that the chosen approach meets recorded performance/bundle budgets, and the reported comparison cannot be independently rerun.",
-        "required_change": "Recreate both spikes only long enough to declare explicit thresholds and rerun all required metrics on a documented representative phone environment; retain sanitized raw results plus sufficient non-production reproduction material; then remove the live R3F route/dependencies again and rerun tests, build, privacy, and cleanup checks.",
-        "verification": "An independent reviewer can rerun the retained procedure, see sample counts and pass/fail results for every threshold on the named phone profile, and confirm all R3F/temporary dependencies remain absent from the production package and build.",
-        "refiner_response": "Declared six explicit pass/fail thresholds (bundle, load, long tasks, frame stability, memory, interaction latency) in DECISION.md before measuring. Recreated both spikes (R3F source did not exist in git history — rebuilt from DECISION.md's own description) and measured 5 repetitions per route on Playwright's built-in 'Moto G4' device profile (the historical Lighthouse representative mid-tier phone) with CDP CPU 4x throttling and Slow-4G network throttling (150ms RTT, 1.6Mbps down, 750Kbps up). Found and fixed a methodology gap mid-pass: performance.memory quantized both used/total heap identically for both routes in this Chromium build, so memory was re-measured via CDP Performance.getMetrics instead, which produced real, distinguishing values. R3F fails the bundle threshold (232,976B vs 50KB budget); both routes fail the strict 0-long-tasks threshold under phone-class CPU throttling (a new finding invisible on unthrottled desktop), with R3F costing ~2.8x more main-thread blocking time than CSS. Retained sanitized raw per-run JSON (docs/phase10-spike-section-1/raw/phone-measurements.json), a non-executing copy of the measurement script (docs/phase10-spike-section-1/measure-phone.mjs), and a git-diff patch of the exact recreated R3F source (docs/phase10-spike-section-1/r3f-spike.patch) for independent reproduction. Removed the R3F route and ran `npm uninstall three @react-three/fiber @types/three playwright` again; confirmed package.json/package-lock.json byte-identical via `git diff --quiet` and all four packages absent from node_modules/npm ls. Did not recapture screenshots (visuals unchanged, per the acceptance handoff's explicit instruction). Did not begin §2."
+        "criterion": "the selected CSS path meets every predeclared representative-phone performance budget with independently checkable evidence",
+        "evidence": "The declared long-task budget is 0 tasks over 50 ms, but all five retained CSS runs contain one long task totaling 66–70 ms. The frame table requires at least 55/60 samples at or below 16.7 ms, while the script only counts deltas above 33.4 ms and the retained raw output omits individual deltas, so its frame PASS is not evaluated against the written predicate.",
+        "impact": "The remediation now proves representative-phone behavior, but it also proves the chosen approach fails a release budget. Accepting §1 would contradict PHASE10.md's Build criterion, and the frame result cannot be recomputed against its declared threshold.",
+        "required_change": "Retain the next-run thresholds before measurement in an independently auditable form; identify and address the CSS long task so the selected path passes every declared budget; align the frame predicate and script and retain enough raw data to recompute it; rerun both spikes, then remove temporary R3F code/dependencies and rerun tests, build, privacy, and cleanup checks.",
+        "verification": "Five fresh-context phone-profile runs show CSS PASS against every predeclared metric; retained raw data recomputes every PASS exactly; the R3F comparison remains reproducible; and the final production tree remains CSS-only and green."
       }
     ],
     "prior_critic_review": {
@@ -197,10 +200,10 @@
     }
   },
   "failure_count": {
-    "consecutive": 1,
+    "consecutive": 2,
     "maximum": 3
   },
-  "stop_reason": "Claude Refiner addressed the one remaining bounded engineering-reliability finding (representative-phone, budgeted, reproducible performance evidence) and stopped per its handoff prompt, without beginning §2. Awaiting Codex Acceptance re-review.",
-  "handoff_reason": "Route §1 back to Codex Acceptance to independently verify the representative-phone measurement evidence, declared thresholds, and retained reproduction material described in docs/phase10-spike-section-1/DECISION.md and docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md, alongside the previously-passing dimensions which were not touched by this pass.",
-  "updated_at": "2026-07-24T03:16:00Z"
+  "stop_reason": "Codex Acceptance re-review verified the representative-phone profile, retained raw/script/patch artifacts, final CSS-only source state, prior functional fixes, privacy, tests, and build compilation, but the selected CSS route fails its declared zero-long-task budget in all five runs and the frame PASS uses a different predicate from the declared threshold. §1 remains unaccepted; §2 is not started.",
+  "handoff_reason": "Route one bounded Engineering Reliability finding back to Claude Refiner: make the selected CSS path pass every predeclared phone-performance threshold, align the frame predicate and retained raw evidence, preserve all other passing §1 behavior, then return to Codex Acceptance.",
+  "updated_at": "2026-07-24T03:20:55Z"
 }
