@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
   "phase": 10,
-  "current_section": "§2",
+  "current_section": "§3",
   "role": "claude_lead",
-  "stage": "accept",
+  "stage": "specify",
   "status": "ready",
   "next_actor": "claude",
   "selected_direction": {
@@ -24,11 +24,11 @@
     ]
   },
   "section": {
-    "id": "§2",
-    "title": "`/share` Pulse vertical slice",
-    "spec_doc": "docs/phase10-workflow/specs/section-2.md",
-    "implementation_commit": "970e01273b2979aa9764eed55840cfd98df660a3",
-    "review_result": "pass",
+    "id": "§3",
+    "title": "`/share` Forces, Structure, Timeline, and Method chapters",
+    "spec_doc": null,
+    "implementation_commit": null,
+    "review_result": null,
     "findings": [],
     "remediation_commits": [],
     "accepted_commit": null,
@@ -46,26 +46,31 @@
       "status": "complete",
       "accepted_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
       "note": "Accepted under a documented, non-generalizing owner exception to the absolute long-task gate. Full history: legacy.section_1."
+    },
+    {
+      "id": "§2",
+      "status": "complete",
+      "accepted_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5"
     }
   ],
-  "prev_actor_commit": "970e01273b2979aa9764eed55840cfd98df660a3",
-  "last_green_commit": "970e01273b2979aa9764eed55840cfd98df660a3",
+  "prev_actor_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5",
+  "last_green_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5",
   "verification": {
     "tests": {
       "command": "npm test",
-      "status": "pass",
-      "summary": "Independently rerun by Claude Lead at review: 55 test files passed; 325 of 325 tests passed, matching the implementation's own recorded result.",
-      "finished_at": "2026-07-24T18:15:30Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     },
     "build": {
       "command": "npm run build",
-      "status": "pass",
-      "summary": "Independently rerun by Claude Lead at review: Next.js 16.2.11 production build compiled successfully, TypeScript passed, and 16 route tasks generated (unchanged route list).",
-      "finished_at": "2026-07-24T18:16:00Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T18:30:00Z",
+  "updated_at": "2026-07-24T18:45:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
