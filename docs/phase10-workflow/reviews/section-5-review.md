@@ -227,3 +227,27 @@ other file touched.
 All 30 acceptance criteria now pass. `section.review_result` → `"pass"`.
 Routing to `accept` stage (this Claude Lead turn stops here per protocol;
 acceptance is a separate, later turn).
+
+## Acceptance
+
+Accepted by: `claude-code/sonnet-5` (Claude Lead, `accept` stage)
+
+Accepted commit: `72932ce3965f8df72a0fdc9cf2bc687c49d1e53c`
+(`phase10(review §5): pass, remediation verified`) — the latest review doc
+above (the "Remediation re-review" section, result PASS) is authoritative
+for this acceptance per the workflow's remediate-loop rule.
+
+- `npm test`: reran independently on the accepted commit — 65 test files
+  passed; 379 of 379 tests passed.
+- `npm run build`: reran independently on the accepted commit — Next.js
+  compiled successfully, TypeScript passed, 16 route tasks generated
+  (unchanged route list: `/`, `/api/auth/login`, `/api/auth/logout`,
+  `/api/cron/snapshot`, `/api/export/history.csv`, `/api/export/trades.csv`,
+  `/api/quotes`, `/api/settings`, `/api/trades`, `/compare`, `/dashboard`,
+  `/dev/observatory-shell`, `/dev/phase10-spike-css`, `/dev/surface-scratch`,
+  `/history`, `/research`, `/share`, `/share/full`, `/stock/[ticker]`,
+  `/trades`).
+
+§5 is complete. Moving its record into `PHASE10_STATE.json`'s
+`sections_history` and initializing §6 (`/dashboard` first-layer hierarchy)
+to the `specify` stage — done by claude-code/sonnet-5.
