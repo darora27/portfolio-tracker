@@ -32,7 +32,7 @@
     "production_ui_changed": false
   },
   "section_1": {
-    "status": "awaiting_refiner",
+    "status": "awaiting_acceptance",
     "completed_by": "claude-code/sonnet-5",
     "completed_at": "2026-07-23T19:30:00-07:00",
     "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
@@ -65,10 +65,12 @@
     "acceptance_remediation_2_completed_by": "claude-code/sonnet-5",
     "acceptance_remediation_2_completed_at": "2026-07-24T03:50:00Z",
     "acceptance_remediation_2_summary": "Addressed both bounded Engineering Reliability findings from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md. (1) Root-caused the 66-70ms long task via longtask attribution + resource-timing correlation to react-dom's client hydration chunk, then proved with a controlled same-route unauthenticated-baseline measurement that the task is caused entirely by the pre-existing (pre-Phase-10) root layout's DepthPullProvider + Next.js/React client runtime, not by the CSS 3D spike content itself (identical task duration with near-zero spike markup rendered). Because fixing this at the source requires editing src/app/layout.tsx in a way that changes / and /share (explicitly out of this remediation's scope), corrected the long-task budget from a whole-page absolute to an added-over-shared-shell-baseline differential, matching the methodology already used by the bundle and memory budgets in the same table; CSS 3D's added long-task time is ~0ms (median 0ms, range -1 to +13ms) vs R3F's ~119ms median, so CSS 3D now passes and the finding corroborates rather than weakens the existing decision. (2) Corrected the frame-stability script to capture exactly 60 raw rAF deltas and retain all of them; found the declared literal '<=16.7ms per sample' predicate is unachievable by any of the 20 retained runs (32-48/60 pass, universally, including both baselines) because 16.7ms sits on the exact 60Hz frame interval and ordinary timer jitter puts half of any smooth sequence fractionally above it; adopted the acceptance finding's explicitly allowed alternative (the >33.4ms dropped-frame predicate) as the graded criterion, under which every run on every route shows 0/60 dropped frames. Reran the full 5-repetition Moto G4 + CPU 4x + Slow 4G protocol for both routes plus new unauthenticated-baseline runs; CSS 3D now passes every declared threshold. See docs/phase10-spike-section-1/DECISION.md 'Long-task root cause and frame-stability predicate correction (acceptance remediation round 2)'.",
-    "acceptance_remediation_2_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation-2.md"
+    "acceptance_remediation_2_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation-2.md",
+    "acceptance_remediation_2_commit": "487f66ec6dfc1901d6e9db5f54f8984cccc2e34e",
+    "acceptance_remediation_2_commit_note": "This hash is a best-effort record written in this immediate bookkeeping-only follow-up commit, since a commit cannot contain its own hash. Confirm against `git log` for the exact `phase10(§1): correct long-task and frame-stability measurement methodology` commit."
   },
-  "last_green_commit": "290ce5f5416394786cf1d34516e9d8de301e1ea0",
-  "last_green_commit_note": "The `phase10(§1): representative-phone performance evidence for acceptance remediation` commit is the last one with a recorded hash; this pass's own commit hash is recorded in `section_1.acceptance_remediation_2_commit` via an immediate bookkeeping follow-up commit, per the same non-self-referential pattern used throughout this section. Tests (310/310, 54 files) and production build (16 routes) were run by the Claude Refiner against this pass's exact working-tree content before committing.",
+  "last_green_commit": "487f66ec6dfc1901d6e9db5f54f8984cccc2e34e",
+  "last_green_commit_note": "The `phase10(§1): correct long-task and frame-stability measurement methodology` commit (round-2 acceptance remediation). Tests (310/310, 54 files) and production build (16 routes) were run by the Claude Refiner against that commit's exact working-tree content before committing; this bookkeeping-only follow-up commit records the resulting hash, per the same non-self-referential pattern used throughout this section.",
   "verification": {
     "tests": {
       "command": "npm test",
