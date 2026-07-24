@@ -22,6 +22,18 @@ describe("csvField", () => {
   it("renders null as an empty field", () => {
     expect(csvField(null)).toBe("");
   });
+
+  it("neutralizes formula-injection triggers with a leading apostrophe", () => {
+    expect(csvField("=cmd|'/c calc'!A1")).toBe("'=cmd|'/c calc'!A1");
+    expect(csvField("+1+1")).toBe("'+1+1");
+    expect(csvField("-1-1")).toBe("'-1-1");
+    expect(csvField("@SUM(A1:A2)")).toBe("'@SUM(A1:A2)");
+  });
+
+  it("does not touch ordinary values that happen to contain but not start with a trigger character", () => {
+    expect(csvField("rebalance - quarterly")).toBe("rebalance - quarterly");
+    expect(csvField("a+b")).toBe("a+b");
+  });
 });
 
 describe("toCsv", () => {

@@ -19,3 +19,16 @@ export function isValidSession(cookieValue: string | undefined, password: string
   if (a.length !== b.length) return false;
   return crypto.timingSafeEqual(a, b);
 }
+
+/**
+ * Constant-time string equality for secret checks (owner password, cron
+ * bearer token). Hashing both sides first makes the two buffers a fixed,
+ * equal length regardless of input length, so there's no early
+ * length-mismatch branch to time — unlike a plain `===`, this doesn't leak
+ * how many leading characters matched via response timing.
+ */
+export function timingSafeStringEqual(candidate: string, expected: string): boolean {
+  const a = crypto.createHash("sha256").update(candidate).digest();
+  const b = crypto.createHash("sha256").update(expected).digest();
+  return crypto.timingSafeEqual(a, b);
+}

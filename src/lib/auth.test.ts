@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isValidSession, sessionToken } from "./auth";
+import { isValidSession, sessionToken, timingSafeStringEqual } from "./auth";
 
 describe("sessionToken", () => {
   it("is deterministic for the same password", () => {
@@ -29,5 +29,24 @@ describe("isValidSession", () => {
   it("rejects garbage input without throwing", () => {
     expect(isValidSession("not-even-hex", "correct-horse-battery-staple")).toBe(false);
     expect(isValidSession("", "correct-horse-battery-staple")).toBe(false);
+  });
+});
+
+describe("timingSafeStringEqual", () => {
+  it("accepts matching strings", () => {
+    expect(timingSafeStringEqual("hunter2", "hunter2")).toBe(true);
+  });
+
+  it("rejects a wrong value of the same length", () => {
+    expect(timingSafeStringEqual("hunter3", "hunter2")).toBe(false);
+  });
+
+  it("rejects values of different lengths without throwing", () => {
+    expect(timingSafeStringEqual("short", "a-much-longer-password")).toBe(false);
+    expect(timingSafeStringEqual("a-much-longer-password", "short")).toBe(false);
+  });
+
+  it("rejects an empty candidate against a real password", () => {
+    expect(timingSafeStringEqual("", "correct-horse-battery-staple")).toBe(false);
   });
 });

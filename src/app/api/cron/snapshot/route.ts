@@ -4,6 +4,7 @@ import { getQuotes } from "@/lib/finnhub";
 import { isTradingDay } from "@/lib/market-calendar";
 import { todayInTimeZone } from "@/lib/date";
 import { computeHoldings, latestKnownPrices, mergePrices } from "@/lib/portfolio/holdings";
+import { timingSafeStringEqual } from "@/lib/auth";
 
 const BENCHMARK_TICKERS = ["VOO", "VTI", "XLK"] as const;
 
@@ -19,7 +20,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "CRON_SECRET is not configured." }, { status: 500 });
   }
   const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${cronSecret}`) {
+  if (!authHeader || !timingSafeStringEqual(authHeader, `Bearer ${cronSecret}`)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
