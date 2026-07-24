@@ -92,8 +92,9 @@ one green commit per section: `phase10(§N): <summary>`.
 
 ## §1. Selected direction technical spike and semantic shell
 
-Status: Claude Refiner addressed all five bounded critic findings. Next
-role: Codex acceptance review. §2 is not started.
+Status: Codex Acceptance verified the refined implementation but found one
+remaining bounded engineering-evidence failure in original finding 1. Next
+role: Claude Refiner. §2 is not started.
 
 - [x] Confirmed the recorded Field Journal structural base and exact Night
   Orbit borrowed parts against `PRODUCT_DIRECTION.md` and
@@ -274,3 +275,61 @@ Claude refinement and Codex acceptance per
 - Codex acceptance handoff:
   `docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance.md`
 - Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_acceptance`)
+
+### §1 Codex Acceptance review
+
+- [x] Confirmed no competing Claude/Codex coding process was active against
+  this repository; the worktree was clean and the scoped commit sequence was
+  `507265d` → `bb57bd8` → `3887bed` → `6f92aaa` — done by
+  codex/gpt-5
+- [x] Excluded unrelated post-handoff commits `9cf4ee3` and `bf98491` from
+  §1 approval and credit; confirmed they touch no §1 source, evidence,
+  progress, state, or package-manifest files — done by codex/gpt-5
+- [x] Independently verified all 13 committed screenshot dimensions with
+  `sips` and visually inspected the CSS/R3F desktop/fallback comparison plus
+  public/private/390/320 shell states — done by codex/gpt-5
+- [x] Independently verified live chapter URLs, preserved `mode`/`no3d`,
+  click/back/forward focus restoration, public/private isolation, the removed
+  R3F route's 404, and zero retained-route console warnings/errors — done by
+  codex/gpt-5
+- [x] Independently verified exact 1440×900, 390×844, and 320×844 shell
+  layouts; both phone widths had no page-level horizontal overflow, the
+  concentric fallback was visible, and all five targets were 44px high —
+  done by codex/gpt-5
+- [x] Independently verified reduced-motion/forced-no-3D selector parity,
+  no-JS server-rendered anchors/article, one semantic nav, one active article,
+  visible focus, zero fallback focus duplicates, and freshness contrast of
+  4.879:1 — done by codex/gpt-5
+- [x] Independently re-ran the exact `6f92aaa` test tree: 53 files and
+  291/291 tests passed — done by codex/gpt-5
+- [x] Independently re-ran current-HEAD `npm test`: 54 files and 310/310
+  tests passed; the additional tests belong to excluded commits and receive
+  no §1 credit — done by codex/gpt-5
+- [x] Independently re-ran current-HEAD `npm run build`: Next.js 16.2.11
+  compiled, TypeScript passed, and 16 static-page tasks generated; the build
+  includes excluded commits but the §1 files/package manifests are unchanged
+  from the handoff — done by codex/gpt-5
+- [x] Independently verified logged-out gating, zero strict currency values
+  and owner markers in unauthenticated raw HTML, public/private raw-HTML
+  isolation, and final absence of `three`, `@react-three/fiber`,
+  `@types/three`, and `playwright` — done by codex/gpt-5
+- [x] Recorded scorecard: Product alignment PASS; Hierarchy PASS; Usefulness
+  PASS; Originality PASS; Accessibility/mobile PASS; Engineering reliability
+  FAIL — done by codex/gpt-5
+- [x] Returned one smallest complete failure: the comparison was not measured
+  on a representative phone profile, has no explicit load/interaction/memory/
+  bundle pass thresholds, and lacks retained source/script/raw evidence for
+  an independent rerun — done by codex/gpt-5
+- [x] Prepared the bounded Claude Refiner handoff and stopped without
+  implementation changes or §2 work — done by codex/gpt-5
+- [x] Review-only commit:
+  `phase10(review §1): fail acceptance with bounded refiner handoff` — done by
+  codex/gpt-5
+
+### §1 acceptance evidence
+
+- Acceptance report:
+  `docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md`
+- Claude Refiner handoff:
+  `docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-to-claude-refiner.md`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_refiner`)

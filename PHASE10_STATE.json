@@ -2,9 +2,9 @@
   "schema_version": 1,
   "phase": 10,
   "current_section": "§1",
-  "role": "codex_acceptance",
-  "status": "awaiting_acceptance",
-  "next_agent": "codex",
+  "role": "claude_refiner",
+  "status": "awaiting_refiner",
+  "next_agent": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -32,7 +32,7 @@
     "production_ui_changed": false
   },
   "section_1": {
-    "status": "awaiting_acceptance",
+    "status": "awaiting_refiner",
     "completed_by": "claude-code/sonnet-5",
     "completed_at": "2026-07-23T19:30:00-07:00",
     "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
@@ -46,6 +46,8 @@
     "critic_report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
     "refiner_handoff": "docs/phase10-handoffs/2026-07-23-section-1-codex-to-claude-refiner.md",
     "acceptance_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance.md",
+    "acceptance_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
+    "acceptance_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-to-claude-refiner.md",
     "commit_subject": "phase10(§1): CSS 3D technical spike and production Observatory shell",
     "refiner_commit_subject": "phase10(§1): refine critic findings",
     "css_vs_r3f_result": "CSS 3D selected; no production Three.js/R3F dependency (reconfirmed by the refiner pass, including recreated measurements)",
@@ -111,19 +113,28 @@
     }
   },
   "review": {
-    "result": "not_run",
-    "reviewer": null,
-    "reviewed_commit": null,
-    "report": null,
+    "result": "fail",
+    "reviewer": "codex/gpt-5",
+    "reviewed_commit": "6f92aaa3ce0425efc02aaa7e60dbc477905fb751",
+    "report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
     "scorecard": {
-      "product_alignment": "not_run",
-      "hierarchy": "not_run",
-      "usefulness": "not_run",
-      "originality": "not_run",
-      "accessibility_mobile": "not_run",
-      "engineering_reliability": "not_run"
+      "product_alignment": "pass",
+      "hierarchy": "pass",
+      "usefulness": "pass",
+      "originality": "pass",
+      "accessibility_mobile": "pass",
+      "engineering_reliability": "fail"
     },
-    "failures": [],
+    "failures": [
+      {
+        "category": "engineering_reliability",
+        "criterion": "representative-phone, budgeted, independently reproducible CSS-vs-R3F performance evidence",
+        "evidence": "DECISION.md records unthrottled headless desktop Chromium and explicitly disclaims a physical phone, touch, mobile GPU, and device pixel ratio. It provides no concrete load, interaction, memory, or bundle pass thresholds. The temporary R3F source, measurement script, and raw JSON were removed, while the table reports ranges without retained per-run values/sample mapping.",
+        "impact": "The CSS decision remains plausible and all implementation checks pass, but §1 cannot prove representative-phone performance or that the chosen approach meets recorded performance/bundle budgets, and the reported comparison cannot be independently rerun.",
+        "required_change": "Recreate both spikes only long enough to declare explicit thresholds and rerun all required metrics on a documented representative phone environment; retain sanitized raw results plus sufficient non-production reproduction material; then remove the live R3F route/dependencies again and rerun tests, build, privacy, and cleanup checks.",
+        "verification": "An independent reviewer can rerun the retained procedure, see sample counts and pass/fail results for every threshold on the named phone profile, and confirm all R3F/temporary dependencies remain absent from the production package and build."
+      }
+    ],
     "prior_critic_review": {
       "result": "fail",
       "reviewer": "codex/gpt-5",
@@ -177,10 +188,10 @@
     }
   },
   "failure_count": {
-    "consecutive": 0,
+    "consecutive": 1,
     "maximum": 3
   },
-  "stop_reason": "Claude Refiner addressed all five recorded §1 critic findings and stopped after the green refinement commit, per the refiner handoff's stop condition. Awaiting Codex acceptance review; §2 has not started.",
-  "handoff_reason": "Route §1 to Codex acceptance review to independently verify the complete section diff, behavior, evidence, tests, build, privacy, mobile, reduced motion, fallback, and all scorecard categories.",
-  "updated_at": "2026-07-24T00:30:00Z"
+  "stop_reason": "Codex Acceptance verified the refined implementation and four functional findings, but original finding 1 remains incomplete because the runtime comparison lacks representative-phone measurements, explicit performance/bundle thresholds, and sufficient retained reproduction evidence. Awaiting Claude Refiner; §2 has not started.",
+  "handoff_reason": "Route §1 back to Claude Refiner for only the one bounded engineering-evidence finding recorded in docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md.",
+  "updated_at": "2026-07-24T02:06:49Z"
 }
