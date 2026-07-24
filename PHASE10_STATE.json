@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
   "phase": 10,
-  "current_section": "§4",
+  "current_section": "§5",
   "role": "claude_lead",
-  "stage": "accept",
+  "stage": "specify",
   "status": "ready",
   "next_actor": "claude",
   "selected_direction": {
@@ -24,11 +24,11 @@
     ]
   },
   "section": {
-    "id": "§4",
-    "title": "Private `/` owner briefing",
-    "spec_doc": "docs/phase10-workflow/specs/section-4.md",
-    "implementation_commit": "2df1caa213420ae6b257bb05a08ff332c3fe0ae2",
-    "review_result": "pass",
+    "id": "§5",
+    "title": "Metric explainability primitive and core metrics",
+    "spec_doc": null,
+    "implementation_commit": null,
+    "review_result": null,
     "findings": [],
     "remediation_commits": [],
     "accepted_commit": null,
@@ -57,26 +57,32 @@
       "status": "complete",
       "accepted_commit": "b47a5e6f9dc5db463d6c4f8d3dccf7b99212c7d8",
       "note": "One remediation round (criterion 14, Timeline marker-label overlap) before pass. See docs/phase10-workflow/reviews/section-3-accepted.md."
+    },
+    {
+      "id": "§4",
+      "status": "complete",
+      "accepted_commit": "b6950a8a1be3f732c29527b36153d0ad53a05a3b",
+      "note": "Zero findings on first review. See docs/phase10-workflow/reviews/section-4-review.md."
     }
   ],
-  "prev_actor_commit": "2df1caa213420ae6b257bb05a08ff332c3fe0ae2",
-  "last_green_commit": "2df1caa213420ae6b257bb05a08ff332c3fe0ae2",
+  "prev_actor_commit": "b6950a8a1be3f732c29527b36153d0ad53a05a3b",
+  "last_green_commit": "b6950a8a1be3f732c29527b36153d0ad53a05a3b",
   "verification": {
     "tests": {
       "command": "npm test",
-      "status": "pass",
-      "summary": "Claude Lead independently reran: 61 test files passed; 357 of 357 tests passed.",
-      "finished_at": "2026-07-24T20:15:46Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     },
     "build": {
       "command": "npm run build",
-      "status": "pass",
-      "summary": "Claude Lead independently reran: Next.js 16.2.11 compiled successfully, TypeScript passed, and 16 static-page tasks generated.",
-      "finished_at": "2026-07-24T20:15:46Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T20:15:46Z",
+  "updated_at": "2026-07-24T20:20:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

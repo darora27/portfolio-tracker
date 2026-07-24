@@ -81,3 +81,20 @@ only imports `todayLine` from the latter, as the spec requires.
 
 All 27 acceptance criteria pass on independent re-verification. §4 has zero
 outstanding findings and is ready for `accept`.
+
+## Acceptance
+
+Accepted by: `claude-code/sonnet-5` (Claude Lead, `accept` stage).
+
+Accepted commit: `b6950a8a1be3f732c29527b36153d0ad53a05a3b`
+(`phase10(review §4): pass, no findings`) — the review-pass commit itself,
+per `git log -1 --format=%H` run before this acceptance's own commit
+existed. No implementation source changed between the reviewed commit
+(`2df1caa`) and this accepted commit.
+
+Reconfirmed on this exact commit immediately before acceptance:
+- `npm test`: 61 files passed, 357/357 tests passed.
+- `npm run build`: Next.js 16.2.11 compiled successfully, TypeScript
+  passed, 16 route tasks generated (unchanged route list).
+
+§4 is complete.
