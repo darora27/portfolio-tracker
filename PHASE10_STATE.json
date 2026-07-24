@@ -56,12 +56,12 @@
     "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 (builder and refiner) deliberately did not widen scope to do that here.",
     "acceptance_remediation_completed_by": "claude-code/sonnet-5",
     "acceptance_remediation_completed_at": "2026-07-24T03:15:00Z",
-    "acceptance_remediation_commit": "PENDING — recorded in an immediate follow-up bookkeeping commit once this commit's own hash is known, same non-self-referential pattern as refiner_commit above",
+    "acceptance_remediation_commit": "290ce5f5416394786cf1d34516e9d8de301e1ea0",
     "acceptance_remediation_commit_subject": "phase10(§1): representative-phone performance evidence for acceptance remediation",
     "acceptance_remediation_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md",
     "acceptance_remediation_summary": "Addressed the single bounded engineering-reliability finding from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md: declared explicit pass/fail thresholds before measuring, recreated both spikes and measured them on Playwright's 'Moto G4' device profile with CDP CPU 4x / Slow-4G-network throttling (5 repetitions per route), retained sanitized raw results and non-executing reproduction material (r3f-spike.patch, measure-phone.mjs), then removed the R3F route and all temporary dependencies again. See docs/phase10-spike-section-1/DECISION.md 'Phone-profile measurement recreation (acceptance remediation)'."
   },
-  "last_green_commit": "PENDING — recorded in an immediate follow-up bookkeeping commit, same as section_1.acceptance_remediation_commit",
+  "last_green_commit": "290ce5f5416394786cf1d34516e9d8de301e1ea0",
   "last_green_commit_note": "The `phase10(§1): representative-phone performance evidence for acceptance remediation` commit. Tests (310/310, 54 files) and production build (16 routes) were run by the Claude Refiner against that commit's exact working-tree content before committing; a bookkeeping-only follow-up commit records the resulting hash.",
   "verification": {
     "tests": {
@@ -202,5 +202,5 @@
   },
   "stop_reason": "Claude Refiner addressed the one remaining bounded engineering-reliability finding (representative-phone, budgeted, reproducible performance evidence) and stopped per its handoff prompt, without beginning §2. Awaiting Codex Acceptance re-review.",
   "handoff_reason": "Route §1 back to Codex Acceptance to independently verify the representative-phone measurement evidence, declared thresholds, and retained reproduction material described in docs/phase10-spike-section-1/DECISION.md and docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md, alongside the previously-passing dimensions which were not touched by this pass.",
-  "updated_at": "2026-07-24T03:15:00Z"
+  "updated_at": "2026-07-24T03:16:00Z"
 }
