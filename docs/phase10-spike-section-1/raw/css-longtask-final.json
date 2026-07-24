@@ -1,0 +1,269 @@
+{
+  "measuredAt": "2026-07-24T04:22:55.361Z",
+  "route": "/dev/phase10-spike-css",
+  "predicate": "every individual longtask entry duration <= 50ms (absolute, no baseline subtraction)",
+  "phoneProfile": {
+    "device": "Moto G4 (Playwright built-in descriptor)",
+    "viewport": {
+      "width": 360,
+      "height": 640
+    },
+    "deviceScaleFactor": 3,
+    "isMobile": true,
+    "hasTouch": true,
+    "userAgent": "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.7827.55 Mobile Safari/537.36",
+    "cpuThrottleRate": 4,
+    "network": {
+      "offline": false,
+      "downloadThroughput": 209715.2,
+      "uploadThroughput": 96000,
+      "latency": 150
+    }
+  },
+  "repetitions": 5,
+  "longTaskBoundaryMs": 50,
+  "overallResult": "FAIL",
+  "runs": [
+    {
+      "run": 1,
+      "wallLoadMs": 2222,
+      "longTaskCount": 2,
+      "longTasks": [
+        {
+          "duration": 57,
+          "startTime": 655.9000000953674,
+          "name": "unknown",
+          "attribution": [
+            {
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        },
+        {
+          "duration": 72,
+          "startTime": 1720.6000001430511,
+          "name": "self",
+          "attribution": [
+            {
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        }
+      ],
+      "maxTaskMs": 72,
+      "tasksOverBoundaryCount": 2,
+      "pass": false,
+      "correlatedResources": [
+        {
+          "taskStartTime": 655.9000000953674,
+          "taskDuration": 57,
+          "overlapping": [
+            {
+              "name": "http://localhost:3100/_next/static/media/70bc3e132a0a741e-s.p.3t6q91iet4nsy.woff2",
+              "startTime": 167.20000004768372,
+              "responseEnd": 1217.7000000476837,
+              "transferSize": 40780
+            },
+            {
+              "name": "http://localhost:3100/_next/static/media/7ebf22b5a21034f8-s.p.3j3877k49yy0l.woff2",
+              "startTime": 167.90000009536743,
+              "responseEnd": 696.4000000953674,
+              "transferSize": 15984
+            },
+            {
+              "name": "http://localhost:3100/_next/static/media/e41d5df559864f9e-s.p.1g73gv09-xcb6.woff2",
+              "startTime": 167.90000009536743,
+              "responseEnd": 718.1000001430511,
+              "transferSize": 15340
+            },
+            {
+              "name": "http://localhost:3100/_next/static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2",
+              "startTime": 167.90000009536743,
+              "responseEnd": 1375,
+              "transferSize": 48732
+            },
+            {
+              "name": "http://localhost:3100/_next/static/chunks/01dkdyukbdpqq.js",
+              "startTime": 178.70000004768372,
+              "responseEnd": 761,
+              "transferSize": 7743
+            },
+            {
+              "name": "http://localhost:3100/_next/static/chunks/07-hzktxqjvzd.js",
+              "startTime": 178.70000004768372,
+              "responseEnd": 918.4000000953674,
+              "transferSize": 11339
+            },
+            {
+              "name": "http://localhost:3100/_next/static/chunks/turbopack-1yiopxmr8stdb.js",
+              "startTime": 179.10000014305115,
+              "responseEnd": 1061,
+              "transferSize": 4449
+            },
+            {
+              "name": "http://localhost:3100/_next/static/chunks/05-c3ty_6dwfk.js",
+              "startTime": 179.10000014305115,
+              "responseEnd": 1140.4000000953674,
+              "transferSize": 1752
+            },
+            {
+              "name": "http://localhost:3100/_next/static/chunks/44g8ralmcgd6e.js",
+              "startTime": 179.10000014305115,
+              "responseEnd": 1555,
+              "transferSize": 38926
+            },
+            {
+              "name": "http://localhost:3100/_next/static/chunks/3hdj40qmts5sf.js",
+              "startTime": 179.10000014305115,
+              "responseEnd": 1719.4000000953674,
+              "transferSize": 71312
+            },
+            {
+              "name": "http://localhost:3100/_next/static/chunks/3_n8hi9uk1lmh.js",
+              "startTime": 179.20000004768372,
+              "responseEnd": 1326.1000001430511,
+              "transferSize": 1041
+            },
+            {
+              "name": "http://localhost:3100/_next/static/chunks/1-8s9_t85wwr4.js",
+              "startTime": 179.20000004768372,
+              "responseEnd": 1461,
+              "transferSize": 13172
+            }
+          ]
+        },
+        {
+          "taskStartTime": 1720.6000001430511,
+          "taskDuration": 72,
+          "overlapping": []
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "wallLoadMs": 2224,
+      "longTaskCount": 1,
+      "longTasks": [
+        {
+          "duration": 68,
+          "startTime": 1722.7000000476837,
+          "name": "self",
+          "attribution": [
+            {
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        }
+      ],
+      "maxTaskMs": 68,
+      "tasksOverBoundaryCount": 1,
+      "pass": false,
+      "correlatedResources": [
+        {
+          "taskStartTime": 1722.7000000476837,
+          "taskDuration": 68,
+          "overlapping": []
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "wallLoadMs": 2224,
+      "longTaskCount": 1,
+      "longTasks": [
+        {
+          "duration": 71,
+          "startTime": 1722.1999998092651,
+          "name": "self",
+          "attribution": [
+            {
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        }
+      ],
+      "maxTaskMs": 71,
+      "tasksOverBoundaryCount": 1,
+      "pass": false,
+      "correlatedResources": [
+        {
+          "taskStartTime": 1722.1999998092651,
+          "taskDuration": 71,
+          "overlapping": []
+        }
+      ]
+    },
+    {
+      "run": 4,
+      "wallLoadMs": 2215,
+      "longTaskCount": 1,
+      "longTasks": [
+        {
+          "duration": 67,
+          "startTime": 1714.9000000953674,
+          "name": "self",
+          "attribution": [
+            {
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        }
+      ],
+      "maxTaskMs": 67,
+      "tasksOverBoundaryCount": 1,
+      "pass": false,
+      "correlatedResources": [
+        {
+          "taskStartTime": 1714.9000000953674,
+          "taskDuration": 67,
+          "overlapping": []
+        }
+      ]
+    },
+    {
+      "run": 5,
+      "wallLoadMs": 2223,
+      "longTaskCount": 1,
+      "longTasks": [
+        {
+          "duration": 66,
+          "startTime": 1722,
+          "name": "self",
+          "attribution": [
+            {
+              "containerType": "window",
+              "containerSrc": "",
+              "containerId": "",
+              "containerName": ""
+            }
+          ]
+        }
+      ],
+      "maxTaskMs": 66,
+      "tasksOverBoundaryCount": 1,
+      "pass": false,
+      "correlatedResources": [
+        {
+          "taskStartTime": 1722,
+          "taskDuration": 66,
+          "overlapping": []
+        }
+      ]
+    }
+  ]
+}
