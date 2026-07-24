@@ -2,10 +2,10 @@
 
 Status: implementation active
 
-Implementation status: §0 baseline complete; §1 Claude Refiner addressed the
-Codex Acceptance re-review's two Engineering Reliability findings (long-task
-root cause/threshold correction, frame-stability predicate alignment) and
-returned to Codex Acceptance for re-verification
+Implementation status: §0 baseline complete; §1 Codex Acceptance final
+re-review accepted the corrected frame evidence but rejected the long-task
+baseline/threshold method as non-equivalent and not prospectively auditable;
+returned to Claude Refiner
 
 Selected direction: Field Journal structural base with Night Orbit orbital
 chapter navigation, selected-body inspector, and static concentric fallback

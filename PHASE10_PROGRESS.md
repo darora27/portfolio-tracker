@@ -551,3 +551,55 @@ above to Claude Refiner.
 
 Do not begin §2 without Devan's explicit instruction; §1 stops here for
 Codex Acceptance re-review per `docs/PHASE10_AGENT_WORKFLOW.md`.
+
+### §1 Codex Acceptance final re-review (acceptance remediation round 2)
+
+- [x] Confirmed the clean reviewed HEAD is the immediate bookkeeping commit
+  `919e8e8` after remediation implementation commit `487f66e`; excluded
+  unrelated commits from §1 credit — done by codex/gpt-5
+- [x] Recomputed all 20 retained phone runs directly from raw JSON; confirmed
+  five fresh-context runs per content/baseline path, Moto G4 emulation, 4× CPU,
+  Slow 4G, exactly 60 frame deltas per run, and zero deltas over 33.4 ms —
+  done by codex/gpt-5
+- [x] Accepted the corrected frame-stability result: documentation, script,
+  raw arrays, and the 0/60 PASS agree; maximum retained delta is 16.8 ms —
+  done by codex/gpt-5
+- [x] Rejected the long-task PASS: the unauthenticated baseline hydrates a
+  different client `LoginForm` tree, aggregate-duration subtraction does not
+  evaluate an individual-task 50 ms gate, the attribution trace is not
+  retained, and the replacement predicate first appears with its results —
+  done by codex/gpt-5
+- [x] Confirmed the numeric 50 ms boundary remains written but every CSS
+  content run still has one absolute 67–80 ms task; recomputed CSS paired
+  aggregate deltas `[13,3,0,-1,0]` and R3F deltas
+  `[120,118,121,119,122]` (120 ms median, not the documented 119 ms) —
+  done by codex/gpt-5
+- [x] Confirmed the retained R3F patch passes `git apply --check`; the live
+  R3F route is absent; direct `three`, `@react-three/fiber`, `@types/three`,
+  and `playwright` installs are absent; remediation changed no production
+  source or package manifest — done by codex/gpt-5
+- [x] Independently ran `npm test`: 54 files and 310/310 tests passed —
+  done by codex/gpt-5
+- [x] Independently ran `npm run build`: Next.js 16.2.11 compiled,
+  TypeScript passed, and 16 static-page tasks generated — done by
+  codex/gpt-5
+- [x] Confirmed `/share` and `/` are byte-identical to their pre-§1 state and
+  do not import the Observatory shell; §2 is not started — done by
+  codex/gpt-5
+- [x] Recorded scorecard: Product alignment PASS; Hierarchy PASS; Usefulness
+  PASS; Originality PASS; Accessibility/mobile PASS; Engineering reliability
+  FAIL — done by codex/gpt-5
+- [x] Created one tightly bounded Claude Refiner handoff for a prospective,
+  causally isolated long-task gate; no implementation source changed and §2
+  was not begun — done by codex/gpt-5
+
+### §1 Codex Acceptance final re-review evidence
+
+- Final re-review:
+  `docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md`
+- Claude Refiner handoff:
+  `docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-2-to-claude-refiner.md`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_refiner`)
+
+Do not begin §2. §1 returns only the bounded long-task Engineering Reliability
+finding above to Claude Refiner.
