@@ -39,9 +39,11 @@ trap release_lock EXIT INT TERM
 echo "Starting Claude Lead turn. Log: $LOG_FILE"
 claude --print --model "$CLAUDE_MODEL" --permission-mode auto -- \
   "$(cat "$PROMPT_FILE")" 2>&1 | tee "$LOG_FILE"
+CLI_STATUS=$?
 
 echo ""
 echo "Claude Lead turn finished. Run 'git log -1' and check"
 echo "PHASE10_STATE.json's status/stage/next_actor to see what happened."
 echo "If status is 'blocked', read stop_reason and the newest file in"
 echo "docs/phase10-handoffs/ before doing anything else."
+exit "$CLI_STATUS"

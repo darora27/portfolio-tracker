@@ -27,6 +27,9 @@ Before doing anything:
    Builder/Critic/Refiner/Acceptance workflow, preserved as history in
    `PHASE10_STATE.json`'s `legacy` key and in `docs/phase10-reviews/` —
    do not follow that older sequence for §2 onward.
+   Devan may invoke those fixed runners manually or through the bounded
+   state-driven `scripts/phase10-relay.sh`; the relay never changes roles,
+   parses agent prose, retries, commits, or runs agents concurrently.
 5. Work sections in order; one commit per section
    (`phase10(§N): <summary>`); `npm test` and `npm run build` must be green
    before every commit.

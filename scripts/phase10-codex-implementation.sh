@@ -39,9 +39,11 @@ if [ -n "$CODEX_MODEL" ]; then
   codex -a never exec -C "$(pwd)" -s workspace-write --add-dir "$GIT_DIR" \
     -m "$CODEX_MODEL" - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+  CLI_STATUS=$?
 else
   codex -a never exec -C "$(pwd)" -s workspace-write --add-dir "$GIT_DIR" - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+  CLI_STATUS=$?
 fi
 
 echo ""
@@ -49,3 +51,4 @@ echo "Codex Implementation turn finished. Run 'git log -1' and check"
 echo "PHASE10_STATE.json's status/stage/next_actor to see what happened."
 echo "If status is 'blocked', read stop_reason and the newest file in"
 echo "docs/phase10-handoffs/ before doing anything else."
+exit "$CLI_STATUS"

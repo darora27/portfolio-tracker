@@ -29,10 +29,12 @@ Applies after: Devan records the Phase 10 visual-direction selection
 - The durable repository state (`PHASE10_STATE.json`, git history,
   committed docs) — not chat history or a resume prompt — is the source
   of truth.
-- Every turn is triggered by Devan running exactly one command. There is
-  no background loop, no sleep-and-retry, and no orchestrator that reads
-  agent output and decides what happens next. Each agent performs its own
-  preflight checks and records its own outcome as its last action.
+- A turn may be triggered directly by Devan or serially by the bounded
+  `scripts/phase10-relay.sh`. The relay reads only validated
+  `PHASE10_STATE.json` fields and Git state; it never reads agent prose,
+  retries, sleeps, commits, edits files, changes roles, or runs agents
+  concurrently. Each agent still performs its own preflight checks and
+  records its own outcome as its last action.
 - Stop safely when state is surprising. Do not "repair" an unexpected
   dirty worktree, bypass a failed test, or guess at an ambiguous failure
   to keep the relay moving. An ambiguous outcome is `blocked`, not a
@@ -115,9 +117,24 @@ non-interactively with the fixed prompt file, and release the lock on
 exit via a trap — they never parse output or make decisions. Full detail:
 `docs/phase10-workflow/IMPLEMENTATION_SPEC.md` §7.
 
+For serial unattended handoffs across a bounded number of turns, Devan may
+instead run:
+
+```bash
+./scripts/phase10-relay.sh --max-turns 6
+```
+
+The relay selects only the runner named by validated `next_actor`, verifies a
+clean tree and a real commit/state transition after every turn, and stops on
+`STOP`, `blocked`, `complete`, `next_actor: devan`, a non-zero runner exit,
+missing progress, a stale lock, or the turn limit. Full operating detail:
+`docs/phase10-workflow/RELAY.md`.
+
 ## 7. Retry and failure discipline
 
-- Zero retries are automatic. Neither runner script loops or sleeps.
+- Zero retries are automatic. Neither fixed runner nor the bounded relay
+  retries or sleeps. The relay's next iteration is a new state-authorized
+  workflow turn, not a retry of the prior turn.
 - At most one manual retry per turn: if a turn ends ambiguously (process
   crash, non-zero exit with no state update, or an unclear result),
   Devan may run the same one-command runner a second time. The agent's
@@ -162,6 +179,9 @@ Manual operation remains possible at all times:
 
 The same schema and bounded-review discipline apply; manual operation
 does not waive any gate.
+
+The relay is optional. A user can return to these manual steps after any relay
+stop without migrating or repairing state.
 
 ## 10. Superseded
 

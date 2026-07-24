@@ -959,12 +959,14 @@ trap release_lock EXIT INT TERM
 echo "Starting Claude Lead turn. Log: $LOG_FILE"
 claude --print --model "$CLAUDE_MODEL" --permission-mode auto -- \
   "$(cat "$PROMPT_FILE")" 2>&1 | tee "$LOG_FILE"
+CLI_STATUS=$?
 
 echo ""
 echo "Claude Lead turn finished. Run 'git log -1' and check"
 echo "PHASE10_STATE.json's status/stage/next_actor to see what happened."
 echo "If status is 'blocked', read stop_reason and the newest file in"
 echo "docs/phase10-handoffs/ before doing anything else."
+exit "$CLI_STATUS"
 ```
 
 ### 6.2 `scripts/phase10-codex-implementation.sh`
@@ -1011,9 +1013,11 @@ if [ -n "$CODEX_MODEL" ]; then
   codex -a never exec -C "$(pwd)" -s workspace-write --add-dir "$GIT_DIR" \
     -m "$CODEX_MODEL" - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+  CLI_STATUS=$?
 else
   codex -a never exec -C "$(pwd)" -s workspace-write --add-dir "$GIT_DIR" - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+  CLI_STATUS=$?
 fi
 
 echo ""
@@ -1021,6 +1025,7 @@ echo "Codex Implementation turn finished. Run 'git log -1' and check"
 echo "PHASE10_STATE.json's status/stage/next_actor to see what happened."
 echo "If status is 'blocked', read stop_reason and the newest file in"
 echo "docs/phase10-handoffs/ before doing anything else."
+exit "$CLI_STATUS"
 ```
 
 Both scripts must be created executable (`chmod +x`).
@@ -1352,3 +1357,29 @@ real turn:
 6. **§2's actual product content is entirely undecided by this spec**,
    deliberately — per this task's explicit instruction not to begin §2
    work.
+
+## 14. Post-bootstrap owner amendment: bounded state relay
+
+After successful manual operation through §3 remediation, Devan explicitly
+requested that ordinary Claude/Codex handoffs proceed without Devan acting as
+the middleman. This later owner decision supersedes only this document's
+manual-trigger-only/no-automatic-control-flow restriction.
+
+The approved implementation is `scripts/phase10-relay.sh`, documented in
+`docs/phase10-workflow/RELAY.md`. It may select the next fixed runner solely
+from a validated `PHASE10_STATE.json` `next_actor` value and continue for a
+caller-bounded number of serial turns.
+
+Every other safety property remains binding:
+
+- no simultaneous agents;
+- no output/prose parsing;
+- no automatic commits or file edits by the relay;
+- no role reassignment;
+- no retry or sleep loop;
+- STOP, lock, clean-tree, state-validation, and durable-progress gates;
+- immediate stop on blocked, ambiguous, non-zero, dirty, invalid, or
+  no-progress outcomes.
+
+The two fixed runner scripts also propagate their underlying CLI exit status so
+the relay can fail closed without interpreting text.
