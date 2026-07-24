@@ -4,8 +4,8 @@
   "current_section": "§6",
   "role": "codex_implementation",
   "stage": "implement",
-  "status": "ready",
-  "next_actor": "codex",
+  "status": "blocked",
+  "next_actor": "devan",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -71,7 +71,7 @@
       "note": "One remediation round (criterion 7 / §4 status-line convention, MetricExplain status prefix rendered as an isolated fragment) before pass. See docs/phase10-workflow/reviews/section-5-review.md."
     }
   ],
-  "prev_actor_commit": "640ba42ad54ac9d1f2aef737d16be41340303faf",
+  "prev_actor_commit": "d50f188f388148a704d3a74b3274a2342552c753",
   "last_green_commit": "72932ce3965f8df72a0fdc9cf2bc687c49d1e53c",
   "verification": {
     "tests": {
@@ -87,8 +87,8 @@
       "finished_at": null
     }
   },
-  "stop_reason": null,
-  "updated_at": "2026-07-24T22:55:00Z",
+  "stop_reason": "Required §6 live screenshot and browser verification could not run: the connected browser runtime reported no available browser backends, and starting a localhost Next.js server at 127.0.0.1:3106 failed with listen EPERM in the sandbox. A post-revert build recheck also stalled during compilation while an unrelated repo-scoped dev server remained active and was interrupted after 90 seconds. The completed implementation edits were reverted, so no implementation source remains changed.",
+  "updated_at": "2026-07-24T23:06:14Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
