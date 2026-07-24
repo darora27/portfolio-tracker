@@ -1,10 +1,11 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "phase": 10,
-  "current_section": "§1",
-  "role": "codex_acceptance",
-  "status": "complete",
-  "next_agent": "devan",
+  "current_section": "§2",
+  "role": "claude_lead",
+  "stage": "specify",
+  "status": "ready",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -22,214 +23,285 @@
       "Night Orbit static concentric fallback"
     ]
   },
-  "section_0": {
-    "status": "complete",
-    "completed_by": "codex/gpt-5",
-    "completed_at": "2026-07-23T22:48:01Z",
-    "baseline_report": "docs/phase10-baseline/section-0/README.md",
-    "handoff": "docs/phase10-handoffs/2026-07-23-section-0-codex-to-claude.md",
-    "commit_subject": "phase10(§0): baseline selected Field Journal orbital hybrid",
-    "production_ui_changed": false
+  "section": {
+    "id": "§2",
+    "title": "`/share` Pulse vertical slice",
+    "spec_doc": null,
+    "implementation_commit": null,
+    "review_result": null,
+    "findings": [],
+    "remediation_commits": [],
+    "accepted_commit": null,
+    "accepted_at": null
   },
-  "section_1": {
-    "status": "complete",
-    "completed_by": "claude-code/sonnet-5",
-    "completed_at": "2026-07-23T19:30:00-07:00",
-    "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
-    "critic_commit": "bb57bd8eb26ea1c1889e34a961575e839aee57fe",
-    "refiner_completed_by": "claude-code/sonnet-5",
-    "refiner_completed_at": "2026-07-24T00:30:00Z",
-    "refiner_commit": "3887bed60aea9ee82bae0a8f3c58f627a5d6e1d0",
-    "refiner_commit_note": "Recorded in an immediate follow-up bookkeeping commit (6f92aaa) once the refinement commit's own hash was known (a state file committed inside a commit cannot contain that same commit's hash) — the same non-self-referential pattern the critic's own state-only commit already used relative to the builder commit.",
-    "evidence_report": "docs/phase10-baseline/section-1/README.md",
-    "css_vs_r3f_decision": "docs/phase10-spike-section-1/DECISION.md",
-    "critic_report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
-    "refiner_handoff": "docs/phase10-handoffs/2026-07-23-section-1-codex-to-claude-refiner.md",
-    "acceptance_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance.md",
-    "acceptance_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
-    "acceptance_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-to-claude-refiner.md",
-    "commit_subject": "phase10(§1): CSS 3D technical spike and production Observatory shell",
-    "refiner_commit_subject": "phase10(§1): refine critic findings",
-    "css_vs_r3f_result": "CSS 3D selected; no production Three.js/R3F dependency (reconfirmed by two refiner passes, including a representative-phone-profile measurement recreation)",
-    "production_ui_changed": false,
-    "shell_wired_into_share_or_home": false,
-    "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 (builder and refiner) deliberately did not widen scope to do that here.",
-    "acceptance_remediation_completed_by": "claude-code/sonnet-5",
-    "acceptance_remediation_completed_at": "2026-07-24T03:15:00Z",
-    "acceptance_remediation_commit": "290ce5f5416394786cf1d34516e9d8de301e1ea0",
-    "acceptance_remediation_commit_subject": "phase10(§1): representative-phone performance evidence for acceptance remediation",
-    "acceptance_remediation_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md",
-    "acceptance_remediation_summary": "Addressed the single bounded engineering-reliability finding from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md: declared explicit pass/fail thresholds before measuring, recreated both spikes and measured them on Playwright's 'Moto G4' device profile with CDP CPU 4x / Slow-4G-network throttling (5 repetitions per route), retained sanitized raw results and non-executing reproduction material (r3f-spike.patch, measure-phone.mjs), then removed the R3F route and all temporary dependencies again. See docs/phase10-spike-section-1/DECISION.md 'Phone-profile measurement recreation (acceptance remediation)'.",
-    "acceptance_remediation_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
-    "acceptance_remediation_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-to-claude-refiner.md",
-    "acceptance_remediation_2_completed_by": "claude-code/sonnet-5",
-    "acceptance_remediation_2_completed_at": "2026-07-24T03:50:00Z",
-    "acceptance_remediation_2_summary": "Addressed both bounded Engineering Reliability findings from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md. (1) Root-caused the 66-70ms long task via longtask attribution + resource-timing correlation to react-dom's client hydration chunk, then proved with a controlled same-route unauthenticated-baseline measurement that the task is caused entirely by the pre-existing (pre-Phase-10) root layout's DepthPullProvider + Next.js/React client runtime, not by the CSS 3D spike content itself (identical task duration with near-zero spike markup rendered). Because fixing this at the source requires editing src/app/layout.tsx in a way that changes / and /share (explicitly out of this remediation's scope), corrected the long-task budget from a whole-page absolute to an added-over-shared-shell-baseline differential, matching the methodology already used by the bundle and memory budgets in the same table; CSS 3D's added long-task time is ~0ms (median 0ms, range -1 to +13ms) vs R3F's ~119ms median, so CSS 3D now passes and the finding corroborates rather than weakens the existing decision. (2) Corrected the frame-stability script to capture exactly 60 raw rAF deltas and retain all of them; found the declared literal '<=16.7ms per sample' predicate is unachievable by any of the 20 retained runs (32-48/60 pass, universally, including both baselines) because 16.7ms sits on the exact 60Hz frame interval and ordinary timer jitter puts half of any smooth sequence fractionally above it; adopted the acceptance finding's explicitly allowed alternative (the >33.4ms dropped-frame predicate) as the graded criterion, under which every run on every route shows 0/60 dropped frames. Reran the full 5-repetition Moto G4 + CPU 4x + Slow 4G protocol for both routes plus new unauthenticated-baseline runs; CSS 3D now passes every declared threshold. See docs/phase10-spike-section-1/DECISION.md 'Long-task root cause and frame-stability predicate correction (acceptance remediation round 2)'.",
-    "acceptance_remediation_2_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation-2.md",
-    "acceptance_remediation_2_commit": "487f66ec6dfc1901d6e9db5f54f8984cccc2e34e",
-    "acceptance_remediation_2_commit_note": "This hash is a best-effort record written in this immediate bookkeeping-only follow-up commit, since a commit cannot contain its own hash. Confirm against `git log` for the exact `phase10(§1): correct long-task and frame-stability measurement methodology` commit.",
-    "acceptance_remediation_2_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
-    "acceptance_remediation_2_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-2-to-claude-refiner.md",
-    "acceptance_remediation_3_completed_by": "claude-code/sonnet-5",
-    "acceptance_remediation_3_completed_at": "2026-07-24T00:30:00-07:00",
-    "acceptance_remediation_3_summary": "Implemented the directed root-cause fix (no baseline subtraction, 50ms absolute boundary unchanged): removed DepthPullProvider from the unconditional src/app/layout.tsx path and scoped it to only /, /share, /dev/surface-scratch via a new src/app/(depth-pull)/ route group + nested layout. Verified via grep that these are the only real consumers, and confirmed no regression via tsc --noEmit, focused tests (DepthPull.test.tsx + observatory-fallback.test.ts, 14/14), full npm test (310/310, 54 files), npm run build (16 routes, unchanged route list), and curl 200-status checks on the affected and unaffected routes against a rebuilt production server. Re-measured /dev/phase10-spike-css on the same Moto G4 + CPU 4x + Slow 4G phone profile, 5 authenticated repetitions, grading every individual longtask entry against the unchanged absolute 50ms boundary: all 5 runs still failed (66-72ms tasks; run 1 has an additional 57ms task). Attribution evidence shows the task correlates with react-dom's hydrateRoot/createRoot chunk (3hdj40qmts5sf.js), which still loads on this route even though its authenticated render branch (the only branch measured) has zero client components of its own post-fix -- meaning the round-2 root-cause finding was incomplete: DepthPullProvider was a real but not the sole source of this cost. Did not attempt baseline subtraction, threshold changes, or further unscoped investigation (e.g. Next.js/Turbopack chunk-splitting internals). Reported directly to Devan rather than resubmitted to Codex Acceptance, since the finding is not resolved and choosing a further strategy is a scope decision outside this pass's authorization. See docs/phase10-spike-section-1/DECISION.md 'Provider-placement root-cause fix, and why the long-task gate still fails (round 3)'.",
-    "acceptance_remediation_3_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md",
-    "acceptance_remediation_3_evidence": "docs/phase10-spike-section-1/raw/css-longtask-final.json",
-    "acceptance_remediation_3_script": "docs/phase10-spike-section-1/measure-css-longtask-final.mjs",
-    "acceptance_remediation_3_result": "The absolute zero-task predicate fails honestly on 5/5 runs. Devan subsequently approved a documented §1-only exception because retained build/timing evidence attributes the repeated 66-72ms task to the shared Next.js/React root bootstrap rather than the route-owned CSS layer.",
-    "accepted_by": "codex/gpt-5",
-    "accepted_at": "2026-07-24T04:38:53Z",
-    "accepted_reviewed_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
-    "accepted_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md",
-    "owner_exception": {
-      "approved_by": "Devan",
-      "scope": "Phase 10 §1 CSS-vs-R3F decision only",
-      "absolute_boundary_ms": 50,
-      "absolute_result": "FAIL in all five retained runs; observed tasks remain recorded without subtraction or concealment",
-      "reason": "The absolute zero-long-task whole-page budget is an invalid proxy for this App Router architecture. Retained build/timing evidence identifies the repeated task with the shared Next.js/React root bootstrap chunk, while the authenticated CSS branch has no route-owned client hydration.",
-      "replacement_gate": "CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration.",
-      "replacement_gate_result": "PASS",
-      "future_audits": "No precedent. Do not generalize this exception to future production performance audits."
+  "sections_history": [
+    {
+      "id": "§0",
+      "status": "complete",
+      "accepted_commit": "0e71fc3a6bbbc64f0382c7642f9dfcb5212bd950",
+      "note": "Baseline only, no production UI changed. Full history: legacy.section_0."
+    },
+    {
+      "id": "§1",
+      "status": "complete",
+      "accepted_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
+      "note": "Accepted under a documented, non-generalizing owner exception to the absolute long-task gate. Full history: legacy.section_1."
     }
-  },
+  ],
+  "prev_actor_commit": "ddd33909c0b6b803cb1bb69d14bca2bc4d231332",
   "last_green_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
-  "last_green_commit_note": "Codex Acceptance reviewed the complete round-3 implementation at f8001ad and ran full tests/build against its executable source plus documentation-only acceptance bookkeeping. The acceptance commit changes no executable source; use git log for its non-self-referential commit hash.",
   "verification": {
     "tests": {
       "command": "npm test",
-      "status": "pass",
-      "summary": "Codex Acceptance independently ran the full suite for final §1 acceptance: 54 test files passed; 310 of 310 tests passed.",
-      "finished_at": "2026-07-24T04:41:34Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     },
     "build": {
       "command": "npm run build",
-      "status": "pass",
-      "summary": "Codex Acceptance independently ran the Next.js 16.2.11 production build for final §1 acceptance: compilation and TypeScript passed; 16 route tasks generated and /dev/phase10-spike-r3f remained absent.",
-      "finished_at": "2026-07-24T04:41:34Z",
-      "font_network_behavior": "Unchanged from §0/§1: src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. Remains §13 work.",
-      "r3f_dependency_absent": "Confirmed by direct inspection and `git diff --quiet package.json package-lock.json` (no diff at all — --no-save was used for this pass's temporary installs, so the manifest files were never touched): three, @react-three/fiber, @types/three, and the temporary measurement tool (playwright) are all absent from package.json, package-lock.json, and node_modules at the final commit.",
-      "performance_bundle_budget_result": "ACCEPTED WITH OWNER-APPROVED §1-ONLY EXCEPTION. The 50ms classification boundary remains unchanged and raw/css-longtask-final.json honestly records FAIL in all five runs (57/72ms, 68ms, 71ms, 67ms, 66ms). The absolute zero-task whole-page budget is invalid as the §1 CSS-vs-R3F proxy because the repeated 66-72ms task aligns with a React DOM hydrateRoot/createRoot chunk classified as a rootMainFile and shared by every built App Router route. The authenticated CSS branch renders no route-owned client component and has no route-owned hydration; no long task is attributable to its CSS spatial layer. §1 replacement gate: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration — PASS. This exception is not precedent for future production audits. R3F remains 4.7x over its bundle budget and absent from production."
-    },
-    "visual": {
-      "required": true,
-      "status": "pass",
-      "desktop_screenshot": "docs/phase10-baseline/section-1/desktop/observatory-shell-public-1440x900.jpg",
-      "mobile_screenshot": "docs/phase10-baseline/section-1/mobile/observatory-shell-390x844.jpg",
-      "note": "All 13 desktop/mobile screenshots across docs/phase10-spike-section-1/ and docs/phase10-baseline/section-1/ were recaptured with headless Playwright (page.setViewportSize, no resize floor) against a real production server, and every file's pixel dimensions were verified with `sips -g pixelWidth -g pixelHeight` before being documented — full sips output is in DECISION.md. Every file now matches its filename/label exactly (previously: the shell public file labeled 1440x900 was 892x779, other desktop files labeled 1440x900 were 991x865, and mobile files were 614x667 substitutes).",
-      "genuine_390_320_capture": "Resolved this pass. Real 390x844 and 320x844 screenshots exist for the CSS spike, the R3F spike (390x844), and the production shell (public, and forced-no-3d-fallback at 390x844; public at 320x844). document.documentElement.scrollWidth === clientWidth (no horizontal overflow) was verified at every narrow capture.",
-      "console": {
-        "warnings": 0,
-        "errors": 0
-      },
-      "mobile_capture_limitation": "Resolved. The original ~614-991px browser-extension resize floor no longer applies — headless Playwright reaches exact 390/320px viewports directly. See docs/phase10-spike-section-1/DECISION.md 'Mobile capture limitation — resolved this pass' for the full method."
-    },
-    "accessibility": {
-      "status": "pass",
-      "chapter_navigation": "Unchanged from the reviewed builder commit: ObservatoryShell/ChapterOrbit provide real five-chapter semantic navigation (one <nav>, one real link per chapter, aria-current on the active one). Not yet wired into /share, /, or /dashboard (§2/§4/§6 do that) — expected, not a defect.",
-      "focus": "Unchanged: the active chapter's h2 (tabIndex=-1) receives a visible :focus-visible outline and is the focus-restoration target after a client-side chapter change.",
-      "headings": "Unchanged: exactly one h1 per shell instance.",
-      "reduced_motion": "Unchanged: pure CSS, verified by observatory-fallback.test.ts — now also asserting the concentric map's display:none/block toggle stays wired to the same reduced-motion/forced-no-3D selectors as every other fallback element.",
-      "contrast": "FIXED: .freshnessLabel's --obs-ink-faint token changed from #726d63 (3.82:1, the critic's measured failure) to #847e73 (4.88:1, computed via the standard WCAG relative-luminance formula and asserted by a new regression test, observatory-contrast.test.ts, that computes the ratio directly from source tokens).",
-      "static_concentric_fallback": "ADDED: a decorative, aria-hidden concentric-rings map (.concentricMap/.concentricRing/.concentricCenter) renders only in the fallback layout (narrow viewport, reduced motion, forced no-3D), highlighting the active chapter's ring. Additive only — the five real chapter links remain the only controls, reading order and 44px targets are unchanged, and ChapterOrbit.test.tsx asserts the map contains zero focusable elements (no duplicate focus stops).",
-      "known_issues": [
-        "The shell is proven at /dev/observatory-shell only; production routes still lack it until later sections wire it in (unchanged from the reviewed builder commit; explicitly out of §1's scope per PHASE10.md)."
-      ]
-    },
-    "privacy": {
-      "status": "pass",
-      "new_routes_owner_gated": ["/dev/observatory-shell", "/dev/phase10-spike-css"],
-      "logged_out_check": "Both routes render the sign-in form with zero authentication cookie present (curl, no cookie jar) against this pass's rebuilt production server. /dev/phase10-spike-r3f (recreated temporarily for phone-profile measurement) returns a genuine 404 after cleanup — confirmed via curl.",
-      "public_dollar_leak_check": "No $<digits>.<digits> pattern found in either retained route's unauthenticated HTML.",
-      "shell_cross_render_check": "Unchanged: ObservatoryShell.test.tsx asserts the owner slot is never rendered in mode=\"public\".",
-      "query_preservation_privacy_note": "Unchanged from the prior refiner pass: preservedQuery only echoes back caller-named query keys and carries no portfolio data.",
-      "raw_measurement_data_privacy_note": "docs/phase10-spike-section-1/raw/phone-measurements.json was checked with a direct grep for the temporary OWNER_PASSWORD value and the word 'password' before being committed — neither is present. It contains only performance timings/byte counts and the named phone-profile descriptor.",
-      "env_contents_accessed_or_output": false,
-      "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override for this pass's live measurement capture and end-to-end privacy re-check; no environment-file contents were read at any point."
-    },
-    "process_check": {
-      "status": "pass",
-      "summary": "Confirmed no other Claude/Codex process was active against this repository before this refiner pass began (the prior pass's server had already been stopped). The temporary production server (port 3100) started for phone-profile measurement was stopped (verified via lsof) before the final commit."
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     }
-  },
-  "review": {
-    "result": "pass",
-    "reviewer": "codex/gpt-5",
-    "reviewed_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
-    "report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md",
-    "owner_exception": "For §1 only, the absolute zero-task whole-page budget is replaced by: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration. The 50ms boundary and all absolute observations remain unchanged. Do not generalize to future production audits.",
-    "prior_final_remediation_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
-    "prior_final_remediation_reviewed_commit": "919e8e8f93cabec403e758ea5ad2bc3bd1c773e9",
-    "prior_acceptance_remediation_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
-    "prior_acceptance_remediation_reviewed_commit": "dfb654d8993541bab1a863b084689b303ea839f1",
-    "prior_acceptance_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
-    "prior_acceptance_reviewed_commit": "6f92aaa3ce0425efc02aaa7e60dbc477905fb751",
-    "scorecard": {
-      "product_alignment": "pass",
-      "hierarchy": "pass",
-      "usefulness": "pass",
-      "originality": "pass",
-      "accessibility_mobile": "pass",
-      "engineering_reliability": "pass"
-    },
-    "failures": [],
-    "prior_critic_review": {
-      "result": "fail",
-      "reviewer": "codex/gpt-5",
-      "reviewed_commit": "507265d6e3427a414f2e2844d8513243ef348198",
-      "report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
-      "scorecard": {
-        "product_alignment": "fail",
-        "hierarchy": "pass",
-        "usefulness": "fail",
-        "originality": "pass",
-        "accessibility_mobile": "fail",
-        "engineering_reliability": "fail"
-      },
-      "failures": [
-        {
-          "category": "engineering_reliability",
-          "criterion": "required measured and dimensionally accurate technical-spike evidence",
-          "evidence": "The decision omits measured load time, long tasks, frame stability, memory, and phone interaction latency. Files labeled 1440x900 are 892x779 or 991x865; committed mobile files are 614x667.",
-          "required_change": "Recreate both spikes long enough to record every required runtime metric and genuine 1440x900/390x844 evidence, verify dimensions, then remove R3F code/dependencies before commit.",
-          "refiner_response": "Recreated /dev/phase10-spike-r3f and its dependencies; measured load time, long tasks, frame stability, memory, and interaction latency with headless Playwright against a real production server; recaptured all 13 screenshots at genuine, sips-verified 1440x900/390x844/320x844 dimensions (full sips output recorded in DECISION.md); removed R3F and the temporary Playwright tooling again before this commit, confirmed via git diff --quiet and direct node_modules inspection."
-        },
-        {
-          "category": "usefulness",
-          "criterion": "stable URL state across chapter navigation",
-          "evidence": "Chapter hrefs replace the query with only chapter. Clicking Forces from mode=private changed the preview to public; no3d=1 is also dropped.",
-          "required_change": "Preserve route-relevant query state while replacing only chapter.",
-          "refiner_response": "observatoryChapterHref() now accepts an optional preservedQuery map merged into the built URL before setting chapter; ChapterOrbit and ObservatoryShell thread it through; the /dev/observatory-shell preview route passes its mode/no3d params as preservedQuery. Verified live end-to-end against the rebuilt server: all five chapter links from ?mode=private&chapter=structure&no3d=1 correctly keep mode=private&no3d=1. New unit tests cover preservedQuery in chapters.test.ts and ChapterOrbit.test.tsx."
-        },
-        {
-          "category": "usefulness",
-          "criterion": "retained evidence controls lead to valid destinations",
-          "evidence": "The retained CSS spike links to removed /dev/phase10-spike-r3f; the critic activated it and received 404.",
-          "required_change": "Link to durable R3F evidence/decision documentation or render historical context without a dead route link.",
-          "refiner_response": "/dev/phase10-spike-css no longer links to /dev/phase10-spike-r3f; it names the path as historical, non-interactive text pointing to DECISION.md. A source-level regression test (page.test.ts) asserts no href to the removed route exists."
-        },
-        {
-          "category": "accessibility_mobile",
-          "criterion": "normal text contrast meets 4.5:1",
-          "evidence": "The freshness label computed to 3.82:1 at 12.8px/400.",
-          "required_change": "Raise freshness-label contrast to at least 4.5:1 while retaining hierarchy.",
-          "refiner_response": "--obs-ink-faint changed from #726d63 (3.82:1) to #847e73 (4.88:1, computed via the standard WCAG relative-luminance formula). A new regression test (observatory-contrast.test.ts) computes the ratio from source tokens directly."
-        },
-        {
-          "category": "product_alignment",
-          "criterion": "the exact selected Night Orbit static concentric fallback is present",
-          "evidence": "Forced, reduced-motion, and mobile fallback CSS produces only a rectangular vertical link strip and inspector; no static concentric map or equivalent spatial index exists.",
-          "required_change": "Add a restrained static concentric map sharing the existing semantic state and single link set without overflow or duplicate focus stops.",
-          "refiner_response": "Added a decorative, aria-hidden concentric-rings map that appears only in the fallback layout and highlights the active chapter's ring. Additive only: five real chapter links remain the only controls, 44px targets and reading order unchanged, zero focusable elements inside the map (asserted by ChapterOrbit.test.tsx). Visually confirmed in the recaptured forced-fallback screenshots at 1440x900 and 390x844."
-        }
-      ]
-    }
-  },
-  "failure_count": {
-    "consecutive": 0,
-    "maximum": 3,
-    "note": "Reset after Devan made the required human scope decision and Codex accepted §1 with the documented, non-generalizable exception."
   },
   "stop_reason": null,
-  "handoff_reason": "§1 accepted and complete with Devan's explicit long-task exception. §2 remains unstarted and requires Devan's explicit instruction.",
-  "updated_at": "2026-07-24T04:41:34Z"
+  "updated_at": "2026-07-24T17:28:18.307Z",
+  "legacy": {
+    "schema_version": 1,
+    "phase": 10,
+    "current_section": "§1",
+    "role": "codex_acceptance",
+    "status": "complete",
+    "next_agent": "devan",
+    "selected_direction": {
+      "name": "Field Journal",
+      "recorded_by": "Devan",
+      "recorded_at": "2026-07-23T22:22:12Z",
+      "structural_base": "Field Journal",
+      "retained_parts": [
+        "Field Journal editorial market-relative lead",
+        "Field Journal observation-plate chapter stack",
+        "Field Journal evidence marginalia",
+        "Field Journal annotated divergence ribbon"
+      ],
+      "combined_parts": [
+        "Night Orbit orbital chapter navigation",
+        "Night Orbit selected-body inspector",
+        "Night Orbit static concentric fallback"
+      ]
+    },
+    "section_0": {
+      "status": "complete",
+      "completed_by": "codex/gpt-5",
+      "completed_at": "2026-07-23T22:48:01Z",
+      "baseline_report": "docs/phase10-baseline/section-0/README.md",
+      "handoff": "docs/phase10-handoffs/2026-07-23-section-0-codex-to-claude.md",
+      "commit_subject": "phase10(§0): baseline selected Field Journal orbital hybrid",
+      "production_ui_changed": false
+    },
+    "section_1": {
+      "status": "complete",
+      "completed_by": "claude-code/sonnet-5",
+      "completed_at": "2026-07-23T19:30:00-07:00",
+      "builder_commit": "507265d6e3427a414f2e2844d8513243ef348198",
+      "critic_commit": "bb57bd8eb26ea1c1889e34a961575e839aee57fe",
+      "refiner_completed_by": "claude-code/sonnet-5",
+      "refiner_completed_at": "2026-07-24T00:30:00Z",
+      "refiner_commit": "3887bed60aea9ee82bae0a8f3c58f627a5d6e1d0",
+      "refiner_commit_note": "Recorded in an immediate follow-up bookkeeping commit (6f92aaa) once the refinement commit's own hash was known (a state file committed inside a commit cannot contain that same commit's hash) — the same non-self-referential pattern the critic's own state-only commit already used relative to the builder commit.",
+      "evidence_report": "docs/phase10-baseline/section-1/README.md",
+      "css_vs_r3f_decision": "docs/phase10-spike-section-1/DECISION.md",
+      "critic_report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
+      "refiner_handoff": "docs/phase10-handoffs/2026-07-23-section-1-codex-to-claude-refiner.md",
+      "acceptance_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance.md",
+      "acceptance_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
+      "acceptance_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-to-claude-refiner.md",
+      "commit_subject": "phase10(§1): CSS 3D technical spike and production Observatory shell",
+      "refiner_commit_subject": "phase10(§1): refine critic findings",
+      "css_vs_r3f_result": "CSS 3D selected; no production Three.js/R3F dependency (reconfirmed by two refiner passes, including a representative-phone-profile measurement recreation)",
+      "production_ui_changed": false,
+      "shell_wired_into_share_or_home": false,
+      "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 (builder and refiner) deliberately did not widen scope to do that here.",
+      "acceptance_remediation_completed_by": "claude-code/sonnet-5",
+      "acceptance_remediation_completed_at": "2026-07-24T03:15:00Z",
+      "acceptance_remediation_commit": "290ce5f5416394786cf1d34516e9d8de301e1ea0",
+      "acceptance_remediation_commit_subject": "phase10(§1): representative-phone performance evidence for acceptance remediation",
+      "acceptance_remediation_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md",
+      "acceptance_remediation_summary": "Addressed the single bounded engineering-reliability finding from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md: declared explicit pass/fail thresholds before measuring, recreated both spikes and measured them on Playwright's 'Moto G4' device profile with CDP CPU 4x / Slow-4G-network throttling (5 repetitions per route), retained sanitized raw results and non-executing reproduction material (r3f-spike.patch, measure-phone.mjs), then removed the R3F route and all temporary dependencies again. See docs/phase10-spike-section-1/DECISION.md 'Phone-profile measurement recreation (acceptance remediation)'.",
+      "acceptance_remediation_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
+      "acceptance_remediation_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-to-claude-refiner.md",
+      "acceptance_remediation_2_completed_by": "claude-code/sonnet-5",
+      "acceptance_remediation_2_completed_at": "2026-07-24T03:50:00Z",
+      "acceptance_remediation_2_summary": "Addressed both bounded Engineering Reliability findings from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md. (1) Root-caused the 66-70ms long task via longtask attribution + resource-timing correlation to react-dom's client hydration chunk, then proved with a controlled same-route unauthenticated-baseline measurement that the task is caused entirely by the pre-existing (pre-Phase-10) root layout's DepthPullProvider + Next.js/React client runtime, not by the CSS 3D spike content itself (identical task duration with near-zero spike markup rendered). Because fixing this at the source requires editing src/app/layout.tsx in a way that changes / and /share (explicitly out of this remediation's scope), corrected the long-task budget from a whole-page absolute to an added-over-shared-shell-baseline differential, matching the methodology already used by the bundle and memory budgets in the same table; CSS 3D's added long-task time is ~0ms (median 0ms, range -1 to +13ms) vs R3F's ~119ms median, so CSS 3D now passes and the finding corroborates rather than weakens the existing decision. (2) Corrected the frame-stability script to capture exactly 60 raw rAF deltas and retain all of them; found the declared literal '<=16.7ms per sample' predicate is unachievable by any of the 20 retained runs (32-48/60 pass, universally, including both baselines) because 16.7ms sits on the exact 60Hz frame interval and ordinary timer jitter puts half of any smooth sequence fractionally above it; adopted the acceptance finding's explicitly allowed alternative (the >33.4ms dropped-frame predicate) as the graded criterion, under which every run on every route shows 0/60 dropped frames. Reran the full 5-repetition Moto G4 + CPU 4x + Slow 4G protocol for both routes plus new unauthenticated-baseline runs; CSS 3D now passes every declared threshold. See docs/phase10-spike-section-1/DECISION.md 'Long-task root cause and frame-stability predicate correction (acceptance remediation round 2)'.",
+      "acceptance_remediation_2_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation-2.md",
+      "acceptance_remediation_2_commit": "487f66ec6dfc1901d6e9db5f54f8984cccc2e34e",
+      "acceptance_remediation_2_commit_note": "This hash is a best-effort record written in this immediate bookkeeping-only follow-up commit, since a commit cannot contain its own hash. Confirm against `git log` for the exact `phase10(§1): correct long-task and frame-stability measurement methodology` commit.",
+      "acceptance_remediation_2_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
+      "acceptance_remediation_2_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-2-to-claude-refiner.md",
+      "acceptance_remediation_3_completed_by": "claude-code/sonnet-5",
+      "acceptance_remediation_3_completed_at": "2026-07-24T00:30:00-07:00",
+      "acceptance_remediation_3_summary": "Implemented the directed root-cause fix (no baseline subtraction, 50ms absolute boundary unchanged): removed DepthPullProvider from the unconditional src/app/layout.tsx path and scoped it to only /, /share, /dev/surface-scratch via a new src/app/(depth-pull)/ route group + nested layout. Verified via grep that these are the only real consumers, and confirmed no regression via tsc --noEmit, focused tests (DepthPull.test.tsx + observatory-fallback.test.ts, 14/14), full npm test (310/310, 54 files), npm run build (16 routes, unchanged route list), and curl 200-status checks on the affected and unaffected routes against a rebuilt production server. Re-measured /dev/phase10-spike-css on the same Moto G4 + CPU 4x + Slow 4G phone profile, 5 authenticated repetitions, grading every individual longtask entry against the unchanged absolute 50ms boundary: all 5 runs still failed (66-72ms tasks; run 1 has an additional 57ms task). Attribution evidence shows the task correlates with react-dom's hydrateRoot/createRoot chunk (3hdj40qmts5sf.js), which still loads on this route even though its authenticated render branch (the only branch measured) has zero client components of its own post-fix -- meaning the round-2 root-cause finding was incomplete: DepthPullProvider was a real but not the sole source of this cost. Did not attempt baseline subtraction, threshold changes, or further unscoped investigation (e.g. Next.js/Turbopack chunk-splitting internals). Reported directly to Devan rather than resubmitted to Codex Acceptance, since the finding is not resolved and choosing a further strategy is a scope decision outside this pass's authorization. See docs/phase10-spike-section-1/DECISION.md 'Provider-placement root-cause fix, and why the long-task gate still fails (round 3)'.",
+      "acceptance_remediation_3_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md",
+      "acceptance_remediation_3_evidence": "docs/phase10-spike-section-1/raw/css-longtask-final.json",
+      "acceptance_remediation_3_script": "docs/phase10-spike-section-1/measure-css-longtask-final.mjs",
+      "acceptance_remediation_3_result": "The absolute zero-task predicate fails honestly on 5/5 runs. Devan subsequently approved a documented §1-only exception because retained build/timing evidence attributes the repeated 66-72ms task to the shared Next.js/React root bootstrap rather than the route-owned CSS layer.",
+      "accepted_by": "codex/gpt-5",
+      "accepted_at": "2026-07-24T04:38:53Z",
+      "accepted_reviewed_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
+      "accepted_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md",
+      "owner_exception": {
+        "approved_by": "Devan",
+        "scope": "Phase 10 §1 CSS-vs-R3F decision only",
+        "absolute_boundary_ms": 50,
+        "absolute_result": "FAIL in all five retained runs; observed tasks remain recorded without subtraction or concealment",
+        "reason": "The absolute zero-long-task whole-page budget is an invalid proxy for this App Router architecture. Retained build/timing evidence identifies the repeated task with the shared Next.js/React root bootstrap chunk, while the authenticated CSS branch has no route-owned client hydration.",
+        "replacement_gate": "CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration.",
+        "replacement_gate_result": "PASS",
+        "future_audits": "No precedent. Do not generalize this exception to future production performance audits."
+      }
+    },
+    "last_green_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
+    "last_green_commit_note": "Codex Acceptance reviewed the complete round-3 implementation at f8001ad and ran full tests/build against its executable source plus documentation-only acceptance bookkeeping. The acceptance commit changes no executable source; use git log for its non-self-referential commit hash.",
+    "verification": {
+      "tests": {
+        "command": "npm test",
+        "status": "pass",
+        "summary": "Codex Acceptance independently ran the full suite for final §1 acceptance: 54 test files passed; 310 of 310 tests passed.",
+        "finished_at": "2026-07-24T04:41:34Z"
+      },
+      "build": {
+        "command": "npm run build",
+        "status": "pass",
+        "summary": "Codex Acceptance independently ran the Next.js 16.2.11 production build for final §1 acceptance: compilation and TypeScript passed; 16 route tasks generated and /dev/phase10-spike-r3f remained absent.",
+        "finished_at": "2026-07-24T04:41:34Z",
+        "font_network_behavior": "Unchanged from §0/§1: src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. Remains §13 work.",
+        "r3f_dependency_absent": "Confirmed by direct inspection and `git diff --quiet package.json package-lock.json` (no diff at all — --no-save was used for this pass's temporary installs, so the manifest files were never touched): three, @react-three/fiber, @types/three, and the temporary measurement tool (playwright) are all absent from package.json, package-lock.json, and node_modules at the final commit.",
+        "performance_bundle_budget_result": "ACCEPTED WITH OWNER-APPROVED §1-ONLY EXCEPTION. The 50ms classification boundary remains unchanged and raw/css-longtask-final.json honestly records FAIL in all five runs (57/72ms, 68ms, 71ms, 67ms, 66ms). The absolute zero-task whole-page budget is invalid as the §1 CSS-vs-R3F proxy because the repeated 66-72ms task aligns with a React DOM hydrateRoot/createRoot chunk classified as a rootMainFile and shared by every built App Router route. The authenticated CSS branch renders no route-owned client component and has no route-owned hydration; no long task is attributable to its CSS spatial layer. §1 replacement gate: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration — PASS. This exception is not precedent for future production audits. R3F remains 4.7x over its bundle budget and absent from production."
+      },
+      "visual": {
+        "required": true,
+        "status": "pass",
+        "desktop_screenshot": "docs/phase10-baseline/section-1/desktop/observatory-shell-public-1440x900.jpg",
+        "mobile_screenshot": "docs/phase10-baseline/section-1/mobile/observatory-shell-390x844.jpg",
+        "note": "All 13 desktop/mobile screenshots across docs/phase10-spike-section-1/ and docs/phase10-baseline/section-1/ were recaptured with headless Playwright (page.setViewportSize, no resize floor) against a real production server, and every file's pixel dimensions were verified with `sips -g pixelWidth -g pixelHeight` before being documented — full sips output is in DECISION.md. Every file now matches its filename/label exactly (previously: the shell public file labeled 1440x900 was 892x779, other desktop files labeled 1440x900 were 991x865, and mobile files were 614x667 substitutes).",
+        "genuine_390_320_capture": "Resolved this pass. Real 390x844 and 320x844 screenshots exist for the CSS spike, the R3F spike (390x844), and the production shell (public, and forced-no-3d-fallback at 390x844; public at 320x844). document.documentElement.scrollWidth === clientWidth (no horizontal overflow) was verified at every narrow capture.",
+        "console": {
+          "warnings": 0,
+          "errors": 0
+        },
+        "mobile_capture_limitation": "Resolved. The original ~614-991px browser-extension resize floor no longer applies — headless Playwright reaches exact 390/320px viewports directly. See docs/phase10-spike-section-1/DECISION.md 'Mobile capture limitation — resolved this pass' for the full method."
+      },
+      "accessibility": {
+        "status": "pass",
+        "chapter_navigation": "Unchanged from the reviewed builder commit: ObservatoryShell/ChapterOrbit provide real five-chapter semantic navigation (one <nav>, one real link per chapter, aria-current on the active one). Not yet wired into /share, /, or /dashboard (§2/§4/§6 do that) — expected, not a defect.",
+        "focus": "Unchanged: the active chapter's h2 (tabIndex=-1) receives a visible :focus-visible outline and is the focus-restoration target after a client-side chapter change.",
+        "headings": "Unchanged: exactly one h1 per shell instance.",
+        "reduced_motion": "Unchanged: pure CSS, verified by observatory-fallback.test.ts — now also asserting the concentric map's display:none/block toggle stays wired to the same reduced-motion/forced-no-3D selectors as every other fallback element.",
+        "contrast": "FIXED: .freshnessLabel's --obs-ink-faint token changed from #726d63 (3.82:1, the critic's measured failure) to #847e73 (4.88:1, computed via the standard WCAG relative-luminance formula and asserted by a new regression test, observatory-contrast.test.ts, that computes the ratio directly from source tokens).",
+        "static_concentric_fallback": "ADDED: a decorative, aria-hidden concentric-rings map (.concentricMap/.concentricRing/.concentricCenter) renders only in the fallback layout (narrow viewport, reduced motion, forced no-3D), highlighting the active chapter's ring. Additive only — the five real chapter links remain the only controls, reading order and 44px targets are unchanged, and ChapterOrbit.test.tsx asserts the map contains zero focusable elements (no duplicate focus stops).",
+        "known_issues": [
+          "The shell is proven at /dev/observatory-shell only; production routes still lack it until later sections wire it in (unchanged from the reviewed builder commit; explicitly out of §1's scope per PHASE10.md)."
+        ]
+      },
+      "privacy": {
+        "status": "pass",
+        "new_routes_owner_gated": [
+          "/dev/observatory-shell",
+          "/dev/phase10-spike-css"
+        ],
+        "logged_out_check": "Both routes render the sign-in form with zero authentication cookie present (curl, no cookie jar) against this pass's rebuilt production server. /dev/phase10-spike-r3f (recreated temporarily for phone-profile measurement) returns a genuine 404 after cleanup — confirmed via curl.",
+        "public_dollar_leak_check": "No $<digits>.<digits> pattern found in either retained route's unauthenticated HTML.",
+        "shell_cross_render_check": "Unchanged: ObservatoryShell.test.tsx asserts the owner slot is never rendered in mode=\"public\".",
+        "query_preservation_privacy_note": "Unchanged from the prior refiner pass: preservedQuery only echoes back caller-named query keys and carries no portfolio data.",
+        "raw_measurement_data_privacy_note": "docs/phase10-spike-section-1/raw/phone-measurements.json was checked with a direct grep for the temporary OWNER_PASSWORD value and the word 'password' before being committed — neither is present. It contains only performance timings/byte counts and the named phone-profile descriptor.",
+        "env_contents_accessed_or_output": false,
+        "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override for this pass's live measurement capture and end-to-end privacy re-check; no environment-file contents were read at any point."
+      },
+      "process_check": {
+        "status": "pass",
+        "summary": "Confirmed no other Claude/Codex process was active against this repository before this refiner pass began (the prior pass's server had already been stopped). The temporary production server (port 3100) started for phone-profile measurement was stopped (verified via lsof) before the final commit."
+      }
+    },
+    "review": {
+      "result": "pass",
+      "reviewer": "codex/gpt-5",
+      "reviewed_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
+      "report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md",
+      "owner_exception": "For §1 only, the absolute zero-task whole-page budget is replaced by: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration. The 50ms boundary and all absolute observations remain unchanged. Do not generalize to future production audits.",
+      "prior_final_remediation_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
+      "prior_final_remediation_reviewed_commit": "919e8e8f93cabec403e758ea5ad2bc3bd1c773e9",
+      "prior_acceptance_remediation_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
+      "prior_acceptance_remediation_reviewed_commit": "dfb654d8993541bab1a863b084689b303ea839f1",
+      "prior_acceptance_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
+      "prior_acceptance_reviewed_commit": "6f92aaa3ce0425efc02aaa7e60dbc477905fb751",
+      "scorecard": {
+        "product_alignment": "pass",
+        "hierarchy": "pass",
+        "usefulness": "pass",
+        "originality": "pass",
+        "accessibility_mobile": "pass",
+        "engineering_reliability": "pass"
+      },
+      "failures": [],
+      "prior_critic_review": {
+        "result": "fail",
+        "reviewer": "codex/gpt-5",
+        "reviewed_commit": "507265d6e3427a414f2e2844d8513243ef348198",
+        "report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
+        "scorecard": {
+          "product_alignment": "fail",
+          "hierarchy": "pass",
+          "usefulness": "fail",
+          "originality": "pass",
+          "accessibility_mobile": "fail",
+          "engineering_reliability": "fail"
+        },
+        "failures": [
+          {
+            "category": "engineering_reliability",
+            "criterion": "required measured and dimensionally accurate technical-spike evidence",
+            "evidence": "The decision omits measured load time, long tasks, frame stability, memory, and phone interaction latency. Files labeled 1440x900 are 892x779 or 991x865; committed mobile files are 614x667.",
+            "required_change": "Recreate both spikes long enough to record every required runtime metric and genuine 1440x900/390x844 evidence, verify dimensions, then remove R3F code/dependencies before commit.",
+            "refiner_response": "Recreated /dev/phase10-spike-r3f and its dependencies; measured load time, long tasks, frame stability, memory, and interaction latency with headless Playwright against a real production server; recaptured all 13 screenshots at genuine, sips-verified 1440x900/390x844/320x844 dimensions (full sips output recorded in DECISION.md); removed R3F and the temporary Playwright tooling again before this commit, confirmed via git diff --quiet and direct node_modules inspection."
+          },
+          {
+            "category": "usefulness",
+            "criterion": "stable URL state across chapter navigation",
+            "evidence": "Chapter hrefs replace the query with only chapter. Clicking Forces from mode=private changed the preview to public; no3d=1 is also dropped.",
+            "required_change": "Preserve route-relevant query state while replacing only chapter.",
+            "refiner_response": "observatoryChapterHref() now accepts an optional preservedQuery map merged into the built URL before setting chapter; ChapterOrbit and ObservatoryShell thread it through; the /dev/observatory-shell preview route passes its mode/no3d params as preservedQuery. Verified live end-to-end against the rebuilt server: all five chapter links from ?mode=private&chapter=structure&no3d=1 correctly keep mode=private&no3d=1. New unit tests cover preservedQuery in chapters.test.ts and ChapterOrbit.test.tsx."
+          },
+          {
+            "category": "usefulness",
+            "criterion": "retained evidence controls lead to valid destinations",
+            "evidence": "The retained CSS spike links to removed /dev/phase10-spike-r3f; the critic activated it and received 404.",
+            "required_change": "Link to durable R3F evidence/decision documentation or render historical context without a dead route link.",
+            "refiner_response": "/dev/phase10-spike-css no longer links to /dev/phase10-spike-r3f; it names the path as historical, non-interactive text pointing to DECISION.md. A source-level regression test (page.test.ts) asserts no href to the removed route exists."
+          },
+          {
+            "category": "accessibility_mobile",
+            "criterion": "normal text contrast meets 4.5:1",
+            "evidence": "The freshness label computed to 3.82:1 at 12.8px/400.",
+            "required_change": "Raise freshness-label contrast to at least 4.5:1 while retaining hierarchy.",
+            "refiner_response": "--obs-ink-faint changed from #726d63 (3.82:1) to #847e73 (4.88:1, computed via the standard WCAG relative-luminance formula). A new regression test (observatory-contrast.test.ts) computes the ratio from source tokens directly."
+          },
+          {
+            "category": "product_alignment",
+            "criterion": "the exact selected Night Orbit static concentric fallback is present",
+            "evidence": "Forced, reduced-motion, and mobile fallback CSS produces only a rectangular vertical link strip and inspector; no static concentric map or equivalent spatial index exists.",
+            "required_change": "Add a restrained static concentric map sharing the existing semantic state and single link set without overflow or duplicate focus stops.",
+            "refiner_response": "Added a decorative, aria-hidden concentric-rings map that appears only in the fallback layout and highlights the active chapter's ring. Additive only: five real chapter links remain the only controls, 44px targets and reading order unchanged, zero focusable elements inside the map (asserted by ChapterOrbit.test.tsx). Visually confirmed in the recaptured forced-fallback screenshots at 1440x900 and 390x844."
+          }
+        ]
+      }
+    },
+    "failure_count": {
+      "consecutive": 0,
+      "maximum": 3,
+      "note": "Reset after Devan made the required human scope decision and Codex accepted §1 with the documented, non-generalizable exception."
+    },
+    "stop_reason": null,
+    "handoff_reason": "§1 accepted and complete with Devan's explicit long-task exception. §2 remains unstarted and requires Devan's explicit instruction.",
+    "updated_at": "2026-07-24T04:41:34Z"
+  }
 }

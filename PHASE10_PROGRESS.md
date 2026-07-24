@@ -662,3 +662,14 @@ finding above to Claude Refiner.
 - Machine state: `PHASE10_STATE.json` (`section_1`, `complete`)
 
 Do not begin §2 without Devan's explicit instruction.
+
+## From §2 onward
+
+Phase 10 §2 onward uses the Claude-lead / Codex-implementation workflow
+defined in `docs/PHASE10_AGENT_WORKFLOW.md` (rewritten for this) and
+implemented per `docs/phase10-workflow/IMPLEMENTATION_SPEC.md`. Live status
+is `PHASE10_STATE.json`; per-section specs and reviews are under
+`docs/phase10-workflow/specs/` and `docs/phase10-workflow/reviews/`; turn
+handoffs are under `docs/phase10-handoffs/`. This file is no longer the
+per-checklist-item ledger for §2+ — read `PHASE10_STATE.json` and the
+latest handoff doc for current status instead.
