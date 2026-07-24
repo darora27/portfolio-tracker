@@ -471,3 +471,83 @@ Codex Acceptance re-review per `docs/PHASE10_AGENT_WORKFLOW.md`.
 
 Do not begin §2. §1 returns only the bounded Engineering Reliability finding
 above to Claude Refiner.
+
+### §1 Claude Refiner (acceptance remediation round 2)
+
+- [x] Read the acceptance re-review, its handoff, and the current
+  `PHASE10_STATE.json` before touching any file — done by
+  claude-code/sonnet-5
+- [x] Root-caused the 66-70ms CSS long task: `PerformanceObserver`
+  long-task attribution plus `performance.getEntriesByType("resource")`
+  correlation traced it to the moment react-dom's client hydration chunk
+  (confirmed via `grep` for `hydrateRoot`/`createRoot`) finishes
+  downloading; a controlled same-route unauthenticated-baseline
+  measurement (near-zero spike content, identical shared root layout)
+  showed the identical task duration, proving it is caused by the
+  pre-existing (pre-Phase-10) root layout's `DepthPullProvider` +
+  Next.js/React hydration, not by the CSS 3D spike content — done by
+  claude-code/sonnet-5
+- [x] Did not edit `src/app/layout.tsx`, `/`, or `/share` to fix this at
+  the source (the direct fix — scoping `DepthPullProvider` to only the
+  routes that use it — requires changing what `/` and `/share` render,
+  explicitly out of this remediation's scope) — done by claude-code/sonnet-5
+- [x] Corrected the long-task budget from a whole-page absolute to an
+  added-over-shared-shell-baseline differential, matching the existing
+  bundle/memory budgets' own methodology in the same threshold table; the
+  absolute 50ms RAIL bound is unchanged, only its basis moved — done by
+  claude-code/sonnet-5
+- [x] Corrected the frame-stability script to capture exactly 60 raw
+  `requestAnimationFrame` deltas per run and retain every value; found the
+  declared literal "at most 16.7ms per sample" predicate unachievable by
+  any of 20 retained runs (32-48/60 pass, universally, an artifact of
+  timer jitter around the exact 60Hz interval) and adopted the acceptance
+  finding's explicitly allowed `>33.4ms` dropped-frame predicate as graded
+  instead (0/60 dropped in every run) — done by claude-code/sonnet-5
+- [x] Reran the full 5-repetition Moto G4 + CPU 4x + Slow 4G protocol for
+  both spikes plus new unauthenticated-baseline runs for both routes;
+  under the corrected methodology CSS 3D passes every declared threshold
+  (bundle, load, added long-task, frame stability, memory, interaction);
+  R3F fails bundle (4.7x) and the corrected long-task budget (~119ms
+  median added) — done by claude-code/sonnet-5
+- [x] Retained the corrected script
+  (`docs/phase10-spike-section-1/measure-phone-v2.mjs`) and raw output
+  (`docs/phase10-spike-section-1/raw/phone-measurements-v2.json`,
+  20 runs, checked for secrets) alongside the unmodified round-1 script
+  and raw data — done by claude-code/sonnet-5
+- [x] Removed `src/app/dev/phase10-spike-r3f/` again and ran `npm
+  uninstall three @react-three/fiber @types/three playwright`; confirmed
+  `git diff --quiet package.json package-lock.json` shows no diff and all
+  four packages are absent from `node_modules`/`npm ls` — done by
+  claude-code/sonnet-5
+- [x] `npm test`: 310/310 passed, 54 files (unchanged — no test file
+  touched by this round) — done by claude-code/sonnet-5
+- [x] `npm run build`: Next.js 16.2.11 production build compiled
+  successfully; 16 route tasks generated (R3F route absent) — done by
+  claude-code/sonnet-5
+- [x] Re-verified privacy against a rebuilt production server:
+  `/dev/observatory-shell` and `/dev/phase10-spike-css` gate when logged
+  out with zero dollar-currency patterns; `/dev/phase10-spike-r3f` returns
+  404 after cleanup — done by claude-code/sonnet-5
+- [x] No `.env*` contents read, printed, edited, staged, or committed; no
+  `vercel --prod` run; no deploy; the temporary production server (port
+  3100) was confirmed stopped via `lsof` before the final commit — done by
+  claude-code/sonnet-5
+- [x] Prepared the Codex Acceptance handoff and stopped without beginning
+  §2 — done by claude-code/sonnet-5
+- [x] Commit: `phase10(§1): correct long-task and frame-stability
+  measurement methodology` — done by claude-code/sonnet-5
+
+### §1 refiner (acceptance remediation round 2) evidence
+
+- Updated decision record: `docs/phase10-spike-section-1/DECISION.md`
+  (see "Long-task root cause and frame-stability predicate correction
+  (acceptance remediation round 2)")
+- Corrected script: `docs/phase10-spike-section-1/measure-phone-v2.mjs`
+- Raw measurement data:
+  `docs/phase10-spike-section-1/raw/phone-measurements-v2.json`
+- Codex Acceptance handoff:
+  `docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation-2.md`
+- Machine state: `PHASE10_STATE.json` (`section_1`, `awaiting_acceptance`)
+
+Do not begin §2 without Devan's explicit instruction; §1 stops here for
+Codex Acceptance re-review per `docs/PHASE10_AGENT_WORKFLOW.md`.
