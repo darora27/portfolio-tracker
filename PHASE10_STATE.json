@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§2",
-  "role": "claude_lead",
-  "stage": "specify",
+  "role": "codex_implementation",
+  "stage": "implement",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -26,7 +26,7 @@
   "section": {
     "id": "§2",
     "title": "`/share` Pulse vertical slice",
-    "spec_doc": null,
+    "spec_doc": "docs/phase10-workflow/specs/section-2.md",
     "implementation_commit": null,
     "review_result": null,
     "findings": [],
@@ -48,7 +48,7 @@
       "note": "Accepted under a documented, non-generalizing owner exception to the absolute long-task gate. Full history: legacy.section_1."
     }
   ],
-  "prev_actor_commit": "ddd33909c0b6b803cb1bb69d14bca2bc4d231332",
+  "prev_actor_commit": "359d25b9616399d1dccd570eed4e83056ce7605c",
   "last_green_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
   "verification": {
     "tests": {
@@ -65,7 +65,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-24T17:28:18.307Z",
+  "updated_at": "2026-07-24T17:46:47.000Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
