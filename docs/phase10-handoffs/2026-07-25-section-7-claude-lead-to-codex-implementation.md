@@ -98,3 +98,60 @@ Implementation turn must:
 ## Decision needed (only if status = blocked)
 
 N/A — status is `ready`.
+
+## Amendment (owner-directed correction, July 25, 2026)
+
+Before this handoff's Codex Implementation turn began, Devan reviewed
+`docs/phase10-workflow/specs/section-7.md` and found it too conservative to
+guarantee the immersive spatial result requested for §7: it could pass every
+criterion while shipping a CSS-styled dashboard with, at most, a decorative
+canvas behind it. Devan directed nine corrections (see the spec's own
+"Owner correction (July 25, 2026)" section for the full list); this
+amendment records what changed so Codex does not implement against the
+description in "What this turn did" above, which is now superseded.
+
+**The "central architecture decision" summary above no longer applies as
+written.** It previously said: "regardless of which runtime the spike
+selects, the already-accepted CSS 3D `ObservatoryShell`/`ChapterOrbit`
+remains the one true interactive structure — CSS-wins extends it directly;
+R3F-wins adds a purely decorative, `aria-hidden`, lazy-loaded
+atmosphere/camera layer on top of it." That is corrected: `ObservatoryShell`/
+`ChapterOrbit` remain the one true *semantic and interactive structure*
+(chapters, URL state, focus, keyboard/touch/screen-reader operation — this
+part is unchanged and still binding), but if R3F wins, its canvas may become
+the visually *dominant* production spatial scene, its five meshes respond to
+pointer hover/activation synchronized with the real chapter links, and
+`aria-hidden` means the canvas's information is accessibly duplicated
+elsewhere — not that the canvas is visually subordinate or decorative. Read
+the spec's §3 in full before writing any Phase B code; it is the binding
+architecture regardless of which runtime wins.
+
+Also changed and binding on this Codex turn:
+
+- The Phase A decision procedure (spec §2.5) is now: four mandatory
+  pass/fail gates (accessibility, privacy, fallback, reliability), then an
+  equally weighted performance/storytelling score among gate-passing
+  variants, with CSS only as the tie-breaker — not "select R3F only if it
+  beats CSS, otherwise default to CSS."
+- The storytelling rubric (spec §2.4) grew from six to eleven rows and is
+  strengthened so gradients, translated layers, and hover labels alone
+  cannot pass it.
+- Screenshot filmstrips or short recordings are now required (spec §2.4,
+  §10) for world entry, pointer exploration, chapter travel, and settled
+  states — a static before/after screenshot pair no longer satisfies the
+  visual acceptance criteria.
+- The performance methodology (spec §2.3) now has two separate profiles: a
+  Moto G4/Slow 4G mobile-fallback confirmation (proves the fallback never
+  requests R3F and does not regress — it is not a scoring input for the
+  desktop scene), and a 1440×900 CPU-throttled desktop measurement of the
+  actual WebGL scene, with declared memory/lazy-chunk budgets and a new
+  repeated-transition leak check.
+- The entrance sequence's duration is decoupled from chapter-travel's (spec
+  §5.1): it may run up to 3000 ms if justified and stays skippable; chapter
+  navigation itself keeps its own quick 400-900 ms budget.
+
+No application code, dependencies, or `PHASE10_STATE.json` fields changed in
+this amendment — `current_section`, `stage`, `role`, `status`, and
+`next_actor` are exactly as this handoff already left them. Implement
+against the current `docs/phase10-workflow/specs/section-7.md` in full, not
+against this handoff's original "What this turn did" summary.
