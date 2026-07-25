@@ -50,6 +50,15 @@ durable repository state and figure out exactly what this turn is for.
 - Add or update tests and, for UI-bearing sections, capture the
   before/after screenshots the spec requires at the exact viewports it
   names.
+- Attempt every required live browser check. If and only if the Codex CLI
+  environment itself has no browser backend or denies localhost binding,
+  do not discard otherwise complete work and do not block solely on that
+  environment limitation. Document the exact unverified browser criteria
+  and evidence gap, keep tests/build green, commit the implementation, and
+  transition normally to Claude `review`. Claude Lead must perform those
+  missing live checks independently before PASS. This exception never
+  converts a known visual, mobile, keyboard, console, or accessibility
+  failure into a pass; it applies only when the check cannot run.
 - Run `npm test` and `npm run build`; both must be green before you
   commit.
 - Update `PHASE10_STATE.json`: `stage` → `review`, `role` →
@@ -86,6 +95,10 @@ durable repository state and figure out exactly what this turn is for.
   validator, commit with
   `phase10(§N): remediate <short description>`, write the handoff doc,
   and stop.
+- Apply the same environment-only browser-evidence rule from `implement`:
+  preserve and commit a complete green remediation when the CLI cannot
+  launch a browser, and route the missing live verification to Claude
+  review instead of reverting the fix.
 
 ## 2. Universal rules for every stage
 

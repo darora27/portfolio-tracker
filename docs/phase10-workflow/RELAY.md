@@ -91,6 +91,19 @@ Because provider quota resets are not exposed here as dependable
 machine-readable state, the relay does not wait and retry after a rate limit.
 That remains a safe manual resume after checking the recorded outcome.
 
+For an owner-directed recovery where a specific Codex session already contains
+valuable implementation context, the fixed Codex runner supports a one-time
+session override:
+
+```bash
+PHASE10_CODEX_RESUME_SESSION=<session-id> \
+  ./scripts/phase10-codex-implementation.sh
+```
+
+This is never selected automatically by the relay. The state must first be
+deliberately restored to a valid `ready` Codex turn, and the exact prior
+session ID must come from that turn's local log.
+
 ## Exit meaning
 
 - Exit `0`: clean safety-limit stop, explicit `STOP`, `complete`, or

@@ -9,6 +9,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 LOCK_FILE="PHASE10_LOCK"
 PROMPT_FILE="docs/phase10-workflow/prompts/codex-implementation.md"
 CODEX_MODEL="${PHASE10_CODEX_MODEL:-}"
+CODEX_RESUME_SESSION="${PHASE10_CODEX_RESUME_SESSION:-}"
 GIT_DIR="$(pwd)/.git"
 LOG_DIR="$HOME/.phase10-workflow-logs"
 mkdir -p "$LOG_DIR"
@@ -35,7 +36,15 @@ release_lock() {
 trap release_lock EXIT INT TERM
 
 echo "Starting Codex Implementation turn. Log: $LOG_FILE"
-if [ -n "$CODEX_MODEL" ]; then
+if [ -n "$CODEX_RESUME_SESSION" ] && [ -n "$CODEX_MODEL" ]; then
+  codex -a never exec resume -m "$CODEX_MODEL" "$CODEX_RESUME_SESSION" - \
+    < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+  CLI_STATUS=$?
+elif [ -n "$CODEX_RESUME_SESSION" ]; then
+  codex -a never exec resume "$CODEX_RESUME_SESSION" - \
+    < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
+  CLI_STATUS=$?
+elif [ -n "$CODEX_MODEL" ]; then
   codex -a never exec -C "$(pwd)" -s workspace-write --add-dir "$GIT_DIR" \
     -m "$CODEX_MODEL" - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
