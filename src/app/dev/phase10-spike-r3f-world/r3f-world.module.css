@@ -1,0 +1,75 @@
+.world {
+  background: #05070c;
+}
+
+.stage {
+  min-height: 39rem;
+}
+
+.canvasStage {
+  position: absolute;
+  z-index: 1;
+  inset: -12rem -8vw -3rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(78, 125, 144, 0.18), transparent 35%),
+    #07090f;
+  box-shadow:
+    inset 0 0 160px rgba(0, 0, 0, 0.55),
+    0 70px 150px rgba(0, 0, 0, 0.48);
+}
+
+.canvasStage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, transparent 35%, rgba(5, 7, 12, 0.72) 93%),
+    linear-gradient(90deg, rgba(5, 7, 12, 0.18), transparent 30%, rgba(5, 7, 12, 0.34));
+}
+
+.semanticCamera {
+  z-index: 4;
+  opacity: 0.94;
+}
+
+.semanticCamera :global(a[data-mesh-hovered="true"]) {
+  z-index: 9;
+  border-color: #9588ff;
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.56),
+    0 0 42px rgba(149, 136, 255, 0.28);
+  filter: brightness(1.18);
+}
+
+.semanticCamera :global(a[data-mesh-hovered="true"] span:last-child) {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.plate {
+  z-index: 7;
+  background: linear-gradient(145deg, rgba(16, 24, 39, 0.87), rgba(7, 9, 15, 0.78));
+  box-shadow:
+    -30px 38px 90px rgba(0, 0, 0, 0.62),
+    -1px 0 rgba(114, 226, 212, 0.3);
+}
+
+.entrance {
+  background:
+    radial-gradient(circle at center, rgba(31, 71, 78, 0.52), transparent 15%),
+    #03050a;
+  animation-duration: 2200ms;
+}
+
+@media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+  .canvasStage {
+    display: none;
+  }
+}
+
+[data-force-no-3d="true"] .canvasStage {
+  display: none;
+}
