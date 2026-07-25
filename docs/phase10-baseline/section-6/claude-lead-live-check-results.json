@@ -1,0 +1,116 @@
+{
+  "desktop-how-default-console": {
+    "warnings": [],
+    "errors": []
+  },
+  "desktop-why-console": {
+    "warnings": [],
+    "errors": []
+  },
+  "desktop-attention-console": {
+    "warnings": [],
+    "errors": []
+  },
+  "desktop-analytics-risk-console": {
+    "warnings": [],
+    "errors": []
+  },
+  "explain-sharpe-focus": {
+    "tag": "H3",
+    "id": "dashboard-metric-heading-_R_66af5fivb_",
+    "text": "Sharpe ratio"
+  },
+  "cross-view-explain-how-panel-count": 0,
+  "mobile-how-default-overflow": {
+    "scrollWidth": 390,
+    "clientWidth": 390
+  },
+  "mobile-why-overflow": {
+    "scrollWidth": 390,
+    "clientWidth": 390
+  },
+  "mobile-attention-overflow": {
+    "scrollWidth": 390,
+    "clientWidth": 390
+  },
+  "mobile-analytics-risk-overflow": {
+    "scrollWidth": 390,
+    "clientWidth": 390
+  },
+  "mobile-analytics-expanded-overflow": {
+    "scrollWidth": 390,
+    "clientWidth": 390
+  },
+  "mobile-switcher-link-sizes": [
+    {
+      "text": "How am I doing?",
+      "width": 126.765625,
+      "height": 44
+    },
+    {
+      "text": "Why?",
+      "width": 53.6875,
+      "height": 44
+    },
+    {
+      "text": "What deserves attention?",
+      "width": 186.9375,
+      "height": 44
+    },
+    {
+      "text": "All analytics",
+      "width": 117.40625,
+      "height": 44
+    }
+  ],
+  "mobile-metric-buttons-sizes": [
+    {
+      "text": "Explain Volatility+",
+      "width": 142.21875,
+      "height": 44
+    },
+    {
+      "text": "Explain Max drawdown+",
+      "width": 142.21875,
+      "height": 44
+    },
+    {
+      "text": "Explain Sharpe−",
+      "width": 327.21875,
+      "height": 44
+    },
+    {
+      "text": "Close",
+      "width": 53.703125,
+      "height": 44
+    },
+    {
+      "text": "Explain Beta+",
+      "width": 142.21875,
+      "height": 44
+    },
+    {
+      "text": "Explain Sortino+",
+      "width": 142.21875,
+      "height": 44
+    }
+  ],
+  "mobile-permalink-sizes": [
+    {
+      "text": "Link to this explanation",
+      "width": 142.109375,
+      "height": 44
+    }
+  ],
+  "keyboard-enter-expands": "true",
+  "keyboard-focus-after-open": "H3",
+  "keyboard-escape-collapses": "false",
+  "keyboard-focus-after-escape": "Explain Sharpe+",
+  "back-nav-h2": "Why?",
+  "forward-nav-h2": "What deserves attention?",
+  "reduced-motion-animation-name": "none",
+  "zoom200-overflow": {
+    "scrollWidth": 720,
+    "clientWidth": 720
+  }
+}

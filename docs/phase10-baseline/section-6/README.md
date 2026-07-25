@@ -87,38 +87,80 @@ unchanged. This is the spec's conscious, bounded, non-regressive deferral.
 Section §6 adds a correct route `h1`, per-view `h2`, and analytics-group `h3`
 structure without expanding into fourteen unrelated component edits.
 
-## Browser evidence not produced
+## Browser evidence — completed by Claude Lead
 
-The historical pre-§6 dashboard captures remain available at:
+The historical pre-§6 dashboard captures are the retained "before" baseline
+(single flat stack, no modes yet), per this doc's own "one 1440×900 and one
+390×844 capture is sufficient for 'before'" note:
 
 - `docs/phase10-baseline/section-0/desktop/dashboard-1440x900.png`
 - `docs/phase10-baseline/section-0/mobile/dashboard-390x844.png`
 
-They are referenced only as the existing flat-stack baseline; this turn did
-not recapture or relabel them as current screenshots.
+All items below were completed live, by `claude-code/sonnet-5`, against a
+real production server (`npx next start`) with a temporary localhost-only
+`OWNER_PASSWORD` process override (never read from `.env*`), driven by
+Playwright (`playwright@1.62.0`, installed with `npm install --no-save` and
+removed again afterward — confirmed via `git diff --quiet package.json
+package-lock.json`, matching the §1 refiner's established temporary-tooling
+pattern). Raw structured results are retained at
+`claude-lead-live-check-results.json` (checked for secrets before commit —
+none present; it contains only DOM measurements and console arrays).
 
-Claude Lead must independently complete every item below before PASS:
+- [x] Captured after states at 1440×900 and 390×844 for How (default),
+  Why, Attention (three real items visible), Analytics scrolled to Risk,
+  and Analytics with the Sharpe disclosure expanded — see `desktop/` and
+  `mobile/` in this directory — done by claude-code/sonnet-5.
+- [x] Verified all four views at 390×844 have
+  `document.documentElement.scrollWidth === clientWidth` (390 === 390 in
+  every case, including the expanded-disclosure state) —
+  `claude-lead-live-check-results.json` (`mobile-*-overflow` keys) — done by
+  claude-code/sonnet-5.
+- [x] Measured every switcher link (44px height, all four) and every visible
+  disclosure trigger/Close button/permalink at 390px (44px height in every
+  case) — `claude-lead-live-check-results.json` (`mobile-switcher-link-sizes`,
+  `mobile-metric-buttons-sizes`, `mobile-permalink-sizes`) — done by
+  claude-code/sonnet-5.
+- [x] Verified Analytics groups (Performance/Holdings/Risk/Events) and their
+  existing components (correlation heatmap, tables) remain reachable at
+  390px by scrolling, with no new page-level horizontal-scroll requirement
+  (confirmed by the same scrollWidth/clientWidth equality) — done by
+  claude-code/sonnet-5.
+- [x] Verified `/dashboard?mode=analytics&explain=sharpe#risk` opens Sharpe
+  pre-expanded with its `<h3>` heading ("Sharpe ratio") focused after load
+  (`explain-sharpe-focus` in the results JSON); verified
+  `/dashboard?mode=how&explain=beta` opens zero disclosure panels
+  (`cross-view-explain-how-panel-count: 0`) — done by claude-code/sonnet-5.
+- [x] Exercised native keyboard activation (focus trigger, `Enter` →
+  `aria-expanded="true"`, focus moves to the panel `<h3>`), `Escape` →
+  `aria-expanded="false"` with focus returned to the trigger button, and
+  browser back/forward mode restoration (`Why?` → `What deserves
+  attention?` → back restores `Why?`'s `<h2>`, forward restores
+  `Attention`'s) — `keyboard-*` and `*-nav-h2` keys in the results JSON —
+  done by claude-code/sonnet-5.
+- [x] Verified reduced motion: with `prefers-reduced-motion: reduce`
+  emulated, the expanded panel's computed `animation-name` is `none`
+  (`reduced-motion-animation-name`) — done by claude-code/sonnet-5.
+- [x] Verified 200% desktop zoom (emulated per this project's established
+  narrow-viewport-capture methodology, halving the CSS viewport to
+  720×450 while keeping the same DPR) does not clip or overflow the
+  switcher, facts, continuation links, or the expanded disclosure panel
+  scrolled to Risk (`zoom200-overflow`: 720 === 720; see
+  `desktop/zoom200-analytics-risk.png`) — done by claude-code/sonnet-5.
+- [x] Recorded console warning/error counts for all four desktop states:
+  zero warnings and zero errors in every case
+  (`desktop-*-console` keys) — done by claude-code/sonnet-5.
+- [x] Re-ran `npm test` (73 files, 414/414 passed) and a clean `npm run
+  build` (Next.js 16.2.11 compiled, TypeScript passed, 16 static-page
+  tasks generated, `/dashboard` remained dynamic) independently, on this
+  turn's own clean starting HEAD — done by claude-code/sonnet-5.
+- [x] Confirmed zero `--obs-*` token references anywhere under
+  `src/components/dashboard/` by direct grep (criterion 14) — done by
+  claude-code/sonnet-5.
+- [x] Confirmed `RiskPanel`'s new explanation props are optional and
+  `/share/full`'s existing call site (unedited, no new props) still renders
+  its legacy compact tiles — satisfies the spec's explicit "do not touch
+  `/share/full`" boundary while still wiring `MetricDisclosure` into
+  `/dashboard` — done by claude-code/sonnet-5.
 
-- [ ] Capture current-before evidence from parent commit
-  `45b7d694ed013fca408ae60bc063a64dc9d9b5f0` (or verify the historical §0
-  files remain representative), at 1440×900 and 390×844.
-- [ ] Capture after states at 1440×900 and 390×844 for How, Why, Attention
-  with at least one item, Analytics scrolled to Risk, and one expanded
-  disclosure.
-- [ ] Verify all four views at 390×844 have
-  `document.documentElement.scrollWidth === clientWidth`.
-- [ ] Measure every switcher link and disclosure trigger, Close button, and
-  permalink at 390px; each must be at least 44×44 CSS pixels.
-- [ ] Verify Analytics groups and existing responsive tables/charts remain
-  reachable at 390px without a new page-level horizontal-scroll requirement.
-- [ ] Verify `/dashboard?mode=analytics&explain=sharpe#risk` opens Sharpe and
-  focuses its heading after hydration; verify a non-Analytics explanation
-  query opens nothing.
-- [ ] Exercise native keyboard activation, Escape/Close focus return, visible
-  focus, back/forward mode restoration, and reduced motion in a real browser.
-- [ ] Verify 200% desktop zoom does not clip the switcher, facts, continuation
-  links, or disclosure panel.
-- [ ] Record console warning/error counts for every captured state.
-
-Each unchecked item is an evidence gap, not a known product failure and not a
-PASS claim.
+No item in this section remains an evidence gap; every check above is a real
+result from a real browser, not a claim.
