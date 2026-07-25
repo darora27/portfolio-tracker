@@ -768,3 +768,61 @@ latest handoff doc for current status instead.
   `docs/phase10-baseline/section-7/capture-report.json`
 - Handoff:
   `docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-codex-implementation-remediate.md`
+
+### §7 owner decision — Option 2, bundle and visual remediation authorized — July 25, 2026
+
+- [x] Recorded Devan's explicit §R.8 decision on the blocked Turn B′ review:
+  **Option 2** — one second, differently scoped Codex remediation attempt —
+  done by claude/fable-5 (cowork, owner-directed)
+- [x] Authorized Part 1 (R3F bundle/runtime optimization): inspect and retain
+  evidence of the ~234 KB production chunk's composition, drop unused
+  Three.js/R3F modules, avoid broad imports, and investigate narrower imports,
+  tree-shaking, chunk splitting, staged module evaluation, and delayed WebGL
+  initialization; a minimal direct-Three.js scene is allowed **only** on
+  measured evidence that R3F framework overhead is the irreducible cause and
+  the semantic/fallback contracts stay unchanged; the exact 50 ms gate and the
+  existing CPU-2× procedure are preserved; **one** round only — done by
+  claude/fable-5
+- [x] Authorized Part 2 (required visual-quality remediation, closing Finding 2
+  in the same turn): coherent star field with depth, atmospheric rim lighting,
+  restrained bloom/telemetry glow around the sun, materially richer procedural
+  planet variation, real depth cues, refined orbital paths and lighting,
+  polished CRT/HUD framing without losing readability, and no generic low-poly
+  or unexplained decorative objects — each evaluated together with bundle,
+  memory, frame-stability, and long-task budgets — done by claude/fable-5
+- [x] Recorded what the owner explicitly withheld: no performance exception
+  accepted, no switch of the primary desktop experience to CSS, and no
+  production `/share` wiring; `/dev/phase10-portfolio-orrery` remains the only
+  target — done by claude/fable-5
+- [x] Recorded the unchanged stop condition: if the route-owned task is still
+  above 50 ms after this attempt, stop and return the measured result to Devan
+  — no silent CSS selection, no weakened gate — done by claude/fable-5
+- [x] Changed no application code and no dependency; did not amend
+  `docs/phase10-workflow/specs/section-7.md` — the 50 ms gate, the §2.3.2 rig,
+  criterion 41, and §R's normative text are untouched — done by claude/fable-5
+- [x] State routed to `§7` / `remediate` / `codex_implementation` / `ready` /
+  `next_actor: codex`, `stop_reason: null` — done by claude/fable-5
+- [x] Validator exit 0. `npm test` 446/446 across 81 files, run in a
+  clean-room sandbox install (`npm ci` from the unmodified lockfile into a
+  copy of the tree, plus the `--no-save` R3F packages) because this shell is
+  `linux-arm64` and the repository's `node_modules` holds darwin-arm64
+  binaries — the repository's own `node_modules` was never mutated.
+  `npm run build` was attempted and **could not complete in this sandbox**:
+  exactly three errors, all `./src/app/layout.tsx`, all `next/font: Failed to
+  fetch <font> from Google Fonts` — the pre-existing open §13 condition,
+  recorded rather than papered over. `npx tsc --noEmit` exits 0, and
+  `git diff --quiet dc358a6 -- src package.json package-lock.json` confirms
+  `src/` and both manifests are byte-identical to the tree Turn B′'s review
+  built green on the owner machine — done by claude/fable-5
+- [x] Commit: `phase10(owner §7): authorize bundle and visual remediation` —
+  done by claude/fable-5
+
+### §7 owner decision evidence
+
+- Owner→Codex handoff:
+  `docs/phase10-handoffs/2026-07-25-section-7-devan-to-codex-implementation-remediate.md`
+- Review doc (see "Owner decision (July 25, 2026)"):
+  `docs/phase10-workflow/reviews/section-7-review-2.md`
+- Blocked handoff this decides:
+  `docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md`
+- Machine state: `PHASE10_STATE.json` (`section.owner_decision`)

@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§7",
-  "role": "claude_lead",
-  "stage": "review",
-  "status": "blocked",
-  "next_actor": "devan",
+  "role": "codex_implementation",
+  "stage": "remediate",
+  "status": "ready",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -32,8 +32,9 @@
     "review_doc": "docs/phase10-workflow/reviews/section-7-review-2.md",
     "decision_doc": "docs/phase10-spike-section-7/DECISION.md",
     "evidence_doc": "docs/phase10-baseline/section-7/README.md",
-    "handoff": "docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md",
-    "turn": "Turn B′ reviewed. Independently re-measured: the R3F route-owned long task is unchanged (59-60ms, 5/5 runs) after the described optimisation round, which per §R.8 requires Devan's explicit decision before proceeding, not another Codex remediation round. Parallax and all eight §R.11 visual-evidence items are now closed. One additional bounded finding (§R.10 visual system — no star field/bloom/rim lighting in the R3F canvas) is recorded for whichever turn resumes implementation after Devan's decision. Blocked on Devan; production wiring into /share (Turn C) has not started.",
+    "handoff": "docs/phase10-handoffs/2026-07-25-section-7-devan-to-codex-implementation-remediate.md",
+    "prior_handoff": "docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md",
+    "turn": "Turn B″ — owner-authorized second remediation. Devan reviewed the blocked Turn B′ review and selected Option 2 from the blocked handoff: one second, differently scoped Codex remediation attempt, with two equally required parts (R3F bundle/runtime optimization targeting the ~234KB chunk itself, and the §R.10 visual system closing Finding 2 in the same turn). No performance exception was accepted, the primary desktop experience was not switched to CSS, and production /share wiring was not authorized — Turn C is unchanged and has not started. /dev/phase10-portfolio-orrery remains the only target. See section.owner_decision and the handoff for full scope, constraints, and the stop condition.",
     "spike_decision": {
       "result": "fail_no_winner",
       "selected_runtime": null,
@@ -51,20 +52,61 @@
         "No isolated front/back occlusion-change observation for CSS §2.4 row 6."
       ]
     },
+    "owner_decision": {
+      "decided_by": "Devan (owner)",
+      "recorded_by": "claude/fable-5 (cowork, owner-directed)",
+      "decided_at": "2026-07-25",
+      "decides": "docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md",
+      "selected_option": "Option 2 — authorize one second, differently scoped Codex remediation attempt",
+      "basis": "section-7.md §R.8 and PRODUCT_DIRECTION.md 'Runtime and resilience' route a failed single optimisation round to Devan for an explicit decision; criterion 41's second clause is satisfied by the Turn B′ review, and this is the answer. The spec was not amended: the 50ms gate, the §2.3.2 CPU-2x rig, criterion 41, and §R's normative text are unchanged.",
+      "authorized": {
+        "part_1_bundle_runtime_optimization": [
+          "Inspect and retain evidence of the production chunk composition (~234KB R3F/Three.js chunk responsible for the repeatable 59-60ms route-owned task), which the first round never addressed.",
+          "Identify unused Three.js/R3F modules and avoid broad imports.",
+          "Investigate whether narrower imports, better tree-shaking, chunk splitting, staged module evaluation, or delayed WebGL initialization can reduce the route-owned task.",
+          "Consider a minimal direct-Three.js scene implementation instead of R3F ONLY if measured evidence shows R3F framework overhead is the irreducible cause and the existing semantic/fallback contracts remain unchanged.",
+          "Preserve the exact 50ms gate and the existing CPU-2x measurement procedure — no weakening, redefinition, re-instrumentation, or baseline subtraction.",
+          "Perform only this one additional optimization round."
+        ],
+        "part_2_visual_quality_remediation": [
+          "Close Finding 2 in the same prototype turn — required and equally important, not deferred behind Part 1.",
+          "A coherent spatial star field with visible depth.",
+          "Atmospheric rim lighting separating planets from the background.",
+          "Restrained bloom/glow around the portfolio sun and appropriate telemetry.",
+          "Materially richer procedural planet variation.",
+          "Depth cues that make planets feel situated in one environment rather than flat spheres over a black surface.",
+          "Refined orbital paths and shadows/lighting.",
+          "Polished retrofuturist CRT/HUD framing without reducing readability.",
+          "No generic low-poly or unexplained decorative objects.",
+          "Every effect evaluated together with bundle, memory, frame-stability, and long-task measurements — iterate toward the best passing implementation, do not add effects blindly if they break the declared budgets."
+        ]
+      },
+      "explicitly_withheld": [
+        "No §7 performance exception is accepted yet (Option 1 not chosen) — do not record, draft, or assume one.",
+        "The primary desktop experience is not switched to CSS (Option 3 not chosen).",
+        "The Orrery is not wired into production /share; Turn C is unchanged and does not begin until this remediation is reviewed.",
+        "/dev/phase10-portfolio-orrery remains the only target route; /share stays unchanged."
+      ],
+      "stop_condition": "If the route-owned task remains above 50ms after this differently scoped attempt, stop and return the measured result to Devan (status blocked, next_actor devan). Do not silently select CSS and do not weaken the gate. Devan will then consider a narrowly documented §7-only exception based on the final visual result and measured user impact; that consideration is not granted in advance.",
+      "evidence_required_for_next_review": "Fresh screenshots and motion evidence (all eight §R.11 items re-captured against the new version — the Turn B′ captures document a superseded build), retained chunk-composition evidence, and raw long-task/bundle/memory/frame-stability/leak-check numbers from the unchanged §2.3.2 procedure written to distinctly named files so prior runs stay readable side by side.",
+      "must_stay_passing": "Everything section-7-review-2.md's 'What already passes' section verified: criteria 35-40, 42, 43, the §R.9 fallbacks (mobile, reduced motion, forced no3d), §R.10a's name-collision resolution, and the privacy/dollar-pattern gates."
+    },
     "findings": [
       {
         "id": 1,
         "category": "engineering_reliability",
         "criterion": "section-7.md §R.8 (\"If one bounded optimisation round cannot bring it under the gate, return the measured result to Devan for an explicit decision — do not silently select CSS\") and criterion 41 (\"The R3F route-owned long task is under 50 ms on the §2.3.2 rig, or the measured failure has been returned to Devan for an explicit decision.\")",
         "evidence": "Independently re-measured /dev/phase10-spike-r3f-world five times on the same rig Turn B used (1440x900, CPU 2x): 59, 59, 60, 59, 59 ms, one route-owned long task per run, 5/5 — byte-for-byte the same result recorded before remediation (59, 60, 60, 59, 59). Baseline and CSS remain 0/5 on the identical rig. Raw: docs/phase10-spike-section-7/raw/desktop-scene-turn-bprime.json. The described optimisation (removed THREE namespace import, reused camera vectors, icosahedronGeometry detail 1->0, dpr={1}, deferred the lazy scene request two rAF frames) is real but changes only when the task is scheduled, not its duration.",
-        "required_change": "BLOCKED ON DEVAN, not a Codex remediation item — the one authorized optimisation round already ran and produced no measurable improvement. Per §R.8's own escape hatch, this is returned to Devan for an explicit decision (options in the handoff to Devan) rather than looped back to Codex a second time on this specific finding."
+        "required_change": "OPEN — owner-authorized for one further, differently scoped Codex attempt (Turn B″). Devan selected Option 2 on 2026-07-25: target the ~234KB R3F/Three.js chunk itself rather than the scene-construction code already tuned in round one. Full scope, constraints, and the stop condition are in section.owner_decision.authorized.part_1_bundle_runtime_optimization and the handoff. The 50ms gate and the CPU-2x procedure are unchanged. If the task is still above 50ms afterwards, stop and return the measured result to Devan — do not select CSS and do not weaken the gate.",
+        "status": "open_authorized"
       },
       {
         "id": 2,
         "category": "visual",
         "criterion": "section-7.md §R.10 (\"Procedurally varied planet materials, an emissive sun, atmospheric rim lighting, depth, restrained bloom, and a coherent star field — replacing the generic low-poly placeholder spheres that failed review\") and PHASE10.md §7 Section gate 2 (storytelling gate)",
         "evidence": "grep for star|bloom|rim in src/app/dev/phase10-portfolio-orrery/OrreryScene.tsx returns nothing. Lighting is one ambient + one directional + one point light; the only glow treatment is a single scale=1.16, opacity=0.12 transparent sphere around the sun. The DOM .starField layer exists in orrery.module.css but sits at z-index -3, entirely behind the opaque canvas (z-index 1) whenever R3F is enabled — i.e. invisible on the visually dominant desktop path. Confirmed live in docs/phase10-baseline/section-7/screenshots/orrery-turn-bprime/01-initial-solar-system-entry.png: flat dark background, no stars, no bloom halo, no rim lighting on planets. Emissive sun and per-planet material variation (the other two named §R.10 elements) are genuinely present and working.",
-        "required_change": "Add a coherent star field, restrained bloom, and atmospheric rim lighting to the R3F canvas itself (not only the DOM layer, which the canvas occludes) — e.g. a Points/particle star field, an emissive rim/Fresnel treatment per planet, and either bloom post-processing or a more convincing manual glow than the current single low-opacity halo sphere. Photorealism/imported assets remain explicitly not required per §7's non-goals."
+        "required_change": "OPEN — required to close in the same Turn B″ prototype turn as finding 1's attempt, not deferred behind it (owner-directed, 2026-07-25). Add to the R3F canvas itself (not only the DOM layer, which the canvas occludes): a coherent spatial star field with visible depth, atmospheric rim lighting separating planets from the background, restrained bloom/glow around the sun and appropriate telemetry, materially richer procedural planet variation, depth cues that situate planets in one environment rather than flat spheres over a black surface, refined orbital paths and shadows/lighting, and polished retrofuturist CRT/HUD framing without reducing readability. No generic low-poly or unexplained decorative objects. Every effect is evaluated together with bundle, memory, frame-stability, and long-task budgets — iterate toward the best passing implementation. Photorealism/imported assets remain explicitly not required per §7's non-goals. See section.owner_decision.authorized.part_2_visual_quality_remediation.",
+        "status": "open_authorized"
       }
     ],
     "remediation_commits": [
@@ -116,24 +158,34 @@
       "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new §7 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
     }
   ],
-  "prev_actor_commit": "dc358a6237b084e3fd3f1e19f1a74ac185868573",
-  "last_green_commit": "dc358a6237b084e3fd3f1e19f1a74ac185868573",
+  "prev_actor_commit": "172f592c3dd89bd1ca6490eff590879b345f2755",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 172f592 is the previous actor's commit, `phase10(review §7): blocked — R3F long task unresolved after remediation, routed to Devan`, resolved with `git log -1 --format=%H` against the clean tree this turn started from. The reviewed §7 implementation commit remains dc358a6237b084e3fd3f1e19f1a74ac185868573 (see section.implementation_commit).",
+  "last_green_commit": "172f592c3dd89bd1ca6490eff590879b345f2755",
   "production_code_changed_this_turn": false,
-  "production_code_note": "This review turn changed no file under src/ and no package.json/package-lock.json (git diff --quiet package.json package-lock.json reports no diff). Only docs/ evidence and retained measurement/capture tooling were added: docs/phase10-baseline/section-7/{README.md addendum, screenshots/orrery-turn-bprime/, filmstrips/orrery-idle-orbit/, filmstrips/orrery-camera-travel/}, docs/phase10-spike-section-7/{capture-orrery-evidence.mjs, verify-r3f-parallax.mjs, measure-desktop-turn-bprime.mjs, raw/desktop-scene-turn-bprime.json}, docs/phase10-workflow/reviews/section-7-review-2.md, this state file, and the handoff doc. three@0.185.1, @react-three/fiber@9.6.1, and @types/three@0.185.1 remain --no-save in node_modules, unchanged from Turn B′.",
+  "production_code_note_prior_turn": "This review turn changed no file under src/ and no package.json/package-lock.json (git diff --quiet package.json package-lock.json reports no diff). Only docs/ evidence and retained measurement/capture tooling were added: docs/phase10-baseline/section-7/{README.md addendum, screenshots/orrery-turn-bprime/, filmstrips/orrery-idle-orbit/, filmstrips/orrery-camera-travel/}, docs/phase10-spike-section-7/{capture-orrery-evidence.mjs, verify-r3f-parallax.mjs, measure-desktop-turn-bprime.mjs, raw/desktop-scene-turn-bprime.json}, docs/phase10-workflow/reviews/section-7-review-2.md, this state file, and the handoff doc. three@0.185.1, @react-three/fiber@9.6.1, and @types/three@0.185.1 remain --no-save in node_modules, unchanged from Turn B′.",
+  "production_code_note": "This owner-decision turn changed no application code and no dependency: no file under src/, and `git diff --quiet package.json package-lock.json` reports no diff. docs/phase10-workflow/specs/section-7.md was deliberately NOT amended — the 50ms gate, the §2.3.2 CPU-2x rig, criterion 41, and §R's normative text are untouched. Only four documentation/bookkeeping files changed: docs/phase10-handoffs/2026-07-25-section-7-devan-to-codex-implementation-remediate.md (new), docs/phase10-workflow/reviews/section-7-review-2.md (appended 'Owner decision' section), PHASE10_PROGRESS.md (appended §7 owner-decision entry), and this state file.",
   "verification": {
-    "environment_note": "This turn ran on the owner machine (not the Codex sandbox that blocked Turn B′'s own live verification). A stale next-server process on port 3100 from an earlier, unrelated session was found and stopped during preflight; a fresh production build and server were started with a task-only OWNER_PASSWORD process override (never read from .env*).",
+    "environment_note": "This owner-decision turn ran in a Linux (linux-arm64) agent sandbox, not on the owner macOS machine. The repository's checked-out node_modules holds darwin-arm64 native binaries, so commands could not be run against it directly (rolldown's linux-arm64 binding is absent by construction). Rather than mutate the owner's node_modules, a clean-room copy of the working tree (excluding node_modules, .next, .git, and .env*) was made to sandbox-local disk, `npm ci` was run there from the unmodified package-lock.json (495 packages), and three@0.185.1 / @react-three/fiber@9.6.1 / @types/three@0.185.1 were added with --no-save to mirror the owner machine's state. The repository itself was never touched by any install; `git diff --quiet package.json package-lock.json` reports no diff and no node_modules under the repo was modified. No .env* file was read, printed, copied into the sandbox, edited, staged, or committed.",
+    "state_validator": {
+      "command": "node scripts/phase10-validate-state.mjs",
+      "status": "pass",
+      "summary": "Exit 0, 'PHASE10_STATE.json is valid.' Run against the real repository file after this turn's edits (§7 / remediate / codex_implementation / ready / next_actor codex / stop_reason null).",
+      "finished_at": "2026-07-25T18:32:08Z"
+    },
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "81 test files passed; 446 of 446 tests passed. Unchanged from Turn B′ — no test file touched this turn.",
-      "finished_at": "2026-07-25T18:00:00Z"
+      "summary": "81 test files passed; 446 of 446 tests passed (6.38s) in the clean-room sandbox install — identical to the Turn B′ review's owner-machine result. No test file and no src/ file was touched this turn.",
+      "finished_at": "2026-07-25T18:40:00Z"
     },
     "build": {
       "command": "npm run build",
-      "status": "pass",
-      "summary": "Next.js 16.2.11 production build compiled and TypeScript passed on this machine; 19 static-page tasks completed and /dev/phase10-portfolio-orrery generated. package.json/package-lock.json unchanged.",
-      "finished_at": "2026-07-25T18:00:00Z"
+      "status": "environment_blocked",
+      "summary": "Attempted and could not complete in this Linux agent sandbox. Turbopack failed with exactly 3 errors, all on ./src/app/layout.tsx, all `next/font: Failed to fetch <Inter|JetBrains Mono|Instrument Serif> from Google Fonts` — the pre-existing open §13 network condition already recorded for §0 and for §7 Turn B, not a code defect. Zero module-not-found errors once the --no-save R3F packages were present, and `npx tsc --noEmit` exits 0 with no output, so TypeScript compiles clean. Recorded as an environment gap rather than papered over or claimed as a pass.",
+      "why_this_is_not_a_regression": "This turn changed no application code and no dependency: `git diff --quiet dc358a6 -- src package.json package-lock.json` reports no diff, i.e. src/ and both manifests are byte-identical to dc358a6, the tree the Turn B′ review built green on the owner machine (Next.js 16.2.11 compiled, TypeScript passed, 19 static-page tasks, /dev/phase10-portfolio-orrery generated). Only four documentation/bookkeeping files changed. Nothing in this turn can have altered the build result.",
+      "finished_at": "2026-07-25T18:45:00Z"
     },
+    "prior_turn_measurement_note": "The measurement block below is the Turn B′ review's evidence, carried forward unchanged. No new measurement was taken this turn — this turn records an owner decision and takes no readings.",
     "measurement": {
       "desktop_rig": "Independently re-ran docs/phase10-spike-section-7/measure-desktop.mjs (as measure-desktop-turn-bprime.mjs) at 1440x900 / CPU 2x against a real production server: R3F route-owned long task is 59, 59, 60, 59, 59 ms across 5 fresh-context runs — unchanged from the pre-remediation FAIL measurement (59, 60, 60, 59, 59). Baseline and CSS remain 0/5. Raw: docs/phase10-spike-section-7/raw/desktop-scene-turn-bprime.json. This is Finding 1, routed to Devan per §R.8.",
       "mobile_rig": "Confirmed live: canvas count is 0 at 390x844 and 320px on /dev/phase10-portfolio-orrery; zero horizontal overflow at either width; zero links under 44px tall at 320px; the fallback is a genuinely reflowed semantic list (legend, sun, holdings, inspector placeholder), not a cropped desktop scene.",
@@ -143,8 +195,9 @@
       "local_auth_method": "A task-only OWNER_PASSWORD process override was supplied to `next start` and used to authenticate via POST /api/auth/login; no .env* contents were read, printed, edited, staged, or committed."
     }
   },
-  "stop_reason": "The R3F route-owned long task remains 59-60ms (5/5 runs) after Codex's described one-round optimisation attempt, independently re-measured and unchanged from the pre-remediation FAIL result. Per section-7.md §R.8 and PRODUCT_DIRECTION.md's 'Runtime and resilience' section, this specific outcome (one authorized optimisation round, no improvement) is not a normal Codex remediate-and-retry case — the spec requires stopping and returning the measured result to Devan for an explicit decision, the same pattern §1 used for its own long-task exception. See docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md for the decision options. A second, independently fixable finding (§R.10's required star field/bloom/rim lighting is largely absent from the R3F canvas) is also recorded and should be folded into whichever remediation round follows Devan's decision.",
-  "updated_at": "2026-07-25T18:14:25Z",
+  "stop_reason": null,
+  "prior_stop_reason_resolved": "RESOLVED by Devan's owner decision on 2026-07-25 (see section.owner_decision). The prior block was: the R3F route-owned long task remains 59-60ms (5/5 runs) after Codex's described one-round optimisation attempt, independently re-measured and unchanged from the pre-remediation FAIL result; per section-7.md §R.8 and PRODUCT_DIRECTION.md's 'Runtime and resilience' section, that outcome required stopping and returning the measured result to Devan for an explicit decision rather than looping back to Codex. Devan selected Option 2 from docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md — one second, differently scoped remediation attempt (bundle/chunk-level, not scene-construction), plus required visual-quality remediation closing finding 2 in the same turn. No performance exception was accepted; the 50ms gate and CPU-2x procedure are unchanged.",
+  "updated_at": "2026-07-25T18:32:08Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

@@ -251,3 +251,85 @@ turn's own server was started; no repository state was affected.
 No production application code changed this turn (`src/` is untouched by
 this review; only `docs/` evidence/tooling was added) — the same "review-only,
 no implementation-source change" pattern as Turn B's own review commit.
+
+---
+
+## Owner decision (July 25, 2026) — recorded by `claude/fable-5` (Cowork,
+owner-directed)
+
+Devan reviewed the blocked handoff and selected **Option 2**: authorize one
+second, differently scoped Codex remediation attempt. This is the explicit
+owner decision that §R.8 and `PRODUCT_DIRECTION.md`'s "Runtime and resilience"
+section route to; criterion 41's second clause ("**or** the measured failure
+has been returned to Devan for an explicit decision") is satisfied by the Turn
+B′ review, and this is the answer.
+
+Full scope, constraints, and evidence requirements:
+`docs/phase10-handoffs/2026-07-25-section-7-devan-to-codex-implementation-remediate.md`.
+
+### What was decided
+
+**Authorized — one further remediation turn (Turn B″), two equally required
+parts:**
+
+1. **R3F bundle/runtime optimization.** The first round changed scene
+   construction but never addressed the ~234 KB R3F/Three.js chunk responsible
+   for the repeatable 59–60 ms route-owned task. Codex may inspect and retain
+   evidence of the production chunk's composition; identify unused
+   Three.js/R3F modules and avoid broad imports; investigate narrower imports,
+   better tree-shaking, chunk splitting, staged module evaluation, and delayed
+   WebGL initialization; and consider a minimal direct-Three.js scene instead
+   of R3F **only** if measured evidence shows R3F framework overhead is the
+   irreducible cause and the existing semantic/fallback contracts stay
+   unchanged. The exact 50 ms gate and the existing CPU-2× measurement
+   procedure are preserved. This is the **only** additional optimization round.
+2. **Visual-quality remediation — Finding 2 closes in the same turn.** The next
+   version must add §R.10's required visual system: a coherent spatial star
+   field with visible depth; atmospheric rim lighting separating planets from
+   the background; restrained bloom/glow around the portfolio sun and
+   appropriate telemetry; materially richer procedural planet variation; depth
+   cues that situate the planets in one environment rather than flat spheres on
+   a black surface; refined orbital paths and shadows/lighting; polished
+   retrofuturist CRT/HUD framing without reducing readability; and no generic
+   low-poly or unexplained decorative objects. Every effect is evaluated
+   together with bundle, memory, frame-stability, and long-task measurements —
+   iterate toward the best *passing* implementation rather than adding effects
+   blindly.
+
+**Explicitly withheld:**
+
+- No §7 performance exception is accepted yet. Option 1 was not chosen and must
+  not be assumed, drafted, or inferred.
+- The primary desktop experience is **not** switched to CSS. Option 3 was not
+  chosen.
+- The Orrery is **not** wired into production `/share`. Turn C is unchanged and
+  does not begin until this remediation is reviewed.
+- `/dev/phase10-portfolio-orrery` remains the only target; `/share` stays
+  unchanged.
+
+**Stop condition, unchanged in spirit from §R.8:** if the route-owned task is
+still above 50 ms after this differently scoped attempt, stop and return the
+measured result to Devan. Do not silently select CSS and do not weaken the
+gate. Devan will then consider a narrowly documented §7-only exception based on
+the final visual result and measured user impact — that consideration has not
+been granted in advance.
+
+**Evidence required for the next Claude review:** fresh screenshots and motion
+evidence (all eight §R.11 items re-captured against the new version), retained
+chunk-composition evidence, and raw long-task/bundle/memory/frame-stability
+numbers from the unchanged §2.3.2 procedure.
+
+### Finding status after this decision
+
+- **Finding 1** — remains open. No longer "blocked on Devan"; now an authorized,
+  bounded Codex work item under the constraints above.
+- **Finding 2** — remains open and is now required to close in the same turn as
+  Finding 1's attempt, not deferred behind it.
+
+### Turn scope note
+
+This decision changed no application code and no dependency, and did not amend
+`docs/phase10-workflow/specs/section-7.md` — the 50 ms gate, the §2.3.2 rig,
+criterion 41, and §R's normative text are all untouched. `PHASE10_STATE.json`
+moves to `§7` / `remediate` / `codex_implementation` / `ready` /
+`next_actor: codex`, `stop_reason: null`.
