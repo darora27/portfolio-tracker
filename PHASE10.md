@@ -2,11 +2,22 @@
 
 Status: implementation active
 
-Implementation status: §0 baseline complete; §1 accepted by Codex with an
+Implementation status: §0–§6 accepted. §1 was accepted by Codex with an
 explicit owner-approved exception to the absolute zero-long-task budget. The
 50 ms classification boundary and all observed absolute tasks remain recorded;
 for §1 only, the accepted gate is no attributable route-owned long task and no
-route-owned client hydration. §2 is not started.
+route-owned client hydration. §2–§6 were accepted under the Claude-lead /
+Codex-implementation workflow (accepted commits: `PHASE10_STATE.json`
+`sections_history`). §7 (Spatial Observatory) is current, at the `specify`
+stage.
+
+Roadmap amendment (July 25, 2026, owner-directed): a new §7 "Spatial
+Observatory" is inserted; the former §7 (`/compare` guided simulation story)
+is renumbered to §8; the former §8 (after-hours capability spike) and former
+§9 (conditional after-hours slice) are consolidated into one §9 that
+preserves the capability gate and every reliability/privacy requirement;
+§10–§13 keep their numbers and purposes. Accepted history (§0–§6) is
+unchanged. Recorded by claude/fable-5 (cowork), directed by Devan.
 
 Selected direction: Field Journal structural base with Night Orbit orbital
 chapter navigation, selected-body inspector, and static concentric fallback
@@ -41,7 +52,11 @@ Agent workflow: `docs/PHASE10_AGENT_WORKFLOW.md`
 11. No new public route or public data field without a privacy decision and
     regression test. New routes remain owner-gated by default.
 12. No production Three.js/React Three Fiber dependency before the §0
-    selection and §1 technical spike pass.
+    selection and §1 technical spike pass. Amended July 25, 2026: §7
+    (Spatial Observatory) reopens this choice for its own scope — a bounded
+    production WebGL/R3F layer is allowed only if §7's own recorded spike
+    decision selects it under §7's gates. §1's recorded CSS 3D decision and
+    evidence remain accepted history.
 13. No after-hours feature promise before the provider capability spike passes.
 14. Use local/self-hosted fonts in production; the clean build must not depend
     on a live Google Fonts fetch.
@@ -355,7 +370,121 @@ the complete toolset.
 
 ---
 
-## §7. `/compare` guided simulation story
+## §7. Spatial Observatory
+
+### Purpose
+
+Turn the dimensionally styled interface into a visibly immersive, spatial,
+floating-world desktop Observatory — entering a coherent world, with
+camera-like movement between chapters, layered depth, and rewarding
+discovery — without sacrificing the semantic, accessible, private, honest
+foundations §0–§6 built. The experiential reference remains
+`https://y-n10.com/`: the sense of entering a world, camera-like movement,
+spatial composition, depth, discovery, and memorable transitions. Its
+branding, assets, voxel language, and exact design are explicitly not
+copied (see `docs/PHASE10_UX_ARCHITECTURE.md` §1's reference note).
+
+This section exists because the current interface, while dimensionally
+styled, does not yet create that experience. More shadows, circles, cards,
+or CSS transforms alone do not satisfy §7.
+
+### Owner amendment terms (July 25, 2026)
+
+- Bounded WebGL/React Three Fiber is reopened as an allowed production
+  option for this section's scope, superseding §1's CSS-3D-only production
+  posture for §7 only. §1's recorded decision, evidence, and owner
+  exception remain accepted history and are not rewritten.
+- Any production spatial-runtime dependency still requires §7's own
+  recorded spike decision first: a fresh bounded CSS-versus-R3F evaluation
+  under `docs/PHASE10_UX_ARCHITECTURE.md` §8's framework, re-scored with
+  visual/storytelling quality as a required gate alongside performance.
+  This keeps `PRODUCT_DIRECTION.md`'s rule intact: no production
+  Three.js/R3F dependency before an isolated technical comparison and
+  recorded selection.
+- Audio is prohibited for now (beyond `PRODUCT_DIRECTION.md`'s "no
+  automatic audio": no audio at all in §7).
+- Personality target: approximately 60% polished/professional and 40%
+  playful/expressive — curiosity, energy, boldness, experimentation, and
+  discovery.
+
+### Work
+
+- Run the §7 spatial-runtime spike: build the selected first viewport (a)
+  in the current CSS-only system pushed to its expressive ceiling and (b)
+  as a bounded, lazy-loaded WebGL/R3F scene; measure both against declared
+  performance budgets and the storytelling gate; record the decision with
+  evidence before adding any production dependency.
+- Build the production Spatial Observatory on the selected runtime:
+  - a deliberate entry experience — one orchestrated arrival moment into
+    the world (`PRODUCT_DIRECTION.md` design principle 6), skippable and
+    never blocking content;
+  - camera-like travel between the five chapters (Pulse, Forces,
+    Structure, Timeline, Lab);
+  - layered depth and responsive parallax tied to navigation and
+    pointer/scroll intent — no constant floating noise;
+  - portfolio chapters, holdings, relationships, and data states as the
+    spatial objects themselves: every body, plane, or node maps to a real
+    destination, holding, relationship, or state (`PRODUCT_DIRECTION.md`
+    principle 3 — nothing purely decorative).
+- Lazy-load the spatial runtime so it never blocks or delays semantic
+  content; declare and enforce explicit bundle/runtime budgets in the §7
+  spec.
+- Keep all essential content and controls in semantic HTML; the spatial
+  layer enhances and never owns content; canvas/WebGL is `aria-hidden`
+  where it duplicates semantic content.
+- Provide deliberate fallbacks: mobile (intentional 2D sequence), reduced
+  motion, no-WebGL, no-JavaScript, and keyboard-only paths, each
+  preserving hierarchy, facts, destinations, and focus behavior.
+- Preserve every public/private boundary; the spatial layer carries no
+  data its semantic counterpart would not.
+- Capture side-by-side comparison evidence against the pre-§7 CSS-only
+  experience.
+
+### Acceptance
+
+- **Behavioral:** Entering the Observatory and traveling between all five
+  chapters works by click, keyboard, touch, URL, and browser history;
+  chapter state and focus restoration survive travel; no essential action
+  or content depends on the spatial layer; the entry experience is
+  skippable and never traps the user.
+- **Visual (storytelling gate — required, equal in rank to performance):**
+  The desktop result reads as a coherent, immersive spatial world judged
+  against named storytelling criteria the §7 spec must declare in advance
+  (coherent world, camera-like movement, spatial composition, layered
+  depth, discovery, memorable transitions) — not merely additional
+  shadows, circles, cards, or transforms; the ~60/40 polished-to-playful
+  balance is evident; real 1440×900 before/after screenshots against the
+  pre-§7 experience document the difference.
+- **Mobile:** 390×844 (and 320px fit) presents an intentional
+  two-dimensional sequence with the same questions, evidence, and
+  controls; no cropped desktop scene, no horizontal page overflow, no
+  targets under 44×44 CSS px; real 390×844 screenshots are required.
+- **Accessibility:** Reduced-motion, no-WebGL, no-JavaScript, and
+  keyboard-only paths preserve hierarchy, facts, destinations, focus
+  visibility, and announcements; contrast is verified on the real dark
+  surfaces; the spatial canvas is `aria-hidden` wherever it duplicates
+  semantic content.
+- **Tests:** Runtime-selection and fallback branching, lazy-load gating,
+  reduced-motion/no-WebGL/no-JS behavior, chapter URL/travel state, and
+  focus behavior are covered; the full existing suite stays green.
+- **Build:** Full tests and production build pass; the spatial runtime is
+  lazy-loaded and inside the spec's declared bundle/runtime budgets; if
+  R3F is selected, the dependency stays bounded (no post-processing or
+  physics beyond the spec), disposable, and absent from routes that do not
+  use it; no audio dependency of any kind.
+- **Privacy:** Public/private render isolation is re-proven on the spatial
+  shell — no owner controls or data cross-render into public mode; no
+  dollar patterns in public HTML/RSC/client payloads; no new public route
+  or public data field without a recorded privacy decision and regression
+  test.
+
+**Section gates:** (1) no production spatial-runtime dependency before
+§7's recorded spike decision; (2) the storytelling gate is required — a
+technically clean but non-immersive result fails §7; (3) no audio.
+
+---
+
+## §8. `/compare` guided simulation story
 
 ### Purpose
 
@@ -395,14 +524,22 @@ Turn three correct simulations into an educational explanation of divergence.
 
 ---
 
-## §8. After-hours provider and exchange-calendar capability spike
+## §9. After-hours capability spike and conditional holdings slice
 
-### Purpose
+Consolidated July 25, 2026 by owner direction from the former §8
+(capability spike) and former §9 (conditional slice). The capability gate
+between the two phases and every reliability/privacy requirement are
+preserved unchanged. The §7 spec-stage for this section must sequence
+Phase A strictly before any Phase B work.
+
+### Phase A — provider and exchange-calendar capability spike
+
+#### Purpose
 
 Determine whether reliable pre-market/after-hours data is possible before
 promising a feature.
 
-### Work
+#### Work
 
 - Execute the provider, coverage, timestamp, rate-limit, plan-rights, and
   session probes defined in the UX architecture.
@@ -413,7 +550,7 @@ promising a feature.
 - Prototype the typed quote state and server cache in isolation.
 - Record pass/fail and the supported symbol/session matrix.
 
-### Acceptance
+#### Acceptance
 
 - **Behavioral:** The spike distinguishes pre-market, regular, after-hours,
   closed, delayed, stale, unavailable, and unsupported; it records an explicit
@@ -432,20 +569,19 @@ promising a feature.
 - **Privacy:** Probes are server-side; logs contain status/field presence only;
   no keys, `.env*` content, or public quote redistribution is introduced.
 
-**Conditional gate:** §9 feature work runs only if the recorded spike result is
-`pass`. If `fail`, §9 implements only the honest regular-close limitation state.
+**Conditional gate:** Phase B feature work runs only if the recorded Phase A
+spike result is `pass`. If `fail`, Phase B implements only the honest
+regular-close limitation state.
 
----
+### Phase B — conditional after-hours holdings slice
 
-## §9. Conditional after-hours holdings slice
+#### Purpose
 
-### Purpose
+If Phase A passes, add reliable extended-hours context to owner holdings and
+stock detail. If it fails, make the regular-close limitation explicit without
+fake data.
 
-If §8 passes, add reliable extended-hours context to owner holdings and stock
-detail. If it fails, make the regular-close limitation explicit without fake
-data.
-
-### Work
+#### Work
 
 - Add session, price, absolute/percentage change, timestamp, source, and
   freshness to owner attention/holdings/stock detail.
@@ -455,7 +591,7 @@ data.
 - Keep public display off unless a separate explicit redistribution/privacy
   approval is recorded.
 
-### Acceptance
+#### Acceptance
 
 - **Behavioral:** Session/change basis is correct for every state; partial
   failure preserves known prices; no zero placeholder masquerades as data.
@@ -466,7 +602,7 @@ data.
   readable without wrapping collisions or overflow.
 - **Accessibility:** Session/freshness are named in text; updates do not create
   noisy announcements; all detail/disclosure works by keyboard/touch.
-- **Tests:** §8 fixtures become production tests; cache, privacy, partial
+- **Tests:** Phase A fixtures become production tests; cache, privacy, partial
   provider failure, unsupported symbol, and stale-state tests pass.
 - **Build:** Full tests and production build pass; server/client boundary and
   performance budget pass.

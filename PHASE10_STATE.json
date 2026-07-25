@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
   "phase": 10,
-  "current_section": "§6",
+  "current_section": "§7",
   "role": "claude_lead",
-  "stage": "accept",
+  "stage": "specify",
   "status": "ready",
   "next_actor": "claude",
   "selected_direction": {
@@ -24,11 +24,11 @@
     ]
   },
   "section": {
-    "id": "§6",
-    "title": "`/dashboard` first-layer hierarchy",
-    "spec_doc": "docs/phase10-workflow/specs/section-6.md",
-    "implementation_commit": "3806060b811d2d27ec3e2844390ce63e8e75a175",
-    "review_result": "pass",
+    "id": "§7",
+    "title": "Spatial Observatory",
+    "spec_doc": null,
+    "implementation_commit": null,
+    "review_result": null,
     "findings": [],
     "remediation_commits": [],
     "accepted_commit": null,
@@ -69,26 +69,32 @@
       "status": "complete",
       "accepted_commit": "72932ce3965f8df72a0fdc9cf2bc687c49d1e53c",
       "note": "One remediation round (criterion 7 / §4 status-line convention, MetricExplain status prefix rendered as an isolated fragment) before pass. See docs/phase10-workflow/reviews/section-5-review.md."
+    },
+    {
+      "id": "§6",
+      "status": "complete",
+      "accepted_commit": "139da143f7e9de48215aa17a52313ab1946bca67",
+      "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new §7 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
     }
   ],
-  "prev_actor_commit": "3806060b811d2d27ec3e2844390ce63e8e75a175",
-  "last_green_commit": "3806060b811d2d27ec3e2844390ce63e8e75a175",
+  "prev_actor_commit": "139da143f7e9de48215aa17a52313ab1946bca67",
+  "last_green_commit": "139da143f7e9de48215aa17a52313ab1946bca67",
   "verification": {
     "tests": {
       "command": "npm test",
-      "status": "pass",
-      "summary": "Claude Lead independently re-ran the full suite on this turn's own clean starting HEAD (3806060): 73 test files passed; 414 of 414 tests passed.",
-      "finished_at": "2026-07-25T02:33:29Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     },
     "build": {
       "command": "npm run build",
-      "status": "pass",
-      "summary": "Claude Lead independently ran a clean Next.js 16.2.11 production build (.next removed first) on the same commit: compilation and TypeScript passed; 16 static-page tasks generated and /dashboard remained dynamic.",
-      "finished_at": "2026-07-25T02:33:29Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-25T02:33:29Z",
+  "updated_at": "2026-07-25T04:05:23Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

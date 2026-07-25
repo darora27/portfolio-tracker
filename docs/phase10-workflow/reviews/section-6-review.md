@@ -122,3 +122,32 @@ verification of how an already-stated constraint was correctly resolved.
 ## Findings
 
 None.
+
+## Acceptance record — July 25, 2026
+
+§6 accepted. The review above records PASS with no findings. This
+acceptance turn was executed by `claude/fable-5` running in Cowork,
+directly instructed by Devan (owner-directed turn outside the fixed
+runners; `PHASE10_LOCK` held for its duration). The `portfolio-ux` skill
+was applied via its documented fallback (direct read of
+`.claude/skills/portfolio-ux/SKILL.md`).
+
+- Accepted commit (the review-pass commit, recorded per Trap B by this
+  later turn, never self-referentially):
+  `139da143f7e9de48215aa17a52313ab1946bca67`
+  ("phase10(review §6): pass, no findings"). No implementation source
+  changed between that commit and this acceptance.
+- Acceptance-turn verification: this turn's sandbox cannot execute the
+  repo's darwin-arm64 test/build binaries, so at Claude Lead's request
+  Devan ran the gate on the working machine against this turn's working
+  tree (HEAD `139da14` plus this turn's three then-uncommitted doc/state
+  files): `npm test` — 73 files, 414/414 passed (Vitest 4.1.10);
+  `npm run build` — Next.js 16.2.11 (Turbopack) compiled successfully,
+  TypeScript passed, 16/16 static pages generated, route list unchanged
+  with `/dashboard` still dynamic. Results pasted verbatim by Devan into
+  the turn transcript.
+- This same turn executed Devan's owner-directed roadmap amendment: new
+  §7 "Spatial Observatory"; former §7 `/compare` renumbered to §8;
+  former §8 + §9 consolidated into §9 (Phase A/Phase B) with the
+  capability gate preserved; §10–§13 unchanged. See `PHASE10.md` and
+  `docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-claude-lead.md`.

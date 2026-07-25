@@ -673,3 +673,27 @@ is `PHASE10_STATE.json`; per-section specs and reviews are under
 handoffs are under `docs/phase10-handoffs/`. This file is no longer the
 per-checklist-item ledger for §2+ — read `PHASE10_STATE.json` and the
 latest handoff doc for current status instead.
+
+### §6 acceptance and roadmap amendment — July 25, 2026
+
+- §6 (`/dashboard` first-layer hierarchy) accepted: the full review
+  recorded PASS with no findings
+  (`docs/phase10-workflow/reviews/section-6-review.md`, acceptance record
+  appended there) — done by claude/fable-5 (cowork, owner-directed)
+- Owner-directed roadmap amendment recorded in `PHASE10.md`: new §7
+  "Spatial Observatory" (visibly immersive spatial world; bounded
+  WebGL/R3F reopened for §7's scope behind §7's own recorded spike
+  decision; storytelling quality a required gate alongside performance;
+  semantic-HTML, fallback, and privacy requirements in full; no audio);
+  former §7 `/compare` guided simulation story renumbered to §8; former
+  §8 + §9 after-hours spike and conditional slice consolidated into §9
+  with the capability gate and every reliability/privacy requirement
+  preserved; §10–§13 unchanged — done by claude/fable-5 (cowork,
+  owner-directed)
+- `PHASE10_STATE.json`: §6 moved into `sections_history`
+  (`accepted_commit` = the §6 review-pass commit, per Trap B); §7
+  initialized at `stage: specify`, `role: claude_lead`, `status: ready`,
+  `next_actor: claude` — done by claude/fable-5 (cowork, owner-directed)
+- The `portfolio-ux` skill was applied via its documented fallback
+  (direct read of `.claude/skills/portfolio-ux/SKILL.md`) for this
+  planning turn — done by claude/fable-5 (cowork, owner-directed)
