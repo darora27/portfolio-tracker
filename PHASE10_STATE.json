@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§7",
-  "role": "claude_lead",
-  "stage": "specify",
+  "role": "codex_implementation",
+  "stage": "implement",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -26,7 +26,7 @@
   "section": {
     "id": "§7",
     "title": "Spatial Observatory",
-    "spec_doc": null,
+    "spec_doc": "docs/phase10-workflow/specs/section-7.md",
     "implementation_commit": null,
     "review_result": null,
     "findings": [],
@@ -77,7 +77,7 @@
       "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new §7 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
     }
   ],
-  "prev_actor_commit": "139da143f7e9de48215aa17a52313ab1946bca67",
+  "prev_actor_commit": "afafa61e58f1dbabc7a1f59f4f0ef49ab9e57b4c",
   "last_green_commit": "139da143f7e9de48215aa17a52313ab1946bca67",
   "verification": {
     "tests": {
@@ -94,7 +94,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-25T04:05:23Z",
+  "updated_at": "2026-07-25T04:15:52Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
