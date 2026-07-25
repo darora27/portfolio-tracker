@@ -67,6 +67,17 @@ export const dashboardTestFixture = {
   prevSnapshotValue: 123_876.78,
   holdingsPerformance: { tickers: ["IBM", "MSFT"], hasOther: false, points: [] },
   holdingRisks: [],
+  publicOrreryHoldings: [
+    {
+      ticker: "IBM",
+      companyName: "IBM",
+      weight: 0.42,
+      weeklyReturn: -0.018,
+      portfolioRelativeReturn: -0.008,
+      volatilityPct: 0.22,
+      betaVsVoo: 0.8,
+    },
+  ],
   twr7d: -0.01,
   voo7d: 0.005,
 } satisfies DashboardData;

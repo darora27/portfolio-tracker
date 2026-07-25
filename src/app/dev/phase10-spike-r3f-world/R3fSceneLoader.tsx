@@ -31,8 +31,19 @@ export function R3fSceneLoader(props: SceneProps & { forceWebglFailure: boolean 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const shouldEnable =
       desktop.matches && !reducedMotion.matches && probeWebgl(forceWebglFailure);
-    const frame = requestAnimationFrame(() => setEnabled(shouldEnable));
-    return () => cancelAnimationFrame(frame);
+    if (!shouldEnable) return;
+
+    // Keep the R3F module evaluation and scene construction out of the route's
+    // first-paint task. Two frame boundaries let semantic content paint before
+    // the intentionally lazy desktop enhancement is requested.
+    let innerFrame = 0;
+    const outerFrame = requestAnimationFrame(() => {
+      innerFrame = requestAnimationFrame(() => setEnabled(true));
+    });
+    return () => {
+      cancelAnimationFrame(outerFrame);
+      if (innerFrame) cancelAnimationFrame(innerFrame);
+    };
   }, [forceWebglFailure]);
 
   return enabled ? <R3fScene {...sceneProps} /> : null;

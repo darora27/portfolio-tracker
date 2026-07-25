@@ -19,7 +19,11 @@ function stubMedia({ desktop = true, reducedMotion = false } = {}) {
   vi.stubGlobal(
     "matchMedia",
     vi.fn((query: string) => ({
-      matches: query.includes("min-width") ? desktop : reducedMotion,
+      matches: query.includes("min-width")
+        ? desktop
+        : query.includes("pointer: fine")
+          ? true
+          : reducedMotion,
       media: query,
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
@@ -86,5 +90,19 @@ describe("§7 R3F world spike", () => {
     render(<R3fWorld activeChapterId="pulse" />);
     await waitFor(() => expect(screen.queryByTestId("mock-r3f-canvas")).toBeNull());
     expect(screen.getAllByRole("link")).toHaveLength(5);
+  });
+
+  it("adds desktop fine-pointer parallax and removes the listener on cleanup", () => {
+    const add = vi.spyOn(window, "addEventListener");
+    const remove = vi.spyOn(window, "removeEventListener");
+    const { unmount } = render(<R3fWorld activeChapterId="pulse" />);
+    expect(add).toHaveBeenCalledWith("pointermove", expect.any(Function), { passive: true });
+    const handler = add.mock.calls.find(([event]) => event === "pointermove")?.[1] as EventListener;
+    handler(new PointerEvent("pointermove", { clientX: 768, clientY: 225 }));
+    const world = screen.getByTestId("r3f-world");
+    expect(world.style.getPropertyValue("--world-pointer-x")).toBe("0.2500");
+    expect(world.style.getPropertyValue("--world-pointer-y")).toBe("-0.2070");
+    unmount();
+    expect(remove).toHaveBeenCalledWith("pointermove", handler);
   });
 });

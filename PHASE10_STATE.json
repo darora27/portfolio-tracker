@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§7",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -32,8 +32,8 @@
     "review_doc": "docs/phase10-workflow/reviews/section-7-review.md",
     "decision_doc": "docs/phase10-spike-section-7/DECISION.md",
     "evidence_doc": "docs/phase10-baseline/section-7/README.md",
-    "handoff": "docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-codex-implementation-remediate.md",
-    "turn": "Turn B complete — spike evaluation and decision. Next is Turn B′ (Codex Orrery remediation) per section-7.md §0.",
+    "handoff": "docs/phase10-handoffs/2026-07-25-section-7-codex-implementation-remediate-to-claude-lead.md",
+    "turn": "Turn B′ complete — R3F engineering optimisation and the owner-gated Portfolio Orrery remediation route are ready for Claude live review. Production wiring into /share remains Turn C.",
     "spike_decision": {
       "result": "fail_no_winner",
       "selected_runtime": null,
@@ -74,7 +74,9 @@
         "required_change": "AUTHORIZED SCOPE — implement the Portfolio Orrery per section-7.md §R (normative and complete; no further scope decision is needed). /share opens with a genuinely full-viewport portfolio solar system; the sun is the portfolio as a whole and never leads with or publicly reveals total account dollar value, activating it opens composition/return/market-relative context; each planet is one actual public-safe holding, not a chapter; radius encodes portfolio weight on a perceptually sensible clamped scale so small holdings stay visible and selectable while larger positions clearly produce larger planets; orbit direction encodes trailing weekly performance (positive clockwise, negative counterclockwise, unavailable or effectively flat a neutral explicitly-labelled behaviour); orbital speed increases monotonically with |weekly % change| under safe clamps, deterministic, tested, and explained by an on-screen legend, and direction and speed can never be the only accessible representation of performance; orbital paths represent the planets' real trajectories with no unexplained ellipses or decorative geometric marks; hover/focus/selection pauses or stabilises a planet and selection opens a semantic holding inspector (ticker and company, portfolio weight, weekly return, portfolio-relative context, public-safe analytics, link to deeper stock information) with URL-restorable state that works with browser back/forward; R3F is the intended visually dominant desktop approach with the semantic DOM as accessible source of truth and the CSS shell as the no-WebGL/reduced-motion fallback; placeholder spheres are replaced by a deliberate visual system (procedurally varied planet materials, emissive sun, atmospheric rim lighting, meaningful orbital paths, depth, restrained bloom, coherent star field) where every visual object encodes portfolio information or supports spatial orientation; art direction is 'portfolio command observatory' (dark outer space, 1980s CRT phosphor green and amber accents, restrained scanlines, neon telemetry glow, analog-future HUD framing, retrofuturist control-room typography, polished first and playful second, translating the broad qualities of classic space-opera control panels, atomic-age futurism, and analog time-bureaucracy without copying protected logos, characters, props, or exact compositions); Dashboard, Research, History, Trades, Compare, and stock routes remain intact and the Orrery becomes the public spatial entry point and navigation signature; mobile uses a deliberate static or simplified 2D orbital map/list, reduced motion freezes orbital movement, keyboard and screen-reader users receive a synchronised semantic holding list and inspector, and no essential information may exist only in WebGL, motion, colour, speed, or direction; all public/private and no-dollar privacy rules are preserved and no owner-only holding data may reach /share. New acceptance criteria 35-43 are in §R.12; the eight required visual-evidence items are in §R.11."
       }
     ],
-    "remediation_commits": [],
+    "remediation_commits": [
+      "Turn B′ remediation commit — hash to be filled by the next actor from git log -1"
+    ],
     "accepted_commit": null,
     "accepted_at": null
   },
@@ -121,35 +123,35 @@
       "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new §7 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
     }
   ],
-  "prev_actor_commit": "2f78b1bedd0b80820b4513be29c0e368828180d5",
+  "prev_actor_commit": "6926fd3959f67b92528b1d789f68c8953af5d7b2",
   "last_green_commit": "139da143f7e9de48215aa17a52313ab1946bca67",
-  "production_code_changed_this_turn": false,
-  "production_code_note": "Turn B is a review-only turn: no file under src/, no package.json/package-lock.json change. `git diff --quiet package.json package-lock.json` reports no diff. three@0.185.1, @react-three/fiber@9.6.1, and @types/three@0.185.1 remain --no-save in node_modules only, retained for the remediation round. The only non-§7 change is one .gitignore line for the machine-local .claude/settings.local.json.",
+  "production_code_changed_this_turn": true,
+  "production_code_note": "Turn B′ changes the owner-gated R3F spike, adds the separately named owner-gated /dev/phase10-portfolio-orrery remediation route, and extends DashboardData with a server-derived public-safe Orrery projection (ticker/company/weight/weekly return/relative return/risk only; no shares, value, cost, or dollars reach the client component). /share and the accepted Observatory shell are not wired or visually changed; that remains Turn C. package.json/package-lock.json are unchanged; three@0.185.1, @react-three/fiber@9.6.1, and @types/three@0.185.1 remain --no-save in node_modules for this intermediate spike/remediation stage.",
   "verification": {
-    "environment_note": "Turn B ran in a Linux sandbox rather than on the machine that ran Turn A. node_modules holds darwin-arm64 native bindings, so vitest required NODE_PATH-injected linux-arm64 bindings (installed outside the repo, in /tmp — node_modules was not modified) to run at all, and next build cannot fetch Google Fonts. Both effects are environmental and neither is caused by this turn, which changed no file under src/, no config, and no dependency.",
+    "environment_note": "Turn B′ ran on the owner machine and completed tests/build normally. Live browser verification was attempted against a rebuilt production server, but the Codex sandbox denied both 0.0.0.0:3100 and 127.0.0.1:3100 with listen EPERM. Per the standing environment-only browser rule, the implementation remains committed and Claude Lead must independently measure the post-optimisation long task and capture/verify the Orrery's live desktop/mobile/reduced-motion/interaction evidence before PASS.",
     "tests": {
       "command": "npm test",
-      "status": "fail_environmental",
-      "summary": "427 of 429 tests passed across 77 files; 2 failed. Both failures are in src/components/surface/CountUpSettle.test.tsx, a pre-existing non-§7 component test. Reproducibly a sandbox CPU-contention artifact: the file passes 4/4 in isolation with those two tests taking 1886ms and 1890ms against their own hard-coded 2000ms waitFor timeout, and crossing it only under full-suite parallelism in this environment. Zero files under src/ changed this turn (git status --porcelain -- src/ is empty). Turn A recorded 429/429 at the same source commit on the owner's machine.",
-      "finished_at": "2026-07-25T17:03:18Z"
+      "status": "pass",
+      "summary": "81 test files passed; 446 of 446 tests passed. New coverage includes the deterministic weight/direction/speed encodings, weekly holding returns, owner gating and public-safe projection, semantic sun/holding controls, inspector/focus behavior, fallbacks, R3F parallax, startup optimisation, real-trajectory source constraints, and planet stabilisation.",
+      "finished_at": "2026-07-25T17:43:43Z"
     },
     "build": {
       "command": "npm run build",
-      "status": "not_run_environmental",
-      "summary": "Could not complete in this sandbox. src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google, which requires a live Google Fonts fetch at build time; this environment's network policy blocks https://fonts.googleapis.com (a direct fetch returns 'fetch failed'), so Turbopack reports three 'Failed to fetch ... from Google Fonts' errors and stalls without producing a BUILD_ID. This is the pre-existing condition already recorded as open §13 work (PRODUCT_DIRECTION.md success measure 'No production build depends on a live Google Fonts fetch'; PHASE10_STATE.json legacy font_network_behavior). Last recorded green build is Turn A's, at the same source commit. The standing prompt's green-before-commit gate applies to commits touching implementation source; this is a pure review/documentation/evidence commit. Codex must confirm both green on the owner's machine before its own remediation commit.",
-      "finished_at": "2026-07-25T17:03:18Z"
+      "status": "pass",
+      "summary": "Next.js 16.2.11 production build compiled and TypeScript passed; 19 static-page tasks completed and the owner-gated /dev/phase10-portfolio-orrery route was generated. package.json/package-lock.json remain unchanged.",
+      "finished_at": "2026-07-25T17:43:43Z"
     },
     "measurement": {
-      "desktop_rig": "docs/phase10-spike-section-7/measure-desktop.mjs — 1440x900, CDP CPU 2x, no network throttle, 5 fresh contexts per route, real production server. Raw: docs/phase10-spike-section-7/raw/desktop-scene.json",
-      "mobile_rig": "docs/phase10-spike-section-7/measure-phone.mjs — Playwright Moto G4 descriptor, CDP CPU 4x, Slow 4G, 5 fresh contexts per route. Raw: docs/phase10-spike-section-7/raw/mobile-fallback.json",
-      "visual_rig": "docs/phase10-spike-section-7/capture-evidence.mjs — 11 dimension-verified 1440x900 screenshots, 6 .webm recordings, and live computed-style pointer/depth/travel reads. Raw: docs/phase10-baseline/section-7/capture-report.json",
+      "desktop_rig": "Post-remediation execution unavailable in Codex: rebuilt production server binding failed with listen EPERM on both 0.0.0.0 and 127.0.0.1. Claude Lead must rerun docs/phase10-spike-section-7/measure-desktop.mjs at 1440x900 / CPU 2x to classify the optimized R3F route's individual task durations against the unchanged 50 ms boundary.",
+      "mobile_rig": "Post-remediation execution unavailable because localhost binding is denied. Claude Lead must confirm the new Orrery route never requests its R3F chunk below 1024px and verify the deliberate semantic list/inspector fallback at 390x844 and 320px.",
+      "visual_rig": "Post-remediation browser capture unavailable because localhost binding is denied. Claude Lead must capture and inspect the owner-gated Orrery at 1440x900, 390x844, 320px, reduced motion, and forced no-3D; verify sun/holding selection, browser history/focus, simultaneous direction where real data supports it, planet size differences, camera travel, inspector, console, overflow, targets, and computed parallax transforms.",
       "script_corrections": "Three corrections were applied to measure-desktop.mjs before the run and are recorded in DECISION.md §1.1 rather than applied silently: the focus predicate used strict equality against a heading whose text also contains the chapter number (could never match); the transition RAF sample started after the window it measured had elapsed (always empty); the R3F leak cycle started on the already-active chapter (a no-op click that would hang).",
       "env_contents_accessed_or_output": false,
-      "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override for the authenticated capture; no environment-file contents were read at any point."
+      "local_auth_method": "A task-only OWNER_PASSWORD process override was supplied to the two denied server-start attempts; no server bound, no session was created, and no environment-file contents were read or output."
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-25T17:03:18Z",
+  "updated_at": "2026-07-25T17:43:43Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

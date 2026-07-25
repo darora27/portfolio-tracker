@@ -9,6 +9,9 @@ describe("§7 R3F scene architecture", () => {
     expect(source).toContain('aria-hidden="true"');
     expect(source).toContain("OBSERVATORY_CHAPTERS.map");
     expect(source).not.toMatch(/postprocessing|physics|textureLoader/i);
+    expect(source).not.toContain('import * as THREE');
+    expect(source).toContain('dpr={1}');
+    expect(source).toContain("<icosahedronGeometry args={[0.72, 0]}");
   });
 
   it("synchronizes mesh hover and activation through the callbacks supplied by the semantic layer", () => {

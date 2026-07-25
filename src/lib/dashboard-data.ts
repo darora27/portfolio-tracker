@@ -42,6 +42,11 @@ import {
 import { classificationWeights, type ClassificationWeight } from "@/lib/portfolio/classification-weights";
 import { buildHoldingsPerformance, type HoldingsPerformanceSeries } from "@/lib/portfolio/holdings-performance";
 import { perHoldingRisk, type HoldingRisk } from "@/lib/portfolio/per-holding-risk";
+import {
+  companyNameForTicker,
+  weeklyReturnForPrices,
+  type PublicOrreryHolding,
+} from "@/lib/observatory/orrery";
 import aiExposureByTicker from "../../data/ai-exposure.json";
 import type { ChartPoint } from "@/components/dashboard/ValueChart";
 import type { PositionRow } from "@/components/dashboard/PositionsTable";
@@ -99,6 +104,8 @@ export type DashboardData = {
   prevSnapshotValue: number | null;
   holdingsPerformance: HoldingsPerformanceSeries;
   holdingRisks: HoldingRisk[];
+  /** Public-safe holding facts used by the §7 Portfolio Orrery. Never includes shares, value, or cost. */
+  publicOrreryHoldings: PublicOrreryHolding[];
   /** Trailing 7-calendar-day return, for the surface tier's weeklySubline. Null when history isn't old enough yet. */
   twr7d: number | null;
   voo7d: number | null;
@@ -367,6 +374,20 @@ export async function getDashboardData(): Promise<DashboardData> {
     .map((d) => ({ date: d.date, index: d.vooIndex }));
   const twr7d = trailingReturn(portfolioIndexSeries, 7);
   const voo7d = trailingReturn(vooIndexSeries, 7);
+  const publicOrreryHoldings: PublicOrreryHolding[] = positions.map((position) => {
+    const weeklyReturn = weeklyReturnForPrices(pricesByTicker.get(position.ticker) ?? []);
+    const risk = holdingRisks.find((item) => item.ticker === position.ticker);
+    return {
+      ticker: position.ticker,
+      companyName: companyNameForTicker(position.ticker),
+      weight: position.weight,
+      weeklyReturn,
+      portfolioRelativeReturn:
+        weeklyReturn === null || twr7d === null ? null : weeklyReturn - twr7d,
+      volatilityPct: risk?.volatilityPct ?? null,
+      betaVsVoo: risk?.betaVsVoo ?? null,
+    };
+  });
 
   return {
     totalValue,
@@ -410,6 +431,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     prevSnapshotValue: prevSnapshot?.totalValue ?? null,
     holdingsPerformance,
     holdingRisks,
+    publicOrreryHoldings,
     twr7d,
     voo7d,
   };

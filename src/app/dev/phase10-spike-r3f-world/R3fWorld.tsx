@@ -23,6 +23,7 @@ export function R3fWorld({
   const router = useRouter();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const previousChapterRef = useRef(activeChapterId);
+  const worldRef = useRef<HTMLElement>(null);
   const [hoveredChapterId, setHoveredChapterId] = useState<ObservatoryChapterId | null>(null);
   const active =
     OBSERVATORY_CHAPTERS.find((chapter) => chapter.id === activeChapterId) ??
@@ -42,8 +43,29 @@ export function R3fWorld({
     }
   }, [activeChapterId]);
 
+  useEffect(() => {
+    const world = worldRef.current;
+    if (!world || typeof window.matchMedia !== "function") return;
+    const finePointer = window.matchMedia("(pointer: fine)");
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!finePointer.matches || !desktop.matches || reducedMotion.matches || forceWebglFailure) {
+      return;
+    }
+
+    const onPointerMove = (event: PointerEvent) => {
+      const x = event.clientX / window.innerWidth - 0.5;
+      const y = event.clientY / window.innerHeight - 0.5;
+      world.style.setProperty("--world-pointer-x", x.toFixed(4));
+      world.style.setProperty("--world-pointer-y", y.toFixed(4));
+    };
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onPointerMove);
+  }, [forceWebglFailure]);
+
   return (
     <main
+      ref={worldRef}
       className={`${worldStyles.world} ${styles.world}`}
       data-active-chapter={active.id}
       data-force-no-3d={forceWebglFailure ? "true" : "false"}

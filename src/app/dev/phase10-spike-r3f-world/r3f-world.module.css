@@ -18,6 +18,12 @@
   box-shadow:
     inset 0 0 160px rgba(0, 0, 0, 0.55),
     0 70px 150px rgba(0, 0, 0, 0.48);
+  transform: translate3d(
+    calc(var(--world-pointer-x) * 14px),
+    calc(var(--world-pointer-y) * 10px),
+    0
+  );
+  transition: transform 120ms linear;
 }
 
 .canvasStage::after {
@@ -67,6 +73,8 @@
 @media (max-width: 1023px), (prefers-reduced-motion: reduce) {
   .canvasStage {
     display: none;
+    transform: none;
+    transition: none;
   }
 }
 

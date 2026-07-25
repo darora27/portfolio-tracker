@@ -1,8 +1,7 @@
 "use client";
 
 import { Canvas, type ThreeEvent, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
-import * as THREE from "three";
+import { useEffect, useRef } from "react";
 import {
   OBSERVATORY_CHAPTERS,
   type ObservatoryChapterId,
@@ -18,15 +17,15 @@ const POSITIONS: Record<ObservatoryChapterId, [number, number, number]> = {
 
 function CameraRig({ activeChapterId }: { activeChapterId: ObservatoryChapterId }) {
   const { camera } = useThree();
-  const targetPosition = useMemo(() => {
+  const targetPositionRef = useRef(camera.position.clone());
+  const targetLookAtRef = useRef(camera.position.clone().set(0, 0, 0));
+  const lookAtRef = useRef(camera.position.clone().set(0, 0, 0));
+
+  useEffect(() => {
     const [x, y, z] = POSITIONS[activeChapterId];
-    return new THREE.Vector3(x * 0.18, y * 0.14, 8.2 + z * 0.16);
+    targetPositionRef.current.set(x * 0.18, y * 0.14, 8.2 + z * 0.16);
+    targetLookAtRef.current.set(x * 0.16, y * 0.12, z * 0.08);
   }, [activeChapterId]);
-  const targetLookAt = useMemo(() => {
-    const [x, y, z] = POSITIONS[activeChapterId];
-    return new THREE.Vector3(x * 0.16, y * 0.12, z * 0.08);
-  }, [activeChapterId]);
-  const lookAtRef = useRef(new THREE.Vector3(0, 0, 0));
 
   useEffect(() => {
     camera.position.set(0, 0, 14);
@@ -34,8 +33,8 @@ function CameraRig({ activeChapterId }: { activeChapterId: ObservatoryChapterId 
 
   useFrame((_, delta) => {
     const amount = 1 - Math.exp(-delta * 5.5);
-    camera.position.lerp(targetPosition, amount);
-    lookAtRef.current.lerp(targetLookAt, amount);
+    camera.position.lerp(targetPositionRef.current, amount);
+    lookAtRef.current.lerp(targetLookAtRef.current, amount);
     camera.lookAt(lookAtRef.current);
   });
   return null;
@@ -74,7 +73,7 @@ function ChapterBodies({
           onNavigateChapter(chapter.id);
         }}
       >
-        <icosahedronGeometry args={[0.72, 1]} />
+        <icosahedronGeometry args={[0.72, 0]} />
         <meshStandardMaterial
           color={active ? "#72e2d4" : hovered ? "#9588ff" : "#26314a"}
           emissive={active ? "#174d4a" : hovered ? "#281f55" : "#080a12"}
@@ -101,7 +100,7 @@ export default function R3fScene({
   return (
     <Canvas
       aria-hidden="true"
-      dpr={[1, 1.5]}
+      dpr={1}
       camera={{ position: [0, 0, 14], fov: 42 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
     >
