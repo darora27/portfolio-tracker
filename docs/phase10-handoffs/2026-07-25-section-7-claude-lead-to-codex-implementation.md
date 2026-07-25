@@ -155,3 +155,58 @@ this amendment — `current_section`, `stage`, `role`, `status`, and
 `next_actor` are exactly as this handoff already left them. Implement
 against the current `docs/phase10-workflow/specs/section-7.md` in full, not
 against this handoff's original "What this turn did" summary.
+
+## Second amendment (owner-directed operational correction, July 25, 2026)
+
+A known environment fact makes the plan above unworkable as a single turn:
+this Codex CLI runner cannot bind `localhost` or obtain a browser backend.
+Item 4 of the "For the next actor" list above — "Verify every acceptance
+criterion in §8 with real `npm test`/`npm run build` runs and live browser
+checks at 1440×900, 390×844, and 320px" — cannot be done by this turn at
+all, for the *entire* section, not just the live-measurement portion. Doing
+so in one turn would predictably exhaust budget attempting Playwright/live
+measurement/screenshot capture that this environment cannot perform, per
+the existing environment-only exception already referenced in item 4 — but
+that exception is designed for a single missed check within an otherwise
+complete implementation, not for an entire missing measurement-and-decision
+phase. §7 is now split across four bounded turns; full detail is in
+`docs/phase10-workflow/specs/section-7.md` §0, which is authoritative.
+Read it before doing anything.
+
+**The turn this handoff hands to you is Turn A only — the spike, not the
+full section.** Concretely, this turn's scope is:
+
+- Build both spike routes (`/dev/phase10-spike-css-world`,
+  `/dev/phase10-spike-r3f-world`) and both variants' full feature set per
+  spec §2.1/§2.2, including the R3F variant's mesh hover/activation
+  synchronization (§3.4).
+- Build every test achievable without a live browser or a bound port
+  (Vitest/jsdom/RTL component tests for keyboard operability, reduced
+  motion, forced-failure branches, and no-JS server-rendered output).
+- Build `docs/phase10-spike-section-7/measure-phone.mjs` and
+  `measure-desktop.mjs` as retained, unrun tooling (spec §2.3.1/§2.3.2) —
+  do not attempt to execute them against a live server.
+- Run `npm test`, `npm run build`, `tsc`, and grep/source-read checks. Do
+  **not** attempt Playwright, screenshots, filmstrips, or any measured
+  value in `DECISION.md`.
+- Do **not** apply the §2.5 decision procedure or select CSS vs. R3F — that
+  is Turn B's job (a Claude turn, next).
+- Do **not** touch any production Observatory file
+  (`ObservatoryShell.tsx`, `ChapterOrbit.tsx`, `observatory.module.css`, or
+  any new §5 file) — Phase B does not start until Turn B records a
+  decision.
+- Commit and transition state exactly as your standing prompt's `implement`
+  stage already instructs (`stage` → `review`, `role` → `claude_lead`,
+  `next_actor` → `claude`) — this is the ordinary transition already
+  documented in `docs/PHASE10_AGENT_WORKFLOW.md`; only the scope of the
+  work behind it is bounded to the spike.
+- In your own handoff doc, state plainly that this turn built the spike
+  only, selected no winner, and touched no production file, so the next
+  (Claude) turn does not mistake your commit for a completed
+  implementation, and does not mistake its own review of it for §7's final
+  acceptance.
+
+`PHASE10_STATE.json` is unchanged by this second amendment — it is exactly
+where the first amendment left it (`§7` / `implement` /
+`codex_implementation` / `ready` / `next_actor: codex`), which is also
+exactly Turn A's starting state.

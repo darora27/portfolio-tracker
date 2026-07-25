@@ -1,11 +1,16 @@
 # Phase 10 §7 — Spatial Observatory
 
 Written by: claude-code/sonnet-5 (Claude Lead, `specify` stage). Revised
-July 25, 2026 by claude-code/sonnet-5 under an owner-directed correction
-(see "Owner correction" below). `PHASE10_STATE.json` remains at
-`§7` / `implement` / `codex_implementation` / `ready` / `next_actor: codex`
-— this is a specification correction made before Codex's implementation
-turn begins, not a reopened specify-stage handoff.
+July 25, 2026 by claude-code/sonnet-5 under two owner-directed corrections
+(see "Owner correction" and "Operational correction" below, and §0 for the
+turn structure the second correction establishes). `PHASE10_STATE.json`
+remains at `§7` / `implement` / `codex_implementation` / `ready` /
+`next_actor: codex` — both corrections were made before Codex's next
+implementation turn begins, not a reopened specify-stage handoff. **Read §0
+before anything else in this document** — it tells you which of four
+bounded turns you are in and what that turn's scope is; the rest of this
+document (§1-§10) describes the section's substance, not who does what
+when.
 
 Authority, in order when anything here seems to conflict: `PRODUCT_DIRECTION.md`
 → `PHASE10.md` §7 (as amended July 25, 2026) → `docs/PHASE10_UX_ARCHITECTURE.md`
@@ -74,11 +79,208 @@ of unrevised text. Net effect:
 Items 1-9 are requirements Phase A/B must satisfy before §7 can be accepted,
 not "if there's time" scope.
 
+## Operational correction (July 25, 2026, second amendment)
+
+Known environment fact: the Codex CLI implementation runner in this
+environment cannot bind `localhost` or obtain a browser backend. Requiring
+Codex to build both spikes, measure them live, select a winner, and
+productionize the result all in one turn would predictably run it out of
+budget mid-turn on exactly the steps it cannot perform — §2.3's live
+Playwright measurement and §2.4's screenshot/filmstrip capture and
+storytelling scoring. §7 is therefore split across four bounded turns
+(Turn A: Codex builds the spikes; Turn B: Claude measures them live and
+decides; Turn C: Codex builds the selected production treatment; Turn D:
+Claude does the real final-acceptance review) using only the five stage
+values already valid in `PHASE10_STATE.json`'s schema and the existing
+standing prompts, unmodified. **§0 below is authoritative on this split —
+read it before doing any §7 work of any kind, in any turn.** Nothing about
+the section's artistic, spatial, accessibility, performance, or evidence
+requirements (§1-§10, unchanged from the first correction) is weakened by
+this split; only the sequencing of who does which piece, and when, changes.
+
+## 0. Turn structure for this section (read this before any stage-specific
+behavior below)
+
+§7's two phases (Phase A "spike," §2; Phase B "production," §5) do not
+happen in one turn each. They are split across four bounded turns, all
+still using only the five stage values already valid in the schema
+(`specify`, `implement`, `review`, `remediate`, `accept`) and the existing
+standing prompts in `docs/phase10-workflow/prompts/`, unmodified. This
+section's own text is what tells each turn which of the four it is — do not
+infer scope from the generic stage name alone; a turn that assumes
+"`implement` stage" or "`review` stage" always means the same thing it
+means for every other Phase 10 section will get §7 wrong.
+
+### Turn A — Codex spike implementation
+(`stage: implement`, `role: codex_implementation`, `next_actor: codex` —
+this is the turn this amendment leaves the state machine pointed at)
+
+**You are in Turn A if `docs/phase10-spike-section-7/DECISION.md` does not
+yet exist, or exists only as an incomplete draft with no recorded Step 3
+selection (§2.5).**
+
+Scope, strictly:
+
+- Build both spike routes (§2.1) and both variants' full feature set
+  (§2.2), including the R3F variant's mesh hover/activation synchronization
+  (§3.4).
+- Build every test achievable without a live browser or a bound port:
+  component/unit tests (Vitest/jsdom/RTL) for keyboard operability,
+  reduced-motion rendering, the forced-`?no3d=1`/forced-WebGL-failure
+  branches, and server-rendered (no-JS) output — these are achievable via
+  in-process component rendering, not a running HTTP server or a real
+  browser engine.
+- Build the complete retained measurement/evidence tooling as code:
+  `docs/phase10-spike-section-7/measure-phone.mjs` and `measure-desktop.mjs`
+  (§2.3.1, §2.3.2). Do not attempt to run them against a live server — that
+  requires the browser backend this environment does not have.
+- Run `npm test`, `npm run build`, `tsc`, and grep-based/source-read checks
+  (dependency presence, dev-route gating logic, absence of audio,
+  `aria-hidden` attributes present in JSX) — all achievable without a bound
+  port or a browser.
+- **Do not** run Playwright, capture any screenshot or filmstrip, fill in
+  any measured value in `DECISION.md`, apply the §2.5 decision procedure, or
+  select a winner. That is entirely Turn B's job.
+- **Do not** touch any production Observatory file (`ObservatoryShell.tsx`,
+  `ChapterOrbit.tsx`, `observatory.module.css`, or any new §5 file) — Phase
+  B does not start until a decision exists.
+- If the R3F spike variant requires the temporary `npm install --no-save`
+  (§2.1's existing precedent), leave the resulting `node_modules` state as
+  it is when you commit — do not run `npm ci` or any command that would
+  reinstall from a clean lockfile and remove it; `package.json`/
+  `package-lock.json` remain untouched either way, so this is not an
+  implementation-source change.
+- Commit both spike routes, their tests, and the unrun measurement scripts
+  together, with a summary specific enough to identify this as spike-only
+  work (the existing `phase10(§7): <summary>` format is unchanged — e.g.
+  `phase10(§7): implement spatial spike routes and tooling (Phase A)`).
+- Transition state exactly as the standing `codex-implementation.md`
+  prompt's `implement` stage already instructs (`stage` → `review`, `role`
+  → `claude_lead`, `next_actor` → `claude`) — this is the ordinary
+  `implement`→`review` transition already documented in
+  `docs/PHASE10_AGENT_WORKFLOW.md`; nothing about the transition mechanics
+  is special, only the scope of the work behind it.
+- Write the handoff doc exactly as usual, but state plainly in it that this
+  turn built the spike only, selected no winner, and touched no production
+  file — so whoever reviews it does not mistake it for a completed
+  Phase A+B implementation.
+
+### Turn B — Claude spike evaluation and decision
+(`stage: review`, `role: claude_lead`, `next_actor: claude`)
+
+**You are in Turn B if you are reviewing a commit whose diff touches only
+`docs/phase10-spike-section-7/**` and the two new spike dev routes — no
+`src/components/observatory/*` production file.**
+
+This is an intermediate review of the *spike*, not a final-acceptance review
+of §7 as a whole. Read this subsection before applying the generic
+`review`-stage behavior in `docs/phase10-workflow/prompts/claude-lead.md` —
+that generic behavior's two documented outcomes (pass → `accept`; fail →
+`remediate`) do not both apply exactly as written here; see below.
+
+Scope:
+
+- Run the real production server locally and the Playwright-driven
+  measurement scripts Turn A built (§2.3.1, §2.3.2). If the temporary R3F
+  install from Turn A is no longer present in `node_modules`, you may
+  re-run the identical `npm install --no-save three @react-three/fiber
+  @types/three` Turn A used (recorded in its handoff) — this does not touch
+  `package.json`/`package-lock.json` and is not an implementation-source
+  change.
+- Capture every required filmstrip/recording, screenshot, network log, and
+  performance measurement (§2.3, §2.4) and score both variants (§2.4's
+  eleven rows, including the verbatim human-reaction rows 1, 7, and 10 —
+  loop in Devan for these if a second independent viewer is needed, the
+  same way §0 of the original section-1 workflow required Devan's judgment
+  for the direction selection).
+- Apply the §2.5 decision procedure (mandatory gates, then equal-weighted
+  scoring, CSS as tie-breaker) and record the full result in
+  `docs/phase10-spike-section-7/DECISION.md`.
+- **This commit is review-only, exactly like every other `review`-stage
+  commit** (`phase10(review §7): <summary>`, no implementation-source
+  changes): it adds `DECISION.md`, screenshots, and filmstrips, and updates
+  `PHASE10_STATE.json`. It does **not** modify `package.json`, remove the
+  unselected variant's dependency, or delete/edit any spike route file —
+  that cleanup is Turn C's first step, not Turn B's, so this turn's commit
+  stays a pure evidence/decision commit.
+- **Outcome — neither variant passes** (§2.4's "failed by both" rule, or a
+  mandatory gate fails for both): this is bounded *spike* remediation, not
+  a full-section failure. Record the specific failing rows/gates as
+  findings, set `stage` → `remediate`, `role` → `codex_implementation`,
+  `next_actor` → `codex` — the existing valid `review`-fail transition,
+  nothing new. Codex's next turn fixes only those spike-scoped findings and
+  returns to `review` (another Turn B pass) — loop until a variant passes.
+- **Outcome — one variant passes and is selected:** this is the one
+  deviation from the generic two-outcome table in
+  `docs/PHASE10_AGENT_WORKFLOW.md` §3, scoped to §7's Phase A→B handoff
+  only — it does not change that table for any other section. Do **not**
+  set `stage` → `accept`: no production Observatory work has happened yet,
+  and doing so would incorrectly mark §7 complete. Instead set `stage` →
+  `implement`, `role` → `codex_implementation`, `next_actor` → `codex`
+  (schema-valid: `implement` requires exactly this role/next_actor
+  combination). In the handoff doc, name the selected runtime explicitly
+  (CSS or R3F) and point to `DECISION.md` and §5 as Turn C's scope — this is
+  what prevents Turn C from re-deciding or re-spiking.
+
+### Turn C — Codex production implementation
+(`stage: implement`, `role: codex_implementation`, `next_actor: codex`)
+
+**You are in Turn C if `docs/phase10-spike-section-7/DECISION.md` already
+records a completed Step 3 selection.** Do not treat this as another Turn A
+— do not rebuild the spikes, re-run the decision procedure, or second-guess
+the recorded selection.
+
+Scope:
+
+- If CSS was selected: confirm (and, if the Turn B handoff says it still
+  needs doing, perform) removal of `three`, `@react-three/fiber`, and
+  `@types/three` and `src/app/dev/phase10-spike-r3f-world/` — Turn A's
+  temporary `--no-save` install never touched the manifests, so this may be
+  a no-op; confirm via `git diff --quiet package.json package-lock.json`
+  and direct `node_modules` inspection either way, per §2.5. If R3F was
+  selected, keep the dependencies and add them to `package.json`/
+  `package-lock.json` for real (no longer `--no-save`).
+- Implement only the selected treatment in the real Observatory per §5:
+  `ObservatoryEntrance` (§5.1), the CSS camera/parallax path (§5.2,
+  always), and, only if R3F was selected, `SpatialScene` (§5.3) with its
+  hover/activation synchronization (§3.4).
+- Preserve and test every required fallback and semantic contract (§3.1,
+  §6) — this is standard Phase B work, not special to the turn split.
+- Run `npm test` and `npm run build`; both green before committing.
+- Transition state exactly as the standing `codex-implementation.md`
+  prompt's `implement` stage already instructs (`stage` → `review`, `role`
+  → `claude_lead`, `next_actor` → `claude`) — the ordinary transition,
+  nothing special.
+- From this point on, §7 behaves exactly like the standard Claude-lead/
+  Codex-implementation cycle in `docs/PHASE10_AGENT_WORKFLOW.md` — no
+  further turn-detection logic applies, including any subsequent
+  remediate/review loop before acceptance.
+
+### Turn D — Claude final review
+(`stage: review`, `role: claude_lead`, `next_actor: claude`)
+
+**You are in Turn D if you are reviewing a commit whose diff touches a
+production Observatory file** (`ObservatoryShell.tsx`, `ChapterOrbit.tsx`,
+`observatory.module.css`, `ObservatoryEntrance.*`, or `SpatialScene.*`).
+
+This is the genuine final-acceptance review of §7 as a whole — apply the
+generic `review`-stage behavior exactly as documented: independently verify
+against every acceptance criterion in §8 (all thirty-four items, not only
+the spike-scoped subset Turn B checked). Zero findings → `stage` → `accept`
+(the normal transition — §7 is then eligible for the standard `accept`-stage
+turn that follows, which rolls the section machine forward to §8). Bounded
+findings → `stage` → `remediate`, looping back to another Turn
+D-equivalent review exactly as the standard workflow describes. No further
+special-casing applies here.
+
 ## 1. Scope — the smallest complete vertical slice
 
-Two strictly sequenced phases, both required for this section, run in one
-implementation turn (mirroring how §1's Builder pass covered spike-then-shell
-in a single pass, and how §9's Phase A/B split works within one section):
+Two strictly sequenced phases, both required for this section and split
+across the four bounded turns in §0 (Turn A builds the Phase A spike, Turn B
+measures and decides, Turn C builds the selected Phase B production
+treatment, Turn D does final review) — mirroring how §9's Phase A/B split
+works within one section, but now also bounded across separate agent turns
+because of the environment limitation §0 describes:
 
 - **Phase A (spike):** build two isolated, non-production, owner-gated dev
   routes that push the *first-viewport arrival + chapter-travel* experience
@@ -164,6 +366,11 @@ in a single pass, and how §9's Phase A/B split works within one section):
   untouched; §7's spike routes are new, separately named (§2).
 
 ## 2. Phase A — spike
+
+Split across Turn A (Codex builds everything in this §2, except live
+measurement and the decision) and Turn B (Claude runs the live measurement
+and decision) — see §0 for the exact split. The subsections below describe
+the substance both turns build toward; §0 is authoritative on who does what.
 
 ### 2.1 Routes (new, owner-gated exactly like `/dev/phase10-spike-css` and
 `/dev/observatory-shell` — `LoginForm` on an invalid/missing session, zero
@@ -447,11 +654,14 @@ Record the full Step 1 gate results, Step 2 scores with their arithmetic,
 and the Step 3 selection in `docs/phase10-spike-section-7/DECISION.md`,
 following `docs/phase10-spike-section-1/DECISION.md`'s existing format
 (methodology, declared thresholds before measuring, results table,
-reasoning, screenshots/filmstrip index). If R3F is selected, keep it
-installed for Phase B (do not round-trip an install/uninstall, since §7's
-R3F — unlike §1's — is being kept as a production dependency). If CSS is
-selected, remove `three`/`@react-three/fiber`/`@types/three` and
-`src/app/dev/phase10-spike-r3f-world/` entirely, and confirm their absence
+reasoning, screenshots/filmstrip index). This decision record is Turn B's
+job (§0); the dependency/file cleanup that follows from it is Turn C's
+job, done as the first step of building Phase B, not folded into Turn B's
+review-only commit: if R3F is selected, Turn C keeps it installed for
+Phase B (no round-trip install/uninstall, since §7's R3F — unlike §1's — is
+being kept as a production dependency); if CSS is selected, Turn C removes
+`three`/`@react-three/fiber`/`@types/three` and
+`src/app/dev/phase10-spike-r3f-world/` entirely, and confirms their absence
 the same way §1 did (`git diff --quiet package.json package-lock.json`,
 direct `node_modules` inspection).
 
@@ -553,6 +763,12 @@ terms, not a downgrade to "the old dashboard."
 spike and to the shipped production result in review)
 
 ## 5. Phase B — production build
+
+Exclusively Turn C's scope (§0) — it never begins until Turn B has recorded
+a decision in `docs/phase10-spike-section-7/DECISION.md`. If you are
+building against this §5 and that file does not yet exist with a completed
+Step 3 selection, stop: you are looking at Turn A's scope (§2), not this
+one.
 
 ### 5.1 `ObservatoryEntrance` (new; shared by both outcomes)
 
@@ -803,6 +1019,14 @@ not invent them as findings)
   everything else, per §6.
 
 ## 8. Acceptance criteria
+
+Per §0's turn split: item 1 (the Phase A decision record) is what Turn B
+verifies before deciding, and is re-confirmed as still true in Turn D. Items
+2-34 concern the Phase B production build, which does not exist during Turn
+A/B — Turn B does not evaluate them. Turn D is the turn that independently
+verifies all thirty-four items against the shipped production build; that
+is what makes Turn D a genuine final-acceptance review rather than a repeat
+of Turn B's spike-only check.
 
 ### Behavioral
 
