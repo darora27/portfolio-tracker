@@ -178,6 +178,67 @@ trade-entry actions, owner-only research, and live/extended-hours states.
 
 ## 3. Navigation and transitions
 
+### 3.1 The Portfolio Orrery spatial model (added July 25, 2026)
+
+This subsection supersedes the rest of §3 wherever the two conflict. It
+records the owner decision that followed §7's spike, which produced no winner
+(`docs/phase10-spike-section-7/DECISION.md`). Both prototypes failed for the
+same reason: their spatial objects encoded nothing. The corrected model makes
+every body carry portfolio information.
+
+**Objects and their meaning.**
+
+| Object | Encodes | Activation opens |
+|---|---|---|
+| Sun | The portfolio as a whole. Never leads with or publicly reveals total account dollar value. | Portfolio-level summary: composition, return, market-relative context |
+| Planet | One actual public-safe holding | The semantic holding inspector |
+| Planet radius | Portfolio weight, on a perceptually sensible clamped scale — small holdings stay visible and selectable, larger positions clearly larger | — |
+| Orbit direction | Trailing weekly performance: positive clockwise, negative counterclockwise, unavailable or effectively flat a neutral explicitly-labelled behaviour | — |
+| Orbital speed | Monotonic in the absolute weekly percentage change, with safe min/max clamps; deterministic, unit-tested, legended on screen | — |
+| Orbital path | The planet's real trajectory. Nothing else. | — |
+
+**Prohibited by construction:** any ellipse, ring, arc, or geometric mark that
+no object travels and no legend explains; any generic placeholder body that
+stands in for portfolio meaning; any encoding whose only accessible
+representation is motion, colour, speed, or direction.
+
+**Holding inspector.** Selecting a planet stabilises or pauses it — motion
+never fights the interaction — and opens an inspector containing at minimum
+ticker and company, portfolio weight, weekly return, portfolio-relative
+performance context, public-safe holding analytics, and a link to deeper stock
+information. Its state is URL-restorable and works with browser back/forward,
+under the same contract chapter state already uses.
+
+**Runtime.** R3F is the visually dominant desktop layer; the semantic DOM is
+the accessible source of truth for headings, the holding list, the inspector,
+keyboard operation, and URL state; the CSS shell is the no-WebGL and
+reduced-motion fallback. The 50 ms long-task boundary is unchanged and is not
+to be replaced with a baseline-subtracted proxy.
+
+**Art direction — "portfolio command observatory."** Dark outer-space
+environment; 1980s CRT phosphor green and amber accents; restrained scanline
+overlays; neon telemetry glow and analog-future HUD framing; retrofuturist
+control-room typography. Procedurally varied planet materials, an emissive
+sun, atmospheric rim lighting, depth, restrained bloom, and a coherent star
+field. Polished and professional first, playful and experimental second.
+Translate the broad qualities of classic space-opera control panels,
+optimistic atomic-age futurism, and analog time-bureaucracy without copying
+protected logos, characters, props, or exact compositions.
+
+**Relationship to the five chapters.** The Orrery is `/share`'s spatial entry
+point and the product's navigation signature; it does not replace the accepted
+five-chapter Observatory content or its navigation contract, which remain
+reachable and unchanged in the semantic layer. Dashboard, Research, History,
+Trades, Compare, and the stock routes are untouched; later integration work
+may extend the same retro-space grammar into them without replacing their
+accepted functionality.
+
+**Mobile and reduced motion.** Mobile gets a deliberate static or simplified
+2D orbital map or list — never a cropped desktop scene. Reduced motion freezes
+orbital movement while preserving every encoded value as text. Keyboard and
+screen-reader users receive a synchronised semantic holding list and
+inspector.
+
 ### Global shell
 
 - Product name and public/private state are always visible.
@@ -588,6 +649,24 @@ non-production route or story:
 Choose R3F only if it creates a material navigation/storytelling advantage that
 CSS cannot provide while meeting the fallback and performance budgets. Otherwise
 use CSS 3D.
+
+### Spike outcome (July 25, 2026)
+
+The §7 spike ran under this framework and **selected neither variant**
+(`docs/phase10-spike-section-7/DECISION.md`). Two lessons are binding on any
+future spike written from this section:
+
+1. **"Otherwise use CSS 3D" is not a default win.** CSS passed every measured
+   reliability row and was still not selected, because the storytelling gate
+   ranks equal to performance and both variants failed it. A variant that
+   passes the technical gate and loses the visual gate has lost.
+2. **A budget row that the untouched baseline also fails is an invalid
+   discriminator.** §7's interaction-latency row appended a fixed 900 ms wait
+   inside the measurement itself, so the pre-§7 baseline failed it too; the
+   row was recorded and then excluded from scoring rather than being used
+   against either variant. Declare thresholds against an instrument that can
+   actually distinguish the thing being measured — the same defect §1 found in
+   its "≤16.7 ms per frame" predicate.
 
 ## 9. Cross-route accessibility contract
 

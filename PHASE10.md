@@ -370,23 +370,111 @@ the complete toolset.
 
 ---
 
-## §7. Spatial Observatory
+## §7. Spatial Observatory — the Portfolio Orrery
 
 ### Purpose
 
 Turn the dimensionally styled interface into a visibly immersive, spatial,
 floating-world desktop Observatory — entering a coherent world, with
-camera-like movement between chapters, layered depth, and rewarding
-discovery — without sacrificing the semantic, accessible, private, honest
-foundations §0–§6 built. The experiential reference remains
-`https://y-n10.com/`: the sense of entering a world, camera-like movement,
-spatial composition, depth, discovery, and memorable transitions. Its
-branding, assets, voxel language, and exact design are explicitly not
-copied (see `docs/PHASE10_UX_ARCHITECTURE.md` §1's reference note).
+camera-like movement, layered depth, and rewarding discovery — without
+sacrificing the semantic, accessible, private, honest foundations §0–§6
+built. The experiential reference remains `https://y-n10.com/`: the sense of
+entering a world, camera-like movement, spatial composition, depth,
+discovery, and memorable transitions. Its branding, assets, voxel language,
+and exact design are explicitly not copied (see
+`docs/PHASE10_UX_ARCHITECTURE.md` §1's reference note).
 
 This section exists because the current interface, while dimensionally
 styled, does not yet create that experience. More shadows, circles, cards,
 or CSS transforms alone do not satisfy §7.
+
+### Spike outcome and product-direction correction (July 25, 2026)
+
+The Phase A spike ran to completion and produced **no winner**
+(`docs/phase10-spike-section-7/DECISION.md`,
+`docs/phase10-workflow/reviews/section-7-review.md`). Devan reviewed both
+measured prototypes and rejected both as production candidates: the CSS
+variant reads as a clean dashboard placed on an infinite perspective grid
+with ellipses that have no apparent meaning; the R3F variant reads as
+low-quality generic spheres whose moving bodies have no understandable
+portfolio purpose. R3F additionally failed the reliability gate on measured
+evidence (a route-owned 59–60 ms long task in 5 of 5 desktop runs, where the
+baseline and CSS each produce zero) and shipped no pointer parallax at all.
+CSS was **not** promoted by default for passing the technical gate — the
+storytelling gate ranks equal to performance, and both variants failed it.
+
+The target is therefore replaced. §7's spatial layer is no longer five
+chapter-bodies in a field; it is the **Portfolio Orrery**, in which every
+body encodes real portfolio information. The normative specification is
+`docs/phase10-workflow/specs/section-7.md` §R; the product statement is
+`PRODUCT_DIRECTION.md`, "The Portfolio Orrery"; the spatial model is
+`docs/PHASE10_UX_ARCHITECTURE.md` §3.1.
+
+### Portfolio Orrery terms (July 25, 2026, owner-defined)
+
+1. `/share` opens with a genuinely full-viewport portfolio solar system.
+2. The central sun represents the portfolio as a whole. It never leads with
+   or publicly reveals total account dollar value. Activating the sun opens
+   the portfolio-level summary: composition, return, and market-relative
+   context.
+3. Each planet represents one actual public-safe holding — not an Observatory
+   chapter.
+4. Planet radius encodes portfolio weight on a perceptually sensible, clamped
+   scale, so small holdings remain visible and selectable while larger
+   positions clearly produce larger planets.
+5. Orbit direction encodes trailing weekly performance: positive clockwise,
+   negative counterclockwise, unavailable or effectively flat a neutral,
+   explicitly labelled behaviour.
+6. Orbital speed increases monotonically with the absolute weekly percentage
+   change, with safe minimum and maximum clamps. The mapping is
+   deterministic, unit-tested, and explained by an on-screen legend.
+   Direction and speed can never be the only accessible representation of
+   performance.
+7. Orbital paths represent the planets' real trajectories. No unexplained
+   ellipses and no decorative geometric marks are permitted.
+8. Hovering, focusing, or selecting a planet pauses or stabilises it so the
+   interaction remains usable. Selecting it opens a semantic holding
+   inspector containing at minimum ticker and company, portfolio weight,
+   weekly return, portfolio-relative performance context, public-safe holding
+   analytics, and a link to deeper stock information. Inspector state is
+   URL-restorable and works with browser back/forward.
+9. R3F is the intended visually dominant desktop approach, with the existing
+   semantic DOM as the accessible source of truth and the CSS shell as the
+   no-WebGL and reduced-motion fallback.
+10. Generic low-poly placeholder spheres are replaced by a deliberate visual
+    system: procedurally varied planet materials, an emissive sun,
+    atmospheric rim lighting, meaningful orbital paths, depth, restrained
+    bloom, and a coherent star field. Every visual object encodes portfolio
+    information or supports spatial orientation.
+11. Art direction is "portfolio command observatory": dark outer-space
+    environment; 1980s CRT phosphor green and amber accents; restrained
+    scanline overlays; neon telemetry glow and analog-future HUD framing;
+    retrofuturist control-room typography and labels; polished and
+    professional first, playful and experimental second. Translate the broad
+    qualities of classic space-opera control panels, optimistic atomic-age
+    futurism, and analog time-bureaucracy. Do not copy protected logos,
+    characters, props, or exact compositions.
+12. Dashboard, Research, History, Trades, Compare, and stock routes remain
+    intact. The Orrery becomes the public spatial entry point and navigation
+    signature; later integration work may extend the same retro-space visual
+    grammar into deeper routes without replacing their accepted
+    functionality.
+13. Mobile uses a deliberate static or simplified 2D orbital map or list.
+    Reduced motion freezes orbital movement. Keyboard and screen-reader users
+    receive a synchronised semantic holding list and inspector. No essential
+    information may exist only in WebGL, motion, colour, speed, or direction.
+14. All public/private and no-dollar privacy rules are preserved. No
+    owner-only holding data may reach `/share`.
+15. Remediation must first address the R3F long task and the missing
+    parallax, attempting real optimisation rather than weakening the 50 ms
+    gate. If the route-owned task cannot be brought under the gate after one
+    bounded optimisation round, the measured result returns to Devan for an
+    explicit decision — CSS is not to be silently selected.
+16. Visual evidence must demonstrate: initial solar-system entry; multiple
+    differently sized planets; simultaneous clockwise and counterclockwise
+    motion; planet focus and selection; camera movement to the selected
+    holding; the holding inspector; and the reduced-motion and mobile
+    fallbacks.
 
 ### Owner amendment terms (July 25, 2026)
 
@@ -400,7 +488,10 @@ or CSS transforms alone do not satisfy §7.
   visual/storytelling quality as a required gate alongside performance.
   This keeps `PRODUCT_DIRECTION.md`'s rule intact: no production
   Three.js/R3F dependency before an isolated technical comparison and
-  recorded selection.
+  recorded selection. **Satisfied July 25, 2026** — the evaluation ran, the
+  decision is recorded in `docs/phase10-spike-section-7/DECISION.md`, and it
+  selected neither variant. R3F's use in the Orrery remediation is
+  authorised by the owner decision above, conditional on term 15.
 - Audio is prohibited for now (beyond `PRODUCT_DIRECTION.md`'s "no
   automatic audio": no audio at all in §7).
 - Personality target: approximately 60% polished/professional and 40%
@@ -409,23 +500,31 @@ or CSS transforms alone do not satisfy §7.
 
 ### Work
 
-- Run the §7 spatial-runtime spike: build the selected first viewport (a)
-  in the current CSS-only system pushed to its expressive ceiling and (b)
-  as a bounded, lazy-loaded WebGL/R3F scene; measure both against declared
-  performance budgets and the storytelling gate; record the decision with
-  evidence before adding any production dependency.
-- Build the production Spatial Observatory on the selected runtime:
-  - a deliberate entry experience — one orchestrated arrival moment into
-    the world (`PRODUCT_DIRECTION.md` design principle 6), skippable and
-    never blocking content;
-  - camera-like travel between the five chapters (Pulse, Forces,
-    Structure, Timeline, Lab);
-  - layered depth and responsive parallax tied to navigation and
-    pointer/scroll intent — no constant floating noise;
-  - portfolio chapters, holdings, relationships, and data states as the
-    spatial objects themselves: every body, plane, or node maps to a real
-    destination, holding, relationship, or state (`PRODUCT_DIRECTION.md`
-    principle 3 — nothing purely decorative).
+- ~~Run the §7 spatial-runtime spike~~ — **done, and it produced no
+  winner.** Both variants were built, measured live on both declared rigs,
+  and photographed; the decision is recorded in
+  `docs/phase10-spike-section-7/DECISION.md` before any production
+  dependency was added. `package.json` and `package-lock.json` remain
+  untouched.
+- Build the production Portfolio Orrery on R3F, under term 15's optimisation
+  condition:
+  - a deliberate entry experience — one orchestrated arrival into the solar
+    system (`PRODUCT_DIRECTION.md` design principle 6), skippable and never
+    blocking content;
+  - camera movement to a selected holding, and to the sun for the
+    portfolio-level summary;
+  - layered depth and responsive parallax tied to navigation and pointer
+    intent — no constant floating noise beyond the orbital motion that
+    itself encodes performance;
+  - holdings, portfolio weight, trailing weekly performance, and real
+    orbital trajectories as the spatial objects themselves: every body,
+    path, or node maps to a real holding, quantity, or destination
+    (`PRODUCT_DIRECTION.md` principle 3 — nothing purely decorative, and no
+    unexplained ellipse or geometric mark);
+  - the accepted five-chapter Observatory content (Pulse, Forces,
+    Structure, Timeline, Lab) remains reachable and unchanged in the
+    semantic layer; the Orrery is the entry point to it, not a replacement
+    for it.
 - Lazy-load the spatial runtime so it never blocks or delays semantic
   content; declare and enforce explicit bundle/runtime budgets in the §7
   spec.
@@ -442,31 +541,46 @@ or CSS transforms alone do not satisfy §7.
 
 ### Acceptance
 
-- **Behavioral:** Entering the Observatory and traveling between all five
-  chapters works by click, keyboard, touch, URL, and browser history;
-  chapter state and focus restoration survive travel; no essential action
-  or content depends on the spatial layer; the entry experience is
-  skippable and never traps the user.
+- **Behavioral:** Entering the Orrery, activating the sun, and selecting
+  every planet work by click, keyboard, touch, URL, and browser history;
+  selection state and focus restoration survive travel and browser
+  back/forward; the accepted five-chapter navigation still works exactly as
+  before; no essential action or content depends on the spatial layer; the
+  entry experience is skippable and never traps the user.
 - **Visual (storytelling gate — required, equal in rank to performance):**
   The desktop result reads as a coherent, immersive spatial world judged
-  against named storytelling criteria the §7 spec must declare in advance
+  against named storytelling criteria the §7 spec declares in advance
   (coherent world, camera-like movement, spatial composition, layered
   depth, discovery, memorable transitions) — not merely additional
-  shadows, circles, cards, or transforms; the ~60/40 polished-to-playful
-  balance is evident; real 1440×900 before/after screenshots against the
-  pre-§7 experience document the difference.
-- **Mobile:** 390×844 (and 320px fit) presents an intentional
-  two-dimensional sequence with the same questions, evidence, and
-  controls; no cropped desktop scene, no horizontal page overflow, no
-  targets under 44×44 CSS px; real 390×844 screenshots are required.
-- **Accessibility:** Reduced-motion, no-WebGL, no-JavaScript, and
-  keyboard-only paths preserve hierarchy, facts, destinations, focus
-  visibility, and announcements; contrast is verified on the real dark
-  surfaces; the spatial canvas is `aria-hidden` wherever it duplicates
-  semantic content.
-- **Tests:** Runtime-selection and fallback branching, lazy-load gating,
-  reduced-motion/no-WebGL/no-JS behavior, chapter URL/travel state, and
-  focus behavior are covered; the full existing suite stays green.
+  shadows, circles, cards, or transforms, and not generic placeholder
+  geometry; the ~60/40 polished-to-playful balance is evident; real
+  1440×900 before/after screenshots against the pre-§7 experience document
+  the difference; and term 16's visual evidence exists (initial
+  solar-system entry, multiple differently sized planets, simultaneous
+  clockwise and counterclockwise motion, planet focus and selection, camera
+  movement to the selected holding, the holding inspector, and the
+  reduced-motion and mobile fallbacks).
+- **Encoding correctness:** The weight→radius, weekly-return→direction, and
+  |weekly %|→speed mappings are deterministic, clamped, unit-tested against
+  hand-computed fixtures, and explained by an on-screen legend; every value
+  they encode is also available as text.
+- **Mobile:** 390×844 (and 320px fit) presents a deliberate static or
+  simplified 2D orbital map or list with the same holdings, encodings,
+  questions, evidence, and inspector content; no cropped desktop scene, no
+  horizontal page overflow, no targets under 44×44 CSS px; real 390×844
+  screenshots are required.
+- **Accessibility:** Reduced-motion (orbital movement frozen), no-WebGL,
+  no-JavaScript, and keyboard-only paths preserve hierarchy, facts,
+  destinations, focus visibility, and announcements; keyboard and
+  screen-reader users get a synchronised semantic holding list and
+  inspector; contrast is verified on the real dark surfaces; the spatial
+  canvas is `aria-hidden` wherever it duplicates semantic content; no
+  essential information exists only in WebGL, motion, colour, speed, or
+  direction.
+- **Tests:** The weight/direction/speed encoding functions, runtime-selection
+  and fallback branching, lazy-load gating, reduced-motion/no-WebGL/no-JS
+  behavior, holding-selection and chapter URL state, and focus behavior are
+  covered; the full existing suite stays green.
 - **Build:** Full tests and production build pass; the spatial runtime is
   lazy-loaded and inside the spec's declared bundle/runtime budgets; if
   R3F is selected, the dependency stays bounded (no post-processing or
@@ -476,11 +590,21 @@ or CSS transforms alone do not satisfy §7.
   shell — no owner controls or data cross-render into public mode; no
   dollar patterns in public HTML/RSC/client payloads; no new public route
   or public data field without a recorded privacy decision and regression
-  test.
+  test. No owner-only holding data may reach `/share`, including through
+  the Orrery's planet set, inspector, or any encoded value.
 
 **Section gates:** (1) no production spatial-runtime dependency before
-§7's recorded spike decision; (2) the storytelling gate is required — a
-technically clean but non-immersive result fails §7; (3) no audio.
+§7's recorded spike decision — **satisfied July 25, 2026**: the decision is
+recorded and R3F is authorised for the Orrery remediation under term 15's
+condition; (2) the storytelling gate is required — a technically clean but
+non-immersive result fails §7, and the technically cleaner variant is never
+promoted by default for passing the performance gate alone; (3) no audio;
+(4) the 50 ms long-task boundary is not to be weakened, redefined, or
+replaced with a baseline-subtracted proxy in this section — if one bounded
+optimisation round cannot meet it, the measured result goes to Devan for an
+explicit decision; (5) no unexplained ellipse, ring, path, or geometric mark
+may ship — every visual object encodes portfolio information or supports
+spatial orientation.
 
 ---
 

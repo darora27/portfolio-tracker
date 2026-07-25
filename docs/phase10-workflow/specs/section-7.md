@@ -98,6 +98,34 @@ the section's artistic, spatial, accessibility, performance, or evidence
 requirements (§1-§10, unchanged from the first correction) is weakened by
 this split; only the sequencing of who does which piece, and when, changes.
 
+## Turn B outcome and product-direction correction (July 25, 2026, third
+amendment) — READ THIS BEFORE §0
+
+Turn B ran to completion and recorded **FAIL / no winner**
+(`docs/phase10-spike-section-7/DECISION.md`,
+`docs/phase10-workflow/reviews/section-7-review.md`). Both spike variants were
+built, measured live on both declared rigs, and photographed. R3F failed the
+§2.3.2 reliability gate on measured evidence (a route-owned 59–60 ms long task
+in 5 of 5 desktop runs, where the baseline and CSS each produce zero) and
+shipped no pointer parallax at all. The owner then reviewed both first
+viewports and **rejected both as production candidates**, so §2.4's "a row
+failed by both variants means neither may be selected as-built" rule fired.
+CSS was **not** selected by default for passing the technical gate.
+
+**The remediation target is replaced.** §7's spatial layer is no longer five
+chapter-bodies in a field. It is the **Portfolio Orrery**, specified
+normatively in **§R below**, which supersedes §2.2's variant descriptions,
+§2.4's rubric framing, §3's chapter-body architecture, and §5's production
+build wherever they conflict. Everything §R does not touch — the semantic
+source-of-truth guarantee (§3.1), the `aria-hidden` meaning (§3.3), the
+fallback obligations (§6), the privacy gates, the measurement rigs (§2.3), and
+the evidence discipline (§10) — remains binding and unchanged.
+
+`PRODUCT_DIRECTION.md` ("The Portfolio Orrery"), `PHASE10.md` §7 ("Portfolio
+Orrery terms"), and `docs/PHASE10_UX_ARCHITECTURE.md` §3.1 carry the same
+decision at their own altitudes. Authority order is unchanged: those three
+outrank this document.
+
 ## 0. Turn structure for this section (read this before any stage-specific
 behavior below)
 
@@ -210,6 +238,35 @@ Scope:
   `next_actor` → `codex` — the existing valid `review`-fail transition,
   nothing new. Codex's next turn fixes only those spike-scoped findings and
   returns to `review` (another Turn B pass) — loop until a variant passes.
+  **This is the outcome that occurred on July 25, 2026**, with one
+  owner-directed enlargement: the remediation scope is not "fix the failing
+  rows on the existing prototypes" but the replacement target in §R. See
+  Turn B′ below.
+
+### Turn B′ — Codex Orrery remediation (the current turn's successor)
+(`stage: remediate`, `role: codex_implementation`, `next_actor: codex`)
+
+**You are in Turn B′ if `DECISION.md` records a completed FAIL / no-winner
+result and §R exists.** Do not re-run the spike, do not re-apply §2.5, and do
+not attempt to select a winner from the two rejected prototypes — there is no
+selection to make.
+
+Scope, strictly, and in this order:
+
+1. **First**, address the two measured engineering findings on the R3F path:
+   the 59–60 ms route-owned long task and the entirely missing pointer
+   parallax (§R.8). Attempt real optimisation. **Do not weaken, redefine, or
+   baseline-subtract the 50 ms gate.** If one bounded optimisation round
+   cannot bring the route-owned task under it, stop and return the measured
+   result to Devan for an explicit decision — do **not** silently select CSS.
+2. **Then** build the Portfolio Orrery per §R, in an owner-gated spike route
+   first, exactly as Phase A's routes are gated (§2.1). Production wiring
+   into `/share` remains Turn C's scope and does not begin until this
+   remediation is reviewed.
+3. Keep `npm test` and `npm run build` green; commit once as
+   `phase10(§7): <summary>`; transition `stage` → `review`, `role` →
+   `claude_lead`, `next_actor` → `claude` as the standing prompt already
+   instructs.
 - **Outcome — one variant passes and is selected:** this is the one
   deviation from the generic two-outcome table in
   `docs/PHASE10_AGENT_WORKFLOW.md` §3, scoped to §7's Phase A→B handoff
@@ -1288,3 +1345,214 @@ Phase B:
 - Record this spec's §3 architecture decision's rationale is not duplicated
   in the evidence doc (it lives here and in `DECISION.md`) — the evidence
   doc only needs to link back to both, not restate them.
+
+---
+
+## §R. The Portfolio Orrery — remediation target (normative, July 25, 2026)
+
+This section is the authorized replacement target recorded by Devan after the
+Phase A spike produced no winner. It supersedes §2.2, §2.4's framing, §3's
+chapter-body architecture, and §5's production build wherever they conflict,
+and is binding on Turn B′ and every turn after it. Where §R is silent, the
+rest of this document still applies unchanged.
+
+### R.1 The world
+
+`/share` opens with a genuinely **full-viewport** portfolio solar system — not
+a scene panel beside a dashboard, not a backdrop behind cards. The Orrery is
+the first thing a public visitor sees and the product's navigation signature.
+
+### R.2 The sun — the portfolio as a whole
+
+- The central sun represents the portfolio in aggregate.
+- **It must not lead with, and must never publicly reveal, total account
+  dollar value.** This is a privacy boundary, not a styling preference, and it
+  outranks every visual consideration (`PRODUCT_DIRECTION.md` decision
+  hierarchy 1–2).
+- Activating the sun — by click, tap, keyboard, or a real link/button in the
+  semantic layer — opens the portfolio-level summary: **composition, return,
+  and market-relative context**. This is the natural entry to the accepted
+  Pulse/Forces/Structure chapter content, which is reused, not rebuilt.
+
+### R.3 The planets — one per real holding
+
+- Each planet represents **one actual public-safe holding**. Not a chapter,
+  not a sector bucket, not a decorative body.
+- The planet set is derived from the same public-safe holding source `/share`
+  already uses. No owner-only holding, position, or field may appear.
+
+### R.4 Radius encodes weight
+
+- Planet radius encodes **portfolio weight** through a single pure function on
+  a perceptually sensible, clamped scale (area- or perceptually-proportional,
+  not raw linear radius, so weight differences read correctly to the eye).
+- **Larger positions must clearly produce larger planets.** Small holdings
+  must remain visible and selectable at every supported viewport — the minimum
+  clamp exists for that, and the selectable hit target still respects the
+  44×44 CSS px floor.
+- The function is deterministic and unit-tested against hand-computed
+  fixtures, including both clamp boundaries and the degenerate single-holding
+  case.
+
+### R.5 Direction encodes weekly performance
+
+Orbit direction encodes **trailing weekly performance**:
+
+| Trailing weekly return | Direction |
+|---|---|
+| Positive | Clockwise |
+| Negative | Counterclockwise |
+| Unavailable, or effectively flat within a declared epsilon | A neutral behaviour, **explicitly labelled as such on screen** — never silently rendered as one of the other two |
+
+The epsilon and the neutral behaviour are declared in code, tested, and named
+in the legend. "Unavailable" and "flat" are designed states, per
+`PRODUCT_DIRECTION.md` principle 8.
+
+### R.6 Speed encodes magnitude
+
+- Orbital speed **increases monotonically with the absolute weekly percentage
+  change**, under safe minimum and maximum clamps (nothing frozen, nothing
+  strobing).
+- The mapping is a single deterministic pure function, unit-tested for
+  monotonicity across the domain and at both clamps.
+- **An on-screen legend explains both direction and speed.** It is part of the
+  first viewport's information, not a hidden tooltip.
+- **Direction and speed can never be the only accessible representation of
+  performance.** Every value they encode is also present as text in the
+  semantic layer.
+
+### R.7 Orbital paths are real trajectories
+
+- A drawn orbital path must be **the path its planet actually travels**.
+- **No unexplained ellipses, rings, arcs, or decorative geometric marks are
+  permitted anywhere in the scene.** This is the specific defect that failed
+  both prototypes (§2.4 row 2); a mark that no object travels and no legend
+  explains does not ship.
+- Every visual object either encodes portfolio information or supports spatial
+  orientation (horizon, depth, scale reference, star field). Nothing else.
+
+### R.8 Interaction, and the two engineering findings that come first
+
+- Hovering, focusing, or selecting a planet **pauses or stabilises it** so the
+  interaction remains usable — motion never fights the pointer or the
+  keyboard.
+- Selecting a planet opens the **semantic holding inspector**, containing at
+  minimum: ticker and company; portfolio weight; weekly return;
+  portfolio-relative performance context; public-safe holding analytics; and a
+  link to deeper stock information (`/stock/[ticker]`).
+- Inspector state is **URL-restorable** and works with browser back/forward,
+  under the same contract chapter state already uses. Focus moves
+  intentionally on open and returns on close.
+- **Before any of the above**, Turn B′ addresses the two measured findings
+  from `DECISION.md`:
+  - the **59–60 ms route-owned long task** (5/5 desktop runs; baseline and CSS
+    both zero) — attempt real optimisation: chunk splitting, deferring scene
+    construction past first paint, yielding scene setup across frames, or
+    reducing initial geometry/material work. **The 50 ms boundary is not to be
+    weakened, redefined, or replaced with a baseline-subtracted proxy.** If one
+    bounded optimisation round cannot meet it, return the measured result to
+    Devan for an explicit decision; do not silently select CSS.
+  - the **missing pointer parallax** on the R3F path — no `pointermove`
+    listener exists in `src/app/dev/phase10-spike-r3f-world/` at all. Implement
+    it, satisfying §2.4 row 6's different-magnitude offset requirement.
+
+### R.9 Runtime, fallbacks, and privacy (unchanged obligations, restated for
+this target)
+
+- **R3F is the intended visually dominant desktop approach.** The existing
+  semantic DOM remains the accessible source of truth for headings, the
+  holding list, the inspector, keyboard operation, and URL state (§3.1,
+  unchanged). The CSS shell is the no-WebGL and reduced-motion fallback (§3.5,
+  unchanged).
+- **Mobile** uses a deliberate static or simplified 2D orbital map or list —
+  never a cropped desktop scene, never a miniature orbit with unreadable
+  labels.
+- **Reduced motion** freezes orbital movement while preserving every encoded
+  value as text and every destination as a real control.
+- **Keyboard and screen-reader users** receive a synchronised semantic holding
+  list and inspector.
+- **No essential information may exist only in WebGL, motion, colour, speed,
+  or direction.**
+- **All public/private and no-dollar privacy rules are preserved.** No
+  owner-only holding data may reach `/share` — not in the planet set, not in
+  the inspector, not in an encoded radius, direction, or speed, and not in any
+  payload the client can read.
+- Dashboard, Research, History, Trades, Compare, and the stock routes remain
+  intact with their accepted functionality.
+
+### R.10 Art direction — "portfolio command observatory"
+
+- Dark outer-space environment.
+- 1980s CRT phosphor green and amber accents.
+- Restrained scanline overlays.
+- Neon telemetry glow and analog-future HUD framing.
+- Retrofuturist control-room typography and labels.
+- Procedurally varied planet materials, an emissive sun, atmospheric rim
+  lighting, depth, restrained bloom, and a coherent star field — replacing the
+  generic low-poly placeholder spheres that failed review.
+- **Polished and professional first, playful and experimental second.**
+- Translate the broad qualities of classic space-opera control panels,
+  optimistic atomic-age futurism, and analog time-bureaucracy. **Do not copy
+  protected logos, characters, props, or exact compositions.**
+- Contrast on every new text element is verified against the real dark surface
+  the same way `observatory-contrast.test.ts` already verifies
+  `--obs-ink-faint` — computed WCAG ratio from source tokens, not eyeballed.
+
+### R.10a Name collision (resolve before building)
+
+`src/components/surface/PortfolioOrrery.tsx` already exists: a Phase 9
+surface-tier **decorative** CSS-3D component ("this decorative layer is never
+the only representation of this data"), consumed by `SurfaceActs.tsx` and
+`/dev/surface-scratch`, whose `weights` prop varies form scale for looks only.
+It is **not** this section's Portfolio Orrery and is **out of §7's scope** —
+do not rename, repurpose, or delete it. Give the new spatial scene a distinct
+component name (for example `OrreryScene` or `ShareOrrery`), or record an
+explicit decision about how the two relate.
+
+### R.11 Required visual evidence
+
+Committed under `docs/phase10-baseline/section-7/`, demonstrating:
+
+1. initial solar-system entry;
+2. multiple differently sized planets (the weight encoding visibly working);
+3. simultaneous clockwise and counterclockwise motion (the direction encoding
+   visibly working, in one frame sequence);
+4. planet focus and selection;
+5. camera movement to the selected holding;
+6. the holding inspector;
+7. the reduced-motion fallback;
+8. the mobile fallback.
+
+Continuous-motion items (1, 3, 5) require a recording or an evenly spaced
+filmstrip per §10 — a single before/after pair does not satisfy them. If
+recording tooling is unavailable, say so and use the filmstrip alternative;
+never claim a recording that does not exist.
+
+### R.12 Additional acceptance criteria (added to §8's thirty-four)
+
+35. The sun exists, is activatable by pointer and keyboard, and opens the
+    portfolio-level summary; no total account dollar value appears in
+    `/share`'s HTML, RSC payload, or client bundle — re-verified by the
+    existing dollar-pattern privacy check.
+36. Every planet corresponds 1:1 to a real public-safe holding; the count and
+    identity match the public holding source exactly; no owner-only field is
+    referenced by any Orrery file (verified by direct source read).
+37. The weight→radius, return→direction, and |return|→speed functions are
+    pure, deterministic, clamped, and unit-tested against hand-computed
+    fixtures including both clamp boundaries, the flat/unavailable case, and
+    monotonicity across the speed domain.
+38. An on-screen legend explains direction and speed; every encoded value also
+    exists as text in the semantic layer.
+39. No ellipse, ring, arc, or geometric mark exists that no object travels and
+    no legend explains (verified by source read and by direct observation of
+    the idle first viewport).
+40. Hover, focus, and selection stabilise the targeted planet; selection opens
+    the inspector with all six required fields; inspector state is
+    URL-restorable and survives browser back/forward.
+41. The R3F route-owned long task is under 50 ms on the §2.3.2 rig, **or** the
+    measured failure has been returned to Devan for an explicit decision. It
+    is not resolved by changing the threshold.
+42. Pointer parallax is present on the R3F path, offsetting at least two
+    layers by different magnitudes, verified by live computed-style reads at
+    two or more distinct pointer positions.
+43. All eight R.11 evidence items are committed.

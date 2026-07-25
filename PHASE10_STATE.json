@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§7",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -25,11 +25,55 @@
   },
   "section": {
     "id": "§7",
-    "title": "Spatial Observatory",
+    "title": "Spatial Observatory — the Portfolio Orrery",
     "spec_doc": "docs/phase10-workflow/specs/section-7.md",
-    "implementation_commit": null,
-    "review_result": null,
-    "findings": [],
+    "implementation_commit": "2f78b1bedd0b80820b4513be29c0e368828180d5",
+    "review_result": "fail",
+    "review_doc": "docs/phase10-workflow/reviews/section-7-review.md",
+    "decision_doc": "docs/phase10-spike-section-7/DECISION.md",
+    "evidence_doc": "docs/phase10-baseline/section-7/README.md",
+    "handoff": "docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-codex-implementation-remediate.md",
+    "turn": "Turn B complete — spike evaluation and decision. Next is Turn B′ (Codex Orrery remediation) per section-7.md §0.",
+    "spike_decision": {
+      "result": "fail_no_winner",
+      "selected_runtime": null,
+      "decided_by": "Devan (owner), recorded by claude/fable-5",
+      "decided_at": "2026-07-25",
+      "summary": "Both prototypes were built, measured live on both declared rigs, and photographed. R3F failed the §2.3.2 reliability gate with a route-owned 59-60ms long task in 5 of 5 desktop runs (baseline and CSS both zero on the identical rig) and shipped no pointer parallax at all. The owner then reviewed both first viewports and rejected both as production candidates: CSS reads as a clean dashboard on an infinite perspective grid with ellipses that have no apparent meaning; R3F reads as low-quality generic spheres whose moving bodies have no understandable portfolio purpose. §2.4's 'a row failed by both variants means neither may be selected as-built' rule fired. CSS was NOT selected by default for passing the technical gate, and no second unprimed viewer reaction was fabricated to manufacture a winner.",
+      "css_result": "Passed every measured reliability row (added initial JS -828B, load 528ms median vs 610ms baseline, 0 long tasks, 0 dropped frames, 100% of transition frames within budget, heap ~= baseline). Rejected on the storytelling gate.",
+      "r3f_result": "FAIL on the reliability gate: 59, 60, 60, 59, 59 ms route-owned long task, one per run, 5/5. Non-failing rows passed: lazy chunk 235,270B (<=260KB) and 0B of the initial bundle, 0 chunk requests at phone width, heap +3.0MB (<=40MB), 20-transition leak check plateaus at max +2.55MB growth (<=10MB). Also fails §2.4 row 6: no pointermove listener exists in src/app/dev/phase10-spike-r3f-world/ at all.",
+      "invalid_row_noted": "The §2.3.2 interaction-latency row is invalid as instrumented — clickChapterAndSettle appends a fixed 900ms wait, so the untouched pre-§7 baseline also fails the <=900ms threshold (970-992ms). Recorded, then excluded from scoring rather than used against either variant. Real focus-to-settle excluding the fixed wait: baseline 70-92ms, CSS 94-120ms, R3F 75-106ms.",
+      "evidence_gaps_declared": [
+        "No second independent unprimed viewer for §2.4 rows 1, 7, 10 — not run, and not fabricated.",
+        "No live side-by-side session against y-n10.com for §2.4 row 11 — recorded as not performed.",
+        "No 390x844/320px stills of the spike routes; the mobile rig ran and passed, the mobile stills were not captured.",
+        "No live logged-out HTML dollar-pattern check this turn; the gate is satisfied at source and by Turn A's tests.",
+        "No isolated front/back occlusion-change observation for CSS §2.4 row 6."
+      ]
+    },
+    "findings": [
+      {
+        "id": 1,
+        "category": "product_alignment",
+        "criterion": "section-7.md §2.4 (all eleven rows; a row failed by both variants means neither may be selected as-built) and PHASE10.md §7 Section gate 2 (storytelling gate required, equal in rank to performance)",
+        "evidence": "Owner reviewed both idle 1440x900 first viewports and rejected both as production candidates. CSS: 'a clean dashboard placed on an infinite perspective grid... its ellipses have no apparent meaning.' R3F: 'low-quality generic spheres. The moving bodies do not have an understandable portfolio purpose.' Independently corroborated by the reviewer's direct read of docs/phase10-baseline/section-7/screenshots/{css,r3f}-world-idle.png. Rows failed by both: 1, 2, 6, 8, 10.",
+        "required_change": "Replace the target with the owner-defined Portfolio Orrery (finding 3). Neither existing variant may be selected; CSS must not be selected merely because it passed the technical gate."
+      },
+      {
+        "id": 2,
+        "category": "engineering_reliability",
+        "criterion": "section-7.md §2.3.2 (0 long tasks > 50ms of added time over the pre-§7 desktop baseline) and §2.4 row 6 (pointer parallax offsetting at least two layers by different magnitudes)",
+        "evidence": "Long task: 59, 60, 60, 59, 59 ms, one per run, 5/5 runs on /dev/phase10-spike-r3f-world; baseline and CSS each produce zero on the identical rig; start times 131-147ms sit inside the evaluation window of the lazily requested R3F chunks (3imkzi2f4gq5q.js 234,117B; 0dcit9joezcnw.js 1,153B). Raw: docs/phase10-spike-section-7/raw/desktop-scene.json. Parallax: --parallax-x/y read 0 and .atmosphere/.orbitCamera transforms are identical at all four measured pointer positions (docs/phase10-baseline/section-7/capture-report.json); grep for pointermove in src/app/dev/phase10-spike-r3f-world/ returns nothing while CssWorld.tsx:37 attaches it.",
+        "required_change": "One bounded optimisation round attempting a real fix (chunk splitting, deferring scene construction past first paint, yielding scene setup across frames, reducing initial geometry/material work). The 50ms gate is not to be weakened, redefined, or replaced with a baseline-subtracted proxy. Implement pointer parallax on the R3F path. If the route-owned task cannot be brought under the gate after that one round, return the measured result to Devan for an explicit decision — do not silently select CSS."
+      },
+      {
+        "id": 3,
+        "category": "product_alignment",
+        "criterion": "PRODUCT_DIRECTION.md design principle 3 (every body, plane, or node must map to a destination or data concept), PHASE10.md §7 Portfolio Orrery terms 1-16, and section-7.md §R",
+        "evidence": "The failure both variants share is that their spatial objects carry no portfolio information: the ellipses have no referent and the spheres have no purpose. This is exactly principle 3's 'if it can be removed without changing navigation or comprehension, it is decoration.'",
+        "required_change": "AUTHORIZED SCOPE — implement the Portfolio Orrery per section-7.md §R (normative and complete; no further scope decision is needed). /share opens with a genuinely full-viewport portfolio solar system; the sun is the portfolio as a whole and never leads with or publicly reveals total account dollar value, activating it opens composition/return/market-relative context; each planet is one actual public-safe holding, not a chapter; radius encodes portfolio weight on a perceptually sensible clamped scale so small holdings stay visible and selectable while larger positions clearly produce larger planets; orbit direction encodes trailing weekly performance (positive clockwise, negative counterclockwise, unavailable or effectively flat a neutral explicitly-labelled behaviour); orbital speed increases monotonically with |weekly % change| under safe clamps, deterministic, tested, and explained by an on-screen legend, and direction and speed can never be the only accessible representation of performance; orbital paths represent the planets' real trajectories with no unexplained ellipses or decorative geometric marks; hover/focus/selection pauses or stabilises a planet and selection opens a semantic holding inspector (ticker and company, portfolio weight, weekly return, portfolio-relative context, public-safe analytics, link to deeper stock information) with URL-restorable state that works with browser back/forward; R3F is the intended visually dominant desktop approach with the semantic DOM as accessible source of truth and the CSS shell as the no-WebGL/reduced-motion fallback; placeholder spheres are replaced by a deliberate visual system (procedurally varied planet materials, emissive sun, atmospheric rim lighting, meaningful orbital paths, depth, restrained bloom, coherent star field) where every visual object encodes portfolio information or supports spatial orientation; art direction is 'portfolio command observatory' (dark outer space, 1980s CRT phosphor green and amber accents, restrained scanlines, neon telemetry glow, analog-future HUD framing, retrofuturist control-room typography, polished first and playful second, translating the broad qualities of classic space-opera control panels, atomic-age futurism, and analog time-bureaucracy without copying protected logos, characters, props, or exact compositions); Dashboard, Research, History, Trades, Compare, and stock routes remain intact and the Orrery becomes the public spatial entry point and navigation signature; mobile uses a deliberate static or simplified 2D orbital map/list, reduced motion freezes orbital movement, keyboard and screen-reader users receive a synchronised semantic holding list and inspector, and no essential information may exist only in WebGL, motion, colour, speed, or direction; all public/private and no-dollar privacy rules are preserved and no owner-only holding data may reach /share. New acceptance criteria 35-43 are in §R.12; the eight required visual-evidence items are in §R.11."
+      }
+    ],
     "remediation_commits": [],
     "accepted_commit": null,
     "accepted_at": null
@@ -77,24 +121,35 @@
       "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new §7 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
     }
   ],
-  "prev_actor_commit": "b4aab543e6871196822352af4d4b85a4928f440a",
+  "prev_actor_commit": "2f78b1bedd0b80820b4513be29c0e368828180d5",
   "last_green_commit": "139da143f7e9de48215aa17a52313ab1946bca67",
+  "production_code_changed_this_turn": false,
+  "production_code_note": "Turn B is a review-only turn: no file under src/, no package.json/package-lock.json change. `git diff --quiet package.json package-lock.json` reports no diff. three@0.185.1, @react-three/fiber@9.6.1, and @types/three@0.185.1 remain --no-save in node_modules only, retained for the remediation round. The only non-§7 change is one .gitignore line for the machine-local .claude/settings.local.json.",
   "verification": {
+    "environment_note": "Turn B ran in a Linux sandbox rather than on the machine that ran Turn A. node_modules holds darwin-arm64 native bindings, so vitest required NODE_PATH-injected linux-arm64 bindings (installed outside the repo, in /tmp — node_modules was not modified) to run at all, and next build cannot fetch Google Fonts. Both effects are environmental and neither is caused by this turn, which changed no file under src/, no config, and no dependency.",
     "tests": {
       "command": "npm test",
-      "status": "pass",
-      "summary": "Phase 10 §7 Turn A full suite: 77 test files passed; 429 of 429 tests passed. New non-browser coverage verifies five real chapter anchors/no-JS markup, keyboard semantics, reduced-motion and forced-failure branches, R3F mesh/link synchronization source contract, owner gating, and synthetic-data/audio bounds.",
-      "finished_at": "2026-07-25T05:06:36Z"
+      "status": "fail_environmental",
+      "summary": "427 of 429 tests passed across 77 files; 2 failed. Both failures are in src/components/surface/CountUpSettle.test.tsx, a pre-existing non-§7 component test. Reproducibly a sandbox CPU-contention artifact: the file passes 4/4 in isolation with those two tests taking 1886ms and 1890ms against their own hard-coded 2000ms waitFor timeout, and crossing it only under full-suite parallelism in this environment. Zero files under src/ changed this turn (git status --porcelain -- src/ is empty). Turn A recorded 429/429 at the same source commit on the owner's machine.",
+      "finished_at": "2026-07-25T17:03:18Z"
     },
     "build": {
       "command": "npm run build",
-      "status": "pass",
-      "summary": "Next.js 16.2.11 production build compiled and TypeScript passed; 18 static-page tasks generated with both new owner-gated §7 spike routes. Temporary R3F dependencies remain no-save in node_modules only; package.json and package-lock.json are unchanged.",
-      "finished_at": "2026-07-25T05:09:20Z"
+      "status": "not_run_environmental",
+      "summary": "Could not complete in this sandbox. src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google, which requires a live Google Fonts fetch at build time; this environment's network policy blocks https://fonts.googleapis.com (a direct fetch returns 'fetch failed'), so Turbopack reports three 'Failed to fetch ... from Google Fonts' errors and stalls without producing a BUILD_ID. This is the pre-existing condition already recorded as open §13 work (PRODUCT_DIRECTION.md success measure 'No production build depends on a live Google Fonts fetch'; PHASE10_STATE.json legacy font_network_behavior). Last recorded green build is Turn A's, at the same source commit. The standing prompt's green-before-commit gate applies to commits touching implementation source; this is a pure review/documentation/evidence commit. Codex must confirm both green on the owner's machine before its own remediation commit.",
+      "finished_at": "2026-07-25T17:03:18Z"
+    },
+    "measurement": {
+      "desktop_rig": "docs/phase10-spike-section-7/measure-desktop.mjs — 1440x900, CDP CPU 2x, no network throttle, 5 fresh contexts per route, real production server. Raw: docs/phase10-spike-section-7/raw/desktop-scene.json",
+      "mobile_rig": "docs/phase10-spike-section-7/measure-phone.mjs — Playwright Moto G4 descriptor, CDP CPU 4x, Slow 4G, 5 fresh contexts per route. Raw: docs/phase10-spike-section-7/raw/mobile-fallback.json",
+      "visual_rig": "docs/phase10-spike-section-7/capture-evidence.mjs — 11 dimension-verified 1440x900 screenshots, 6 .webm recordings, and live computed-style pointer/depth/travel reads. Raw: docs/phase10-baseline/section-7/capture-report.json",
+      "script_corrections": "Three corrections were applied to measure-desktop.mjs before the run and are recorded in DECISION.md §1.1 rather than applied silently: the focus predicate used strict equality against a heading whose text also contains the chapter number (could never match); the transition RAF sample started after the window it measured had elapsed (always empty); the R3F leak cycle started on the already-active chapter (a no-op click that would hang).",
+      "env_contents_accessed_or_output": false,
+      "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override for the authenticated capture; no environment-file contents were read at any point."
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-25T05:09:20Z",
+  "updated_at": "2026-07-25T17:03:18Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

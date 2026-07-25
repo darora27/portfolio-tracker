@@ -697,3 +697,74 @@ latest handoff doc for current status instead.
 - The `portfolio-ux` skill was applied via its documented fallback
   (direct read of `.claude/skills/portfolio-ux/SKILL.md`) for this
   planning turn — done by claude/fable-5 (cowork, owner-directed)
+
+### §7 Turn B — spike evaluation: FAIL, no winner; target replaced by the Portfolio Orrery — July 25, 2026
+
+- [x] Ran the retained Turn A tooling against a real production server and
+  completed the §7 Phase A decision as **FAIL / no winner**. Both variants
+  were built, measured live on both declared rigs (Moto G4 / CPU 4× /
+  Slow 4G, and 1440×900 / CPU 2×, five fresh contexts per route), and
+  photographed — done by claude/fable-5 (cowork, owner-directed)
+- [x] Recorded R3F's reliability-gate failure honestly and without
+  subtraction: a **route-owned 59–60 ms long task in 5 of 5 desktop runs**,
+  where the pre-§7 baseline and the CSS variant each produce zero on the
+  identical rig — done by claude/fable-5
+- [x] Recorded R3F's **entirely missing pointer parallax**, verified live
+  (all four pointer reads identical) and at source (no `pointermove`
+  listener exists in `src/app/dev/phase10-spike-r3f-world/`) — done by
+  claude/fable-5
+- [x] Recorded the owner's rejection of **both** production candidates: CSS
+  reads as a clean dashboard on an infinite perspective grid with ellipses
+  that have no apparent meaning; R3F reads as low-quality generic spheres
+  whose moving bodies have no understandable portfolio purpose. §2.4's
+  "failed by both" rule fired — done by claude/fable-5
+- [x] Did **not** select CSS by default for passing the technical gate, and
+  did **not** fabricate a second unprimed viewer reaction. Unperformed rows
+  (§2.4 rows 1, 7, 10, 11) are recorded as unperformed — done by
+  claude/fable-5
+- [x] Flagged the §2.3.2 interaction-latency row as **invalid as
+  instrumented** — a fixed 900 ms wait inside the measurement means the
+  untouched baseline fails it too (970–992 ms); the row scored nothing —
+  done by claude/fable-5
+- [x] Recorded three corrections applied to `measure-desktop.mjs` before the
+  run (focus predicate, transition-frame sampling window, leak-cycle start
+  chapter) rather than applying them silently — done by claude/fable-5
+- [x] Recorded the owner's replacement target, the **Portfolio Orrery**,
+  consistently across `PRODUCT_DIRECTION.md`, `PHASE10.md` §7,
+  `docs/PHASE10_UX_ARCHITECTURE.md` §3.1/§8, and
+  `docs/phase10-workflow/specs/section-7.md` (new normative §R with
+  acceptance criteria 35–43 and eight required visual-evidence items) —
+  done by claude/fable-5
+- [x] Preserved every uncommitted §7 measurement, screenshot, filmstrip, and
+  script; nothing was reset, cleaned, or discarded — done by claude/fable-5
+- [x] Changed no production application code and no dependency:
+  `src/` untouched, `git diff --quiet package.json package-lock.json`
+  clean — done by claude/fable-5
+- [x] Validator exit 0. `npm test` 427/429 across 77 files — the 2 failures
+  are a reproducible sandbox CPU-contention artifact in the pre-existing
+  non-§7 `CountUpSettle.test.tsx` (passes 4/4 in isolation at 1886/1890 ms
+  against its own 2000 ms `waitFor` timeout); zero `src/` files changed this
+  turn. `npm run build` could not complete in this Linux sandbox because
+  `next/font/google` requires a live Google Fonts fetch the environment
+  blocks — the pre-existing open §13 condition, recorded rather than papered
+  over — done by claude/fable-5
+- [x] Flagged the name collision with the existing Phase 9 decorative
+  `src/components/surface/PortfolioOrrery.tsx`, which is out of §7's scope
+  and must not be renamed, repurposed, or deleted — done by claude/fable-5
+- [x] State routed to `§7` / `remediate` / `codex_implementation` / `ready`
+  / `next_actor: codex`, with the Orrery scope explicitly authorized in
+  finding 3 — done by claude/fable-5
+- [x] The `portfolio-ux` skill was applied via its documented fallback
+  (direct read of `.claude/skills/portfolio-ux/SKILL.md`) — done by
+  claude/fable-5
+
+### §7 Turn B evidence
+
+- Decision: `docs/phase10-spike-section-7/DECISION.md`
+- Review: `docs/phase10-workflow/reviews/section-7-review.md`
+- Evidence index: `docs/phase10-baseline/section-7/README.md`
+- Raw: `docs/phase10-spike-section-7/raw/desktop-scene.json`,
+  `docs/phase10-spike-section-7/raw/mobile-fallback.json`,
+  `docs/phase10-baseline/section-7/capture-report.json`
+- Handoff:
+  `docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-codex-implementation-remediate.md`

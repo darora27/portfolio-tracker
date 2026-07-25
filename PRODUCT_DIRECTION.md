@@ -35,6 +35,96 @@ extraterrestrial curiosity while the lead observation keeps the product firmly
 aware of market and economic reality. The interface should feel singular and
 human-authored, yet simple to understand.
 
+## The Portfolio Orrery (owner decision, July 25, 2026)
+
+This section supersedes the spatial-object model above wherever the two
+conflict. Everything else in the selected direction — the editorial
+market-relative lead, the observation-plate chapters, evidence marginalia, the
+divergence ribbon, the selected-body inspector pattern, and the static
+concentric fallback — remains in force.
+
+### Why the change
+
+Phase 10 §7's two spatial prototypes were built, measured, and photographed,
+and Devan rejected both as production candidates
+(`docs/phase10-spike-section-7/DECISION.md`). The CSS prototype read as a
+clean dashboard placed on an infinite perspective grid rather than a detailed
+spatial world, and its ellipses had no apparent meaning. The R3F prototype
+read as low-quality generic spheres whose moving bodies had no understandable
+portfolio purpose. Both failures are the same failure: **the spatial objects
+carried no portfolio information**, which design principle 3 already forbids.
+Neither prototype was selected, and the technically cleaner one was not
+promoted by default.
+
+### What the Orrery is
+
+`/share` opens with a genuinely full-viewport portfolio solar system.
+
+1. **The sun is the portfolio as a whole.** It never leads with, and never
+   publicly reveals, total account dollar value. Activating it opens the
+   portfolio-level summary: composition, return, and market-relative context.
+2. **Each planet is one actual public-safe holding** — not an Observatory
+   chapter, not a category, not a decorative body.
+3. **Planet radius encodes portfolio weight** on a perceptually sensible,
+   clamped scale. Larger positions must clearly produce larger planets; small
+   holdings must remain visible and selectable.
+4. **Orbit direction encodes trailing weekly performance:** positive return
+   clockwise, negative return counterclockwise, unavailable or effectively
+   flat a neutral, explicitly labelled behaviour.
+5. **Orbital speed increases monotonically with the absolute weekly
+   percentage change**, under safe minimum and maximum clamps. The mapping is
+   deterministic, unit-tested, and explained by an on-screen legend. Direction
+   and speed may never be the only accessible representation of performance.
+6. **Orbital paths represent the planets' real trajectories.** No unexplained
+   ellipses and no decorative geometric marks are permitted anywhere in the
+   scene.
+7. **Hovering, focusing, or selecting a planet pauses or stabilises it** so
+   the interaction stays usable, and selecting it opens a semantic holding
+   inspector: ticker and company, portfolio weight, weekly return,
+   portfolio-relative performance context, public-safe holding analytics, and
+   a link to deeper stock information. Inspector state is URL-restorable and
+   works with browser back/forward.
+8. **Every visual object encodes portfolio information or supports spatial
+   orientation.** Generic low-poly placeholder spheres are replaced by a
+   deliberate visual system: procedurally varied planet materials, an emissive
+   sun, atmospheric rim lighting, meaningful orbital paths, depth, restrained
+   bloom, and a coherent star field.
+
+### Art direction — "portfolio command observatory"
+
+Dark outer-space environment; 1980s CRT phosphor green and amber accents;
+restrained scanline overlays; neon telemetry glow and analog-future HUD
+framing; retrofuturist control-room typography and labels. Polished and
+professional first, playful and experimental second. Translate the broad
+qualities of classic space-opera control panels, optimistic atomic-age
+futurism, and analog time-bureaucracy — never copying protected logos,
+characters, props, or exact compositions.
+
+### Runtime and resilience
+
+React Three Fiber is the intended visually dominant desktop approach, with the
+existing semantic DOM as the accessible source of truth and the CSS shell as
+the no-WebGL and reduced-motion fallback. This authorisation is conditional,
+not a blank cheque: R3F's measured 59–60 ms route-owned long task must be
+genuinely optimised, not excused, and the 50 ms boundary is not to be weakened
+or redefined. If one bounded optimisation round cannot bring it under the
+gate, the measured result returns to Devan for an explicit decision — CSS is
+not selected silently as a consolation.
+
+Mobile uses a deliberate static or simplified 2D orbital map or list. Reduced
+motion freezes orbital movement. Keyboard and screen-reader users receive a
+synchronised semantic holding list and inspector. No essential information may
+exist only in WebGL, motion, colour, speed, or direction.
+
+### What the Orrery does not disturb
+
+Dashboard, Research, History, Trades, Compare, and the stock routes remain
+intact with their accepted functionality. The Orrery becomes the public
+spatial entry point and the product's navigation signature; later integration
+work may extend the same retro-space visual grammar into deeper routes without
+replacing what those routes already do. All public/private and no-dollar
+privacy rules are unchanged — no owner-only holding data may reach `/share`.
+
 ## Product purpose
 
 Portfolio Observatory is a personal investing product that helps a person
@@ -194,6 +284,12 @@ must reflect chapter changes.
 | `/stock/[ticker]` | Explain one holding's role in the portfolio | Why is this position here, how is it behaving, and what is its portfolio effect? | Fundamentals, research, correlation, and price history |
 | `/share/full` | Transitional legacy public detail during Phase 10 | Where is the complete read-only dataset? | It should be reorganized or retired only through an explicit migration decision |
 
+As of July 25, 2026, `/share`'s spatial entry point is the Portfolio Orrery
+above: the full-viewport solar system a public visitor arrives in, whose sun
+opens the portfolio-level summary and whose planets open individual public-safe
+holdings. The route's job, first question, and no-dollar boundary are
+unchanged.
+
 ## Decision hierarchy
 
 When requirements conflict, decide in this order:
@@ -230,6 +326,14 @@ No decision lower in the list may weaken one above it.
 - No brokerage, trading, or portfolio-recommendation behavior.
 - No generic SaaS dashboard, card wall, purple gradient on white, glassmorphism
   kit, or context-free 3D decoration.
+- No unexplained ellipses, rings, orbit paths, or geometric marks that no
+  object travels and no legend explains (added July 25, 2026 — this is the
+  specific failure that ended the §7 spike).
+- No generic placeholder geometry standing in for portfolio meaning: a body in
+  the scene either encodes portfolio information or supports spatial
+  orientation, or it does not ship.
+- No public exposure of total account dollar value, including via the
+  Orrery's sun.
 - No literal food language or imagery.
 - No automatic audio.
 - No essential content that exists only in WebGL, canvas, hover, motion, or
@@ -237,7 +341,12 @@ No decision lower in the list may weaken one above it.
 - No promise of pre-market or after-hours data before provider, exchange
   calendar, freshness, caching, and failure-state spikes pass.
 - No production Three.js/React Three Fiber dependency before the isolated
-  technical comparison and design selection.
+  technical comparison and design selection. **Status, July 25, 2026:** the
+  comparison is complete and recorded
+  (`docs/phase10-spike-section-7/DECISION.md`); it produced no winner. R3F is
+  authorised for §7's Portfolio Orrery remediation under the conditions in
+  "Runtime and resilience" above — the unchanged 50 ms long-task gate and the
+  owner-decision escape hatch — and nowhere else.
 - No exact visual-token or font freeze during the planning pass.
 - No rewrite of the proven financial math merely to support a new layout.
 - No removal of advanced data; it moves to an appropriate layer.

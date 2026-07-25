@@ -69,7 +69,7 @@ async function clickChapterAndSettle(page, label) {
   await page.waitForFunction(
     (expected) =>
       document.activeElement?.tagName === "H2" &&
-      document.activeElement.textContent?.trim() === expected,
+      document.activeElement.textContent?.trim().includes(expected),
     label,
   );
   await page.waitForTimeout(900);
@@ -127,23 +127,25 @@ async function measureRun(browser, path, name) {
   await page.waitForTimeout(2500);
   const settledHeap = heapFrom(await cdp.send("Performance.getMetrics"));
   const idleFrameDeltas = await sampleFrames(page);
-  const transitionStart = await page.evaluate(() => performance.now());
+  // Start the RAF sampling promise now, before the click, and await it only
+  // after the click settles — the transition window this measures runs
+  // concurrently with clickChapterAndSettle's own ~900ms wait, not after it
+  // (starting the sample post-click would begin sampling once the window it's
+  // meant to observe had already elapsed, producing an always-empty result).
+  const transitionFramesPromise = page.evaluate(() => {
+    const frames = [];
+    return new Promise((resolveFrames) => {
+      const startTime = performance.now();
+      const tick = (now) => {
+        frames.push(now);
+        if (now - startTime < 900) requestAnimationFrame(tick);
+        else resolveFrames(frames.slice(1).map((frame, index) => frame - frames[index]));
+      };
+      requestAnimationFrame(tick);
+    });
+  });
   const interactionLatencyMs = await clickChapterAndSettle(page, "Forces");
-  const transitionFrameDeltas = await page.evaluate(
-    async (startTime) => {
-      const frames = [];
-      await new Promise((resolveFrames) => {
-        const tick = (now) => {
-          if (now >= startTime) frames.push(now);
-          if (now - startTime < 900) requestAnimationFrame(tick);
-          else resolveFrames();
-        };
-        requestAnimationFrame(tick);
-      });
-      return frames.slice(1).map((frame, index) => frame - frames[index]);
-    },
-    transitionStart,
-  );
+  const transitionFrameDeltas = await transitionFramesPromise;
   const longTasks = await page.evaluate(() => window.__phase10LongTasks ?? []);
 
   const scripts = [...network.values()]
@@ -159,7 +161,11 @@ async function measureRun(browser, path, name) {
 
   const leakCycles = [];
   if (name === "r3f") {
-    const sequence = ["Forces", "Structure", "Timeline", "Lab", "Pulse"];
+    // Starts at "Structure", not "Forces": the interaction-latency click above
+    // already navigated to Forces, and clicking an already-active chapter's
+    // own link is a no-op (no focus change), so starting the cycle there
+    // would hang waiting for a transition that never happens.
+    const sequence = ["Structure", "Timeline", "Lab", "Pulse", "Forces"];
     for (let cycle = 1; cycle <= 4; cycle += 1) {
       for (const label of sequence) await clickChapterAndSettle(page, label);
       leakCycles.push({
