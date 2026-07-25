@@ -162,6 +162,7 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
       exit 2
       ;;
   esac
+  ACTOR_THIS_TURN="$NEXT_ACTOR"
 
   BEFORE_COMMIT="$(git rev-parse HEAD)"
   BEFORE_STATE="$(shasum -a 256 PHASE10_STATE.json | awk '{print $1}')"
@@ -174,6 +175,10 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
     RUNNER_STATUS=0
   else
     RUNNER_STATUS=$?
+  fi
+
+  if [ "$ACTOR_THIS_TURN" = "codex" ] && [ -n "${PHASE10_CODEX_RESUME_SESSION:-}" ]; then
+    unset PHASE10_CODEX_RESUME_SESSION
   fi
 
   if [ -e PHASE10_LOCK ]; then

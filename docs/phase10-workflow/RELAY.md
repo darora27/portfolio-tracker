@@ -102,7 +102,10 @@ PHASE10_CODEX_RESUME_SESSION=<session-id> \
 
 This is never selected automatically by the relay. The state must first be
 deliberately restored to a valid `ready` Codex turn, and the exact prior
-session ID must come from that turn's local log.
+session ID must come from that turn's local log. When supplied to the relay
+rather than the fixed runner directly, the relay clears the override after the
+first Codex turn so later Codex stages or sections do not inherit stale session
+context.
 
 ## Exit meaning
 
