@@ -1,0 +1,209 @@
+.metric {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  padding: 0.9rem;
+  transition:
+    border-color 150ms ease-out,
+    box-shadow 150ms ease-out;
+}
+
+.metric:hover {
+  border-color: var(--border-strong);
+}
+
+.metric[data-open="true"] {
+  grid-column: 1 / -1;
+}
+
+.compact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.3rem;
+}
+
+.value {
+  color: var(--text-primary);
+  font-family: var(--font-mono, monospace);
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.label {
+  color: var(--text-secondary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.trigger,
+.actions button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+  padding: 0 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  color: var(--text-primary);
+  background: transparent;
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.trigger:focus-visible,
+.panel h3:focus-visible,
+.calcDetails summary:focus-visible,
+.actions a:focus-visible,
+.actions button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.panel {
+  display: grid;
+  gap: 0.72rem;
+  padding-top: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  overflow: hidden;
+  animation: metric-open 150ms ease-out;
+}
+
+.panel[data-reduced-motion="true"] {
+  animation: none;
+}
+
+.panel h3 {
+  color: var(--text-primary);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.2;
+}
+
+.panel h4 {
+  margin-bottom: 0.3rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.panel ul {
+  display: grid;
+  gap: 0.25rem;
+  padding-left: 1.2rem;
+}
+
+.currentValue strong,
+.status {
+  color: var(--text-primary);
+}
+
+.currentValue strong {
+  font-family: var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+}
+
+.relevance {
+  padding: 0.65rem 0 0.65rem 0.8rem;
+  border-left: 2px solid var(--text-secondary);
+}
+
+.calcDetails {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.calcDetails summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.calcDetails dl {
+  display: grid;
+  gap: 0.55rem;
+  padding-bottom: 0.8rem;
+}
+
+.calcDetails dl > div {
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr);
+  gap: 0.65rem;
+}
+
+.calcDetails dt {
+  color: var(--text-secondary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+}
+
+.calcDetails dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.freshness {
+  color: var(--text-secondary);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.68rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.actions a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-primary);
+  text-underline-offset: 0.2em;
+}
+
+.actions button {
+  margin-top: 0;
+}
+
+@keyframes metric-open {
+  from {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+  to {
+    max-height: 200rem;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .calcDetails dl > div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}
