@@ -1,3 +1,4 @@
+/* Shared production and owner-gated reference-route Portfolio Orrery. */
 .world {
   --phosphor: #9de7b2;
   --phosphor-dim: #79b98b;
@@ -109,8 +110,10 @@
   text-transform: uppercase;
 }
 
-.commandBar h1 {
+.commandBar h1,
+.worldTitle {
   margin-top: 0.25rem;
+  color: var(--ink);
   font-size: clamp(1.35rem, 2.4vw, 2.5rem);
   font-weight: 500;
   letter-spacing: 0.08em;

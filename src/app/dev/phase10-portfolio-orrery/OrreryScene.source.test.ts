@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 
-const source = readFileSync(path.resolve(__dirname, "OrreryScene.tsx"), "utf8");
+const source = readFileSync(
+  path.resolve(__dirname, "../../../components/observatory/orrery/OrreryScene.tsx"),
+  "utf8",
+);
 
 describe("Portfolio Orrery direct-Three architecture", () => {
   it("keeps the canvas duplicated-accessibility layer aria-hidden and bounded", () => {

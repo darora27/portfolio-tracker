@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§7",
-  "role": "codex_implementation",
-  "stage": "implement",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -32,9 +32,9 @@
     "review_doc": "docs/phase10-workflow/reviews/section-7-review-3.md",
     "decision_doc": "docs/phase10-spike-section-7/DECISION.md",
     "evidence_doc": "docs/phase10-baseline/section-7/README.md",
-    "handoff": "docs/phase10-handoffs/2026-07-26-section-7-claude-lead-to-codex-implementation-turnc.md",
+    "handoff": "docs/phase10-handoffs/2026-07-26-section-7-codex-implementation-turnc-to-claude-lead.md",
     "prior_handoff": "docs/phase10-handoffs/2026-07-26-section-7-codex-implementation-remediate-to-claude-lead.md",
-    "turn": "Turn B″ review complete: PASS, zero remaining findings. Claude Lead independently reran the unchanged CPU-2× desktop procedure (5/5 fresh contexts) and the R3F route-owned long task is now 0 ms in every run — identical to baseline and CSS — resolving Finding 1 without any exception, threshold change, or Devan escalation. Direct source read and eight freshly captured §R.11 evidence items confirm Finding 2's required visual system (in-canvas star field, Fresnel rim lighting on planets and the sun, layered additive sun glow, seeded per-planet procedural shader variation) is genuinely present, not merely named. Every criterion section-7-review-2.md previously verified (35–40, 42, 43, §R.9 fallbacks, §R.10a, privacy, console cleanliness) was independently re-verified live this turn, not carried forward on trust. Per §0's Turn B′ subsection, this does not transition to `accept` (no production Observatory file has been touched yet); it routes to Turn C — Codex production implementation wiring the now-passing Orrery into `/share` — with R3F as the owner-authorized selected runtime.",
+    "turn": "Turn C production implementation complete. The reviewed direct-Three Portfolio Orrery is now `/share`'s full-viewport entry, driven only by the existing publicOrreryHoldings projection. Sun and holding selection are URL-restorable, the six-field public-safe inspector and on-screen encoding legend are preserved, and the accepted five-chapter Observatory remains intact as the semantic content layer below the entry. A one-time, session-scoped, skippable desktop arrival was added; mobile, reduced-motion, forced-no3d, no-WebGL, no-JS, keyboard, and screen-reader paths retain complete semantic controls and textual encodings. three@0.185.1 and @types/three@0.185.1 are now recorded in the manifests; @react-three/fiber remains absent from source and manifests. Tests and build are green. Live verification was attempted but `next start -p 3100` failed with `listen EPERM: operation not permitted 0.0.0.0:3100`; per the standing environment-only rule, Turn D must independently perform the 49 live browser/visual/performance criteria before PASS.",
     "spike_decision": {
       "result": "fail_no_winner",
       "selected_runtime": null,
@@ -159,45 +159,45 @@
       "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new §7 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
     }
   ],
-  "prev_actor_commit": "5f89a9bbdb7e7fbded6432af9c0adac136c8bda4",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 5f89a9b is the previous actor's commit, `phase10(§7): remediate runtime chunk and Orrery visual system` (Turn B″), resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "799a124caf12b91370c3669494f6a625a2bb8ed9",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 799a124 is the previous actor's commit, the Turn B″ Claude Lead review PASS routing §7 to Turn C production implementation, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "5f89a9bbdb7e7fbded6432af9c0adac136c8bda4",
-  "production_code_changed_this_turn": false,
+  "production_code_changed_this_turn": true,
   "production_code_note_prior_turn": "Turn B″ changed only the two owner-authorized scene implementations and the Orrery route's visual CSS/tests: src/app/dev/phase10-portfolio-orrery/{OrreryScene.tsx,OrreryScene.source.test.ts,orrery.module.css} and src/app/dev/phase10-spike-r3f-world/{R3fScene.tsx,R3fScene.source.test.ts}. The R3F reconciler/whole-namespace registration was replaced with bounded direct Three using named imports, shared geometries, one raycaster/render loop, and explicit disposal; the Orrery gained the complete §R.10 star/rim/glow/procedural-depth/HUD system. package.json and package-lock.json remain untouched.",
-  "production_code_note": "This review turn changed no file under src/ and no package.json/package-lock.json (git diff --quiet package.json package-lock.json reports no diff). Only docs/ evidence and retained measurement/capture tooling were added: docs/phase10-baseline/section-7/{screenshots/orrery-turn-bdoubleprime/, filmstrips/orrery-idle-orbit-turn-bdoubleprime/, filmstrips/orrery-camera-travel-turn-bdoubleprime/}, docs/phase10-spike-section-7/{raw/desktop-scene-turn-bdoubleprime.json, raw/mobile-fallback-turn-bdoubleprime.json, console-check-turn-bdoubleprime.mjs, mobile-check-turn-bdoubleprime.mjs, fallback-check-turn-bdoubleprime.mjs, inspector-check-turn-bdoubleprime.mjs, inspector-debug-turn-bdoubleprime.mjs}, docs/phase10-workflow/reviews/section-7-review-3.md, this state file, and the handoff doc. three@0.185.1, @react-three/fiber@9.6.1, and @types/three@0.185.1 remain --no-save in node_modules, unchanged from Turn B″ — Turn C is authorized to install them for real per §2.5/§R.9.",
+  "production_code_note": "Turn C moved the already-reviewed Orrery scene/world/loader/CSS from the owner-gated dev-route directory into src/components/observatory/orrery/ so production and the retained reference route share one implementation; wired it into src/app/(depth-pull)/share/page.tsx; added the session-scoped ObservatoryEntrance and route composition CSS; extended /share and reference-route tests; and added three@0.185.1 plus @types/three@0.185.1 to package.json/package-lock.json. The accepted five chapter components, ChapterOrbit, ChapterFocusManager, ObservatoryShell contracts, financial math, dashboard/private routes, and Phase 9 src/components/surface/PortfolioOrrery.tsx were not changed. @react-three/fiber remains absent from source and manifests.",
   "verification": {
-    "environment_note": "This review ran on the owner macOS checkout. Started a real production server (`next start -p 3100`) with a task-only OWNER_PASSWORD process override (never read from .env*); every live check below (desktop CPU-2x measurement, mobile-fallback measurement, all eight §R.11 evidence items, parallax verification, console-error sweep, mobile canvas/overflow/target sweep, no3d/reduced-motion canvas-absence sweep, inspector URL-restorability and dollar-pattern checks) was performed independently against that server, then the server was stopped cleanly. No .env* contents were read, printed, copied, edited, staged, or committed.",
+    "environment_note": "Turn C ran in the Codex sandbox. A real production server was attempted with `OWNER_PASSWORD=phase10-turnc-local npm start -- -p 3100`, but localhost binding was denied before startup with `listen EPERM: operation not permitted 0.0.0.0:3100`. No browser claim or new screenshot was fabricated. Turn D must independently verify all live desktop/mobile/reduced-motion/no3d/no-WebGL/no-JS/keyboard/history/console/privacy/performance and 49 acceptance criteria against this production commit. No .env* contents were read, printed, copied, edited, staged, or committed.",
     "state_validator": {
       "command": "node scripts/phase10-validate-state.mjs",
       "status": "pass",
-      "summary": "Exit 0, 'PHASE10_STATE.json is valid.' Run against the final repository state (§7 / implement / codex_implementation / ready / next_actor codex / stop_reason null).",
-      "finished_at": "2026-07-26T04:20:00Z"
+      "summary": "Exit 0, 'PHASE10_STATE.json is valid.' Run against §7 / review / claude_lead / ready / next_actor claude / stop_reason null.",
+      "finished_at": "2026-07-26T04:42:44Z"
     },
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "81 test files passed; 448 of 448 tests passed, rerun independently on this machine (matches Codex's reported count exactly, confirming no test regression).",
-      "finished_at": "2026-07-26T04:02:52Z"
+      "summary": "82 test files passed; 454 of 454 tests passed, including new production /share Orrery URL/privacy assertions and the session-scoped entrance suite.",
+      "finished_at": "2026-07-26T04:39:08Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Next.js 16.2.11 production build compiled successfully; TypeScript passed; all 19 static-page tasks generated, including both owner-gated §7 routes. Independently inspected .next/static/chunks/*.js: no chunk contains react-three-fiber or @react-three signatures; the shared heavy chunk gzips to 133,633 bytes on this machine (matches the claimed 134,184 bytes closely enough to confirm the same build).",
-      "why_this_is_not_a_regression": "The build is green. package.json and package-lock.json are unchanged (git diff --quiet confirmed). Production /share and the Observatory remain untouched.",
-      "finished_at": "2026-07-26T04:03:20Z"
+      "summary": "Next.js 16.2.11 production build compiled successfully; TypeScript passed; all 19 static-page tasks generated, including production /share and the retained owner-gated §7 routes.",
+      "why_this_is_not_a_regression": "The build is green. The reviewed direct-Three path is lazy-gated post-mount, @react-three/fiber is absent from source/manifests, and the accepted semantic chapter components and deep/private routes were not changed.",
+      "finished_at": "2026-07-26T04:42:44Z"
     },
     "measurement": {
-      "desktop_rig": "Fresh live run completed by Claude Lead: 1440x900, CPU 2x, 5 fresh contexts. R3F route-owned long task is 0/5 runs over 50ms — identical to baseline (0/5) and CSS (0/5) on the same rig, resolving Finding 1. Every other §2.3.2 row also passes: added initial JS ~760B, R3F lazy chunk ~136.8KB transferred, load ~625-646ms, 0 idle dropped frames, 100% transition frames within budget, added heap ~2.2-3.3MB, leak-check growth ~0.23MB over 4 cycles. Raw: docs/phase10-spike-section-7/raw/desktop-scene-turn-bdoubleprime.json. The interaction-latency row remains the known invalid-as-instrumented artifact (baseline also fails it, ~970-1018ms) carried forward unchanged from Turn B.",
-      "mobile_rig": "Fresh live run completed: Moto G4, CPU 4x, Slow 4G, 5 fresh contexts. Zero R3F heavy-chunk requests below 1024px on any route; added long tasks over baseline are 0 (baseline/css/r3f each show the same single pre-existing 65-67ms shared-bootstrap task, unchanged from §1's accepted exception); 0 dropped frames; CSS wall-load has no regression vs baseline. Raw: docs/phase10-spike-section-7/raw/mobile-fallback-turn-bdoubleprime.json.",
-      "visual_rig": "All eight §R.11 items freshly captured (tag turn-bdoubleprime) and visually inspected directly by Claude Lead: a real in-canvas star field, Fresnel rim-lit planets and sun, layered additive sun glow, and seeded per-planet procedural variation are all visibly present — materially different from the flat starless spheres that failed the prior review. The idle-orbit filmstrip shows genuine simultaneous clockwise/counterclockwise motion across frames. Finding 2 is closed.",
-      "additional_live_checks": "Console/page-error sweep: 0 errors across 5 route/viewport/mode combinations. Mobile sweep at 390px/320px: 0 canvases, 0 horizontal overflow, 0 targets under 44px. Canvas-presence sweep: 0 under ?no3d=1, 0 under prefers-reduced-motion:reduce, 1 under normal desktop — confirming §R.9 fallback gating. Inspector sweep: ?holding=ASML and ?focus=portfolio both render 0 dollar-pattern matches and full inspector text; goBack/goForward correctly restore each URL state.",
+      "desktop_rig": "Not rerun in Turn C because localhost binding was denied with EPERM. The latest reviewed reference-route evidence remains docs/phase10-spike-section-7/raw/desktop-scene-turn-bdoubleprime.json; Turn D must measure the shipped /share build independently.",
+      "mobile_rig": "Not rerun in Turn C because localhost binding was denied with EPERM. The latest reviewed reference-route evidence remains docs/phase10-spike-section-7/raw/mobile-fallback-turn-bdoubleprime.json; Turn D must measure the shipped /share fallback independently.",
+      "visual_rig": "No new production screenshot was captured because the server could not bind. Source and tests prove the same reviewed Orrery scene/world/CSS is shared by /share and the reference route; this is not a substitute for Turn D's required production visual inspection and captures.",
+      "additional_live_checks": "Unverified in Turn C due solely to localhost EPERM: production /share entrance once-only/skip behavior, desktop scene/parallax/selection/history/focus, console cleanliness, mobile 390x844 and 320px overflow/target/canvas state, reduced-motion/no3d/no-WebGL/no-JS behavior, production HTML/RSC/client-payload dollar sweep, and all required Turn D screenshots/filmstrips.",
       "env_contents_accessed_or_output": false,
       "local_auth_method": "A task-only OWNER_PASSWORD process override was supplied to a locally started production server for this turn's live measurement/capture/verification. No .env* contents were read, printed, edited, staged, or committed."
     }
   },
   "stop_reason": null,
   "prior_stop_reason_resolved": "RESOLVED by Devan's owner decision on 2026-07-25 (see section.owner_decision). The prior block was: the R3F route-owned long task remains 59-60ms (5/5 runs) after Codex's described one-round optimisation attempt, independently re-measured and unchanged from the pre-remediation FAIL result; per section-7.md §R.8 and PRODUCT_DIRECTION.md's 'Runtime and resilience' section, that outcome required stopping and returning the measured result to Devan for an explicit decision rather than looping back to Codex. Devan selected Option 2 from docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md — one second, differently scoped remediation attempt (bundle/chunk-level, not scene-construction), plus required visual-quality remediation closing finding 2 in the same turn. No performance exception was accepted; the 50ms gate and CPU-2x procedure are unchanged.",
-  "updated_at": "2026-07-26T04:20:00Z",
+  "updated_at": "2026-07-26T04:42:44Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

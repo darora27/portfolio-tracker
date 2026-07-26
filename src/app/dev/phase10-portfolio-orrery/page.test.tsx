@@ -17,7 +17,7 @@ vi.mock("@/lib/auth", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/auth")>();
   return { ...actual, isValidSession };
 });
-vi.mock("./OrreryWorld", () => ({
+vi.mock("@/components/observatory/orrery/OrreryWorld", () => ({
   OrreryWorld: (props: unknown) => <pre>{JSON.stringify(props)}</pre>,
 }));
 

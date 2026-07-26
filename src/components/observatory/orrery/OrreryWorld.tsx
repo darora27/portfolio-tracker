@@ -1,5 +1,6 @@
 "use client";
 
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -12,10 +13,14 @@ import {
 import { OrrerySceneLoader } from "./OrrerySceneLoader";
 import styles from "./orrery.module.css";
 
-const BASE_PATH = "/dev/phase10-portfolio-orrery";
+const REFERENCE_BASE_PATH = "/dev/phase10-portfolio-orrery";
 
-export function orreryHoldingHref(ticker: string, forceNo3d = false): string {
-  return `${BASE_PATH}?holding=${encodeURIComponent(ticker)}${forceNo3d ? "&no3d=1" : ""}`;
+export function orreryHoldingHref(
+  ticker: string,
+  forceNo3d = false,
+  basePath = REFERENCE_BASE_PATH,
+): string {
+  return `${basePath}?holding=${encodeURIComponent(ticker)}${forceNo3d ? "&no3d=1" : ""}`;
 }
 
 function formatPercent(value: number | null, digits = 1): string {
@@ -52,6 +57,9 @@ export function OrreryWorld({
   portfolioSelected,
   forceNo3d = false,
   portfolioSummary,
+  basePath = REFERENCE_BASE_PATH,
+  referenceStudy = false,
+  semanticTitle = true,
 }: {
   holdings: readonly PublicOrreryHolding[];
   selectedTicker: string | null;
@@ -62,6 +70,9 @@ export function OrreryWorld({
     marketRelativePct: number | null;
     topTwoWeight: number;
   };
+  basePath?: string;
+  referenceStudy?: boolean;
+  semanticTitle?: boolean;
 }) {
   const router = useRouter();
   const worldRef = useRef<HTMLElement>(null);
@@ -71,12 +82,17 @@ export function OrreryWorld({
   const selected = holdings.find((holding) => holding.ticker === selectedTicker) ?? null;
 
   const navigateToHolding = useCallback(
-    (ticker: string) => router.push(orreryHoldingHref(ticker, forceNo3d), { scroll: false }),
-    [forceNo3d, router],
+    (ticker: string) =>
+      router.push(orreryHoldingHref(ticker, forceNo3d, basePath), { scroll: false }),
+    [basePath, forceNo3d, router],
   );
   const navigateToPortfolio = useCallback(
-    () => router.push(`${BASE_PATH}?focus=portfolio${forceNo3d ? "&no3d=1" : ""}`, { scroll: false }),
-    [forceNo3d, router],
+    () =>
+      router.push(
+        `${basePath}?focus=portfolio${forceNo3d ? "&no3d=1" : ""}`,
+        { scroll: false },
+      ),
+    [basePath, forceNo3d, router],
   );
 
   useEffect(() => {
@@ -124,8 +140,17 @@ export function OrreryWorld({
 
       <header className={styles.commandBar}>
         <div>
-          <p>Public orbital telemetry / owner-gated production study</p>
-          <h1>Portfolio Orrery</h1>
+          <p>
+            Public orbital telemetry
+            {referenceStudy ? " / owner-gated reference study" : " / read-only"}
+          </p>
+          {semanticTitle ? (
+            <h1>Portfolio Orrery</h1>
+          ) : (
+            <p className={styles.worldTitle} aria-hidden="true">
+              Portfolio Orrery
+            </p>
+          )}
         </div>
         <p className={styles.status}>SYSTEM NOMINAL · {holdings.length} PUBLIC HOLDINGS</p>
       </header>
@@ -145,7 +170,7 @@ export function OrreryWorld({
 
         <nav className={styles.semanticMap} aria-label="Portfolio bodies">
           <Link
-            href={`${BASE_PATH}?focus=portfolio${forceNo3d ? "&no3d=1" : ""}`}
+            href={`${basePath}?focus=portfolio${forceNo3d ? "&no3d=1" : ""}`}
             data-portfolio-sun
             className={styles.sunControl}
             aria-current={portfolioSelected ? "page" : undefined}
@@ -161,7 +186,7 @@ export function OrreryWorld({
               return (
                 <li key={holding.ticker}>
                   <Link
-                    href={orreryHoldingHref(holding.ticker, forceNo3d)}
+                    href={orreryHoldingHref(holding.ticker, forceNo3d, basePath)}
                     data-holding={holding.ticker}
                     data-selected={holding.ticker === selectedTicker ? "true" : undefined}
                     data-hovered={holding.ticker === hoveredTicker ? "true" : undefined}
@@ -212,7 +237,12 @@ export function OrreryWorld({
                 <div><dt>Market-relative</dt><dd>{formatPercent(portfolioSummary.marketRelativePct)}</dd></div>
                 <div><dt>Top-two weight</dt><dd>{formatPercent(portfolioSummary.topTwoWeight)}</dd></div>
               </dl>
-              <Link className={styles.deepLink} href="/share?chapter=pulse">Open Pulse and Forces context</Link>
+              <Link
+                className={styles.deepLink}
+                href="/share?focus=portfolio&chapter=pulse#portfolio-observatory"
+              >
+                Open Pulse and Forces context
+              </Link>
             </>
           ) : (
             <>
@@ -224,7 +254,11 @@ export function OrreryWorld({
             </>
           )}
           {(selected || portfolioSelected) && (
-            <Link className={styles.closeLink} href={forceNo3d ? `${BASE_PATH}?no3d=1` : BASE_PATH} scroll={false}>
+            <Link
+              className={styles.closeLink}
+              href={forceNo3d ? `${basePath}?no3d=1` : basePath}
+              scroll={false}
+            >
               Close inspector
             </Link>
           )}

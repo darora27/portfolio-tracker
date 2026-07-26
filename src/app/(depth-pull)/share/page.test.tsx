@@ -13,6 +13,9 @@ vi.mock("@/lib/dashboard-data", () => ({
 vi.mock("@/lib/observatory/timeline-data", () => ({
   getPublicTimelineData,
 }));
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn() }),
+}));
 
 const publicFixture = {
   historyDays: 30,
@@ -56,6 +59,26 @@ const publicFixture = {
       excessReturnPct: -0.046,
     },
   ],
+  publicOrreryHoldings: [
+    {
+      ticker: "IBM",
+      companyName: "IBM",
+      weight: 0.42,
+      weeklyReturn: -0.021,
+      portfolioRelativeReturn: -0.016,
+      volatilityPct: 0.18,
+      betaVsVoo: 0.74,
+    },
+    {
+      ticker: "MSFT",
+      companyName: "Microsoft",
+      weight: 0.31,
+      weeklyReturn: 0.012,
+      portfolioRelativeReturn: 0.017,
+      volatilityPct: 0.21,
+      betaVsVoo: 1.04,
+    },
+  ],
   totalValue: 999999.99,
   realizedGain: 8888.88,
   unrealizedGain: 7777.77,
@@ -77,12 +100,14 @@ const timelineFixture = {
 async function renderShare(
   chapter?: string,
   explain?: string,
+  selection?: { focus?: string; holding?: string; no3d?: string },
 ) {
   const { default: SharePage } = await import("./page");
   const element = await SharePage({
     searchParams: Promise.resolve({
       ...(chapter ? { chapter } : {}),
       ...(explain ? { explain } : {}),
+      ...selection,
     }),
   });
   return renderToStaticMarkup(element);
@@ -94,6 +119,36 @@ beforeEach(() => {
 });
 
 describe("/share Pulse rendered output", () => {
+  it("opens with the public-safe Portfolio Orrery while preserving the chapter shell", async () => {
+    const html = await renderShare();
+
+    expect(html).toContain("Portfolio Orrery");
+    expect(html).toContain("Portfolio summary");
+    expect(html).toContain("IBM");
+    expect(html).toContain("Microsoft");
+    expect(html).toContain("ORBIT ENCODING");
+    expect(html).toContain('id="portfolio-observatory"');
+    expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
+  });
+
+  it("restores public holding and sun selection from URL state", async () => {
+    const holding = await renderShare(undefined, undefined, {
+      holding: "IBM",
+      no3d: "1",
+    });
+    expect(holding).toContain("Holding telemetry / public-safe");
+    expect(holding).toContain("Annualized volatility");
+    expect(holding).toContain('href="/stock/IBM"');
+    expect(holding).toContain('data-force-no-3d="true"');
+
+    const portfolio = await renderShare("pulse", undefined, {
+      focus: "portfolio",
+    });
+    expect(portfolio).toContain("Central body / portfolio aggregate");
+    expect(portfolio).toContain("Market-relative");
+    expect(portfolio).toContain('href="/share?focus=portfolio&amp;chapter=forces"');
+  });
+
   it("defaults to Pulse with real comparison copy, one chart, freshness, read-only state, and a Forces link", async () => {
     const html = await renderShare();
 

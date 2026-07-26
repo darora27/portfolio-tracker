@@ -2,7 +2,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { OrreryWorld, orreryHoldingHref } from "./OrreryWorld";
+import {
+  OrreryWorld,
+  orreryHoldingHref,
+} from "@/components/observatory/orrery/OrreryWorld";
 import type { PublicOrreryHolding } from "@/lib/observatory/orrery";
 
 const push = vi.fn();

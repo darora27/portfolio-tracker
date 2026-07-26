@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
-import { OrreryWorld } from "./OrreryWorld";
+import { OrreryWorld } from "@/components/observatory/orrery/OrreryWorld";
 
 export const metadata: Metadata = {
   title: "Phase 10 §7 — Portfolio Orrery",
@@ -58,6 +58,7 @@ export default async function PortfolioOrreryPage({
         marketRelativePct: voo?.excessReturnPct ?? null,
         topTwoWeight: data.top2ConcentrationPct,
       }}
+      referenceStudy
     />
   );
 }
