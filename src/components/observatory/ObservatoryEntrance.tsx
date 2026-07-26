@@ -23,21 +23,23 @@ export function ObservatoryEntrance({
 }) {
   const reducedMotion = usePrefersReducedMotion();
   const [visible, setVisible] = useState(false);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const endingRef = useRef(false);
   const storageKey = `observatory-entrance-seen-${mode}`;
 
   const endEntrance = useCallback(() => {
+    if (endingRef.current) return;
+    endingRef.current = true;
     try {
       window.sessionStorage.setItem(storageKey, "true");
     } catch {
       // Storage denial must never hold the content behind the visual arrival.
     }
     setVisible(false);
-    if (overlayRef.current?.contains(document.activeElement)) {
+    window.requestAnimationFrame(() => {
       document
         .querySelector<HTMLElement>("[data-portfolio-sun]")
         ?.focus({ preventScroll: true });
-    }
+    });
   }, [storageKey]);
 
   useEffect(() => {
@@ -57,6 +59,7 @@ export function ObservatoryEntrance({
     } catch {
       // A blocked storage API does not block the one-time visual treatment.
     }
+    endingRef.current = false;
     setVisible(true);
   }, [disabled, reducedMotion, storageKey]);
 
@@ -78,7 +81,7 @@ export function ObservatoryEntrance({
     <>
       {children}
       {visible ? (
-        <div ref={overlayRef} className={styles.entranceRoot}>
+        <div className={styles.entranceRoot}>
           <div className={styles.arrival} aria-hidden="true">
             <span className={styles.reticle} />
             <span className={styles.horizon} />

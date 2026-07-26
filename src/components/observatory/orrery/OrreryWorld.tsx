@@ -44,7 +44,11 @@ function HoldingInspector({ holding }: { holding: PublicOrreryHolding }) {
         <div><dt>Beta vs. VOO</dt><dd>{holding.betaVsVoo?.toFixed(2) ?? "Unavailable"}</dd></div>
         <div><dt>Orbit state</dt><dd>{directionForWeeklyReturn(holding.weeklyReturn)}</dd></div>
       </dl>
-      <Link className={styles.deepLink} href={`/stock/${encodeURIComponent(holding.ticker)}`}>
+      <Link
+        className={styles.deepLink}
+        href={`/stock/${encodeURIComponent(holding.ticker)}`}
+        prefetch={false}
+      >
         Open deeper stock information
       </Link>
     </>
@@ -171,6 +175,7 @@ export function OrreryWorld({
         <nav className={styles.semanticMap} aria-label="Portfolio bodies">
           <Link
             href={`${basePath}?focus=portfolio${forceNo3d ? "&no3d=1" : ""}`}
+            prefetch={false}
             data-portfolio-sun
             className={styles.sunControl}
             aria-current={portfolioSelected ? "page" : undefined}
@@ -187,6 +192,7 @@ export function OrreryWorld({
                 <li key={holding.ticker}>
                   <Link
                     href={orreryHoldingHref(holding.ticker, forceNo3d, basePath)}
+                    prefetch={false}
                     data-holding={holding.ticker}
                     data-selected={holding.ticker === selectedTicker ? "true" : undefined}
                     data-hovered={holding.ticker === hoveredTicker ? "true" : undefined}
@@ -240,6 +246,7 @@ export function OrreryWorld({
               <Link
                 className={styles.deepLink}
                 href="/share?focus=portfolio&chapter=pulse#portfolio-observatory"
+                prefetch={false}
               >
                 Open Pulse and Forces context
               </Link>
@@ -257,6 +264,7 @@ export function OrreryWorld({
             <Link
               className={styles.closeLink}
               href={forceNo3d ? `${basePath}?no3d=1` : basePath}
+              prefetch={false}
               scroll={false}
             >
               Close inspector

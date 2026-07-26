@@ -21,6 +21,10 @@ function stubMedia(desktop = true, reducedMotion = false) {
 beforeEach(() => {
   window.sessionStorage.clear();
   stubMedia();
+  vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
+    callback(0);
+    return 1;
+  });
 });
 
 afterEach(() => {
@@ -45,12 +49,19 @@ describe("ObservatoryEntrance", () => {
   it("ends and stores the flag on button activation", () => {
     render(
       <ObservatoryEntrance mode="public">
-        <p>Content</p>
+        <a href="/share?focus=portfolio" data-portfolio-sun>
+          Portfolio summary
+        </a>
       </ObservatoryEntrance>,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Skip intro" }));
+    const skip = screen.getByRole("button", { name: "Skip intro" });
+    skip.focus();
+    fireEvent.click(skip);
     expect(screen.queryByRole("button", { name: "Skip intro" })).toBeNull();
     expect(window.sessionStorage.getItem("observatory-entrance-seen-public")).toBe("true");
+    expect(document.activeElement).toBe(
+      screen.getByRole("link", { name: "Portfolio summary" }),
+    );
   });
 
   it("ends on document pointer or key input", () => {

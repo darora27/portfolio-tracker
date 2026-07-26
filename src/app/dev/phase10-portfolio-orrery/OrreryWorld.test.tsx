@@ -2,6 +2,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import {
   OrreryWorld,
   orreryHoldingHref,
@@ -138,6 +140,18 @@ describe("Portfolio Orrery remediation route", () => {
     render(<OrreryWorld {...baseProps} />);
     expect(screen.getAllByRole("link").length).toBe(holdings.length + 1);
     expect(screen.queryByTestId("orrery-canvas")).toBeNull();
+  });
+
+  it("disables speculative prefetch on every Orrery link for the mobile fallback", () => {
+    const source = readFileSync(
+      path.resolve(__dirname, "../../../components/observatory/orrery/OrreryWorld.tsx"),
+      "utf8",
+    );
+    const links = source.match(/<Link\b[\s\S]*?>/g) ?? [];
+    expect(links.length).toBeGreaterThan(0);
+    for (const link of links) {
+      expect(link).toContain("prefetch={false}");
+    }
   });
 
   it("provides 44px-class semantic controls without duplicate canvas focus stops", () => {

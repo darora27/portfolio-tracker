@@ -8,6 +8,10 @@ import path from "node:path";
 // minimum. This computes the actual contrast ratio from the token values in
 // source so a future color edit can't silently regress below 4.5:1 again.
 const css = readFileSync(path.resolve(__dirname, "observatory.module.css"), "utf8");
+const entranceCss = readFileSync(
+  path.resolve(__dirname, "observatory-entrance.module.css"),
+  "utf8",
+);
 
 function hexToRgb(hex: string): [number, number, number] {
   const clean = hex.replace("#", "");
@@ -33,6 +37,29 @@ function contrastRatio(hexA: string, hexB: string): number {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
+function compositeOver(
+  foreground: [number, number, number],
+  alpha: number,
+  background: [number, number, number],
+): [number, number, number] {
+  return foreground.map((channel, index) =>
+    Math.round(channel * alpha + background[index] * (1 - alpha)),
+  ) as [number, number, number];
+}
+
+function contrastRatioRgb(
+  foreground: [number, number, number],
+  background: [number, number, number],
+): number {
+  const foregroundLuminance = relativeLuminance(foreground);
+  const backgroundLuminance = relativeLuminance(background);
+  const [lighter, darker] =
+    foregroundLuminance > backgroundLuminance
+      ? [foregroundLuminance, backgroundLuminance]
+      : [backgroundLuminance, foregroundLuminance];
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 function readToken(name: string): string {
   const match = css.match(new RegExp(`${name}:\\s*(#[0-9a-fA-F]{6})`));
   if (!match) throw new Error(`token ${name} not found in observatory.module.css`);
@@ -44,5 +71,38 @@ describe("observatory.module.css — freshness label contrast", () => {
     const fg = readToken("--obs-ink-faint");
     const bg = readToken("--obs-bg");
     expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(4.5);
+  });
+});
+
+describe("observatory entrance text contrast", () => {
+  it(".signal meets 4.5:1 against the arrival surface", () => {
+    const signal = entranceCss.match(/\.signal\s*\{[\s\S]*?color:\s*(#[0-9a-fA-F]{6})/);
+    const arrival = entranceCss.match(
+      /\.arrival\s*\{[\s\S]*?background:[\s\S]*?(#[0-9a-fA-F]{6});/,
+    );
+    if (!signal || !arrival) throw new Error("entrance signal colors not found");
+    expect(contrastRatio(signal[1], arrival[1])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it(".skip meets 4.5:1 against its composited button surface", () => {
+    const skipBlock = entranceCss.match(/\.skip\s*\{([\s\S]*?)\n\}/)?.[1];
+    const foreground = skipBlock?.match(/color:\s*(#[0-9a-fA-F]{6})/)?.[1];
+    const background = skipBlock?.match(
+      /background:\s*rgba\((\d+),\s*(\d+),\s*(\d+),\s*([\d.]+)\)/,
+    );
+    const arrival = entranceCss.match(
+      /\.arrival\s*\{[\s\S]*?background:[\s\S]*?(#[0-9a-fA-F]{6});/,
+    )?.[1];
+    if (!foreground || !background || !arrival) {
+      throw new Error("entrance skip colors not found");
+    }
+    const compositedBackground = compositeOver(
+      [Number(background[1]), Number(background[2]), Number(background[3])],
+      Number(background[4]),
+      hexToRgb(arrival),
+    );
+    expect(
+      contrastRatioRgb(hexToRgb(foreground), compositedBackground),
+    ).toBeGreaterThanOrEqual(4.5);
   });
 });
