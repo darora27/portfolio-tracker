@@ -1,0 +1,153 @@
+{
+  "results": [
+    {
+      "label": "prod",
+      "run": 1,
+      "wallLoadMs": 2565,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 1,
+      "wallLoadMs": 3015,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 2,
+      "wallLoadMs": 2758,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 2,
+      "wallLoadMs": 2470,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 3,
+      "wallLoadMs": 2362,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 3,
+      "wallLoadMs": 2882,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 4,
+      "wallLoadMs": 2706,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 4,
+      "wallLoadMs": 2334,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 5,
+      "wallLoadMs": 2336,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 5,
+      "wallLoadMs": 2706,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 6,
+      "wallLoadMs": 2742,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 6,
+      "wallLoadMs": 2341,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 7,
+      "wallLoadMs": 2336,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 7,
+      "wallLoadMs": 2702,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 8,
+      "wallLoadMs": 2704,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 8,
+      "wallLoadMs": 2339,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 9,
+      "wallLoadMs": 2343,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 9,
+      "wallLoadMs": 2709,
+      "canvasCount": 0
+    },
+    {
+      "label": "baseline",
+      "run": 10,
+      "wallLoadMs": 2702,
+      "canvasCount": 0
+    },
+    {
+      "label": "prod",
+      "run": 10,
+      "wallLoadMs": 2345,
+      "canvasCount": 0
+    }
+  ],
+  "summary": {
+    "prodLoads": [
+      2565,
+      2470,
+      2362,
+      2334,
+      2336,
+      2341,
+      2336,
+      2339,
+      2343,
+      2345
+    ],
+    "baselineLoads": [
+      3015,
+      2758,
+      2882,
+      2706,
+      2706,
+      2742,
+      2702,
+      2704,
+      2709,
+      2702
+    ],
+    "prodMedian": 2343,
+    "baselineMedian": 2709,
+    "deltaMedianMs": -366
+  }
+}
