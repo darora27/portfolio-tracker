@@ -8,6 +8,8 @@
  *   OWNER_PASSWORD=<temporary-local-value> node docs/phase10-spike-section-7/measure-desktop.mjs
  *
  * Requires a production server and a temporary, unsaved Playwright install.
+ * Set PHASE10_DESKTOP_OUTPUT to a path relative to this script directory when
+ * a review must retain a new run without overwriting earlier raw evidence.
  */
 import { chromium } from "playwright";
 import crypto from "node:crypto";
@@ -16,7 +18,10 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const OUTPUT = resolve(HERE, "raw/desktop-scene.json");
+const OUTPUT = resolve(
+  HERE,
+  process.env.PHASE10_DESKTOP_OUTPUT ?? "raw/desktop-scene.json",
+);
 const BASE_URL = process.env.PHASE10_BASE_URL ?? "http://localhost:3100";
 const OWNER_PASSWORD = process.env.OWNER_PASSWORD;
 if (!OWNER_PASSWORD) throw new Error("OWNER_PASSWORD must be provided without reading .env*");

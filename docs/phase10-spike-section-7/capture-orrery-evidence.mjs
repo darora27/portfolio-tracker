@@ -8,7 +8,8 @@
  *
  * Requires a production server and the same temporary, unsaved Playwright
  * install used by the other spike/measurement scripts. Never reads .env
- * files.
+ * files. Set PHASE10_EVIDENCE_TAG (for example, turn-bdoubleprime) to write
+ * screenshots and filmstrips into distinct review directories.
  */
 import { chromium } from "playwright";
 import crypto from "node:crypto";
@@ -21,10 +22,19 @@ const SESSION_COOKIE_NAME = "owner_session";
 function sessionToken(password) {
   return crypto.createHmac("sha256", password).update("portfolio-tracker-owner-session").digest("hex");
 }
-const OUT = "docs/phase10-baseline/section-7/screenshots/orrery-turn-bprime";
+const EVIDENCE_TAG = process.env.PHASE10_EVIDENCE_TAG;
+const OUT = EVIDENCE_TAG
+  ? `docs/phase10-baseline/section-7/screenshots/orrery-${EVIDENCE_TAG}`
+  : "docs/phase10-baseline/section-7/screenshots/orrery-turn-bprime";
 const FILMSTRIPS = "docs/phase10-baseline/section-7/filmstrips";
-mkdirSync(`${FILMSTRIPS}/orrery-idle-orbit`, { recursive: true });
-mkdirSync(`${FILMSTRIPS}/orrery-camera-travel`, { recursive: true });
+const IDLE_FILMSTRIP = EVIDENCE_TAG
+  ? `orrery-idle-orbit-${EVIDENCE_TAG}`
+  : "orrery-idle-orbit";
+const CAMERA_FILMSTRIP = EVIDENCE_TAG
+  ? `orrery-camera-travel-${EVIDENCE_TAG}`
+  : "orrery-camera-travel";
+mkdirSync(`${FILMSTRIPS}/${IDLE_FILMSTRIP}`, { recursive: true });
+mkdirSync(`${FILMSTRIPS}/${CAMERA_FILMSTRIP}`, { recursive: true });
 
 async function authedContext(browser, viewport, extra = {}) {
   const context = await browser.newContext({ viewport, ...extra });
@@ -45,7 +55,7 @@ async function main() {
   await page.screenshot({ path: `${OUT}/01-initial-solar-system-entry.png` });
   await page.screenshot({ path: `${OUT}/02-multiple-differently-sized-planets.png` });
   for (let i = 0; i < 8; i++) {
-    await page.screenshot({ path: `${FILMSTRIPS}/orrery-idle-orbit/frame-${String(i).padStart(2, "0")}.png` });
+    await page.screenshot({ path: `${FILMSTRIPS}/${IDLE_FILMSTRIP}/frame-${String(i).padStart(2, "0")}.png` });
     await page.waitForTimeout(350);
   }
   await context.close();
@@ -59,11 +69,11 @@ async function main() {
   await firstHoldingLink.focus();
   await page.waitForTimeout(200);
   await page.screenshot({ path: `${OUT}/04-planet-focus.png` });
-  await page.screenshot({ path: `${FILMSTRIPS}/orrery-camera-travel/frame-00-before.png` });
+  await page.screenshot({ path: `${FILMSTRIPS}/${CAMERA_FILMSTRIP}/frame-00-before.png` });
   await firstHoldingLink.click();
   for (let i = 1; i <= 7; i++) {
     await page.waitForTimeout(100);
-    await page.screenshot({ path: `${FILMSTRIPS}/orrery-camera-travel/frame-${String(i).padStart(2, "0")}.png` });
+    await page.screenshot({ path: `${FILMSTRIPS}/${CAMERA_FILMSTRIP}/frame-${String(i).padStart(2, "0")}.png` });
   }
   await page.waitForTimeout(400);
   await page.screenshot({ path: `${OUT}/05-camera-moved-to-selected-holding.png` });

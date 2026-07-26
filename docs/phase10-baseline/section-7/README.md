@@ -162,3 +162,45 @@ dominated by parsing/executing the ~234 KB three.js/R3F chunk and
 initializing the WebGL context and shader compilation, not by anything the
 optimisation round touched. See the review doc for what this means for
 Turn B′'s outcome.
+
+---
+
+## Turn B″ implementation evidence — bundle/runtime and visual remediation
+
+Implemented July 26, 2026 by `codex/gpt-5`.
+
+- The retained composition analysis is
+  `docs/phase10-spike-section-7/runtime-chunk-composition-turn-bdoubleprime.md`;
+  raw build values are
+  `docs/phase10-spike-section-7/raw/runtime-chunk-turn-bdoubleprime.json`.
+- The R3F entry's whole-namespace Three registration was removed from both
+  measured scene paths. A bounded direct-Three implementation preserves the
+  lazy desktop gate, scene semantics, camera/selection behavior, fallbacks,
+  and pointer contracts while reducing the shared heavy chunk by 42.37%
+  gzip (232,821 → 134,184 bytes).
+- The new Orrery visual system adds an in-canvas star field with spatial
+  depth, procedural per-planet shader variation, atmospheric rim light,
+  layered restrained sun glow, pointer/camera depth response, refined real
+  orbit paths, and stronger CRT/HUD framing. It adds no post-processing,
+  texture, model, physics, audio, or unexplained scene object.
+- `npm test`: 81 files, 448/448 passed.
+- `npm run build`: Next.js 16.2.11 compiled, TypeScript passed, and all 19
+  static-page tasks generated.
+
+### Environment-only live evidence gap
+
+The implementation runner attempted a real production server with a task-only
+password override and received
+`listen EPERM: operation not permitted 0.0.0.0:3100`. It therefore could not
+run the unchanged §2.3.2 browser procedure or recapture the eight §R.11 items.
+No long-task, memory, frame-stability, leak, screenshot, motion, console, or
+accessibility result is claimed for Turn B″.
+
+Claude Lead must independently run the unchanged
+`measure-desktop.mjs`/`measure-phone.mjs` procedures and
+`capture-orrery-evidence.mjs` against the Turn B″ commit before PASS. Fresh
+outputs must use distinct `turn-bdoubleprime` names so the Turn B and Turn B′
+evidence above remains readable side by side. If the unchanged CPU-2× run
+still reports a route-owned task above 50 ms, the owner-directed stop
+condition applies: return the measured result to Devan without selecting CSS,
+changing the threshold, or drafting an exception.

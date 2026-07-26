@@ -1,0 +1,53 @@
+{
+  "recordedAt": "2026-07-26",
+  "recordedBy": "codex/gpt-5",
+  "source": "successful production build followed by local gzip recomputation",
+  "before": {
+    "build": "Turn B-prime",
+    "chunk": "0_z2rgj02ay80.js",
+    "rawBytes": 881917,
+    "gzipBytes": 232821,
+    "liveTransferredBytes": 233398,
+    "containsReactThreeFiber": true,
+    "containsThreeNamespaceImport": true
+  },
+  "after": {
+    "build": "Turn B-double-prime",
+    "chunks": [
+      {
+        "chunk": "3c2h0fp_tgndt.js",
+        "role": "shared Three renderer",
+        "rawBytes": 540142,
+        "gzipBytes": 134184,
+        "containsReactThreeFiber": false,
+        "containsThreeNamespaceRegistration": false
+      },
+      {
+        "chunk": "3vuva1ht_a0y8.js",
+        "role": "Portfolio Orrery scene",
+        "rawBytes": 8391,
+        "gzipBytes": 3378,
+        "containsReactThreeFiber": false,
+        "containsThreeNamespaceRegistration": false
+      },
+      {
+        "chunk": "2j3rjldu01k2r.js",
+        "role": "chapter-spike scene",
+        "rawBytes": 3521,
+        "gzipBytes": 1753,
+        "containsReactThreeFiber": false,
+        "containsThreeNamespaceRegistration": false
+      }
+    ]
+  },
+  "heavyChunkReduction": {
+    "gzipBytes": 98637,
+    "percent": 42.37
+  },
+  "liveMeasurement": {
+    "status": "environment_blocked",
+    "attempt": "OWNER_PASSWORD=<task-only override> npm run start -- -p 3100",
+    "error": "listen EPERM: operation not permitted 0.0.0.0:3100",
+    "claimedLiveMetrics": false
+  }
+}

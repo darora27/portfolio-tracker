@@ -16,14 +16,47 @@
   background: #010504;
   font-family: var(--font-mono, ui-monospace, monospace);
 }
+
+.world::before {
+  position: fixed;
+  z-index: 18;
+  inset: 0.65rem;
+  border: 1px solid rgba(157, 231, 178, 0.16);
+  clip-path: polygon(
+    0 0,
+    4.5rem 0,
+    4.5rem 1px,
+    calc(100% - 4.5rem) 1px,
+    calc(100% - 4.5rem) 0,
+    100% 0,
+    100% 4.5rem,
+    calc(100% - 1px) 4.5rem,
+    calc(100% - 1px) calc(100% - 4.5rem),
+    100% calc(100% - 4.5rem),
+    100% 100%,
+    calc(100% - 4.5rem) 100%,
+    calc(100% - 4.5rem) calc(100% - 1px),
+    4.5rem calc(100% - 1px),
+    4.5rem 100%,
+    0 100%,
+    0 calc(100% - 4.5rem),
+    1px calc(100% - 4.5rem),
+    1px 4.5rem,
+    0 4.5rem
+  );
+  pointer-events: none;
+  content: "";
+}
+
 .starField {
   position: absolute;
-  z-index: -3;
+  z-index: 0;
   inset: -4%;
   background:
     radial-gradient(circle, rgba(228, 248, 225, 0.9) 0 1px, transparent 1.4px) 0 0 / 89px 83px,
     radial-gradient(circle, rgba(157, 231, 178, 0.65) 0 1px, transparent 1.5px) 41px 23px / 137px 131px,
-    radial-gradient(circle at 50% 48%, rgba(46, 119, 77, 0.19), transparent 34%),
+    radial-gradient(ellipse at 50% 62%, rgba(46, 119, 77, 0.2), transparent 40%),
+    radial-gradient(ellipse at 70% 24%, rgba(114, 72, 28, 0.12), transparent 29%),
     linear-gradient(150deg, #010504, #04110d 55%, #020706);
   transform: translate3d(
     calc(var(--orrery-pointer-x) * -7px),
@@ -54,6 +87,17 @@
   align-items: flex-start;
   gap: 1rem;
   pointer-events: none;
+}
+
+.commandBar::after {
+  position: absolute;
+  top: calc(100% + 0.65rem);
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--phosphor), transparent 38%, transparent 72%, var(--amber));
+  opacity: 0.36;
+  content: "";
 }
 
 .commandBar p,
@@ -97,11 +141,25 @@
   transition: transform 100ms linear;
 }
 
+.canvasLayer::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(1, 5, 4, 0.5), transparent 24%, transparent 72%, rgba(1, 5, 4, 0.5)),
+    radial-gradient(circle at 50% 48%, transparent 42%, rgba(1, 5, 4, 0.48) 100%);
+  pointer-events: none;
+  content: "";
+}
+
 .semanticMap {
   position: absolute;
   z-index: 5;
   inset: 6.5rem auto 7.5rem 1.5rem;
   width: min(17rem, 22vw);
+  padding: 0.45rem;
+  border: 1px solid rgba(157, 231, 178, 0.13);
+  background: linear-gradient(180deg, rgba(2, 10, 8, 0.52), rgba(2, 10, 8, 0.18));
+  box-shadow: inset 0 0 24px rgba(70, 155, 103, 0.04);
   pointer-events: none;
 }
 
@@ -138,6 +196,7 @@
   list-style: none;
   overflow: auto;
   scrollbar-width: thin;
+  mask-image: linear-gradient(to bottom, #000 94%, transparent);
 }
 
 .holdingControl {
@@ -196,6 +255,19 @@
     var(--panel);
   box-shadow: 0 22px 80px rgba(0, 0, 0, 0.55), inset 3px 0 rgba(157, 231, 178, 0.26);
   backdrop-filter: blur(10px);
+}
+
+.legend::after,
+.inspector::after {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 2.7rem;
+  height: 0.35rem;
+  border-top: 2px solid var(--amber);
+  border-right: 2px solid var(--amber);
+  opacity: 0.65;
+  content: "";
 }
 
 .legend {
@@ -294,6 +366,9 @@
 }
 
 @media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+  .world::before {
+    display: none;
+  }
   .world {
     min-height: 100svh;
     overflow: auto;
@@ -327,6 +402,10 @@
   }
   .semanticMap {
     order: 2;
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
   }
   .legend {
     order: 1;
@@ -338,6 +417,7 @@
   }
   .holdingList {
     max-height: none;
+    mask-image: none;
   }
   .holdingControl {
     min-height: 58px;
