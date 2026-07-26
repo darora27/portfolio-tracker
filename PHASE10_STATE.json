@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§7",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -27,14 +27,14 @@
     "id": "§7",
     "title": "Spatial Observatory — the Portfolio Orrery",
     "spec_doc": "docs/phase10-workflow/specs/section-7.md",
-    "implementation_commit": "dc358a6237b084e3fd3f1e19f1a74ac185868573",
-    "review_result": "pass",
-    "review_doc": "docs/phase10-workflow/reviews/section-7-review-3.md",
+    "implementation_commit": "a361977a76de90fa07c99955a8bf980968178b4e",
+    "review_result": "fail",
+    "review_doc": "docs/phase10-workflow/reviews/section-7-review-4.md",
     "decision_doc": "docs/phase10-spike-section-7/DECISION.md",
     "evidence_doc": "docs/phase10-baseline/section-7/README.md",
-    "handoff": "docs/phase10-handoffs/2026-07-26-section-7-codex-implementation-turnc-to-claude-lead.md",
-    "prior_handoff": "docs/phase10-handoffs/2026-07-26-section-7-codex-implementation-remediate-to-claude-lead.md",
-    "turn": "Turn C production implementation complete. The reviewed direct-Three Portfolio Orrery is now `/share`'s full-viewport entry, driven only by the existing publicOrreryHoldings projection. Sun and holding selection are URL-restorable, the six-field public-safe inspector and on-screen encoding legend are preserved, and the accepted five-chapter Observatory remains intact as the semantic content layer below the entry. A one-time, session-scoped, skippable desktop arrival was added; mobile, reduced-motion, forced-no3d, no-WebGL, no-JS, keyboard, and screen-reader paths retain complete semantic controls and textual encodings. three@0.185.1 and @types/three@0.185.1 are now recorded in the manifests; @react-three/fiber remains absent from source and manifests. Tests and build are green. Live verification was attempted but `next start -p 3100` failed with `listen EPERM: operation not permitted 0.0.0.0:3100`; per the standing environment-only rule, Turn D must independently perform the 49 live browser/visual/performance criteria before PASS.",
+    "handoff": "docs/phase10-handoffs/2026-07-26-section-7-claude-lead-to-codex-implementation-turnd-remediate.md",
+    "prior_handoff": "docs/phase10-handoffs/2026-07-26-section-7-codex-implementation-turnc-to-claude-lead.md",
+    "turn": "Turn D genuine final-acceptance review complete. Unlike Codex's Turn C sandbox (localhost EPERM), this machine ran a real production server plus a real pre-Turn-C baseline server (git worktree at prev_actor_commit), so all live/browser criteria were independently performed rather than deferred. 40 of 43 criteria (§8's 34 plus §R.12's 9) independently verified passing, including fresh production screenshots/filmstrips this turn captured (Turn C's sandbox could not). Three bounded findings found and reproduced live: (1) ObservatoryEntrance's focus-restoration to the sun never actually fires on any of its three end paths (click/key/timeout) due to a pointerdown-vs-click-vs-unmount race, root-caused by direct event tracing — criterion 16; (2) the mobile-fallback load time on the unchanged §2.3.1 rig shows a reproducible +506ms/+18.8% regression vs. a real rebuilt pre-Turn-C /share baseline — criterion 30; (3) no computed contrast-ratio regression test covers this section's new text colors, though I independently computed both pass by a wide margin (~17.6:1, ~14.4:1) — criterion 20. Routed to Codex remediate, scoped to exactly these three findings.",
     "spike_decision": {
       "result": "fail_no_winner",
       "selected_runtime": null,
@@ -107,6 +107,30 @@
         "evidence": "grep for star|bloom|rim in src/app/dev/phase10-portfolio-orrery/OrreryScene.tsx returns nothing. Lighting is one ambient + one directional + one point light; the only glow treatment is a single scale=1.16, opacity=0.12 transparent sphere around the sun. The DOM .starField layer exists in orrery.module.css but sits at z-index -3, entirely behind the opaque canvas (z-index 1) whenever R3F is enabled — i.e. invisible on the visually dominant desktop path. Confirmed live in docs/phase10-baseline/section-7/screenshots/orrery-turn-bprime/01-initial-solar-system-entry.png: flat dark background, no stars, no bloom halo, no rim lighting on planets. Emissive sun and per-planet material variation (the other two named §R.10 elements) are genuinely present and working.",
         "required_change": "RESOLVED. `OrreryScene.tsx` now implements a real `Points`-based star field, Fresnel-style rim-lighting terms in both the planet and sun fragment shaders, layered `AdditiveBlending` sun glow, and seeded per-planet procedural shader variation; the renderer is now alpha-transparent so the DOM star-field CSS layer composes with the canvas instead of being occluded. Claude Lead independently confirmed via direct source read, a new dedicated source test, and eight freshly captured §R.11 screenshots/filmstrips this turn (tag turn-bdoubleprime) that the look is materially different from the flat starless spheres that failed the prior review.",
         "status": "resolved"
+      },
+      {
+        "id": 3,
+        "category": "accessibility",
+        "criterion": "criterion 16 (\"focus lands somewhere sensible ... once the entrance ends, never trapped inside the (now-unmounted) overlay\")",
+        "evidence": "Live-verified on the shipped production /share across all three end paths (Skip-button click, keydown, natural 1800ms timeout): document.activeElement is BODY in every case, never [data-portfolio-sun], reproduced across 4+ separate fresh-context runs. Root-caused by direct event tracing (docs/phase10-workflow/reviews/section-7-review-4.md, Finding 1): the window-level pointerdown listener that ends the entrance fires and evaluates overlayRef.current?.contains(document.activeElement) before the browser applies its own focus-on-click default action, so the check is always false; by the time the button's own onClick (which also calls endEntrance) runs, overlayRef.current is already null. ObservatoryEntrance.test.tsx never asserts document.activeElement after ending, so jsdom did not catch this real-browser event-ordering defect.",
+        "required_change": "Fix ObservatoryEntrance.tsx's focus-restoration so it reliably moves focus to [data-portfolio-sun] (or another sensible target) after any of the three end triggers — e.g. capture whether focus was inside the overlay before setVisible(false) runs, rather than re-checking document.activeElement afterward. Add a document.activeElement assertion to ObservatoryEntrance.test.tsx for the button-activation path.",
+        "status": "open"
+      },
+      {
+        "id": 4,
+        "category": "engineering_reliability",
+        "criterion": "criterion 30 / §2.3.1 (\"Load (goto → networkidle) on the CSS-fallback path | ≤ 5000 ms, no regression vs. the pre-§7 baseline\")",
+        "evidence": "Measured /share on the unchanged Moto G4/CPU4x/Slow4G rig, 5 fresh contexts each, against a real pre-Turn-C /share server rebuilt from prev_actor_commit 799a124 on a separate port: baseline [2696,2682,2689,2696,2873]ms (median 2696) vs shipped [3109,3181,3339,3323,3202]ms (median 3202) — a consistent, non-overlapping +506ms (+18.8%) increase. Both remain under the 5000ms absolute ceiling; the 'no regression' clause is explicit and unmet. The pre-existing ~66-69ms long task on this rig is identical in magnitude/timing on both builds (not a new regression); the R3F chunk is confirmed absent from both builds' mobile script requests. Raw: docs/phase10-spike-section-7/raw/share-turn-d.json.",
+        "required_change": "Reduce the added mobile-fallback render/hydration cost so load time no longer measurably regresses vs. the pre-§7 baseline on this rig, or — if attributable to R.9's required real content rather than inefficiency — return the measured result to Devan for an explicit decision, the same escalation pattern §R.8/term 15 established for the R3F long-task gate.",
+        "status": "open"
+      },
+      {
+        "id": 5,
+        "category": "accessibility",
+        "criterion": "criterion 20 (\"Contrast of any new text ... verified the same way observatory-contrast.test.ts already verifies --obs-ink-faint (computed WCAG relative-luminance ratio from source tokens, not eyeballed)\")",
+        "evidence": "observatory-contrast.test.ts is untouched by this diff and contains no assertion for any color this section introduces (.signal's #ffd68c and .skip's #fff0cf in observatory-entrance.module.css, or any new Orrery text color in orrery.module.css). I independently computed both entrance colors against their real rendered backgrounds: #fff0cf on rgba(2,12,9,0.92) ≈ 17.6:1; #ffd68c on the arrival overlay's near-black background ≈ 14.4:1 — both pass 4.5:1 by a wide margin, so this is a missing-verification gap, not a numeric failure.",
+        "required_change": "Add a computed-ratio regression test (following observatory-contrast.test.ts's existing pattern) covering this section's new text/background pairs, so a future color change cannot silently regress below 4.5:1 without a test catching it.",
+        "status": "open"
       }
     ],
     "remediation_commits": [
@@ -159,8 +183,8 @@
       "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new §7 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
     }
   ],
-  "prev_actor_commit": "799a124caf12b91370c3669494f6a625a2bb8ed9",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 799a124 is the previous actor's commit, the Turn B″ Claude Lead review PASS routing §7 to Turn C production implementation, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "a361977a76de90fa07c99955a8bf980968178b4e",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): a361977 is the previous actor's commit, Codex's Turn C production implementation (`phase10(§7): wire Portfolio Orrery into production /share (Turn C)`), resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "5f89a9bbdb7e7fbded6432af9c0adac136c8bda4",
   "production_code_changed_this_turn": true,
   "production_code_note_prior_turn": "Turn B″ changed only the two owner-authorized scene implementations and the Orrery route's visual CSS/tests: src/app/dev/phase10-portfolio-orrery/{OrreryScene.tsx,OrreryScene.source.test.ts,orrery.module.css} and src/app/dev/phase10-spike-r3f-world/{R3fScene.tsx,R3fScene.source.test.ts}. The R3F reconciler/whole-namespace registration was replaced with bounded direct Three using named imports, shared geometries, one raycaster/render loop, and explicit disposal; the Orrery gained the complete §R.10 star/rim/glow/procedural-depth/HUD system. package.json and package-lock.json remain untouched.",
@@ -170,34 +194,34 @@
     "state_validator": {
       "command": "node scripts/phase10-validate-state.mjs",
       "status": "pass",
-      "summary": "Exit 0, 'PHASE10_STATE.json is valid.' Run against §7 / review / claude_lead / ready / next_actor claude / stop_reason null.",
-      "finished_at": "2026-07-26T04:42:44Z"
+      "summary": "Exit 0, 'PHASE10_STATE.json is valid.' Run against §7 / remediate / codex_implementation / ready / next_actor codex / stop_reason null.",
+      "finished_at": "2026-07-26T21:51:07Z"
     },
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "82 test files passed; 454 of 454 tests passed, including new production /share Orrery URL/privacy assertions and the session-scoped entrance suite.",
-      "finished_at": "2026-07-26T04:39:08Z"
+      "summary": "82 test files passed; 454 of 454 tests passed. Independently reran by Claude Lead this turn (Turn D); no implementation source changed.",
+      "finished_at": "2026-07-26T21:51:07Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Next.js 16.2.11 production build compiled successfully; TypeScript passed; all 19 static-page tasks generated, including production /share and the retained owner-gated §7 routes.",
+      "summary": "Next.js 16.2.11 production build compiled successfully; TypeScript passed; all 19 static-page tasks generated. Independently reran by Claude Lead this turn (Turn D).",
       "why_this_is_not_a_regression": "The build is green. The reviewed direct-Three path is lazy-gated post-mount, @react-three/fiber is absent from source/manifests, and the accepted semantic chapter components and deep/private routes were not changed.",
-      "finished_at": "2026-07-26T04:42:44Z"
+      "finished_at": "2026-07-26T21:51:07Z"
     },
     "measurement": {
-      "desktop_rig": "Not rerun in Turn C because localhost binding was denied with EPERM. The latest reviewed reference-route evidence remains docs/phase10-spike-section-7/raw/desktop-scene-turn-bdoubleprime.json; Turn D must measure the shipped /share build independently.",
-      "mobile_rig": "Not rerun in Turn C because localhost binding was denied with EPERM. The latest reviewed reference-route evidence remains docs/phase10-spike-section-7/raw/mobile-fallback-turn-bdoubleprime.json; Turn D must measure the shipped /share fallback independently.",
-      "visual_rig": "No new production screenshot was captured because the server could not bind. Source and tests prove the same reviewed Orrery scene/world/CSS is shared by /share and the reference route; this is not a substitute for Turn D's required production visual inspection and captures.",
-      "additional_live_checks": "Unverified in Turn C due solely to localhost EPERM: production /share entrance once-only/skip behavior, desktop scene/parallax/selection/history/focus, console cleanliness, mobile 390x844 and 320px overflow/target/canvas state, reduced-motion/no3d/no-WebGL/no-JS behavior, production HTML/RSC/client-payload dollar sweep, and all required Turn D screenshots/filmstrips.",
+      "desktop_rig": "Independently measured this turn (Turn D) directly against the shipped /share build (not only the reference route): 5 fresh-context runs, 1440x900, CPU 2x. One run showed a single 58ms long task at load; 10 additional fresh-context re-runs targeting only this question showed 0/10 — 1-in-15 total, non-repeatable, unlike the original deterministic 59-60ms/5-of-5 R3F defect. Idle dropped frames 0/5; added heap ~2.1-3.1MB (budget 40MB); added initial JS ~3.2KB (budget 50KB); R3F lazy chunk ~134.7KB transferred (budget 260KB), confirmed 0B of initial bundle and absent from narrow-viewport requests. Real click-to-settle interaction latency (correcting for a known fixed-wait instrumentation artifact copied from the existing measurement script, same as Turn B already documented) is ~200-460ms, well under the 900ms budget. Raw: docs/phase10-spike-section-7/raw/share-turn-d.json.",
+      "mobile_rig": "Independently measured this turn (Turn D) against the shipped /share build AND a real rebuilt pre-Turn-C baseline server (git worktree at prev_actor_commit 799a124, not the isolated dev reference route): canvas count 0/5 on both; the pre-existing ~66-69ms long task is identical in magnitude/timing on both builds (not a new regression); load time shows a reproducible +506ms/+18.8% regression vs baseline (Finding 4, section.findings id 4) — see review doc for full evidence.",
+      "visual_rig": "Fresh production screenshots and filmstrips captured this turn under docs/phase10-baseline/section-7/screenshots/share-turn-d/ and filmstrips/share-turn-d-*/, including a genuine pre-Turn-C 'before' still from the rebuilt baseline server — the evidence Turn C's sandbox could not produce. All eight §R.11 items now committed against the shipped build. Visually inspected directly by Claude Lead, not summarized.",
+      "additional_live_checks": "All performed this turn: entrance once-only/skip/click/key/timeout behavior (Finding 3 found here), desktop scene/parallax/selection/history/focus (focus-return-on-close confirmed correct; focus-after-entrance confirmed broken), console cleanliness (0 errors across 4 states), mobile 390x844/320px overflow/target/canvas state (all pass), reduced-motion/no3d/no-WebGL/no-JS/keyboard behavior (all pass), production HTML dollar sweep (0 matches), and all required Turn D screenshots/filmstrips.",
       "env_contents_accessed_or_output": false,
       "local_auth_method": "A task-only OWNER_PASSWORD process override was supplied to a locally started production server for this turn's live measurement/capture/verification. No .env* contents were read, printed, edited, staged, or committed."
     }
   },
   "stop_reason": null,
   "prior_stop_reason_resolved": "RESOLVED by Devan's owner decision on 2026-07-25 (see section.owner_decision). The prior block was: the R3F route-owned long task remains 59-60ms (5/5 runs) after Codex's described one-round optimisation attempt, independently re-measured and unchanged from the pre-remediation FAIL result; per section-7.md §R.8 and PRODUCT_DIRECTION.md's 'Runtime and resilience' section, that outcome required stopping and returning the measured result to Devan for an explicit decision rather than looping back to Codex. Devan selected Option 2 from docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md — one second, differently scoped remediation attempt (bundle/chunk-level, not scene-construction), plus required visual-quality remediation closing finding 2 in the same turn. No performance exception was accepted; the 50ms gate and CPU-2x procedure are unchanged.",
-  "updated_at": "2026-07-26T04:42:44Z",
+  "updated_at": "2026-07-26T21:51:07Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

@@ -1,0 +1,105 @@
+{
+  "entrance": {
+    "overlayFirstLoad": 1,
+    "skipVisible": true,
+    "sunOperableDuringEntrance": true,
+    "overlayAfterSkip": 0,
+    "overlayOnReloadSameSession": 0,
+    "overlayFreshSession": 1
+  },
+  "selection": {
+    "tickers": [
+      "ASML",
+      "GOOG",
+      "COST",
+      "MSFT",
+      "INTC",
+      "IBM",
+      "CBRS",
+      "NBIS",
+      "CRM",
+      "SPCX",
+      "ORCL",
+      "KYMR",
+      "MEI"
+    ],
+    "firstTicker": "ASML",
+    "inspectorText": true,
+    "focusedId": "orrery-inspector-heading",
+    "inspectorFields": [
+      "Portfolio weight",
+      "Trailing week",
+      "Vs. portfolio",
+      "Annualized volatility",
+      "Beta vs. VOO",
+      "Orbit state"
+    ],
+    "deepLink": "/stock/ASML",
+    "urlAfterBack": "http://localhost:3100/share?no3d=1",
+    "portfolioHeading": true,
+    "noDollarInPortfolioSummary": true
+  },
+  "legendAndPrivacy": {
+    "legendText": "ORBIT ENCODING\n\nRadius\nPortfolio weight, perceptually scaled and clamped\nClockwise\nPositive trailing week\nCounterclockwise\nNegative trailing week\nNeutral\nUnavailable or within ±0.05%; orbit freezes\nSpeed\nIncreases with absolute weekly change, safely clamped",
+    "dollarMatches": [],
+    "htmlDollarMatches": []
+  },
+  "mobile-390": {
+    "canvasCount": 0,
+    "overflow": true,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "smallTargets": []
+  },
+  "mobile-320": {
+    "canvasCount": 0,
+    "overflow": true,
+    "scrollWidth": 320,
+    "clientWidth": 320,
+    "smallTargets": []
+  },
+  "reducedMotion": {
+    "canvasCount": 0,
+    "overlayCount": 0,
+    "orbitFactsVisible": true
+  },
+  "fallbacks": {
+    "canvasCountNo3d": 0,
+    "allHoldingsOperableNo3d": 13,
+    "canvasCountForcedFail": 0,
+    "holdingsOperableForcedFail": 13,
+    "consoleErrors": []
+  },
+  "accessibilityTree": {
+    "canvasAriaHidden": true,
+    "starFieldAriaHidden": "true",
+    "scanlinesAriaHidden": "true",
+    "canvasAccessibleNodes": 0
+  },
+  "keyboardOnly": {
+    "foundHoldingViaTab": true,
+    "urlAfterKeyboardActivation": "http://localhost:3100/share?holding=ASML&no3d=1"
+  },
+  "parallax": {
+    "varsA": {
+      "x": "",
+      "y": ""
+    },
+    "varsB": {
+      "x": "",
+      "y": ""
+    }
+  },
+  "r3fChunkGating": {
+    "desktopCanvasCount": 1,
+    "desktopChunkCount": 11,
+    "narrowChunkCount": 9,
+    "onlyOnDesktopCount": 2
+  },
+  "consoleErrors": {
+    "desktop": [],
+    "no3d": [],
+    "mobile390": [],
+    "reducedMotion": []
+  }
+}
