@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -27,10 +27,32 @@
     "id": "§8",
     "title": "The Stock Market Universe — /share rebuilt",
     "spec_doc": "docs/phase10-workflow/specs/section-8.md",
-    "implementation_commit": "d992510c0e6b3b3c3d3cf1dff053c195a1c10ce5",
-    "review_result": null,
-    "review_doc": "docs/phase10-workflow/reviews/section-8-review-2.md",
-    "findings": [],
+    "implementation_commit": "333566a46c6a2c5509c27ecf136e6ede25d41624",
+    "review_result": "fail",
+    "review_doc": "docs/phase10-workflow/reviews/section-8-review-3.md",
+    "findings": [
+      {
+        "id": 1,
+        "severity": "severe",
+        "summary": "/share renders full owner-only Mission Control content (exact dollar amounts, trade reasons) whenever the visiting browser carries a valid owner session cookie, because UniverseRoute.tsx's owner-content branch checks only `authenticated`, never `ownerGate`/basePath.",
+        "criterion": "section-8.md §14 item 47 (Privacy); PRODUCT_DIRECTION.md Decision hierarchy rank 1",
+        "required_change": "Scope the OwnerMissionControlContent branch in UniverseRoute.tsx to `portfolioSelected && authenticated && ownerGate`; flip the /share authenticated-viewer test to assert public-only content; keep/add the equivalent authenticated-full-content test scoped to /."
+      },
+      {
+        "id": 2,
+        "severity": "moderate",
+        "summary": "OrreryWorld's top header always renders \"Public universe / read-only\" regardless of viewer identity, including on the authenticated, owner-gated /.",
+        "criterion": "round-two owner decision E1 (\"identity-aware private Mission Control\")",
+        "required_change": "Derive the header text from viewer identity/route (missionMode/ownerGate/basePath) instead of the referenceStudy-only flag."
+      },
+      {
+        "id": 3,
+        "severity": "moderate",
+        "summary": "The Systems Manual button and the holding inspector's \"Return to overview\" control share the same bottom-right CSS anchor and visually/functionally overlap in APPROACH at 1440x900; clicks in the overlap region open the manual instead of returning to OVERVIEW.",
+        "criterion": "section-8.md §14 item 3 (Behavioral); undermines round-two finding E4",
+        "required_change": "Reposition .manualButton and/or .inspector so the two 44x44 controls never overlap while the inspector is open; add evidence the full \"Return to overview\" target resolves to itself."
+      }
+    ],
     "prior_findings_resolved": [
       {
         "id": 1,
@@ -48,7 +70,8 @@
     "remediation_commits": [
       "3c53630 — phase10(§8): remediate desktop fallback and data coverage (findings 1-2)",
       "d992510 — phase10(§8): remediate owner universe feedback (A2, A3, B1, B2, C1, C2)",
-      "pending next-actor hash — phase10(§8): remediate shared universe and native textures (E1-E5; E6 not started per lower-priority budget rule)"
+      "333566a — phase10(§8): remediate shared universe and native textures (E1-E5; E6 not started per lower-priority budget rule)",
+      "pending next-actor hash — phase10(§8): remediate review-3 findings 1-3 (owner-content route gating, header identity text, manual-button/inspector overlap)"
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -58,7 +81,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-codex-implementation-to-claude-lead-remediate-2.md",
+    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-claude-lead-to-codex-implementation-remediate-3.md",
     "owner_feedback": {
       "recorded_at": "2026-07-27",
       "recorded_by": "claude/fable-5 (cowork, owner-directed)",
@@ -154,46 +177,46 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "ff005e056cd20583829d6354c8f884f3d7974d13",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): ff005e0 (`owner(§8): home route becomes the universe, texture resolution defect, round-2 feedback`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
-  "last_green_commit": "d992510c0e6b3b3c3d3cf1dff053c195a1c10ce5",
-  "production_code_changed_this_turn": true,
-  "production_code_note_prior_turn": "The prior turn (Codex Implementation, §8 remediate stage, commit d992510) addressed the bounded owner-feedback items A2, A3, B1, B2, C1, and C2 in application source, then deferred all live verification to Claude Lead because its sandbox could not bind a local server.",
-  "production_code_note": "This turn (Codex Implementation, §8 remediate stage) addressed bounded owner-feedback round-two items E1-E5: `/` and `/share` now share one UniverseRoute while the root owner gate remains intact; all 24 KTX2 maps ship at native 512x256 with a parsed-dimension regression test; ticker labels keep 44px hit areas without opaque boxes; a single empty-space click joins Escape, the visible control, and browser history as overview return paths; and Mission Control chrome is simplified without removing its data. E6 satellites/news moons were not started under the handoff's explicit lower-priority budget rule; public news moons would also require a new privacy decision not present in this remediation scope.",
+  "prev_actor_commit": "333566a46c6a2c5509c27ecf136e6ede25d41624",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 333566a (`phase10(§8): remediate shared universe and native textures`) is HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "last_green_commit": "333566a46c6a2c5509c27ecf136e6ede25d41624",
+  "production_code_changed_this_turn": false,
+  "production_code_note_prior_turn": "The prior turn (Codex Implementation, §8 remediate stage, commit 333566a) addressed bounded owner-feedback round-two items E1-E5 in application source, then deferred all live verification to Claude Lead because its sandbox could not bind a local server.",
+  "production_code_note": "This turn (Claude Lead, §8 review stage) changed no implementation source. It built and started a real production server, independently drove it with temporary unsaved Playwright scripts, and found 3 bounded findings against the still-binding spec/owner-feedback criteria: (1) severe — /share renders full owner-only Mission Control content, including exact dollar amounts and trade reasons, whenever the visiting browser carries a valid owner session cookie, because UniverseRoute.tsx's owner-content branch checks only `authenticated`, never `ownerGate`; (2) moderate — OrreryWorld's top header always reads \"Public universe / read-only\" even on the authenticated, owner-gated /; (3) moderate — the Systems Manual button and the holding inspector's explicit \"Return to overview\" control share one CSS anchor and overlap in APPROACH at 1440x900, so clicks in the overlap region open the manual instead of returning to OVERVIEW. See docs/phase10-workflow/reviews/section-8-review-3.md.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex Implementation ran the full Vitest suite: 87 test files passed; 469 of 469 tests passed, including shared root/share route identity and gating, root-relative Mission Control links, overview-return coverage, and parsed 512x256 dimensions for all 24 KTX2 maps.",
-      "finished_at": "2026-07-27T23:06:23Z"
+      "summary": "Claude Lead independently re-ran the full Vitest suite: 87 test files passed; 469 of 469 tests passed.",
+      "finished_at": "2026-07-27T23:28:54Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex Implementation ran the Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
-      "finished_at": "2026-07-27T23:06:23Z"
+      "summary": "Claude Lead independently ran the Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
+      "finished_at": "2026-07-27T23:28:54Z"
     },
     "long_task_gate": {
       "command": "CDP Emulation.setCPUThrottlingRate(2) + PerformanceObserver('longtask'), 5 fresh contexts, 1440x900, against a real npm run start server on /share",
-      "status": "not_run",
-      "summary": "Round-two measurement could not run: the Codex sandbox denied `next start` with listen EPERM on 0.0.0.0:3100 and the required in-app browser returned `No browser is available`. Claude Lead must independently re-measure the unchanged 50ms gate with the native-resolution maps.",
-      "finished_at": "2026-07-27T23:06:23Z"
+      "status": "pass",
+      "summary": "Claude Lead independently measured against the completed native-texture implementation: 0 long tasks over 50ms across all 5 fresh-context runs (textures allowed to fully stream, 3s settle, before measuring); max observed task duration across all runs was 0ms. The gate holds.",
+      "finished_at": "2026-07-27T23:28:54Z"
     },
     "texture_budget": {
       "command": "stat -f%z public/textures/planets/*.ktx2",
       "status": "pass",
-      "summary": "24 native 512x256 KTX2 maps, 3424390 bytes total, 240295 bytes max, 10519 bytes min. The prior 300KB/24KB budget is explicitly superseded because it caused the confirmed 95% pixel-loss defect. Parsed dimensions pass for every map; decoded RGBA base-level analytical footprint is 12582912 bytes. Live GPU/heap remains for Claude review.",
-      "finished_at": "2026-07-27T23:06:23Z"
+      "summary": "Claude Lead independently confirmed: 24 native 512x256 KTX2 maps, 3424390 bytes total, 240295 bytes max, 10519 bytes min, matching the handoff's claimed table exactly. Live visual inspection of a streamed APPROACH-state texture (MSFT) shows real cloud/shading detail, not a blur.",
+      "finished_at": "2026-07-27T23:28:54Z"
     },
     "mobile_fallback": {
       "command": "Playwright, 390x844 and 320x844, against a real npm run start server on /share",
-      "status": "not_run",
-      "summary": "The existing automated narrow-viewport zero-canvas coverage remains green, but live 390x844/320x844 checks could not run because localhost binding and the in-app browser were unavailable. Claude Lead must independently re-verify canvas count, overflow, and target sizes.",
-      "finished_at": "2026-07-27T23:06:23Z"
+      "status": "pass",
+      "summary": "Claude Lead independently verified live: canvas count 0 at both 390x844 and 320x844; scrollWidth - clientWidth === 0 at both widths; visual inspection confirms a genuinely reflowed semantic list carrying every encoded value as text. Zero console warnings/errors across all captured contexts.",
+      "finished_at": "2026-07-27T23:28:54Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T23:06:23Z",
+  "updated_at": "2026-07-27T23:28:54Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
