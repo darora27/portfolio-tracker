@@ -2,6 +2,69 @@
 
 Implemented July 27, 2026 by codex/gpt-5.
 
+## Owner-feedback round two remediation
+
+Completed July 27, 2026 by codex/gpt-5.
+
+- [x] `/` and `/share` now render one shared `UniverseRoute` implementation;
+  the root route preserves its owner sign-in gate, while both routes use the
+  same identity-aware Mission Control and URL/camera behavior once the
+  universe is rendered. The rejected five-chapter root shell is retired. —
+  done by codex/gpt-5
+- [x] The offline texture generator preserves every authored 512×256 source
+  plate at native resolution. A committed test parses all 24 KTX2 containers
+  and asserts their pixel dimensions, so byte-budget tuning cannot silently
+  downsample the art again. — done by codex/gpt-5
+- [x] Planet ticker hit targets remain at least 44×44px, but their visible
+  treatment is now unboxed 0.58rem text with shadow instead of a large opaque
+  rectangle, keeping labels always visible without covering the bodies. —
+  done by codex/gpt-5
+- [x] APPROACH and COMMAND retain Escape, an explicit overview link, and
+  browser-history navigation; a single empty-space canvas click now returns
+  to OVERVIEW as well. Focus and route tests cover the shared root/share URL
+  behavior and the explicit/Escape paths; the scene source regression covers
+  empty-space dispatch. — done by codex/gpt-5
+- [x] Mission Control keeps all four stations and their data, but removes
+  competing panel borders, gradients, boxed tab chrome, and oversized spacing
+  in favor of one quieter full-screen surface and a simple underlined active
+  station. — done by codex/gpt-5
+- [ ] Satellites and per-planet news moons were not started. They are
+  explicitly lower priority in the owner handoff, and news moons would require
+  a new public-news data/privacy decision that this remediation does not
+  authorize. — recorded by codex/gpt-5
+
+### Native texture measurement
+
+The prior 300,000-byte total / 24,000-byte per-map budget is superseded because
+it caused the confirmed 95% pixel-loss defect. The quality contract is now
+native 512×256 dimensions; payload size is measured and reported, not used to
+reduce resolution.
+
+| Maps | Dimensions | Total bytes | Smallest | Largest | Average |
+|---:|---:|---:|---:|---:|---:|
+| 24 | 512×256 | 3,424,390 | 10,519 | 240,295 | 142,682.9 |
+
+The decoded RGBA base-level footprint is 12,582,912 bytes (24 × 512 × 256 ×
+4), an analytical bound rather than a live GPU/heap measurement. The maps
+remain desktop-only, enter through the existing lazy WebGL gate, and begin
+loading two animation frames after scene creation. — measured by codex/gpt-5
+
+### Round-two verification
+
+- `npm test`: PASS, 87 files and 469/469 tests. — done by codex/gpt-5
+- `npm run build`: PASS, Next.js 16.2.11 production build compiled,
+  TypeScript passed, and 18 route-generation tasks completed. — done by
+  codex/gpt-5
+- Focused ESLint and `git diff --check`: PASS. — done by codex/gpt-5
+- Live browser checks could not run: `next start` was denied at bind time
+  with `listen EPERM: operation not permitted 0.0.0.0:3100`, and the required
+  in-app browser connection returned `No browser is available`. Therefore the
+  50ms five-context long-task gate, GPU/heap measurement, real 1440×900 label
+  and Mission Control inspection, return-path interaction, mobile/no3d/
+  reduced-motion checks, console inspection, and screenshots remain explicitly
+  unverified for Claude Lead review. This is an environment evidence gap, not
+  a claimed pass. — recorded by codex/gpt-5
+
 ## Outcome
 
 `/share` is now the Stock Market Universe: eight snapshot-stable planets,

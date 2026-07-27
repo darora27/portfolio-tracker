@@ -11,8 +11,8 @@ const ownerSource = readFileSync(
   path.join(directory, "OwnerMissionControlContent.tsx"),
   "utf8",
 );
-const pageSource = readFileSync(
-  path.resolve(directory, "../../../app/(depth-pull)/share/page.tsx"),
+const routeSource = readFileSync(
+  path.join(directory, "UniverseRoute.tsx"),
   "utf8",
 );
 
@@ -34,14 +34,17 @@ describe("Mission Control viewer-identity isolation", () => {
   });
 
   it("loads the owner content module only inside the authenticated branch", () => {
-    const authBranch = pageSource.slice(
-      pageSource.indexOf("if (portfolioSelected && authenticated)"),
-      pageSource.indexOf("return ("),
+    const authStart = routeSource.indexOf(
+      "if (portfolioSelected && authenticated)",
+    );
+    const authBranch = routeSource.slice(
+      authStart,
+      routeSource.indexOf("\n  return (", authStart),
     );
     expect(authBranch).toContain('await import(');
     expect(authBranch).toContain("OwnerMissionControlContent");
-    expect(pageSource).toContain("PublicMissionControlContent");
-    expect(pageSource).not.toMatch(
+    expect(routeSource).toContain("PublicMissionControlContent");
+    expect(routeSource).not.toMatch(
       /^import .*OwnerMissionControlContent/m,
     );
   });

@@ -4,13 +4,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const {
   cookies,
   getDashboardData,
-  getPublicTimelineData,
+  getHistoryData,
+  getResearchData,
   isValidSession,
+  from,
 } = vi.hoisted(() => ({
   cookies: vi.fn(),
   getDashboardData: vi.fn(),
-  getPublicTimelineData: vi.fn(),
+  getHistoryData: vi.fn(),
+  getResearchData: vi.fn(),
   isValidSession: vi.fn(),
+  from: vi.fn(),
 }));
 
 vi.mock("next/headers", () => ({ cookies }));
@@ -22,7 +26,9 @@ vi.mock("@/lib/auth", () => ({
   isValidSession,
 }));
 vi.mock("@/lib/dashboard-data", () => ({ getDashboardData }));
-vi.mock("@/lib/observatory/timeline-data", () => ({ getPublicTimelineData }));
+vi.mock("@/lib/history-data", () => ({ getHistoryData }));
+vi.mock("@/lib/research-data", () => ({ getResearchData }));
+vi.mock("@/lib/supabase/client", () => ({ supabase: { from } }));
 
 const dashboardFixture = {
   historyDays: 30,
@@ -31,6 +37,8 @@ const dashboardFixture = {
   pricesAsOf: "2026-07-23",
   dailyChangeAsOf: "2026-07-23",
   dailyChangePct: -0.042,
+  twr7d: -0.018,
+  volatilityPct: 0.37,
   chartData: [
     { date: "2026-06-24", portfolioIndex: 100, vooIndex: 100 },
     { date: "2026-07-23", portfolioIndex: 97.1, vooIndex: 101.7 },
@@ -61,40 +69,64 @@ const dashboardFixture = {
   totalValue: 123456.78,
   totalCost: 100000,
   simpleReturnPct: 0.2345678,
+  publicOrreryHoldings: [
+    {
+      ticker: "IBM",
+      companyName: "IBM",
+      weight: 0.42,
+      weeklyReturn: -0.021,
+      portfolioRelativeReturn: -0.016,
+      volatilityPct: 0.18,
+      betaVsVoo: 0.74,
+      dayReturn: -0.042,
+    },
+    {
+      ticker: "MSFT",
+      companyName: "Microsoft",
+      weight: 0.31,
+      weeklyReturn: 0.012,
+      portfolioRelativeReturn: 0.017,
+      volatilityPct: 0.21,
+      betaVsVoo: 1.04,
+      dayReturn: 0.009,
+    },
+  ],
+  orreryBelt: { planetTickers: ["IBM", "MSFT"], beltTickers: [] },
 };
 
-const timelineFixture = {
-  flowMarkers: [{ date: "2026-07-02", direction: "in" as const }],
-  tradeMarkers: [{ date: "2026-07-03", ticker: "IBM", action: "buy" as const }],
-  compositionHistory: {
-    tickers: ["IBM", "MSFT"],
-    hasOther: false,
-    points: [{ date: "2026-07-03", IBM: 60, MSFT: 40 }],
-  },
-};
-
-async function renderHome(chapter?: string, explain?: string) {
+async function renderHome(selection: {
+  focus?: string;
+  holding?: string;
+  no3d?: string;
+  station?: string;
+} = {}) {
   const { default: Home } = await import("./page");
   const element = await Home({
-    searchParams: Promise.resolve({
-      ...(chapter ? { chapter } : {}),
-      ...(explain ? { explain } : {}),
-    }),
+    searchParams: Promise.resolve(selection),
   });
   return renderToStaticMarkup(element);
 }
 
 beforeEach(() => {
+  getDashboardData.mockReset();
+  getHistoryData.mockReset();
+  getResearchData.mockReset();
+  isValidSession.mockReset();
   process.env.OWNER_PASSWORD = "test-owner-password";
   cookies.mockResolvedValue({
     get: vi.fn(() => ({ value: "test-session" })),
   });
   isValidSession.mockReturnValue(true);
   getDashboardData.mockResolvedValue(dashboardFixture);
-  getPublicTimelineData.mockResolvedValue(timelineFixture);
+  getHistoryData.mockResolvedValue({});
+  getResearchData.mockResolvedValue({
+    redditConfigured: false,
+    marketNews: [],
+    rows: [],
+  });
 });
 
-describe("private / owner briefing", () => {
+describe("private / owner universe", () => {
   it("keeps the unauthenticated sign-in branch and avoids private data work", async () => {
     isValidSession.mockReturnValue(false);
 
@@ -104,85 +136,48 @@ describe("private / owner briefing", () => {
     expect(html).toContain("View public share page");
     expect(html).toContain("<h1");
     expect(html).toContain("Portfolio Tracker");
-    expect(html).toContain("Sign in to view the private dashboard.");
+    expect(html).toContain("Sign in to view the private universe.");
     expect(html).toContain('type="password"');
     expect(html).not.toContain("Portfolio Observatory");
     expect(html).not.toContain("$123,456.78");
     expect(getDashboardData).not.toHaveBeenCalled();
-    expect(getPublicTimelineData).not.toHaveBeenCalled();
+    expect(getHistoryData).not.toHaveBeenCalled();
   });
 
-  it("renders the briefing before subordinate owner utilities", async () => {
+  it("renders the shared universe at the authenticated front door", async () => {
     const html = await renderHome();
 
-    expect(html).toContain("01 — Pulse");
-    expect(html).toContain("Owner briefing");
-    expect(html).toContain("Down 4.2% today.");
-    expect(html).toContain("IBM drove most of today&#x27;s move, -4.2%.");
-    expect(html).toContain("What deserves attention");
-    expect(html).toContain("Notice: ");
-    expect(html).toContain('href="/stock/IBM"');
-    expect(html).toContain('href="/?chapter=forces"');
-    expect(html).toContain("Total value");
-    expect(html).toContain("$123,456.78");
-    expect(html).toContain("Total cost");
-    expect(html).toContain("$100,000.00");
-    expect(html).toContain("Simple return");
-    expect(html).toContain("+23.5%");
-    expect(html.indexOf("Owner briefing")).toBeLessThan(html.indexOf("$123,456.78"));
+    expect(html).toContain("Stock Market Universe");
+    expect(html).toContain('href="/?focus=portfolio&amp;camera=command"');
+    expect(html).toContain('href="/?holding=IBM&amp;camera=approach"');
+    expect(html).not.toContain("01 — Pulse");
+    expect(html).not.toContain("Portfolio Observatory");
     expect((html.match(/<h1/g) ?? [])).toHaveLength(1);
   });
 
-  it("renders all four reused Observatory chapters from the same data shapes", async () => {
-    const forces = await renderHome("forces");
-    expect(forces).toContain("02 — Forces");
-    expect(forces).toContain("MSFT contributed the most to total return");
-
-    const structure = await renderHome("structure");
-    expect(structure).toContain("The top two holdings make up 73.0%");
-    expect(structure).toContain("IBM and MSFT are the most correlated holdings");
-
-    const timeline = await renderHome("timeline");
-    expect(timeline).toContain("Annotated divergence ribbon");
-    expect(timeline).toContain("Capital added");
-    expect(timeline).toContain("Bought IBM");
-
-    const lab = await renderHome("lab");
-    expect(lab).toContain("time-weighted return (TWR)");
-    expect(lab).toContain("Explain TWR");
-    expect(lab).toContain("Explain XIRR");
-  });
-
-  it("wires validated direct explanation links only into their home chapter", async () => {
-    const xirr = await renderHome("lab", "xirr");
-    expect(xirr).toContain("XIRR (annualized return)");
-    expect(xirr).toContain("+12.34%");
-    expect((xirr.match(/aria-expanded="true"/g) ?? [])).toHaveLength(1);
-
-    const hhi = await renderHome("structure", "hhi");
-    expect(hhi).toContain("Herfindahl-Hirschman Index");
-    expect((hhi.match(/aria-expanded="true"/g) ?? [])).toHaveLength(1);
-
-    expect(await renderHome("structure", "xirr")).not.toContain(
-      'aria-expanded="true"',
-    );
-    expect(await renderHome("lab", "unknown")).not.toContain(
-      'aria-expanded="true"',
-    );
-  });
-
-  it("renders the exact no-attention fallback", async () => {
-    getDashboardData.mockResolvedValue({
-      ...dashboardFixture,
-      pricesAsOf: "2026-07-23",
-      hhi: 1200,
-      movers: [],
-      upcomingEarnings: [],
+  it("uses the owner Mission Control on the gated route", async () => {
+    const html = await renderHome({
+      focus: "portfolio",
+      station: "research",
     });
+    expect(html).toContain('data-mode="private"');
+    expect(html).toContain("owner authenticated");
+    expect(html).toContain("Owner research station");
+    expect(html).toContain('href="/?focus=portfolio');
+  });
 
-    const html = await renderHome();
+  it("restores a selected holding without changing the root route", async () => {
+    const html = await renderHome({ holding: "IBM", no3d: "1" });
+    expect(html).toContain("Holding telemetry / public-safe");
+    expect(html).toContain('href="/stock/IBM"');
+    expect(html).toContain('href="/?no3d=1"');
+  });
 
-    expect(html).toContain("Nothing needs your attention right now.");
-    expect(html).not.toContain("drove most of today");
+  it("does not expose the owner universe to a failed session", async () => {
+    isValidSession.mockReturnValue(false);
+    const html = await renderHome({ focus: "portfolio" });
+    expect(html).toContain('type="password"');
+    expect(html).not.toContain("Mission Control");
+    expect(getDashboardData).not.toHaveBeenCalled();
   });
 });

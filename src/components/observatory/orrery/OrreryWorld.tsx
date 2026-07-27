@@ -363,6 +363,7 @@ export function OrreryWorld({
           mode={missionMode}
           content={missionControlContent}
           closeHref={fallbackHref}
+          basePath={basePath}
           preservedQuery={missionPreservedQuery}
         />
       ) : null}

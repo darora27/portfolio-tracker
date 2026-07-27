@@ -6,6 +6,12 @@ Depends on: `PRODUCT_DIRECTION.md` and a recorded Phase 10 design selection
 
 Primary route: `/share`
 
+Owner amendment, July 27, 2026 (Phase 10 §8 round two): `/` and `/share` now
+share the Stock Market Universe implementation. `/` retains its owner gate and
+private identity-aware Mission Control; its former five-chapter shell is
+retired. The older route sections below remain planning history wherever they
+conflict with this amendment. — recorded by codex/gpt-5
+
 ## 1. Evidence and current-state diagnosis
 
 This diagnosis combines Devan's Phase 9 review, the Phase 9 specification and
@@ -309,6 +315,11 @@ inspector.
 - “Method” opens calculation/freshness content without leaving the story.
 
 ### `/` — private Observatory
+
+**Superseded for the top-level presentation by the July 27 owner amendment:**
+the root is now the owner-gated Stock Market Universe, sharing the `/share`
+implementation and opening private Mission Control after authentication. The
+questions and owner-only data boundary below remain binding.
 
 **User questions**
 

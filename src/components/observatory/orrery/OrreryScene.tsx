@@ -657,6 +657,9 @@ export default function OrreryScene({
       if (target === "portfolio") callbacksRef.current.onSelectPortfolio();
       else if (target === "belt") callbacksRef.current.onSelectBelt();
       else if (target) launchRocket(target);
+      else if (cameraStateRef.current !== "overview") {
+        callbacksRef.current.onExitOverview();
+      }
     };
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();

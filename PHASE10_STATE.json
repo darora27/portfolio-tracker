@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -28,7 +28,7 @@
     "title": "The Stock Market Universe — /share rebuilt",
     "spec_doc": "docs/phase10-workflow/specs/section-8.md",
     "implementation_commit": "d992510c0e6b3b3c3d3cf1dff053c195a1c10ce5",
-    "review_result": "pass",
+    "review_result": null,
     "review_doc": "docs/phase10-workflow/reviews/section-8-review-2.md",
     "findings": [],
     "prior_findings_resolved": [
@@ -47,7 +47,8 @@
     ],
     "remediation_commits": [
       "3c53630 — phase10(§8): remediate desktop fallback and data coverage (findings 1-2)",
-      "d992510 — phase10(§8): remediate owner universe feedback (A2, A3, B1, B2, C1, C2)"
+      "d992510 — phase10(§8): remediate owner universe feedback (A2, A3, B1, B2, C1, C2)",
+      "pending next-actor hash — phase10(§8): remediate shared universe and native textures (E1-E5; E6 not started per lower-priority budget rule)"
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -57,7 +58,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-devan-to-codex-implementation-remediate-2.md",
+    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-codex-implementation-to-claude-lead-remediate-2.md",
     "owner_feedback": {
       "recorded_at": "2026-07-27",
       "recorded_by": "claude/fable-5 (cowork, owner-directed)",
@@ -153,46 +154,46 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "d992510c0e6b3b3c3d3cf1dff053c195a1c10ce5",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): d992510 (`phase10(§8): remediate owner universe feedback`) is HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "ff005e056cd20583829d6354c8f884f3d7974d13",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): ff005e0 (`owner(§8): home route becomes the universe, texture resolution defect, round-2 feedback`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "d992510c0e6b3b3c3d3cf1dff053c195a1c10ce5",
-  "production_code_changed_this_turn": false,
+  "production_code_changed_this_turn": true,
   "production_code_note_prior_turn": "The prior turn (Codex Implementation, §8 remediate stage, commit d992510) addressed the bounded owner-feedback items A2, A3, B1, B2, C1, and C2 in application source, then deferred all live verification to Claude Lead because its sandbox could not bind a local server.",
-  "production_code_note": "This turn (Claude Lead, §8 review stage) changed no application source. It independently ran npm test/npm run build, built and started a real production server, and used a temporary unsaved Playwright script (deleted after use) to verify live: the two carried-forward findings from section-8-review.md (both fixed), all six owner-feedback items A2/A3/B1/B2/C1/C2 (all fixed), the §14 criterion-43 50ms long-task gate on /share (holds — two 62-63ms tasks appeared only on the very first request to a cold server and vanished on two subsequent full 5-context passes against the warm server), and mobile zero-canvas/zero-overflow at 390/320px (unchanged, still passing). Result: PASS, no findings. See docs/phase10-workflow/reviews/section-8-review-2.md.",
+  "production_code_note": "This turn (Codex Implementation, §8 remediate stage) addressed bounded owner-feedback round-two items E1-E5: `/` and `/share` now share one UniverseRoute while the root owner gate remains intact; all 24 KTX2 maps ship at native 512x256 with a parsed-dimension regression test; ticker labels keep 44px hit areas without opaque boxes; a single empty-space click joins Escape, the visible control, and browser history as overview return paths; and Mission Control chrome is simplified without removing its data. E6 satellites/news moons were not started under the handoff's explicit lower-priority budget rule; public news moons would also require a new privacy decision not present in this remediation scope.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Claude Lead review independently re-ran the full Vitest suite against commit d992510: 86 test files passed; 465 of 465 tests passed, including identity/privacy canaries, arrival-surface isolation, rocket-selection source coverage, orbit-clearance invariants, and the fixture-driven getDashboardData behavior (independently hand-checked the dayReturn/orreryBelt arithmetic in the review doc).",
-      "finished_at": "2026-07-27T22:22:30Z"
+      "summary": "Codex Implementation ran the full Vitest suite: 87 test files passed; 469 of 469 tests passed, including shared root/share route identity and gating, root-relative Mission Control links, overview-return coverage, and parsed 512x256 dimensions for all 24 KTX2 maps.",
+      "finished_at": "2026-07-27T23:06:23Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Claude Lead review independently re-ran the Next.js 16.2.11 Turbopack production build against commit d992510: compiled successfully, TypeScript passed, 18 route-generation tasks completed. /share remains a dynamic route.",
-      "finished_at": "2026-07-27T22:22:30Z"
+      "summary": "Codex Implementation ran the Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
+      "finished_at": "2026-07-27T23:06:23Z"
     },
     "long_task_gate": {
       "command": "CDP Emulation.setCPUThrottlingRate(2) + PerformanceObserver('longtask'), 5 fresh contexts, 1440x900, against a real npm run start server on /share",
-      "status": "pass",
-      "summary": "Claude Lead review independently measured this gate (Codex's sandbox could not bind a server). First pass against a freshly started server showed two 62-63ms tasks in run 1 only; two subsequent full 5-fresh-context passes against the now-warm server showed zero long tasks in all 10 runs -- a one-time server/route bootstrap artifact, not a route-owned cost. Gate holds unweakened.",
-      "finished_at": "2026-07-27T22:22:30Z"
+      "status": "not_run",
+      "summary": "Round-two measurement could not run: the Codex sandbox denied `next start` with listen EPERM on 0.0.0.0:3100 and the required in-app browser returned `No browser is available`. Claude Lead must independently re-measure the unchanged 50ms gate with the native-resolution maps.",
+      "finished_at": "2026-07-27T23:06:23Z"
     },
     "texture_budget": {
       "command": "stat -f%z public/textures/planets/*.ktx2",
       "status": "pass",
-      "summary": "24 files, 261415 bytes total, 21194 bytes max -- passes the declared <=300000 total and <=24000 per-map budgets recorded in docs/phase10-baseline/section-8/README.md. Files unchanged since the owner-feedback remediation turn; not re-measured, only re-confirmed present at the same sizes.",
-      "finished_at": "2026-07-27T22:22:30Z"
+      "summary": "24 native 512x256 KTX2 maps, 3424390 bytes total, 240295 bytes max, 10519 bytes min. The prior 300KB/24KB budget is explicitly superseded because it caused the confirmed 95% pixel-loss defect. Parsed dimensions pass for every map; decoded RGBA base-level analytical footprint is 12582912 bytes. Live GPU/heap remains for Claude review.",
+      "finished_at": "2026-07-27T23:06:23Z"
     },
     "mobile_fallback": {
       "command": "Playwright, 390x844 and 320x844, against a real npm run start server on /share",
-      "status": "pass",
-      "summary": "canvas count 0 and scrollWidth === clientWidth at both widths, independently re-verified live by Claude Lead review.",
-      "finished_at": "2026-07-27T22:22:30Z"
+      "status": "not_run",
+      "summary": "The existing automated narrow-viewport zero-canvas coverage remains green, but live 390x844/320x844 checks could not run because localhost binding and the in-app browser were unavailable. Claude Lead must independently re-verify canvas count, overflow, and target sizes.",
+      "finished_at": "2026-07-27T23:06:23Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T22:51:07Z",
+  "updated_at": "2026-07-27T23:06:23Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

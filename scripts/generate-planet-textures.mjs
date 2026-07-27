@@ -18,8 +18,10 @@ import {
   write as writeKtx,
 } from "three/addons/libs/ktx-parse.module.js";
 
-const WIDTH = 112;
-const HEIGHT = 56;
+// Preserve the authored equirectangular plates at native resolution. These
+// dimensions are a perceptual-quality contract, not a byte-budget tuning knob.
+const WIDTH = 512;
+const HEIGHT = 256;
 const OUTPUT = path.resolve("public/textures/planets");
 const SOURCE = path.resolve("assets/planet-textures/source");
 const WORLDS = {

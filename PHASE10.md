@@ -661,6 +661,13 @@ Sequenced to prove the hard parts before spending on art
   one-time first-visit orientation.
 - **Retire** the five-chapter `/share` navigation and the session-scoped
   entrance, preserving their analysis content per the Purpose above.
+- **Owner amendment, July 27 round two:** `/` now uses the same universe
+  implementation and identity split as `/share` while preserving the root
+  route's owner gate; the five-chapter root shell is retired. Planet maps ship
+  at their authored 512×256 resolution, labels no longer occlude bodies,
+  every selected camera state has Escape/visible-control/browser-Back/
+  empty-space return paths, and Mission Control chrome is simplified without
+  removing data. — recorded by codex/gpt-5
 
 ### Acceptance
 

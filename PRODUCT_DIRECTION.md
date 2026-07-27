@@ -6,6 +6,14 @@ Owner: Devan
 
 Primary showcase route: `/share`
 
+Owner amendment, July 27, 2026 (Phase 10 §8 round two): `/` now shares the
+Stock Market Universe implementation with `/share` while preserving its owner
+sign-in gate and identity-aware private Mission Control. The five-chapter
+Observatory is retired from the root route as well as `/share`. Where this
+older planning document describes either route as a five-chapter shell, the
+owner amendment and `UNIVERSE_DIRECTION.md` supersede it. — recorded by
+codex/gpt-5
+
 ## Authority
 
 This document overrides Phase 9 visual choices for Phase 10 whenever they
@@ -275,7 +283,7 @@ must reflect chapter changes.
 | Route | Primary job | First question | Deepest useful continuation |
 |---|---|---|---|
 | `/share` | Create the strongest public first impression through an honest market-relative story | How is this portfolio behaving, and what is driving it? | Public methodology and selected read-only detail without dollars |
-| `/` | Give Devan a private daily briefing | What changed, why, and what deserves review? | Private dashboard, research, trades, and history |
+| `/` | Give Devan the owner-gated Stock Market Universe | What changed, why, and what deserves review? | Identity-aware Mission Control: private dashboard, research, trades, and history |
 | `/dashboard` | Turn the portfolio into a prioritized decision-review surface | How am I doing? Why? What deserves attention? | Metric calculations and holding-level evidence |
 | `/compare` | Teach what three hypothetical portfolios reveal about the real one | What does each rule represent, and why did paths diverge? | Rules, rebalance events, calculations, and limitations |
 | `/research` | Prioritize public evidence connected to held positions | What new information matters and why is it relevant? | Source items, filings, filters, freshness, and methodology |

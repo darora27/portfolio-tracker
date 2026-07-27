@@ -10,6 +10,7 @@ describe("MissionControl", () => {
         mode="private"
         content={<p>Owner history content</p>}
         closeHref="/share"
+        basePath="/share"
       />,
     );
     for (const panel of ["dashboard", "history", "trades", "research"]) {
@@ -19,5 +20,19 @@ describe("MissionControl", () => {
     expect(html).toContain("owner authenticated");
     expect(html).toContain('data-mode="private"');
     expect(html).toContain('aria-current="page"');
+  });
+
+  it("keeps station navigation on the route that opened the universe", () => {
+    const html = renderToStaticMarkup(
+      <MissionControl
+        activePanel="dashboard"
+        mode="private"
+        content={<p>Owner dashboard</p>}
+        closeHref="/"
+        basePath="/"
+      />,
+    );
+    expect(html).toContain('href="/?focus=portfolio');
+    expect(html).not.toContain('href="/share?');
   });
 });

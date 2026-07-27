@@ -17,12 +17,14 @@ export function MissionControl({
   mode,
   content,
   closeHref,
+  basePath,
   preservedQuery,
 }: {
   activePanel: MissionControlPanelId;
   mode: "public" | "private";
   content: ReactNode;
   closeHref: string;
+  basePath: string;
   preservedQuery?: Record<string, string>;
 }) {
   return (
@@ -48,7 +50,7 @@ export function MissionControl({
         {MISSION_CONTROL_PANELS.map((panel) => (
           <Link
             key={panel.id}
-            href={`/share?${new URLSearchParams({
+            href={`${basePath}?${new URLSearchParams({
               focus: "portfolio",
               camera: "command",
               station: panel.id,

@@ -29,6 +29,15 @@ retired chapters' analysis, a summonable systems manual, and a one-time
 first-visit orientation. Below 1024px nothing changes — the existing tested
 fallback ships unchanged.
 
+**Owner amendment, July 27, 2026 (round two):** the bounded remediation in
+`docs/phase10-handoffs/2026-07-27-section-8-devan-to-codex-implementation-remediate-2.md`
+supersedes this document only where it explicitly says so. In particular,
+`/` now shares the Stock Market Universe implementation with `/share` while
+retaining its owner gate; native 512×256 texture resolution, non-occluding
+ticker labels, four return-to-OVERVIEW paths, and simpler Mission Control
+chrome are required. The former `/` out-of-scope statement below is retained
+as specification history, not current direction. — recorded by codex/gpt-5
+
 ## 0. Correcting a premise before scope: the runtime is raw three.js, not R3F
 
 `PRODUCT_DIRECTION.md` and `PHASE10.md` §7 both describe "React Three Fiber"

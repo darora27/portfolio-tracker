@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -132,6 +132,22 @@ describe("Portfolio Orrery remediation route", () => {
     }
     expect(screen.getByRole("link", { name: "Open full analysis" }).getAttribute("href"))
       .toBe("/stock/MSFT");
+  });
+
+  it("returns from approach in one gesture and keeps an explicit overview link", () => {
+    render(
+      <OrreryWorld
+        {...baseProps}
+        basePath="/"
+        selectedTicker="MSFT"
+        cameraState="approach"
+      />,
+    );
+    expect(
+      screen.getByRole("link", { name: "Return to overview" }).getAttribute("href"),
+    ).toBe("/");
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(push).toHaveBeenCalledWith("/", { scroll: false });
   });
 
   it("moves focus into Mission Control opened from the semantic sun", () => {

@@ -43,6 +43,8 @@ describe("Portfolio Orrery direct-Three architecture", () => {
     expect(source).toContain("callbacksRef.current.onSelect(ticker)");
     expect(source).toContain("callbacksRef.current.onSelectPortfolio()");
     expect(source).toContain("magneticTarget");
+    expect(source).toContain('cameraStateRef.current !== "overview"');
+    expect(source).toContain("callbacksRef.current.onExitOverview()");
   });
 
   it("builds the required star, rim, glow, and procedural-material system", () => {
