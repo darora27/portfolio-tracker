@@ -1,26 +1,44 @@
 "use client";
 
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  angularSpeedForWeeklyReturn,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import {
+  axialSpinForDayReturn,
   directionForWeeklyReturn,
-  radiusForWeight,
+  type BeltResolution,
   type PublicOrreryHolding,
 } from "@/lib/observatory/orrery";
+import type { ObservatoryChapterId } from "@/lib/observatory/chapters";
+import { FirstVisitOrientation } from "./FirstVisitOrientation";
+import { MissionControl } from "./MissionControl";
 import { OrrerySceneLoader } from "./OrrerySceneLoader";
+import { SystemsManual } from "./SystemsManual";
 import styles from "./orrery.module.css";
 
 const REFERENCE_BASE_PATH = "/dev/phase10-portfolio-orrery";
+
+export type PortfolioHealth = {
+  h: number;
+  sunspotIntensity: number;
+};
+
+export type OrreryCameraState = "overview" | "approach" | "command";
 
 export function orreryHoldingHref(
   ticker: string,
   forceNo3d = false,
   basePath = REFERENCE_BASE_PATH,
 ): string {
-  return `${basePath}?holding=${encodeURIComponent(ticker)}${forceNo3d ? "&no3d=1" : ""}`;
+  return `${basePath}?holding=${encodeURIComponent(ticker)}&camera=approach${
+    forceNo3d ? "&no3d=1" : ""
+  }`;
 }
 
 function formatPercent(value: number | null, digits = 1): string {
@@ -29,27 +47,38 @@ function formatPercent(value: number | null, digits = 1): string {
   return `${sign}${(value * 100).toFixed(digits)}%`;
 }
 
-function HoldingInspector({ holding }: { holding: PublicOrreryHolding }) {
+function healthLabel(h: number): string {
+  if (h >= 0.6) return "Strong";
+  if (h >= 0.18) return "Steady";
+  if (h > -0.18) return "Flat";
+  if (h > -0.6) return "Weak";
+  return "Struggling";
+}
+
+function HoldingInspector({
+  holding,
+  showHint,
+}: {
+  holding: PublicOrreryHolding;
+  showHint: boolean;
+}) {
   return (
     <>
       <p className={styles.inspectorKicker}>Holding telemetry / public-safe</p>
+      {showHint ? <p className={styles.microHint}>spin = today · orbit = this week</p> : null}
       <h2 id="orrery-inspector-heading" tabIndex={-1}>
         {holding.ticker} <span>{holding.companyName}</span>
       </h2>
       <dl className={styles.inspectorGrid}>
         <div><dt>Portfolio weight</dt><dd>{formatPercent(holding.weight)}</dd></div>
+        <div><dt>Today</dt><dd>{formatPercent(holding.dayReturn)}</dd></div>
         <div><dt>Trailing week</dt><dd>{formatPercent(holding.weeklyReturn)}</dd></div>
         <div><dt>Vs. portfolio</dt><dd>{formatPercent(holding.portfolioRelativeReturn)}</dd></div>
         <div><dt>Annualized volatility</dt><dd>{formatPercent(holding.volatilityPct)}</dd></div>
         <div><dt>Beta vs. VOO</dt><dd>{holding.betaVsVoo?.toFixed(2) ?? "Unavailable"}</dd></div>
-        <div><dt>Orbit state</dt><dd>{directionForWeeklyReturn(holding.weeklyReturn)}</dd></div>
       </dl>
-      <Link
-        className={styles.deepLink}
-        href={`/stock/${encodeURIComponent(holding.ticker)}`}
-        prefetch={false}
-      >
-        Open deeper stock information
+      <Link className={styles.deepLink} href={`/stock/${encodeURIComponent(holding.ticker)}`} prefetch={false}>
+        Open full analysis
       </Link>
     </>
   );
@@ -57,23 +86,38 @@ function HoldingInspector({ holding }: { holding: PublicOrreryHolding }) {
 
 export function OrreryWorld({
   holdings,
+  orreryBelt,
   selectedTicker,
   portfolioSelected,
+  cameraState = selectedTicker ? "approach" : portfolioSelected ? "command" : "overview",
+  manualOpen = false,
   forceNo3d = false,
   portfolioSummary,
+  portfolioHealth,
+  missionControlContent = null,
+  activeChapterId = "pulse",
+  missionPreservedQuery,
   basePath = REFERENCE_BASE_PATH,
   referenceStudy = false,
   semanticTitle = true,
 }: {
   holdings: readonly PublicOrreryHolding[];
+  orreryBelt?: BeltResolution;
   selectedTicker: string | null;
   portfolioSelected: boolean;
+  cameraState?: OrreryCameraState;
+  manualOpen?: boolean;
   forceNo3d?: boolean;
   portfolioSummary: {
     returnPct: number;
+    dayReturnPct?: number;
     marketRelativePct: number | null;
     topTwoWeight: number;
   };
+  portfolioHealth?: PortfolioHealth;
+  missionControlContent?: ReactNode;
+  activeChapterId?: ObservatoryChapterId;
+  missionPreservedQuery?: Record<string, string>;
   basePath?: string;
   referenceStudy?: boolean;
   semanticTitle?: boolean;
@@ -82,48 +126,98 @@ export function OrreryWorld({
   const worldRef = useRef<HTMLElement>(null);
   const previousTickerRef = useRef<string | null>(selectedTicker);
   const previousPortfolioRef = useRef(portfolioSelected);
+  const priorCameraRef = useRef<OrreryCameraState>("overview");
   const [hoveredTicker, setHoveredTicker] = useState<string | null>(null);
-  const selected = holdings.find((holding) => holding.ticker === selectedTicker) ?? null;
+  const [beltOpen, setBeltOpen] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const selected = holdings.find(({ ticker }) => ticker === selectedTicker) ?? null;
+  const planetTickers = orreryBelt?.planetTickers ?? holdings.slice(0, 8).map(({ ticker }) => ticker);
+  const beltTickers = orreryBelt?.beltTickers ?? holdings.slice(8).map(({ ticker }) => ticker);
+  const planets = planetTickers
+    .map((ticker) => holdings.find((holding) => holding.ticker === ticker))
+    .filter((holding): holding is PublicOrreryHolding => Boolean(holding));
+  const beltHoldings = beltTickers
+    .map((ticker) => holdings.find((holding) => holding.ticker === ticker))
+    .filter((holding): holding is PublicOrreryHolding => Boolean(holding));
+  const health = portfolioHealth ?? { h: 0, sunspotIntensity: 0 };
+  const fallbackHref = forceNo3d ? `${basePath}?no3d=1` : basePath;
 
   const navigateToHolding = useCallback(
-    (ticker: string) =>
-      router.push(orreryHoldingHref(ticker, forceNo3d, basePath), { scroll: false }),
-    [basePath, forceNo3d, router],
+    (ticker: string) => {
+      priorCameraRef.current = cameraState;
+      router.push(orreryHoldingHref(ticker, forceNo3d, basePath), { scroll: false });
+    },
+    [basePath, cameraState, forceNo3d, router],
   );
-  const navigateToPortfolio = useCallback(
-    () =>
-      router.push(
-        `${basePath}?focus=portfolio${forceNo3d ? "&no3d=1" : ""}`,
-        { scroll: false },
-      ),
-    [basePath, forceNo3d, router],
+  const navigateToPortfolio = useCallback(() => {
+    priorCameraRef.current = cameraState;
+    router.push(
+      `${basePath}?focus=portfolio&camera=command${forceNo3d ? "&no3d=1" : ""}`,
+      { scroll: false },
+    );
+  }, [basePath, cameraState, forceNo3d, router]);
+  const returnToOverview = useCallback(() => {
+    setBeltOpen(false);
+    router.push(fallbackHref, { scroll: false });
+  }, [fallbackHref, router]);
+  const setManual = useCallback(
+    (open: boolean) => {
+      const query = new URLSearchParams(window.location.search);
+      if (open) query.set("manual", "1");
+      else query.delete("manual");
+      router.push(`${basePath}${query.size ? `?${query.toString()}` : ""}`, {
+        scroll: false,
+      });
+    },
+    [basePath, router],
   );
 
   useEffect(() => {
+    let hintFrame = 0;
     if (selectedTicker || portfolioSelected) {
-      document.getElementById("orrery-inspector-heading")?.focus({ preventScroll: true });
+      document.getElementById(
+        portfolioSelected ? "mission-control-title" : "orrery-inspector-heading",
+      )?.focus({ preventScroll: true });
+      if (selectedTicker) {
+        try {
+          const count = Number(window.sessionStorage.getItem("orrery-selection-hints") ?? "0");
+          hintFrame = window.requestAnimationFrame(() => setShowHint(count < 2));
+          window.sessionStorage.setItem("orrery-selection-hints", String(count + 1));
+        } catch {
+          hintFrame = window.requestAnimationFrame(() => setShowHint(false));
+        }
+      }
     } else if (previousTickerRef.current) {
-      const prior = document.querySelector<HTMLElement>(
+      document.querySelector<HTMLElement>(
         `[data-holding="${CSS.escape(previousTickerRef.current)}"]`,
-      );
-      prior?.focus({ preventScroll: true });
+      )?.focus({ preventScroll: true });
     } else if (previousPortfolioRef.current) {
-      document.querySelector<HTMLElement>("[data-portfolio-sun]")?.focus({ preventScroll: true });
+      document.querySelector<HTMLElement>("[data-portfolio-sun]")?.focus({
+        preventScroll: true,
+      });
     }
     previousTickerRef.current = selectedTicker;
     previousPortfolioRef.current = portfolioSelected;
+    return () => {
+      if (hintFrame) window.cancelAnimationFrame(hintFrame);
+    };
   }, [portfolioSelected, selectedTicker]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && (selectedTicker || portfolioSelected || beltOpen)) {
+        event.preventDefault();
+        returnToOverview();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [beltOpen, portfolioSelected, returnToOverview, selectedTicker]);
 
   useEffect(() => {
     const world = worldRef.current;
     if (!world || forceNo3d || typeof window.matchMedia !== "function") return;
-    if (
-      !window.matchMedia("(min-width: 1024px)").matches ||
-      !window.matchMedia("(pointer: fine)").matches ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
+    if (!window.matchMedia("(min-width: 1024px)").matches) return;
     const onPointerMove = (event: PointerEvent) => {
       world.style.setProperty("--orrery-pointer-x", (event.clientX / window.innerWidth - 0.5).toFixed(4));
       world.style.setProperty("--orrery-pointer-y", (event.clientY / window.innerHeight - 0.5).toFixed(4));
@@ -137,57 +231,59 @@ export function OrreryWorld({
       ref={worldRef}
       className={styles.world}
       data-force-no-3d={forceNo3d ? "true" : "false"}
+      data-camera={cameraState}
       data-selected-holding={selectedTicker ?? ""}
     >
       <div className={styles.starField} aria-hidden="true" />
       <div className={styles.scanlines} aria-hidden="true" />
-
       <header className={styles.commandBar}>
         <div>
-          <p>
-            Public orbital telemetry
-            {referenceStudy ? " / owner-gated reference study" : " / read-only"}
-          </p>
-          {semanticTitle ? (
-            <h1>Portfolio Orrery</h1>
-          ) : (
-            <p className={styles.worldTitle} aria-hidden="true">
-              Portfolio Orrery
-            </p>
-          )}
+          <p>{referenceStudy ? "Owner-gated reference study" : "Public universe / read-only"}</p>
+          {semanticTitle ? <h1>Stock Market Universe</h1> : <p className={styles.worldTitle}>Stock Market Universe</p>}
         </div>
-        <p className={styles.status}>SYSTEM NOMINAL · {holdings.length} PUBLIC HOLDINGS</p>
+        <p className={styles.status}>OVERVIEW · {planets.length} PLANETS · {beltHoldings.length} BELT</p>
       </header>
 
       <section className={styles.stage} aria-label="Portfolio solar system">
-        <div className={styles.canvasLayer} aria-hidden="true">
+        <div className={styles.canvasLayer} aria-hidden="true" onDoubleClick={returnToOverview}>
           <OrrerySceneLoader
-            holdings={holdings}
+            holdings={planets}
+            beltHoldings={beltHoldings}
             selectedTicker={selectedTicker}
             hoveredTicker={hoveredTicker}
+            cameraState={cameraState}
+            portfolioHealth={health}
             forceNo3d={forceNo3d}
             onHover={setHoveredTicker}
             onSelect={navigateToHolding}
             onSelectPortfolio={navigateToPortfolio}
+            onSelectBelt={() => setBeltOpen(true)}
+            onExitOverview={returnToOverview}
           />
+        </div>
+
+        <div className={styles.sunTelemetry} aria-hidden="true">
+          <span>PORTFOLIO</span>
+          <strong>{formatPercent(portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct)}</strong>
+          <em>{healthLabel(health.h)}</em>
         </div>
 
         <nav className={styles.semanticMap} aria-label="Portfolio bodies">
           <Link
-            href={`${basePath}?focus=portfolio${forceNo3d ? "&no3d=1" : ""}`}
+            href={`${basePath}?focus=portfolio&camera=command${forceNo3d ? "&no3d=1" : ""}`}
             prefetch={false}
             data-portfolio-sun
             className={styles.sunControl}
             aria-current={portfolioSelected ? "page" : undefined}
-            onMouseEnter={() => setHoveredTicker(null)}
             scroll={false}
           >
-            <span aria-hidden="true">SUN / 00</span>
-            Portfolio summary
+            <span>SUN / PORTFOLIO</span>
+            {formatPercent(portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct)} today · {healthLabel(health.h)} health · {(health.sunspotIntensity * 100).toFixed(0)}% sunspot intensity
           </Link>
           <ol className={styles.holdingList}>
-            {holdings.map((holding, index) => {
-              const direction = directionForWeeklyReturn(holding.weeklyReturn);
+            {holdings.map((holding) => {
+              const rank = planetTickers.indexOf(holding.ticker);
+              const isBelt = rank < 0;
               return (
                 <li key={holding.ticker}>
                   <Link
@@ -204,13 +300,12 @@ export function OrreryWorld({
                     onBlur={() => setHoveredTicker(null)}
                     scroll={false}
                   >
-                    <span className={styles.ticker}>{String(index + 1).padStart(2, "0")} · {holding.ticker}</span>
-                    <span>{holding.companyName}</span>
+                    <span className={styles.ticker}>{holding.ticker} · {holding.companyName}</span>
                     <span className={styles.orbitFacts}>
-                      {formatPercent(holding.weight)} weight · {formatPercent(holding.weeklyReturn)} week · {direction}
+                      {formatPercent(holding.weight)} weight · {formatPercent(holding.weeklyReturn)} week · {directionForWeeklyReturn(holding.weeklyReturn)}
                     </span>
-                    <span className={styles.visualEncoding} aria-hidden="true">
-                      R {radiusForWeight(holding.weight).toFixed(2)} · ω {angularSpeedForWeeklyReturn(holding.weeklyReturn).toFixed(2)}
+                    <span className={styles.orbitFacts}>
+                      {formatPercent(holding.dayReturn)} today · axial spin {axialSpinForDayReturn(holding.dayReturn).toFixed(2)} · {isBelt ? "asteroid belt" : `planet rank ${rank + 1}`}
                     </span>
                   </Link>
                 </li>
@@ -219,59 +314,54 @@ export function OrreryWorld({
           </ol>
         </nav>
 
-        <aside className={styles.legend} aria-label="Orbit encoding legend">
-          <p>ORBIT ENCODING</p>
-          <ul>
-            <li><span>Radius</span> Portfolio weight, perceptually scaled and clamped</li>
-            <li><span>Clockwise</span> Positive trailing week</li>
-            <li><span>Counterclockwise</span> Negative trailing week</li>
-            <li><span>Neutral</span> Unavailable or within ±0.05%; orbit freezes</li>
-            <li><span>Speed</span> Increases with absolute weekly change, safely clamped</li>
-          </ul>
-        </aside>
+        <button type="button" className={styles.beltButton} onClick={() => setBeltOpen(true)}>
+          ASTEROID BELT · {beltHoldings.length}
+        </button>
+        <SystemsManual
+          open={manualOpen}
+          onOpen={() => setManual(true)}
+          onClose={() => setManual(false)}
+          disabled={cameraState !== "overview"}
+        />
 
-        <aside className={styles.inspector} aria-live="polite">
-          {selected ? (
-            <HoldingInspector holding={selected} />
-          ) : portfolioSelected ? (
-            <>
-              <p className={styles.inspectorKicker}>Central body / portfolio aggregate</p>
-              <h2 id="orrery-inspector-heading" tabIndex={-1}>Portfolio summary</h2>
-              <dl className={styles.inspectorGrid}>
-                <div><dt>Composition</dt><dd>{holdings.length} public holdings</dd></div>
-                <div><dt>Portfolio return</dt><dd>{formatPercent(portfolioSummary.returnPct)}</dd></div>
-                <div><dt>Market-relative</dt><dd>{formatPercent(portfolioSummary.marketRelativePct)}</dd></div>
-                <div><dt>Top-two weight</dt><dd>{formatPercent(portfolioSummary.topTwoWeight)}</dd></div>
-              </dl>
-              <Link
-                className={styles.deepLink}
-                href="/share?focus=portfolio&chapter=pulse#portfolio-observatory"
-                prefetch={false}
-              >
-                Open Pulse and Forces context
-              </Link>
-            </>
-          ) : (
-            <>
-              <p className={styles.inspectorKicker}>Navigation signature / awaiting selection</p>
-              <h2>Every body carries portfolio meaning.</h2>
-              <p className={styles.inspectorLead}>
-                Select the sun for composition and market-relative context, or a planet for holding telemetry.
-              </p>
-            </>
-          )}
-          {(selected || portfolioSelected) && (
-            <Link
-              className={styles.closeLink}
-              href={forceNo3d ? `${basePath}?no3d=1` : basePath}
-              prefetch={false}
-              scroll={false}
-            >
-              Close inspector
+        {selected ? (
+          <aside className={styles.inspector} aria-live="polite">
+            <HoldingInspector holding={selected} showHint={showHint} />
+            <Link className={styles.closeLink} href={fallbackHref} prefetch={false} scroll={false}>
+              Return to overview
             </Link>
-          )}
-        </aside>
+          </aside>
+        ) : null}
+
+        {beltOpen ? (
+          <aside className={styles.inspector} aria-live="polite">
+            <p className={styles.inspectorKicker}>Outer-system telemetry</p>
+            <h2 id="orrery-inspector-heading" tabIndex={-1}>Asteroid belt</h2>
+            <ul className={styles.beltList}>
+              {beltHoldings.map((holding) => (
+                <li key={holding.ticker}>
+                  <strong>{holding.ticker}</strong>
+                  <span>{formatPercent(holding.weight)} weight</span>
+                  <span>{formatPercent(holding.weeklyReturn)} week · {directionForWeeklyReturn(holding.weeklyReturn)}</span>
+                </li>
+              ))}
+            </ul>
+            <button type="button" className={styles.hudButton} onClick={() => setBeltOpen(false)}>
+              Close belt
+            </button>
+          </aside>
+        ) : null}
       </section>
+
+      {portfolioSelected && missionControlContent ? (
+        <MissionControl
+          activeChapterId={activeChapterId}
+          content={missionControlContent}
+          closeHref={fallbackHref}
+          preservedQuery={missionPreservedQuery}
+        />
+      ) : null}
+      <FirstVisitOrientation disabled={forceNo3d} />
     </main>
   );
 }

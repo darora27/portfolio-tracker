@@ -5,15 +5,24 @@ export const ORRERY_MIN_RADIUS = 0.34;
 export const ORRERY_MAX_RADIUS = 0.92;
 export const ORRERY_MIN_ANGULAR_SPEED = 0.08;
 export const ORRERY_MAX_ANGULAR_SPEED = 0.32;
+export const ORRERY_SUN_CLEARANCE = 3.4;
+export const ORRERY_RING_SPACING = 0.62;
+export const ORRERY_MIN_AXIAL_SPIN = 0.05;
+export const ORRERY_MAX_AXIAL_SPIN = 0.55;
+export const ORRERY_BELT_HYSTERESIS_BAND = 0.005;
+export const ORRERY_PLANET_COUNT = 8;
 
 const MIN_WEIGHT = 0.01;
 const MAX_WEIGHT = 0.35;
 const MIN_SPEED_RETURN = 0.002;
 const MAX_SPEED_RETURN = 0.12;
+const MIN_SPIN_RETURN = 0.001;
+const MAX_SPIN_RETURN = 0.06;
+const SUNSPOT_FULL_INTENSITY_DRAWDOWN = -0.2;
 
 const COMPANY_NAMES: Record<string, string> = {
   ASML: "ASML Holding",
-  CBRS: "CBRS",
+  CBRS: "Cerebras Systems",
   COST: "Costco Wholesale",
   CRM: "Salesforce",
   GOOG: "Alphabet",
@@ -37,6 +46,12 @@ export type PublicOrreryHolding = {
   portfolioRelativeReturn: number | null;
   volatilityPct: number | null;
   betaVsVoo: number | null;
+  dayReturn: number | null;
+};
+
+export type BeltResolution = {
+  planetTickers: readonly string[];
+  beltTickers: readonly string[];
 };
 
 export function companyNameForTicker(ticker: string): string {
@@ -64,6 +79,92 @@ export function angularSpeedForWeeklyReturn(weeklyReturn: number | null): number
   const normalized = (clamped - MIN_SPEED_RETURN) / (MAX_SPEED_RETURN - MIN_SPEED_RETURN);
   return ORRERY_MIN_ANGULAR_SPEED +
     normalized * (ORRERY_MAX_ANGULAR_SPEED - ORRERY_MIN_ANGULAR_SPEED);
+}
+
+export function orbitRadiusForRank(rank: number): number {
+  if (rank < 1 || !Number.isInteger(rank)) {
+    throw new RangeError(
+      `orbitRadiusForRank: rank must be a positive integer, got ${rank}`,
+    );
+  }
+  return ORRERY_SUN_CLEARANCE + (rank - 1) * ORRERY_RING_SPACING;
+}
+
+export function axialSpinForDayReturn(dayReturn: number | null): number {
+  if (dayReturn === null) return ORRERY_MIN_AXIAL_SPIN;
+  const clamped = Math.min(
+    MAX_SPIN_RETURN,
+    Math.max(MIN_SPIN_RETURN, Math.abs(dayReturn)),
+  );
+  const normalized =
+    (clamped - MIN_SPIN_RETURN) / (MAX_SPIN_RETURN - MIN_SPIN_RETURN);
+  return (
+    ORRERY_MIN_AXIAL_SPIN +
+    normalized * (ORRERY_MAX_AXIAL_SPIN - ORRERY_MIN_AXIAL_SPIN)
+  );
+}
+
+export function healthScalarForPortfolio(
+  dayReturnPct: number,
+  weekReturnPct: number,
+  annualizedVolatilityPct: number,
+): number {
+  const safeVol = Math.max(annualizedVolatilityPct, 0.02);
+  const dayZ = dayReturnPct / (safeVol / Math.sqrt(252));
+  const weekZ = weekReturnPct / (safeVol / Math.sqrt(52));
+  return Math.max(-1, Math.min(1, (0.6 * dayZ + 0.4 * weekZ) / 2));
+}
+
+export function sunspotIntensityForDrawdown(
+  currentDrawdownFromAthPct: number,
+): number {
+  const clamped = Math.max(
+    SUNSPOT_FULL_INTENSITY_DRAWDOWN,
+    Math.min(0, currentDrawdownFromAthPct),
+  );
+  if (clamped === 0) return 0;
+  return clamped / SUNSPOT_FULL_INTENSITY_DRAWDOWN;
+}
+
+export function resolveBeltMembership(
+  currentWeights: readonly { ticker: string; weight: number }[],
+  previousMembership: ReadonlySet<string> | null,
+  hysteresisBand = ORRERY_BELT_HYSTERESIS_BAND,
+): BeltResolution {
+  const sorted = [...currentWeights].sort(
+    (a, b) => b.weight - a.weight || a.ticker.localeCompare(b.ticker),
+  );
+  if (!previousMembership || sorted.length <= ORRERY_PLANET_COUNT) {
+    return {
+      planetTickers: sorted
+        .slice(0, ORRERY_PLANET_COUNT)
+        .map(({ ticker }) => ticker),
+      beltTickers: sorted
+        .slice(ORRERY_PLANET_COUNT)
+        .map(({ ticker }) => ticker),
+    };
+  }
+
+  // A prior planet receives exactly the declared hysteresis-band advantage.
+  // Current weight still decides every position outside that boundary band.
+  const stickyOrder = [...sorted].sort((a, b) => {
+    const aScore = a.weight + (previousMembership.has(a.ticker) ? hysteresisBand : 0);
+    const bScore = b.weight + (previousMembership.has(b.ticker) ? hysteresisBand : 0);
+    return bScore - aScore || b.weight - a.weight || a.ticker.localeCompare(b.ticker);
+  });
+  const planetSet = new Set(
+    stickyOrder
+      .slice(0, ORRERY_PLANET_COUNT)
+      .map(({ ticker }) => ticker),
+  );
+  return {
+    planetTickers: sorted
+      .filter(({ ticker }) => planetSet.has(ticker))
+      .map(({ ticker }) => ticker),
+    beltTickers: sorted
+      .filter(({ ticker }) => !planetSet.has(ticker))
+      .map(({ ticker }) => ticker),
+  };
 }
 
 export function weeklyReturnForPrices(

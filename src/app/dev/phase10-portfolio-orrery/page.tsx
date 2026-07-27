@@ -50,11 +50,20 @@ export default async function PortfolioOrreryPage({
   return (
     <OrreryWorld
       holdings={data.publicOrreryHoldings}
+      orreryBelt={data.orreryBelt}
       selectedTicker={selectedTicker}
       portfolioSelected={focusParam === "portfolio"}
+      cameraState={
+        selectedTicker
+          ? "approach"
+          : focusParam === "portfolio"
+            ? "command"
+            : "overview"
+      }
       forceNo3d={no3dParam === "1"}
       portfolioSummary={{
         returnPct: data.twrPct,
+        dayReturnPct: data.dailyChangePct,
         marketRelativePct: voo?.excessReturnPct ?? null,
         topTwoWeight: data.top2ConcentrationPct,
       }}

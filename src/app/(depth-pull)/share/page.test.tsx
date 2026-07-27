@@ -68,6 +68,7 @@ const publicFixture = {
       portfolioRelativeReturn: -0.016,
       volatilityPct: 0.18,
       betaVsVoo: 0.74,
+      dayReturn: -0.014,
     },
     {
       ticker: "MSFT",
@@ -77,8 +78,13 @@ const publicFixture = {
       portfolioRelativeReturn: 0.017,
       volatilityPct: 0.21,
       betaVsVoo: 1.04,
+      dayReturn: 0.009,
     },
   ],
+  orreryBelt: { planetTickers: ["IBM", "MSFT"], beltTickers: [] },
+  dailyChangePct: -0.0113,
+  twr7d: -0.024,
+  volatilityPct: 0.37,
   totalValue: 999999.99,
   realizedGain: 8888.88,
   unrealizedGain: 7777.77,
@@ -107,6 +113,7 @@ async function renderShare(
     searchParams: Promise.resolve({
       ...(chapter ? { chapter } : {}),
       ...(explain ? { explain } : {}),
+      ...(chapter || explain ? { focus: "portfolio", camera: "command" } : {}),
       ...selection,
     }),
   });
@@ -118,16 +125,17 @@ beforeEach(() => {
   getPublicTimelineData.mockResolvedValue(timelineFixture);
 });
 
-describe("/share Pulse rendered output", () => {
-  it("opens with the public-safe Portfolio Orrery while preserving the chapter shell", async () => {
+describe("/share Stock Market Universe rendered output", () => {
+  it("opens with the public-safe universe and retires the five-chapter landing shell", async () => {
     const html = await renderShare();
 
-    expect(html).toContain("Portfolio Orrery");
-    expect(html).toContain("Portfolio summary");
+    expect(html).toContain("Stock Market Universe");
+    expect(html).toContain("SUN / PORTFOLIO");
     expect(html).toContain("IBM");
     expect(html).toContain("Microsoft");
-    expect(html).toContain("ORBIT ENCODING");
-    expect(html).toContain('id="portfolio-observatory"');
+    expect(html).toContain("SYSTEMS MANUAL");
+    expect(html).toContain("ASTEROID BELT");
+    expect(html).not.toContain('id="portfolio-observatory"');
     expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
   });
 
@@ -144,33 +152,31 @@ describe("/share Pulse rendered output", () => {
     const portfolio = await renderShare("pulse", undefined, {
       focus: "portfolio",
     });
-    expect(portfolio).toContain("Central body / portfolio aggregate");
-    expect(portfolio).toContain("Market-relative");
-    expect(portfolio).toContain('href="/share?focus=portfolio&amp;chapter=forces"');
+    expect(portfolio).toContain("Mission Control");
+    expect(portfolio).toContain("Market-relative observation");
+    expect(portfolio).toContain(
+      'href="/share?focus=portfolio&amp;camera=command&amp;chapter=forces"',
+    );
   });
 
-  it("defaults to Pulse with real comparison copy, one chart, freshness, read-only state, and a Forces link", async () => {
+  it("keeps the overview sparse until the visitor summons Mission Control", async () => {
     const html = await renderShare();
 
-    expect(html).toContain("01 — Pulse");
-    expect(html).toContain("a 4.6-point gap behind the market");
-    expect(html).toContain("The largest drag came from IBM. MSFT offset part of it.");
-    expect(html).toContain("Prices as of");
-    expect(html).toContain("Jul 23, 2026");
-    expect(html).toContain("Read-only");
-    expect(html).toContain('href="/share?chapter=forces"');
-    expect((html.match(/<svg/g) ?? [])).toHaveLength(1);
-    expect(html).toContain("View trajectory data");
+    expect(html).toContain("Public universe / read-only");
+    expect(html).toContain("-1.1% today");
+    expect(html).toContain("Weak health");
+    expect(html).not.toContain("Market-relative observation");
+    expect((html.match(/<svg/g) ?? [])).toHaveLength(0);
   });
 
   it("renders Forces from real contribution and mover data", async () => {
     const html = await renderShare("forces");
 
-    expect(html).toContain("02 — Forces");
+    expect(html).toContain("02 Forces");
     expect(html).toContain("Every holding&#x27;s share of the portfolio&#x27;s total return, ranked.");
     expect(html).toContain("MSFT contributed the most to total return");
     expect(html).toContain("IBM moved the most today");
-    expect(html).toContain('href="/share?chapter=structure"');
+    expect(html).toContain("chapter=structure");
     expect(html).not.toContain("Market-relative observation");
   });
 
@@ -253,7 +259,7 @@ describe("/share Pulse rendered output", () => {
       const html = await renderShare(chapter);
       expect(html).not.toContain("NaN");
       expect(html).not.toContain("This chapter&#x27;s content ships");
-      expect(html).toMatch(/href="\/share(?:\/full|\?chapter=)/);
+      expect(html).toMatch(/href="\/share(?:\/full|\?focus=portfolio)/);
     }
   });
 
@@ -271,7 +277,7 @@ describe("/share Pulse rendered output", () => {
       ],
     });
 
-    const html = await renderShare();
+    const html = await renderShare("pulse");
     expect(html).toContain(
       "Building the market-relative picture — a full comparison needs more trading history.",
     );

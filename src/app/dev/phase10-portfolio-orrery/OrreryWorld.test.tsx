@@ -27,6 +27,7 @@ const holdings: PublicOrreryHolding[] = [
     portfolioRelativeReturn: 0.018,
     volatilityPct: 0.21,
     betaVsVoo: 1.04,
+    dayReturn: 0.012,
   },
   {
     ticker: "IBM",
@@ -36,6 +37,7 @@ const holdings: PublicOrreryHolding[] = [
     portfolioRelativeReturn: -0.02,
     volatilityPct: 0.18,
     betaVsVoo: 0.74,
+    dayReturn: -0.008,
   },
   {
     ticker: "ORCL",
@@ -45,6 +47,7 @@ const holdings: PublicOrreryHolding[] = [
     portfolioRelativeReturn: null,
     volatilityPct: null,
     betaVsVoo: null,
+    dayReturn: null,
   },
 ];
 
@@ -74,6 +77,10 @@ const baseProps = {
 beforeEach(() => {
   push.mockReset();
   stubMedia();
+  window.localStorage.setItem(
+    "stock-market-universe-orientation-seen",
+    "true",
+  );
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation(
     (() => ({ getExtension: vi.fn() })) as unknown as typeof HTMLCanvasElement.prototype.getContext,
   );
@@ -94,17 +101,17 @@ describe("Portfolio Orrery remediation route", () => {
     }
     expect(html).toContain("clockwise");
     expect(html).toContain("counterclockwise");
-    expect(html).toContain("Neutral");
+    expect(html).toContain("neutral");
     expect(html).not.toMatch(/\$[0-9]/);
   });
 
   it("uses URL-addressable holding selection and preserves the forced fallback", () => {
     expect(orreryHoldingHref("MSFT", true)).toBe(
-      "/dev/phase10-portfolio-orrery?holding=MSFT&no3d=1",
+      "/dev/phase10-portfolio-orrery?holding=MSFT&camera=approach&no3d=1",
     );
     render(<OrreryWorld {...baseProps} forceNo3d />);
     expect(screen.getByRole("link", { name: /Microsoft/ }).getAttribute("href")).toContain(
-      "holding=MSFT&no3d=1",
+      "holding=MSFT&camera=approach&no3d=1",
     );
   });
 
@@ -115,24 +122,29 @@ describe("Portfolio Orrery remediation route", () => {
     expect(document.activeElement).toBe(heading);
     for (const label of [
       "Portfolio weight",
+      "Today",
       "Trailing week",
       "Vs. portfolio",
       "Annualized volatility",
       "Beta vs. VOO",
-      "Orbit state",
     ]) {
       expect(screen.getByText(label)).toBeTruthy();
     }
-    expect(screen.getByRole("link", { name: "Open deeper stock information" }).getAttribute("href"))
+    expect(screen.getByRole("link", { name: "Open full analysis" }).getAttribute("href"))
       .toBe("/stock/MSFT");
   });
 
-  it("moves focus into the portfolio summary opened from the semantic sun", () => {
-    render(<OrreryWorld {...baseProps} portfolioSelected />);
-    const heading = screen.getByRole("heading", { level: 2, name: "Portfolio summary" });
+  it("moves focus into Mission Control opened from the semantic sun", () => {
+    render(
+      <OrreryWorld
+        {...baseProps}
+        portfolioSelected
+        missionControlContent={<p>Public portfolio analysis</p>}
+      />,
+    );
+    const heading = screen.getByRole("heading", { level: 2, name: "Mission Control" });
     expect(document.activeElement).toBe(heading);
-    expect(screen.getByText("Composition")).toBeTruthy();
-    expect(screen.getByText("Market-relative")).toBeTruthy();
+    expect(screen.getByText("Public portfolio analysis")).toBeTruthy();
   });
 
   it("keeps the static semantic map when reduced motion disables the scene", () => {
@@ -140,6 +152,13 @@ describe("Portfolio Orrery remediation route", () => {
     render(<OrreryWorld {...baseProps} />);
     expect(screen.getAllByRole("link").length).toBe(holdings.length + 1);
     expect(screen.queryByTestId("orrery-canvas")).toBeNull();
+  });
+
+  it("renders zero canvas elements below the 1024px gate", () => {
+    stubMedia(false, false);
+    render(<OrreryWorld {...baseProps} />);
+    expect(document.querySelectorAll("canvas")).toHaveLength(0);
+    expect(screen.getByRole("navigation", { name: "Portfolio bodies" })).toBeTruthy();
   });
 
   it("disables speculative prefetch on every Orrery link for the mobile fallback", () => {
@@ -157,6 +176,7 @@ describe("Portfolio Orrery remediation route", () => {
   it("provides 44px-class semantic controls without duplicate canvas focus stops", () => {
     render(<OrreryWorld {...baseProps} />);
     expect(screen.getAllByRole("link")).toHaveLength(holdings.length + 1);
-    expect(screen.queryByRole("button")).toBeNull();
+    expect(screen.getByRole("button", { name: "Open systems manual" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /ASTEROID BELT/ })).toBeTruthy();
   });
 });

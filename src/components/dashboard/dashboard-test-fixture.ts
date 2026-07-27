@@ -76,8 +76,10 @@ export const dashboardTestFixture = {
       portfolioRelativeReturn: -0.008,
       volatilityPct: 0.22,
       betaVsVoo: 0.8,
+      dayReturn: -0.01,
     },
   ],
+  orreryBelt: { planetTickers: ["IBM"], beltTickers: [] },
   twr7d: -0.01,
   voo7d: 0.005,
 } satisfies DashboardData;

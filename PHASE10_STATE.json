@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "codex_implementation",
-  "stage": "implement",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -89,28 +89,28 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "f59e835db6f08868b8ddb7248737881ad8525b5d",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): f59e835 (`owner: commit §8 visual references`) is HEAD at the start of this Claude Lead `specify`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from. It postdates the §7-accept turn's own prev_actor_commit (25de6a6) by three owner-authored commits (3cac5d7, 0580bf8, f59e835) that recorded the Stock Market Universe direction change and were not yet reflected in this field.",
+  "prev_actor_commit": "84bc7ccfd242bd9b83090e2b10f3e2ca8c815e13",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 84bc7cc (`phase10(§8): specify Stock Market Universe vertical slice`) is HEAD at the start of this Codex Implementation `implement`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "f59e835db6f08868b8ddb7248737881ad8525b5d",
-  "production_code_changed_this_turn": false,
+  "production_code_changed_this_turn": true,
   "production_code_note_prior_turn": "The prior three owner commits (3cac5d7, 0580bf8, f59e835) changed no application source: they recorded UNIVERSE_DIRECTION.md/UNIVERSE_IDEAS.md, amended PHASE10.md's roadmap (new §8, renumbered former §8-§13 to §9-§14), widened the validator's section bounds, and committed docs/reference/ visual references.",
-  "production_code_note": "This turn (Claude Lead, §8 specify stage) changed no application source. It read UNIVERSE_DIRECTION.md, UNIVERSE_IDEAS.md, docs/reference/README.md, PHASE10.md §8, and surveyed the current /share and Portfolio Orrery implementation (src/components/observatory/orrery/*, src/lib/observatory/orrery.ts, src/lib/dashboard-data.ts) to ground the spec in real file paths and signatures, applied the portfolio-ux skill, and wrote docs/phase10-workflow/specs/section-8.md: exact scope, new/extended pure encoding functions (orbit-radius-by-rank, axial spin, health scalar, sunspot intensity, belt hysteresis), the camera/lock-on/sun/texture/Mission-Control/systems-manual/first-visit-orientation design, and acceptance criteria restated per PHASE10.md §8's eight dimensions. No src/ file was read-modified; only PHASE10_STATE.json and the new spec doc are staged.",
+  "production_code_note": "This turn (Codex Implementation, §8 implement stage) rebuilt public /share as the Stock Market Universe vertical slice: raw-three rank orbits, trails, ticker labels, identity-keyed lazy KTX2 planet maps, axial spin, health/sunspot encodings, belt hysteresis, lock-on and URL-restored camera states, Mission Control with the five accepted public chapters, a systems manual, first-visit orientation, and the complete sub-1024px semantic fallback. It extended dashboard projection for day return and prior top-eight membership, added the deterministic offline texture pipeline and 24 committed maps, removed the superseded Observatory entrance, and added/updated focused unit, source, route, accessibility, and interaction tests. Browser evidence is explicitly deferred because the sandbox denied localhost binding; the default Turbopack build also stalled while external DNS was denied, so final production verification used Next.js 16.2.11's documented Webpack path with temporary local font and fetch caches, neither committed.",
   "verification": {
     "tests": {
       "command": "npm test",
-      "status": "not_run",
-      "summary": null,
-      "finished_at": null
+      "status": "pass",
+      "summary": "Codex Implementation ran the full Vitest suite: 85 test files passed; 466 of 466 tests passed.",
+      "finished_at": "2026-07-27T20:26:25Z"
     },
     "build": {
-      "command": "npm run build",
-      "status": "not_run",
-      "summary": null,
-      "finished_at": null
+      "command": "NEXT_FONT_GOOGLE_MOCKED_RESPONSES=<temporary-local-mock> npm run build -- --webpack",
+      "status": "pass",
+      "summary": "Next.js 16.2.11 production build passed via the documented Webpack path: compilation and TypeScript passed, all 19 page-generation tasks completed, and traces were collected. The network-denied sandbox required a temporary uncommitted local WOFF2 response through Next's documented Google-font mock hook and a still-current copied Next fetch cache for Supabase prerender data. Default Turbopack stalled at compilation while DNS was unavailable, including with its build worker disabled; no application build error was reported.",
+      "finished_at": "2026-07-27T20:25:16Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T19:33:40Z",
+  "updated_at": "2026-07-27T20:26:33Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

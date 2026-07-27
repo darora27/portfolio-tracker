@@ -1,199 +1,225 @@
 import type { Metadata } from "next";
-import { getDashboardData } from "@/lib/dashboard-data";
-import { formatDate } from "@/lib/format";
-import { ObservatoryShell } from "@/components/observatory/ObservatoryShell";
-import { ObservatoryEntrance } from "@/components/observatory/ObservatoryEntrance";
 import { ForcesChapter } from "@/components/observatory/ForcesChapter";
 import { LabChapter } from "@/components/observatory/LabChapter";
 import { PulseChapter } from "@/components/observatory/PulseChapter";
 import { StructureChapter } from "@/components/observatory/StructureChapter";
 import { TimelineChapter } from "@/components/observatory/TimelineChapter";
-import { OrreryWorld } from "@/components/observatory/orrery/OrreryWorld";
+import {
+  OrreryWorld,
+  type OrreryCameraState,
+} from "@/components/observatory/orrery/OrreryWorld";
+import { getDashboardData } from "@/lib/dashboard-data";
+import {
+  healthScalarForPortfolio,
+  resolveBeltMembership,
+  sunspotIntensityForDrawdown,
+} from "@/lib/observatory/orrery";
 import { resolveObservatoryChapter } from "@/lib/observatory/chapters";
 import { resolveExplainParam } from "@/lib/observatory/metric-explanations";
 import { getPublicTimelineData } from "@/lib/observatory/timeline-data";
 import styles from "./share-orrery.module.css";
 
-// Public, read-only, no login — same staleness posture as /share/full.
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Portfolio — Share View",
-  description: "A read-only look at portfolio performance.",
+  title: "Stock Market Universe — Share View",
+  description: "Explore a public, read-only portfolio solar system.",
   robots: { index: false, follow: false },
 };
+
+function first(value: string | string[] | undefined): string | undefined {
+  return Array.isArray(value) ? value[0] : value;
+}
 
 export default async function SharePage({
   searchParams,
 }: {
   searchParams: Promise<{
+    camera?: string | string[];
     chapter?: string | string[];
     explain?: string | string[];
     focus?: string | string[];
     holding?: string | string[];
+    planet?: string | string[];
+    manual?: string | string[];
     no3d?: string | string[];
   }>;
 }) {
-  const [data, timeline] = await Promise.all([
+  const [data, timeline, params] = await Promise.all([
     getDashboardData(),
     getPublicTimelineData(),
+    searchParams,
   ]);
-  const params = await searchParams;
   const active = resolveObservatoryChapter(params.chapter);
   const explainOpenId = resolveExplainParam(params.explain);
-  const focusParam = Array.isArray(params.focus) ? params.focus[0] : params.focus;
-  const holdingParam = Array.isArray(params.holding) ? params.holding[0] : params.holding;
-  const no3dParam = Array.isArray(params.no3d) ? params.no3d[0] : params.no3d;
+  const focusParam = first(params.focus);
+  const holdingParam = first(params.holding) ?? first(params.planet);
+  const no3d = first(params.no3d) === "1";
+  const manualOpen = first(params.manual) === "1";
   const portfolioSelected = focusParam === "portfolio";
   const selectedTicker = data.publicOrreryHoldings.some(
     (holding) => holding.ticker === holdingParam,
   )
     ? holdingParam ?? null
     : null;
-  const preservedQueryEntries = {
-    ...(portfolioSelected ? { focus: "portfolio" } : {}),
+  const requestedCamera = first(params.camera);
+  const cameraState: OrreryCameraState =
+    requestedCamera === "approach" ||
+    requestedCamera === "command" ||
+    requestedCamera === "overview"
+      ? requestedCamera
+      : selectedTicker
+        ? "approach"
+        : portfolioSelected
+          ? "command"
+          : "overview";
+  const preservedQuery = {
+    ...(portfolioSelected ? { focus: "portfolio", camera: "command" } : {}),
     ...(explainOpenId ? { explain: explainOpenId } : {}),
-    ...(no3dParam === "1" ? { no3d: "1" } : {}),
+    ...(no3d ? { no3d: "1" } : {}),
   };
-  const preservedQuery =
-    Object.keys(preservedQueryEntries).length > 0
-      ? preservedQueryEntries
-      : undefined;
-  const voo = data.benchmarkComparisons.find((comparison) => comparison.ticker === "VOO") ?? {
+  const chapterQuery =
+    Object.keys(preservedQuery).length > 0 ? preservedQuery : undefined;
+  const voo = data.benchmarkComparisons.find(
+    (comparison) => comparison.ticker === "VOO",
+  ) ?? {
     available: false,
     twrPct: null,
     excessReturnPct: null,
   };
 
+  const chapterContent = {
+    pulse: (
+      <PulseChapter
+        historyDays={data.historyDays}
+        portfolioTwrPct={data.twrPct}
+        benchmark={{
+          available: voo.available,
+          twrPct: voo.twrPct,
+          excessReturnPct: voo.excessReturnPct,
+        }}
+        chartData={data.chartData.map(({ date, portfolioIndex, vooIndex }) => ({
+          date,
+          portfolioIndex,
+          vooIndex,
+        }))}
+        positions={data.positionRows.map(({ ticker, contribution }) => ({
+          ticker,
+          contribution,
+        }))}
+      />
+    ),
+    forces: (
+      <ForcesChapter
+        positions={data.positionRows.map(({ ticker, contribution }) => ({
+          ticker,
+          contribution,
+        }))}
+        movers={data.movers.map(({ ticker, dayPct }) => ({ ticker, dayPct }))}
+      />
+    ),
+    structure: (
+      <StructureChapter
+        basePath="/share"
+        preservedQuery={chapterQuery}
+        explainOpenId={active.id === "structure" ? explainOpenId : undefined}
+        pricesAsOf={data.pricesAsOf}
+        dailyChangeAsOf={data.dailyChangeAsOf}
+        hhi={data.hhi}
+        top2ConcentrationPct={data.top2ConcentrationPct}
+        positions={data.positionRows.map(({ ticker, weight }) => ({
+          ticker,
+          weight,
+        }))}
+        sectorWeights={data.sectorWeights.map(({ label, weight }) => ({
+          label,
+          weight,
+        }))}
+        aiExposureWeights={data.aiExposureWeights.map(({ label, weight }) => ({
+          label,
+          weight,
+        }))}
+        correlationTickers={data.correlationTickers}
+        correlationCells={data.correlationCells}
+      />
+    ),
+    timeline: (
+      <TimelineChapter
+        chartData={data.chartData.map(({ date, portfolioIndex }) => ({
+          date,
+          index: portfolioIndex,
+        }))}
+        allTimeHigh={data.allTimeHigh}
+        bestDay={data.bestDay}
+        worstDay={data.worstDay}
+        flowMarkers={timeline.flowMarkers}
+        tradeMarkers={timeline.tradeMarkers}
+        compositionHistory={timeline.compositionHistory}
+      />
+    ),
+    lab: (
+      <LabChapter
+        basePath="/share"
+        preservedQuery={chapterQuery}
+        explainOpenId={active.id === "lab" ? explainOpenId : undefined}
+        historyDays={data.historyDays}
+        firstFundedDate={data.chartData[0]?.date ?? null}
+        pricesAsOf={data.pricesAsOf}
+        dailyChangeAsOf={data.dailyChangeAsOf}
+        twrPct={data.twrPct}
+        xirrPct={data.xirrPct}
+        benchmark={{
+          available: voo.available,
+          twrPct: voo.twrPct,
+          excessReturnPct: voo.excessReturnPct,
+        }}
+      />
+    ),
+  };
+  const orreryBelt =
+    data.orreryBelt ??
+    resolveBeltMembership(
+      data.publicOrreryHoldings.map(({ ticker, weight }) => ({ ticker, weight })),
+      null,
+    );
+  const portfolioHealth = {
+    h: healthScalarForPortfolio(
+      data.dailyChangePct,
+      data.twr7d ?? 0,
+      data.volatilityPct ?? 0.02,
+    ),
+    sunspotIntensity: sunspotIntensityForDrawdown(
+      data.allTimeHigh?.pct ?? 0,
+    ),
+  };
+
   return (
     <div className={styles.page}>
-      <section
-        id="portfolio-observatory"
-        className={styles.semanticObservatory}
-        aria-label="Portfolio chapters"
-      >
-        <ObservatoryShell
-          mode="public"
+      <div className={styles.orreryEntry}>
+        <OrreryWorld
           basePath="/share"
-          preservedQuery={preservedQuery}
+          holdings={data.publicOrreryHoldings}
+          orreryBelt={orreryBelt}
+          selectedTicker={selectedTicker}
+          portfolioSelected={portfolioSelected}
+          cameraState={cameraState}
+          manualOpen={manualOpen}
+          forceNo3d={no3d}
+          portfolioHealth={portfolioHealth}
+          portfolioSummary={{
+            returnPct: data.twrPct,
+            dayReturnPct: data.dailyChangePct,
+            marketRelativePct: voo.excessReturnPct,
+            topTwoWeight: data.top2ConcentrationPct,
+          }}
+          missionControlContent={chapterContent[active.id]}
           activeChapterId={active.id}
-          title="Portfolio Observatory"
-          freshness={{
-            label: "Prices as of",
-            value: formatDate(data.dailyChangeAsOf),
-            stale: data.pricesAsOf === null,
+          missionPreservedQuery={{
+            ...(explainOpenId ? { explain: explainOpenId } : {}),
+            ...(no3d ? { no3d: "1" } : {}),
           }}
-          chapterContent={{
-        pulse: (
-          <PulseChapter
-            historyDays={data.historyDays}
-            portfolioTwrPct={data.twrPct}
-            benchmark={{
-              available: voo.available,
-              twrPct: voo.twrPct,
-              excessReturnPct: voo.excessReturnPct,
-            }}
-            chartData={data.chartData.map(({ date, portfolioIndex, vooIndex }) => ({
-              date,
-              portfolioIndex,
-              vooIndex,
-            }))}
-            positions={data.positionRows.map(({ ticker, contribution }) => ({ ticker, contribution }))}
-          />
-        ),
-        forces: (
-          <ForcesChapter
-            positions={data.positionRows.map(({ ticker, contribution }) => ({
-              ticker,
-              contribution,
-            }))}
-            movers={data.movers.map(({ ticker, dayPct }) => ({
-              ticker,
-              dayPct,
-            }))}
-          />
-        ),
-        structure: (
-          <StructureChapter
-            basePath="/share"
-            preservedQuery={preservedQuery}
-            explainOpenId={
-              active.id === "structure" ? explainOpenId : undefined
-            }
-            pricesAsOf={data.pricesAsOf}
-            dailyChangeAsOf={data.dailyChangeAsOf}
-            hhi={data.hhi}
-            top2ConcentrationPct={data.top2ConcentrationPct}
-            positions={data.positionRows.map(({ ticker, weight }) => ({
-              ticker,
-              weight,
-            }))}
-            sectorWeights={data.sectorWeights.map(({ label, weight }) => ({
-              label,
-              weight,
-            }))}
-            aiExposureWeights={data.aiExposureWeights.map(({ label, weight }) => ({
-              label,
-              weight,
-            }))}
-            correlationTickers={data.correlationTickers}
-            correlationCells={data.correlationCells}
-          />
-        ),
-        timeline: (
-          <TimelineChapter
-            chartData={data.chartData.map(({ date, portfolioIndex }) => ({
-              date,
-              index: portfolioIndex,
-            }))}
-            allTimeHigh={data.allTimeHigh}
-            bestDay={data.bestDay}
-            worstDay={data.worstDay}
-            flowMarkers={timeline.flowMarkers}
-            tradeMarkers={timeline.tradeMarkers}
-            compositionHistory={timeline.compositionHistory}
-          />
-        ),
-        lab: (
-          <LabChapter
-            basePath="/share"
-            preservedQuery={preservedQuery}
-            explainOpenId={active.id === "lab" ? explainOpenId : undefined}
-            historyDays={data.historyDays}
-            firstFundedDate={data.chartData[0]?.date ?? null}
-            pricesAsOf={data.pricesAsOf}
-            dailyChangeAsOf={data.dailyChangeAsOf}
-            twrPct={data.twrPct}
-            xirrPct={data.xirrPct}
-            benchmark={{
-              available: voo.available,
-              twrPct: voo.twrPct,
-              excessReturnPct: voo.excessReturnPct,
-            }}
-          />
-        ),
-          }}
-          forceNo3d={no3dParam === "1"}
         />
-      </section>
-
-      <ObservatoryEntrance mode="public" disabled={no3dParam === "1"}>
-        <div className={styles.orreryEntry}>
-          <OrreryWorld
-            basePath="/share"
-            semanticTitle={false}
-            holdings={data.publicOrreryHoldings}
-            selectedTicker={selectedTicker}
-            portfolioSelected={portfolioSelected}
-            forceNo3d={no3dParam === "1"}
-            portfolioSummary={{
-              returnPct: data.twrPct,
-              marketRelativePct: voo.excessReturnPct,
-              topTwoWeight: data.top2ConcentrationPct,
-            }}
-          />
-        </div>
-      </ObservatoryEntrance>
+      </div>
     </div>
   );
 }

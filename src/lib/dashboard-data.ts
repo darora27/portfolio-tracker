@@ -44,7 +44,9 @@ import { buildHoldingsPerformance, type HoldingsPerformanceSeries } from "@/lib/
 import { perHoldingRisk, type HoldingRisk } from "@/lib/portfolio/per-holding-risk";
 import {
   companyNameForTicker,
+  resolveBeltMembership,
   weeklyReturnForPrices,
+  type BeltResolution,
   type PublicOrreryHolding,
 } from "@/lib/observatory/orrery";
 import aiExposureByTicker from "../../data/ai-exposure.json";
@@ -106,6 +108,8 @@ export type DashboardData = {
   holdingRisks: HoldingRisk[];
   /** Public-safe holding facts used by the §7 Portfolio Orrery. Never includes shares, value, or cost. */
   publicOrreryHoldings: PublicOrreryHolding[];
+  /** Snapshot-stable top-eight planet membership and the remaining asteroid-belt tickers. */
+  orreryBelt: BeltResolution;
   /** Trailing 7-calendar-day return, for the surface tier's weeklySubline. Null when history isn't old enough yet. */
   twr7d: number | null;
   voo7d: number | null;
@@ -126,7 +130,7 @@ export async function getDashboardData(): Promise<DashboardData> {
   ] = await Promise.all([
     supabase.from("trades").select("*").order("date", { ascending: true }),
     supabase.from("snapshots").select("*").order("date", { ascending: true }),
-    supabase.from("snapshot_positions").select("snapshot_id, ticker, close_price"),
+    supabase.from("snapshot_positions").select("snapshot_id, ticker, close_price, value"),
     supabase.from("benchmarks").select("date, close, ticker").in("ticker", BENCHMARK_TICKERS),
     // Cached sector classification only — never a live Finnhub call from the
     // page-load path. Refreshed exclusively by ensureSectorCached at trade entry.
@@ -386,8 +390,35 @@ export async function getDashboardData(): Promise<DashboardData> {
         weeklyReturn === null || twr7d === null ? null : weeklyReturn - twr7d,
       volatilityPct: risk?.volatilityPct ?? null,
       betaVsVoo: risk?.betaVsVoo ?? null,
+      dayReturn:
+        positionRows.find((row) => row.ticker === position.ticker)?.dayPct ??
+        null,
     };
   });
+  const previousSnapshotRecord = [...(snapshots ?? [])]
+    .reverse()
+    .find((snapshot) => snapshot.date < today);
+  const previousMembership = previousSnapshotRecord
+    ? new Set(
+        (snapshotPositions ?? [])
+          .filter(
+            (position) =>
+              position.snapshot_id === previousSnapshotRecord.id &&
+              previousSnapshotRecord.total_value > 0,
+          )
+          .map((position) => ({
+            ticker: position.ticker,
+            weight: position.value / previousSnapshotRecord.total_value,
+          }))
+          .sort((a, b) => b.weight - a.weight)
+          .slice(0, 8)
+          .map(({ ticker }) => ticker),
+      )
+    : null;
+  const orreryBelt = resolveBeltMembership(
+    publicOrreryHoldings.map(({ ticker, weight }) => ({ ticker, weight })),
+    previousMembership,
+  );
 
   return {
     totalValue,
@@ -432,6 +463,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     holdingsPerformance,
     holdingRisks,
     publicOrreryHoldings,
+    orreryBelt,
     twr7d,
     voo7d,
   };
