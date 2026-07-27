@@ -15,9 +15,11 @@ import {
   type BeltResolution,
   type PublicOrreryHolding,
 } from "@/lib/observatory/orrery";
-import type { ObservatoryChapterId } from "@/lib/observatory/chapters";
 import { FirstVisitOrientation } from "./FirstVisitOrientation";
-import { MissionControl } from "./MissionControl";
+import {
+  MissionControl,
+  type MissionControlPanelId,
+} from "./MissionControl";
 import { OrrerySceneLoader } from "./OrrerySceneLoader";
 import { SystemsManual } from "./SystemsManual";
 import styles from "./orrery.module.css";
@@ -95,7 +97,8 @@ export function OrreryWorld({
   portfolioSummary,
   portfolioHealth,
   missionControlContent = null,
-  activeChapterId = "pulse",
+  activeMissionPanel = "dashboard",
+  missionMode = "public",
   missionPreservedQuery,
   basePath = REFERENCE_BASE_PATH,
   referenceStudy = false,
@@ -116,7 +119,8 @@ export function OrreryWorld({
   };
   portfolioHealth?: PortfolioHealth;
   missionControlContent?: ReactNode;
-  activeChapterId?: ObservatoryChapterId;
+  activeMissionPanel?: MissionControlPanelId;
+  missionMode?: "public" | "private";
   missionPreservedQuery?: Record<string, string>;
   basePath?: string;
   referenceStudy?: boolean;
@@ -355,7 +359,8 @@ export function OrreryWorld({
 
       {portfolioSelected && missionControlContent ? (
         <MissionControl
-          activeChapterId={activeChapterId}
+          activePanel={activeMissionPanel}
+          mode={missionMode}
           content={missionControlContent}
           closeHref={fallbackHref}
           preservedQuery={missionPreservedQuery}

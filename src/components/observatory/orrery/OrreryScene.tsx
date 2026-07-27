@@ -28,6 +28,7 @@ import {
 } from "three";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 import {
+  ORRERY_MAX_ANGULAR_SPEED,
   angularSpeedForWeeklyReturn,
   axialSpinForDayReturn,
   directionForWeeklyReturn,
@@ -146,6 +147,15 @@ type PlanetRuntime = {
   angularSpeed: number;
   axialSpin: number;
 };
+
+type RocketFlight = {
+  ticker: string;
+  startedAt: number;
+  startX: number;
+  startY: number;
+};
+
+const ROCKET_FLIGHT_MS = 560;
 
 function tickerSeed(ticker: string): number {
   return [...ticker].reduce((sum, char) => sum * 31 + char.charCodeAt(0), 7);
@@ -342,6 +352,19 @@ export default function OrreryScene({
     labelLayer.setAttribute("aria-hidden", "true");
     mount.appendChild(labelLayer);
 
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const rocket = document.createElement("span");
+    rocket.className = styles.rocketCursor;
+    rocket.setAttribute("aria-hidden", "true");
+    const rocketBody = document.createElement("span");
+    rocketBody.className = styles.rocketBody;
+    const rocketFlame = document.createElement("span");
+    rocketFlame.className = styles.rocketFlame;
+    rocket.append(rocketBody, rocketFlame);
+    if (!reducedMotion) labelLayer.appendChild(rocket);
+
     const starField = createStarField();
     scene.add(starField);
     const planetGeometry = new SphereGeometry(1, 32, 24);
@@ -378,6 +401,9 @@ export default function OrreryScene({
     const trailMaterials: MeshBasicMaterial[] = [];
     const loadedTextures: Texture[] = [];
 
+    let launchRocket = (ticker: string) => {
+      callbacksRef.current.onSelect(ticker);
+    };
     const planetRuntimes: PlanetRuntime[] = sceneHoldings.map((holding, index) => {
       const rank = index + 1;
       const orbitRadius = orbitRadiusForRank(rank);
@@ -403,7 +429,7 @@ export default function OrreryScene({
       const speed = angularSpeedForWeeklyReturn(holding.weeklyReturn);
       const trailGeometry = createTrailGeometry(
         orbitRadius,
-        0.28 + (speed / 0.32) * 0.78,
+        0.28 + (speed / ORRERY_MAX_ANGULAR_SPEED) * 0.78,
         direction,
       );
       trailGeometries.push(trailGeometry);
@@ -454,7 +480,7 @@ export default function OrreryScene({
       label.tabIndex = -1;
       label.className = styles.sceneLabel;
       label.textContent = holding.ticker;
-      label.addEventListener("click", () => callbacksRef.current.onSelect(holding.ticker));
+      label.addEventListener("click", () => launchRocket(holding.ticker));
       labelLayer.appendChild(label);
       return {
         holding,
@@ -530,6 +556,27 @@ export default function OrreryScene({
     let dragging = false;
     let dragStartX = 0;
     let dragStartTilt = 0;
+    let rocketFlight: RocketFlight | null = null;
+
+    const positionRocket = (x: number, y: number) => {
+      rocket.style.left = `${x}px`;
+      rocket.style.top = `${y}px`;
+    };
+
+    launchRocket = (ticker: string) => {
+      if (reducedMotion) {
+        callbacksRef.current.onSelect(ticker);
+        return;
+      }
+      rocketFlight = {
+        ticker,
+        startedAt: performance.now(),
+        startX: pointerClientX,
+        startY: pointerClientY,
+      };
+      rocket.dataset.flying = "true";
+      rocket.dataset.visible = "true";
+    };
 
     const readPointer = (event: PointerEvent) => {
       const rect = renderer.domElement.getBoundingClientRect();
@@ -539,6 +586,10 @@ export default function OrreryScene({
       pointerY = pointer.y;
       pointerClientX = event.clientX - rect.left;
       pointerClientY = event.clientY - rect.top;
+      if (!rocketFlight && !reducedMotion) {
+        positionRocket(pointerClientX, pointerClientY);
+        rocket.dataset.visible = "true";
+      }
     };
     const magneticTarget = () => {
       const rect = renderer.domElement.getBoundingClientRect();
@@ -549,7 +600,7 @@ export default function OrreryScene({
         const x = (projected.x * 0.5 + 0.5) * rect.width;
         const y = (-projected.y * 0.5 + 0.5) * rect.height;
         const distance = Math.hypot(pointerClientX - x, pointerClientY - y);
-        if (distance <= 44 && (!nearest || distance < nearest.distance)) {
+        if (distance <= 64 && (!nearest || distance < nearest.distance)) {
           nearest = { ticker: planet.holding.ticker, distance };
         }
       }
@@ -565,7 +616,16 @@ export default function OrreryScene({
         localHovered = ticker;
         callbacksRef.current.onHover(ticker);
       }
-      renderer.domElement.style.cursor = target ? "pointer" : dragging ? "grabbing" : "grab";
+      if (!reducedMotion) {
+        rocket.dataset.targeted = ticker ? "true" : "false";
+      }
+      renderer.domElement.style.cursor = reducedMotion
+        ? target
+          ? "pointer"
+          : dragging
+            ? "grabbing"
+            : "grab"
+        : "none";
       return target;
     };
     const onPointerMove = (event: PointerEvent) => {
@@ -589,13 +649,14 @@ export default function OrreryScene({
       pointer.set(2, 2);
       localHovered = null;
       callbacksRef.current.onHover(null);
+      if (!rocketFlight) rocket.dataset.visible = "false";
     };
     const onClick = (event: MouseEvent) => {
       readPointer(event as PointerEvent);
       const target = pick();
       if (target === "portfolio") callbacksRef.current.onSelectPortfolio();
       else if (target === "belt") callbacksRef.current.onSelectBelt();
-      else if (target) callbacksRef.current.onSelect(target);
+      else if (target) launchRocket(target);
     };
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
@@ -631,25 +692,22 @@ export default function OrreryScene({
       const state = cameraStateRef.current;
 
       for (const planet of planetRuntimes) {
-        const stabilized =
+        const targeted =
           planet.holding.ticker === selected || planet.holding.ticker === hovered;
-        if (stabilized) {
-          planet.orbit.rotation.y +=
-            (planet.initialAngle - planet.orbit.rotation.y) * (1 - Math.exp(-delta * 7));
-        } else if (planet.direction !== "neutral") {
+        if (planet.direction !== "neutral") {
           planet.orbit.rotation.y +=
             (planet.direction === "clockwise" ? -1 : 1) *
             planet.angularSpeed *
             delta;
         }
         planet.mesh.rotation.y += planet.axialSpin * delta;
-        const targetScale = radiusForWeight(planet.holding.weight) * (stabilized ? 1.08 : 1);
+        const targetScale = radiusForWeight(planet.holding.weight) * (targeted ? 1.08 : 1);
         const nextScale =
           planet.mesh.scale.x +
           (targetScale - planet.mesh.scale.x) * (1 - Math.exp(-delta * 9));
         planet.mesh.scale.setScalar(nextScale);
         planet.mesh.material.uniforms.uActive.value +=
-          ((stabilized ? 1 : 0) - planet.mesh.material.uniforms.uActive.value) *
+          ((targeted ? 1 : 0) - planet.mesh.material.uniforms.uActive.value) *
           (1 - Math.exp(-delta * 8));
         const dimTarget = selected && planet.holding.ticker !== selected ? 0.22 : 1;
         planet.mesh.material.uniforms.uDim.value +=
@@ -659,8 +717,36 @@ export default function OrreryScene({
         projected.project(camera);
         planet.label.style.left = `${(projected.x * 0.5 + 0.5) * 100}%`;
         planet.label.style.top = `${(-projected.y * 0.5 + 0.5) * 100}%`;
-        planet.label.dataset.locked = stabilized ? "true" : "false";
+        planet.label.dataset.targeted = targeted ? "true" : "false";
         planet.label.hidden = projected.z > 1;
+      }
+      if (rocketFlight) {
+        const destination = planetRuntimes.find(
+          ({ holding }) => holding.ticker === rocketFlight?.ticker,
+        );
+        if (destination) {
+          destination.mesh.getWorldPosition(projected);
+          projected.project(camera);
+          const rect = renderer.domElement.getBoundingClientRect();
+          const targetX = (projected.x * 0.5 + 0.5) * rect.width;
+          const targetY = (-projected.y * 0.5 + 0.5) * rect.height;
+          const progress = Math.min(
+            1,
+            (now - rocketFlight.startedAt) / ROCKET_FLIGHT_MS,
+          );
+          const eased = 1 - Math.pow(1 - progress, 3);
+          positionRocket(
+            rocketFlight.startX + (targetX - rocketFlight.startX) * eased,
+            rocketFlight.startY + (targetY - rocketFlight.startY) * eased,
+          );
+          if (progress >= 1) {
+            const ticker = rocketFlight.ticker;
+            rocketFlight = null;
+            rocket.dataset.flying = "false";
+            rocket.dataset.visible = "false";
+            callbacksRef.current.onSelect(ticker);
+          }
+        }
       }
       beltGroup.rotation.y += delta * 0.015;
       beltRocks.forEach((rock, index) => {

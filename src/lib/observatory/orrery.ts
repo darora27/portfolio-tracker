@@ -3,10 +3,12 @@ import { trailingReturn } from "@/lib/portfolio/trailing-return";
 export const ORRERY_FLAT_EPSILON = 0.0005;
 export const ORRERY_MIN_RADIUS = 0.34;
 export const ORRERY_MAX_RADIUS = 0.92;
-export const ORRERY_MIN_ANGULAR_SPEED = 0.08;
-export const ORRERY_MAX_ANGULAR_SPEED = 0.32;
+export const ORRERY_MIN_ANGULAR_SPEED = 0.012;
+export const ORRERY_MAX_ANGULAR_SPEED = 0.055;
 export const ORRERY_SUN_CLEARANCE = 3.4;
-export const ORRERY_RING_SPACING = 0.62;
+export const ORRERY_PLANET_CLEARANCE = 0.18;
+export const ORRERY_RING_SPACING =
+  ORRERY_MAX_RADIUS * 2 + ORRERY_PLANET_CLEARANCE;
 export const ORRERY_MIN_AXIAL_SPIN = 0.05;
 export const ORRERY_MAX_AXIAL_SPIN = 0.55;
 export const ORRERY_BELT_HYSTERESIS_BAND = 0.005;
@@ -76,6 +78,7 @@ export function angularSpeedForWeeklyReturn(weeklyReturn: number | null): number
   if (directionForWeeklyReturn(weeklyReturn) === "neutral") return 0;
   const magnitude = Math.abs(weeklyReturn ?? 0);
   const clamped = Math.min(MAX_SPEED_RETURN, Math.max(MIN_SPEED_RETURN, magnitude));
+  if (clamped === MAX_SPEED_RETURN) return ORRERY_MAX_ANGULAR_SPEED;
   const normalized = (clamped - MIN_SPEED_RETURN) / (MAX_SPEED_RETURN - MIN_SPEED_RETURN);
   return ORRERY_MIN_ANGULAR_SPEED +
     normalized * (ORRERY_MAX_ANGULAR_SPEED - ORRERY_MIN_ANGULAR_SPEED);

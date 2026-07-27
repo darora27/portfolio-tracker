@@ -15,6 +15,7 @@ const ENCODINGS = [
   ["Sun weather", "TWR-consistent portfolio health"],
   ["Sunspots", "Distance below all-time high"],
   ["Asteroid belt", "Holdings ranked ninth and beyond"],
+  ["Rocket cursor", "Aim once; the rocket travels to a planet"],
 ] as const;
 
 export function SystemsManual({

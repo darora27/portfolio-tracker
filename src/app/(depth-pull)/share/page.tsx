@@ -1,25 +1,27 @@
 import type { Metadata } from "next";
-import { ForcesChapter } from "@/components/observatory/ForcesChapter";
-import { LabChapter } from "@/components/observatory/LabChapter";
-import { PulseChapter } from "@/components/observatory/PulseChapter";
-import { StructureChapter } from "@/components/observatory/StructureChapter";
-import { TimelineChapter } from "@/components/observatory/TimelineChapter";
+import { cookies } from "next/headers";
 import {
   OrreryWorld,
   type OrreryCameraState,
 } from "@/components/observatory/orrery/OrreryWorld";
+import { PublicMissionControlContent } from "@/components/observatory/orrery/PublicMissionControlContent";
+import {
+  MISSION_CONTROL_PANELS,
+  type MissionControlPanelId,
+} from "@/components/observatory/orrery/MissionControl";
+import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
+import { getHistoryData } from "@/lib/history-data";
+import { getResearchData } from "@/lib/research-data";
+import { supabase } from "@/lib/supabase/client";
 import {
   healthScalarForPortfolio,
   resolveBeltMembership,
   sunspotIntensityForDrawdown,
 } from "@/lib/observatory/orrery";
-import { resolveObservatoryChapter } from "@/lib/observatory/chapters";
-import { resolveExplainParam } from "@/lib/observatory/metric-explanations";
-import { getPublicTimelineData } from "@/lib/observatory/timeline-data";
 import styles from "./share-orrery.module.css";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Stock Market Universe — Share View",
@@ -29,6 +31,15 @@ export const metadata: Metadata = {
 
 function first(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value;
+}
+
+function resolveMissionPanel(
+  value: string | string[] | undefined,
+): MissionControlPanelId {
+  const candidate = first(value);
+  return MISSION_CONTROL_PANELS.some(({ id }) => id === candidate)
+    ? (candidate as MissionControlPanelId)
+    : "dashboard";
 }
 
 export default async function SharePage({
@@ -43,15 +54,20 @@ export default async function SharePage({
     planet?: string | string[];
     manual?: string | string[];
     no3d?: string | string[];
+    station?: string | string[];
   }>;
 }) {
-  const [data, timeline, params] = await Promise.all([
+  const [data, params, cookieStore] = await Promise.all([
     getDashboardData(),
-    getPublicTimelineData(),
     searchParams,
+    cookies(),
   ]);
-  const active = resolveObservatoryChapter(params.chapter);
-  const explainOpenId = resolveExplainParam(params.explain);
+  const ownerPassword = process.env.OWNER_PASSWORD;
+  const session = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  const authenticated = ownerPassword
+    ? isValidSession(session, ownerPassword)
+    : false;
+  const activeMissionPanel = resolveMissionPanel(params.station);
   const focusParam = first(params.focus);
   const holdingParam = first(params.holding) ?? first(params.planet);
   const no3d = first(params.no3d) === "1";
@@ -73,13 +89,6 @@ export default async function SharePage({
         : portfolioSelected
           ? "command"
           : "overview";
-  const preservedQuery = {
-    ...(portfolioSelected ? { focus: "portfolio", camera: "command" } : {}),
-    ...(explainOpenId ? { explain: explainOpenId } : {}),
-    ...(no3d ? { no3d: "1" } : {}),
-  };
-  const chapterQuery =
-    Object.keys(preservedQuery).length > 0 ? preservedQuery : undefined;
   const voo = data.benchmarkComparisons.find(
     (comparison) => comparison.ticker === "VOO",
   ) ?? {
@@ -88,94 +97,6 @@ export default async function SharePage({
     excessReturnPct: null,
   };
 
-  const chapterContent = {
-    pulse: (
-      <PulseChapter
-        historyDays={data.historyDays}
-        portfolioTwrPct={data.twrPct}
-        benchmark={{
-          available: voo.available,
-          twrPct: voo.twrPct,
-          excessReturnPct: voo.excessReturnPct,
-        }}
-        chartData={data.chartData.map(({ date, portfolioIndex, vooIndex }) => ({
-          date,
-          portfolioIndex,
-          vooIndex,
-        }))}
-        positions={data.positionRows.map(({ ticker, contribution }) => ({
-          ticker,
-          contribution,
-        }))}
-      />
-    ),
-    forces: (
-      <ForcesChapter
-        positions={data.positionRows.map(({ ticker, contribution }) => ({
-          ticker,
-          contribution,
-        }))}
-        movers={data.movers.map(({ ticker, dayPct }) => ({ ticker, dayPct }))}
-      />
-    ),
-    structure: (
-      <StructureChapter
-        basePath="/share"
-        preservedQuery={chapterQuery}
-        explainOpenId={active.id === "structure" ? explainOpenId : undefined}
-        pricesAsOf={data.pricesAsOf}
-        dailyChangeAsOf={data.dailyChangeAsOf}
-        hhi={data.hhi}
-        top2ConcentrationPct={data.top2ConcentrationPct}
-        positions={data.positionRows.map(({ ticker, weight }) => ({
-          ticker,
-          weight,
-        }))}
-        sectorWeights={data.sectorWeights.map(({ label, weight }) => ({
-          label,
-          weight,
-        }))}
-        aiExposureWeights={data.aiExposureWeights.map(({ label, weight }) => ({
-          label,
-          weight,
-        }))}
-        correlationTickers={data.correlationTickers}
-        correlationCells={data.correlationCells}
-      />
-    ),
-    timeline: (
-      <TimelineChapter
-        chartData={data.chartData.map(({ date, portfolioIndex }) => ({
-          date,
-          index: portfolioIndex,
-        }))}
-        allTimeHigh={data.allTimeHigh}
-        bestDay={data.bestDay}
-        worstDay={data.worstDay}
-        flowMarkers={timeline.flowMarkers}
-        tradeMarkers={timeline.tradeMarkers}
-        compositionHistory={timeline.compositionHistory}
-      />
-    ),
-    lab: (
-      <LabChapter
-        basePath="/share"
-        preservedQuery={chapterQuery}
-        explainOpenId={active.id === "lab" ? explainOpenId : undefined}
-        historyDays={data.historyDays}
-        firstFundedDate={data.chartData[0]?.date ?? null}
-        pricesAsOf={data.pricesAsOf}
-        dailyChangeAsOf={data.dailyChangeAsOf}
-        twrPct={data.twrPct}
-        xirrPct={data.xirrPct}
-        benchmark={{
-          available: voo.available,
-          twrPct: voo.twrPct,
-          excessReturnPct: voo.excessReturnPct,
-        }}
-      />
-    ),
-  };
   const orreryBelt =
     data.orreryBelt ??
     resolveBeltMembership(
@@ -192,6 +113,54 @@ export default async function SharePage({
       data.allTimeHigh?.pct ?? 0,
     ),
   };
+  let missionControlContent = (
+    <PublicMissionControlContent panel={activeMissionPanel} data={data} />
+  );
+
+  if (portfolioSelected && authenticated) {
+    const { OwnerMissionControlContent } = await import(
+      "@/components/observatory/orrery/OwnerMissionControlContent"
+    );
+    if (activeMissionPanel === "history") {
+      missionControlContent = (
+        <OwnerMissionControlContent
+          panel="history"
+          data={data}
+          history={await getHistoryData()}
+        />
+      );
+    } else if (activeMissionPanel === "research") {
+      missionControlContent = (
+        <OwnerMissionControlContent
+          panel="research"
+          data={data}
+          research={await getResearchData()}
+        />
+      );
+    } else if (activeMissionPanel === "trades") {
+      const [{ data: trades, error }, { data: setting }] = await Promise.all([
+        supabase.from("trades").select("*").order("date", { ascending: false }),
+        supabase
+          .from("settings")
+          .select("value")
+          .eq("key", "share_hide_dollars")
+          .maybeSingle(),
+      ]);
+      if (error) throw error;
+      missionControlContent = (
+        <OwnerMissionControlContent
+          panel="trades"
+          data={data}
+          trades={trades ?? []}
+          hideDollars={setting?.value ?? true}
+        />
+      );
+    } else {
+      missionControlContent = (
+        <OwnerMissionControlContent panel="dashboard" data={data} />
+      );
+    }
+  }
 
   return (
     <div className={styles.page}>
@@ -212,10 +181,10 @@ export default async function SharePage({
             marketRelativePct: voo.excessReturnPct,
             topTwoWeight: data.top2ConcentrationPct,
           }}
-          missionControlContent={chapterContent[active.id]}
-          activeChapterId={active.id}
+          missionControlContent={missionControlContent}
+          activeMissionPanel={activeMissionPanel}
+          missionMode={authenticated ? "private" : "public"}
           missionPreservedQuery={{
-            ...(explainOpenId ? { explain: explainOpenId } : {}),
             ...(no3d ? { no3d: "1" } : {}),
           }}
         />

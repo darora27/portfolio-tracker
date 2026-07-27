@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { zstdCompressSync } from "node:zlib";
+import sharp from "sharp";
 import {
   DataTexture,
   NoColorSpace,
@@ -17,9 +18,10 @@ import {
   write as writeKtx,
 } from "three/addons/libs/ktx-parse.module.js";
 
-const WIDTH = 128;
-const HEIGHT = 64;
+const WIDTH = 112;
+const HEIGHT = 56;
 const OUTPUT = path.resolve("public/textures/planets");
+const SOURCE = path.resolve("assets/planet-textures/source");
 const WORLDS = {
   ASML: [[24, 18, 56], [146, 91, 232], [110, 223, 244]],
   GOOG: [[10, 42, 72], [58, 148, 255], [246, 198, 64]],
@@ -59,7 +61,7 @@ function sample(ticker, x, y) {
   return { relief, emissive };
 }
 
-function textureBytes(ticker, kind) {
+function proceduralTextureBytes(ticker, kind) {
   const bytes = new Uint8Array(WIDTH * HEIGHT * 4);
   const [deep, mid, glow] = WORLDS[ticker];
   for (let y = 0; y < HEIGHT; y += 1) {
@@ -91,12 +93,57 @@ function textureBytes(ticker, kind) {
   return bytes;
 }
 
+async function sourceTextureBytes(ticker, kind) {
+  let base;
+  try {
+    base = await sharp(await readFile(path.join(SOURCE, `${ticker.toLowerCase()}.png`)))
+      .resize(WIDTH, HEIGHT, { fit: "fill", kernel: "lanczos3" })
+      .ensureAlpha()
+      .raw()
+      .toBuffer();
+  } catch {
+    return proceduralTextureBytes(ticker, kind);
+  }
+  if (kind === "base") return new Uint8Array(base);
+
+  const bytes = new Uint8Array(base.length);
+  const luminanceAt = (x, y) => {
+    const clampedX = (x + WIDTH) % WIDTH;
+    const clampedY = Math.max(0, Math.min(HEIGHT - 1, y));
+    const offset = (clampedY * WIDTH + clampedX) * 4;
+    return (
+      base[offset] * 0.2126 +
+      base[offset + 1] * 0.7152 +
+      base[offset + 2] * 0.0722
+    ) / 255;
+  };
+  for (let y = 0; y < HEIGHT; y += 1) {
+    for (let x = 0; x < WIDTH; x += 1) {
+      const offset = (y * WIDTH + x) * 4;
+      if (kind === "emissive") {
+        const strength = Math.max(0, (luminanceAt(x, y) - 0.46) / 0.54);
+        bytes[offset] = Math.round(base[offset] * strength);
+        bytes[offset + 1] = Math.round(base[offset + 1] * strength);
+        bytes[offset + 2] = Math.round(base[offset + 2] * strength);
+      } else {
+        const dx = luminanceAt(x - 1, y) - luminanceAt(x + 1, y);
+        const dy = luminanceAt(x, y - 1) - luminanceAt(x, y + 1);
+        bytes[offset] = Math.round(128 + dx * 88);
+        bytes[offset + 1] = Math.round(128 + dy * 88);
+        bytes[offset + 2] = 238;
+      }
+      bytes[offset + 3] = 255;
+    }
+  }
+  return bytes;
+}
+
 await mkdir(OUTPUT, { recursive: true });
 const exporter = new KTX2Exporter();
 for (const ticker of Object.keys(WORLDS)) {
   for (const kind of ["base", "emissive", "normal"]) {
     const texture = new DataTexture(
-      textureBytes(ticker, kind),
+      await sourceTextureBytes(ticker, kind),
       WIDTH,
       HEIGHT,
       RGBAFormat,

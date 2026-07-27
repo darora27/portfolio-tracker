@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -57,7 +57,8 @@
       }
     ],
     "remediation_commits": [
-      "Codex §8 desktop fallback and dashboard-data behavioral-test remediation commit; hash to be filled by the next actor via git log -1."
+      "Codex §8 desktop fallback and dashboard-data behavioral-test remediation commit; hash to be filled by the next actor via git log -1.",
+      "Codex §8 owner-feedback remediation (non-intersecting/slower orbits, company-generated textures, rocket pointer, arrival cleanup, identity-gated four-station Mission Control); hash to be filled by the next actor via git log -1."
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -67,7 +68,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-devan-to-codex-implementation-remediate.md",
+    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-codex-owner-feedback-remediation-to-claude-lead.md",
     "owner_feedback": {
       "recorded_at": "2026-07-27",
       "recorded_by": "claude/fable-5 (cowork, owner-directed)",
@@ -143,40 +144,40 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "8a50c1a46ffaedf2a7c52a5b7b7542b4e2c2ce10",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 8a50c1a (`phase10(review §8): fail with 2 bounded findings`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "e50ca25e7cda4580859e25b3d9419cce69413381",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): e50ca25 (`owner(§8): record live-review feedback, rocket cursor, Mission Control by viewer identity`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "2962c866aa0b8a5cd2bab907827c44564c1eb353",
   "production_code_changed_this_turn": true,
-  "production_code_note_prior_turn": "The prior turn (Claude Lead, §8 review stage, commit 8a50c1a) changed no application source. It ran a real local production server, independently exercised the implementation with Playwright, re-ran npm test/npm run build, re-measured the texture and long-task budgets, and recorded 2 bounded findings in docs/phase10-workflow/reviews/section-8-review.md.",
-  "production_code_note": "This turn (Codex Implementation, §8 remediate stage) fixed only the 2 bounded Claude Lead findings. The fallback CSS now unclamps the semantic map at desktop widths when either no3d is forced or reduced motion disables WebGL, while Mission Control, the systems manual, and the belt control remain reachable under reduced motion. The dashboard-data test now executes getDashboardData() with mocked Supabase/Finnhub current-day and prior-snapshot fixtures, asserting the hand-computed dayReturn join and sticky belt membership. Focused tests, the full suite, and the production build pass. A local Next.js server started successfully, but the Codex browser runtime reported no available browser backend, so live 1440x900 no3d/reduced-motion visibility and operability remain explicitly deferred to Claude Lead re-review under the environment-only browser-evidence rule.",
+  "production_code_note_prior_turn": "The prior owner-directed turn (commit e50ca25) recorded Devan's live feedback, superseded reticle lock-on with a rocket pointer decision, defined Mission Control's authenticated/public identity split, and routed §8 back to Codex remediation without changing application source.",
+  "production_code_note": "This turn (Codex Implementation, §8 remediate stage) addressed only the bounded owner-feedback items A2, A3, B1, B2, C1, and C2. Ring spacing now provides physical non-intersection clearance and tested adjacent-rank invariants; angular speeds are substantially slower while retaining the encoding; eight company-specific no-logo ImageGen source plates feed the existing offline KTX2 pipeline; reticle/orbit stabilization is replaced by a rocket-flight pointer while semantic keyboard operation remains intact; the arrival surface contains only the universe; and Mission Control is a four-station Dashboard/History/Trades/Research surface rendered with public-safe telemetry or dynamically imported full owner content after session validation. D1 and D2 were not changed. TypeScript, focused tests, full tests, focused ESLint, build, and texture budgets pass. Localhost binding failed with listen EPERM and the prescribed browser runtime returned no available browser, so live visual, responsive, accessibility, console, public-payload, authenticated-owner, and long-task checks are explicitly deferred to Claude Lead under the environment-only evidence rule.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex remediation ran the full Vitest suite: 85 test files passed; 467 of 467 tests passed, including the new fixture-driven getDashboardData behavioral test.",
-      "finished_at": "2026-07-27T21:05:11Z"
+      "summary": "Codex owner-feedback remediation ran the full Vitest suite: 86 test files passed; 465 of 465 tests passed, including identity/privacy canaries, arrival-surface isolation, rocket-selection source coverage, orbit-clearance invariants, and the prior fixture-driven getDashboardData behavior.",
+      "finished_at": "2026-07-27T22:01:42Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex remediation ran the default Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and all 19 route tasks generated. No DNS/font workaround was needed.",
-      "finished_at": "2026-07-27T21:05:33Z"
+      "summary": "Codex owner-feedback remediation ran the default Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and all route-generation tasks completed. /share remains a dynamic route.",
+      "finished_at": "2026-07-27T22:01:42Z"
     },
     "long_task_gate": {
       "command": "CDP Emulation.setCPUThrottlingRate(2) + PerformanceObserver('longtask'), 5 fresh contexts, 1440x900, against a real npm run start server",
-      "status": "pass",
-      "summary": "Zero long tasks observed in any of 5 runs (budget: <50ms). Clears the unweakened §2.3.2 gate.",
-      "finished_at": "2026-07-27T21:00:00Z"
+      "status": "not_run_environment_blocked",
+      "summary": "Not measured this remediation turn: npm run start could not bind 127.0.0.1:3100 (listen EPERM) and the prescribed in-app browser runtime returned 'No browser is available'. Claude Lead must run the exact five-context CPU-2x protocol before PASS; no performance pass is claimed.",
+      "finished_at": "2026-07-27T22:01:42Z"
     },
     "texture_budget": {
       "command": "stat -f%z public/textures/planets/*.ktx2",
       "status": "pass",
-      "summary": "24 files, 247022 bytes total, 21234 bytes max -- matches the declared <=300000/<=24000 byte budgets exactly as claimed in docs/phase10-baseline/section-8/README.md.",
-      "finished_at": "2026-07-27T21:02:00Z"
+      "summary": "24 files, 261415 bytes total, 21194 bytes max -- passes the declared <=300000 total and <=24000 per-map budgets recorded in docs/phase10-baseline/section-8/README.md.",
+      "finished_at": "2026-07-27T22:01:42Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T21:33:08Z",
+  "updated_at": "2026-07-27T22:01:42Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

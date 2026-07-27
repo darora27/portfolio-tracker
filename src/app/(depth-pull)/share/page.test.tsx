@@ -1,18 +1,31 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getDashboardData, getPublicTimelineData } = vi.hoisted(() => ({
-  getDashboardData: vi.fn(),
-  getPublicTimelineData: vi.fn(),
-}));
-
-vi.mock("@/lib/dashboard-data", () => ({
+const {
+  cookies,
+  from,
   getDashboardData,
+  getHistoryData,
+  getResearchData,
+  isValidSession,
+} = vi.hoisted(() => ({
+  cookies: vi.fn(),
+  from: vi.fn(),
+  getDashboardData: vi.fn(),
+  getHistoryData: vi.fn(),
+  getResearchData: vi.fn(),
+  isValidSession: vi.fn(),
 }));
 
-vi.mock("@/lib/observatory/timeline-data", () => ({
-  getPublicTimelineData,
+vi.mock("next/headers", () => ({ cookies }));
+vi.mock("@/lib/auth", () => ({
+  SESSION_COOKIE_NAME: "portfolio_session",
+  isValidSession,
 }));
+vi.mock("@/lib/dashboard-data", () => ({ getDashboardData }));
+vi.mock("@/lib/history-data", () => ({ getHistoryData }));
+vi.mock("@/lib/research-data", () => ({ getResearchData }));
+vi.mock("@/lib/supabase/client", () => ({ supabase: { from } }));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
 }));
@@ -20,7 +33,9 @@ vi.mock("next/navigation", () => ({
 const publicFixture = {
   historyDays: 30,
   twrPct: -0.029,
+  twr7d: -0.024,
   xirrPct: 0.1234,
+  simpleReturnPct: 0.9876,
   pricesAsOf: "2026-07-23",
   dailyChangeAsOf: "2026-07-23",
   chartData: [
@@ -36,10 +51,22 @@ const publicFixture = {
       costBasis: 111111.11,
       price: 222.22,
       day: 333.33,
+      dayPct: -0.014,
       prevClose: 444.44,
       weight: 0.42,
+      shares: 100,
     },
-    { ticker: "MSFT", contribution: 0.011, weight: 0.31 },
+    {
+      ticker: "MSFT",
+      contribution: 0.011,
+      weight: 0.31,
+      value: 100,
+      price: 10,
+      day: 1,
+      dayPct: 0.009,
+      prevClose: 9,
+      shares: 10,
+    },
   ],
   movers: [{ ticker: "IBM", day: 12345.67, dayPct: -0.021 }],
   top2ConcentrationPct: 0.73,
@@ -83,205 +110,115 @@ const publicFixture = {
   ],
   orreryBelt: { planetTickers: ["IBM", "MSFT"], beltTickers: [] },
   dailyChangePct: -0.0113,
-  twr7d: -0.024,
   volatilityPct: 0.37,
   totalValue: 999999.99,
+  totalCost: 111111.11,
   realizedGain: 8888.88,
   unrealizedGain: 7777.77,
   latestNews: [{ headline: "PRIVATE_RESEARCH_MARKER" }],
   simulations: [{ result: "PRIVATE_SIMULATION_MARKER" }],
   trades: [{ reason: "PRIVATE_TRADE_REASON" }],
+  netFlowsToday: 0,
+  prevSnapshotValue: 900000,
 };
 
-const timelineFixture = {
-  flowMarkers: [{ date: "2026-07-02", direction: "in" as const }],
-  tradeMarkers: [{ date: "2026-07-03", ticker: "IBM", action: "buy" as const }],
-  compositionHistory: {
-    tickers: ["IBM", "MSFT"],
-    hasOther: false,
-    points: [{ date: "2026-07-03", IBM: 60, MSFT: 40 }],
-  },
-};
-
-async function renderShare(
-  chapter?: string,
-  explain?: string,
-  selection?: { focus?: string; holding?: string; no3d?: string },
-) {
+async function renderShare(selection: {
+  focus?: string;
+  holding?: string;
+  no3d?: string;
+  station?: string;
+} = {}) {
   const { default: SharePage } = await import("./page");
   const element = await SharePage({
-    searchParams: Promise.resolve({
-      ...(chapter ? { chapter } : {}),
-      ...(explain ? { explain } : {}),
-      ...(chapter || explain ? { focus: "portfolio", camera: "command" } : {}),
-      ...selection,
-    }),
+    searchParams: Promise.resolve(selection),
   });
   return renderToStaticMarkup(element);
 }
 
 beforeEach(() => {
+  process.env.OWNER_PASSWORD = "test-owner-password";
   getDashboardData.mockResolvedValue(publicFixture);
-  getPublicTimelineData.mockResolvedValue(timelineFixture);
+  getResearchData.mockResolvedValue({
+    redditConfigured: false,
+    marketNews: [{
+      headline: "OWNER_RESEARCH_HEADLINE",
+      source: "Owner source",
+      url: "https://example.com/owner",
+      datetime: 1_722_038_400,
+    }],
+    rows: [],
+  });
+  cookies.mockResolvedValue({
+    get: () => ({ value: "test-session" }),
+  });
+  isValidSession.mockReturnValue(false);
 });
 
 describe("/share Stock Market Universe rendered output", () => {
-  it("opens with the public-safe universe and retires the five-chapter landing shell", async () => {
+  it("opens with the universe alone and keeps analysis inside Mission Control", async () => {
     const html = await renderShare();
 
     expect(html).toContain("Stock Market Universe");
     expect(html).toContain("SUN / PORTFOLIO");
-    expect(html).toContain("IBM");
-    expect(html).toContain("Microsoft");
     expect(html).toContain("SYSTEMS MANUAL");
     expect(html).toContain("ASTEROID BELT");
+    expect(html).not.toContain("Portfolio command summary");
+    expect(html).not.toContain("Market-relative observation");
     expect(html).not.toContain('id="portfolio-observatory"');
     expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
   });
 
-  it("restores public holding and sun selection from URL state", async () => {
-    const holding = await renderShare(undefined, undefined, {
-      holding: "IBM",
-      no3d: "1",
-    });
-    expect(holding).toContain("Holding telemetry / public-safe");
-    expect(holding).toContain("Annualized volatility");
-    expect(holding).toContain('href="/stock/IBM"');
-    expect(holding).toContain('data-force-no-3d="true"');
-
-    const portfolio = await renderShare("pulse", undefined, {
-      focus: "portfolio",
-    });
-    expect(portfolio).toContain("Mission Control");
-    expect(portfolio).toContain("Market-relative observation");
-    expect(portfolio).toContain(
-      'href="/share?focus=portfolio&amp;camera=command&amp;chapter=forces"',
-    );
+  it("restores holding selection and the forced fallback", async () => {
+    const html = await renderShare({ holding: "IBM", no3d: "1" });
+    expect(html).toContain("Holding telemetry / public-safe");
+    expect(html).toContain("Annualized volatility");
+    expect(html).toContain('href="/stock/IBM"');
+    expect(html).toContain('data-force-no-3d="true"');
   });
 
-  it("keeps the overview sparse until the visitor summons Mission Control", async () => {
-    const html = await renderShare();
+  it.each(["dashboard", "history", "trades", "research"])(
+    "renders the public-safe %s station without owner canaries",
+    async (station) => {
+      const html = await renderShare({ focus: "portfolio", station });
 
-    expect(html).toContain("Public universe / read-only");
-    expect(html).toContain("-1.1% today");
-    expect(html).toContain("Weak health");
-    expect(html).not.toContain("Market-relative observation");
-    expect((html.match(/<svg/g) ?? [])).toHaveLength(0);
-  });
-
-  it("renders Forces from real contribution and mover data", async () => {
-    const html = await renderShare("forces");
-
-    expect(html).toContain("02 Forces");
-    expect(html).toContain("Every holding&#x27;s share of the portfolio&#x27;s total return, ranked.");
-    expect(html).toContain("MSFT contributed the most to total return");
-    expect(html).toContain("IBM moved the most today");
-    expect(html).toContain("chapter=structure");
-    expect(html).not.toContain("Market-relative observation");
-  });
-
-  it.each(["pulse", "forces", "structure", "timeline", "lab"])(
-    "keeps strict currency and owner-only poison fields out of the %s chapter",
-    async (chapter) => {
-      const html = await renderShare(chapter);
-
+      expect(html).toContain("Mission Control");
+      expect(html).toContain('data-mode="public"');
+      expect(html).toContain(`station=${station}`);
       expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
       expect(html).not.toContain("PRIVATE_RESEARCH_MARKER");
       expect(html).not.toContain("PRIVATE_SIMULATION_MARKER");
       expect(html).not.toContain("PRIVATE_TRADE_REASON");
+      expect(html).not.toContain("OWNER_RESEARCH_HEADLINE");
       expect(html).not.toContain("999999.99");
-      expect(html).not.toContain("ownerSlot");
+      expect(html).not.toContain("111111.11");
     },
   );
 
-  it("renders Structure, Timeline, and Lab as complete standalone chapters", async () => {
-    const structure = await renderShare("structure");
-    expect(structure).toContain("The top two holdings make up 73.0%");
-    expect(structure).toContain("IBM and MSFT are the most correlated holdings");
-    expect(structure).toContain("View the correlation matrix");
+  it("shows only percentage, weight, and derived telemetry in public stations", async () => {
+    const dashboard = await renderShare({ focus: "portfolio", station: "dashboard" });
+    expect(dashboard).toContain("Public dashboard / percentage-only");
+    expect(dashboard).toContain("Top two weight");
+    expect(dashboard).toContain("Volatility");
 
-    const timeline = await renderShare("timeline");
-    expect(timeline).toContain("Annotated divergence ribbon");
-    expect(timeline).toContain("Capital added");
-    expect(timeline).toContain("Bought IBM");
-    expect(timeline).toContain("View composition over time");
+    const trades = await renderShare({ focus: "portfolio", station: "trades" });
+    expect(trades).toContain("Public position structure / no ledger");
+    expect(trades).toContain("42.0% weight");
+    expect(trades).not.toContain("PRIVATE_TRADE_REASON");
 
-    const lab = await renderShare("lab");
-    expect(lab).toContain("time-weighted return (TWR)");
-    expect(lab).toContain("Explain TWR");
-    expect(lab).toContain("Explain XIRR");
-    expect(lab).toContain('href="/share/full"');
+    const research = await renderShare({ focus: "portfolio", station: "research" });
+    expect(research).toContain("Public research / derived telemetry");
+    expect(research).toContain("18.0% volatility");
+    expect(research).not.toContain("Owner source");
   });
 
-  it("pre-opens only a valid explanation in its home chapter and passes XIRR through", async () => {
-    const twr = await renderShare("lab", "twr");
-    expect(twr).toContain("Time-weighted return");
-    expect((twr.match(/aria-expanded="true"/g) ?? [])).toHaveLength(1);
+  it("renders full owner research only for an authenticated viewer", async () => {
+    isValidSession.mockReturnValue(true);
+    const html = await renderShare({ focus: "portfolio", station: "research" });
 
-    const xirr = await renderShare("lab", "xirr");
-    expect(xirr).toContain("XIRR (annualized return)");
-    expect(xirr).toContain("+12.34%");
-
-    const hhi = await renderShare("structure", "hhi");
-    expect(hhi).toContain("Herfindahl-Hirschman Index");
-    expect((hhi.match(/aria-expanded="true"/g) ?? [])).toHaveLength(1);
-
-    expect(await renderShare("structure", "twr")).not.toContain(
-      'aria-expanded="true"',
-    );
-    expect(await renderShare("lab", "alpha")).not.toContain(
-      'aria-expanded="true"',
-    );
-  });
-
-  it("keeps every new chapter useful with sparse public history", async () => {
-    getDashboardData.mockResolvedValue({
-      ...publicFixture,
-      historyDays: 1,
-      chartData: [],
-      positionRows: [],
-      movers: [],
-      sectorWeights: [],
-      aiExposureWeights: [],
-      correlationTickers: [],
-      correlationCells: [],
-      allTimeHigh: null,
-      bestDay: null,
-      worstDay: null,
-    });
-    getPublicTimelineData.mockResolvedValue({
-      flowMarkers: [],
-      tradeMarkers: [],
-      compositionHistory: { tickers: [], hasOther: false, points: [] },
-    });
-
-    for (const chapter of ["forces", "structure", "timeline", "lab"]) {
-      const html = await renderShare(chapter);
-      expect(html).not.toContain("NaN");
-      expect(html).not.toContain("This chapter&#x27;s content ships");
-      expect(html).toMatch(/href="\/share(?:\/full|\?focus=portfolio)/);
-    }
-  });
-
-  it("renders the exact useful fallback without driver copy when history is insufficient", async () => {
-    getDashboardData.mockResolvedValue({
-      ...publicFixture,
-      historyDays: 8,
-      benchmarkComparisons: [
-        {
-          ticker: "VOO",
-          available: false,
-          twrPct: null,
-          excessReturnPct: null,
-        },
-      ],
-    });
-
-    const html = await renderShare("pulse");
-    expect(html).toContain(
-      "Building the market-relative picture — a full comparison needs more trading history.",
-    );
-    expect(html).not.toContain("largest drag");
-    expect(html).not.toContain("NaN");
+    expect(html).toContain('data-mode="private"');
+    expect(html).toContain("owner authenticated");
+    expect(html).toContain("Owner research station");
+    expect(html).toContain("OWNER_RESEARCH_HEADLINE");
+    expect(getResearchData).toHaveBeenCalledOnce();
   });
 });

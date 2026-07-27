@@ -5,12 +5,15 @@ Implemented July 27, 2026 by codex/gpt-5.
 ## Outcome
 
 `/share` is now the Stock Market Universe: eight snapshot-stable planets,
-ranked orbits, still-readable comet trails, axial spin, ticker labels, a
-health-encoded sun, an asteroid belt, lock-on targeting, OVERVIEW / APPROACH /
-COMMAND camera states, Mission Control, a summonable systems manual, and a
-localStorage-gated first-visit orientation. The five accepted public chapter
-components survive unchanged inside Mission Control. Below 1024px, the
-semantic list remains the complete zero-WebGL presentation.
+non-intersecting ranked orbits, deliberately slow orbital motion,
+company-evoking generated textures, still-readable comet trails, axial spin,
+ticker labels, a health-encoded sun, an asteroid belt, a rocket-flight pointer
+selection affordance, OVERVIEW / APPROACH / COMMAND camera states, Mission
+Control, a summonable systems manual, and a localStorage-gated first-visit
+orientation. Mission Control now contains Dashboard, History, Trades, and
+Research stations rendered by viewer identity. The arrival surface contains
+only the universe; below 1024px and whenever 3D is disabled, the semantic list
+is the complete zero-WebGL presentation.
 
 ## Design decisions recorded from the §8 spec
 
@@ -34,13 +37,24 @@ semantic list remains the complete zero-WebGL presentation.
    axial-spin magnitude and appears as its own `Today` value, never beside a
    benchmark claim. — done by codex/gpt-5
 6. **Texture generation is a committed static asset pipeline, not a live
-   AI-image dependency.** This environment used the spec-authorized
-   deterministic procedural fallback. The offline script keys its art by
-   ticker identity, exports equirectangular base/emissive/normal maps, applies
-   KTX2 Zstandard supercompression, and performs no network request. The
-   image-generation skill informed the no-logo, company-world art direction;
-   the built-in image generator was not used because repeatable
-   equirectangular KTX2 source maps were required. — done by codex/gpt-5
+   AI-image dependency.** OpenAI's built-in ImageGen tool produced eight
+   company-specific, no-logo source plates under
+   `assets/planet-textures/source/`; their exact art-direction prompts are
+   retained in that directory's README. The offline script downsamples those
+   committed images, derives base/emissive/normal maps, and applies KTX2
+   Zstandard supercompression without a runtime network request. Unknown
+   future tickers retain the deterministic procedural fallback. — done by
+   codex/gpt-5
+7. **Owner feedback supersedes the original reticle interaction.** Pointer
+   users aim once and a rocket follows the still-orbiting target until
+   selection; reduced-motion users receive direct ordinary-pointer selection.
+   The semantic links remain the keyboard and screen-reader source of truth. —
+   done by codex/gpt-5
+8. **Mission Control is identity-gated.** Public requests receive only
+   percentage, weight, indexed-history, volatility, and beta telemetry. The
+   owner component is dynamically imported only after session validation and
+   contains the full dashboard, dollar history, trade ledger, and research
+   surfaces. — done by codex/gpt-5
 
 ## Texture budget — declared before final regeneration
 
@@ -57,21 +71,19 @@ Final post-declaration measurement:
 
 | Maps | Total bytes | Smallest | Largest | Average | Result |
 |---:|---:|---:|---:|---:|---|
-| 24 | 247,022 | 721 | 21,234 | 10,292.6 | PASS |
+| 24 | 261,415 | 907 | 21,194 | 10,892.3 | PASS |
 
 Both the 300,000-byte total and 24,000-byte per-map budgets pass.
 
 ## Automated verification
 
-- `npm test`: **PASS**, 85 files and 466/466 tests. — done by codex/gpt-5
-- `npm run build -- --webpack`: **PASS**, Next.js 16.2.11 compiled,
-  TypeScript passed, and all 19 page-generation tasks completed. The sandbox
-  denied DNS for both Google Fonts and Supabase; the successful verification
-  used Next's documented Google-font mock hook with an already cached WOFF2
-  and the prior successful build's still-current Next fetch cache. Neither
-  workaround is committed. The default Turbopack build stalled at compilation
-  while DNS was unavailable, including with its build worker disabled. —
-  done by codex/gpt-5
+- `npm test`: **PASS**, 86 files and 465/465 tests, including public/owner
+  Mission Control canaries, rocket-selection source coverage, orbit-clearance
+  invariants, and the prior fixture-driven dashboard-data behavior. — done by
+  codex/gpt-5
+- `npm run build`: **PASS**, Next.js 16.2.11 compiled with Turbopack,
+  TypeScript passed, and all route-generation tasks completed. — done by
+  codex/gpt-5
 - §8-focused ESLint: exit 0 across every touched source, test, and script file.
   — done by codex/gpt-5
 - Full-repository ESLint is not a Phase 10 commit gate and remains non-green
@@ -81,25 +93,29 @@ Both the 300,000-byte total and 24,000-byte per-map budgets pass.
 
 ## Browser and visual evidence gap
 
-The CLI sandbox denied both production-server bind attempts before any browser
-could connect:
+The CLI sandbox denied the production-server bind attempt before any browser
+could connect, and the required in-app browser backend was unavailable:
 
 ```text
-listen EPERM: operation not permitted 0.0.0.0:3100
 listen EPERM: operation not permitted 127.0.0.1:3100
+No browser is available
 ```
 
 Per the Codex Implementation standing prompt's environment-only browser rule,
 the complete green implementation is preserved and the following live checks
 are explicitly routed to Claude Lead review:
 
-- 1440×900 OVERVIEW, lock-on, rendezvous, settled APPROACH, belt panel,
+- 1440×900 OVERVIEW, rocket flight, moving-target rendezvous, settled
+  APPROACH, belt panel,
   systems manual, Mission Control, weak-vs-strong sun, and paused-trail
   screenshots/filmstrip;
 - 60-second no-overlap observation and OVERVIEW clipping check;
-- pointer lock-on/click, keyboard `Tab`+`Enter`, Escape, empty-space
+- pointer rocket/click, keyboard `Tab`+`Enter`, Escape, empty-space
   double-click, direct link, browser back/forward, and exact camera-state
   restoration;
+- public HTML/RSC/client-bundle inspection for owner-only dashboard, dollar,
+  trade-ledger, and research canaries, plus authenticated owner checks for all
+  four Mission Control stations;
 - 390×844 and 320×844 live assertions for zero canvas, zero horizontal
   overflow, and ≥44px targets;
 - reduced-motion and `?no3d=1` live presentation;

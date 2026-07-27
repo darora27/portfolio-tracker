@@ -7,6 +7,7 @@ import {
   ORRERY_MIN_ANGULAR_SPEED,
   ORRERY_MIN_AXIAL_SPIN,
   ORRERY_MIN_RADIUS,
+  ORRERY_PLANET_CLEARANCE,
   ORRERY_PLANET_COUNT,
   ORRERY_RING_SPACING,
   ORRERY_SUN_CLEARANCE,
@@ -76,6 +77,18 @@ describe("Portfolio Orrery encodings", () => {
     );
     for (const invalid of [0, -1, 1.5]) {
       expect(() => orbitRadiusForRank(invalid)).toThrow(RangeError);
+    }
+  });
+
+  it("keeps adjacent maximum-size planet surfaces physically separated", () => {
+    expect(ORRERY_RING_SPACING).toBeGreaterThanOrEqual(
+      ORRERY_MAX_RADIUS * 2 + ORRERY_PLANET_CLEARANCE,
+    );
+    for (let rank = 1; rank < ORRERY_PLANET_COUNT; rank += 1) {
+      expect(orbitRadiusForRank(rank + 1) - orbitRadiusForRank(rank)).toBeCloseTo(
+        ORRERY_RING_SPACING,
+        12,
+      );
     }
   });
 

@@ -25,19 +25,22 @@ describe("Portfolio Orrery direct-Three architecture", () => {
     expect(source).toContain("planet.position.set(orbitRadius, 0, 0)");
   });
 
-  it("stabilizes selected and hovered planets while direction and speed drive motion", () => {
-    expect(source).toContain("if (stabilized)");
+  it("keeps planets orbiting while pointer selection travels by rocket", () => {
+    expect(source).not.toContain("if (stabilized)");
     expect(source).toContain('planet.direction === "clockwise" ? -1 : 1');
     expect(source).toContain("planet.angularSpeed *");
     expect(source).toContain("planet.holding.ticker === selected");
     expect(source).toContain("planet.holding.ticker === hovered");
     expect(source).toContain("planet.mesh.rotation.y += planet.axialSpin * delta");
+    expect(source).toContain("ROCKET_FLIGHT_MS");
+    expect(source).toContain("launchRocket(target)");
+    expect(source).toContain("if (reducedMotion)");
   });
 
   it("uses one raycast path for mesh hover, holding selection, and sun activation", () => {
     expect(source).toContain("raycaster.intersectObjects");
     expect(source).toContain("callbacksRef.current.onHover(ticker)");
-    expect(source).toContain("callbacksRef.current.onSelect(target)");
+    expect(source).toContain("callbacksRef.current.onSelect(ticker)");
     expect(source).toContain("callbacksRef.current.onSelectPortfolio()");
     expect(source).toContain("magneticTarget");
   });
