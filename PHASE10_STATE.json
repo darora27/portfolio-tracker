@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -34,7 +34,13 @@
       {
         "id": 1,
         "category": "behavioral/accessibility/product-alignment",
-        "criteria": ["§14 item 22", "§14 item 23", "§14 item 24", "§14 item 25", "§14 items 1-8 (by consequence)"],
+        "criteria": [
+          "§14 item 22",
+          "§14 item 23",
+          "§14 item 24",
+          "§14 item 25",
+          "§14 items 1-8 (by consequence)"
+        ],
         "summary": "`/share?no3d=1` at >=1024px and `prefers-reduced-motion: reduce` at >=1024px both render the page almost entirely blank: the sr-only clip on `.semanticMap` set by `@media (min-width: 1024px)` is only reversed by `@media (max-width: 1023px), (prefers-reduced-motion: reduce)`, which has no `[data-force-no-3d=\"true\"]` clause, so the no3d-at-desktop case is never unclipped; the same combined query also force-hides Mission Control/manual/belt button under reduced motion at any width, making the retained five-chapter analysis unreachable for reduced-motion desktop visitors.",
         "evidence": "Live Playwright verification against a real production server: computed style dump shows `.semanticMap` stuck at `width:2px;height:2px;clip:rect(0px,0px,0px,0px)` in both states; screenshots docs/phase10-baseline/section-8/claude-review/BUG-no3d-desktop-blank-1440x900.png and BUG-reduced-motion-desktop-blank-1440x900.png; Mission Control DOM count 1 but visible:false under reduced motion vs visible:true under ordinary motion at the identical URL.",
         "required_change": "Trigger the flat-fallback CSS restoration (unclip `.semanticMap`; keep Mission Control/manual/belt reachable) on any of: narrow viewport, reduced motion, or `[data-force-no-3d=\"true\"]` -- not only the first two. Mission Control/manual/belt must stay reachable under reduced motion regardless of viewport width; only the WebGL canvas itself has a spec-authorized reduced-motion gate."
@@ -42,7 +48,9 @@
       {
         "id": 2,
         "category": "tests",
-        "criteria": ["§14 item 37"],
+        "criteria": [
+          "§14 item 37"
+        ],
         "summary": "`src/lib/dashboard-data.source.test.ts` only asserts source-code substrings (e.g. `toContain(\"positionRows.find\")`), never calls `getDashboardData()` with a synthetic prior-snapshot fixture, so it does not actually verify `dayReturn` population or `orreryBelt` derivation as criterion 37 requires.",
         "evidence": "Direct read of src/lib/dashboard-data.source.test.ts: every assertion is `expect(source).toContain(...)` against raw file text; no other test file exercises getDashboardData's new query logic with fixture data (other tests mock the whole function and consume the static, hand-edited dashboardTestFixture).",
         "required_change": "Add a behavioral test that mocks the Supabase client calls getDashboardData makes, constructs a synthetic prior-snapshot with known snapshot_positions rows, and asserts the resulting orreryBelt and publicOrreryHoldings[].dayReturn match hand-computed expectations."
@@ -58,7 +66,33 @@
       "UNIVERSE_IDEAS.md"
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
-    "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)"
+    "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
+    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-devan-to-codex-implementation-remediate.md",
+    "owner_feedback": {
+      "recorded_at": "2026-07-27",
+      "recorded_by": "claude/fable-5 (cowork, owner-directed)",
+      "source": "Devan's live review of commit 3c53630",
+      "confirmed_defects": [
+        "A1 planets run away when clicked (lock-on never worked; superseded by C1, do not repair reticle lock-on)",
+        "A2 planets still overlap despite one-planet-per-ring and minimum-separation requirements",
+        "A3 the Portfolio Observatory content is still on the arrival surface; the solar system must be first and alone"
+      ],
+      "tuning_and_assets": [
+        "B1 orbital speed far too fast — scale the domain down, keep the encoding and clamp tests valid",
+        "B2 planet textures do not evoke their companies; the KTX2 pipeline works, the art is placeholder. Art direction in UNIVERSE_IDEAS.md §12, quality bar in docs/reference/. No logos or wordmarks."
+      ],
+      "owner_decisions": [
+        "C1 the rocket-ship cursor REPLACES reticle lock-on as the single planet-selection mechanism; planets keep orbiting and the rocket travels. Keyboard/screen-reader operation unchanged; reduced motion falls back to an ordinary pointer.",
+        "C2 Mission Control becomes dashboard/history/trades/research restyled retrofuturist, rendered BY VIEWER IDENTITY: full content when authenticated as owner, public-safe percentage-only equivalents when not. Reuses the existing mode=public/private pattern. All privacy criteria remain; canary tests extend to cover the split."
+      ],
+      "awaiting_clarification": [
+        "D1 owner reports a green trail on a holding down for the week. NOT reproduced — source mapping is correct and every committed screenshot matches. Likely day-vs-week confusion (panels show both TODAY and TRAILING WEEK; the trail encodes week). Do not change colour logic until a contradicting ticker is named; if named, treat as severe.",
+        "D2 'website is still relatively confusing' — recorded verbatim, deliberately not actioned, too general to bound without unscoped change."
+      ],
+      "carried_forward_unverified": [
+        "Commit 3c53630's fixes for desktop ?no3d=1 / reduced-motion blank page and criterion 37 fixture coverage have NOT been verified live. Not closed; the next Claude review must confirm both alongside the new work."
+      ]
+    }
   },
   "sections_history": [
     {
@@ -142,7 +176,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T21:05:33Z",
+  "updated_at": "2026-07-27T21:33:08Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
