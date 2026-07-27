@@ -758,6 +758,53 @@ latest handoff doc for current status instead.
   (direct read of `.claude/skills/portfolio-ux/SKILL.md`) — done by
   claude/fable-5
 
+### §8 inserted — Stock Market Universe direction change — July 27, 2026
+
+- [x] Recorded Devan's direction change from a finance-first product to a
+  creative-first one: `/share` becomes an explorable stock-market universe
+  (solar system = portfolio, sun = portfolio whole, planet = holding) — done by
+  claude/fable-5 (cowork, owner-directed)
+- [x] Wrote `UNIVERSE_DIRECTION.md` (owner brief: vision, honest inventory of
+  what survives vs. is discarded, fixed constraints, ten open questions) and
+  committed the accepted creative response `UNIVERSE_IDEAS.md` alongside it in
+  `3cac5d7` — done by claude/fable-5
+- [x] Corrected the creative response against existing guarantees before
+  adoption: named Cerebras Systems for CBRS; withdrew the mobile 3D "parade"
+  per the owner's desktop-first decision; required the semantic DOM to survive
+  the side panel's visual removal (criterion 38); and required the sun's health
+  scalar to derive from TWR rather than simple return per `CLAUDE.md`'s math
+  rules — done by claude/fable-5
+- [x] Owner decision recorded: **desktop-first**. Below 1024px `/share` keeps
+  the existing tested fallback unchanged (zero WebGL, reflowed semantic list,
+  verified at 390px/320px across three review turns). No mobile 3D is built.
+  This also keeps the planet-texture pipeline a desktop-only cost — done by
+  claude/fable-5
+- [x] Roadmap amendment in `PHASE10.md`: inserted a new **§8 "The Stock Market
+  Universe — `/share` rebuilt"**; renumbered former §8–§13 to §9–§14 with their
+  scope, work, and acceptance criteria unchanged (§9 `/compare`, §10
+  after-hours, §11 `/research`, §12 `/history`, §13 `/trades`, §14 integration).
+  No spec files existed for any of them, so the renumbering touched only
+  headings, the state file, and the validator's bounds — done by claude/fable-5
+- [x] `scripts/phase10-validate-state.mjs`: section bounds widened from §2–§13
+  to §2–§14 and the completion check now requires §14. No other validation rule
+  changed — done by claude/fable-5
+- [x] Deliberately did **not** rewrite `PRODUCT_DIRECTION.md`; the two
+  direction documents supersede its `/share` description for §8 onward, and
+  reconciling it is recorded as a separate later task — done by claude/fable-5
+- [x] Changed no application code and no dependency: `src/` untouched,
+  `git diff --quiet package.json package-lock.json` clean — done by
+  claude/fable-5
+- [x] Validator exit 0; `npm test` and `npm run build` re-run against the
+  amended tree — done by claude/fable-5
+
+### §8 amendment evidence
+
+- Owner brief: `UNIVERSE_DIRECTION.md`
+- Accepted creative response: `UNIVERSE_IDEAS.md`
+- Roadmap: `PHASE10.md` §8 (and the §9–§14 renumbering)
+- Machine state: `PHASE10_STATE.json` (`roadmap_amendment`, `section`)
+- Direction-adoption commit: `3cac5d7`
+
 ### §7 Turn B evidence
 
 - Decision: `docs/phase10-spike-section-7/DECISION.md`

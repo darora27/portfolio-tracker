@@ -608,7 +608,100 @@ spatial orientation.
 
 ---
 
-## §8. `/compare` guided simulation story
+## §8. The Stock Market Universe — `/share` rebuilt
+
+Inserted July 27, 2026 by owner direction. Former §8–§13 renumbered to
+§9–§14; their scope, work, and acceptance criteria are unchanged. Authoritative
+sources for this section, in order: `UNIVERSE_DIRECTION.md` (the owner's brief)
+→ `UNIVERSE_IDEAS.md` (the accepted creative response, including its inline
+corrections) → this section. Where the older `PRODUCT_DIRECTION.md` describes
+`/share` as a five-chapter Field Journal with an Orrery entrance, those two
+documents supersede it.
+
+### Purpose
+
+Turn `/share` from a report you read into a place you explore. A solar system
+is a portfolio, the sun is the portfolio as a whole, and a planet is a holding.
+The product becomes creative-first while every number underneath stays correct.
+
+This supersedes the five-chapter `/share` navigation built in §2–§3. The
+analysis inside those chapters — concentration, correlation, contribution
+ranking, the market-relative summary — is **not** discarded; it moves into the
+dashboard that opens when the sun is selected.
+
+### Work
+
+Sequenced to prove the hard parts before spending on art
+(`UNIVERSE_IDEAS.md` §14):
+
+- **Layout, camera, trails, labels** with placeholder spheres: one planet per
+  orbital ring with guaranteed minimum separation, size encoding weight,
+  heaviest innermost, always-visible ticker labels, comet trails whose taper
+  encodes direction and length encodes weekly magnitude, and a bounded
+  OVERVIEW camera elevated off the orbital plane.
+- **Lock-on targeting and the rendezvous**: pointer proximity eases a planet's
+  orbital advance to a stop while axial spin continues; selection travels the
+  camera alongside the planet and draws the holding panel on. Extends the
+  existing hover/focus stabilisation rather than replacing it.
+- **The sun**: health scalar computed from TWR-consistent daily net-of-flow
+  returns, normalised against the portfolio's own volatility; colour
+  temperature, corona, and breathing encode health; sunspots encode drawdown
+  from all-time high; portfolio name and percentage legible on the sun itself.
+- **Planet texture pipeline**: equirectangular base plus emissive and normal
+  maps per top-8 ticker, brand-evoking but reproducing no logos or wordmarks,
+  compressed to KTX2/Basis and streamed after first paint.
+- **The asteroid belt**: holdings ranked 9 and beyond, re-ranked only at
+  snapshot time with a hysteresis band so top-8 membership cannot churn daily.
+- **Mission Control**: selecting the sun opens the existing dashboard as an
+  overlay that preserves camera state, absorbing the retained chapter analysis.
+- **Summonable systems manual** replacing the permanent encoding legend, plus a
+  one-time first-visit orientation.
+- **Retire** the five-chapter `/share` navigation and the session-scoped
+  entrance, preserving their analysis content per the Purpose above.
+
+### Acceptance
+
+- **Behavioral:** Every planet is identifiable without clicking; a planet can
+  be selected reliably while the system is in motion; camera state is always
+  one gesture from OVERVIEW; selection is URL-restorable and survives browser
+  back/forward; the sun opens the dashboard without resetting the scene.
+- **Visual:** The scene reads as spheres in space, not circles on a plane; no
+  two planets overlap at any point in their orbits; no planet is clipped by the
+  viewport in OVERVIEW; orbit direction and relative speed are readable from a
+  single still frame; weak portfolio states are art-directed as deliberately as
+  strong ones. 1440×900 screenshots and motion evidence required.
+- **Desktop-first scope:** Below 1024px the route keeps the existing tested
+  fallback unchanged — `canvas` count 0 at 390px and 320px, a genuinely
+  reflowed semantic list, no horizontal overflow, no sub-44px targets. No
+  mobile 3D scene is built. This is an owner decision, not a deferral.
+- **Accessibility:** The semantic DOM remains the accessible source of truth.
+  The visible 13-entry side panel is removed; its content survives visually
+  hidden, in reading order, keyboard-navigable, carrying every encoded value as
+  text. No essential information exists only in WebGL, motion, colour, speed,
+  or direction. Reduced motion freezes the scene while preserving every
+  encoding. Contrast of new text is verified by computed WCAG ratio from source
+  tokens, not by eye.
+- **Financial honesty:** The sun's health scalar and every market-relative
+  reading derive from TWR-consistent returns, never simple return. Any simple
+  or since-purchase return shown is labeled as such and never placed beside a
+  benchmark measured from a different period.
+- **Tests:** Encoding functions (weight→size, rank→radius, return→direction,
+  |return|→speed, health→sun state, drawdown→sunspots) are pure, deterministic,
+  clamped, and unit-tested against hand-computed fixtures including clamp
+  boundaries and the unavailable case. Belt hysteresis is tested against a
+  churn fixture. Retained chapter analysis keeps its existing tests.
+- **Build:** Full tests and production build pass. The route-owned long task
+  stays under 50 ms on the §2.3.2 desktop rig (1440×900, CPU 2×) — the gate
+  cleared in §7 is not to be weakened, redefined, or baseline-subtracted.
+  Texture payloads are measured and budgeted, not assumed.
+- **Privacy:** `/share` remains public and read-only with zero dollar amounts
+  and zero owner-only fields in HTML, RSC payload, or client bundle — including
+  in any encoded radius, size, direction, speed, or texture selection. The
+  existing canary-value tests continue to pass.
+
+---
+
+## §9. `/compare` guided simulation story
 
 ### Purpose
 
@@ -648,7 +741,7 @@ Turn three correct simulations into an educational explanation of divergence.
 
 ---
 
-## §9. After-hours capability spike and conditional holdings slice
+## §10. After-hours capability spike and conditional holdings slice
 
 Consolidated July 25, 2026 by owner direction from the former §8
 (capability spike) and former §9 (conditional slice). The capability gate
@@ -735,7 +828,7 @@ fake data.
 
 ---
 
-## §10. `/research` prioritization and filing context
+## §11. `/research` prioritization and filing context
 
 ### Purpose
 
@@ -772,7 +865,7 @@ while preserving insider filings.
 
 ---
 
-## §11. `/history` event narrative
+## §12. `/history` event narrative
 
 ### Purpose
 
@@ -809,7 +902,7 @@ evolved.
 
 ---
 
-## §12. `/trades` decision review and focused entry
+## §13. `/trades` decision review and focused entry
 
 ### Purpose
 
@@ -847,7 +940,7 @@ trade-entry reliability.
 
 ---
 
-## §13. Integration, local fonts, resilience, and acceptance
+## §14. Integration, local fonts, resilience, and acceptance
 
 ### Purpose
 

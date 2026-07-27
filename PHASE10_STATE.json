@@ -25,14 +25,19 @@
   },
   "section": {
     "id": "§8",
-    "title": "`/compare` guided simulation story",
+    "title": "The Stock Market Universe — /share rebuilt",
     "spec_doc": null,
     "implementation_commit": null,
     "review_result": null,
     "findings": [],
     "remediation_commits": [],
     "accepted_commit": null,
-    "accepted_at": null
+    "accepted_at": null,
+    "direction_docs": [
+      "UNIVERSE_DIRECTION.md",
+      "UNIVERSE_IDEAS.md"
+    ],
+    "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn."
   },
   "sections_history": [
     {
@@ -104,7 +109,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T15:37:01Z",
+  "updated_at": "2026-07-27T19:11:04Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
@@ -342,5 +347,18 @@
     "stop_reason": null,
     "handoff_reason": "§1 accepted and complete with Devan's explicit long-task exception. §2 remains unstarted and requires Devan's explicit instruction.",
     "updated_at": "2026-07-24T04:41:34Z"
+  },
+  "roadmap_amendment": {
+    "amended_at": "2026-07-27",
+    "amended_by": "Devan (owner), recorded by claude/fable-5 (cowork, owner-directed)",
+    "change": "Inserted a new §8 'The Stock Market Universe — /share rebuilt'. Former §8-§13 renumbered to §9-§14 with scope and acceptance criteria unchanged: §9 /compare, §10 after-hours, §11 /research, §12 /history, §13 /trades, §14 integration/local fonts/resilience/acceptance.",
+    "reason": "Owner direction change from a finance-first product to a creative-first one. /share becomes an explorable stock-market universe (solar system = portfolio, sun = portfolio whole, planet = holding). The five-chapter Field Journal navigation built in §2-§3 is retired; its analysis content moves into the dashboard the sun opens. §9-§14 target routes other than /share and were unaffected by the direction change.",
+    "scope_note": "Sections §0-§7 remain accepted and unchanged. No application code or dependency changed in this amendment turn.",
+    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from §2-§13 to §2-§14, and the completion check now requires §14 instead of §13. No other validation rule changed.",
+    "direction_docs": [
+      "UNIVERSE_DIRECTION.md",
+      "UNIVERSE_IDEAS.md"
+    ],
+    "superseded": "PRODUCT_DIRECTION.md's description of /share as a five-chapter Field Journal with an Orrery entrance is superseded by the two direction documents for §8 onward. PRODUCT_DIRECTION.md was deliberately not rewritten here; reconciling it is a separate, later task."
   }
 }
