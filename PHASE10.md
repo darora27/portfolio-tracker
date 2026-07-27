@@ -614,7 +614,10 @@ Inserted July 27, 2026 by owner direction. Former §8–§13 renumbered to
 §9–§14; their scope, work, and acceptance criteria are unchanged. Authoritative
 sources for this section, in order: `UNIVERSE_DIRECTION.md` (the owner's brief)
 → `UNIVERSE_IDEAS.md` (the accepted creative response, including its inline
-corrections) → this section. Where the older `PRODUCT_DIRECTION.md` describes
+corrections) → this section. Visual references are committed under
+`docs/reference/` — **read its `README.md` first**, as one mockup there depicts
+a superseded mobile concept and the planet mood reference must not be
+reproduced literally. Where the older `PRODUCT_DIRECTION.md` describes
 `/share` as a five-chapter Field Journal with an Orrery entrance, those two
 documents supersede it.
 

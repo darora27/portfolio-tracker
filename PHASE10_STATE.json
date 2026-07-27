@@ -37,7 +37,8 @@
       "UNIVERSE_DIRECTION.md",
       "UNIVERSE_IDEAS.md"
     ],
-    "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn."
+    "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
+    "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)"
   },
   "sections_history": [
     {
@@ -359,6 +360,7 @@
       "UNIVERSE_DIRECTION.md",
       "UNIVERSE_IDEAS.md"
     ],
-    "superseded": "PRODUCT_DIRECTION.md's description of /share as a five-chapter Field Journal with an Orrery entrance is superseded by the two direction documents for §8 onward. PRODUCT_DIRECTION.md was deliberately not rewritten here; reconciling it is a separate, later task."
+    "superseded": "PRODUCT_DIRECTION.md's description of /share as a five-chapter Field Journal with an Orrery entrance is superseded by the two direction documents for §8 onward. PRODUCT_DIRECTION.md was deliberately not rewritten here; reconciling it is a separate, later task.",
+    "visual_references": "Committed docs/reference/ on 2026-07-27: planet-surface-mood-reference.jpg (owner's quality target for planet surfaces; contains a real logo/wordmark and must NOT be reproduced literally), concept-desktop-overview.png (OVERVIEW layout with the full encoding system), concept-sun-health-states.png (five discrete sun health states), and SUPERSEDED-concept-mobile-parade.png (retained only to make the desktop-first decision legible; do not build). docs/reference/README.md carries these cautions inline."
   }
 }
