@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "claude_lead",
-  "stage": "accept",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -57,7 +57,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-codex-owner-feedback-remediation-to-claude-lead.md",
+    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-devan-to-codex-implementation-remediate-2.md",
     "owner_feedback": {
       "recorded_at": "2026-07-27",
       "recorded_by": "claude/fable-5 (cowork, owner-directed)",
@@ -81,6 +81,27 @@
       ],
       "carried_forward_unverified": [],
       "carried_forward_resolved_note": "Both items (commit 3c53630's ?no3d=1/reduced-motion desktop fallback fix and criterion 37 fixture coverage) were independently verified live against a real production server this review turn (claude-code/sonnet-5, commit d992510) and confirmed fixed; see docs/phase10-workflow/reviews/section-8-review-2.md."
+    },
+    "owner_feedback_round_2": {
+      "recorded_at": "2026-07-27",
+      "recorded_by": "claude/fable-5 (cowork, owner-directed)",
+      "source": "Devan running commit d992510 locally, after review 4577d78 passed with zero findings",
+      "resolved_false_alarm": "E0 — the owner's 'still stuck with Pulse/Forces/Structure/Timeline/Lab' report was against `/`, not `/share`. share/page.tsx imports no chapter components; (depth-pull)/page.tsx (home) still renders ObservatoryShell with all five. Not a §8 defect, but it exposed a real scope hole: no direction doc or spec ever said what happens to `/`.",
+      "owner_decisions": [
+        "E1 `/` becomes the universe, sharing one implementation and the C2 identity gating with /share. The five-chapter Observatory is retired from `/` as it was from /share. Existing `/` gating and non-chapter behavior preserved.",
+        "E7 public-first emphasis: identity gating stays, but when public and owner presentation compete for polish, public wins. Owner's longer-term multi-user vision (template portfolios, sync or manual entry, private own-system view, fly to another user's system and see only its public face) recorded as context, explicitly not in scope now, and must not be foreclosed."
+      ],
+      "confirmed_defects": [
+        "E2 SEVERE — planet textures destroyed by the build pipeline. Source art is correct (assets/planet-textures/source/, eight 512x256 equirectangular plates, real per-company direction, no logos). scripts/generate-planet-textures.mjs downsamples to 112x56 (lines 21-22) — a 95% pixel loss — annihilating every recognizable feature. ROOT CAUSE: the ~261KB/24-map texture byte budget forces ~11KB per map, which forces postage-stamp resolution. Review passed it because coverage was mechanical (textures load, variation exists), never perceptual. FIX: ship at native 512x256, expect ~1-2MB total, re-measure the 50ms gate and GPU/heap, and add a dimension assertion so a budget change cannot silently destroy the art again.",
+        "E3 ticker label boxes did not scale down with the reduced planet sizes and now occlude the planets at OVERVIEW. Labels stay always-visible; they must stop obscuring the bodies.",
+        "E4 no reliable way back to the whole solar system after selecting a stock. Spec §6 requires every camera state be one gesture from OVERVIEW — verify and fix Escape, an explicit control, browser Back, and empty-space click; cover the return path in tests."
+      ],
+      "design_changes": [
+        "E5 Mission Control's interface is too busy. Reduce toward UNIVERSE_IDEAS.md §9's telegraphic discipline — fewer simultaneous elements, stronger hierarchy, less competing chrome. Reduce what surrounds the data, not the data."
+      ],
+      "features": [
+        "E6 satellites carrying portfolio-level statistics, and per-planet moons opening recent news. Both must obey the encoding rule (every object means one real number). Additive and lower priority than E1-E4; report as not started if budget is short."
+      ]
     }
   },
   "sections_history": [
@@ -171,7 +192,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T22:22:30Z",
+  "updated_at": "2026-07-27T22:51:07Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
