@@ -631,6 +631,21 @@
     white-space: nowrap;
   }
 
+  [data-force-no-3d="true"] .semanticMap {
+    position: absolute;
+    z-index: 5;
+    inset: 6.5rem auto 7.5rem 1.5rem;
+    width: min(21rem, 34vw);
+    height: auto;
+    margin: 0;
+    padding: 0.45rem;
+    overflow: auto;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+    pointer-events: auto;
+  }
+
   .semanticMap:focus-within {
     position: absolute;
     z-index: 30;
@@ -713,7 +728,7 @@
   color: #b9cdb8;
 }
 
-@media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+@media (max-width: 1023px) {
   .world::before {
     display: none;
   }
@@ -793,9 +808,40 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .world::before {
+    display: none;
+  }
+
+  .starField,
+  .canvasLayer {
+    transform: none;
+    transition: none;
+  }
+
+  .canvasLayer {
+    display: none;
+  }
+
   [data-camera="approach"] .inspector,
   .missionControl {
     animation: none;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .semanticMap {
+    position: absolute;
+    z-index: 5;
+    inset: 6.5rem auto 7.5rem 1.5rem;
+    width: min(21rem, 34vw);
+    height: auto;
+    margin: 0;
+    padding: 0.45rem;
+    overflow: auto;
+    clip: auto;
+    clip-path: none;
+    white-space: normal;
+    pointer-events: auto;
   }
 }
 

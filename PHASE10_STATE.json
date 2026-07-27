@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -48,7 +48,9 @@
         "required_change": "Add a behavioral test that mocks the Supabase client calls getDashboardData makes, constructs a synthetic prior-snapshot with known snapshot_positions rows, and asserts the resulting orreryBelt and publicOrreryHoldings[].dayReturn match hand-computed expectations."
       }
     ],
-    "remediation_commits": [],
+    "remediation_commits": [
+      "Codex §8 desktop fallback and dashboard-data behavioral-test remediation commit; hash to be filled by the next actor via git log -1."
+    ],
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
@@ -107,24 +109,24 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "2962c866aa0b8a5cd2bab907827c44564c1eb353",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 2962c86 (`phase10(§8): rebuild share as Stock Market Universe`) is HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "8a50c1a46ffaedf2a7c52a5b7b7542b4e2c2ce10",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 8a50c1a (`phase10(review §8): fail with 2 bounded findings`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "2962c866aa0b8a5cd2bab907827c44564c1eb353",
-  "production_code_changed_this_turn": false,
-  "production_code_note_prior_turn": "The prior turn (Codex Implementation, §8 implement stage, commit 2962c86) rebuilt public /share as the Stock Market Universe vertical slice: raw-three rank orbits, trails, ticker labels, identity-keyed lazy KTX2 planet maps, axial spin, health/sunspot encodings, belt hysteresis, lock-on and URL-restored camera states, Mission Control with the five accepted public chapters, a systems manual, first-visit orientation, and the complete sub-1024px semantic fallback. Browser evidence was explicitly deferred to this review because that turn's sandbox denied localhost binding.",
-  "production_code_note": "This turn (Claude Lead, §8 review stage) changed no application source. It ran a real local production server and independently exercised the implementation live with Playwright (the exact evidence the prior turn's sandbox could not produce), re-ran npm test/npm run build cleanly with default Turbopack (no font/DNS workaround needed in this environment), independently re-measured the texture budget and the §2.3.2 long-task gate (both pass), and found 2 bounded findings recorded in section.findings and docs/phase10-workflow/reviews/section-8-review.md. New evidence screenshots were added under docs/phase10-baseline/section-8/claude-review/.",
+  "production_code_changed_this_turn": true,
+  "production_code_note_prior_turn": "The prior turn (Claude Lead, §8 review stage, commit 8a50c1a) changed no application source. It ran a real local production server, independently exercised the implementation with Playwright, re-ran npm test/npm run build, re-measured the texture and long-task budgets, and recorded 2 bounded findings in docs/phase10-workflow/reviews/section-8-review.md.",
+  "production_code_note": "This turn (Codex Implementation, §8 remediate stage) fixed only the 2 bounded Claude Lead findings. The fallback CSS now unclamps the semantic map at desktop widths when either no3d is forced or reduced motion disables WebGL, while Mission Control, the systems manual, and the belt control remain reachable under reduced motion. The dashboard-data test now executes getDashboardData() with mocked Supabase/Finnhub current-day and prior-snapshot fixtures, asserting the hand-computed dayReturn join and sticky belt membership. Focused tests, the full suite, and the production build pass. A local Next.js server started successfully, but the Codex browser runtime reported no available browser backend, so live 1440x900 no3d/reduced-motion visibility and operability remain explicitly deferred to Claude Lead re-review under the environment-only browser-evidence rule.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Claude Lead independently ran the full Vitest suite against commit 2962c86: 85 test files passed; 466 of 466 tests passed.",
-      "finished_at": "2026-07-27T20:32:47Z"
+      "summary": "Codex remediation ran the full Vitest suite: 85 test files passed; 467 of 467 tests passed, including the new fixture-driven getDashboardData behavioral test.",
+      "finished_at": "2026-07-27T21:05:11Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Claude Lead independently ran the default Next.js 16.2.11 Turbopack production build against commit 2962c86: compiled successfully, TypeScript passed, all 19 route tasks generated. No DNS/font workaround was needed in this environment.",
-      "finished_at": "2026-07-27T20:35:00Z"
+      "summary": "Codex remediation ran the default Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and all 19 route tasks generated. No DNS/font workaround was needed.",
+      "finished_at": "2026-07-27T21:05:33Z"
     },
     "long_task_gate": {
       "command": "CDP Emulation.setCPUThrottlingRate(2) + PerformanceObserver('longtask'), 5 fresh contexts, 1440x900, against a real npm run start server",
@@ -140,7 +142,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T21:30:00Z",
+  "updated_at": "2026-07-27T21:05:33Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
