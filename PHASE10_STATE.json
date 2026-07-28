@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§9",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -29,53 +29,27 @@
     "spec_doc": "docs/phase10-workflow/specs/section-9.md",
     "implementation_commit": "bc1b79c97a9487174f389430a6f5fc8447ebde05",
     "review_result": "fail",
-    "review_doc": "docs/phase10-workflow/reviews/section-9-review.md",
+    "review_doc": "docs/phase10-workflow/reviews/section-9-review-2.md",
     "findings": [
       {
-        "id": "F1",
-        "criterion": "9 (and blocks 1-5, 7, 8, 10-13, 15-17, 20-22, 25, 26, 50, 54, 56, 60, 66)",
-        "summary": "/share returns HTTP 500 on every request in the production build.",
-        "evidence": "Against the production build produced in this review turn, curl http://127.0.0.1:3100/share returns 500, as does /share?focus=portfolio&camera=command&station=manifest. Server log repeats `TypeError: l.MISSION_CONTROL_PANELS.some is not a function` (digest 69160525). MissionControl.tsx:1 gained \"use client\" in this section (absent at 77c74b3) while the server component UniverseRoute.tsx:15 still imports the runtime value MISSION_CONTROL_PANELS from it and calls .some() on it at line 43; across the client boundary that export is a client-reference proxy, not an array. / returns 200 only because the owner gate renders the sign-in form before resolveMissionPanel runs. Capture: docs/phase10-baseline/section-9/claude-review/raw-route-status.txt and share-1440x900-FAILS.png.",
-        "required_change": "Move MISSION_CONTROL_PANELS and MissionControlPanelId into a shared non-\"use client\" module imported by both UniverseRoute.tsx (server) and MissionControl.tsx (client), so no runtime value crosses the boundary. Add coverage that would catch a 500 on /share; unit tests import the modules directly under vitest where the boundary does not exist, and npm run build never prerenders /share because it is dynamic."
-      },
-      {
-        "id": "F2",
-        "criterion": "42, spec §6.2, and §1's every-object-encodes-a-real-number constraint",
-        "summary": "The planet detail benchmark overlay draws a hard-coded, fabricated VOO trace.",
-        "evidence": "src/components/observatory/orrery/PlanetDetail.tsx:102 renders the overlay as <polyline className={styles.benchmarkTrace} points=\"0,71 80,66 160,69 240,57 320,52\" />. Those coordinates are string literals derived from no input, so the same VOO line is drawn for every holding, range, and data state, beside a real portfolio trace computed by tracePoints(values).",
-        "required_change": "Drive the overlay from the real same-period VOO series, or render the toggle in its unavailable state (as SINCE BUY already does) when that series is not supplied. No invented figure may ship on a chart."
-      },
-      {
-        "id": "F3",
-        "criterion": "54 and 50",
-        "summary": "The retained long-task measurement script is a SyntaxError and cannot run; both raw output files remain NOT CAPTURED.",
-        "evidence": "node --check docs/phase10-baseline/section-9/scripts/measure-long-tasks.mjs fails with `SyntaxError: Unexpected token '}'` at line 42 — the final Math.max(...runs.map(({ maximumMs }) => maximumMs), is missing its closing parenthesis. raw-long-task-output.txt and raw-rgb-pixel-output.txt each contain only the NOT CAPTURED placeholder.",
-        "required_change": "Fix the script so it parses and runs, then commit the five fresh-context raw runs (1440x900, CPU 2x, every route-owned maximum under 50 ms) and the raw RGB sampling output, replacing both placeholder files."
-      },
-      {
-        "id": "F4",
-        "criterion": "52 (with §10.1's rule against guards that cannot fail)",
-        "summary": "The sun-invariance test varies no interaction state and cannot fail.",
-        "evidence": "src/lib/observatory/scene-model.test.ts test 'keeps sun physiology identical across interaction states' calls sunVisualParameters(-0.5, 0.7) twice with identical arguments and compares the results. No hover or focus state is varied, so it asserts determinism rather than interaction-invariance and would still pass if hover were wired into the sun's appearance. The implementation itself is correct: OrreryScene.tsx drives the sun material and corona only from healthRef and sceneModel.sun, and hover changes only dockingRing.visible.",
-        "required_change": "Vary the interaction input and compare descriptors — assert buildOverviewSceneModel({...}).sun is deeply equal with hoveredTicker unset and with the sun hovered/focused, so the test fails if any sun body parameter becomes interaction-dependent."
-      },
-      {
-        "id": "F5",
-        "criterion": "61",
-        "summary": "The public-log canary does not cover share counts.",
-        "evidence": "src/app/(depth-pull)/share/page.test.tsx covers prices (222.22), day and prev-close (333.33, 444.44), totals (999999.99, 111111.11), realized-gain magnitude (8888.88) and the trade reason (PRIVATE_TRADE_REASON). Share counts are not covered: the fixture's only share values are shares: 100 (line 57) and shares: 10 (line 68), neither distinctive, and no assertion checks their absence, so a regression leaking share counts would pass.",
-        "required_change": "Give at least one fixture position a distinctive share value in the same style as the other canaries and assert it is absent from the public render."
-      },
-      {
-        "id": "F6",
-        "criterion": "13, 25, 26, 50, 54 and spec §12",
-        "summary": "The required live evidence set is absent and could not be captured at review.",
-        "evidence": "docs/phase10-baseline/section-9/ contains no after screenshots at any viewport, no 390/320 fallback audit output, and no live 32 px sphere strip; the only image is the authored-map thumbnail proxy, which the evidence README itself states is not the live strip. Both raw output files read NOT CAPTURED. Claude Lead could not close the gap: /share returns 500 (F1) and the owner-gated /dev/phase10-portfolio-orrery renders only the sign-in form (0 canvases) without owner credentials, which this turn did not use.",
-        "required_change": "After F1 is fixed, capture and commit the complete §12 evidence set against a running production build and record the results in docs/phase10-baseline/section-9/README.md with executor suffixes."
+        "id": "F7",
+        "criterion": "1 and 17",
+        "summary": "The outermost planet (NBIS) and its tag leave the 1440x900 viewport at OVERVIEW, so only seven of eight planets are nameable at rest and one planet is clipped.",
+        "evidence": "Measured live against a production build at exactly 1440x900, sampling every DOM scene label's bounding rect and each planet's projected centre and radius 24 times over 12 seconds. Seven planets stay fully inside the frame (label bottoms 338-748, label lefts 275-1150). NBIS reaches label bottom 935 (viewport height 900), label left -8, and planet left edge -10 — the tag is cut off the bottom edge by up to 35 px and off the left edge by up to 8 px, and the sphere crosses the left edge by up to 10 px. Not transient: all three committed OVERVIEW-camera frames (after/overview-1440x900.png, after/moon-hover-1440x900.png, after/satellite-hover-1440x900.png) and both pixel-samples/overview-*.png show the eighth planet clipped in the bottom-left corner with no visible tag. raw-live-scene-diagnostic.txt records sceneLabelCount 8, which counts DOM labels and does not test whether they are on screen, and docs/phase10-baseline/section-9/README.md records no result for criterion 1 or 17. No test catches it: scene-model.ts exposes belt.viewportSpanPct as the constant OVERVIEW_BELT_SPAN_PCT = 0.88 echoed back, and scene-model.test.ts:101-102 asserts that value is between 0.85 and 0.92 — the constant checked against itself. The constant drives world scale at scene-model.ts:350 under a flat-plane assumption, but the rendered scene uses a perspective camera over a tilted orbital plane, so the near arc of the outermost orbit projects outside the predicted extent. Not a remediation regression — it was unobservable while /share returned 500, and both criteria were named in F1's blocked list.",
+        "required_change": "Make the OVERVIEW composition fit the 1440x900 frame with every planet and every tag fully inside it — e.g. derive the scale from the projected extent of the outermost orbit at the OVERVIEW camera rather than a flat belt-diameter constant, and/or clamp tag placement to the viewport. Assert it where it can fail: extend buildOverviewSceneModel to expose the projected bounding box of every planet and label at the OVERVIEW camera, and unit-test that all eight fall inside 1440x900 across a full orbital phase sweep, not against a hard-coded span constant. Recapture after/overview-1440x900.png and record the criterion 1 and 17 results in docs/phase10-baseline/section-9/README.md with executor suffixes. Do not change trail/orbit sign->colour or sign->direction mapping (spec §1.1, D1)."
       }
     ],
+    "resolved_findings": [
+      "F1 /share 500 — FIXED and confirmed live: MISSION_CONTROL_PANELS and MissionControlPanelId moved to the non-client module mission-control-panels.ts; /share plus all seven ?station= bays return 200 against a production server Claude Lead started independently, with an empty server error log. npm run build is now node scripts/build.mjs, which runs next build then scripts/verify-share-route.mjs and fails the build unless /share and the manifest station return 200 — real coverage the vitest suite could not provide.",
+      "F2 fabricated VOO trace — FIXED: the literal polyline is deleted; the control renders its authorized unavailable state (VOO UNAVAILABLE, disabled, reason in the title) and PlanetDetail.test.tsx asserts exactly one polyline plus the disabled control.",
+      "F3 broken measurement script — FIXED: node --check passes on all seven retained scripts; measure-long-tasks.mjs is a real longtask PerformanceObserver at 1440x900, CPU 2x, five fresh contexts; raw-long-task-output.txt holds five real 0 ms runs and raw-rgb-pixel-output.txt holds live sampling (3,078 annulus, 3,397 trail pixels). Both placeholders are gone.",
+      "F4 hollow sun-invariance test — FIXED: the test builds idle, planet-hovered, and sun-focused models, asserts the interaction inputs were recorded, and deep-compares each .sun against idle.",
+      "F5 missing share-count canary — FIXED: the IBM fixture carries shares 24680.13579, asserted absent from the public station loop and the public LOG render.",
+      "F6 absent live evidence — FIXED: the complete §12 set is committed and was inspected by Claude Lead, not taken on trust — fourteen sips-verified 1440x900 frames, exact 390x844/320x844 fallbacks with machine-readable audits (canvas 0, scrollWidth == clientWidth, minimum target 44 px), a live 256x32 eight-tile sphere strip, the criterion-37 Tab walk, Enter/Back/Forward/Escape checks, and a reduced-motion audit with zero canvases and zero running animations.",
+      "Also confirmed this turn now that the route renders: criteria 4 and 14 pass on direct inspection of the shipped bytes — all eight KTX2 base maps decode to authored 1024x512 plates carrying a correctly spelled, legible embossed mark; criteria 21 and 22 (operations-room chrome, bays' named treatments); criteria 28 and 66 (orientation line at OVERVIEW and in the 390 px fallback); criterion 39 (teletype quotes TWR and same-period excess); criterion 60 (live public-payload scan across five surfaces found zero dollar amounts and zero owner-only fields)."
+    ],
     "remediation_commits": [
-      "Codex §9 bounded remediation for review findings F1-F6; hash to be filled by the next actor via git log -1."
+      "7e37bdda62b0cf9d283b54410f96cffa5828d673"
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -85,7 +59,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_2). Authority order for this section: UNIVERSE_ROUND2_BRIEF.md -> UNIVERSE_IDEAS_2.md (including its §9 owner corrections and authorizations) -> PHASE10.md §9. §8 proved the universe works; §9 makes it good. Two new public disclosure surfaces are authorized in UNIVERSE_IDEAS_2.md §9.3-9.4 (public trade log: action, ticker, date, and % impact only, never shares/prices/dollars; public news for held tickers) and both require extended privacy canary coverage. Texture resolution is bound by the §9.1 correction: tune compression first, ship base at 2048x1024 and emissive/normal at 1024x512, measure and record the real total, reduce further if it exceeds ~15MB. §9's acceptance criteria forbid `expect(source).toContain(...)` as coverage for rendered behavior. Two owner observations carried forward unclosed from §8 and recorded in docs/phase10-workflow/reviews/section-8-accepted.md: D1 (unreproduced green-trail report — do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 ('website is still relatively confusing', too general to bound in §8).",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-codex-implementation-remediate-to-claude-lead.md"
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-claude-lead-to-codex-remediation-2.md"
   },
   "sections_history": [
     {
@@ -142,40 +116,40 @@
       "note": "The Stock Market Universe — /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes §9. See docs/phase10-workflow/reviews/section-8-accepted.md."
     }
   ],
-  "prev_actor_commit": "518165b395e0966fa14b1cae13e26d7a1632df5f",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 518165b (`phase10(review §9): fail with bounded remediation handoff`) was HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "7e37bdda62b0cf9d283b54410f96cffa5828d673",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 7e37bdd (`phase10(§9): remediate review findings`) was HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from. The same hash is now recorded in section.remediation_commits, replacing the placeholder Codex left for this turn to fill.",
   "last_green_commit": "6a68758d57474f5494ff2ce38056ebb37b5aa244",
-  "production_code_changed_this_turn": true,
-  "production_code_note_prior_turn": "Claude Lead review of §9 returned FAIL with six bounded findings: the production /share server/client boundary crash, a fabricated VOO trace, a broken retained long-task script and missing raw output, a hollow sun-invariance test, a missing share-count privacy canary, and the absent §12 live evidence set.",
-  "production_code_note": "Codex Implementation remediated only review findings F1-F6. Mission Control panel metadata now lives in a shared non-client module and the canonical production build permanently probes /share plus the manifest station for HTTP 200. The fabricated VOO polyline is removed and its unavailable control is explicit. The long-task and RGB scripts execute and retain raw live output. Sun invariance now varies real scene interaction descriptors. The public fixture has a distinctive share-count canary. The complete §12 evidence set is committed: 14 desktop/live-sphere frames, two exact mobile frames, five fresh CPU-2x long-task contexts, RGB sampling, production scene diagnostics, deterministic keyboard/Enter/Escape/history checks, reduced-motion checks, and console results. Live verification also exposed and resolved three direct blockers within F6's required criteria: a render-loop temporal-dead-zone crash, magnetic planet targeting overriding direct moon/satellite hits, and cold-frame shader/texture work exceeding the 50 ms gate. No dependency manifest changed.",
+  "production_code_changed_this_turn": false,
+  "production_code_note_prior_turn": "Codex Implementation remediated only review findings F1-F6. Mission Control panel metadata now lives in a shared non-client module and the canonical production build permanently probes /share plus the manifest station for HTTP 200. The fabricated VOO polyline is removed and its unavailable control is explicit. The long-task and RGB scripts execute and retain raw live output. Sun invariance now varies real scene interaction descriptors. The public fixture has a distinctive share-count canary. The complete §12 evidence set is committed. Live verification also exposed and resolved three direct blockers within F6's required criteria: a render-loop temporal-dead-zone crash, magnetic planet targeting overriding direct moon/satellite hits, and cold-frame shader/texture work exceeding the 50 ms gate. No dependency manifest changed.",
+  "production_code_note": "Claude Lead review round 2 changed no application source — this turn's commit touches only the review doc, this state file, and the handoff. All six prior findings (F1-F6) are verified resolved. One new bounded finding, F7: with /share finally rendering, live measurement at 1440x900 shows the outermost planet NBIS and its tag leaving the viewport, failing criteria 1 and 17. Both criteria were in F1's blocked list and were unobservable during the prior review.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex Implementation ran the full Vitest suite after the bounded F1-F6 remediation: 94 test files passed; 497 of 497 tests passed.",
-      "finished_at": "2026-07-28T08:12:14Z"
+      "summary": "Claude Lead independently ran the full Vitest suite at 7e37bdd: 94 test files passed; 497 of 497 tests passed.",
+      "finished_at": "2026-07-28T08:57:24Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex Implementation ran the final Next.js 16.2.11 production build: compilation and TypeScript passed, all 18 static-generation tasks completed, and the post-build production smoke returned HTTP 200 for /share and /share?focus=portfolio&camera=command&station=manifest.",
-      "finished_at": "2026-07-28T08:14:45Z"
+      "summary": "Claude Lead independently ran the Next.js 16.2.11 production build at 7e37bdd: compilation and TypeScript passed, 18 static-generation tasks completed, and the new post-build smoke reported 'Share route smoke: PASS (/share 200; Mission Control manifest 200)'.",
+      "finished_at": "2026-07-28T09:05:00Z"
     },
     "live_routes": {
-      "command": "npm run build post-build production smoke via scripts/verify-share-route.mjs",
+      "command": "npx next start -H 127.0.0.1 -p 3117 + independent curl probes",
       "status": "pass",
-      "summary": "/share -> 200 and /share?focus=portfolio&camera=command&station=manifest -> 200 against the exact completed production build. The route probe is now part of every npm run build.",
-      "finished_at": "2026-07-28T08:14:45Z"
+      "summary": "Claude Lead started its own production server rather than relying on the build's smoke: /share, all seven ?station= bays (plot, manifest, scope, hazard, signals, comms, log), /share?focus=ASML&camera=approach, /share?camera=sector, and / all returned 200, with zero errors in the server log. F1 is confirmed fixed in production.",
+      "finished_at": "2026-07-28T09:12:00Z"
     },
     "live_evidence": {
-      "command": "retained Playwright scripts against the production build-owned Next server",
-      "status": "pass",
-      "summary": "Complete §12 evidence retained under docs/phase10-baseline/section-9: all required 1440x900 surfaces, exact 390x844 and 320x844 fallbacks, live 32px sphere strip, five CPU-2x fresh-context long-task runs (maximum 0ms), live RGB ring/trail sampling, deterministic keyboard/Enter/Escape/history audit, reduced-motion audit with zero canvas and zero running animations, and zero console warnings/errors.",
-      "finished_at": "2026-07-28T08:10:00Z"
+      "command": "Claude Lead inspection of the committed §12 set, plus independent Playwright geometry measurement and KTX2 base-map decoding",
+      "status": "fail",
+      "summary": "The committed evidence set is complete and genuine: 14 frames verified at exactly 1440x900 with sips, exact 390/320 fallbacks with canvas 0 and scrollWidth == clientWidth, a live eight-tile 32px sphere strip, real five-context long-task and RGB output, and full keyboard/reduced-motion audits. Independent checks added this turn: all eight shipped KTX2 base maps decoded to authored 1024x512 plates with correctly spelled legible marks (criteria 4, 14), and a live public-payload scan across five surfaces found zero dollar amounts and zero owner-only fields (criterion 60). The failure is F7: live geometry measurement (24 samples over 12 s at 1440x900) shows NBIS's tag reaching bottom 935 of 900 and left -8, and its sphere crossing the left edge at -10, so criteria 1 and 17 fail.",
+      "finished_at": "2026-07-28T09:30:00Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T08:15:06Z",
+  "updated_at": "2026-07-28T09:35:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
