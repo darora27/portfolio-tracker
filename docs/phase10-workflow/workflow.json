@@ -14,7 +14,8 @@
     "acceptance_directory": "docs/phase10-workflow/acceptance",
     "design_gate": "docs/phase10-workflow/DESIGN_GATE.md",
     "design_proof_template": "docs/phase10-workflow/design-proofs/TEMPLATE.md",
-    "provider_outage": "docs/phase10-workflow/PROVIDER_OUTAGE.md"
+    "provider_outage": "docs/phase10-workflow/PROVIDER_OUTAGE.md",
+    "owner_feedback_ledger": "OWNER_FEEDBACK_LEDGER.md"
   },
   "stages": {
     "specify": {
@@ -134,6 +135,7 @@
     "always_read": [
       "AGENTS.md",
       "PHASE10_STATE.json",
+      "OWNER_FEEDBACK_LEDGER.md",
       "docs/phase10-workflow/ACTIVE_CONTEXT.md"
     ],
     "active_context_hash_sources": [

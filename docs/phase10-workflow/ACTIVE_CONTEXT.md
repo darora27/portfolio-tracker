@@ -29,6 +29,7 @@ Always read:
 
 - `AGENTS.md`
 - `PHASE10_STATE.json`
+- `OWNER_FEEDBACK_LEDGER.md`
 - `docs/phase10-workflow/ACTIVE_CONTEXT.md`
 
 Then read the current, specifically routed sources:
@@ -102,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 
 These hashes make stale generated context mechanically detectable:
 
-- `docs/phase10-workflow/workflow.json`: `43c90cbd5b95fa106c130923ebaa405643de45f8517c0f6fa902976ece2bdfe9`
+- `docs/phase10-workflow/workflow.json`: `f160fbde679450e7194b122c750cc39a61ea2b627233788c0afa096f7921cd4f`
 - `PHASE10_STATE.json`: `2c233cfd7d02a395d79ec1ed491f6a73ad8ef4bb30c13c5b8755eb7e5fc16ad6`
 - `PHASE10.md`: `6b91c5b0a0708eee11034aac548b37a32febac89edf69522c19b94f0d18c8aa2`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
