@@ -266,7 +266,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T04:15:00Z",
+  "updated_at": "2026-07-28T04:11:34Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
@@ -518,5 +518,18 @@
     ],
     "superseded": "PRODUCT_DIRECTION.md's description of /share as a five-chapter Field Journal with an Orrery entrance is superseded by the two direction documents for §8 onward. PRODUCT_DIRECTION.md was deliberately not rewritten here; reconciling it is a separate, later task.",
     "visual_references": "Committed docs/reference/ on 2026-07-27: planet-surface-mood-reference.jpg (owner's quality target for planet surfaces; contains a real logo/wordmark and must NOT be reproduced literally), concept-desktop-overview.png (OVERVIEW layout with the full encoding system), concept-sun-health-states.png (five discrete sun health states), and SUPERSEDED-concept-mobile-parade.png (retained only to make the desktop-first decision legible; do not build). docs/reference/README.md carries these cautions inline."
+  },
+  "roadmap_amendment_2": {
+    "amended_at": "2026-07-28",
+    "amended_by": "Devan (owner), recorded by claude/fable-5 (cowork, owner-directed)",
+    "change": "Inserted a new §9 'Universe craft and depth'. Former §9-§14 renumbered to §10-§15 with scope and acceptance criteria unchanged: §10 /compare, §11 after-hours, §12 /research, §13 /history, §14 /trades, §15 integration/local fonts/resilience/acceptance.",
+    "reason": "§8 built the universe and proved it works; the owner's verdict on its accepted state is that the textures are 'ambiguous garbage', Mission Control 'looks so generic and basic', and the scene lacks life. The round-2 creative work (UNIVERSE_IDEAS_2.md) is a section's worth of craft work and needed its own acceptance criteria rather than being folded into §8, which already ran fifteen turns.",
+    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from §2-§14 to §2-§15; the completion check now requires §15.",
+    "direction_docs": [
+      "UNIVERSE_ROUND2_BRIEF.md",
+      "UNIVERSE_IDEAS_2.md"
+    ],
+    "carried_authorizations": "Public trade log (action/ticker/date/% impact only) and public stock news for held tickers, both authorized 2026-07-28 and recorded in UNIVERSE_IDEAS_2.md §9.3-9.4. Both are new disclosure surfaces requiring extended canary coverage.",
+    "testing_note": "§9's acceptance criteria explicitly forbid `expect(source).toContain(...)` as coverage for rendered behavior. §8 shipped five such guards; one passed while the trails it claimed to protect were fogged to invisibility."
   }
 }

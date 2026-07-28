@@ -36,7 +36,7 @@ try {
 
 require_(state.schema_version === 2, "schema_version must be 2");
 require_(state.phase === 10, "phase must be 10");
-require_(/^§(1[0-4]|[2-9])$/.test(state.current_section), `current_section "${state.current_section}" is not §2-§14`);
+require_(/^§(1[0-5]|[2-9])$/.test(state.current_section), `current_section "${state.current_section}" is not §2-§15`);
 require_(["claude_lead", "codex_implementation"].includes(state.role), `role "${state.role}" invalid`);
 require_(["specify", "implement", "review", "remediate", "accept"].includes(state.stage), `stage "${state.stage}" invalid`);
 require_(["ready", "blocked", "complete"].includes(state.status), `status "${state.status}" invalid`);
@@ -56,7 +56,7 @@ if (state.status === "ready") {
   require_(state.stop_reason === null, "status ready requires stop_reason to be null");
 }
 if (state.status === "complete") {
-  require_(state.current_section === "§14", "status complete requires current_section §14");
+  require_(state.current_section === "§15", "status complete requires current_section §15");
   require_(state.next_actor === "devan", "status complete requires next_actor devan");
 }
 for (const hash of [state.prev_actor_commit, state.last_green_commit]) {

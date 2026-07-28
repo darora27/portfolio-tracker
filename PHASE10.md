@@ -711,7 +711,94 @@ Sequenced to prove the hard parts before spending on art
 
 ---
 
-## §9. `/compare` guided simulation story
+## §9. Universe craft and depth
+
+Inserted July 28, 2026 by owner direction. Former §9–§14 renumbered to
+§10–§15; their scope, work, and acceptance criteria are unchanged.
+
+Authoritative sources, in order: `UNIVERSE_ROUND2_BRIEF.md` (the owner's
+questions) → `UNIVERSE_IDEAS_2.md` (the accepted creative response, **including
+its §9 owner corrections and authorizations**) → this section. Visual
+references under `docs/reference/`.
+
+### Purpose
+
+§8 built the universe and proved it works. This section makes it *good*. The
+owner's verdict on §8's accepted state: the textures are "ambiguous garbage,"
+Mission Control "looks so generic and basic," and the scene lacks life. Round 1
+solved structure; this section solves craft.
+
+### Work
+
+- **Planet textures, regenerated.** Composite real vector logos onto generated
+  equirectangular maps rather than prompting text (models misspell wordmarks).
+  Real branding is authorized — this is a personal project, not a commercial
+  one. Every map must pass the 32-pixel test: shrink the rendered sphere to
+  32px and the company is still nameable from one dominant colour, one macro
+  silhouette, one emissive signature. Detail concentrated in the equatorial and
+  mid-latitude bands; poles simplified; horizontal edges seamless.
+- **Overview composition.** Planet diameter proportional to √weight with a
+  floor; rings as the drawing rather than noise; trails carrying colour and
+  length at rest; a health-tinted nebula behind the system; trade comets as the
+  one event-driven ambient object.
+- **Ticker labels.** Below the planet, billboarded, fixed screen-space size,
+  contrast carried by the label rather than by dimming the art. Tint toward the
+  planet's dominant brand hue, lightened — never literal colour inversion,
+  which collides with the reserved red/green direction semantics.
+- **Mission Control as an operations room.** Apollo mission ops + the Loki TVA
+  + holographic bridge. A teletype status line, an orange wireframe system plot
+  every bay refers back to, folder-tab bays, and named treatments per content:
+  the manifest, the scope, the ring diagram, the hazard cluster, the signals
+  grid, the launch schedule, the captain's log.
+- **The planet detail view.** ID plate, holding chart with range detents,
+  a four-tile telemetry strip, three news headlines, and egress. Hard budget:
+  no paragraphs, ≤60 words on screen.
+- **Moons, satellites, and the sector map.** One moon maximum per planet,
+  carrying news. Three satellites carrying named portfolio statistics. Other
+  portfolios reachable as a flat sector chart, with hollow-core suns for
+  systems that lack trade history and therefore cannot compute TWR.
+- **The sun's hover state.** Instrumentation, never physiology — a docking
+  affordance that can never be misread as a change in portfolio health.
+
+### Acceptance
+
+- **Behavioral:** Every planet is nameable at OVERVIEW without hovering; moons,
+  satellites, and belt objects are activatable by pointer and keyboard; the
+  sector map loads another system and returns; every camera state remains one
+  gesture from OVERVIEW.
+- **Visual:** Each texture passes the 32-pixel test, verified by inspection of
+  a shrunk render. Trails carry direction and magnitude in a still frame.
+  Mission Control reads as an operations room rather than a web dashboard.
+  1440×900 evidence required for every named surface.
+- **Desktop-first scope:** unchanged. Below 1024px the existing tested fallback
+  ships as-is — `canvas` count 0 at 390px and 320px. No mobile 3D.
+- **Accessibility:** The semantic DOM remains the accessible source of truth.
+  New objects (moons, satellites, sector systems) exist as real controls with
+  text equivalents. Reduced motion freezes the scene while preserving every
+  encoding. Contrast of new text verified by computed WCAG ratio from source
+  tokens.
+- **Financial honesty:** Every visual channel encodes one real computed number.
+  Market-relative readings derive from TWR; any simple or since-purchase return
+  is labeled and never placed beside a benchmark from a different period.
+  Systems without trade history render hollow-core rather than faking a TWR.
+- **Tests:** New encoding functions are pure, deterministic, clamped, and
+  unit-tested against hand-computed fixtures. **Rendered behavior is verified by
+  scene-graph or pixel assertions, never by `expect(source).toContain(...)`** —
+  §8 shipped five source-string guards, one of which passed while the trails it
+  claimed to protect were invisible.
+- **Build:** Full tests and production build pass. Texture payload measured and
+  recorded; if the shipped total exceeds ~15 MB, reduce rather than absorb. The
+  route-owned long task stays under 50 ms on the §2.3.2 rig.
+- **Privacy:** `/share` stays public with zero dollar amounts and zero
+  owner-only fields. The **public trade log** (authorized: action, ticker, date,
+  % impact — never shares, prices, or dollars) and **public news** (authorized
+  for held tickers) are new disclosure surfaces; canary tests must extend to
+  cover both. A news-source failure degrades gracefully rather than breaking the
+  scene.
+
+---
+
+## §10. `/compare` guided simulation story
 
 ### Purpose
 
@@ -751,7 +838,7 @@ Turn three correct simulations into an educational explanation of divergence.
 
 ---
 
-## §10. After-hours capability spike and conditional holdings slice
+## §11. After-hours capability spike and conditional holdings slice
 
 Consolidated July 25, 2026 by owner direction from the former §8
 (capability spike) and former §9 (conditional slice). The capability gate
@@ -838,7 +925,7 @@ fake data.
 
 ---
 
-## §11. `/research` prioritization and filing context
+## §12. `/research` prioritization and filing context
 
 ### Purpose
 
@@ -875,7 +962,7 @@ while preserving insider filings.
 
 ---
 
-## §12. `/history` event narrative
+## §13. `/history` event narrative
 
 ### Purpose
 
@@ -912,7 +999,7 @@ evolved.
 
 ---
 
-## §13. `/trades` decision review and focused entry
+## §14. `/trades` decision review and focused entry
 
 ### Purpose
 
@@ -950,7 +1037,7 @@ trade-entry reliability.
 
 ---
 
-## §14. Integration, local fonts, resilience, and acceptance
+## §15. Integration, local fonts, resilience, and acceptance
 
 ### Purpose
 
