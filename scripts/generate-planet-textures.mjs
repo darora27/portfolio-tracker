@@ -527,11 +527,27 @@ await Promise.all([
   mkdir(MARKS, { recursive: true }),
 ]);
 
+// A supplied brand mark always wins. This loop previously overwrote every file
+// in marks/ unconditionally, which silently destroyed real logos placed there
+// before they were ever composited — the generated block wordmark is a fallback
+// for tickers with no supplied asset, not a replacement for one.
 for (const identity of IDENTITIES) {
-  await writeFile(
-    path.join(MARKS, `${identity.ticker.toLowerCase()}.svg`),
-    blockWordmarkSvg(identity.ticker, identity.brandHex),
-  );
+  const markPath = path.join(MARKS, `${identity.ticker.toLowerCase()}.svg`);
+  let supplied = false;
+  try {
+    const existing = await readFile(markPath, "utf8");
+    // The generated fallback is a grid of 1x1 rects; anything else is a real
+    // mark someone put there deliberately.
+    supplied = !existing.includes('h1v1h-1z');
+  } catch {
+    supplied = false;
+  }
+  if (supplied) {
+    process.stdout.write(`${identity.ticker}: using supplied brand mark\n`);
+    continue;
+  }
+  await writeFile(markPath, blockWordmarkSvg(identity.ticker, identity.brandHex));
+  process.stdout.write(`${identity.ticker}: no supplied mark, generated fallback\n`);
 }
 
 const ladder = [];

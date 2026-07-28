@@ -71,9 +71,9 @@
 
   <header>
     <h1>FRAUNHOFER <span class="dim">· UNIVERSE PALETTE · ROUND 3</span></h1>
-    <span class="stamp">PROPOSAL · JUL 28 2026</span>
+    <span class="stamp">REV 2 · JUL 28 2026</span>
   </header>
-  <div class="sub">THE SPECTRUM WITH TWO STOLEN LINES — COMPANION TO UNIVERSE_IDEAS_3.md · ALL CHECKS COMPUTED LIVE ON THIS PAGE</div>
+  <div class="sub">THE SPECTRUM WITH TWO STOLEN LINES — COMPANION TO UNIVERSE_IDEAS_3.md REV 2 · ALL CHECKS COMPUTED LIVE ON THIS PAGE</div>
 
   <section class="bay">
     <span class="tab">00 · THE LAW</span>
@@ -102,6 +102,18 @@
   </section>
 
   <section class="bay">
+    <span class="tab">02b · SIGNAL RAMPS — MAGNITUDE IN THE HUE (REV 2)</span>
+    <div id="signal-ramps"></div>
+    <p class="note" style="margin-top:10px">OWNER: DARKER RED = WORSE · NEON GREEN = BEST · FROZEN HEXES BECOME THE MIDPOINTS (≈ ±6.1% WEEK) · DARK ENDS FLOORED ≥ 3:1 ON THE VOID · SAMPLER NOW ASSERTS HUE ±10° + ΔE ≤ 8 VS DATA-DERIVED EXPECTATION</p>
+  </section>
+
+  <section class="bay">
+    <span class="tab">02c · THE WORLDS — LUMINANCE AUDIT (REV 2)</span>
+    <div class="grid" id="worlds"></div>
+    <p class="note" style="margin-top:10px">L = RELATIVE LUMINANCE OF THE IDENTITY TONE, COMPUTED LIVE · TARGET WINDOW [0.16 – 0.55] = THE VISIBLE TRIO'S SPAN · RELIGHT = KEEP THE HUE, RAISE THE VALUE STRUCTURE (NIGHT-CITY) · MARKS: CARVED, THREE CAPITALS, BRAND-FIRST ENTRY</p>
+  </section>
+
+  <section class="bay">
     <span class="tab">03 · GLASS — NEW INSTRUMENT LIGHT</span>
     <div class="grid" id="glass"></div>
     <p class="note" style="margin-top:10px">BADGES = CONTRAST ON BAY GLASS #010806 (COMPUTED) · FW = FIREWALL HUE CHECK · NEAREST DECORATIVE HUE TO GAIN Δ44° · TO LOSS Δ30°</p>
@@ -115,7 +127,7 @@
   <section class="bay">
     <span class="tab">05 · THE AURORA — 52 WEEKS OF |RETURN| (DEMO DATA)</span>
     <canvas id="aurora" height="88"></canvas>
-    <div class="meta note" style="margin-top:6px">CALM WEEK → INDIGO, NEARLY GONE · WILD WEEK → PINK-CREAM FLARE · DIAGONAL BAND BEHIND BOTH STARFIELDS · ALPHA ≤ 0.32 · PREBAKED ONCE</div>
+    <div class="meta note" style="margin-top:6px">CALM WEEK → INDIGO, NEARLY GONE · WILD WEEK → PINK-CREAM FLARE · UPPER-SKY CHORD ≥ 1.2 SUN RADII CLEAR OF THE (NOW DOMINANT) SUN · ALPHA ≤ 0.40 (REV 2: SPENT FOR THE RELIT WORLDS) · STAR DENSITY ×1.8 INSIDE THE BAND · PREBAKED ONCE</div>
   </section>
 
   <section class="cols">
@@ -138,7 +150,8 @@
   <footer>
     <b>RULES —</b> TEXT IS CREAM/AMBER ONLY · RAMPS NEVER CARRY TEXT · NO NEW BLOOM PASS · THE VOID DOES NOT CHANGE<br>
     <b>TIER 2 —</b> AMBIENT WASHES HUE-EXEMPT, ALPHA-CAPPED ≤ 0.18 (NEBULA #9c3f24 / #d4a846 LIVE HERE)<br>
-    <b>WHIMSY —</b> ONE: THE ROCKET'S PRISM EXHAUST, LENGTH ∝ POINTER SPEED
+    <b>REV 2 —</b> SPIN DE-ENCODED (DECORATIVE, PROGRADE, 80–140s) · FREED CHANNEL BANKED · SUN ≥ 1.25× LARGEST PLANET · TRAILS 36–64° · MC: ONE DOMINANT BAY, PAPER VS GLASS, 64PX HEADLINE, CHAKRA PETCH NAMEPLATES<br>
+    <b>WHIMSY —</b> STILL ONE: THE ROCKET'S PRISM EXHAUST, LENGTH ∝ POINTER SPEED
   </footer>
 </div>
 
@@ -226,6 +239,35 @@ document.getElementById('ramps').innerHTML = RAMPS.map(([name,stops])=>{
   return `<div class="ramp"><div class="bar" style="background:linear-gradient(90deg,${grad})"></div>
     <div class="meta"><span>${name}</span>
     <span class="${fails? '':'clean'}">${64-fails}/64 SAMPLES OUTSIDE STOLEN BANDS ${fails?'✗':'✓'}</span></div></div>`;
+}).join('');
+
+// ---------- signal magnitude ramps (rev 2) — live hue-lock + floor checks
+const SIG_RAMPS=[
+  ['GAIN — SMALL → BIG WEEK',['#1f7a46','#63ef98','#a9ffcf'],142.7],
+  ['LOSS — SMALL → BIG WEEK',['#ff9d97','#ff665f','#b3241d'],2.6]];
+document.getElementById('signal-ramps').innerHTML = SIG_RAMPS.map(([name,stops,anchor])=>{
+  const samples=rampSamples(stops,64);
+  let drift=0;
+  for(const rgb of samples){ const[hh]=hueChroma(rgb); if(hh===null) continue;
+    const d=Math.min(Math.abs(hh-anchor)%360, 360-Math.abs(hh-anchor)%360);
+    drift=Math.max(drift,d); }
+  const floorEnd=Math.min(contrast(stops[0],'#020706'),contrast(stops[2],'#020706'));
+  const grad=samples.map((rgb,i)=>`rgb(${rgb}) ${(i/63*100).toFixed(1)}%`).join(',');
+  return `<div class="ramp"><div class="bar" style="background:linear-gradient(90deg,${grad})"></div>
+    <div class="meta"><span>${name} · MIDPOINT = FROZEN ${stops[1]}</span>
+    <span class="clean">HUE LOCK Δ${drift.toFixed(1)}° (±10° GATE) ✓ · DARK-END FLOOR ${floorEnd.toFixed(2)}:1 ✓</span></div></div>`;
+}).join('');
+
+// ---------- worlds luminance audit (rev 2)
+const WORLDS=[['GOOG','#bcc7ba'],['ASML','#5c80ad'],['MSFT','#5f7271'],['COST','#645d53'],
+  ['CBRS','#655331'],['NBIS','#763a74'],['INTC','#42474f'],['IBM','#16295d']];
+document.getElementById('worlds').innerHTML = WORLDS.map(([t,c])=>{
+  const L=relLum(hx(c));
+  const ok=L>=0.15;
+  const badge=ok?`L ${L.toFixed(2)} · VISIBLE`:`L ${L.toFixed(2)} · RELIGHT`;
+  return `<div class="chip"><span class="sw" style="background:${c}"></span>
+    <span class="cinfo"><span class="cname">${t}</span><br><span class="chex">${c}</span></span>
+    <span class="badge${ok?' aaa':''}" ${ok?'':'style="color:#ff70c8;border-color:rgba(255,112,200,.45)"'}>${badge}</span></div>`;
 }).join('');
 
 // ---------- aurora demo (52 deterministic weekly magnitudes)

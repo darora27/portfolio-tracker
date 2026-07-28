@@ -1,6 +1,6 @@
 {
-  "totalBytes": 22660766,
-  "mapBytes": 22643542,
+  "totalBytes": 22450706,
+  "mapBytes": 22433438,
   "tier": {
     "base": "1448x724",
     "emissive": "724x362",
@@ -16,12 +16,12 @@
     {
       "base": "2048x1024",
       "derived": "1024x512",
-      "mapBytes": 43725764
+      "mapBytes": 43319630
     },
     {
       "base": "1448x724",
       "derived": "724x362",
-      "mapBytes": 22643542
+      "mapBytes": 22433438
     }
   ],
   "tickers": {
@@ -32,12 +32,12 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2350232,
-        "emissive": 198862,
-        "normal": 325737
+        "base": 2335825,
+        "emissive": 199573,
+        "normal": 323498
       },
-      "dominantHex": "#597da9",
-      "luminanceStdDev": 0.171592,
+      "dominantHex": "#557aaa",
+      "luminanceStdDev": 0.181038,
       "seamMaxDeltaE": 0
     },
     "GOOG": {
@@ -47,12 +47,12 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2534785,
-        "emissive": 206687,
-        "normal": 336643
+        "base": 2566572,
+        "emissive": 213200,
+        "normal": 340909
       },
-      "dominantHex": "#b8c2b5",
-      "luminanceStdDev": 0.135843,
+      "dominantHex": "#b9c2b7",
+      "luminanceStdDev": 0.137785,
       "seamMaxDeltaE": 0
     },
     "MSFT": {
@@ -62,12 +62,12 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2674792,
-        "emissive": 220172,
-        "normal": 351256
+        "base": 2688445,
+        "emissive": 224465,
+        "normal": 354159
       },
-      "dominantHex": "#5c706f",
-      "luminanceStdDev": 0.114599,
+      "dominantHex": "#5c706e",
+      "luminanceStdDev": 0.115812,
       "seamMaxDeltaE": 0
     },
     "IBM": {
@@ -77,12 +77,12 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 1728535,
-        "emissive": 40813,
-        "normal": 268756
+        "base": 1535990,
+        "emissive": 38716,
+        "normal": 244643
       },
-      "dominantHex": "#16285a",
-      "luminanceStdDev": 0.101663,
+      "dominantHex": "#223262",
+      "luminanceStdDev": 0.211837,
       "seamMaxDeltaE": 0
     },
     "COST": {
@@ -92,12 +92,12 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2304993,
-        "emissive": 115651,
-        "normal": 320222
+        "base": 2299993,
+        "emissive": 120571,
+        "normal": 323802
       },
-      "dominantHex": "#635b51",
-      "luminanceStdDev": 0.121395,
+      "dominantHex": "#655b52",
+      "luminanceStdDev": 0.122195,
       "seamMaxDeltaE": 0
     },
     "INTC": {
@@ -107,12 +107,12 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2310209,
-        "emissive": 142803,
-        "normal": 384551
+        "base": 2325394,
+        "emissive": 142893,
+        "normal": 385430
       },
-      "dominantHex": "#434952",
-      "luminanceStdDev": 0.098445,
+      "dominantHex": "#3f4857",
+      "luminanceStdDev": 0.098092,
       "seamMaxDeltaE": 0
     },
     "NBIS": {
@@ -122,12 +122,12 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2761244,
-        "emissive": 124922,
-        "normal": 315486
+        "base": 2673149,
+        "emissive": 124143,
+        "normal": 311547
       },
-      "dominantHex": "#723872",
-      "luminanceStdDev": 0.120147,
+      "dominantHex": "#733c71",
+      "luminanceStdDev": 0.137494,
       "seamMaxDeltaE": 0
     },
     "CBRS": {
@@ -137,12 +137,12 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2156910,
-        "emissive": 118956,
-        "normal": 350325
+        "base": 2184071,
+        "emissive": 123534,
+        "normal": 352916
       },
-      "dominantHex": "#665535",
-      "luminanceStdDev": 0.086677,
+      "dominantHex": "#675332",
+      "luminanceStdDev": 0.093008,
       "seamMaxDeltaE": 0
     }
   }

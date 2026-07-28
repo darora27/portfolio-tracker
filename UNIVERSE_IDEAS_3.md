@@ -1,485 +1,493 @@
 # The Stock Market Universe — round 3 creative response: the colour question
+## Revision 2 — after the owner ran the build
 
-Answers to the round 3 brief, in its order. Written July 28, 2026.
-Grounded in the build as it exists: every colour named below was checked
-against the shipped tokens in `scene-model.ts`, `planet-identity.ts`,
-`orrery.module.css`, and `OrreryScene.tsx`, and every contrast ratio and
-hue claim in this document was **computed, not eyeballed** (results in §8).
-As before: proposals, not decisions.
-
----
-
-## 0. What the references actually agree on
-
-Read the thirteen images as one deck and they stop conflicting. In every
-single one, **saturated colour is light**: CRT phosphor, false-colour
-plots, neon airbrush, prism diffraction, glowing wireframe. And in every
-single one, **the furniture is warm matter**: cream consoles, bakelite
-buttons, paper forms, beige machines, painted cities. The two never trade
-places. There is no reference with a rainbow desk or a grey screen.
-
-Note what the owner kept in the deck: both TVA stills, the orange
-sphere-computer, the beige machine at the moonlit window. Round 2's warm
-chrome was not voted off — it was re-elected as the furniture. The ask is
-not "replace the world," it is:
-
-**Round 2 built the cabinet. Round 3 turns on the glass.**
-
-Where each reference lands in this proposal:
-
-| Reference | Lands as |
-|---|---|
-| Rainbow-monitor control room | Mission Control's data surfaces (§4) |
-| Prism space collage (floppies, planets) | The aurora tape behind the system (§3) |
-| Neon airbrushed montage on black | Trail glow discipline + glass palette (§1, §2) |
-| Green-phosphor terminals | **Refused — retuned to amber phosphor** (§4) |
-| Amber rounded-bezel HUD kit | Already built; unchanged |
-| Pastel daylight city, McCall paintings | The FIRST LIGHT weather pole (§5) |
-| Moonlit-mountain computer room | The CLEAR NIGHT weather pole (§5) |
-| Red monorail hero | The lesson that one solid hue = the thing that matters (§1) |
-| TVA stills, sphere computer | The cabinet, kept as-is (§2) |
+Written July 28, 2026. Supersedes revision 1 in place; this is one design,
+not a patch list. Adopted from revision 1 and standing: **the Fraunhofer
+rule, the two-tier firewall, the ramp-transit test, `universe-palette.ts`
+as the first buildable unit, the P3-amber refusal, the aurora, the weather
+poles, the cabinet contained as furniture.** Changed by contact with live
+use: the texture clause, the frozen-hex literalism, the motion freeze, the
+sun's scale, the starfield, and Mission Control's structure. Every colour
+and luminance claim below is computed (§9). As before: proposals, not
+decisions.
 
 ---
 
-## 1. The conflict resolved (brief §3): the Fraunhofer rule
+## 1. The law, restated in one breath
 
-Real starlight is not a full spectrum. It carries **absorption lines** —
-narrow bands stolen by matter standing between you and the light. A
-spectrograph reads a star by its missing colours.
+Decorative and instrument light draws from the full spectrum **minus two
+stolen bands** — green 125°–165°, red 345°–20°, at chroma > 0.30 — which
+belong to meaning alone. Only meaning burns white-hot. Ambient washes are
+hue-exempt but alpha-capped ≤ 0.18. Matter is exempt.
 
-This universe's spectrum has **two stolen lines**:
-
-- **the green band, hue 125°–165°** — stolen by gain (`#63ef98`, 143°)
-- **the red band, hue 345°–20°** — stolen by loss (`#ff665f`, 3°)
-
-Everything else may burn. Cyan, blue, violet, magenta, pink, amber, gold,
-orange — full saturation, welcome everywhere light lives. The two stolen
-bands appear **only as signal**. That is the whole law, in three clauses:
-
-1. **Meaning is light, and only meaning burns white-hot.** Red and green
-   exist solely as emissive signal — trails, signed values, the trade
-   comet, radar blips — and signal alone gets a white-hot core (§2). No
-   decorative glow ever carries a white centre.
-2. **Decoration is the spectrum minus two.** Any decorative or
-   instrument light must sit outside the stolen bands (enforced at
-   chroma > 0.30 — pale washes can't impersonate a signal and are
-   handled by tier 2, §8).
-3. **Matter is exempt.** Planet surfaces are lit, non-emissive matter —
-   COST's red dock lanes and GOOG's leaf-green district are paint, not
-   signal. Nothing matte glows, so nothing matte can lie.
-
-Why this dissolves the conflict rather than splitting the difference: a
-spectrum with two absorption lines **still reads as a rainbow**. Indigo
-→ violet → magenta → pink → cream registers as "every colour" to a
-human; no one stands in front of the aurora counting for the missing
-green. But the pixel sampler counts — and it will find red and green
-exactly where money put them, nowhere else.
-
-Said plainly, because the brief asks for the pick: **the owner cannot
-have indiscriminate full-spectrum colour and meaningful red/green at
-full strength in the same field. Meaning wins.** The rainbow is then
-rebuilt around the two reserved bands — and the result is *more*
-chromatic than the references' literal rainbows, because every hue that
-remains is allowed to go louder, knowing it cannot be misread.
-
-Where the eye finds the spectrum afterward:
-
-| Where | What's chromatic there |
-|---|---|
-| The sky | The aurora tape (§3) — indigo→violet→magenta→pink |
-| Mission Control glass | Cold benchmark traces, ice + ember ramps (§4) |
-| The cursor | The rocket's prism exhaust (§7) |
-| The stars | Cyan and violet accent points (§3) |
-| The planets | The approved textures — untouched matter (§6) |
+One amendment, forced by §4: the whitelist inside the stolen bands widens
+from **six literal hexes to two signal ramps plus four constants** — and
+the lint now polices both directions: decorative light must stay *out* of
+the bands, and every sample of the signal ramps must stay *in* its own
+band (hue within ±10° of its anchor). The law holds; it grew teeth on its
+own side of the fence.
 
 ---
 
-## 2. The palette (brief §4.1)
+## 2. The worlds, relit (revision brief §3.1)
 
-Four layers. Two exist and are kept; one is frozen; one is new.
+"Textures — untouched" is dead. The owner can't see five of his eight
+planets, and the marks are broken. What survives from revision 1 is the
+**matter clause** — planet surfaces stay exempt from the firewall — which
+was always about *exemption*, never immutability. The assets change; the
+law doesn't.
 
-### VOID — the grounds (unchanged)
+### 2.1 The luminance window: [0.16, 0.55], measured from the render
 
-| Token | Hex | Where |
-|---|---|---|
-| `void.space` | `#020706` | Scene clear colour + fog, as shipped |
-| `void.glass` | `#010806` / `#010504` / `#04110d` | Bay interiors, as shipped |
+The owner's report is exactly reproducible from the identity tokens. Mean
+relative luminance of each world's dominant tone:
 
-The void does not change. The references' colour lives **on** black, and
-the build already has the right black — the faint green-black CRT cast
-is heritage worth keeping. Richness is added in front of it, never by
-lightening it. This also spares every existing baseline re-shoot the
-brief didn't budget for.
-
-### CABINET — the TVA chrome (kept, contained)
-
-Everything from round 2's §3: creams `#fff0cf` `#f6d493` `#e8f1df`,
-ambers `#ffd68c` `#efbb62` `#e6a14d`, burnt oranges `#d96f23` `#c96d32`
-`#7d3d1d`, umbers `#21120d` `#3b1f12` `#160e0a`, sage `#b9cdb8`.
-
-**Answer to "replace or contain": contain.** The cabinet is demoted from
-"the whole aesthetic" to "the furniture" — bezels, tabs, nameplates,
-lamps, gauges, stamps, prose, the belt, the moons, the satellites. It
-gains not one new hue. A note the numbers force: the entire cabinet
-lives at hue 33°–41°, only ~30° from loss-red — it has never been
-misread as loss because it is matte chrome while loss is emissive
-signal. That standing proof is what makes clause 1 of the law credible.
-
-### SIGNAL — the money colours (frozen)
-
-| Token | Hex | Meaning |
-|---|---|---|
-| `signal.gain` | `#63ef98` | week up — trails, signed values, blips |
-| `signal.loss` | `#ff665f` | week down — same surfaces |
-| `signal.flat` | `#e3b65c` | flat/no-data — the amber neutral |
-| `signal.buy` | `#f4f0df` | buy comet |
-| `sun.up` / `sun.down` | `#f5c45d` / `#d65a24` | portfolio health |
-
-These are **contract values** — the live review process samples them by
-pixel. Round 3 does not move them by one bit. What it adds is the
-signals' exclusive property: **the white-hot core.** Each trail's core
-pass gains a head→tail vertex gradient — `#fff7e6` at the planet,
-resolving into pure signal hue within the first quarter-arc, fading out
-along the existing taper. Gains and losses get identical craftsmanship;
-a bad week is rendered as beautifully as a good one, just in red.
-(Vertex colours on the existing custom geometry — no new pass, §8.)
-
-### GLASS — the new chromatic layer (this round's addition)
-
-Saturated instrument light, on black only, all firewall-verified:
-
-| Token | Hex | Hue | Role |
+| World | brandHex | L | Owner's verdict |
 |---|---|---|---|
-| `glass.cyan` | `#4fd6e8` | 187° | pair-lines, hover linework, star accent |
-| `glass.blue` | `#5f8dff` | 223° | secondary linework |
-| `glass.violet` | `#8f6bff` | 255° | star accent, ramp family |
-| `glass.magenta` | `#d95ce0` | 297° | aurora family, flourishes |
-| `glass.pink` | `#ff70c8` | 323° | aurora hot end |
-| `glass.amber/gold/orange` | `#ffd68c` `#efbb62` `#e6a14d` | 33–39° | warm instrument light (existing, promoted into glass) |
-| `bench.voo` | `#5fa8c9` | 199° | VOO trace |
-| `bench.vti` | `#46799c` | 204° | VTI trace |
-| `bench.xlk` | `#7b6bc9` | 250° | XLK trace |
+| GOOG | `#bcc7ba` | 0.551 | visible |
+| ASML | `#5c80ad` | 0.207 | visible |
+| MSFT | `#5f7271` | 0.157 | visible |
+| COST | `#645d53` | 0.112 | dark |
+| CBRS | `#655331` | 0.092 | dark |
+| NBIS | `#763a74` | 0.081 | dark |
+| INTC | `#42474f` | 0.062 | dark |
+| IBM | `#16295d` | 0.025 | dark |
 
-Plus three **ramps — shipped as LUTs, never improvised gradients** (why
-that matters: a naive magenta→orange lerp transits crimson; §8):
+The three he can see are precisely the three above L ≈ 0.15. So the
+target is empirical, not aesthetic: **equatorial-band mean luminance in
+[0.16, 0.55]** — the window the working trio already occupies — verified
+from the **live sphere-strip capture** (the script exists), not from the
+source map, because the render includes lighting.
 
-| Ramp | Stops | Encodes |
+**How the dark five get there without losing themselves:** keep the
+identity *hue*, raise the *value structure* — the night-city strategy.
+A world stays dark-souled while its architecture catches light:
+
+| World | Keeps | Gains (firewall-checked lifts) |
 |---|---|---|
-| `aurora` | `#131c3f → #33307e → #63359c → #a23d9c → #e0559c → #f7a0c0 → #ffe4d6` | weekly return magnitude (§3) |
-| `ember` | `#1c0f06 → #5e2d0e → #9c4f16 → #d97a2b → #ffb347 → #ffe4ad` | drawdown depth (§4) |
-| `ice` | `#061018 → #123a54 → #1e6b8f → #3fa8c4 → #a8e4ef` | correlation strength (§4) |
+| IBM | deep navy `#16295d` terrain | monolith tops + pinstripe edge-light in `#8fa3d6` (L 0.37), ~18% band coverage; denser quantum-dome emissive |
+| INTC | slate plains | slate lifted to `#5a6270`; molten copper rivers widened (emissive carries the rest) |
+| COST | concrete world | concrete lifted to `#8a8274` (L 0.23) — daylight warehouse, red signage stays matte paint |
+| NBIS | violet accretion scar | scar core brightened to `#a05a9e` (L 0.17); violet-white terrace emissive |
+| CBRS | bronze wafer | wafer sheen to `#9c7d3f` (L 0.22); cyan coolant rivers widened |
 
-**A gap the brief didn't assign, called here:** colour currently has no
-single source of truth — hexes live in `scene-model.ts`, inline in
-`OrreryScene.tsx`, in `orrery.module.css`, and in the bays. Round 3's
-first buildable unit is `src/lib/observatory/universe-palette.ts`
-exporting every token above (plus CSS custom properties for the DOM
-side), so the firewall lint in §8 has one target and the 2D fallback
-inherits the palette for free.
+**What it costs the sky — said out loud, not left to hope:** five
+brighter worlds plus a dominant sun (§6) raise foreground luminance, and
+the aurora's *relative* prominence drops. Two caps move, one doesn't:
 
----
+- **Aurora alpha cap: 0.32 → 0.40.** Explicit trade, spent here.
+- **Aurora chord moves off-centre:** nearest screen-space approach to the
+  sun's disc ≥ 1.2 sun radii — the band crosses the upper sky beyond the
+  sun, not behind its glare. (Also composition: §6.)
+- **The void and nebula caps do not move.** `#020706` stands; brighter
+  planets pop *harder* against an unchanged night.
 
-## 3. The universe background (brief §4.2)
+### 2.2 The marks: carve, don't stamp
 
-What is behind the planets, back to front:
+The owner's three complaints are the three structural defects of
+compositing a crisp vector over a finished painting, and one pipeline bug:
 
-**1. The void — unchanged.** `#020706`, fog as shipped.
+**The pick: build the mark into the material stack, three times.**
 
-**2. The aurora: the round's one big scene move.** A broad band crossing
-deep space diagonally (~28°, behind both starfields, parallax with the
-far layer) — the prism road from the collage reference, made honest.
-It is built from **52 stripes: the trailing 52 weeks of portfolio
-return, each stripe coloured by that week's |magnitude| on the aurora
-ramp.** Calm weeks are deep indigo and nearly vanish; wild weeks flare
-magenta-pink toward cream. A violent quarter reads as a hot streak in
-the sky; a sleepy summer fades the band to embers. The wildest thing
-your money did all year is literally written across the heavens.
+1. **Carve, don't stamp.** The vector still lands in post — generation
+   still misspells wordmarks ("Cotsco" is not coming back) — but it stops
+   being an *image* layered on the picture and becomes an *input to the
+   material*: its albedo is the world's material treatment (road-paint,
+   etched metal, inlaid ceramic — the round-2 per-ticker assignments)
+   **multiplied by the underlying terrain's luminance** so ground shows
+   through; its silhouette is embossed into the **normal map** so engine
+   light rakes across it; its emissive copy glows on the night side; its
+   mask is edge-eroded a few pixels so the boundary weathers. A mark that
+   shares the terrain's lighting and grain cannot read as a decal —
+   MSFT's round-2 note ("the logo IS the continental structure") applied
+   to all eight.
+2. **Three capitals.** The mark repeats at three longitudes, 120° apart,
+   within ±18° latitude (where equirectangular stretch is ≤ 5%, which
+   kills the warp complaint without pre-distortion math). One instance is
+   always within 60° of facing the camera — worst-case foreshortening
+   0.5×, still legible. In-world it reads as what brands actually do:
+   build the same store everywhere.
+3. **Brand-first entry.** Because spin is now decorative (§4), the planet
+   view is free to set rotation phase on entry: the camera arrives with
+   the nearest capital facing you, then the slow spin resumes. The
+   recognition moment is guaranteed at the exact moment it matters, with
+   zero standing cost at overview (where the 32px test — colour + macro
+   silhouette + emissive signature — was always the identity carrier).
 
-- Data: weekly net-of-flow returns from the existing snapshot history —
-  the same series the SCOPE already draws, so this is a **re-encoding of
-  data the accessible surfaces already carry**, not a new colour-only
-  channel. Percent magnitudes only: public-safe on `/share`.
-- If history < 52 weeks, the band is short and grows week by week — the
-  sky ages with the book. That is a feature; do not pad it.
-- Texture: rendered once to an offscreen canvas (~1024×256, stripe
-  colour + per-stripe alpha jitter + film grain) in an idle callback,
-  uploaded once. Luminance cap: composite alpha ≤ 0.32. Zero per-frame
-  cost (§8).
+Rejected: generation-time wordmarks (misspelling), billboard marks that
+counter-rotate against the surface (breaks the object's physicality), and
+dropping surface marks (the owner has asked repeatedly; recognition in
+scene-objects is weaker than the thing itself).
 
-**3. Starfields — kept, with two accents.** The three shipped tints
-(`#dcebd7` white, `#8acda0` phosphor, `#d7aa63` amber) stay; add
-`#4fd6e8` cyan at 1-in-23 and `#8f6bff` violet at 1-in-41. Optional
-flourish, cheap and honest: accent stars twinkle **only while the market
-is open** (`market-calendar` already knows) — the sky trades with you.
-Reduced motion: no twinkle. The open/closed fact already lives in the
-"prices as of" badge, so nothing is colour-only.
+**Defect, not design:** marks rendering mirrored ("the wrong direction")
+is a compositor orientation bug — flipY/seam-roll order — fix it in the
+pipeline and add a chirality assertion to the sphere-strip capture so it
+can't regress silently.
 
-**4. The nebula — kept, plus one wisp per weather pole.** The shipped
-health wisp is untouched (`#d4a846` up / `#9c3f24` down, alpha
-0.08–0.15). §5 adds a second wisp at ≤ 0.10 alpha. Note for §8: the
-ember `#9c3f24` sits at hue 13.5° — inside the red band — and is legal
-**only** as an alpha-capped ambient wash; the new lint turns that cap
-from habit into law.
+### 2.3 The byte budget
 
-What the background encodes:
+~23 MB sits against the 30 MB ceiling, and denser emissive costs bytes.
+Plan, measured at each gate, recorded like the round-2 correction:
 
-| Layer | Encodes | Channel |
-|---|---|---|
-| Aurora stripes | 52 × weekly return magnitude | hue position + brightness on one ramp |
-| Nebula hue + alpha | portfolio health scalar | as shipped |
-| Weather wisp | health sign (the two poles, §5) | hue temperature |
-| Accent twinkle | market open/closed | motion (optional) |
-| Star positions, grain | nothing — ground texture, static | exempt: not a variable |
+1. Regenerate all eight in one pass (relight + carved marks together).
+2. **Emissive maps to aggressive ETC1S** — soft glow tolerates ETC1S
+   artifacts better than any other content in the pipeline. Measure.
+3. If > 30 MB: normal maps to 512×256 for the two smallest discs
+   (CBRS, NBIS — smallest projected diameters, macro relief survives).
+4. If still > 30 MB: base to 1024×512 for those same two.
 
----
-
-## 4. Mission Control (brief §4.3)
-
-**Verdict: the cabinet survives; the glass turns on.** Both TVA stills
-show the same desk: paper forms *and* a glowing CRT. That is the room —
-**paper for words, glass for numbers.** Round 2's bay grounds are
-already black glass (`#010806` family), which means the references were
-half-obeyed before this brief was written. The chrome, tabs, teletype,
-lamps, gauges, stamps: unchanged. The change is four recolors inside
-the glass, each named:
-
-**1. The SCOPE goes bi-thermal.** Portfolio trace stays hero amber
-`#e6a14d`. The three benchmarks — today three barely-separable browns
-(`#927e64` `#725f4e` `#5e5044`) — go cold: VOO `#5fa8c9` dashed, VTI
-`#46799c`, XLK `#7b6bc9`. **The book burns warm; the market glows
-cold.** One glance separates "me" from "everyone" by temperature, and
-the muddiest corner of the room becomes its most reference-faithful.
-The planet detail view's scope inherits the same rule.
-
-**2. The PLOT radar wears the week.** Blips are currently uniform
-`#cf7b46`. They take their holding's **trail colour** — semantic hue on
-real data, so the radar becomes a one-glance week summary: a green
-system, a red system, a mixed one. Active blip gains the white-hot core
-(`#fff4d7`), consistent with clause 1. Rings stay health-tinted amber.
-
-**3. The SIGNALS grid gets ice.** Correlation cells fill from the ice
-ramp by |ρ| (brightness = strength, as designed); sign stays a glyph.
-Explicitly guarded: sign must **never** take red/green — red means
-"down," not "anti-correlated," and a hue that lies about which question
-it answers is worse than no hue. Hover pair-lines draw in `glass.cyan`.
-
-**4. The HAZARD column burns ember.** The drawdown pressure column
-fills from the ember ramp by depth — shallow dips smoulder dark, a deep
-drawdown glows toward `#ffb347`. Magnitude on a warm ramp, direction
-already unambiguous (drawdown only goes down). Transit-verified (§8).
-
-**The refusal, stated as the brief demands:** the green-phosphor
-terminal reference is the one reference this response rejects. In a
-system where green *is* gain, green monospace would dress every neutral
-word in profit — the terminal would lie once per line. The period
-answer is that CRTs shipped in more than one phosphor: **P1 was green,
-P3 was amber.** This room runs P3. The teletype and all terminal text
-stay in the shipped amber family (`#f6d493` on `#21120d`, 12.75:1), and
-the radar-scope *form* the reference offers is kept — it is already the
-PLOT — just never its colour.
+If step 4 is ever reached, say so in the progress log rather than
+absorbing it silently.
 
 ---
 
-## 5. Colour by state (brief §4.4): weather, not verdict
+## 3. Trails: magnitude moves into the hue (revision brief §3.2)
 
-Yes — the universe's palette shifts with portfolio state. **One layer
-shifts. Everything else holds still.** The shift is the second nebula
-wisp from §3, and its two poles are designed with equal love, straight
-from the two daylight/night families in the reference deck:
+The owner asked for the strongest kind of encoding change — one he
+invented while using the thing. Adopted, with the collision he predicted
+resolved as follows.
 
-| Pole | Trigger | Wisp | The reference it comes from |
+### 3.1 The ramps, with the frozen hexes as their midpoints
+
+Weekly magnitude (same 0.2%–12% clamp the arc already uses) maps to
+lightness within each semantic hue:
+
+| Ramp | small → mid → big | Hue drift | Endpoint floors on void |
 |---|---|---|---|
-| **FIRST LIGHT** | health > 0 | `#b3479e` magenta, alpha 0.04 + 0.06·h | McCall's purple-and-amber painted skies |
-| **CLEAR NIGHT** | health < 0 | `#3d5aa8` indigo, alpha 0.04 + 0.06·\|h\| | the moonlit mountains behind the beige computer |
+| gain | `#1f7a46` → `#63ef98` → `#a9ffcf` | ≤ 3.8° off 143° | 3.80:1 / 17.28:1 |
+| loss | `#ff9d97` → `#ff665f` → `#b3241d` | ≤ 1.3° off 3° | 10.16:1 / 3.08:1 |
 
-The mood-ring trap, and the four guards against it:
+Dark green grinding upward; the neon week of your life; a pale scratch of
+a down day; a deep dried-blood bad week. **The shipped hexes `#63ef98`
+and `#ff665f` become the exact midpoints (t = 0.5 ≈ a ±6.1% week)** — a
+typical week renders the colour every screenshot to date has shown, so
+continuity is free.
 
-1. **Only hue temperature moves.** Luminance, composition, aurora,
-   chrome, text, signal colours: constant. Contrast ratios are
-   identical at both poles because no text ground changes.
-2. **Both poles are fully designed.** A down day is not "the pretty sky,
-   removed" — it is a different, colder, *clearer* beauty. The single
-   coziest image in the owner's own deck is a cold night. Bad days get
-   the dignity of good art direction; that is what makes the tracker
-   bearable to open in a drawdown, which is the entire point.
-3. **The shift is slow and small.** Crossfade ≤ 2s on data refresh,
-   capped at 0.10 alpha; reduced motion snaps. Nobody watches their sky
-   mood-swing during a volatile lunch hour.
-4. **The sun stays the verdict.** Both wisps derive from the same
-   health scalar the sun already encodes — the sky is weather *about*
-   the verdict and can never contradict it.
+The conflict inside the owner's own ask, called: **"darker means worse"
+collides with "visible on a near-black void."** An honestly-dark worst
+trail disappears — the IBM problem again, in miniature. Resolved by
+flooring the dark ends at ≥ 3:1 against `#020706` (computed: 3.80 and
+3.08). The owner gets *clearly darker*; the void never gets *gone*.
+Luminance is monotonic along both ramps (verified), so ordering reads.
 
----
+### 3.2 Is the redundancy worth it? Yes — and here is the argument
 
-## 6. The planet textures (brief §4.5)
+Arc length already encodes this variable. Keep both, because the two
+channels fail differently: arc length is a *comparison* channel that
+humans read badly across different ring radii (the same 30° subtends
+wildly different on-screen lengths on ring 1 vs ring 8 — and rate/length
+channels are exactly what the owner just told us he can't read, twice:
+spin and orbit speed). Lightness is instantly ordinal at a glance with no
+cross-referencing. Arc stays as the long-exposure *form*; lightness
+becomes the *read*. And per the owner: **arcs lengthen, 18–30° →
+36–64°** — longer trails also give the lightness somewhere to live.
 
-**Untouched.** The eight approved worlds are the matter clause of the
-law: lit, non-emissive, identity-bearing. COST's signal-red dock lanes
-and GOOG's leaf-green district are paint on terrain. Nothing on a
-planet surface blooms, adds, or glows white-hot — those three
-properties belong exclusively to signal, and the separation is what
-lets the two coexist within pixels of each other at 32px.
+The white-hot head survives at **fixed extent** — first 12% of arc,
+constant intensity, every trail. Fixed, because a variable head would
+adulterate the lightness read; constant, it becomes a calibration
+reference sitting next to every trail body ("how dark is this trail
+compared to white-hot" is an easier judgement than absolute darkness).
 
-Considered and dropped: per-planet emissive rims tinted by each world's
-identity hue. It dies on its own test case — COST's identity is red;
-a red *emissive* rim is a fake loss. The texture already carries
-identity; the new palette's job is to stay out of its way.
+**Defect, not design:** trails currently sweep *ahead* of the planet —
+the geometry's sign runs with the velocity, not against it. Flip it;
+update the trail-geometry test. Not part of this design's scope.
 
-One monitored token from the audit: the star phosphor `#8acda0` (hue
-140° — inside the green band, chroma 0.26 — under the 0.30 gate). It
-passes as-built. It goes in the lint's watch list with a comment rather
-than being churned: if anyone ever saturates the starfield, the lint
-catches the moment it starts to lie.
+### 3.3 What the sampler asserts now — exactly
 
----
+The literal-hex baselines die for trails only. Replacement assertions,
+runnable from the same public payload the scene reads:
 
-## 7. What stays quiet (brief §4.6)
-
-Colour got promoted this round. These deliberately did not:
-
-- **The void.** Still `#020706`. The night is the house; colour is the
-  guest.
-- **The cabinet.** Zero new hues in chrome, ever. If a bezel turns
-  cyan, the room stops being a place and starts being a screensaver.
-- **Text.** Cream and amber only, signed values in signal, **ramps and
-  glass hues never carry a single character.** (Also the WCAG
-  constraint solved by construction — §8.)
-- **The sun.** The most important instrument keeps its two-colour axis.
-  Nothing competes with the health read.
-- **Labels, rings, belt, moons, satellites.** Slate ring `#66756f`,
-  bone moons, tan rocks — the scene's matter stays matte and warm so
-  trails and aurora own the light. Sector-map suns keep the sun's own
-  palette.
-- **Motion.** Frozen at round-2 levels. Promoting colour *and* motion
-  in the same round is how command decks become carnivals.
-- **The comet.** Three semantic colours, as authorized. No prism tail.
-
-One sanctioned whimsy, because the deck is playful and the owner is
-too: **the rocket cursor's exhaust becomes a prism ribbon** — a short
-cyan→violet→magenta→amber gradient (the spectrum minus two, in
-miniature), length and density proportional to pointer speed. It is the
-only full-arc spectrum in the scene: ephemeral, user-steered, carrying
-a value that is self-encoding (your own hand's velocity), and gone the
-moment you stop. ≤ 24 additive points; reduced motion: plain exhaust.
+1. **Hue lock:** sampled trail-core pixels sit within ±10° of the anchor
+   (143° gain / 3° loss) at chroma > 0.30.
+2. **Expected colour:** ΔE*ab ≤ 8 between the sample and
+   `rampGain(|weekly|)` / `rampLoss(|weekly|)` computed from the payload
+   — the sampler stops checking paint and starts checking the *encoding*.
+3. **Ordering:** for any two same-direction holdings, the larger
+   |weekly| samples lighter (gain) / darker (loss) — robust to renderer
+   tone shifts.
+4. **Literals stay literal** for what didn't change: flat `#e3b65c`,
+   comet `#f4f0df`, sun `#f5c45d`/`#d65a24`.
 
 ---
 
-## 8. Constraints check (brief §5) — computed, not asserted
+## 4. The freed channel: banked (revision brief §3.3)
 
-**Semantic hexes frozen.** `#63ef98` `#ff665f` `#e3b65c` `#f4f0df`
-`#f5c45d` `#d65a24` are untouched, so the live pixel-sampling baselines
-for signals remain valid. Background sample points near the aurora's
-path need one re-baseline; that is the only verifier churn in the
-round.
+Spin-as-day-return is scrapped, per the owner. **Nothing takes the
+channel.** The owner's live feedback has one consistent theme — spin
+unreadable, the diagram says nothing, too many words, bays unproductive:
+**the ambient scene was over-encoded relative to what a visitor can
+absorb.** Re-homing day return onto some other ambient property would
+re-create the disease. Day return stays where it is already read: the
+hover chip, the manifest, the teletype, the fallback text. The encoding
+ledger, Systems Manual, and fallback prose drop the spin row.
 
-**The firewall, formalized as lint** (proposed test:
-`universe-palette.test.ts` against the new token module):
+What decorative motion looks like, since it must now *only* be pleasing:
+planets spin prograde (with their orbit), seeded periods 80–140 s so the
+system never looks gear-locked; **moon orbits slow to ~40 s periods**
+(the owner: "far too fast"); moons stop axial spin entirely. And the one
+dividend already spent: decorative spin is what makes **brand-first
+entry** legal (§2.2.3) — you cannot phase-snap a rotation that encodes
+data, but you can phase-snap scenery.
 
-- *Tier 1 — emissive signal & instrument light:* chroma > 0.30 ⇒ hue
-  ∉ [125°,165°] ∪ [345°,20°]. Semantic tokens whitelisted. **Result:
-  all 16 glass tokens pass; nearest decorative hue to gain is cyan at
-  Δ44°, to loss is orange at Δ30° (the established amber-neutral
-  family).**
-- *Tier 2 — ambient washes:* large-area layers are hue-exempt but
-  **alpha-capped ≤ 0.18 by the same lint.** This tier exists because
-  the audit caught a shipped token breaking tier 1: `nebula.down`
-  `#9c3f24` (hue 13.5°). It has never been misread precisely because
-  it is a ≤0.15 wash — the tier writes down why.
-- *Ramp transit:* each LUT sampled at 64 points under the tier-1 rule.
-  **The first aurora draft failed** (pink→cream transiting crimson at
-  chroma 0.35) and was re-routed through `#f7a0c0` (hue 338°); the
-  ember ramp's deep stops were retuned to `#5e2d0e`/`#9c4f16` for the
-  same reason. **All three ramps now pass all 64 samples.** This is
-  exactly the failure class the test exists to catch in CI.
+---
 
-**WCAG, computed from source tokens** (the brief's hard gate):
+## 5. The sun: bigger than everything (revision brief §3.4)
 
-| Pair | Ratio | Tier |
+New rule: **`sunRadius = max(2.4, 1.25 × largest planet radius)`** —
+strict ordering over every planet (with the current book: ~2.44 vs
+ASML's 1.95), capped near 1.25× because the owner's sentence ends at
+"bigger than the planets," and a to-scale sun would end the planets as
+content. The sun is the *largest* body, not the only one.
+
+Ripples, traced:
+
+- **Layout:** the satellite ring and first orbit already derive from
+  `SUN_BODY_RADIUS` plus clearances, and the camera already binary-
+  searches to fit the belt at 88% span — the system re-fits itself. Net
+  effect: everything breathes outward slightly; no constant hand-tuning.
+- **The sky (asked directly):** yes, it moves. The aurora's diagonal
+  through frame centre dies — a dominant central body was exactly what
+  that diagonal never had to negotiate. The band becomes an upper-sky
+  chord, ≥ 1.2 sun radii clear of the disc (§2.1), which reads *more*
+  like a milky way seen past a foreground star, not less.
+- **Luminance at centre:** corona parameters scale with radius; the
+  corona alpha curve (0.018–0.073) is unchanged, so centre brightness
+  grows with area, not intensity. The health read improves — a bigger
+  instrument.
+- **Docking ring, label, hover states** scale with radius; hit-target
+  code inherits geometry.
+
+Composition note: the missing *focal hierarchy* was half of the
+graph-paper problem. A sun that outranks its planets gives the overview a
+protagonist; §6 does the rest.
+
+---
+
+## 6. "Graph paper, not stars" (revision brief §3.5)
+
+Asked to say which — aurora or starfield — the answer is **both, because
+the complaint has two parents:**
+
+**Diagnosis.** The graph-paper read comes from (a) **eight concentric
+constant-opacity ellipses** — literally compass circles — and (b) a
+starfield of near-uniform dots, evenly scattered, two fixed point sizes,
+no hierarchy. The aurora gives the sky an *axis and a place* — structure
+— but a mechanical dot-field in front of it would still read as plotted,
+not photographed. So:
+
+**Stars become a population, not a pattern:**
+
+- **Magnitude distribution:** ~70% faint 1px at 0.25–0.45 alpha, ~25% at
+  2px, ~4% bright 3px, and the **twelve brightest get 4-point
+  diffraction spikes** — the single cheapest "telescope photograph"
+  signal that exists.
+- **Clustering:** positions sampled from 2–3 seeded gaussian fields over
+  a uniform floor — space has weather, not wallpaper.
+- **Geography:** star density ×1.8 within the aurora band — the band
+  reads as a stellar structure the way the collage reference's prism
+  road does, not as a stripe overlay.
+- Round-3 accent tints stand (cyan 1-in-23, violet 1-in-41).
+
+**Rings stop being compass circles:** each ring gets a vertex-alpha
+falloff along its own ellipse — ~0.50 in the arc near its planet,
+decaying to ~0.10 at the far side, as if the body lights its own road.
+Structure stays; the drafting-tool uniformity dies. Hover behaviour
+unchanged.
+
+**Owner's distinct-orbit-colours idea — split verdict, stated:** adopted
+in Mission Control's radar (§7), **refused in the 3D scene** — eight
+differently-coloured concentric circles is graph paper in a party hat,
+and in-scene the trails already carry the week. The scene keeps slate
+rings; the radar gets the colour.
+
+The void still does not change.
+
+---
+
+## 7. Mission Control: structure, then colour (revision brief §3.6)
+
+**Diagnosis first, as asked.** The "AI vibe-coded look" is not chromatic.
+It is **uniformity**: every bay the same size, same 1px border, same
+corner radius, same padding, same type scale, arranged in an even grid
+with no dominant element — the visual signature of a system that made no
+choices. **Colour alone does not remove it.** Revision 1's four recolors
+stand (cold benchmarks, radar week-colours, ice correlation, ember
+drawdown) but they are seasoning. The meal:
+
+**1. One dominant.** The PLOT — the thing the owner already loves — grows
+to ~55% of the overlay, full height, left side, with true chassis (2px
+frame, corner ticks). Everything else is subordinate by construction.
+The right rail stacks MANIFEST, SCOPE, LAUNCH; a narrow bottom strip
+carries HAZARD and SIGNALS as instruments. No two bays the same size.
+
+**2. One huge number.** The teletype strip keeps its typed line, but the
+day number becomes a real instrument readout — **64px**, the largest
+thing in the room. Type scale now spans 64 → 15 → 11px; the current
+everything-at-12px flatness is the vibe-code tell.
+
+**3. Materials split, visibly.** Revision 1 said "paper for words, glass
+for numbers" — the build renders every bay as identical dark cards. Make
+the metaphor physical: instruments stay black glass with CRT-curved 10px
+bezels; **the LOG and the BRIEFING become actual parchment** — `#f0e2c4`
+paper, `#2b1a10` umber ink (13.02:1, AAA), 2px corners, a deckled edge,
+tabs like file folders. A TVA desk is CRTs *and* paperwork. Material
+contrast is what generated interfaces never have.
+
+**4. The word budget, enforced.** The far-left column the owner won't
+read — dies. Its prose compresses into the teletype line and a `BRIEFING
+▸` paper folder that unfolds on demand and folds away. Re-asserted from
+round 2, since the build drifted: nameplates ≤ 2 words, no sentence
+outside the teletype, headlines wrap once.
+
+**5. Asymmetry with reasons.** Gutters differ (dominant 20px, strip
+10px); tabs size to their names; stamps sit slightly over frame edges;
+the concentration verdict stays a dashed rubber-stamp. Uniformity is the
+tell; wear is the cure.
+
+**The radar earns its keep** (owner: "very cool but does not say
+anything" — his fix adopted and extended):
+
+- **Rings take their holding's signal-ramp colour at its current week
+  value** — the radar becomes the week at a glance, in the exact
+  encoding the scene teaches. A tiny ticker label sits at each ring's
+  outer edge. (This is where the distinct-orbit idea lives.)
+- **Blip size ∝ weight**; hover still flares scene + row.
+- **Click a ring or blip → that holding's manifest row expands in place**
+  into a detail card (sparkline, day/week/weight, latest headline);
+  Enter or double-click → full planet view. One gesture, information.
+- **The sweep**: a slow radar sweep whose period equals the data-refresh
+  interval — decorative theatre that honestly encodes staleness (a fresh
+  sweep means fresh quotes). Reduced motion: no sweep, timestamp stamp
+  instead.
+
+**Every bay must name its question or die:**
+
+| Bay | The question it answers | Click-through |
 |---|---|---|
-| orientation `#e8f1df` / `#020706` | 17.46:1 | AAA |
-| teletype `#f6d493` / `#21120d` | 12.75:1 | AAA |
-| active bay `#fff0cf` / `#7d3d1d` | 7.28:1 | AAA |
-| nameplate `#d5ba8c` / `#3b1f12` | 8.08:1 | AAA |
-| cream on glass `#fff0cf` / `#010806` | 17.92:1 | AAA |
-| amber on glass `#ffd68c` / `#010806` | 14.68:1 | AAA |
-| gain on glass `#63ef98` / `#010806` | 13.80:1 | AAA |
-| loss on glass `#ff665f` / `#010806` | 7.05:1 | AAA |
+| PLOT | where is everything, and how was the week | ring → holding card |
+| MANIFEST | what do I own, at what weight | row → detail card |
+| SCOPE | am I beating the market | range detents, benchmark toggle |
+| HAZARD | how much can this hurt | → drawdown history |
+| SIGNALS | what moves together | cell → pair-line on PLOT |
+| LAUNCH | what's next on the calendar | row → that ticker's card |
+| COMMS | what's being said | headline → article |
+| LOG (paper) | what did I do | entry → trade context |
 
-Every text colour proposed is a colour already committed — no new text
-hue exists to fail. Non-text marks all clear 3:1 on glass (worst:
-`nebula.clear-night` 3.11:1, `bench.vti` 4.31:1; every other glass
-token ≥ 4.6:1). `OBSERVATORY_TEXT_CONTRASTS` extends with the
-on-glass pairs above.
-
-**Performance accounting** (50 ms route budget):
-
-| Addition | Cost |
-|---|---|
-| Aurora | one offscreen canvas render in `requestIdleCallback` (~2 ms, once) + 1 textured quad |
-| Weather wisp | +1 sprite, same geometry as shipped nebula |
-| White-hot heads | vertex colours on existing trail geometry — no new pass |
-| Star accents | init-time colour array change |
-| Benchmarks / radar / grids | prop + CSS values, zero runtime delta |
-| Prism exhaust | ≤ 24 additive points, pointer-gated |
-| **Post-processing added** | **none — no bloom pass, no grading pass** |
-
-**Fallbacks.** No new encoding is colour-only: the aurora re-encodes
-the scope's own series; the twinkle mirrors the as-of badge; trail
-direction keeps taper + travel + text fallback. The 2D phone fallback
-and no-WebGL path inherit the palette through the CSS variables in the
-new token module, and change nothing else.
-
-**`/share`.** Weekly percent magnitudes and correlation strengths are
-already public-grade. No new surface carries a dollar, share count, or
-owner-only field. Canary tests unaffected.
-
-**Proposed new checks, in the build's own culture:** the palette lint
-(both tiers + alpha caps), the ramp-transit test, the extended contrast
-table, and one live scene assertion — render a loss trail crossing the
-aurora's hottest stripe and assert channel distance at the trail core
-(the white-hot head makes this trivially separable; prove it stays so).
+**The planet detail panel** (owner: too small, too many words, better
+font): panel widens to ~40% of the viewport (min 560px); body text
+15px, headlines 15px, the ID-plate day number **64px** to match the
+teletype's scale logic. Typeface: **Chakra Petch** (600) for nameplates,
+tabs, and the ID plate — the Eurostile-descended retrofuture face, free
+via Google Fonts, self-hosted — while all numerals stay in the mono
+stack with `tabular-nums`. Word budget unchanged from round 2 (≤ 60
+words on screen), which the larger type now enforces physically.
 
 ---
 
-## 9. Conflicts called, positions picked
+## 8. What stays quiet — revised ledger
 
-1. **Full rainbow vs meaningful red/green.** Cannot both be everywhere
-   at full strength. Picked meaning; rebuilt the rainbow as the
-   spectrum-minus-two. The absence is invisible to people and obvious
-   to the sampler — which is the correct way around.
-2. **Green phosphor vs green-means-gain.** Refused the reference —
-   the only one in the deck this response rejects — and kept its form:
-   the room runs P3 amber, the scope shape stays.
-3. **Whole-universe mood vs the mood ring.** Both wishes survive by
-   rationing: one alpha-capped weather layer moves; two designed poles
-   (FIRST LIGHT / CLEAR NIGHT); everything else constant. Bad days get
-   cold clarity, not ugliness.
-4. **The aurora's hot end vs loss-red.** The obvious ramp transits
-   crimson; caught by the transit test this document proposes, re-routed
-   through hue 338°, verified at 64 samples. The tooling earned its
-   place before shipping.
-5. **Identity rims vs the firewall.** Dropped on the COST case — a red
-   emissive rim is a fake loss. Identity stays in matter.
-6. **A shipped token vs the new law.** `nebula.down` breaks tier 1.
-   Rather than bending the band or churning a sampled token, the law
-   grew a second tier with an enforced alpha cap. The rule improved by
-   contact with the build.
-7. **Gap caught beyond the brief:** no single source of colour truth
-   exists; `universe-palette.ts` + lint is the first buildable unit.
+- **The void**: unchanged, still `#020706`. Third revision saying so.
+- **The cabinet**: no new hues, now with material contrast instead.
+- **Text**: cream/amber + signed values; ramps still never carry text.
+- **Scene rings**: slate, now with falloff — but never per-holding hue.
+- **Belt, satellites**: untouched this round.
+- **The comet**: three colours, semantic, no prism tail.
+- **Motion**: *reduced* overall — spin slowed and de-encoded, moons
+  slowed, one sweep added with an honest meaning. The freed channel is
+  banked, not spent (§4).
+- **The prism exhaust**: survives as the one whimsy, unchanged.
 
 ---
 
-## 10. Sequence note
+## 9. Constraints check — computed, revision 2
 
-1. `universe-palette.ts` + lint + ramp LUTs + contrast extension — pure
-   code, no pixels change, the contract lands first.
-2. Mission Control's four recolors (§4) — smallest visible win, biggest
-   reference payoff.
-3. Trail white-hot heads (§2).
-4. The aurora (§3) — needs the weekly-series plumbing.
-5. Weather wisps + star accents (§3, §5).
-6. The prism exhaust (§7) — dessert, last.
+**Firewall v2.** All revision-1 results stand (16 glass tokens clean;
+three decorative ramps transit-clean; ambient tier capped). New:
+both signal ramps hold their bands across 64 samples — max hue drift
+3.8° (gain) / 1.3° (loss) against the ±10° gate — with monotonic
+luminance (gain 0.147→0.845, loss 0.476→0.109: darker *is* worse, as
+ordered). Relit mid-tone accents (`#8fa3d6` `#5a6270` `#8a8274`
+`#a05a9e` `#9c7d3f`) all clear the firewall — they are matter anyway,
+checked out of caution.
 
-*Uncommitted, for owner review. Companion palette board:
-`UNIVERSE_PALETTE_3.html` — every token, ramp, and pole from this
-document, rendered with live-computed contrast and firewall checks.*
+**Contrast.** All revision-1 pairs stand (worst text pair 7.28:1 AAA).
+New: paper pair `#2b1a10`/`#f0e2c4` = 13.02:1 AAA. Signal ramp dark
+ends floored on the void: `#1f7a46` 3.80:1, `#b3241d` 3.08:1 (≥ 3:1
+non-text gate). The neon end 17.28:1.
+
+**Luminance law.** Worlds: equatorial-band mean L ∈ [0.16, 0.55],
+asserted from the live sphere-strip render per world. The window is
+derived from the built, owner-approved trio (0.157 / 0.207 / 0.551),
+not from taste.
+
+**Bytes.** 23 MB now; regeneration plan with measure-gates (§2.3),
+ceiling 30 MB, escalation recorded not absorbed.
+
+**Performance.** Everything here is init-time (star population, ring
+vertex alpha, texture load), 2D-canvas (radar), or CSS (Mission
+Control). The aurora remains one prebaked texture. No post pass. The
+50 ms route-owned budget is untouched; texture regeneration is offline.
+
+**Sampler.** Trail assertions upgraded per §3.3 (hue lock, ΔE ≤ 8 vs
+data-derived expectation, ordering, literals for unchanged tokens).
+Sphere-strip capture gains the mark-chirality assertion. Aurora-adjacent
+background baselines re-shot once.
+
+**Fallbacks & ledger.** Spin leaves the encoding ledger, Systems Manual,
+and fallback prose. Trail magnitude is now triple-carried (arc,
+lightness, fallback text) — nothing lives only in colour. Reduced
+motion: no sweep, no twinkle, static trails with taper + white head
+still showing direction of travel.
+
+**`/share`.** Ramp inputs are public weekly percentages; the detail
+card shows nothing the manifest doesn't already show. No new leakage
+surface.
+
+---
+
+## 10. Conflicts called, positions picked
+
+1. **"Darker red = worse" vs a near-black void.** An honest dark is an
+   invisible trail. Floored both ramps' dark ends at ≥ 3:1 (computed
+   3.80 / 3.08) — the owner gets *darker*, never *gone*.
+2. **My "textures untouched" vs five invisible planets.** The owner
+   wins, and the matter clause survives intact — it governed exemption,
+   not immutability. Relight + carve in one regeneration pass.
+3. **White-hot heads vs lightness-as-magnitude.** A variable head would
+   pollute the read; a fixed 12% head becomes its calibration reference.
+4. **Logos always visible vs projection physics.** Not billboards —
+   three carved capitals plus brand-first entry. The mark is guaranteed
+   at the moment of attention and honest the rest of the time.
+5. **Redundant magnitude encoding.** Earns its cost: the owner has now
+   rejected two rate/length channels (spin, orbit speed) as unreadable;
+   lightness is the ordinal channel he reads instantly. Arc demotes to
+   form, lengthened 36–64° per his ask.
+6. **The freed spin channel.** Banked, against the temptation to spend
+   it — over-encoding is the complaint under half his feedback. The
+   scene loses ambient day-return; the chip, manifest, teletype and
+   fallback keep it.
+7. **A decorative radar sweep vs "nothing decorative."** Tied its
+   period to the data-refresh interval: the sweep now encodes staleness.
+8. **Distinct orbit colours (owner's idea).** Adopted in the radar,
+   where it makes the diagram *say* something; refused in the 3D scene,
+   where eight coloured compass circles would deepen the exact
+   graph-paper read he's complaining about.
+
+---
+
+## 11. Sequence
+
+1. `universe-palette.ts` + firewall v2 + signal-ramp LUTs + sampler
+   upgrade — the contract, before any pixel moves.
+2. Sun scale rule + trail ramps/arc lengths + trail-behind fix + spin
+   de-encoding and new rates — small scene-math diffs, big felt change.
+3. Star population + ring falloff — the graph-paper cure.
+4. Mission Control restructure (§7) — dominant plot, materials, word
+   budget, radar click-through, detail panel.
+5. Texture regeneration batch (relight + carved marks, byte-gated).
+6. Aurora reposition + weather wisps + brand-first entry + sweep.
+7. Prism exhaust — still dessert, still last.
+
+*Uncommitted, for owner review. Companion board updated in place:
+`UNIVERSE_PALETTE_3.html` — now including the signal ramps, the world
+luminance audit, and the revised aurora cap.*
