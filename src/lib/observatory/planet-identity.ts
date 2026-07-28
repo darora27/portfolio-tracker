@@ -4,6 +4,7 @@ export type PlanetIdentity = {
   labelHex: string;
   macroFeature: string;
   emissiveSignature: string;
+  renderExposure: number;
   relightHex?: string;
 };
 
@@ -22,6 +23,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#e8f3ff",
     macroFeature: "precision-lens continent",
     emissiveSignature: "cyan optics rings",
+    renderExposure: 2.8,
   },
   {
     ticker: "GOOG",
@@ -29,6 +31,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#eef8ff",
     macroFeature: "four product districts",
     emissiveSignature: "white fiber boulevards",
+    renderExposure: 1,
   },
   {
     ticker: "MSFT",
@@ -36,6 +39,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#e8f5ff",
     macroFeature: "four-quadrant continent",
     emissiveSignature: "azure ring roads",
+    renderExposure: 2.8,
   },
   {
     ticker: "IBM",
@@ -43,6 +47,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#eaf2ff",
     macroFeature: "pinstripe monolith range",
     emissiveSignature: "quantum-dome grid",
+    renderExposure: 12,
     relightHex: "#8fa3d6",
   },
   {
@@ -51,6 +56,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#fff2e9",
     macroFeature: "warehouse crater complex",
     emissiveSignature: "red dock lanes",
+    renderExposure: 2.8,
     relightHex: "#8a8274",
   },
   {
@@ -59,6 +65,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#fff0e8",
     macroFeature: "copper reconstruction spiral",
     emissiveSignature: "blue coolant channels",
+    renderExposure: 12,
     relightHex: "#5a6270",
   },
   {
@@ -67,6 +74,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#faedff",
     macroFeature: "newborn accretion scar",
     emissiveSignature: "violet-white compute terraces",
+    renderExposure: 4.4,
     relightHex: "#a05a9e",
   },
   {
@@ -75,6 +83,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#fff1dd",
     macroFeature: "wafer-scale core",
     emissiveSignature: "cyan coolant rivers",
+    renderExposure: 3.4,
     relightHex: "#9c7d3f",
   },
 ] as const satisfies readonly PlanetIdentity[];
@@ -93,6 +102,7 @@ export function planetIdentityForTicker(ticker: string): PlanetIdentity {
       labelHex: "#eef8ef",
       macroFeature: "authored surface",
       emissiveSignature: "surface light network",
+      renderExposure: 1,
     }
   );
 }

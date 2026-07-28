@@ -251,10 +251,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
           "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-09 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F3 remediated in the raycast model: corona-only portfolio-glow hits yield to a specific satellite while solid-sun priority is retained; focused tests pass. Live pointer rerun was attempted, but in-app discovery=[] and standalone Chromium was sandbox-blocked before navigation (Permission denied 1100), so DEF-09 remains deferred_to_reviewer rather than passed. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -282,9 +283,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-10 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "The inspector is now viewport-bounded and scrollable; the approach camera moves farther outward and looks farther along the tangent. Full tests/build pass. Live geometry and screenshot verification was attempted but Chromium was sandbox-blocked before navigation, so DEF-10 remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -336,10 +338,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
           "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-02 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F2 remediated: decorative corona hits use portfolio-glow and yield to specific ray intersections, with unit coverage for satellite acquisition, corona-only sun fallback and solid-sun priority. Live every-camera pointer verification was attempted but Chromium was sandbox-blocked before navigation, so BHV-02 remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -561,9 +564,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-10 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "The duplicated shell-level bay question is removed; PLOT renders its question once and keeps a two-word direct holding action instead of the redundant MANIFEST table. DOM tests for one question and every destination pass. Live word-budget capture remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -768,10 +772,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
           "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F1 remediated with per-world linear shader exposure calibrated from the reviewer's live linear-luminance table to approximately 0.20-0.22 for the seven dark worlds; GOOG remains unchanged. The accepted floor, hue and texture statistics are unchanged. Live remeasurement was attempted but Chromium was sandbox-blocked before navigation, so VIS-01 remains deferred_to_reviewer and no pixel pass is claimed. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -964,9 +969,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-08 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "The redundant PLOT-side MANIFEST table is removed while a compact two-word direct action preserves click-through; the existing 55% chassis geometry and type-scale model are unchanged. Live visual verification remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -991,9 +997,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-09 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "The LOG chip now explicitly restores paper-on-ink contrast after the parchment descendant rule, and trade rows scroll on whole-row boundaries. DOM tests/build pass; live parchment capture remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1071,9 +1078,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-12 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F6's surfaced layout defects were remediated (bounded planet detail, farther/tangent camera, readable LOG chip, whole-row scroll, one bay question, no redundant PLOT MANIFEST). The retained capture was attempted, but Chromium was sandbox-blocked before navigation; after/ cannot truthfully be populated in this CLI, so VIS-12 remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1632,10 +1640,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for TST-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F4 remediated at the render stage: the measurable 3px core is opaque normal blending and the 9px glow remains additive; the scene-model assertion passes. Live deltaE/hue/order sampling was attempted but Chromium was sandbox-blocked before navigation, so TST-03 remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1878,10 +1887,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs",
           "docs/phase10-baseline/section-10/raw-long-task-output.txt"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BLD-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F5 root cause remediated: raw KTX2 fetch/parse/zstd decode now runs in a bundled module worker after first paint and transfers decoded buffers to the UI thread; production build confirms the worker bundle and no post-processing was added. The five-context PerformanceObserver matrix was attempted but Chromium was sandbox-blocked before navigation, so BLD-04 remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1909,9 +1919,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/diagnose-live-scene.mjs"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BLD-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "Texture work remains scheduled after two animation frames; deterministic shader art is bound before the module worker begins fetching and decoding maps. Production build passes. Live first-paint/network sequencing remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",

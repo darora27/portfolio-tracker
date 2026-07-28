@@ -49,8 +49,6 @@ export function MissionControl({
   const [detailTicker, setDetailTicker] = useState<string | null>(null);
   const [briefingOpen, setBriefingOpen] = useState(false);
   const activeTicker = hoveredTicker ?? detailTicker;
-  const activeQuestion =
-    MISSION_CONTROL_PANELS.find(({ id }) => id === activePanel)?.question ?? "";
   const routeToHolding = useCallback((ticker: string) => {
     window.location.assign(
       `${basePath}?holding=${encodeURIComponent(ticker)}&camera=approach`,
@@ -135,7 +133,11 @@ export function MissionControl({
         <aside className={styles.plotChassis} aria-label="System plot">
           <header>
             <b>PLOT FEED</b>
-            <span className={styles.bayQuestion}>where is everything, and how was the week</span>
+            {activePanel === "plot" ? null : (
+              <span className={styles.bayQuestion}>
+                where is everything, and how was the week
+              </span>
+            )}
           </header>
           <SystemPlot
             holdings={holdings}
@@ -209,7 +211,6 @@ export function MissionControl({
             className={styles.missionContent}
             data-material={activePanel === "log" ? "paper" : "glass"}
           >
-            <p className={styles.activeBayQuestion}>{activeQuestion}</p>
             {content}
           </div>
           <div className={styles.railStations}>

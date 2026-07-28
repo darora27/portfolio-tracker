@@ -107,6 +107,7 @@ export type SceneModel = {
     screen: { x: number; y: number; depth: number };
     bounds: ScreenBounds;
     brandHex: string;
+    renderExposure: number;
     encodedWeight: number;
   }>;
   trails: Array<{
@@ -125,7 +126,7 @@ export type SceneModel = {
     fog: false;
     passes: readonly [
       { id: "glow"; widthPx: 9; opacity: 0.36; additive: true },
-      { id: "core"; widthPx: 3; opacity: 0.96; additive: true },
+      { id: "core"; widthPx: 3; opacity: 1; additive: false },
     ];
   }>;
   labels: Array<{
@@ -778,6 +779,16 @@ export function resolveOrreryPointerTarget(
   return magneticTarget ?? directHit;
 }
 
+export function resolveOrreryRaycastTarget(
+  directHits: readonly string[],
+  magneticTarget: string | undefined,
+): string | undefined {
+  const directHit =
+    directHits.find((target) => target !== "portfolio-glow") ??
+    (directHits.includes("portfolio-glow") ? "portfolio" : undefined);
+  return resolveOrreryPointerTarget(directHit, magneticTarget);
+}
+
 export function formatDayChip(value: number | null): string {
   if (value === null) return "—";
   const glyph = value > 0 ? "▲" : value < 0 ? "▼" : "◆";
@@ -949,6 +960,7 @@ export function buildOverviewSceneModel({
       spinPeriodSeconds,
       spinRadiansPerSecond: decorativeSpinRadiansPerSecond(holding.ticker),
       brandHex: planetIdentityForTicker(holding.ticker).brandHex,
+      renderExposure: planetIdentityForTicker(holding.ticker).renderExposure,
       encodedWeight: holding.weight,
     };
   });
@@ -1077,7 +1089,7 @@ export function buildOverviewSceneModel({
         fog: false,
         passes: [
           { id: "glow", widthPx: 9, opacity: 0.36, additive: true },
-          { id: "core", widthPx: 3, opacity: 0.96, additive: true },
+          { id: "core", widthPx: 3, opacity: 1, additive: false },
         ],
       };
     }),

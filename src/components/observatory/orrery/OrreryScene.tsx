@@ -14,22 +14,26 @@ import {
   LineSegments,
   Mesh,
   MeshBasicMaterial,
+  NoColorSpace,
+  NormalBlending,
   PerspectiveCamera,
   PlaneGeometry,
   Points,
   PointsMaterial,
   Raycaster,
+  RedFormat,
+  RGFormat,
   RingGeometry,
   Scene,
   ShaderMaterial,
   SphereGeometry,
   SRGBColorSpace,
   Texture,
+  UnsignedByteType,
   Vector2,
   Vector3,
   WebGLRenderer,
 } from "three";
-import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 import {
   ORRERY_SUN_CLEARANCE,
   type PublicOrreryHolding,
@@ -41,7 +45,7 @@ import {
   buildOverviewSceneModel,
   layoutOverviewLabels,
   projectSphereScreenBounds,
-  resolveOrreryPointerTarget,
+  resolveOrreryRaycastTarget,
   ringVertexAlpha,
   starMagnitudeBucket,
   type SceneModel,
@@ -74,6 +78,7 @@ const PLANET_FRAGMENT_SHADER = `
   uniform float uActive;
   uniform float uDim;
   uniform float uHasTextures;
+  uniform float uExposure;
   uniform sampler2D uBaseMap;
   uniform sampler2D uEmissiveMap;
   uniform sampler2D uNormalMap;
@@ -97,7 +102,7 @@ const PLANET_FRAGMENT_SHADER = `
     float rim = pow(1.0 - max(dot(normal, viewDirection), 0.0), 2.2);
     vec3 color = surface * diffuse + uAccent * rim * (0.7 + uActive * 0.5);
     color += uAccent * emissive * uHasTextures * 0.75 + uAccent * uActive * 0.1;
-    gl_FragColor = vec4(color * uDim, 1.0);
+    gl_FragColor = vec4(color * uDim * uExposure, 1.0);
   }
 `;
 
@@ -708,8 +713,8 @@ export default function OrreryScene({
     const glowMaterialOuter = glowMaterialInner.clone();
     const glowInner = new Mesh(sunGeometry, glowMaterialInner);
     const glowOuter = new Mesh(sunGeometry, glowMaterialOuter);
-    glowInner.userData.orreryTarget = "portfolio";
-    glowOuter.userData.orreryTarget = "portfolio";
+    glowInner.userData.orreryTarget = "portfolio-glow";
+    glowOuter.userData.orreryTarget = "portfolio-glow";
     scene.add(glowInner, glowOuter);
 
     const dockingRingMaterial = new MeshBasicMaterial({
@@ -805,7 +810,7 @@ export default function OrreryScene({
           transparent: true,
           opacity: pass.opacity,
           fog: trailDescriptor.fog,
-          blending: AdditiveBlending,
+          blending: pass.additive ? AdditiveBlending : NormalBlending,
           depthWrite: false,
           side: 2,
         });
@@ -843,6 +848,7 @@ export default function OrreryScene({
           uActive: { value: 0 },
           uDim: { value: 1 },
           uHasTextures: { value: 0 },
+          uExposure: { value: descriptor.renderExposure },
           uBaseMap: { value: fallbackTexture },
           uEmissiveMap: { value: fallbackTexture },
           uNormalMap: { value: fallbackTexture },
@@ -1016,7 +1022,78 @@ export default function OrreryScene({
     }
 
     let textureCancelled = false;
-    const textureLoader = new KTX2Loader().detectSupport(renderer);
+    const textureWorker = new Worker(
+      new URL("./planet-texture.worker.ts", import.meta.url),
+      { type: "module" },
+    );
+    let textureRequestId = 0;
+    const textureRequests = new Map<
+      number,
+      {
+        resolve: (texture: DataTexture) => void;
+        reject: (error: Error) => void;
+        kind: "base" | "emissive" | "normal";
+      }
+    >();
+    textureWorker.addEventListener(
+      "message",
+      (
+        event: MessageEvent<
+          | {
+              id: number;
+              data: ArrayBuffer;
+              width: number;
+              height: number;
+              channels: 1 | 2 | 4;
+            }
+          | { id: number; error: string }
+        >,
+      ) => {
+        const request = textureRequests.get(event.data.id);
+        if (!request) return;
+        textureRequests.delete(event.data.id);
+        if ("error" in event.data) {
+          request.reject(new Error(event.data.error));
+          return;
+        }
+        const format =
+          event.data.channels === 4
+            ? undefined
+            : event.data.channels === 2
+              ? RGFormat
+              : RedFormat;
+        const texture = new DataTexture(
+          new Uint8Array(event.data.data),
+          event.data.width,
+          event.data.height,
+          format,
+          UnsignedByteType,
+        );
+        texture.colorSpace =
+          request.kind === "base" ? SRGBColorSpace : NoColorSpace;
+        texture.needsUpdate = true;
+        request.resolve(texture);
+      },
+    );
+    textureWorker.addEventListener("error", () => {
+      for (const request of textureRequests.values()) {
+        request.reject(new Error("Texture worker failed"));
+      }
+      textureRequests.clear();
+    });
+    const loadTexture = (
+      url: string,
+      kind: "base" | "emissive" | "normal",
+    ) =>
+      new Promise<DataTexture>((resolve, reject) => {
+        if (textureCancelled) {
+          reject(new Error("Texture decode cancelled"));
+          return;
+        }
+        const id = ++textureRequestId;
+        textureRequests.set(id, { resolve, reject, kind });
+        textureWorker.postMessage({ id, url });
+      });
     const nextTextureFrame = () =>
       new Promise<void>((resolve) => {
         textureFrame = requestAnimationFrame(() => resolve());
@@ -1029,9 +1106,12 @@ export default function OrreryScene({
         const uniforms = planet.mesh.material.uniforms;
         try {
           const [base, emissive, normal] = await Promise.all([
-            textureLoader.loadAsync(`/textures/planets/${ticker}-base.ktx2`),
-            textureLoader.loadAsync(`/textures/planets/${ticker}-emissive.ktx2`),
-            textureLoader.loadAsync(`/textures/planets/${ticker}-normal.ktx2`),
+            loadTexture(`/textures/planets/${ticker}-base.ktx2`, "base"),
+            loadTexture(
+              `/textures/planets/${ticker}-emissive.ktx2`,
+              "emissive",
+            ),
+            loadTexture(`/textures/planets/${ticker}-normal.ktx2`, "normal"),
           ]);
           if (textureCancelled) {
             base.dispose();
@@ -1048,6 +1128,7 @@ export default function OrreryScene({
         } catch {
           // Unknown/new top-eight tickers keep deterministic shader art.
         }
+        if (textureCancelled) return;
         await nextTextureFrame();
       }
     };
@@ -1159,9 +1240,11 @@ export default function OrreryScene({
     };
     const pick = () => {
       raycaster.setFromCamera(pointer, camera);
-      const hit = raycaster.intersectObjects(pickTargets, false)[0]?.object.userData
-        .orreryTarget as string | undefined;
-      const target = resolveOrreryPointerTarget(hit, magneticTarget());
+      const directHits = raycaster
+        .intersectObjects(pickTargets, false)
+        .map(({ object }) => object.userData.orreryTarget)
+        .filter((target): target is string => typeof target === "string");
+      const target = resolveOrreryRaycastTarget(directHits, magneticTarget());
       localTarget = target;
       mount.dataset.orreryTarget = target ?? "";
       const ticker =
@@ -1518,12 +1601,12 @@ export default function OrreryScene({
         tangentVector.set(-outwardVector.z, 0, outwardVector.x);
         cameraTarget
           .copy(worldPosition)
-          .addScaledVector(outwardVector, 4.8)
+          .addScaledVector(outwardVector, 6.2)
           .addScaledVector(tangentVector, 1.25);
         cameraTarget.y += 1.35;
         lookAtTarget
           .copy(worldPosition)
-          .addScaledVector(tangentVector, 0.75);
+          .addScaledVector(tangentVector, 1.45);
       } else if (state === "command") {
         brandEntryTicker = null;
         cameraTarget.set(0, 3.8, 7.4);
@@ -1591,6 +1674,11 @@ export default function OrreryScene({
       cancelAnimationFrame(animationFrame);
       textureCancelled = true;
       cancelAnimationFrame(textureFrame);
+      textureWorker.terminate();
+      for (const request of textureRequests.values()) {
+        request.reject(new Error("Texture decode cancelled"));
+      }
+      textureRequests.clear();
       window.clearTimeout(dockingHintTimer);
       resizeObserver.disconnect();
       renderer.domElement.removeEventListener("pointermove", onPointerMove);
@@ -1644,7 +1732,6 @@ export default function OrreryScene({
       cometTailGeometry?.dispose();
       cometMaterial?.dispose();
       fallbackTexture.dispose();
-      textureLoader.dispose();
       renderer.dispose();
       labelLayer.remove();
       renderer.domElement.remove();

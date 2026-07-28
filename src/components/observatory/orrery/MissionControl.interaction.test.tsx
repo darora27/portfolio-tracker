@@ -93,7 +93,7 @@ describe("MissionControl interactions", () => {
       <MissionControl
         activePanel="log"
         mode="public"
-        content={<div>LOG PANEL</div>}
+        content={<div><p>what did I do</p><div>LOG PANEL</div></div>}
         closeHref="/share"
         basePath="/share"
         holdings={[]}
@@ -105,6 +105,7 @@ describe("MissionControl interactions", () => {
     fireEvent.click(briefing);
     expect(screen.getByText("PUBLIC RATIOS · SAME-PERIOD INDEXES · HELD NEWS")).toBeTruthy();
     expect(briefing.getAttribute("aria-expanded")).toBe("true");
+    expect(screen.getAllByText("what did I do")).toHaveLength(1);
   });
 
   it("keeps cabinet chrome constant when portfolio health changes", () => {
@@ -144,5 +145,24 @@ describe("MissionControl interactions", () => {
       plot: container.querySelector("[aria-label='System plot']")?.getAttribute("class"),
       rail: container.querySelector("[aria-label='Mission instruments']")?.getAttribute("class"),
     }).toEqual(before);
+  });
+
+  it("renders the active bay question once", () => {
+    render(
+      <MissionControl
+        activePanel="plot"
+        mode="public"
+        content={<p>where is everything, and how was the week</p>}
+        closeHref="/share"
+        basePath="/share"
+        holdings={[holding]}
+        health={0.2}
+        teletype="SOL-DEVAN · DAY +1.0%"
+      />,
+    );
+
+    expect(
+      screen.getAllByText("where is everything, and how was the week"),
+    ).toHaveLength(1);
   });
 });

@@ -6,7 +6,7 @@ Captured by `codex/gpt-5` on 2026-07-28.
 
 The deterministic implementation matrix is green:
 
-- `npm test`: 99 test files / 525 tests passed at the final implementation gate.
+- `npm test`: 99 test files / 526 tests passed at the remediation gate.
 - `npm run build`: passed, including `/share` and Mission Control route smoke.
 - `npx tsc --noEmit`: passed.
 - Planet textures: 22,570,477 bytes shipped at 1448×724 base / 724×362 derived, below the 30,000,000-byte ceiling.
@@ -14,9 +14,49 @@ The deterministic implementation matrix is green:
 
 ## Live-browser environment gap
 
-The prescribed in-app browser runtime was initialized, then returned `No browser is available`; its one permitted discovery call returned `[]`. No alternate browser controller was substituted and no visual pass is claimed from source.
+The prescribed in-app browser runtime was initialized, then returned `No browser is available`; its one permitted discovery call returned `[]`. No visual pass is claimed from source.
+
+During remediation the retained Playwright verifiers were also attempted
+against a ready production server at `127.0.0.1:3131`. Both installed Chromium
+headless-shell revisions were blocked before navigation by the CLI sandbox:
+`bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>:
+Permission denied (1100)`. Exact evidence is retained in `browser-backend.txt`.
 
 Criteria whose truth depends on live WebGL pixels, computed geometry, pointer acquisition, mobile layout, reduced-motion rendering, or long-task entries are recorded as `deferred_to_reviewer`. Their retained verifier scripts are under `scripts/`; the corresponding raw output files record the exact environment-only gap.
+
+## Review remediation
+
+The six bounded Claude Lead findings were addressed without changing the
+accepted thresholds or expanding route scope:
+
+- `VIS-01`: the planet shader now carries an identity-owned linear exposure.
+  Applying the selected scalars to the reviewer's measured linear luminances
+  targets ASML 0.214, COST 0.218, MSFT 0.214, IBM 0.203, INTC 0.197, CBRS
+  0.215, and NBIS 0.219; GOOG remains unchanged at 0.342. This is a calibration
+  prediction, not a claimed live pass. The accepted `[0.16, 0.55]` window,
+  identity hue, texture maps, and `luminanceStdDev` floor are unchanged.
+- `BHV-02` / `DEF-09`: corona hits are tagged `portfolio-glow`. Ray resolution
+  skips that decorative envelope only when a more specific intersected target
+  exists, so satellites inside the enlarged corona win while the solid sun
+  retains priority over objects geometrically behind it.
+- `TST-03`: the measurable 3px trail core is now opaque normal blending and
+  therefore carries the payload-derived ramp colour; the 9px atmospheric glow
+  stays additive.
+- `BLD-04`: Three's raw KTX2 path parsed and zstd-decoded each map on the UI
+  thread. A module worker now fetches, parses, and decompresses the same
+  committed KTX2 assets after two animation frames, then transfers raw buffers
+  back for `DataTexture` upload. The shader fallback remains the first frame.
+- `VIS-12` and its surfaced `DEF-10` / `VIS-08` / `VIS-09` / `BHV-10`
+  defects: the approach panel is viewport-bounded and scrollable, the camera
+  moves farther outward and looks farther along the tangent, LOG restores
+  paper-on-ink chip contrast and whole-row scrolling, each active question
+  renders once, and PLOT replaces the redundant MANIFEST table with a compact
+  two-word direct action.
+
+The deterministic remediation matrix is retained in
+`remediation-verification.txt`: 99 test files / 526 tests, TypeScript, and the
+production build are green. Live remeasurement remains explicitly assigned to
+the reviewer because of the browser environment gap above.
 
 ## Root-cause record
 

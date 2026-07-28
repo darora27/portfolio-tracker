@@ -1,10 +1,17 @@
-DEFERRED_TO_REVIEWER — 2026-07-28 — codex/gpt-5
+DEFERRED_TO_REVIEWER AFTER REMEDIATION — 2026-07-28 — codex/gpt-5
 The prescribed browser runtime returned no available browser backends:
   selection: No browser is available
   discovery: []
+The retained Playwright probes were also attempted against a ready production
+server, but Chromium was blocked before navigation by:
+  bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permission denied (1100)
 No pointer/keyboard live result is claimed.
 Retained verifier: docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs
 Non-live DOM interaction coverage:
   MissionControl.interaction.test.tsx PASS
   MissionControlBays/SystemPlot.test.tsx PASS
   OrrerySceneLoader.test.ts PASS
+Raycast model coverage:
+  portfolio-glow + satellite:HAZARD resolves satellite:HAZARD
+  portfolio-glow alone resolves portfolio
+  solid portfolio hit remains higher priority than geometry behind the sun

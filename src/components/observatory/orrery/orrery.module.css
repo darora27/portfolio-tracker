@@ -595,11 +595,14 @@
 
 @media (min-width: 1024px) {
   [data-camera="approach"] .inspector {
+    top: 6.5rem;
+    bottom: 1.5rem;
     width: max(
       var(--mission-detail-fraction, 40vw),
       var(--mission-detail-min, 560px)
     );
     max-width: calc(100vw - 3rem);
+    overflow-y: auto;
   }
 
   [data-camera="approach"] .planetDetail {
@@ -1141,6 +1144,11 @@
   border-color: rgba(43, 26, 16, 0.42);
 }
 
+.missionContent[data-material="paper"] .operationsBay h3 {
+  color: var(--universe-paper-sheet);
+  background: var(--universe-paper-ink);
+}
+
 .railStations,
 .instrumentStrip {
   display: grid;
@@ -1253,6 +1261,12 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.logRows {
+  max-height: 9rem;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 .manifestRows a {
@@ -1496,13 +1510,6 @@
 
 .logRows b {
   color: #f4cf91;
-}
-
-.activeBayQuestion {
-  margin: 0 0 0.4rem;
-  color: var(--universe-cabinet-question);
-  font-size: 11px;
-  text-transform: lowercase;
 }
 
 .bayDestination {

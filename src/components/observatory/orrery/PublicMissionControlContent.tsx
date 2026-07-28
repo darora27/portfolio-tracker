@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { DashboardData } from "@/lib/dashboard-data";
 import type { MissionControlPanelId } from "./mission-control-panels";
 import { CommsBay } from "./MissionControlBays/CommsBay";
@@ -73,7 +74,14 @@ export function PublicMissionControlContent({
           <span>VS VOO <b>{pct(voo?.excessReturnPct ?? null)}</b></span>
           <span>BODIES <b>{data.publicOrreryHoldings.length}</b></span>
         </div>
-        <ManifestBay holdings={data.publicOrreryHoldings} basePath={basePath} />
+        {data.publicOrreryHoldings[0] ? (
+          <Link
+            className={styles.bayDestination}
+            href={`${basePath}?holding=${encodeURIComponent(data.publicOrreryHoldings[0].ticker)}&camera=approach`}
+          >
+            OPEN {data.publicOrreryHoldings[0].ticker}
+          </Link>
+        ) : null}
       </section>
     );
   }

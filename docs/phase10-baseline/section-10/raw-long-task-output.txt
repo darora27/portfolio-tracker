@@ -1,5 +1,10 @@
-DEFERRED_TO_REVIEWER — 2026-07-28 — codex/gpt-5
+DEFERRED_TO_REVIEWER AFTER REMEDIATION — 2026-07-28 — codex/gpt-5
 The prescribed browser runtime returned no available browser backends (discovery=[]).
+The retained Playwright script was also attempted against a ready production
+server, but Chromium was blocked before navigation by:
+bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permission denied (1100)
 No PerformanceObserver long-task result is claimed.
 Retained verifier: docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs
 Required matrix remains five fresh 1440x900 contexts at CPU 2x with an unmodified 50ms ceiling.
+The raw zstd KTX2 parse/decode path now runs in planet-texture.worker.ts after
+two animation frames; the committed maps and first-paint fallback are unchanged.

@@ -1,0 +1,36 @@
+Phase 10 §10 remediation verification — 2026-07-28 — codex/gpt-5
+
+Deterministic gates
+  npx tsc --noEmit
+    PASS
+  npm test
+    PASS — 99 test files / 526 tests
+  npm run build
+    PASS — Next.js 16.2.11 production build and /share smoke
+
+Focused remediation matrix
+  scene-model.test.ts
+    PASS — corona-specific hit priority, solid-sun priority, trail core
+    compositing, and per-world render exposure propagation
+  MissionControl.interaction.test.tsx
+    PASS — active LOG and PLOT questions each render once
+  MissionControlContent.test.tsx
+    PASS — all bay questions and direct public destinations remain present
+  planet-textures.test.ts
+    PASS — source texture statistics and 30 MB ceiling unchanged
+  production worker bundle
+    PASS — Turbopack emitted the module-worker bootstrap and bundled KTX parser
+    plus zstd decoder; raw TypeScript is not the executed worker entrypoint
+
+Browser gate
+  In-app browser selection: No browser is available
+  Discovery: []
+  Retained Playwright probes: attempted against 127.0.0.1:3131/share
+  Chromium launch: BLOCKED before navigation
+  Exact fatal:
+    bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>:
+    Permission denied (1100)
+  Result:
+    All live WebGL, pixel, geometry, pointer, mobile, accessibility, fallback,
+    and long-task criteria remain deferred_to_reviewer. No rendered pass is
+    claimed by this file.

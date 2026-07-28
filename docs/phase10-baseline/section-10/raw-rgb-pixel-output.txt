@@ -1,5 +1,10 @@
-DEFERRED_TO_REVIEWER — 2026-07-28 — codex/gpt-5
+DEFERRED_TO_REVIEWER AFTER REMEDIATION — 2026-07-28 — codex/gpt-5
 The prescribed browser runtime returned no available browser backends (discovery=[]).
+The retained Playwright script was also attempted against a ready production
+server, but Chromium was blocked before navigation by:
+bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permission denied (1100)
 No live RGB, hue-lock, DeltaE, ordering, or ring-pixel result is claimed.
 Retained verifier: docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs
 Deterministic palette/scene-model verifier: npm test -- --run src/lib/observatory/universe-palette.test.ts src/lib/observatory/scene-model.test.ts
+The core pass now uses normal blending at opacity 1 while the surrounding glow
+remains additive; the scene-model assertion is green.

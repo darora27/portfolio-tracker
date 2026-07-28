@@ -23,6 +23,7 @@ import {
   radarBlipDiameterPx,
   radarRingColor,
   resolveOrreryPointerTarget,
+  resolveOrreryRaycastTarget,
   resolveLabelCollisions,
   ringVertexAlpha,
   satelliteBlinkSeconds,
@@ -36,6 +37,7 @@ import {
   weatherWispsForHealth,
   weeklyReturnsFromIndexSeries,
 } from "./scene-model";
+import { planetIdentityForTicker } from "./planet-identity";
 import { UNIVERSE_PALETTE, rampForWeekly } from "./universe-palette";
 
 const holdings: PublicOrreryHolding[] = [
@@ -121,8 +123,11 @@ describe("pure overview scene descriptor", () => {
     });
     expect(model.trails[0].passes).toEqual([
       { id: "glow", widthPx: 9, opacity: 0.36, additive: true },
-      { id: "core", widthPx: 3, opacity: 0.96, additive: true },
+      { id: "core", widthPx: 3, opacity: 1, additive: false },
     ]);
+    expect(model.planets[0].renderExposure).toBe(
+      planetIdentityForTicker(model.planets[0].ticker).renderExposure,
+    );
     expect(model.trails[0].arcRadians).toBe(
       trailArcLengthForWeeklyReturn(-0.06),
     );
@@ -479,6 +484,18 @@ describe("pure overview scene descriptor", () => {
     expect(resolveOrreryPointerTarget("belt", "NBIS")).toBe("belt");
     expect(resolveOrreryPointerTarget("belt:CBRS", "NBIS")).toBe("belt:CBRS");
     expect(resolveOrreryPointerTarget("ASML", "GOOG")).toBe("GOOG");
+    expect(
+      resolveOrreryRaycastTarget(
+        ["portfolio-glow", "portfolio-glow", "satellite:HAZARD"],
+        undefined,
+      ),
+    ).toBe("satellite:HAZARD");
+    expect(
+      resolveOrreryRaycastTarget(["portfolio-glow", "portfolio-glow"], undefined),
+    ).toBe("portfolio");
+    expect(
+      resolveOrreryRaycastTarget(["portfolio", "planet:behind-sun"], undefined),
+    ).toBe("portfolio");
   });
 
   it("keeps sun physiology identical across interaction states", () => {
