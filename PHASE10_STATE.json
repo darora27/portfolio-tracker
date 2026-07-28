@@ -170,7 +170,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T22:16:41Z",
+  "updated_at": "2026-07-28T23:22:27Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
@@ -450,5 +450,6 @@
     "verification_note": "Every quantitative claim in UNIVERSE_IDEAS_3.md was independently recomputed before adoption: all eight world luminances matched to three decimals and the L~=0.15 visible/dark split the owner reported holds 8/8; both trail-ramp dark-end contrast floors (3.80, 3.08) and the neon end (17.28) exact; hue drift 3.5 deg (gain) and 0.5 deg (loss) against a 10 deg gate; paper pair 13.02:1; luminance monotonic along both signal ramps. Round-3 revision 1's six contrast claims and sixteen glass-hue firewall checks were also verified exact in a prior pass.",
     "carried_defects": "Ten owner-reported defects are recorded in PHASE10.md §10 'Owner defects to close in this section' rather than being filed against §9."
   },
-  "last_green_commit_note": "Moved from 6a68758 (§8) to §9’s accepted commit 589be88, the last commit at which npm test was green. Verified at acceptance rather than assumed: at 589be88 all three assertions in planet-textures.test.ts pass (directory total 11,727,680 == manifest.totalBytes, <= the 15,000,000 cap; minimum luminanceStdDev 0.101584 >= the 0.1 floor), and the other 93 test files depend on src/, which is byte-identical between 589be88 and HEAD. HEAD itself is RED by documented owner exception - see sections_history §9."
+  "last_green_commit_note": "Moved from 6a68758 (§8) to §9’s accepted commit 589be88, the last commit at which npm test was green. Verified at acceptance rather than assumed: at 589be88 all three assertions in planet-textures.test.ts pass (directory total 11,727,680 == manifest.totalBytes, <= the 15,000,000 cap; minimum luminanceStdDev 0.101584 >= the 0.1 floor), and the other 93 test files depend on src/, which is byte-identical between 589be88 and HEAD. HEAD itself is RED by documented owner exception - see sections_history §9.",
+  "owner_feedback_ledger": "OWNER_FEEDBACK_LEDGER.md — the durable record of owner decisions, open items, and standing rules. Read alongside the section spec. Newer than any older document it contradicts."
 }
