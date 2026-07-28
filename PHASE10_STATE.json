@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "claude_lead",
-  "stage": "accept",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -28,7 +28,7 @@
     "title": "The Stock Market Universe — /share rebuilt",
     "spec_doc": "docs/phase10-workflow/specs/section-8.md",
     "implementation_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
-    "review_result": "pass",
+    "review_result": "fail",
     "review_doc": "docs/phase10-workflow/reviews/section-8-review-4.md",
     "findings": [],
     "prior_findings_resolved": [
@@ -77,7 +77,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-8-claude-lead-to-claude-lead-accept.md",
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-8-devan-to-codex-implementation-remediate-3.md",
     "owner_feedback": {
       "recorded_at": "2026-07-27",
       "recorded_by": "claude/fable-5 (cowork, owner-directed)",
@@ -122,6 +122,34 @@
       "features": [
         "E6 satellites carrying portfolio-level statistics, and per-planet moons opening recent news. Both must obey the encoding rule (every object means one real number). Additive and lower priority than E1-E4; report as not started if budget is short."
       ]
+    },
+    "owner_defects_round_3": {
+      "recorded_at": "2026-07-28",
+      "recorded_by": "claude/fable-5 (cowork, owner-directed)",
+      "source": "Devan running commit c2485af locally after review 9b907c2 passed",
+      "scope_note": "Defects only. The round-2 creative work (texture regeneration, overview composition, Mission Control reskin, planet detail view, moons, satellites, sector map) is NEW SCOPE recorded in UNIVERSE_IDEAS_2.md and will be specified as its own section after §8 is accepted. Do not begin it in this remediation.",
+      "defects": [
+        "F1 SEVERE — orbit rings render at opacity 0.12/0.2 and trails are too thin to read at OVERVIEW. Regression. Trails are the ONLY encoding of orbit direction (weekly return sign), so an invisible trail makes performance direction unreadable. Restore legibility in a still frame; add a regression check.",
+        "F2 planets intersect orbit lines at close camera range. Owner explicitly does NOT want orbits spaced further apart — seeing other planets while zoomed is desirable. Fix depth/geometry handling, not spacing.",
+        "F3 exiting a planet back to OVERVIEW is still unreliable — reported a third time. Spec §6 requires every camera state be one gesture from OVERVIEW. Cover the return path from every state, not only APPROACH.",
+        "F4 asteroid-belt objects are not clickable. Verify hit targets, pointer handling under the rocket cursor, and keyboard reachability.",
+        "F5 the sun gives no hover feedback and reads as scenery. CONSTRAINT: the sun's body encodes health (colour, corona, sunspots, pulse) — hover feedback must never be confusable with a health change. Use clearly-instrumentation affordance (UNIVERSE_IDEAS_2.md §6 proposes a dashed docking ring plus extended label).",
+        "F6 ticker labels darken the planets to stay legible, hiding the textures. Remove the scrim; move the tag below the planet with contrast carried by the label itself. Owner suggested inverse colours; UNIVERSE_IDEAS_2.md §2 refines this — literal inversion collides with reserved red/green direction semantics, so tint toward the planet's dominant brand hue, lightened."
+      ]
+    },
+    "round_2_creative_doc": {
+      "doc": "UNIVERSE_IDEAS_2.md",
+      "brief": "UNIVERSE_ROUND2_BRIEF.md",
+      "status": "adopted with four owner corrections/authorizations recorded in its §9",
+      "corrections": [
+        "9.1 texture resolution: 4096x2048 measured at ~245MB for 24 maps and cannot ship. Compression is the real lever (currently ~1.28 bytes/pixel = UASTC; ETC1S runs 0.25-0.5). Directed: tune compression, then ship base at 2048x1024 and emissive/normal at 1024x512; measure and record the real total; reduce further if it exceeds ~15MB.",
+        "9.2 satellite placement must derive from ring geometry at render time with the existing minimum-separation guarantee, not from today's concentration snapshot."
+      ],
+      "authorizations": [
+        "9.3 public trade log AUTHORIZED — action, ticker, date, and % impact only. Never shares, prices, or dollar amounts. The trade comet is authorized on the same basis. This is a NEW disclosure (/share exposes no trade data today); privacy canary tests must extend to the new surface.",
+        "9.4 public stock news AUTHORIZED for held tickers, enabling news moons and the Transmissions bay. No owner-only field may ride along; a news-source failure must degrade gracefully rather than break the scene."
+      ],
+      "sequencing": "Specified as its own section after §8 is accepted."
     }
   },
   "sections_history": [
@@ -218,7 +246,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T01:57:53Z",
+  "updated_at": "2026-07-28T02:55:02Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
