@@ -10,7 +10,7 @@ them.
 
 - Phase: 10
 - Current section: **§10 — Universe colour, material, and command structure**
-- Managed range: §2–§16
+- Managed range: §2–§17
 - Stage: `review`
 - Role: `claude_lead`
 - Status: `ready`
@@ -103,9 +103,9 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 
 These hashes make stale generated context mechanically detectable:
 
-- `docs/phase10-workflow/workflow.json`: `f160fbde679450e7194b122c750cc39a61ea2b627233788c0afa096f7921cd4f`
+- `docs/phase10-workflow/workflow.json`: `3d64a23fadd829c2c42d9722c2cd82225f1304bb0cb15017f4d925b257c8fa22`
 - `PHASE10_STATE.json`: `2c233cfd7d02a395d79ec1ed491f6a73ad8ef4bb30c13c5b8755eb7e5fc16ad6`
-- `PHASE10.md`: `6b91c5b0a0708eee11034aac548b37a32febac89edf69522c19b94f0d18c8aa2`
+- `PHASE10.md`: `a676fa1f1230a47dafebf9f85d62df39ca00b96b57d03318175f15ab2083bc58`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
 - `docs/phase10-workflow/DESIGN_GATE.md`: `bf5a35b998fc240e58f083da48093444cffd8daabfad450caa09256b255be25c`

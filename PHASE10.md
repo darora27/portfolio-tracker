@@ -904,7 +904,95 @@ Reported live and carried from §9 rather than reopening it:
 
 ---
 
-## §11. `/compare` guided simulation story
+## §11. Universe legibility and the draft rig
+
+Inserted July 28, 2026 by owner direction. Former §11–§16 renumbered to
+§12–§17; their scope and acceptance criteria are unchanged.
+
+Authoritative sources, in order: `UNIVERSE_IDEAS_5.md` (legibility) →
+`UNIVERSE_IDEAS_4.md` (the draft rig) → `OWNER_FEEDBACK_LEDGER.md` →
+`UNIVERSE_LEGIBILITY_MOCK.html` and `UNIVERSE_DRAFT_RIG.html` (working
+prototypes the owner has reviewed and approved) → this section.
+
+### Purpose
+
+§10 gave the universe colour. This section makes it **readable**.
+
+The owner's verdict on §10's interfaces: Mission Control *"looks cool… then I
+realized most of it was garbage,"* the planet panel *"needs massive
+improvements,"* and numbers appear with no indication of what period they cover.
+His bar: **everything you need to know about a holding in ten seconds or less.**
+
+### Work
+
+- **Plain naming.** PLOT→ORBITS, MANIFEST→HOLDINGS, SCOPE→RETURNS, HAZARD→RISK,
+  SIGNALS→CORRELATION, COMMS→NEWS, LOG→TRADES. Only Mission Control keeps its
+  name. The retrofuturist costume stays in the type, tabs, stamps, and
+  materials — never the vocabulary.
+- **The window vocabulary.** Five terms — TODAY / WEEK / 30D / SINCE BUY /
+  SINCE START — with two legal attachment forms, so a bare `+5.2%` or an
+  unexplained `−0.7` becomes an impossible state.
+- **The planet panel, rebuilt.** The planet stays visible on the left; the panel
+  occupies a fixed rail on the right and is **smaller than the mock's** (owner:
+  *"slightly too big"*). A labelled hero number, a chart with real axes whose
+  range toggle changes what you read, and a strict word budget.
+- **Mission Control as a scrolling room.** A pinned summary strip carries the
+  glance; the radar scrolls away as you descend. The one-screen-at-a-glance
+  property is abandoned — three rounds never delivered it.
+- **Remove the embedded legacy dashboard.** The "pure AI" remnant the owner
+  keeps identifying is the old Tailwind dashboard included wholesale. It is
+  deleted, not restyled, and takes its Recharts instances with it.
+- **The DRAFT rig.** A hypothetical-portfolio workbench: one draft, weights as
+  an integer half-percent ledger so they always total 100%, circles on a shared
+  track sized by allocation, direction and speed carrying each holding's *real*
+  weekly performance, ghost rings showing real weights, and the draft encoded in
+  the URL so browser-back is undo.
+- **Scene tuning.** Full orbital circles visible without reading as graph paper;
+  the sun escalated to 1.6× the largest planet with a measured pixel assertion;
+  even use of the frame.
+- **The sector map is cut** until the galaxy phase earns it.
+
+### Owner items to close in this section
+
+- **News headlines must hyperlink to the real article.** Owner: *"if you cannot
+  hyperlink to the actual article then it defeats the purpose."* If a source
+  provides no URL, that headline does not ship.
+- **Correlation needs a plain-language explanation** of what it tells the owner
+  about his own portfolio — he likes the look and cannot read the meaning.
+- The Mission Control radar draws **two ellipses per planet**; there must be one.
+- The panel is **slightly too big** — shrink it, keep the layout.
+
+### Acceptance
+
+- **Behavioral:** Every section name says what it contains. Every displayed
+  figure carries its window. The planet remains visible while its panel is open.
+  Mission Control scrolls with a pinned summary. The draft rig's weights always
+  total 100% and browser-back undoes an edit.
+- **Visual:** The planet chart is readable at panel scale with axis, scale, and
+  endpoint values; its range toggle visibly changes the data. Full orbital
+  circles are visible without the scene reading as graph paper. The sun is
+  measurably the largest body. 1440×900 evidence for every surface.
+- **Desktop-first:** unchanged. Below 1024px the existing tested fallback ships
+  as-is.
+- **Accessibility:** the semantic DOM remains the accessible source of truth;
+  draft weights are keyboard-adjustable, not drag-only; contrast verified by
+  computed WCAG ratio from source tokens.
+- **Financial honesty:** the draft rig computes draft and real returns with an
+  identical mix-held formula over an identical window, differing only in
+  weights, with an identity test against the existing `simulateRebalanced`
+  engine. The `/compare` page's mandatory simulation disclaimer survives
+  verbatim. Nothing in the rig carries a dollar amount.
+- **Tests:** rendered behaviour verified by scene-graph or pixel assertions,
+  never by `expect(source).toContain(...)`.
+- **Build:** full tests and production build pass. This section should be a net
+  *refund* against the long-task budget — the removed dashboard, the paused
+  off-screen radar, and lazy-mounted below-fold sections all reduce load work.
+- **Privacy:** `/share` stays public with zero dollar amounts and zero
+  owner-only fields, including in the draft rig and the public trades view.
+
+---
+
+## §12. `/compare` guided simulation story
 
 ### Purpose
 
@@ -944,7 +1032,7 @@ Turn three correct simulations into an educational explanation of divergence.
 
 ---
 
-## §12. After-hours capability spike and conditional holdings slice
+## §13. After-hours capability spike and conditional holdings slice
 
 Consolidated July 25, 2026 by owner direction from the former §8
 (capability spike) and former §9 (conditional slice). The capability gate
@@ -1031,7 +1119,7 @@ fake data.
 
 ---
 
-## §13. `/research` prioritization and filing context
+## §14. `/research` prioritization and filing context
 
 ### Purpose
 
@@ -1068,7 +1156,7 @@ while preserving insider filings.
 
 ---
 
-## §14. `/history` event narrative
+## §15. `/history` event narrative
 
 ### Purpose
 
@@ -1105,7 +1193,7 @@ evolved.
 
 ---
 
-## §15. `/trades` decision review and focused entry
+## §16. `/trades` decision review and focused entry
 
 ### Purpose
 
@@ -1143,7 +1231,7 @@ trade-entry reliability.
 
 ---
 
-## §16. Integration, local fonts, resilience, and acceptance
+## §17. Integration, local fonts, resilience, and acceptance
 
 ### Purpose
 
