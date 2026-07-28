@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -76,7 +76,8 @@
       "d992510 — phase10(§8): remediate owner universe feedback (A2, A3, B1, B2, C1, C2)",
       "333566a — phase10(§8): remediate shared universe and native textures (E1-E5; E6 not started per lower-priority budget rule)",
       "c2485af — phase10(§8): remediate privacy identity and control overlap (review-3 findings 1-3: owner-content route gating, header identity text, manual-button/inspector overlap)",
-      "bdf524c — phase10(§8): remediate universe interaction defects (owner round-3 F1-F6; F2-F6 verified fixed, F1 review-5 finding 1 not resolved)"
+      "bdf524c — phase10(§8): remediate universe interaction defects (owner round-3 F1-F6; F2-F6 verified fixed, F1 review-5 finding 1 not resolved)",
+      "Codex §8 OVERVIEW orbit-ring and trail fog remediation commit; hash to be filled by the next actor via git log -1."
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -210,24 +211,24 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "bdf524c389b08c8b69eb6b9be46285595bbf14a2",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): bdf524c (`phase10(§8): remediate universe interaction defects`) is HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from. This review's diff-under-test used the prior value (8dae6fb..bdf524c) recorded by Codex at the start of its own turn; see docs/phase10-workflow/reviews/section-8-review-5.md.",
+  "prev_actor_commit": "253ec2c9b83b50159da3d120c3ff6e6fd8db9f7b",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 253ec2c (`phase10(review §8): fail with 1 bounded finding`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "bdf524c389b08c8b69eb6b9be46285595bbf14a2",
-  "production_code_changed_this_turn": false,
-  "production_code_note_prior_turn": "The prior Codex Implementation remediation turn (bdf524c) fixed owner round-three defects F1-F6 in OrreryScene.tsx/orrery.module.css; tests and build were green but live browser verification was deferred to Claude Lead due to a sandbox EPERM bind failure.",
-  "production_code_note": "This Claude Lead review turn changed no implementation source. It independently built and ran a real production server (bind succeeded here) and live-verified all six owner round-three defects: F2-F6 confirmed fixed with screenshot evidence; F1 (orbit-ring/trail legibility at OVERVIEW) is NOT fixed in the live render — scene.fog darkens the trail/ring MeshBasicMaterial toward near-black at OVERVIEW camera distance while the planet's fog-exempt ShaderMaterial stays fully lit, neutralizing the opacity increase Codex made. See docs/phase10-workflow/reviews/section-8-review-5.md Finding 1 for full pixel-sampled evidence and required fix.",
+  "production_code_changed_this_turn": true,
+  "production_code_note_prior_turn": "The prior Claude Lead review turn changed no implementation source. It independently live-verified owner round-three defects F2-F6 as fixed and found one remaining severe F1 defect: scene fog darkened the OVERVIEW orbit-ring and comet-trail materials toward near-black, leaving trails colorless and illegible despite their increased opacity. See docs/phase10-workflow/reviews/section-8-review-5.md.",
+  "production_code_note": "This Codex Implementation remediation turn fixed only review-5 Finding 1. The orbit-ring and comet-trail MeshBasicMaterial instances now explicitly set fog: false, matching the already fog-exempt planet body so OVERVIEW camera distance cannot neutralize their opacity or direction hue. The source regression test now asserts fog immunity on both specific materials rather than checking opacity constants alone. The targeted test, full 474-test suite, and production build pass. A local Next.js server bound successfully, but the Codex browser runtime reported no available browser backend, so the required live 1440x900 still-frame and pixel verification remain explicitly deferred to Claude Lead under the environment-only browser-evidence rule.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex Implementation ran the full Vitest suite after owner round-three remediation: 87 test files passed; 474 of 474 tests passed.",
-      "finished_at": "2026-07-28T03:02:50Z"
+      "summary": "Codex Implementation ran the full Vitest suite after the bounded OVERVIEW fog remediation: 87 test files passed; 474 of 474 tests passed, including the strengthened orbit-ring/trail fog-immunity regression.",
+      "finished_at": "2026-07-28T03:54:57Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex Implementation ran the Next.js 16.2.11 Turbopack production build after owner round-three remediation: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
-      "finished_at": "2026-07-28T03:03:01Z"
+      "summary": "Codex Implementation ran the Next.js 16.2.11 Turbopack production build after the bounded OVERVIEW fog remediation: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
+      "finished_at": "2026-07-28T03:54:57Z"
     },
     "long_task_gate": {
       "command": "CDP Emulation.setCPUThrottlingRate(2) + PerformanceObserver('longtask'), 5 fresh contexts, 1440x900, against a real npm run start server on /share",

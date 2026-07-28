@@ -26,8 +26,8 @@ describe("Portfolio Orrery direct-Three architecture", () => {
   });
 
   it("keeps overview rings and trails legible and clears rings near approached planets", () => {
-    expect(source).toContain("opacity: 0.34");
-    expect(source).toContain("opacity: 0.96");
+    expect(source).toMatch(/opacity: 0\.34,\s+fog: false,/);
+    expect(source).toMatch(/opacity: 0\.96,\s+fog: false,/);
     expect(source).toContain("planet.path.visible = state !== \"approach\"");
     expect(source).toContain("0.14 * (1 - t0)");
   });
