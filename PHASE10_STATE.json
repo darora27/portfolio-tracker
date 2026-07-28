@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§9",
-  "role": "codex_implementation",
-  "stage": "implement",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -39,7 +39,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_2). Authority order for this section: UNIVERSE_ROUND2_BRIEF.md -> UNIVERSE_IDEAS_2.md (including its §9 owner corrections and authorizations) -> PHASE10.md §9. §8 proved the universe works; §9 makes it good. Two new public disclosure surfaces are authorized in UNIVERSE_IDEAS_2.md §9.3-9.4 (public trade log: action, ticker, date, and % impact only, never shares/prices/dollars; public news for held tickers) and both require extended privacy canary coverage. Texture resolution is bound by the §9.1 correction: tune compression first, ship base at 2048x1024 and emissive/normal at 1024x512, measure and record the real total, reduce further if it exceeds ~15MB. §9's acceptance criteria forbid `expect(source).toContain(...)` as coverage for rendered behavior. Two owner observations carried forward unclosed from §8 and recorded in docs/phase10-workflow/reviews/section-8-accepted.md: D1 (unreproduced green-trail report — do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 ('website is still relatively confusing', too general to bound in §8).",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-claude-lead-to-codex-implementation.md"
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-codex-implementation-to-claude-lead.md"
   },
   "sections_history": [
     {
@@ -96,28 +96,28 @@
       "note": "The Stock Market Universe — /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes §9. See docs/phase10-workflow/reviews/section-8-accepted.md."
     }
   ],
-  "prev_actor_commit": "a8b18070605747dde4cae7c45bfa917971d0c213",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): a8b1807 (`chore: scoped Codex local-dev permissions so implementation turns can self-verify`) was HEAD at the start of this Claude Lead `specify`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from. It sits on top of the §8 acceptance commit 6a68758 and changes no application source.",
+  "prev_actor_commit": "77c74b3d725ada00e6783822eebffcb6f3e7fbec",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 77c74b3 (`phase10(§9): specify universe craft and depth`) was HEAD at the start of this Codex Implementation `implement`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "6a68758d57474f5494ff2ce38056ebb37b5aa244",
-  "production_code_changed_this_turn": false,
+  "production_code_changed_this_turn": true,
   "production_code_note_prior_turn": "The prior commit was a tooling/permissions chore scoping Codex local-dev permissions. It changed no application source.",
-  "production_code_note": "This Claude Lead specify turn changed no implementation source. It wrote docs/phase10-workflow/specs/section-9.md (66 numbered acceptance criteria across PHASE10.md §9's seven dimensions plus one bounded orientation criterion closing owner observation D2) and routed state to Codex Implementation. The spec corrects four premises before scope: (1) the KTX2 pipeline is three.js KTX2Exporter uncompressed RGBA + zstd, not Basis UASTC, so UNIVERSE_IDEAS_2 §9.1's 'switch to ETC1S' is specified as a hypothesis to test and record rather than a known-available step, with the owner's binding <=15MB measure-and-reduce instruction carried through as a three-step ladder; (2) the shipped textures are Math.sin-synthesised noise seeded by an FNV ticker hash, with the authored plates used only as a tint — the mechanical cause of the owner's 'ambiguous garbage' verdict; (3) docs/reference/README.md's no-logo caution is superseded for §9 by UNIVERSE_ROUND2_BRIEF §1 and PHASE10.md §9; (4) below-planet identity-tinted labels, the sun docking ring, and the fog:false ring/trail fix already shipped in §8 remediation and must not be rebuilt. No application source, dependency, or texture asset was touched.",
+  "production_code_note": "Codex Implementation completed the §9 Universe craft and depth vertical slice: authored-mark texture generation and measured KTX2 ladder; pure scene descriptors; designed overview composition; seven-bay Mission Control; five-bay planet detail; news moons; DRIFT/HAZARD/SUPPLY satellites; one observed hollow-core sector system; docking/orientation completion; public ratio-only trade log and held-ticker news projections; privacy/contrast/model/DOM tests; and retained evidence scripts. The shipped texture directory is 11,727,680 bytes at the largest measured tier below the 15 MB cap (1024x512 base, 512x256 derived). Attached-browser discovery returned no backend, so live screenshots, RGB samples, mobile audits, keyboard walk-through, and long-task measurements are explicitly unverified and routed to Claude Lead review under the standing environment-only exception. No dependency manifest changed.",
   "verification": {
     "tests": {
       "command": "npm test",
-      "status": "not_run",
-      "summary": null,
-      "finished_at": null
+      "status": "pass",
+      "summary": "94 test files passed; 496 tests passed.",
+      "finished_at": "2026-07-28T07:02:03Z"
     },
     "build": {
       "command": "npm run build",
-      "status": "not_run",
-      "summary": null,
-      "finished_at": null
+      "status": "pass",
+      "summary": "Next.js 16.2.11 production build compiled successfully; TypeScript passed; 18 static-generation tasks completed.",
+      "finished_at": "2026-07-28T07:02:03Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T05:55:00Z",
+  "updated_at": "2026-07-28T07:02:03Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

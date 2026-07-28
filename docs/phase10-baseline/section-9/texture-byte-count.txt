@@ -1,0 +1,8 @@
+Command:
+find public/textures/planets -type f -print0 | sort -z | xargs -0 wc -c
+
+KTX2 map payload: 11,710,317 bytes
+Manifest + thumbnails: 17,363 bytes
+Total directory payload: 11,727,680 bytes
+
+The manifest totalBytes value is 11,727,680 and matches this on-disk count.

@@ -49,6 +49,14 @@ import {
   type BeltResolution,
   type PublicOrreryHolding,
 } from "@/lib/observatory/orrery";
+import {
+  buildPublicTradeLog,
+  type PublicTradeEntry,
+} from "@/lib/observatory/public-trade-log";
+import {
+  groupNewsByTicker,
+  type PublicNewsItem,
+} from "@/lib/observatory/public-news";
 import aiExposureByTicker from "../../data/ai-exposure.json";
 import type { ChartPoint } from "@/components/dashboard/ValueChart";
 import type { PositionRow } from "@/components/dashboard/PositionsTable";
@@ -95,6 +103,10 @@ export type DashboardData = {
   unrealizedGain: number;
   donutSlices: { ticker: string; weight: number; value: number }[];
   latestNews: NewsItem[];
+  /** Trailing-seven-day, held-ticker-only public news projection. */
+  newsByHolding?: Record<string, PublicNewsItem[]>;
+  /** Ratio-only public trade projection; never carries owner ledger fields. */
+  publicTradeLog?: PublicTradeEntry[];
   allTimeHigh: AllTimeHighInfo | null;
   sortinoRatio: number | null;
   bestDay: DatedReturn | null;
@@ -194,11 +206,37 @@ export async function getDashboardData(): Promise<DashboardData> {
   const [liveQuotes, upcomingEarnings, newsByTicker] = await Promise.all([
     getQuotes(heldTickers),
     getUpcomingEarnings(heldTickers),
-    Promise.all(heldTickers.map((ticker) => getCompanyNews(ticker))),
+    Promise.all(
+      heldTickers.map(async (ticker) => {
+        try {
+          return await getCompanyNews(ticker, 7, 20);
+        } catch {
+          return [];
+        }
+      }),
+    ),
   ]);
   // Top 6 headlines across all holdings, newest first — each item already
   // carries its own ticker (tagged by getCompanyNews) for the chip.
   const latestNews = newsByTicker.flat().sort((a, b) => b.datetime - a.datetime).slice(0, 6);
+  const newsByHolding = groupNewsByTicker(
+    new Map(
+      heldTickers.map((ticker, index) => [ticker, newsByTicker[index] ?? []]),
+    ),
+    heldTickers,
+  );
+  const nowSeconds = Math.floor(Date.now() / 1000);
+  const publicNewsCounts = new Map(
+    heldTickers.map((ticker, index) => [
+      ticker,
+      (newsByTicker[index] ?? []).filter(
+        (item) =>
+          item.datetime >= nowSeconds - 7 * 24 * 60 * 60 &&
+          item.datetime <= nowSeconds,
+      ).length,
+    ]),
+  );
+  const publicTradeLog = buildPublicTradeLog(trades ?? []);
   const livePrices = new Map(
     [...liveQuotes.entries()].map(([ticker, quote]) => [
       ticker,
@@ -381,10 +419,20 @@ export async function getDashboardData(): Promise<DashboardData> {
   const publicOrreryHoldings: PublicOrreryHolding[] = positions.map((position) => {
     const weeklyReturn = weeklyReturnForPrices(pricesByTicker.get(position.ticker) ?? []);
     const risk = holdingRisks.find((item) => item.ticker === position.ticker);
+    const nextEarnings = upcomingEarnings
+      .filter((event) => event.ticker === position.ticker)
+      .map((event) => daysBetween(today, event.date))
+      .filter((days) => days >= 0 && days <= 7)
+      .sort((left, right) => left - right)[0];
+    const holdingSeries = pricesByTicker.get(position.ticker) ?? [];
+    const firstPrice = holdingSeries[0]?.price;
     return {
       ticker: position.ticker,
       companyName: companyNameForTicker(position.ticker),
       weight: position.weight,
+      contributionPct:
+        positionRows.find((row) => row.ticker === position.ticker)
+          ?.contribution ?? null,
       weeklyReturn,
       portfolioRelativeReturn:
         weeklyReturn === null || twr7d === null ? null : weeklyReturn - twr7d,
@@ -393,6 +441,15 @@ export async function getDashboardData(): Promise<DashboardData> {
       dayReturn:
         positionRows.find((row) => row.ticker === position.ticker)?.dayPct ??
         null,
+      nextEarningsDays: nextEarnings ?? null,
+      newsCount: publicNewsCounts.get(position.ticker) ?? 0,
+      chart:
+        firstPrice && firstPrice > 0
+          ? holdingSeries.map(({ date, price }) => ({
+              date,
+              index: (price / firstPrice) * 100,
+            }))
+          : [],
     };
   });
   const previousSnapshotRecord = [...(snapshots ?? [])]
@@ -452,6 +509,8 @@ export async function getDashboardData(): Promise<DashboardData> {
     unrealizedGain,
     donutSlices,
     latestNews,
+    newsByHolding,
+    publicTradeLog,
     allTimeHigh,
     sortinoRatio,
     bestDay: bestDayResult,

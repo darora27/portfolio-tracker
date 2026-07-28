@@ -54,7 +54,7 @@ export function OwnerMissionControlContent({
   trades?: TradeRow[];
   hideDollars?: boolean;
 }) {
-  if (panel === "history" && history) {
+  if (panel === "scope" && history) {
     return (
       <div className={styles.ownerMissionPanel}>
         <div className={styles.ownerPanelHeading}>
@@ -86,7 +86,7 @@ export function OwnerMissionControlContent({
     );
   }
 
-  if (panel === "trades" && trades) {
+  if (panel === "log" && trades) {
     return (
       <div className={styles.ownerMissionPanel}>
         <div className={styles.ownerPanelHeading}>
@@ -100,7 +100,7 @@ export function OwnerMissionControlContent({
     );
   }
 
-  if (panel === "research" && research) {
+  if (panel === "comms" && research) {
     return (
       <div className={styles.ownerMissionPanel}>
         <p className={styles.inspectorKicker}>Owner research station</p>

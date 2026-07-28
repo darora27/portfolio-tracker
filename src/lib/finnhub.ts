@@ -134,20 +134,24 @@ export async function getRecommendationTrend(ticker: string): Promise<Recommenda
   });
 }
 
-/** Recent news for one ticker (last `daysBack` days, capped at 5), tagged with its ticker. Never throws — empty array on any failure. */
-export async function getCompanyNews(ticker: string, daysBack = 14): Promise<NewsItem[]> {
+/** Recent news for one ticker, tagged with its ticker. Never throws — empty array on any failure. */
+export async function getCompanyNews(
+  ticker: string,
+  daysBack = 14,
+  maxItems = 5,
+): Promise<NewsItem[]> {
   const apiKey = process.env.FINNHUB_API_KEY;
   if (!apiKey) return [];
   const to = todayInTimeZone("America/New_York");
   const from = addDays(to, -daysBack);
-  const items = await getOrFetch(`news:${ticker}:${from}:${to}`, FINNHUB_TTL.news, async () => {
+  const items = await getOrFetch(`news:${ticker}:${from}:${to}:${maxItems}`, FINNHUB_TTL.news, async () => {
     try {
       const res = await fetch(
         `${FINNHUB_BASE_URL}/company-news?symbol=${encodeURIComponent(ticker)}&from=${from}&to=${to}&token=${apiKey}`,
         { cache: "no-store" },
       );
       if (!res.ok) return null;
-      return parseNewsResponse(await res.json());
+      return parseNewsResponse(await res.json(), maxItems);
     } catch {
       return null;
     }

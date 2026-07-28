@@ -78,6 +78,7 @@ const publicFixture = {
   allTimeHigh: { pct: -0.046, peakDate: "2026-07-01" },
   bestDay: { date: "2026-07-05", r: 0.023 },
   worstDay: { date: "2026-07-18", r: -0.031 },
+  winRatePct: 52.5,
   benchmarkComparisons: [
     {
       ticker: "VOO",
@@ -116,6 +117,23 @@ const publicFixture = {
   realizedGain: 8888.88,
   unrealizedGain: 7777.77,
   latestNews: [{ headline: "PRIVATE_RESEARCH_MARKER" }],
+  upcomingEarnings: [],
+  newsByHolding: {
+    IBM: [{
+      headline: "PUBLIC_IBM_TRANSMISSION",
+      source: "Wire",
+      url: "https://example.com/public",
+      datetime: 1_785_200_000,
+      ticker: "IBM",
+    }],
+  },
+  publicTradeLog: [{
+    date: "2026-07-14",
+    action: "buy",
+    ticker: "MSFT",
+    impactPct: 0.021,
+    realizedSign: 0,
+  }],
   simulations: [{ result: "PRIVATE_SIMULATION_MARKER" }],
   trades: [{ reason: "PRIVATE_TRADE_REASON" }],
   netFlowsToday: 0,
@@ -170,13 +188,13 @@ describe("/share Stock Market Universe rendered output", () => {
 
   it("restores holding selection and the forced fallback", async () => {
     const html = await renderShare({ holding: "IBM", no3d: "1" });
-    expect(html).toContain("Holding telemetry / public-safe");
-    expect(html).toContain("Annualized volatility");
-    expect(html).toContain('href="/stock/IBM"');
+    expect(html).toContain("IBM · IBM");
+    expect(html).toContain("TELEMETRY");
+    expect(html).toContain("PUBLIC_IBM_TRANSMISSION");
     expect(html).toContain('data-force-no-3d="true"');
   });
 
-  it.each(["dashboard", "history", "trades", "research"])(
+  it.each(["plot", "manifest", "scope", "hazard", "signals", "comms", "log"])(
     "renders the public-safe %s station without owner canaries",
     async (station) => {
       const html = await renderShare({ focus: "portfolio", station });
@@ -191,34 +209,37 @@ describe("/share Stock Market Universe rendered output", () => {
       expect(html).not.toContain("OWNER_RESEARCH_HEADLINE");
       expect(html).not.toContain("999999.99");
       expect(html).not.toContain("111111.11");
+      expect(html).not.toContain("8888.88");
+      expect(html).not.toContain("222.22");
+      expect(html).not.toContain("333.33");
+      expect(html).not.toContain("444.44");
     },
   );
 
   it("shows only percentage, weight, and derived telemetry in public stations", async () => {
-    const dashboard = await renderShare({ focus: "portfolio", station: "dashboard" });
-    expect(dashboard).toContain("Public dashboard / percentage-only");
-    expect(dashboard).toContain("Top two weight");
-    expect(dashboard).toContain("Volatility");
+    const plot = await renderShare({ focus: "portfolio", station: "plot" });
+    expect(plot).toContain("PLOT FEED");
+    expect(plot).toContain("MANIFEST");
 
-    const trades = await renderShare({ focus: "portfolio", station: "trades" });
-    expect(trades).toContain("Public position structure / no ledger");
-    expect(trades).toContain("42.0% weight");
-    expect(trades).not.toContain("PRIVATE_TRADE_REASON");
+    const log = await renderShare({ focus: "portfolio", station: "log" });
+    expect(log).toContain("LOG");
+    expect(log).toContain("+2.1% OF BOOK");
+    expect(log).not.toContain("PRIVATE_TRADE_REASON");
 
-    const research = await renderShare({ focus: "portfolio", station: "research" });
-    expect(research).toContain("Public research / derived telemetry");
-    expect(research).toContain("18.0% volatility");
-    expect(research).not.toContain("Owner source");
+    const hazard = await renderShare({ focus: "portfolio", station: "hazard" });
+    expect(hazard).toContain("HAZARD");
+    expect(hazard).toContain("+37.0%");
+    expect(hazard).not.toContain("Owner source");
   });
 
   it("keeps public-only research when the visiting browser is authenticated", async () => {
     isValidSession.mockReturnValue(true);
-    const html = await renderShare({ focus: "portfolio", station: "research" });
+    const html = await renderShare({ focus: "portfolio", station: "comms" });
 
     expect(html).toContain('data-mode="public"');
     expect(html).toContain("Public universe / read-only");
-    expect(html).toContain("Public research / derived telemetry");
-    expect(html).not.toContain("owner authenticated");
+    expect(html).toContain("COMMS");
+    expect(html).not.toContain("OWNER LINK");
     expect(html).not.toContain("Owner research station");
     expect(html).not.toContain("OWNER_RESEARCH_HEADLINE");
     expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);

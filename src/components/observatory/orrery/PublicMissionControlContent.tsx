@@ -1,103 +1,77 @@
 import type { DashboardData } from "@/lib/dashboard-data";
 import type { MissionControlPanelId } from "./MissionControl";
+import { CommsBay } from "./MissionControlBays/CommsBay";
+import { HazardBay } from "./MissionControlBays/HazardBay";
+import { LogBay } from "./MissionControlBays/LogBay";
+import { ManifestBay } from "./MissionControlBays/ManifestBay";
+import { ScopeBay } from "./MissionControlBays/ScopeBay";
+import { SignalsBay } from "./MissionControlBays/SignalsBay";
 import styles from "./orrery.module.css";
 
-function pct(value: number | null, digits = 1): string {
-  if (value === null) return "Unavailable";
-  const sign = value > 0 ? "+" : "";
-  return `${sign}${(value * 100).toFixed(digits)}%`;
+function pct(value: number | null): string {
+  if (value === null) return "—";
+  return `${value >= 0 ? "+" : ""}${(value * 100).toFixed(1)}%`;
 }
 
 export function PublicMissionControlContent({
   panel,
   data,
+  basePath,
 }: {
   panel: MissionControlPanelId;
   data: DashboardData;
+  basePath: string;
 }) {
-  const voo = data.benchmarkComparisons.find(({ ticker }) => ticker === "VOO");
-
-  if (panel === "history") {
+  if (panel === "scope") {
+    return <ScopeBay data={data.chartData} />;
+  }
+  if (panel === "hazard") {
     return (
-      <section className={styles.publicMissionPanel}>
-        <p className={styles.inspectorKicker}>Public history / percentage index</p>
-        <h3>Return trajectory</h3>
-        <p>
-          Portfolio TWR is {pct(data.twrPct)} across {data.historyDays} days;
-          the current drawdown is {pct(data.allTimeHigh?.pct ?? null)}.
-        </p>
-        <ol className={styles.publicTelemetryList}>
-          {data.chartData.slice(-12).map(({ date, portfolioIndex }) => (
-            <li key={date}>
-              <time>{date}</time>
-              <span>{portfolioIndex.toFixed(2)} index</span>
-            </li>
-          ))}
-        </ol>
+      <HazardBay
+        volatility={data.volatilityPct}
+        beta={data.betaVsVoo ?? null}
+        drawdown={data.allTimeHigh?.pct ?? null}
+        winRate={data.winRatePct ?? 0}
+        best={data.bestDay?.r ?? null}
+        worst={data.worstDay?.r ?? null}
+      />
+    );
+  }
+  if (panel === "signals") {
+    return (
+      <SignalsBay
+        tickers={data.correlationTickers}
+        cells={data.correlationCells}
+        holdings={data.publicOrreryHoldings}
+        hhi={data.hhi}
+      />
+    );
+  }
+  if (panel === "comms") {
+    return <CommsBay events={data.upcomingEarnings} />;
+  }
+  if (panel === "log") {
+    return <LogBay entries={data.publicTradeLog ?? []} />;
+  }
+  if (panel === "plot") {
+    const voo = data.benchmarkComparisons.find(({ ticker }) => ticker === "VOO");
+    return (
+      <section className={styles.operationsBay} aria-labelledby="plot-title">
+        <h3 id="plot-title">PLOT</h3>
+        <div className={styles.plotReadouts}>
+          <span>DAY <b>{pct(data.dailyChangePct)}</b></span>
+          <span>TWR <b>{pct(data.twrPct)}</b></span>
+          <span>VS VOO <b>{pct(voo?.excessReturnPct ?? null)}</b></span>
+          <span>BODIES <b>{data.publicOrreryHoldings.length}</b></span>
+        </div>
+        <ManifestBay holdings={data.publicOrreryHoldings} basePath={basePath} />
       </section>
     );
   }
-
-  if (panel === "trades") {
-    return (
-      <section className={styles.publicMissionPanel}>
-        <p className={styles.inspectorKicker}>Public position structure / no ledger</p>
-        <h3>Current allocation</h3>
-        <p>
-          The public station exposes weights and returns only. Share counts,
-          prices, cost basis, and trade reasons remain owner-only.
-        </p>
-        <ul className={styles.publicTelemetryGrid}>
-          {data.publicOrreryHoldings.map((holding) => (
-            <li key={holding.ticker}>
-              <strong>{holding.ticker}</strong>
-              <span>{pct(holding.weight)} weight</span>
-              <span>{pct(holding.weeklyReturn)} week</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    );
-  }
-
-  if (panel === "research") {
-    return (
-      <section className={styles.publicMissionPanel}>
-        <p className={styles.inspectorKicker}>Public research / derived telemetry</p>
-        <h3>Holding risk signals</h3>
-        <p>
-          Public mode contains derived portfolio scalars only. News, filings,
-          private notes, and source-level research remain owner-only.
-        </p>
-        <ul className={styles.publicTelemetryGrid}>
-          {data.publicOrreryHoldings.map((holding) => (
-            <li key={holding.ticker}>
-              <strong>{holding.ticker}</strong>
-              <span>{pct(holding.volatilityPct)} volatility</span>
-              <span>
-                {holding.betaVsVoo === null
-                  ? "Beta unavailable"
-                  : `${holding.betaVsVoo.toFixed(2)} beta`}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    );
-  }
-
   return (
-    <section className={styles.publicMissionPanel}>
-      <p className={styles.inspectorKicker}>Public dashboard / percentage-only</p>
-      <h3>Portfolio command summary</h3>
-      <div className={styles.publicSummaryGrid}>
-        <div><span>TWR</span><strong>{pct(data.twrPct)}</strong></div>
-        <div><span>Today</span><strong>{pct(data.dailyChangePct)}</strong></div>
-        <div><span>Trailing week</span><strong>{pct(data.twr7d)}</strong></div>
-        <div><span>Vs. VOO</span><strong>{pct(voo?.excessReturnPct ?? null)}</strong></div>
-        <div><span>Top two weight</span><strong>{pct(data.top2ConcentrationPct)}</strong></div>
-        <div><span>Volatility</span><strong>{pct(data.volatilityPct)}</strong></div>
-      </div>
-    </section>
+    <ManifestBay
+      holdings={data.publicOrreryHoldings}
+      basePath={basePath}
+    />
   );
 }

@@ -17,6 +17,8 @@ import {
 } from "./MissionControl";
 import { OrreryWorld, type OrreryCameraState } from "./OrreryWorld";
 import { PublicMissionControlContent } from "./PublicMissionControlContent";
+import { additionalSectorSystem } from "@/lib/observatory/sector-systems";
+import { todayInTimeZone } from "@/lib/date";
 
 export type UniverseSearchParams = {
   camera?: string | string[];
@@ -26,6 +28,8 @@ export type UniverseSearchParams = {
   manual?: string | string[];
   no3d?: string | string[];
   station?: string | string[];
+  detail?: string | string[];
+  system?: string | string[];
 };
 
 function first(value: string | string[] | undefined): string | undefined {
@@ -38,7 +42,7 @@ function resolveMissionPanel(
   const candidate = first(value);
   return MISSION_CONTROL_PANELS.some(({ id }) => id === candidate)
     ? (candidate as MissionControlPanelId)
-    : "dashboard";
+    : "plot";
 }
 
 export async function UniverseRoute({
@@ -93,7 +97,8 @@ export async function UniverseRoute({
   const cameraState: OrreryCameraState =
     requestedCamera === "approach" ||
     requestedCamera === "command" ||
-    requestedCamera === "overview"
+    requestedCamera === "overview" ||
+    requestedCamera === "sector"
       ? requestedCamera
       : selectedTicker
         ? "approach"
@@ -126,31 +131,36 @@ export async function UniverseRoute({
       data.allTimeHigh?.pct ?? 0,
     ),
   };
+  const sectorSystem = additionalSectorSystem(data.publicOrreryHoldings);
   let missionControlContent = (
-    <PublicMissionControlContent panel={activeMissionPanel} data={data} />
+    <PublicMissionControlContent
+      panel={activeMissionPanel}
+      data={data}
+      basePath={basePath}
+    />
   );
 
   if (portfolioSelected && authenticated && ownerGate) {
     const { OwnerMissionControlContent } = await import(
       "./OwnerMissionControlContent"
     );
-    if (activeMissionPanel === "history") {
+    if (activeMissionPanel === "scope") {
       missionControlContent = (
         <OwnerMissionControlContent
-          panel="history"
+          panel="scope"
           data={data}
           history={await getHistoryData()}
         />
       );
-    } else if (activeMissionPanel === "research") {
+    } else if (activeMissionPanel === "comms") {
       missionControlContent = (
         <OwnerMissionControlContent
-          panel="research"
+          panel="comms"
           data={data}
           research={await getResearchData()}
         />
       );
-    } else if (activeMissionPanel === "trades") {
+    } else if (activeMissionPanel === "log") {
       const [{ data: trades, error }, { data: setting }] = await Promise.all([
         supabase.from("trades").select("*").order("date", { ascending: false }),
         supabase
@@ -162,7 +172,7 @@ export async function UniverseRoute({
       if (error) throw error;
       missionControlContent = (
         <OwnerMissionControlContent
-          panel="trades"
+          panel="log"
           data={data}
           trades={trades ?? []}
           hideDollars={setting?.value ?? true}
@@ -170,7 +180,7 @@ export async function UniverseRoute({
       );
     } else {
       missionControlContent = (
-        <OwnerMissionControlContent panel="dashboard" data={data} />
+        <OwnerMissionControlContent panel={activeMissionPanel} data={data} />
       );
     }
   }
@@ -191,6 +201,7 @@ export async function UniverseRoute({
         dayReturnPct: data.dailyChangePct,
         marketRelativePct: voo.excessReturnPct,
         topTwoWeight: data.top2ConcentrationPct,
+        drawdownPct: data.allTimeHigh?.pct ?? null,
       }}
       missionControlContent={missionControlContent}
       activeMissionPanel={activeMissionPanel}
@@ -198,6 +209,17 @@ export async function UniverseRoute({
       missionPreservedQuery={{
         ...(no3d ? { no3d: "1" } : {}),
       }}
+      newsByHolding={data.newsByHolding ?? {}}
+      upcomingEarnings={data.upcomingEarnings}
+      publicTradeLog={data.publicTradeLog ?? []}
+      tradeComet={(data.publicTradeLog ?? []).find(
+        (entry) => entry.date === todayInTimeZone("America/New_York"),
+      ) ?? null}
+      portfolioVolatility={data.volatilityPct}
+      portfolioBeta={data.betaVsVoo}
+      sectorSystem={sectorSystem}
+      selectedSystem={first(params.system) ?? null}
+      transmissionsFirst={first(params.detail) === "transmissions"}
     />
   );
 }

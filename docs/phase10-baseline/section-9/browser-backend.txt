@@ -1,0 +1,9 @@
+Codex browser setup result:
+No browser is available
+
+Browser discovery result:
+[]
+
+Live verification was not attempted through a substitute backend because the
+browser-control skill explicitly forbids substituting an unrelated browser
+tool after attached-browser discovery returns no backend.

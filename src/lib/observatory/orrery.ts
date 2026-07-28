@@ -8,7 +8,7 @@ export const ORRERY_MAX_ANGULAR_SPEED = 0.055;
 export const ORRERY_SUN_CLEARANCE = 3.4;
 export const ORRERY_PLANET_CLEARANCE = 0.18;
 export const ORRERY_RING_SPACING =
-  ORRERY_MAX_RADIUS * 2 + ORRERY_PLANET_CLEARANCE;
+  ORRERY_MAX_RADIUS * 2 * 1.6 + ORRERY_PLANET_CLEARANCE;
 export const ORRERY_MIN_AXIAL_SPIN = 0.05;
 export const ORRERY_MAX_AXIAL_SPIN = 0.55;
 export const ORRERY_BELT_HYSTERESIS_BAND = 0.005;
@@ -44,11 +44,15 @@ export type PublicOrreryHolding = {
   ticker: string;
   companyName: string;
   weight: number;
+  contributionPct?: number | null;
   weeklyReturn: number | null;
   portfolioRelativeReturn: number | null;
   volatilityPct: number | null;
   betaVsVoo: number | null;
   dayReturn: number | null;
+  nextEarningsDays?: number | null;
+  newsCount?: number;
+  chart?: readonly { date: string; index: number }[];
 };
 
 export type BeltResolution = {

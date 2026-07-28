@@ -150,5 +150,13 @@ describe("dashboard-data §8 public projection", () => {
       planetTickers: ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "OLD"],
       beltTickers: ["NEW"],
     });
+
+    getCompanyNews.mockRejectedValue(new Error("news source offline"));
+    const degraded = await getDashboardData();
+    expect(degraded.newsByHolding?.NEW).toEqual([]);
+    expect(
+      degraded.publicOrreryHoldings.find(({ ticker }) => ticker === "NEW")
+        ?.newsCount,
+    ).toBe(0);
   });
 });

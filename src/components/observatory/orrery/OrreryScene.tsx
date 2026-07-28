@@ -28,30 +28,22 @@ import {
 } from "three";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 import {
-  ORRERY_MAX_ANGULAR_SPEED,
-  angularSpeedForWeeklyReturn,
-  axialSpinForDayReturn,
-  directionForWeeklyReturn,
-  orbitRadiusForRank,
-  radiusForWeight,
+  ORRERY_SUN_CLEARANCE,
   type PublicOrreryHolding,
 } from "@/lib/observatory/orrery";
+import {
+  ACTIVE_RING_OPACITY,
+  OVERVIEW_RING_OPACITY,
+  buildOverviewSceneModel,
+  resolveLabelCollisions,
+  type SceneModel,
+  type TradeCometInput,
+} from "@/lib/observatory/scene-model";
 import type {
   OrreryCameraState,
   PortfolioHealth,
 } from "./OrreryWorld";
 import styles from "./orrery.module.css";
-
-const PALETTES: Record<string, readonly [string, string]> = {
-  ASML: ["#2d1d63", "#87d7ff"],
-  GOOG: ["#17466b", "#f0c857"],
-  COST: ["#70251f", "#f3d99e"],
-  MSFT: ["#15628c", "#6fe0d0"],
-  INTC: ["#493022", "#63a9d4"],
-  IBM: ["#18366d", "#a8d8ff"],
-  NBIS: ["#632a78", "#ff873d"],
-  CBRS: ["#1d5c3b", "#b8ff6d"],
-};
 
 const PLANET_VERTEX_SHADER = `
   varying vec2 vUv;
@@ -80,7 +72,9 @@ const PLANET_FRAGMENT_SHADER = `
   varying vec3 vNormal;
   varying vec3 vViewPosition;
   void main() {
-    vec3 normalTex = texture2D(uNormalMap, vUv).xyz * 2.0 - 1.0;
+    vec2 normalXY = texture2D(uNormalMap, vUv).rg * 2.0 - 1.0;
+    float normalZ = sqrt(max(0.0, 1.0 - dot(normalXY, normalXY)));
+    vec3 normalTex = vec3(normalXY, normalZ);
     vec3 normal = normalize(vNormal + normalTex * 0.16 * uHasTextures);
     vec3 viewDirection = normalize(vViewPosition);
     vec3 lightDirection = normalize(vec3(0.7, 0.8, 1.0));
@@ -89,11 +83,11 @@ const PLANET_FRAGMENT_SHADER = `
     float pattern = smoothstep(-0.45, 0.62, bands);
     vec3 procedural = mix(uBase, uAccent, pattern * 0.58);
     vec3 mapped = texture2D(uBaseMap, vUv).rgb;
-    vec3 emissive = texture2D(uEmissiveMap, vUv).rgb;
+    float emissive = texture2D(uEmissiveMap, vUv).r;
     vec3 surface = mix(procedural, mapped, uHasTextures);
     float rim = pow(1.0 - max(dot(normal, viewDirection), 0.0), 2.2);
     vec3 color = surface * diffuse + uAccent * rim * (0.7 + uActive * 0.5);
-    color += emissive * uHasTextures * 0.75 + uAccent * uActive * 0.1;
+    color += uAccent * emissive * uHasTextures * 0.75 + uAccent * uActive * 0.1;
     gl_FragColor = vec4(color * uDim, 1.0);
   }
 `;
@@ -142,9 +136,13 @@ type PlanetRuntime = {
   orbit: Group;
   mesh: Mesh<SphereGeometry, ShaderMaterial>;
   path: Mesh<RingGeometry, MeshBasicMaterial>;
+  trailMeshes: Mesh<BufferGeometry, MeshBasicMaterial>[];
   label: HTMLButtonElement;
+  descriptor: SceneModel["planets"][number];
+  labelDescriptor: SceneModel["labels"][number];
+  trailDescriptor: SceneModel["trails"][number];
   initialAngle: number;
-  direction: ReturnType<typeof directionForWeeklyReturn>;
+  direction: SceneModel["planets"][number]["direction"];
   angularSpeed: number;
   axialSpin: number;
 };
@@ -167,20 +165,24 @@ function seededUnit(index: number, salt: number): number {
   return value - Math.floor(value);
 }
 
-function createStarField(): Points<BufferGeometry, PointsMaterial> {
+function createStarField(
+  count: number,
+  depthOffset: number,
+  size: number,
+): Points<BufferGeometry, PointsMaterial> {
   const positions: number[] = [];
   const colors: number[] = [];
   const phosphor = new Color("#8acda0");
   const amber = new Color("#d7aa63");
   const white = new Color("#dcebd7");
-  for (let index = 0; index < 760; index += 1) {
+  for (let index = 0; index < count; index += 1) {
     const radius = 10 + seededUnit(index, 1) * 22;
     const theta = seededUnit(index, 2) * Math.PI * 2;
     const phi = Math.acos(2 * seededUnit(index, 3) - 1);
     positions.push(
       radius * Math.sin(phi) * Math.cos(theta),
       radius * Math.cos(phi) * 0.8,
-      radius * Math.sin(phi) * Math.sin(theta) - 5,
+      radius * Math.sin(phi) * Math.sin(theta) + depthOffset,
     );
     const tint = index % 17 === 0 ? amber : index % 5 === 0 ? phosphor : white;
     const intensity = 0.45 + seededUnit(index, 4) * 0.55;
@@ -192,7 +194,7 @@ function createStarField(): Points<BufferGeometry, PointsMaterial> {
   return new Points(
     geometry,
     new PointsMaterial({
-      size: 0.045,
+      size,
       transparent: true,
       opacity: 0.82,
       vertexColors: true,
@@ -204,7 +206,8 @@ function createStarField(): Points<BufferGeometry, PointsMaterial> {
 function createTrailGeometry(
   radius: number,
   length: number,
-  direction: ReturnType<typeof directionForWeeklyReturn>,
+  direction: SceneModel["trails"][number]["direction"],
+  maximumWidth: number,
 ): BufferGeometry {
   const positions: number[] = [];
   const segments = 28;
@@ -214,8 +217,8 @@ function createTrailGeometry(
     const t1 = (index + 1) / segments;
     const a0 = sign * length * t0;
     const a1 = sign * length * t1;
-    const w0 = 0.14 * (1 - t0) + 0.012;
-    const w1 = 0.14 * (1 - t1) + 0.012;
+    const w0 = maximumWidth * (1 - t0) + 0.008;
+    const w1 = maximumWidth * (1 - t1) + 0.008;
     const point = (angle: number, width: number) => [
       Math.cos(angle) * (radius + width),
       0.025,
@@ -247,62 +250,107 @@ export default function OrreryScene({
   beltHoldings,
   selectedTicker,
   hoveredTicker,
+  portfolioFocused = false,
   cameraState,
   portfolioHealth,
+  driftExcessReturn = null,
+  portfolioVolatility = null,
+  nextEarningsDays = null,
+  tradeComet = null,
   onHover,
   onSelect,
   onSelectPortfolio,
   onSelectBelt,
+  onSelectMoon,
+  onSelectSatellite,
+  onOpenSector,
   onExitOverview,
 }: {
   holdings: readonly PublicOrreryHolding[];
   beltHoldings: readonly PublicOrreryHolding[];
   selectedTicker: string | null;
   hoveredTicker: string | null;
+  portfolioFocused?: boolean;
   cameraState: OrreryCameraState;
   portfolioHealth: PortfolioHealth;
+  driftExcessReturn?: number | null;
+  portfolioVolatility?: number | null;
+  nextEarningsDays?: number | null;
+  tradeComet?: TradeCometInput | null;
   onHover: (ticker: string | null) => void;
   onSelect: (ticker: string) => void;
   onSelectPortfolio: () => void;
   onSelectBelt: () => void;
+  onSelectMoon: (ticker: string) => void;
+  onSelectSatellite: (id: "DRIFT" | "HAZARD" | "SUPPLY") => void;
+  onOpenSector: () => void;
   onExitOverview: () => void;
 }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const selectedTickerRef = useRef(selectedTicker);
   const hoveredTickerRef = useRef(hoveredTicker);
   const cameraStateRef = useRef(cameraState);
+  const portfolioFocusedRef = useRef(portfolioFocused);
   const callbacksRef = useRef({
     onHover,
     onSelect,
     onSelectPortfolio,
     onSelectBelt,
+    onSelectMoon,
+    onSelectSatellite,
+    onOpenSector,
     onExitOverview,
   });
   const holdingsRef = useRef(holdings);
   const beltRef = useRef(beltHoldings);
   const healthRef = useRef(portfolioHealth);
+  const instrumentRef = useRef({
+    driftExcessReturn,
+    portfolioVolatility,
+    nextEarningsDays,
+    tradeComet,
+  });
   const sceneKey = useMemo(
     () =>
       [...holdings, ...beltHoldings]
         .map((holding) =>
           [holding.ticker, holding.weight, holding.weeklyReturn, holding.dayReturn].join(":"),
         )
-        .join("|"),
-    [beltHoldings, holdings],
+        .join("|") +
+      `|health:${portfolioHealth.h}:${portfolioHealth.sunspotIntensity}` +
+      `|trade:${tradeComet?.date ?? "none"}:${tradeComet?.ticker ?? ""}`,
+    [
+      beltHoldings,
+      holdings,
+      portfolioHealth.h,
+      portfolioHealth.sunspotIntensity,
+      tradeComet?.date,
+      tradeComet?.ticker,
+    ],
   );
 
   useEffect(() => {
     selectedTickerRef.current = selectedTicker;
     hoveredTickerRef.current = hoveredTicker;
     cameraStateRef.current = cameraState;
+    portfolioFocusedRef.current = portfolioFocused;
     callbacksRef.current = {
       onHover,
       onSelect,
       onSelectPortfolio,
       onSelectBelt,
+      onSelectMoon,
+      onSelectSatellite,
+      onOpenSector,
       onExitOverview,
     };
     healthRef.current = portfolioHealth;
+    instrumentRef.current = {
+      driftExcessReturn,
+      portfolioVolatility,
+      nextEarningsDays,
+      tradeComet,
+    };
     holdingsRef.current = holdings;
     beltRef.current = beltHoldings;
   }, [
@@ -310,13 +358,21 @@ export default function OrreryScene({
     cameraState,
     holdings,
     hoveredTicker,
+    driftExcessReturn,
+    nextEarningsDays,
     onExitOverview,
     onHover,
     onSelect,
     onSelectBelt,
-    onSelectPortfolio,
+    onSelectMoon,
+    onSelectSatellite,
+    onOpenSector,
+      onSelectPortfolio,
+    portfolioVolatility,
     portfolioHealth,
+    portfolioFocused,
     selectedTicker,
+    tradeComet,
   ]);
 
   useEffect(() => {
@@ -324,12 +380,31 @@ export default function OrreryScene({
     if (!mount) return;
     const sceneHoldings = holdingsRef.current;
     const sceneBelt = beltRef.current;
+    const instruments = instrumentRef.current;
+    const sceneModel = buildOverviewSceneModel({
+      holdings: sceneHoldings,
+      beltHoldings: sceneBelt,
+      healthScalar: healthRef.current.h,
+      sunspotIntensity: healthRef.current.sunspotIntensity,
+      hoveredTicker: hoveredTickerRef.current,
+      viewport: {
+        width: Math.max(1, mount.clientWidth),
+        height: Math.max(1, mount.clientHeight),
+      },
+      ...instruments,
+    });
+
     const scene = new Scene();
     scene.fog = new Fog("#020706", 15, 34);
 
-    const outerRadius = orbitRadiusForRank(Math.max(1, sceneHoldings.length));
+    const outerRadius =
+      sceneModel.planets.at(-1)?.orbitRadius ?? ORRERY_SUN_CLEARANCE;
     const camera = new PerspectiveCamera(42, 1, 0.1, 70);
-    const overviewPosition = new Vector3(0, outerRadius * 1.15, outerRadius * 2.05);
+    const overviewPosition = new Vector3(
+      0,
+      outerRadius * 0.82,
+      outerRadius * 1.62,
+    );
     camera.position.copy(overviewPosition);
     const cameraTarget = overviewPosition.clone();
     const lookAt = new Vector3();
@@ -356,6 +431,24 @@ export default function OrreryScene({
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const dockingStorageKey = "orrery-sun-docking-introduced";
+    let dockingFlashUntil = 0;
+    let dockingHintTimer = 0;
+    if (!reducedMotion) {
+      try {
+        if (
+          !window.sessionStorage.getItem(dockingStorageKey) &&
+          !window.sessionStorage.getItem(`${dockingStorageKey}:activated`)
+        ) {
+          dockingHintTimer = window.setTimeout(() => {
+            dockingFlashUntil = performance.now() + 1050;
+            window.sessionStorage.setItem(dockingStorageKey, "shown");
+          }, 20_000);
+        }
+      } catch {
+        // Storage denial suppresses the optional discoverability nudge.
+      }
+    }
     const rocket = document.createElement("span");
     rocket.className = styles.rocketCursor;
     rocket.setAttribute("aria-hidden", "true");
@@ -366,8 +459,30 @@ export default function OrreryScene({
     rocket.append(rocketBody, rocketFlame);
     if (!reducedMotion) labelLayer.appendChild(rocket);
 
-    const starField = createStarField();
-    scene.add(starField);
+    const starField = createStarField(760, -4, 0.045);
+    const farStarField = createStarField(430, -11, 0.032);
+    scene.add(starField, farStarField);
+    const nebulaGeometry = new RingGeometry(
+      outerRadius * 0.25,
+      outerRadius * 0.95,
+      96,
+      1,
+      0,
+      Math.PI * 0.82,
+    );
+    nebulaGeometry.rotateX(-Math.PI / 2);
+    const nebulaMaterial = new MeshBasicMaterial({
+      color: sceneModel.nebula.color,
+      transparent: true,
+      opacity: sceneModel.nebula.alpha,
+      blending: AdditiveBlending,
+      depthWrite: false,
+      fog: false,
+      side: 2,
+    });
+    const nebula = new Mesh(nebulaGeometry, nebulaMaterial);
+    nebula.position.set(-outerRadius * 0.25, -1.7, -outerRadius * 0.45);
+    scene.add(nebula);
     const planetGeometry = new SphereGeometry(1, 32, 24);
     const sunGeometry = new SphereGeometry(1.28, 40, 28);
     const fallbackTexture = createFallbackTexture();
@@ -426,9 +541,14 @@ export default function OrreryScene({
       callbacksRef.current.onSelect(ticker);
     };
     const planetRuntimes: PlanetRuntime[] = sceneHoldings.map((holding, index) => {
-      const rank = index + 1;
-      const orbitRadius = orbitRadiusForRank(rank);
-      const initialAngle = index * 2.399963;
+      const descriptor = sceneModel.planets[index];
+      const ringDescriptor = sceneModel.rings[index];
+      const trailDescriptor = sceneModel.trails[index];
+      const labelDescriptor = sceneModel.labels.find(
+        ({ ticker }) => ticker === holding.ticker,
+      )!;
+      const orbitRadius = descriptor.orbitRadius;
+      const initialAngle = descriptor.initialAngle;
       const plane = new Group();
       const pathGeometry = new RingGeometry(orbitRadius - 0.012, orbitRadius + 0.012, 160);
       pathGeometry.rotateX(-Math.PI / 2);
@@ -436,10 +556,10 @@ export default function OrreryScene({
       const path = new Mesh(
         pathGeometry,
         new MeshBasicMaterial({
-          color: "#6da184",
+          color: ringDescriptor.color,
           transparent: true,
-          opacity: 0.34,
-          fog: false,
+          opacity: ringDescriptor.opacity,
+          fog: ringDescriptor.fog,
           depthWrite: false,
           side: 2,
         }),
@@ -447,38 +567,35 @@ export default function OrreryScene({
       orbitMaterials.push(path.material);
       plane.add(path);
 
-      const direction = directionForWeeklyReturn(holding.weeklyReturn);
-      const speed = angularSpeedForWeeklyReturn(holding.weeklyReturn);
-      const trailGeometry = createTrailGeometry(
-        orbitRadius,
-        0.28 + (speed / ORRERY_MAX_ANGULAR_SPEED) * 0.78,
-        direction,
-      );
-      trailGeometries.push(trailGeometry);
-      const trailMaterial = new MeshBasicMaterial({
-        color:
-          direction === "clockwise"
-            ? "#63ef98"
-            : direction === "counterclockwise"
-              ? "#ff665f"
-              : "#e3b65c",
-        transparent: true,
-        opacity: 0.96,
-        fog: false,
-        blending: AdditiveBlending,
-        depthWrite: false,
-        side: 2,
-      });
-      trailMaterials.push(trailMaterial);
-
       const orbit = new Group();
       orbit.rotation.y = initialAngle;
-      orbit.add(new Mesh(trailGeometry, trailMaterial));
-      const palette = PALETTES[holding.ticker] ?? ["#345b59", "#d8b35b"];
+      const trailMeshes = trailDescriptor.passes.map((pass) => {
+        const geometry = createTrailGeometry(
+          orbitRadius,
+          trailDescriptor.arcRadians,
+          trailDescriptor.direction,
+          pass.id === "glow" ? 0.16 : 0.052,
+        );
+        trailGeometries.push(geometry);
+        const material = new MeshBasicMaterial({
+          color: trailDescriptor.color,
+          transparent: true,
+          opacity: pass.opacity,
+          fog: trailDescriptor.fog,
+          blending: AdditiveBlending,
+          depthWrite: false,
+          side: 2,
+        });
+        trailMaterials.push(material);
+        const mesh = new Mesh(geometry, material);
+        orbit.add(mesh);
+        return mesh;
+      });
+      const brandColor = new Color(descriptor.brandHex);
       const material = new ShaderMaterial({
         uniforms: {
-          uBase: { value: new Color(palette[0]) },
-          uAccent: { value: new Color(palette[1]) },
+          uBase: { value: brandColor.clone().multiplyScalar(0.34) },
+          uAccent: { value: brandColor },
           uSeed: { value: tickerSeed(holding.ticker) % 97 },
           uActive: { value: 0 },
           uDim: { value: 1 },
@@ -492,7 +609,7 @@ export default function OrreryScene({
       });
       const planet = new Mesh(planetGeometry, material);
       planet.position.set(orbitRadius, 0, 0);
-      planet.scale.setScalar(radiusForWeight(holding.weight));
+      planet.scale.setScalar(descriptor.radius);
       planet.userData.orreryTarget = holding.ticker;
       orbit.add(planet);
       plane.add(orbit);
@@ -505,7 +622,7 @@ export default function OrreryScene({
       label.textContent = holding.ticker;
       label.style.setProperty(
         "--planet-label-color",
-        new Color(palette[1]).lerp(new Color("#ffffff"), 0.72).getStyle(),
+        labelDescriptor.color,
       );
       label.addEventListener("click", () => launchRocket(holding.ticker));
       labelLayer.appendChild(label);
@@ -514,15 +631,77 @@ export default function OrreryScene({
         orbit,
         mesh: planet,
         path,
+        trailMeshes,
         label,
+        descriptor,
+        labelDescriptor,
+        trailDescriptor,
         initialAngle,
-        direction,
-        angularSpeed: speed,
-        axialSpin: axialSpinForDayReturn(holding.dayReturn),
+        direction: descriptor.direction,
+        angularSpeed: descriptor.angularSpeed,
+        axialSpin: descriptor.axialSpin,
       };
     });
 
-    const beltRadius = outerRadius + 1.05;
+    const moonGeometry = new IcosahedronGeometry(1, 2);
+    const moonMaterial = new MeshBasicMaterial({ color: "#b9aa8c" });
+    const moonRuntimes = sceneModel.moons.flatMap((moon) => {
+      const planet = planetRuntimes.find(
+        ({ holding }) => holding.ticker === moon.ticker,
+      );
+      if (!planet) return [];
+      const group = new Group();
+      group.position.copy(planet.mesh.position);
+      const mesh = new Mesh(moonGeometry, moonMaterial);
+      mesh.scale.setScalar(moon.radius);
+      mesh.position.x = planet.descriptor.radius * 1.7 + moon.radius;
+      mesh.userData.orreryTarget = `moon:${moon.ticker}`;
+      group.add(mesh);
+      let earningsRing: Mesh<RingGeometry, MeshBasicMaterial> | null = null;
+      if (moon.ringVisible) {
+        earningsRing = new Mesh(
+          new RingGeometry(moon.radius * 1.45, moon.radius * 1.72, 28),
+          new MeshBasicMaterial({
+            color: "#ffe3a2",
+            transparent: true,
+            opacity: 0.85,
+            blending: AdditiveBlending,
+            side: 2,
+          }),
+        );
+        earningsRing.position.copy(mesh.position);
+        earningsRing.rotation.x = -Math.PI / 2;
+        group.add(earningsRing);
+      }
+      planet.orbit.add(group);
+      return [{ descriptor: moon, group, mesh, earningsRing }];
+    });
+
+    const satelliteGeometry = new IcosahedronGeometry(0.16, 0);
+    const satelliteMaterial = new MeshBasicMaterial({ color: "#e9c780" });
+    const satelliteLightMaterial = new MeshBasicMaterial({
+      color: "#fff4cb",
+      transparent: true,
+      opacity: 1,
+    });
+    const satelliteRuntimes = sceneModel.satellites.map((satellite) => {
+      const group = new Group();
+      group.rotation.y = satellite.phase;
+      const craft = new Mesh(satelliteGeometry, satelliteMaterial);
+      craft.position.x = satellite.orbitRadius;
+      craft.scale.set(1.5, 0.55, 0.8);
+      craft.userData.orreryTarget = `satellite:${satellite.id}`;
+      const light = new Mesh(
+        new IcosahedronGeometry(0.045, 1),
+        satelliteLightMaterial,
+      );
+      light.position.set(satellite.orbitRadius, 0.13, 0);
+      group.add(craft, light);
+      scene.add(group);
+      return { descriptor: satellite, group, craft, light };
+    });
+
+    const beltRadius = sceneModel.belt.radius;
     const beltGroup = new Group();
     const rockGeometry = new IcosahedronGeometry(0.11, 0);
     const rockMaterial = new MeshBasicMaterial({ color: "#b38a57" });
@@ -546,6 +725,38 @@ export default function OrreryScene({
       beltLabels.push(label);
     });
     scene.add(beltGroup);
+
+    const cometGroup = new Group();
+    const cometHeadGeometry = sceneModel.comet
+      ? new IcosahedronGeometry(0.13, 1)
+      : null;
+    const cometTailGeometry = sceneModel.comet
+      ? new BufferGeometry()
+      : null;
+    const cometMaterial = sceneModel.comet
+      ? new MeshBasicMaterial({
+          color: sceneModel.comet.color,
+          transparent: true,
+          opacity: 0.92,
+          blending: AdditiveBlending,
+          depthWrite: false,
+          fog: false,
+          side: 2,
+        })
+      : null;
+    if (cometHeadGeometry && cometTailGeometry && cometMaterial) {
+      const head = new Mesh(cometHeadGeometry, cometMaterial);
+      cometTailGeometry.setAttribute(
+        "position",
+        new Float32BufferAttribute(
+          [0, 0, 0, -2.8, 0.13, 0, -2.8, -0.13, 0],
+          3,
+        ),
+      );
+      cometGroup.add(head, new Mesh(cometTailGeometry, cometMaterial));
+      cometGroup.position.set(-outerRadius * 1.2, 2.4, -outerRadius * 0.34);
+      scene.add(cometGroup);
+    }
 
     let textureFrame = requestAnimationFrame(() => {
       textureFrame = requestAnimationFrame(() => {
@@ -579,7 +790,13 @@ export default function OrreryScene({
     const worldPosition = new Vector3();
     const projected = new Vector3();
     const labelPosition = new Vector3();
-    const pickTargets: Mesh[] = [sun, ...planetRuntimes.map(({ mesh }) => mesh), ...beltRocks];
+    const pickTargets: Mesh[] = [
+      sun,
+      ...planetRuntimes.map(({ mesh }) => mesh),
+      ...moonRuntimes.map(({ mesh }) => mesh),
+      ...satelliteRuntimes.map(({ craft }) => craft),
+      ...beltRocks,
+    ];
     let localHovered: string | null = null;
     let localTarget: string | undefined;
     let pointerX = 0;
@@ -590,6 +807,7 @@ export default function OrreryScene({
     let dragStartX = 0;
     let dragStartTilt = 0;
     let rocketFlight: RocketFlight | null = null;
+    const cometStartedAt = performance.now();
 
     const positionRocket = (x: number, y: number) => {
       rocket.style.left = `${x}px`;
@@ -655,7 +873,12 @@ export default function OrreryScene({
         .orreryTarget as string | undefined;
       const target = magneticTarget() ?? hit;
       localTarget = target;
-      const ticker = target && target !== "portfolio" && target !== "belt" ? target : null;
+      const ticker =
+        target?.startsWith("moon:")
+          ? target.slice(5)
+          : target && !target.startsWith("satellite:") && target !== "portfolio" && target !== "belt"
+            ? target
+            : null;
       if (ticker !== localHovered) {
         localHovered = ticker;
         callbacksRef.current.onHover(ticker);
@@ -699,8 +922,27 @@ export default function OrreryScene({
     const onClick = (event: MouseEvent) => {
       readPointer(event as PointerEvent);
       const target = pick();
-      if (target === "portfolio") callbacksRef.current.onSelectPortfolio();
+      if (target === "portfolio") {
+        try {
+          window.clearTimeout(dockingHintTimer);
+          window.sessionStorage.setItem(
+            `${dockingStorageKey}:activated`,
+            "true",
+          );
+        } catch {
+          // Storage denial never blocks docking.
+        }
+        callbacksRef.current.onSelectPortfolio();
+      }
       else if (target === "belt") callbacksRef.current.onSelectBelt();
+      else if (target?.startsWith("moon:")) {
+        callbacksRef.current.onSelectMoon(target.slice(5));
+      }
+      else if (target?.startsWith("satellite:")) {
+        callbacksRef.current.onSelectSatellite(
+          target.slice(10) as "DRIFT" | "HAZARD" | "SUPPLY",
+        );
+      }
       else if (target) launchRocket(target);
       else if (cameraStateRef.current !== "overview") {
         callbacksRef.current.onExitOverview();
@@ -708,6 +950,14 @@ export default function OrreryScene({
     };
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
+      if (
+        event.deltaY > 0 &&
+        zoomScale >= 1.18 &&
+        cameraStateRef.current === "overview"
+      ) {
+        callbacksRef.current.onOpenSector();
+        return;
+      }
       zoomScale = Math.max(0.88, Math.min(1.18, zoomScale + Math.sign(event.deltaY) * 0.035));
     };
     const onDoubleClick = () => callbacksRef.current.onExitOverview();
@@ -738,6 +988,8 @@ export default function OrreryScene({
       const selected = selectedTickerRef.current;
       const hovered = hoveredTickerRef.current;
       const state = cameraStateRef.current;
+      const labelRect = renderer.domElement.getBoundingClientRect();
+      const labelCandidates: SceneModel["labels"] = [];
 
       for (const planet of planetRuntimes) {
         const targeted =
@@ -749,7 +1001,8 @@ export default function OrreryScene({
             delta;
         }
         planet.mesh.rotation.y += planet.axialSpin * delta;
-        const targetScale = radiusForWeight(planet.holding.weight) * (targeted ? 1.08 : 1);
+        const targetScale =
+          planet.descriptor.radius * (targeted ? 1.08 : 1);
         const nextScale =
           planet.mesh.scale.x +
           (targetScale - planet.mesh.scale.x) * (1 - Math.exp(-delta * 9));
@@ -761,6 +1014,12 @@ export default function OrreryScene({
         planet.mesh.material.uniforms.uDim.value +=
           (dimTarget - planet.mesh.material.uniforms.uDim.value) *
           (1 - Math.exp(-delta * 5));
+        planet.path.material.opacity = targeted
+          ? ACTIVE_RING_OPACITY
+          : OVERVIEW_RING_OPACITY;
+        planet.path.material.color.set(
+          targeted ? planet.trailDescriptor.color : "#66756f",
+        );
         planet.path.visible = state !== "approach";
         planet.mesh.getWorldPosition(worldPosition);
         projected.copy(worldPosition).project(camera);
@@ -768,10 +1027,32 @@ export default function OrreryScene({
           .copy(worldPosition)
           .addScaledVector(camera.up, -planet.mesh.scale.x * 1.45)
           .project(camera);
-        planet.label.style.left = `${(labelPosition.x * 0.5 + 0.5) * 100}%`;
-        planet.label.style.top = `${(-labelPosition.y * 0.5 + 0.5) * 100}%`;
+        labelCandidates.push({
+          ...planet.labelDescriptor,
+          screen: {
+            x: (labelPosition.x * 0.5 + 0.5) * labelRect.width,
+            y: (-labelPosition.y * 0.5 + 0.5) * labelRect.height,
+            depth: projected.z,
+          },
+          opacity: 1,
+          yielded: false,
+        });
+        planet.label.textContent = targeted
+          ? `${planet.holding.ticker} ${planet.labelDescriptor.dayChip}`
+          : planet.holding.ticker;
         planet.label.dataset.targeted = targeted ? "true" : "false";
         planet.label.hidden = projected.z > 1;
+      }
+      const resolvedLabels = resolveLabelCollisions(labelCandidates);
+      for (const resolved of resolvedLabels) {
+        const runtime = planetRuntimes.find(
+          ({ holding }) => holding.ticker === resolved.ticker,
+        );
+        if (!runtime) continue;
+        runtime.label.style.left = `${resolved.screen.x}px`;
+        runtime.label.style.top = `${resolved.screen.y}px`;
+        runtime.label.style.opacity = String(resolved.opacity);
+        runtime.label.dataset.yielded = resolved.yielded ? "true" : "false";
       }
       if (rocketFlight) {
         const destination = planetRuntimes.find(
@@ -802,6 +1083,24 @@ export default function OrreryScene({
         }
       }
       beltGroup.rotation.y += delta * 0.015;
+      moonRuntimes.forEach(({ group }, index) => {
+        group.rotation.y += delta * (0.72 + index * 0.08);
+      });
+      satelliteRuntimes.forEach(({ descriptor, group, light }, index) => {
+        group.rotation.y += delta * (0.19 + index * 0.025);
+        light.material.opacity =
+          descriptor.blinkSeconds === null
+            ? 1
+            : 0.35 + 0.65 * (0.5 + Math.sin(time * Math.PI * 2 / descriptor.blinkSeconds) * 0.5);
+      });
+      if (sceneModel.comet && cometGroup.visible) {
+        const cometProgress = Math.min(1, (now - cometStartedAt) / 2400);
+        cometGroup.position.x =
+          -outerRadius * 1.2 + outerRadius * 2.4 * cometProgress;
+        cometGroup.position.z =
+          -outerRadius * 0.34 + Math.sin(cometProgress * Math.PI) * 1.8;
+        if (cometProgress >= 1) cometGroup.visible = false;
+      }
       beltRocks.forEach((rock, index) => {
         rock.getWorldPosition(projected);
         projected.project(camera);
@@ -841,23 +1140,35 @@ export default function OrreryScene({
 
       const time = now / 1000;
       const health = healthRef.current;
-      dockingRing.visible = localTarget === "portfolio";
+      const dockingActive =
+        localTarget === "portfolio" ||
+        portfolioFocusedRef.current ||
+        now < dockingFlashUntil;
+      dockingRing.visible = dockingActive;
+      mount.dataset.docking = dockingActive ? "true" : "false";
       dockingRing.rotation.z = reducedMotion ? 0 : time * 0.16;
       sunMaterial.uniforms.uTime.value = time;
       sunMaterial.uniforms.uHealth.value = health.h;
       sunMaterial.uniforms.uSunspots.value = health.sunspotIntensity;
-      const health01 = (health.h + 1) / 2;
-      const pulseDepth = 0.002 + health01 * 0.012;
-      const pulseRate = 0.42 + health01 * 0.95;
-      const pulse = 1 + Math.sin(time * pulseRate) * pulseDepth;
+      const sunDescriptor = sceneModel.sun;
+      const health01 = (sunDescriptor.healthScalar + 1) / 2;
+      const pulse =
+        1 + Math.sin(time * sunDescriptor.pulseRate) * sunDescriptor.pulseDepth;
       const innerBase = 1.12 + health01 * 0.22;
-      const outerBase = 1.28 + health01 * 0.38;
+      const outerBase = sunDescriptor.coronaWidth;
       glowMaterialInner.opacity = 0.05 + health01 * 0.11;
-      glowMaterialOuter.opacity = 0.018 + health01 * 0.055;
+      glowMaterialOuter.opacity = sunDescriptor.coronaOpacity;
       glowInner.scale.setScalar(innerBase * pulse);
       glowOuter.scale.setScalar(outerBase * (2 - pulse));
-      starField.rotation.y = pointerX * 0.007 + time * 0.0007;
-      starField.rotation.x = pointerY * -0.005;
+      starField.rotation.y =
+        pointerX * sceneModel.starfields[0].parallax + time * 0.0007;
+      starField.rotation.x =
+        pointerY * -sceneModel.starfields[0].parallax * 0.72;
+      farStarField.rotation.y =
+        pointerX * sceneModel.starfields[1].parallax - time * 0.00025;
+      farStarField.rotation.x =
+        pointerY * -sceneModel.starfields[1].parallax;
+      nebula.rotation.z += delta * sceneModel.nebula.driftRadiansPerSecond;
       renderer.render(scene, camera);
       animationFrame = requestAnimationFrame(render);
     };
@@ -866,6 +1177,7 @@ export default function OrreryScene({
     return () => {
       cancelAnimationFrame(animationFrame);
       cancelAnimationFrame(textureFrame);
+      window.clearTimeout(dockingHintTimer);
       resizeObserver.disconnect();
       renderer.domElement.removeEventListener("pointermove", onPointerMove);
       renderer.domElement.removeEventListener("pointerdown", onPointerDown);
@@ -882,6 +1194,10 @@ export default function OrreryScene({
       for (const material of trailMaterials) material.dispose();
       starField.geometry.dispose();
       starField.material.dispose();
+      farStarField.geometry.dispose();
+      farStarField.material.dispose();
+      nebulaGeometry.dispose();
+      nebulaMaterial.dispose();
       planetGeometry.dispose();
       sunGeometry.dispose();
       sunMaterial.dispose();
@@ -893,6 +1209,19 @@ export default function OrreryScene({
       dockingRingMaterial.dispose();
       rockGeometry.dispose();
       rockMaterial.dispose();
+      moonGeometry.dispose();
+      moonMaterial.dispose();
+      moonRuntimes.forEach(({ earningsRing }) => {
+        earningsRing?.geometry.dispose();
+        earningsRing?.material.dispose();
+      });
+      satelliteGeometry.dispose();
+      satelliteMaterial.dispose();
+      satelliteLightMaterial.dispose();
+      satelliteRuntimes.forEach(({ light }) => light.geometry.dispose());
+      cometHeadGeometry?.dispose();
+      cometTailGeometry?.dispose();
+      cometMaterial?.dispose();
       fallbackTexture.dispose();
       renderer.dispose();
       labelLayer.remove();

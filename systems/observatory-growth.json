@@ -1,0 +1,8 @@
+{
+  "name": "OBSERVATORY-GROWTH",
+  "holdings": [
+    { "ticker": "MSFT", "weight": 0.42 },
+    { "ticker": "GOOG", "weight": 0.34 },
+    { "ticker": "ASML", "weight": 0.24 }
+  ]
+}

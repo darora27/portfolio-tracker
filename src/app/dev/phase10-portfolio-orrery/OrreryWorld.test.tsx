@@ -115,23 +115,22 @@ describe("Portfolio Orrery remediation route", () => {
     );
   });
 
-  it("renders the complete six-field semantic inspector and deeper link", () => {
+  it("renders the five-bay planet detail with the four-field telemetry strip", () => {
     render(<OrreryWorld {...baseProps} selectedTicker="MSFT" />);
-    const heading = screen.getByRole("heading", { level: 2, name: /MSFT Microsoft/ });
+    const heading = screen.getByRole("heading", { level: 2, name: /MSFT · Microsoft/ });
     expect(heading).toBeTruthy();
     expect(document.activeElement).toBe(heading);
     for (const label of [
-      "Portfolio weight",
-      "Today",
-      "Trailing week",
-      "Vs. portfolio",
-      "Annualized volatility",
-      "Beta vs. VOO",
+      "WEIGHT",
+      "WEEK",
+      "VOL",
+      "BETA",
     ]) {
       expect(screen.getByText(label)).toBeTruthy();
     }
-    expect(screen.getByRole("link", { name: "Open full analysis" }).getAttribute("href"))
-      .toBe("/stock/MSFT");
+    expect(document.querySelectorAll("aside section")).toHaveLength(5);
+    expect(screen.getByRole("link", { name: "OPEN IN MISSION CONTROL ▸" }).getAttribute("href"))
+      .toContain("station=manifest");
   });
 
   it("returns from approach in one gesture and keeps an explicit overview link", () => {
@@ -144,7 +143,7 @@ describe("Portfolio Orrery remediation route", () => {
       />,
     );
     expect(
-      screen.getByRole("link", { name: "Return to overview" }).getAttribute("href"),
+      screen.getByRole("link", { name: "◂ SYSTEM" }).getAttribute("href"),
     ).toBe("/");
     fireEvent.keyDown(window, { key: "Escape" });
     expect(push).toHaveBeenCalledWith("/", { scroll: false });
@@ -183,7 +182,7 @@ describe("Portfolio Orrery remediation route", () => {
   it("keeps the static semantic map when reduced motion disables the scene", () => {
     stubMedia(true, true);
     render(<OrreryWorld {...baseProps} />);
-    expect(screen.getAllByRole("link").length).toBe(holdings.length + 1);
+    expect(screen.getAllByRole("link").length).toBe(holdings.length + 4);
     expect(screen.queryByTestId("orrery-canvas")).toBeNull();
   });
 
@@ -208,7 +207,7 @@ describe("Portfolio Orrery remediation route", () => {
 
   it("provides 44px-class semantic controls without duplicate canvas focus stops", () => {
     render(<OrreryWorld {...baseProps} />);
-    expect(screen.getAllByRole("link")).toHaveLength(holdings.length + 1);
+    expect(screen.getAllByRole("link")).toHaveLength(holdings.length + 4);
     expect(screen.getByRole("button", { name: "Open systems manual" })).toBeTruthy();
     expect(screen.getByRole("button", { name: /ASTEROID BELT/ })).toBeTruthy();
   });

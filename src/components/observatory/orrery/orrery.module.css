@@ -164,14 +164,17 @@
   border: 0;
   color: var(--planet-label-color, #e8f1df);
   background: transparent;
-  font: 700 0.58rem/1 var(--font-mono, ui-monospace, monospace);
+  font: 700 12px/1 var(--font-mono, ui-monospace, monospace);
   isolation: isolate;
   letter-spacing: 0.07em;
   pointer-events: auto;
   cursor: none;
   transform: translate(-50%, 0.25rem);
   text-shadow:
-    0 1px 2px #010806,
+    -2px -2px 0 #010806,
+    2px -2px 0 #010806,
+    -2px 2px 0 #010806,
+    2px 2px 0 #010806,
     0 0 8px rgba(1, 8, 6, 0.95);
 }
 
@@ -305,6 +308,32 @@
   font-variant-numeric: tabular-nums;
 }
 
+.canvasLayer:has(.sceneMount[data-docking="true"]) + .sunTelemetry span::after {
+  color: #fff1cf;
+  content: " · ENTER MISSION CONTROL ▸";
+}
+
+.orientationLine {
+  position: absolute;
+  z-index: 9;
+  right: 50%;
+  bottom: 1.45rem;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(232, 241, 223, 0.34);
+  color: #e8f1df;
+  background: rgba(2, 7, 6, 0.9);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translateX(50%);
+}
+
+[data-camera]:not([data-camera="overview"]) .orientationLine {
+  display: none;
+}
+
 .sunControl,
 .holdingControl,
 .deepLink,
@@ -351,6 +380,35 @@
   font-size: 0.66rem;
   line-height: 1.25;
   transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.instrumentList {
+  display: grid;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bodyControl {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid rgba(137, 213, 158, 0.18);
+  color: #e8f1df;
+  background: rgba(3, 16, 12, 0.82);
+  font: 600 0.62rem/1.35 var(--font-mono, ui-monospace, monospace);
+  text-align: left;
+  text-decoration: none;
+  pointer-events: auto;
+}
+
+.bodyControl:hover,
+.bodyControl:focus-visible {
+  border-color: #ffd68c;
+  outline: 2px solid #ffd68c;
+  outline-offset: 2px;
 }
 
 .holdingControl:hover,
@@ -582,12 +640,21 @@
   z-index: 35;
   inset: 0;
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto auto minmax(0, 1fr);
   padding: clamp(1rem, 2vw, 2rem);
-  color: var(--ink);
-  background: rgba(1, 9, 7, 0.97);
+  color: #f1dfbd;
+  background: rgba(29, 14, 8, 0.9);
   backdrop-filter: blur(12px);
   animation: command-arrival 440ms ease-out both;
+}
+
+.missionControl::before {
+  position: absolute;
+  inset: 0.7rem;
+  border: 1px solid #ead7b0;
+  clip-path: polygon(0 0, 3rem 0, 3rem 2px, calc(100% - 3rem) 2px, calc(100% - 3rem) 0, 100% 0, 100% 3rem, calc(100% - 2px) 3rem, calc(100% - 2px) calc(100% - 3rem), 100% calc(100% - 3rem), 100% 100%, calc(100% - 3rem) 100%, calc(100% - 3rem) calc(100% - 2px), 3rem calc(100% - 2px), 3rem 100%, 0 100%, 0 calc(100% - 3rem), 2px calc(100% - 3rem), 2px 3rem, 0 3rem);
+  pointer-events: none;
+  content: "";
 }
 
 .missionControl > header {
@@ -607,8 +674,8 @@
 
 .missionControl nav {
   display: flex;
-  gap: 1rem;
-  padding: 0.55rem 0 0.8rem;
+  gap: 0.35rem;
+  padding: 0.55rem 0 0;
   overflow-x: auto;
 }
 
@@ -618,22 +685,724 @@
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 0.45rem 0;
-  color: var(--phosphor);
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(235, 210, 165, 0.35);
+  border-bottom: 0;
+  color: #d5ba8c;
+  background: #3b1f12;
   text-decoration: none;
   white-space: nowrap;
 }
 
 .missionControl nav a[aria-current="page"] {
-  color: var(--amber-bright);
-  text-decoration: underline;
-  text-underline-offset: 0.35rem;
+  color: #fff0cf;
+  background: #7d3d1d;
+  text-decoration: none;
+}
+
+.teletype {
+  min-width: 0;
+  padding: 0.48rem 0.65rem;
+  border-block: 1px solid rgba(235, 210, 165, 0.28);
+  color: #f6d493;
+  overflow: hidden;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.teletype span {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  animation: teletype-write 1.6s steps(72, end) both;
+}
+
+.teletype i {
+  margin-left: 0.15rem;
+  color: #fff0cf;
+  font-style: normal;
+  animation: teletype-cursor 760ms steps(1, end) infinite;
+}
+
+.missionMachine {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(15rem, 28%) minmax(0, 1fr);
+  min-height: 0;
+  border: 1px solid rgba(235, 210, 165, 0.42);
+  background:
+    linear-gradient(rgba(237, 202, 139, 0.055) 1px, transparent 1px) 0 0 / 100% 28px,
+    #21120d;
+}
+
+.missionMachine::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 28%;
+  width: 1px;
+  background: rgba(235, 210, 165, 0.42);
+  content: "";
+}
+
+.plotChassis {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+  padding: 0.75rem;
+  color: #d8bd8b;
+}
+
+.plotChassis > span {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+}
+
+.systemPlot {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
 }
 
 .missionContent {
   min-height: 0;
-  padding: clamp(0.75rem, 1.5vw, 1.25rem) 0 0;
+  padding: clamp(0.75rem, 1.5vw, 1.25rem);
   overflow: auto;
+}
+
+.operationsBay {
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+  min-height: 100%;
+  padding: 0.35rem;
+  color: #f1dfbd;
+}
+
+.operationsBay b,
+.operationsBay strong {
+  font-variant-numeric: tabular-nums;
+  animation: odometer-flip 120ms ease-out both;
+}
+
+.operationsBay h3 {
+  width: max-content;
+  padding: 0.36rem 0.65rem;
+  border-left: 3px solid #c96d32;
+  color: #fff0cf;
+  background: #3c2014;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+}
+
+.plotReadouts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-block: 1px solid rgba(235, 210, 165, 0.25);
+}
+
+.plotReadouts span {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.7rem;
+  color: #bda57b;
+  font-size: 0.62rem;
+}
+
+.plotReadouts b {
+  color: #f6d493;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.manifestHeader,
+.manifestRows a {
+  display: grid;
+  grid-template-columns: 1.4rem 4.5rem 5rem minmax(8rem, 1fr) minmax(11rem, 1fr);
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.manifestHeader {
+  padding: 0 0.55rem;
+  color: #ad936a;
+  font-size: 0.56rem;
+}
+
+.manifestHeader span:nth-child(3) {
+  grid-column: 4;
+}
+
+.manifestRows,
+.commsRows,
+.logRows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.manifestRows a {
+  min-height: 46px;
+  padding: 0.45rem 0.55rem;
+  border-top: 1px solid rgba(235, 210, 165, 0.17);
+  color: #ead7b0;
+  text-decoration: none;
+}
+
+.manifestRows a:hover,
+.manifestRows a:focus-visible {
+  color: #fff4d7;
+  background: rgba(205, 102, 47, 0.16);
+  outline: 1px solid #f6d493;
+}
+
+.planetChip {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--chip);
+  box-shadow: 0 0 8px var(--chip);
+}
+
+.fuelGauge,
+.bilateralBar {
+  position: relative;
+  height: 1.15rem;
+  border: 1px solid rgba(235, 210, 165, 0.24);
+  overflow: hidden;
+}
+
+.fuelGauge i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: #9f5a2f;
+}
+
+.fuelGauge b,
+.bilateralBar b {
+  position: relative;
+  z-index: 2;
+  display: block;
+  padding: 0.13rem 0.3rem;
+  font-size: 0.59rem;
+  text-align: center;
+}
+
+.bilateralBar::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  border-left: 1px solid #f1dfbd;
+  content: "";
+}
+
+.bilateralBar i {
+  position: absolute;
+  inset-block: 0;
+  background: #5f9b71;
+}
+
+.bilateralBar i[data-sign="negative"] {
+  background: #a94d3d;
+}
+
+.scopeTrace {
+  position: relative;
+  height: min(60vh, 410px);
+  border: 1px solid rgba(235, 210, 165, 0.28);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 23px, rgba(219, 156, 79, 0.06) 24px),
+    #160e0a;
+}
+
+.scopeStamp {
+  position: absolute;
+  right: 0.8rem;
+  bottom: 0.7rem;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid #bd7543;
+  color: #e8b87a;
+  font-size: 0.58rem;
+}
+
+.hazardGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.needleGauge,
+.pressureColumn,
+.lampBar {
+  position: relative;
+  display: grid;
+  min-height: 12rem;
+  place-items: center;
+  align-content: space-between;
+  padding: 0.8rem;
+  border-top: 1px solid #d7b47b;
+  background: rgba(76, 38, 22, 0.38);
+}
+
+.needleGauge::before {
+  width: 7rem;
+  height: 3.5rem;
+  border: 1px solid rgba(235, 210, 165, 0.42);
+  border-bottom: 0;
+  border-radius: 7rem 7rem 0 0;
+  content: "";
+}
+
+.needleGauge > i {
+  position: absolute;
+  top: 6rem;
+  left: 50%;
+  width: 3.1rem;
+  height: 1px;
+  background: #f1c57e;
+  transform-origin: left;
+}
+
+.pressureColumn > i {
+  position: absolute;
+  bottom: 2.4rem;
+  width: 1.35rem;
+  max-height: 7rem;
+  background: #9d422c;
+}
+
+.pressureColumn > b {
+  position: absolute;
+  top: 2.1rem;
+  color: #c9ae81;
+  font-size: 0.55rem;
+}
+
+.lampBar > div {
+  display: flex;
+  gap: 0.18rem;
+}
+
+.lampBar i {
+  width: 0.5rem;
+  height: 2.9rem;
+  background: #39271d;
+}
+
+.lampBar i[data-lit="true"] {
+  background: #d99b4a;
+  box-shadow: 0 0 8px #b66a32;
+}
+
+.stampedExtremes {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.stampedExtremes span {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #9c6c48;
+  color: #cdb083;
+}
+
+.signalsLayout {
+  display: grid;
+  grid-template-columns: minmax(18rem, 1fr) minmax(15rem, 0.7fr);
+  gap: 1rem;
+}
+
+.signalMatrix {
+  display: grid;
+  gap: 3px;
+}
+
+.signalMatrix span {
+  display: grid;
+  min-width: 2rem;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid #8d5d3c;
+  color: #fff0cf;
+  background: #b66d34;
+}
+
+.compositionArcs {
+  position: relative;
+  min-height: 290px;
+}
+
+.compositionArcs i {
+  position: absolute;
+  border-radius: 50%;
+  background: conic-gradient(#d1934f 0 var(--arc), transparent var(--arc));
+  -webkit-mask: radial-gradient(circle, transparent calc(100% - 4px), #000 calc(100% - 3px));
+  mask: radial-gradient(circle, transparent calc(100% - 4px), #000 calc(100% - 3px));
+}
+
+.compositionArcs strong {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0.4rem;
+  border: 1px solid #b96b39;
+}
+
+.commsRows li,
+.logRows li {
+  display: grid;
+  grid-template-columns: 6rem 5rem minmax(8rem, 1fr) minmax(7rem, 0.7fr);
+  gap: 0.8rem;
+  min-height: 48px;
+  align-items: center;
+  padding: 0.55rem;
+  border-top: 1px solid rgba(235, 210, 165, 0.2);
+}
+
+.commsRows li[data-soonest="true"] {
+  color: #fff4d7;
+  background: rgba(216, 125, 60, 0.18);
+  box-shadow: inset 4px 0 #d8793d;
+}
+
+.logRows b {
+  color: #f4cf91;
+}
+
+.planetDetail {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.detailBay {
+  position: relative;
+  display: grid;
+  gap: 0.38rem;
+  padding: 0.65rem;
+  border-top: 1px solid rgba(157, 231, 178, 0.34);
+  background: rgba(2, 12, 9, 0.32);
+}
+
+.detailBay > span:first-child {
+  color: #9de7b2;
+  font-size: 0.56rem;
+  letter-spacing: 0.13em;
+}
+
+.detailBay h2 {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
+.dayNumber {
+  color: #ffd68c;
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  font-variant-numeric: tabular-nums;
+}
+
+.earningsChip {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid #ffd68c;
+  color: #ffd68c;
+  font-size: 0.58rem;
+}
+
+.rangeDetents {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+
+.rangeDetents button,
+.benchmarkToggle,
+.detailBay > button {
+  min-height: 44px;
+  border: 1px solid rgba(157, 231, 178, 0.28);
+  color: #b9cdb8;
+  background: #071712;
+  font: 600 0.54rem/1.15 var(--font-mono, monospace);
+}
+
+.rangeDetents button[aria-pressed="true"],
+.benchmarkToggle[aria-pressed="true"] {
+  color: #010504;
+  background: #ffd68c;
+}
+
+.benchmarkToggle:disabled {
+  color: #8f9d8e;
+  background: #101712;
+}
+
+.holdingScope {
+  width: 100%;
+  height: 132px;
+}
+
+.holdingScope line {
+  stroke: rgba(157, 231, 178, 0.3);
+}
+
+.holdingScope polyline {
+  fill: none;
+  stroke: #efbb62;
+  stroke-width: 2.5;
+}
+
+.holdingScope .benchmarkTrace {
+  stroke: #84968b;
+  stroke-dasharray: 5 5;
+}
+
+.telemetryStrip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0;
+}
+
+.telemetryStrip div {
+  padding: 0.3rem;
+  border-right: 1px solid rgba(157, 231, 178, 0.18);
+}
+
+.telemetryStrip dt {
+  color: #8eaa94;
+  font-size: 0.5rem;
+}
+
+.telemetryStrip dd {
+  margin: 0.15rem 0 0;
+  color: #ffd68c;
+  font-size: 0.68rem;
+}
+
+.transmissionList {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.transmissionList a {
+  display: grid;
+  grid-template-columns: 2.8rem minmax(0, 1fr) auto;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.3rem;
+  color: #e8f1df;
+  font-size: 0.58rem;
+  text-decoration: none;
+}
+
+.transmissionList b {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.transmissionList i {
+  color: #9db09e;
+  font-style: normal;
+}
+
+.detailBay[data-expanded="true"] .transmissionList a {
+  grid-template-columns: 3rem minmax(0, 1fr);
+}
+
+.detailBay[data-expanded="true"] .transmissionList i {
+  grid-column: 2;
+}
+
+.noTransmissions {
+  min-height: 44px;
+  color: #c9d6c4;
+  font-size: 0.65rem;
+}
+
+.detailBay[aria-label="Egress"] {
+  grid-template-columns: 1fr 1fr;
+}
+
+.detailBay[aria-label="Egress"] > span {
+  grid-column: 1 / -1;
+}
+
+.detailBay[aria-label="Egress"] a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  color: #ffd68c;
+  font-size: 0.62rem;
+}
+
+.sectorMap {
+  position: absolute;
+  z-index: 12;
+  inset: 5.8rem 2rem 2rem;
+  overflow: hidden;
+  border: 1px solid #d79e58;
+  color: #f3ddaf;
+  background: rgba(20, 12, 8, 0.95);
+  animation: sector-warp 600ms ease-out both;
+}
+
+.sectorMap header {
+  position: relative;
+  z-index: 2;
+  padding: 1rem;
+}
+
+.sectorMap header span {
+  color: #ce8a48;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+}
+
+.sectorGrid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(219, 152, 73, 0.1) 1px, transparent 1px) 0 0 / 5rem 5rem,
+    linear-gradient(90deg, rgba(219, 152, 73, 0.1) 1px, transparent 1px) 0 0 / 5rem 5rem,
+    radial-gradient(circle at center, transparent 0 9%, rgba(219, 152, 73, 0.16) 9.2% 9.4%, transparent 9.6% 19%, rgba(219, 152, 73, 0.12) 19.2% 19.4%, transparent 19.6%);
+}
+
+.sectorSun {
+  position: absolute;
+  top: var(--sector-y);
+  left: var(--sector-x);
+  display: grid;
+  min-width: 13rem;
+  min-height: 44px;
+  gap: 0.2rem;
+  color: #f3ddaf;
+  text-decoration: none;
+  transform: translate(-50%, -50%);
+}
+
+.sectorSun i {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--system-health, #d89a4c);
+  border-radius: 50%;
+  background: var(--system-health, #d89a4c);
+  box-shadow: 0 0 26px color-mix(in srgb, var(--system-health, #d89a4c), transparent 25%);
+}
+
+.sectorSun[data-core="hollow"] i {
+  background: #21120d;
+}
+
+.sectorSun span {
+  color: #c9aa77;
+  font-size: 0.62rem;
+}
+
+.sectorSun:focus-visible {
+  outline: 2px solid #fff0cf;
+  outline-offset: 4px;
+}
+
+.sectorBreadcrumb {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid #b97743;
+  color: #fff0cf;
+  text-decoration: none;
+}
+
+.observedSystem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 1px;
+  height: 1px;
+  place-items: center;
+  color: #f3ddaf;
+}
+
+.observedSystem::before,
+.observedSystem::after {
+  position: absolute;
+  width: 19rem;
+  height: 9rem;
+  border: 1px solid rgba(216, 154, 76, 0.38);
+  border-radius: 50%;
+  content: "";
+}
+
+.observedSystem::after {
+  width: 31rem;
+  height: 15rem;
+}
+
+.observedSystem > strong,
+.observedSystem > span:not(.observedBody) {
+  position: absolute;
+  top: 2.4rem;
+  width: 22rem;
+  text-align: center;
+}
+
+.observedSystem > span:not(.observedBody) {
+  top: 3.8rem;
+  color: #c9aa77;
+  font-size: 0.62rem;
+}
+
+.observedCore {
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 4px solid #f5c45d;
+  border-radius: 50%;
+  background: #21120d;
+  box-shadow: 0 0 30px rgba(245, 196, 93, 0.45);
+}
+
+.observedBody {
+  position: absolute;
+  left: var(--body-x);
+  top: var(--body-y);
+  display: grid;
+  min-width: 8rem;
+  gap: 0.2rem;
+  justify-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.observedBody > i {
+  width: var(--body-size);
+  height: var(--body-size);
+  border-radius: 50%;
+  background: #8f6949;
+  box-shadow: 0 0 12px #d38b4a;
+}
+
+.observedBody b {
+  font-size: 0.68rem;
+}
+
+.observedBody small {
+  color: #c9aa77;
+  font-size: 0.55rem;
+  white-space: nowrap;
+}
+
+[data-camera="sector"] .canvasLayer,
+[data-camera="sector"] .sunTelemetry {
+  visibility: hidden;
 }
 
 .publicMissionPanel,
@@ -794,6 +1563,25 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes teletype-write {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes teletype-cursor {
+  50% { opacity: 0; }
+}
+
+@keyframes sector-warp {
+  from { opacity: 0; transform: scaleX(0.15); filter: blur(9px); }
+  to { opacity: 1; transform: scaleX(1); filter: none; }
+}
+
+@keyframes odometer-flip {
+  from { opacity: 0.45; transform: translateY(-0.18em) rotateX(48deg); }
+  to { opacity: 1; transform: none; }
+}
+
 @keyframes rocket-flame {
   50% { transform: scaleX(0.68); }
 }
@@ -931,6 +1719,12 @@
   .status {
     display: none;
   }
+  .orientationLine {
+    position: relative;
+    inset: auto;
+    margin: 1rem;
+    transform: none;
+  }
   .stage {
     display: grid;
     min-height: auto;
@@ -1015,6 +1809,14 @@
 
   [data-camera="approach"] .inspector,
   .missionControl {
+    animation: none;
+  }
+
+  .teletype span,
+  .teletype i,
+  .sectorMap,
+  .operationsBay b,
+  .operationsBay strong {
     animation: none;
   }
 }

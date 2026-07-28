@@ -1,0 +1,154 @@
+{
+  "totalBytes": 11727680,
+  "mapBytes": 11710317,
+  "tier": {
+    "base": "1024x512",
+    "emissive": "512x256",
+    "normal": "512x256"
+  },
+  "encoder": "three KTX2Exporter RGBA8/R8/RG8 + KHR_SUPERCOMPRESSION_ZSTD level 19",
+  "basisAttempt": {
+    "command": "basisu --version",
+    "output": "zsh:2: command not found: basisu\nexit_status=127",
+    "result": "unavailable"
+  },
+  "ladder": [
+    {
+      "base": "2048x1024",
+      "derived": "1024x512",
+      "mapBytes": 44368743
+    },
+    {
+      "base": "1448x724",
+      "derived": "724x362",
+      "mapBytes": 22958079
+    },
+    {
+      "base": "1024x512",
+      "derived": "512x256",
+      "mapBytes": 11710317
+    }
+  ],
+  "tickers": {
+    "ASML": {
+      "ticker": "ASML",
+      "shippedWidth": 1024,
+      "shippedHeight": 512,
+      "derivedWidth": 512,
+      "derivedHeight": 256,
+      "bytes": {
+        "base": 1194588,
+        "emissive": 104857,
+        "normal": 172157
+      },
+      "dominantHex": "#5c81ad",
+      "luminanceStdDev": 0.177095,
+      "seamMaxDeltaE": 0
+    },
+    "GOOG": {
+      "ticker": "GOOG",
+      "shippedWidth": 1024,
+      "shippedHeight": 512,
+      "derivedWidth": 512,
+      "derivedHeight": 256,
+      "bytes": {
+        "base": 1302851,
+        "emissive": 108310,
+        "normal": 176036
+      },
+      "dominantHex": "#bcc7ba",
+      "luminanceStdDev": 0.115987,
+      "seamMaxDeltaE": 0
+    },
+    "MSFT": {
+      "ticker": "MSFT",
+      "shippedWidth": 1024,
+      "shippedHeight": 512,
+      "derivedWidth": 512,
+      "derivedHeight": 256,
+      "bytes": {
+        "base": 1374576,
+        "emissive": 116786,
+        "normal": 182429
+      },
+      "dominantHex": "#5f7271",
+      "luminanceStdDev": 0.117274,
+      "seamMaxDeltaE": 0
+    },
+    "IBM": {
+      "ticker": "IBM",
+      "shippedWidth": 1024,
+      "shippedHeight": 512,
+      "derivedWidth": 512,
+      "derivedHeight": 256,
+      "bytes": {
+        "base": 920532,
+        "emissive": 21769,
+        "normal": 142408
+      },
+      "dominantHex": "#16295d",
+      "luminanceStdDev": 0.102384,
+      "seamMaxDeltaE": 0
+    },
+    "COST": {
+      "ticker": "COST",
+      "shippedWidth": 1024,
+      "shippedHeight": 512,
+      "derivedWidth": 512,
+      "derivedHeight": 256,
+      "bytes": {
+        "base": 1178687,
+        "emissive": 60956,
+        "normal": 167595
+      },
+      "dominantHex": "#645d53",
+      "luminanceStdDev": 0.123548,
+      "seamMaxDeltaE": 0
+    },
+    "INTC": {
+      "ticker": "INTC",
+      "shippedWidth": 1024,
+      "shippedHeight": 512,
+      "derivedWidth": 512,
+      "derivedHeight": 256,
+      "bytes": {
+        "base": 1211739,
+        "emissive": 76586,
+        "normal": 192897
+      },
+      "dominantHex": "#464b54",
+      "luminanceStdDev": 0.104309,
+      "seamMaxDeltaE": 0
+    },
+    "NBIS": {
+      "ticker": "NBIS",
+      "shippedWidth": 1024,
+      "shippedHeight": 512,
+      "derivedWidth": 512,
+      "derivedHeight": 256,
+      "bytes": {
+        "base": 1414997,
+        "emissive": 68744,
+        "normal": 162847
+      },
+      "dominantHex": "#763a74",
+      "luminanceStdDev": 0.128912,
+      "seamMaxDeltaE": 0
+    },
+    "CBRS": {
+      "ticker": "CBRS",
+      "shippedWidth": 1024,
+      "shippedHeight": 512,
+      "derivedWidth": 512,
+      "derivedHeight": 256,
+      "bytes": {
+        "base": 1114308,
+        "emissive": 65549,
+        "normal": 178113
+      },
+      "dominantHex": "#6b5934",
+      "luminanceStdDev": 0.101584,
+      "seamMaxDeltaE": 0
+    }
+  }
+}

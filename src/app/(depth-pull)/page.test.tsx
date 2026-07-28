@@ -160,18 +160,18 @@ describe("private / owner universe", () => {
   it("uses the owner Mission Control on the gated route", async () => {
     const html = await renderHome({
       focus: "portfolio",
-      station: "research",
+      station: "comms",
     });
     expect(html).toContain('data-mode="private"');
-    expect(html).toContain("owner authenticated");
+    expect(html).toContain("OWNER LINK");
     expect(html).toContain("Owner research station");
     expect(html).toContain('href="/?focus=portfolio');
   });
 
   it("restores a selected holding without changing the root route", async () => {
     const html = await renderHome({ holding: "IBM", no3d: "1" });
-    expect(html).toContain("Holding telemetry / public-safe");
-    expect(html).toContain('href="/stock/IBM"');
+    expect(html).toContain("IBM · IBM");
+    expect(html).toContain("TELEMETRY");
     expect(html).toContain('href="/?no3d=1"');
   });
 
