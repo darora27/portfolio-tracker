@@ -24,3 +24,13 @@ No browser is available
 The production build and its built-in /share smoke passed, but this Codex
 environment could not keep a localhost server bound for the F8 live geometry
 run or attach a browser. No older screenshot was relabelled as current.
+
+F9 remediation attempt (2026-07-28, codex/gpt-5):
+
+$ npm run start -- --hostname 127.0.0.1 --port 3141
+Error: listen EPERM: operation not permitted 127.0.0.1:3141
+
+The F9 full-sweep model assertions, full test suite, TypeScript check,
+production build, and built-in /share smoke passed. This Codex environment
+could not bind the production server for the required final live 1440x900
+measurement or recapture. No older screenshot was relabelled as current.

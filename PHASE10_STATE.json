@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§9",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -53,7 +53,8 @@
     "remediation_commits": [
       "7e37bdda62b0cf9d283b54410f96cffa5828d673",
       "78da83f16c0f4bbb0b6dc6962186a92f8501285c",
-      "e8377855e38d38e1cbbc283464c07ff80237599e"
+      "e8377855e38d38e1cbbc283464c07ff80237599e",
+      "Codex §9 bounded remediation for F9 production-weight OVERVIEW composition; hash to be filled by the next actor via git log -1."
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -63,7 +64,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_2). Authority order for this section: UNIVERSE_ROUND2_BRIEF.md -> UNIVERSE_IDEAS_2.md (including its §9 owner corrections and authorizations) -> PHASE10.md §9. §8 proved the universe works; §9 makes it good. Two new public disclosure surfaces are authorized in UNIVERSE_IDEAS_2.md §9.3-9.4 (public trade log: action, ticker, date, and % impact only, never shares/prices/dollars; public news for held tickers) and both require extended privacy canary coverage. Texture resolution is bound by the §9.1 correction: tune compression first, ship base at 2048x1024 and emissive/normal at 1024x512, measure and record the real total, reduce further if it exceeds ~15MB. §9's acceptance criteria forbid `expect(source).toContain(...)` as coverage for rendered behavior. Two owner observations carried forward unclosed from §8 and recorded in docs/phase10-workflow/reviews/section-8-accepted.md: D1 (unreproduced green-trail report — do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 ('website is still relatively confusing', too general to bound in §8).",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-claude-lead-to-codex-remediation-4.md"
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-codex-implementation-remediate-4-to-claude-lead.md"
   },
   "sections_history": [
     {
@@ -120,40 +121,40 @@
       "note": "The Stock Market Universe — /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes §9. See docs/phase10-workflow/reviews/section-8-accepted.md."
     }
   ],
-  "prev_actor_commit": "e8377855e38d38e1cbbc283464c07ff80237599e",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md section 8 (the completing actor never writes its own commit's hash): e837785 (`phase10(§9): remediate projected planet sizing`) was HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from. It is also recorded as the third entry of section.remediation_commits, replacing the placeholder Codex left for it.",
+  "prev_actor_commit": "a7558ba838871d8d5bfdbc2417bbfde683efe5fc",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md section 8 (the completing actor never writes its own commit's hash): a7558ba (`phase10(review §9): fail with 1 bounded finding on planet scale`) was HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "6a68758d57474f5494ff2ce38056ebb37b5aa244",
-  "production_code_changed_this_turn": false,
-  "production_code_note_prior_turn": "Codex Implementation remediated only F8. Planet radius became a clamped square-root-of-weight scale with an explicit visibility floor; orbit gaps derive from each adjacent pair of actual radii instead of one ORRERY_MAX_RADIUS-derived global spacing; the pure model computes exact perspective sphere bounds and sets projectedDiameterPx to bounds.width; OrreryScene uses that same projection helper for its live evidence attributes. Live recapture was left explicitly unverified because that CLI denied localhost bindings and exposed no browser backend.",
-  "production_code_note": "Claude Lead review round 4 changed no application source - this turn's commit touches only the review doc, this state file, the handoff, and newly captured review evidence. It closed the environment gap Codex recorded honestly: Claude Lead started a production build on 127.0.0.1:3141, ran the retained measurement script at exactly 1440x900, and captured the post-F8 frame. F8's instrumentation half and its >= 22 px floor clause are confirmed resolved, and criteria 1 and 17 re-confirmed live at the new composition. One bounded finding remains, F9: the heaviest planet reaches only 59.22-65.35 px across a full orbital sweep on production weights against the required ~68 px, and the new gate's fixture is pinned at the MAX_WEIGHT saturation point where it cannot detect this.",
+  "production_code_changed_this_turn": true,
+  "production_code_note_prior_turn": "Claude Lead review round 4 changed no application source. It independently confirmed the post-F8 projection model and renderer agree, criteria 1 and 17 pass live, and the >= 22 px floor passes, then raised one bounded finding, F9: the production portfolio's 26.5% heaviest holding still spans only 59.22-65.35 px across the model sweep and the gate was pinned at the 35% MAX_WEIGHT saturation point.",
+  "production_code_note": "Codex Implementation remediated only F9. ORRERY_MAX_RADIUS moves from 1.8 to 1.95 and the prior 0.18 world-unit surplus between adjacent rings is removed while preserving the exact required 1.6x radius-sum spacing, the fitted 88% belt span, and the unchanged camera contract. The full 360-degree 1440x900 gate now uses the representative production distribution (heaviest 26.5%, strictly below the 35% saturation point): the heaviest planet spans 64.27-71.21 px, the smallest diameter is 25.73 px, every planet and label stays inside the frame, and adjacent spacing is exactly 1.6x. Trail/orbit sign-to-colour and sign-to-direction mapping are unchanged. Live recapture remains explicitly unverified because this CLI denied localhost binding with listen EPERM.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Claude Lead independently ran the full Vitest suite this turn against the reviewed commit: 94 test files passed; 499 of 499 tests passed.",
-      "finished_at": "2026-07-28T17:07:40Z"
+      "summary": "Codex Implementation ran the full Vitest suite after the bounded F9 remediation: 94 test files passed; 499 of 499 tests passed.",
+      "finished_at": "2026-07-28T14:30:17Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Claude Lead independently ran the Next.js 16.2.11 production build this turn: compilation and TypeScript passed, 23 route tasks generated, and the post-build smoke reported 'Share route smoke: PASS (/share 200; Mission Control manifest 200)'.",
-      "finished_at": "2026-07-28T17:07:40Z"
+      "summary": "Codex Implementation ran the final Next.js 16.2.11 production build: compilation and TypeScript passed, 23 route tasks generated, and the post-build smoke reported 'Share route smoke: PASS (/share 200; Mission Control manifest 200)'.",
+      "finished_at": "2026-07-28T14:30:17Z"
     },
     "live_routes": {
-      "command": "npm run start on 127.0.0.1:3141 plus the npm run build post-build smoke via scripts/verify-share-route.mjs",
+      "command": "npm run build post-build production smoke via scripts/verify-share-route.mjs",
       "status": "pass",
-      "summary": "/share returned 200 against a production server Claude Lead started independently on 127.0.0.1:3141, and the post-build smoke reported /share 200 and the Mission Control manifest station 200.",
-      "finished_at": "2026-07-28T17:08:10Z"
+      "summary": "/share and the Mission Control manifest station returned 200 against the completed production build.",
+      "finished_at": "2026-07-28T14:30:17Z"
     },
     "live_evidence": {
-      "command": "PHASE10_BASE_URL=http://127.0.0.1:3141/share node docs/phase10-baseline/section-9/scripts/measure-overview-fit.mjs, plus a 1440x900 screenshot capture",
-      "status": "pass",
-      "summary": "Claude Lead closed the environment gap Codex reported. Against a production server started on 127.0.0.1:3141, 24 samples over 12 seconds at exactly 1440x900: criterion 1 PASS (8/8 labels fully inside, zero hidden), criterion 17 PASS (8/8 planets fully inside, belt span 88.00%), criterion 18 FAIL on its ~68 px clause (heaviest 61.49 px mean, 61.99 px maximum) and PASS on its >= 22 px clause (smallest 26.45 px). Zero console or page errors. Raw output in docs/phase10-baseline/section-9/claude-review/raw-overview-fit-review-4.json; sips-verified 1440x900 frame in docs/phase10-baseline/section-9/claude-review/overview-1440x900-review-4.png. docs/phase10-baseline/section-9/after/overview-1440x900.png is deliberately still pre-F7 and is carried into F9, because the F9 fix will change the composition again.",
-      "finished_at": "2026-07-28T17:12:00Z"
+      "command": "npm run start -- --hostname 127.0.0.1 --port 3141, then the retained 1440x900 measurement and screenshot capture",
+      "status": "not_run",
+      "summary": "Environment-only evidence gap: next start was denied with listen EPERM on 127.0.0.1:3141, so no post-F9 live 1440x900 geometry measurement or screenshot was produced. The production-weight full-sweep model gate passes criteria 1, 17, and 18, but Claude Lead must perform the missing live measurement and recapture independently before PASS. No older image was relabelled as current.",
+      "finished_at": "2026-07-28T14:30:17Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T17:20:00Z",
+  "updated_at": "2026-07-28T14:30:17Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

@@ -55,15 +55,30 @@ const holdings: PublicOrreryHolding[] = [
   },
 ];
 
-const overviewHoldings: PublicOrreryHolding[] = [
-  { ...holdings[0], ticker: "ASML", weight: 0.35 },
-  { ...holdings[1], ticker: "GOOG", weight: 0.22 },
-  { ...holdings[1], ticker: "COST", companyName: "Costco Wholesale", weight: 0.16 },
-  { ...holdings[1], ticker: "MSFT", companyName: "Microsoft", weight: 0.1 },
-  { ...holdings[0], ticker: "INTC", companyName: "Intel", weight: 0.07 },
-  { ...holdings[1], ticker: "IBM", companyName: "IBM", weight: 0.05 },
-  { ...holdings[2], ticker: "CBRS", weight: 0.03 },
-  { ...holdings[2], ticker: "NBIS", companyName: "Nebius Group", weight: 0.02 },
+const productionOverviewHoldings: PublicOrreryHolding[] = [
+  { ...holdings[0], ticker: "ASML", weight: 0.265 },
+  { ...holdings[1], ticker: "GOOG", weight: 0.208 },
+  {
+    ...holdings[1],
+    ticker: "COST",
+    companyName: "Costco Wholesale",
+    weight: 0.125,
+  },
+  {
+    ...holdings[1],
+    ticker: "MSFT",
+    companyName: "Microsoft",
+    weight: 0.083,
+  },
+  { ...holdings[1], ticker: "IBM", companyName: "IBM", weight: 0.073 },
+  { ...holdings[0], ticker: "INTC", companyName: "Intel", weight: 0.072 },
+  { ...holdings[2], ticker: "CBRS", weight: 0.038 },
+  {
+    ...holdings[2],
+    ticker: "NBIS",
+    companyName: "Nebius Group",
+    weight: 0.035,
+  },
 ];
 
 describe("pure overview scene descriptor", () => {
@@ -103,7 +118,7 @@ describe("pure overview scene descriptor", () => {
 
   it("derives projected diameter from the fitted camera instead of a fixed scale", () => {
     const model = buildOverviewSceneModel({
-      holdings: overviewHoldings,
+      holdings: productionOverviewHoldings,
       healthScalar: 0,
       sunspotIntensity: 0,
     });
@@ -119,14 +134,18 @@ describe("pure overview scene descriptor", () => {
     expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.92);
   });
 
-  it("keeps every planet and resting label inside 1440x900 across a full orbital phase sweep", () => {
+  it("keeps the production-weight composition in spec across a full 1440x900 orbital phase sweep", () => {
     const viewport = { width: 1440, height: 900 };
     const seenPlanets = new Set<string>();
     const seenLabels = new Set<string>();
+    let heaviestDiameterMin = Number.POSITIVE_INFINITY;
+    let heaviestDiameterMax = Number.NEGATIVE_INFINITY;
+    let smallestDiameter = Number.POSITIVE_INFINITY;
+    let minimumSpacingRatio = Number.POSITIVE_INFINITY;
 
     for (let phaseIndex = 0; phaseIndex < 360; phaseIndex += 1) {
       const model = buildOverviewSceneModel({
-        holdings: overviewHoldings,
+        holdings: productionOverviewHoldings,
         healthScalar: 0,
         sunspotIntensity: 0,
         viewport,
@@ -139,17 +158,30 @@ describe("pure overview scene descriptor", () => {
         model.belt.bounds.width / viewport.width,
         12,
       );
-      expect(
+      heaviestDiameterMin = Math.min(
+        heaviestDiameterMin,
         model.planets[0].projectedDiameterPx,
-        "ASML projected diameter",
-      ).toBeGreaterThanOrEqual(64);
-      expect(
+      );
+      heaviestDiameterMax = Math.max(
+        heaviestDiameterMax,
         model.planets[0].projectedDiameterPx,
-        "ASML projected diameter",
-      ).toBeLessThanOrEqual(72);
+      );
+      for (let index = 0; index < model.planets.length - 1; index += 1) {
+        const current = model.planets[index];
+        const next = model.planets[index + 1];
+        minimumSpacingRatio = Math.min(
+          minimumSpacingRatio,
+          (next.orbitRadius - current.orbitRadius) /
+            (current.radius + next.radius),
+        );
+      }
 
       for (const planet of model.planets) {
         seenPlanets.add(planet.ticker);
+        smallestDiameter = Math.min(
+          smallestDiameter,
+          planet.projectedDiameterPx,
+        );
         expect(
           planet.projectedDiameterPx,
           `${planet.ticker} projected diameter`,
@@ -181,14 +213,22 @@ describe("pure overview scene descriptor", () => {
       }
     }
 
-    expect([...seenPlanets]).toEqual(overviewHoldings.map(({ ticker }) => ticker));
-    expect([...seenLabels]).toEqual(overviewHoldings.map(({ ticker }) => ticker));
+    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(64);
+    expect(heaviestDiameterMax).toBeLessThanOrEqual(72);
+    expect(smallestDiameter).toBeGreaterThanOrEqual(22);
+    expect(minimumSpacingRatio).toBeCloseTo(1.6, 12);
+    expect([...seenPlanets]).toEqual(
+      productionOverviewHoldings.map(({ ticker }) => ticker),
+    );
+    expect([...seenLabels]).toEqual(
+      productionOverviewHoldings.map(({ ticker }) => ticker),
+    );
   });
 
   it("matches the renderer camera projection used by the live scene", () => {
     const viewport = { width: 1440, height: 900 };
     const model = buildOverviewSceneModel({
-      holdings: overviewHoldings,
+      holdings: productionOverviewHoldings,
       healthScalar: 0,
       sunspotIntensity: 0,
       viewport,
@@ -240,10 +280,10 @@ describe("pure overview scene descriptor", () => {
       const next = model.planets[index + 1];
       const spacing = next.orbitRadius - current.orbitRadius;
       expect(spacing).toBeCloseTo(
-        1.6 * (current.radius + next.radius) + ORRERY_PLANET_CLEARANCE,
+        1.6 * (current.radius + next.radius),
         12,
       );
-      expect(spacing).toBeGreaterThan(
+      expect(spacing).toBeGreaterThanOrEqual(
         1.6 * (current.radius + next.radius),
       );
     }

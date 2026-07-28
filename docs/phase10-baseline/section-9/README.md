@@ -14,9 +14,15 @@ Codex environment denied both localhost bindings and exposed no browser
 backend. The exact gap is recorded below and in `browser-backend.txt`; no prior
 image is represented as post-F8 evidence — done by codex/gpt-5.
 
+The F9 remediation changes the OVERVIEW composition once more. Its
+production-weight scene-model sweep, tests, TypeScript, and production build
+are complete. A final live frame is still not: `next start` was denied with
+`listen EPERM` on `127.0.0.1:3141`. The prior screenshot remains unchanged and
+is not represented as post-F9 evidence — done by codex/gpt-5.
+
 ## Automated verification
 
-- `npm test`: PASS — 94 files, 497 tests — done by codex/gpt-5.
+- `npm test`: PASS — 94 files, 499 tests — done by codex/gpt-5.
 - `npx tsc --noEmit`: PASS, exit 0 — done by codex/gpt-5.
 - `npm run build`: PASS under Next.js 16.2.11; 18 static-generation tasks
   completed, then production `/share` and Mission Control manifest probes
@@ -90,6 +96,39 @@ image is represented as post-F8 evidence — done by codex/gpt-5.
   be used to pass criteria 1, 17, or 18 for this composition. Claude Lead must
   independently run the retained 1440×900 measurement and overwrite the
   image before PASS — recorded by codex/gpt-5.
+
+## F9 production-weight composition remediation
+
+- Criterion 1 model geometry: PASS. The representative production-weight
+  fixture uses all eight shipped holdings with ASML at 26.5%, strictly below
+  the 35% radius-saturation point. Across a 360-step phase sweep at 1440×900,
+  every resting ticker label remains inside the viewport — done by
+  codex/gpt-5.
+- Criterion 17 model geometry: PASS. The belt remains fixed at 88.00% of
+  viewport width, every planet remains inside 1440×900 at every phase, and
+  adjacent ring spacing is exactly
+  `1.6 × (current radius + next radius)`. The prior 0.18 world-unit surplus was
+  removed, but the specification's complete 1.6× minimum remains intact —
+  done by codex/gpt-5.
+- Criterion 18 model geometry: PASS against the production distribution. The
+  heaviest planet spans **64.27–71.21 px** across the full sweep, centred on
+  the ≈68 px target, while the smallest diameter reached by any planet is
+  **25.73 px**, above the 22 px floor. `ORRERY_MAX_RADIUS` moves only from 1.8
+  to 1.95; the belt is not narrowed and the fitted camera still targets its
+  88% span — done by codex/gpt-5.
+- Regression gate: PASS. The full-sweep test now runs against the actual
+  26.5/20.8/12.5/8.3/7.3/7.2/3.8/3.5% distribution rather than a fixture
+  pinned at `MAX_WEIGHT`. It asserts the 64–72 px heaviest band, the ≥22 px
+  floor, 85–92% belt span, no planet or label clipping, projection parity, and
+  the 1.6× spacing rule — done by codex/gpt-5.
+- Trail/orbit sign→colour and sign→direction mapping is unchanged, as required
+  by spec §1.1 D1 — done by codex/gpt-5.
+- Live measurement and `after/overview-1440x900.png` recapture: NOT
+  PERFORMED. `next start --hostname 127.0.0.1 --port 3141` failed with
+  `listen EPERM`. The existing image is not post-F9 and must not be used to
+  pass the final live checks. Claude Lead must independently run
+  `measure-overview-fit.mjs` at exactly 1440×900 and replace the screenshot
+  before PASS — recorded by codex/gpt-5.
 
 ## Texture ladder and encoder
 

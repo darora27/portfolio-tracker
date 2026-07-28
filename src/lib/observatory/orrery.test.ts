@@ -75,8 +75,7 @@ describe("Portfolio Orrery encodings", () => {
     expect(orbitRadii).toEqual([...orbitRadii].sort((a, b) => a - b));
     for (let index = 0; index < orbitRadii.length - 1; index += 1) {
       expect(orbitRadii[index + 1] - orbitRadii[index]).toBeCloseTo(
-        1.6 * (planetRadii[index] + planetRadii[index + 1]) +
-          ORRERY_PLANET_CLEARANCE,
+        1.6 * (planetRadii[index] + planetRadii[index + 1]),
         12,
       );
     }
