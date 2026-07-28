@@ -148,6 +148,8 @@ describe("private / owner universe", () => {
     const html = await renderHome();
 
     expect(html).toContain("Stock Market Universe");
+    expect(html).toContain("Private universe / owner access");
+    expect(html).not.toContain("Public universe / read-only");
     expect(html).toContain('href="/?focus=portfolio&amp;camera=command"');
     expect(html).toContain('href="/?holding=IBM&amp;camera=approach"');
     expect(html).not.toContain("01 — Pulse");

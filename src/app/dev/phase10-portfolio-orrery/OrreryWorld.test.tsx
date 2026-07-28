@@ -195,4 +195,19 @@ describe("Portfolio Orrery remediation route", () => {
     expect(screen.getByRole("button", { name: "Open systems manual" })).toBeTruthy();
     expect(screen.getByRole("button", { name: /ASTEROID BELT/ })).toBeTruthy();
   });
+
+  it("anchors the manual above the bottom-right inspector controls", () => {
+    const css = readFileSync(
+      path.resolve(
+        __dirname,
+        "../../../components/observatory/orrery/orrery.module.css",
+      ),
+      "utf8",
+    );
+    const manualRule = css.match(/\.manualButton\s*\{([^}]*)\}/)?.[1] ?? "";
+
+    expect(manualRule).toContain("top: 6.5rem");
+    expect(manualRule).not.toContain("bottom:");
+    expect(css).toMatch(/\.inspector\s*\{[^}]*bottom:\s*1\.5rem/);
+  });
 });

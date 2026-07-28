@@ -130,7 +130,7 @@ export async function UniverseRoute({
     <PublicMissionControlContent panel={activeMissionPanel} data={data} />
   );
 
-  if (portfolioSelected && authenticated) {
+  if (portfolioSelected && authenticated && ownerGate) {
     const { OwnerMissionControlContent } = await import(
       "./OwnerMissionControlContent"
     );
@@ -194,7 +194,7 @@ export async function UniverseRoute({
       }}
       missionControlContent={missionControlContent}
       activeMissionPanel={activeMissionPanel}
-      missionMode={authenticated ? "private" : "public"}
+      missionMode={authenticated && ownerGate ? "private" : "public"}
       missionPreservedQuery={{
         ...(no3d ? { no3d: "1" } : {}),
       }}

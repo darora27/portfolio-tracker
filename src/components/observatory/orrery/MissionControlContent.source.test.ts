@@ -33,10 +33,11 @@ describe("Mission Control viewer-identity isolation", () => {
     expect(publicSource).not.toContain("formatCurrency");
   });
 
-  it("loads the owner content module only inside the authenticated branch", () => {
+  it("loads the owner content module only inside the authenticated owner-route branch", () => {
     const authStart = routeSource.indexOf(
-      "if (portfolioSelected && authenticated)",
+      "if (portfolioSelected && authenticated && ownerGate)",
     );
+    expect(authStart).toBeGreaterThan(-1);
     const authBranch = routeSource.slice(
       authStart,
       routeSource.indexOf("\n  return (", authStart),

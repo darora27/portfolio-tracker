@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -81,7 +81,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-27-section-8-claude-lead-to-codex-implementation-remediate-3.md",
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-8-codex-implementation-remediate-to-claude-lead.md",
     "owner_feedback": {
       "recorded_at": "2026-07-27",
       "recorded_by": "claude/fable-5 (cowork, owner-directed)",
@@ -177,24 +177,24 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "333566a46c6a2c5509c27ecf136e6ede25d41624",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 333566a (`phase10(§8): remediate shared universe and native textures`) is HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "15bb49d669a78a90c2a3ea90e263cc0b25cfb477",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 15bb49d (`phase10(review §8): fail re-review with bounded remediation handoff`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "333566a46c6a2c5509c27ecf136e6ede25d41624",
-  "production_code_changed_this_turn": false,
-  "production_code_note_prior_turn": "The prior turn (Codex Implementation, §8 remediate stage, commit 333566a) addressed bounded owner-feedback round-two items E1-E5 in application source, then deferred all live verification to Claude Lead because its sandbox could not bind a local server.",
-  "production_code_note": "This turn (Claude Lead, §8 review stage) changed no implementation source. It built and started a real production server, independently drove it with temporary unsaved Playwright scripts, and found 3 bounded findings against the still-binding spec/owner-feedback criteria: (1) severe — /share renders full owner-only Mission Control content, including exact dollar amounts and trade reasons, whenever the visiting browser carries a valid owner session cookie, because UniverseRoute.tsx's owner-content branch checks only `authenticated`, never `ownerGate`; (2) moderate — OrreryWorld's top header always reads \"Public universe / read-only\" even on the authenticated, owner-gated /; (3) moderate — the Systems Manual button and the holding inspector's explicit \"Return to overview\" control share one CSS anchor and overlap in APPROACH at 1440x900, so clicks in the overlap region open the manual instead of returning to OVERVIEW. See docs/phase10-workflow/reviews/section-8-review-3.md.",
+  "production_code_changed_this_turn": true,
+  "production_code_note_prior_turn": "The prior turn (Claude Lead, §8 review stage, commit 15bb49d) changed no implementation source and returned 3 bounded findings: public-route owner-content leakage under an authenticated cookie, incorrect private-route header identity, and a manual-button/inspector overlap.",
+  "production_code_note": "This turn (Codex Implementation, §8 remediate stage) fixed only review-3 findings 1-3: owner Mission Control content and private mission mode now require the owner-gated route as well as authentication; OrreryWorld renders identity-accurate public/private header text; and the Systems Manual control is anchored top-right instead of sharing the inspector's bottom-right anchor. Route, source-isolation, identity-copy, and CSS-anchor regression tests were updated. The sandbox denied both 0.0.0.0:3100 and 127.0.0.1:3100 with listen EPERM, so Claude Lead must independently perform the authenticated / to /share live privacy sequence and the 1440x900 full-target elementFromPoint check.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Claude Lead independently re-ran the full Vitest suite: 87 test files passed; 469 of 469 tests passed.",
-      "finished_at": "2026-07-27T23:28:54Z"
+      "summary": "Codex Implementation ran the full Vitest suite after remediation: 87 test files passed; 470 of 470 tests passed.",
+      "finished_at": "2026-07-28T01:25:27Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Claude Lead independently ran the Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
-      "finished_at": "2026-07-27T23:28:54Z"
+      "summary": "Codex Implementation ran the Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
+      "finished_at": "2026-07-28T01:25:27Z"
     },
     "long_task_gate": {
       "command": "CDP Emulation.setCPUThrottlingRate(2) + PerformanceObserver('longtask'), 5 fresh contexts, 1440x900, against a real npm run start server on /share",
@@ -216,7 +216,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-27T23:28:54Z",
+  "updated_at": "2026-07-28T01:25:27Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

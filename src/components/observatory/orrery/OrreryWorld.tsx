@@ -242,7 +242,13 @@ export function OrreryWorld({
       <div className={styles.scanlines} aria-hidden="true" />
       <header className={styles.commandBar}>
         <div>
-          <p>{referenceStudy ? "Owner-gated reference study" : "Public universe / read-only"}</p>
+          <p>
+            {referenceStudy
+              ? "Owner-gated reference study"
+              : missionMode === "private"
+                ? "Private universe / owner access"
+                : "Public universe / read-only"}
+          </p>
           {semanticTitle ? <h1>Stock Market Universe</h1> : <p className={styles.worldTitle}>Stock Market Universe</p>}
         </div>
         <p className={styles.status}>OVERVIEW · {planets.length} PLANETS · {beltHoldings.length} BELT</p>

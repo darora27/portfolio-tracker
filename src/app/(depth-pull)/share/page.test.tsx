@@ -211,14 +211,17 @@ describe("/share Stock Market Universe rendered output", () => {
     expect(research).not.toContain("Owner source");
   });
 
-  it("renders full owner research only for an authenticated viewer", async () => {
+  it("keeps public-only research when the visiting browser is authenticated", async () => {
     isValidSession.mockReturnValue(true);
     const html = await renderShare({ focus: "portfolio", station: "research" });
 
-    expect(html).toContain('data-mode="private"');
-    expect(html).toContain("owner authenticated");
-    expect(html).toContain("Owner research station");
-    expect(html).toContain("OWNER_RESEARCH_HEADLINE");
-    expect(getResearchData).toHaveBeenCalledOnce();
+    expect(html).toContain('data-mode="public"');
+    expect(html).toContain("Public universe / read-only");
+    expect(html).toContain("Public research / derived telemetry");
+    expect(html).not.toContain("owner authenticated");
+    expect(html).not.toContain("Owner research station");
+    expect(html).not.toContain("OWNER_RESEARCH_HEADLINE");
+    expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
+    expect(getResearchData).not.toHaveBeenCalled();
   });
 });
