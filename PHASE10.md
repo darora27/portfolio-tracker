@@ -1278,7 +1278,7 @@ Phase 10 experience.
 
 ## Required final report
 
-After §16 acceptance, report:
+After §17 acceptance, report:
 
 1. selected direction and any combined named parts;
 2. sections completed, builders/reviewers, and accepted commits;
