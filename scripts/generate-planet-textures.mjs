@@ -30,7 +30,14 @@ const OUTPUT = path.resolve("public/textures/planets");
 const THUMBS = path.join(OUTPUT, "thumbs");
 const SOURCE = path.resolve("assets/planet-textures/source");
 const MARKS = path.resolve("assets/planet-textures/marks");
-const BYTE_BUDGET = 15_000_000;
+// Raised from 15 MB on 2026-07-28 by owner direction. Compositing real brand
+// marks adds high-frequency edge detail that compresses far worse than painted
+// terrain, which forced the tier selector down from 2048x1024 to 1024x512 and
+// produced visible graininess the owner rejected. These are desktop-only,
+// lazy-loaded, cached assets fetched after first paint, so a larger ceiling is
+// affordable; the 50 ms route-owned long-task gate governs main-thread
+// JavaScript, not texture bytes. Re-measure load and GPU/heap after any change.
+const BYTE_BUDGET = 30_000_000;
 const ZSTD_LEVEL = 19;
 const BASIS_ATTEMPT = {
   command: "basisu --version",
@@ -199,11 +206,33 @@ async function authoredBase(identity, width, height) {
   const source = await readFile(
     path.join(SOURCE, `${identity.ticker.toLowerCase()}.png`),
   );
-  const markWidth = Math.round(width * 0.2);
-  const mark = await sharp(
-    await readFile(path.join(MARKS, `${identity.ticker.toLowerCase()}.svg`)),
-  )
+  // Real brand SVGs carry no contrast treatment of their own, so a dark mark
+  // composited onto a dark world is invisible (IBM navy on a navy planet, ASML
+  // blue on a blue-and-white one). Build a soft dark halo from the mark's own
+  // silhouette and lay the mark over it, so the logo separates from any terrain
+  // and reads as set into the surface rather than pasted on.
+  const markSvg = await readFile(
+    path.join(MARKS, `${identity.ticker.toLowerCase()}.svg`),
+  );
+  const markWidth = Math.round(width * 0.26);
+  const mark = await sharp(markSvg)
     .resize({ width: markWidth, withoutEnlargement: false })
+    .png()
+    .toBuffer();
+  const haloWidth = Math.round(markWidth * 1.1);
+  const halo = await sharp(markSvg)
+    .resize({ width: haloWidth, withoutEnlargement: false })
+    .ensureAlpha()
+    .modulate({ brightness: 0.04 })
+    .blur(Math.max(1, Math.round(markWidth * 0.03)))
+    .png()
+    .toBuffer();
+  const glowWidth = Math.round(markWidth * 1.22);
+  const glow = await sharp(markSvg)
+    .resize({ width: glowWidth, withoutEnlargement: false })
+    .ensureAlpha()
+    .modulate({ brightness: 0.02 })
+    .blur(Math.max(2, Math.round(markWidth * 0.075)))
     .png()
     .toBuffer();
   const needsMacroContrast =
@@ -216,7 +245,11 @@ async function authoredBase(identity, width, height) {
     .modulate({ saturation: 1.06, brightness: 0.98 })
     .linear(contrast.alpha, contrast.beta)
     .ensureAlpha()
-    .composite([{ input: mark, gravity: "center", blend: "over" }])
+    .composite([
+      { input: glow, gravity: "center", blend: "over" },
+      { input: halo, gravity: "center", blend: "over" },
+      { input: mark, gravity: "center", blend: "over" },
+    ])
     .raw()
     .toBuffer();
   return repairHorizontalSeam(raw, width, height);

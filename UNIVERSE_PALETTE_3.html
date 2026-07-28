@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FRAUNHOFER — Universe Palette · Round 3</title>
+<style>
+  :root{
+    --void:#020706; --glass:#010806; --cream:#fff0cf; --cream-dim:#d5ba8c;
+    --amber:#ffd68c; --teletype:#f6d493; --umber:#21120d; --orange:#d96f23;
+    --gain:#63ef98; --loss:#ff665f; --flat:#e3b65c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{background:var(--void); color:var(--cream);
+    font-family:ui-monospace,'SF Mono','Cascadia Mono','JetBrains Mono',Menlo,Consolas,monospace}
+  body{padding:26px 30px 40px}
+  .frame{border:1px solid rgba(255,240,207,.32); position:relative; padding:26px 28px 30px; max-width:1180px; margin:0 auto}
+  .tick{position:absolute; width:10px; height:10px; border-color:var(--cream); border-style:solid; border-width:0}
+  .tick.tl{top:-1px; left:-1px; border-top-width:2px; border-left-width:2px}
+  .tick.tr{top:-1px; right:-1px; border-top-width:2px; border-right-width:2px}
+  .tick.bl{bottom:-1px; left:-1px; border-bottom-width:2px; border-left-width:2px}
+  .tick.br{bottom:-1px; right:-1px; border-bottom-width:2px; border-right-width:2px}
+  header{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:6px}
+  h1{font-size:15px; letter-spacing:.24em; color:var(--teletype); font-weight:600}
+  h1 .dim{color:var(--cream-dim)}
+  .stamp{font-size:10px; letter-spacing:.18em; color:var(--orange);
+    border:1px dashed rgba(217,111,35,.7); padding:3px 8px}
+  .sub{font-size:10.5px; letter-spacing:.14em; color:var(--cream-dim); margin-bottom:20px}
+  section{margin-top:22px}
+  .bay{background:var(--glass); border:1px solid rgba(255,240,207,.16); border-radius:9px; padding:14px 16px 16px; position:relative}
+  .tab{position:absolute; top:-9px; left:14px; background:var(--umber); color:var(--teletype);
+    font-size:9.5px; letter-spacing:.2em; padding:2px 10px; border:1px solid rgba(255,240,207,.22); border-radius:4px}
+  .note{font-size:10px; color:var(--cream-dim); letter-spacing:.08em; line-height:1.55}
+  /* spectrum hero */
+  #spectrum{width:100%; height:74px; display:block; border-radius:5px}
+  .spec-labels{display:flex; justify-content:space-between; font-size:9.5px; letter-spacing:.14em; color:var(--cream-dim); margin-top:6px}
+  .stolen{display:flex; gap:26px; margin-top:12px; flex-wrap:wrap}
+  .stolen .chip{flex:1; min-width:220px}
+  /* chips */
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(196px,1fr)); gap:10px; margin-top:8px}
+  .chip{display:flex; align-items:center; gap:10px; background:rgba(255,240,207,.03);
+    border:1px solid rgba(255,240,207,.10); border-radius:6px; padding:8px 10px}
+  .sw{width:34px; height:34px; border-radius:5px; flex:none; box-shadow:0 0 0 1px rgba(255,240,207,.18)}
+  .sw.glow{box-shadow:0 0 0 1px rgba(255,240,207,.18), 0 0 14px 1px var(--gc)}
+  .cinfo{min-width:0}
+  .cname{font-size:10px; letter-spacing:.12em; color:var(--cream)}
+  .chex{font-size:10px; color:var(--cream-dim)}
+  .badge{margin-left:auto; font-size:9px; letter-spacing:.08em; color:var(--amber);
+    border:1px solid rgba(255,214,140,.35); border-radius:3px; padding:1px 5px; white-space:nowrap}
+  .badge.aaa{color:var(--gain); border-color:rgba(99,239,152,.4)}
+  .cols{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+  @media (max-width:900px){.cols{grid-template-columns:1fr}}
+  /* ramps */
+  .ramp{margin-top:12px}
+  .ramp .bar{height:26px; border-radius:5px; box-shadow:0 0 0 1px rgba(255,240,207,.14)}
+  .ramp .meta{display:flex; justify-content:space-between; font-size:9.5px; color:var(--cream-dim); letter-spacing:.12em; margin-top:4px}
+  .clean{color:var(--gain)}
+  /* aurora demo */
+  #aurora{width:100%; height:88px; display:block; border-radius:6px}
+  /* poles */
+  .pole{height:150px; border-radius:8px; position:relative; overflow:hidden; box-shadow:0 0 0 1px rgba(255,240,207,.14)}
+  .pole .lab{position:absolute; left:10px; bottom:8px; font-size:10px; letter-spacing:.2em; color:var(--cream)}
+  .pole .sun{position:absolute; width:26px; height:26px; border-radius:50%; top:26px; right:30px}
+  footer{margin-top:26px; font-size:10px; letter-spacing:.1em; color:var(--cream-dim); line-height:2}
+  footer b{color:var(--teletype); font-weight:600}
+</style>
+</head>
+<body>
+<div class="frame">
+  <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+
+  <header>
+    <h1>FRAUNHOFER <span class="dim">· UNIVERSE PALETTE · ROUND 3</span></h1>
+    <span class="stamp">PROPOSAL · JUL 28 2026</span>
+  </header>
+  <div class="sub">THE SPECTRUM WITH TWO STOLEN LINES — COMPANION TO UNIVERSE_IDEAS_3.md · ALL CHECKS COMPUTED LIVE ON THIS PAGE</div>
+
+  <section class="bay">
+    <span class="tab">00 · THE LAW</span>
+    <canvas id="spectrum" height="74"></canvas>
+    <div class="spec-labels"><span>0°</span><span>60°</span><span>120°</span><span>180°</span><span>240°</span><span>300°</span><span>360°</span></div>
+    <div class="stolen">
+      <div class="chip"><span class="sw glow" style="--gc:#ff665f;background:#ff665f"></span>
+        <span class="cinfo"><span class="cname">STOLEN BY LOSS</span><br><span class="chex">#ff665f · band 345–20°</span></span>
+        <span class="badge" id="b-loss"></span></div>
+      <div class="chip"><span class="sw glow" style="--gc:#63ef98;background:#63ef98"></span>
+        <span class="cinfo"><span class="cname">STOLEN BY GAIN</span><br><span class="chex">#63ef98 · band 125–165°</span></span>
+        <span class="badge" id="b-gain"></span></div>
+    </div>
+    <p class="note" style="margin-top:10px">MEANING IS LIGHT · ONLY MEANING BURNS WHITE-HOT · DECORATION = THE SPECTRUM MINUS TWO · MATTER (PLANET SURFACES) EXEMPT</p>
+  </section>
+
+  <section class="cols">
+    <div class="bay">
+      <span class="tab">01 · SIGNAL — FROZEN</span>
+      <div class="grid" id="signal"></div>
+    </div>
+    <div class="bay">
+      <span class="tab">02 · CABINET + VOID — KEPT</span>
+      <div class="grid" id="cabinet"></div>
+    </div>
+  </section>
+
+  <section class="bay">
+    <span class="tab">03 · GLASS — NEW INSTRUMENT LIGHT</span>
+    <div class="grid" id="glass"></div>
+    <p class="note" style="margin-top:10px">BADGES = CONTRAST ON BAY GLASS #010806 (COMPUTED) · FW = FIREWALL HUE CHECK · NEAREST DECORATIVE HUE TO GAIN Δ44° · TO LOSS Δ30°</p>
+  </section>
+
+  <section class="bay">
+    <span class="tab">04 · RAMPS — SHIPPED AS LUTS</span>
+    <div id="ramps"></div>
+  </section>
+
+  <section class="bay">
+    <span class="tab">05 · THE AURORA — 52 WEEKS OF |RETURN| (DEMO DATA)</span>
+    <canvas id="aurora" height="88"></canvas>
+    <div class="meta note" style="margin-top:6px">CALM WEEK → INDIGO, NEARLY GONE · WILD WEEK → PINK-CREAM FLARE · DIAGONAL BAND BEHIND BOTH STARFIELDS · ALPHA ≤ 0.32 · PREBAKED ONCE</div>
+  </section>
+
+  <section class="cols">
+    <div class="bay">
+      <span class="tab">06 · FIRST LIGHT — HEALTH &gt; 0</span>
+      <div class="pole" id="pole-up">
+        <div class="sun" style="background:#f5c45d; box-shadow:0 0 26px 8px rgba(245,196,93,.5)"></div>
+        <div class="lab">MAGENTA WISP #b3479e · α ≤ 0.10</div>
+      </div>
+    </div>
+    <div class="bay">
+      <span class="tab">07 · CLEAR NIGHT — HEALTH &lt; 0</span>
+      <div class="pole" id="pole-down">
+        <div class="sun" style="background:#d65a24; box-shadow:0 0 18px 5px rgba(214,90,36,.4)"></div>
+        <div class="lab">INDIGO WISP #3d5aa8 · α ≤ 0.10</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <b>RULES —</b> TEXT IS CREAM/AMBER ONLY · RAMPS NEVER CARRY TEXT · NO NEW BLOOM PASS · THE VOID DOES NOT CHANGE<br>
+    <b>TIER 2 —</b> AMBIENT WASHES HUE-EXEMPT, ALPHA-CAPPED ≤ 0.18 (NEBULA #9c3f24 / #d4a846 LIVE HERE)<br>
+    <b>WHIMSY —</b> ONE: THE ROCKET'S PRISM EXHAUST, LENGTH ∝ POINTER SPEED
+  </footer>
+</div>
+
+<script>
+// ---------- shared colour math (mirrors the round-3 verification script)
+const hx = s => { s=s.replace('#',''); return [0,2,4].map(i=>parseInt(s.slice(i,i+2),16)); };
+const hueChroma = ([r,g,b]) => { const mx=Math.max(r,g,b), mn=Math.min(r,g,b), c=mx-mn;
+  if(!c) return [null,0]; let h;
+  if(mx===r) h=((g-b)/c)%6; else if(mx===g) h=(b-r)/c+2; else h=(r-g)/c+4;
+  return [((h*60)+360)%360, c/255]; };
+const relLum = ([r,g,b]) => { const f=v=>{v/=255; return v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4};
+  return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b); };
+const contrast=(a,b)=>{const[l1,l2]=[relLum(hx(a)),relLum(hx(b))].sort((x,y)=>y-x);return (l1+.05)/(l2+.05)};
+const inBand = h => (h>=125&&h<=165)||h>=345||h<=20;
+const fwOK = tok => { const [h,c]=hueChroma(hx(tok)); return h===null||c<=0.30||!inBand(h); };
+const GLASS_BG='#010806';
+
+// ---------- tokens
+const SIGNAL=[['GAIN — WEEK UP','#63ef98'],['LOSS — WEEK DOWN','#ff665f'],['FLAT / NO DATA','#e3b65c'],
+  ['BUY COMET','#f4f0df'],['SUN · UP','#f5c45d'],['SUN · DOWN','#d65a24'],['WHITE-HOT CORE','#fff7e6']];
+const CABINET=[['CREAM','#fff0cf'],['TELETYPE','#f6d493'],['AMBER CHROME','#ffd68c'],['BURNT ORANGE','#d96f23'],
+  ['UMBER','#21120d',1],['BAY GLASS','#010806',1],['VOID','#020706',1],['RING SLATE','#66756f']];
+const GLASS=[['CYAN','#4fd6e8'],['BLUE','#5f8dff'],['VIOLET','#8f6bff'],['MAGENTA','#d95ce0'],['PINK','#ff70c8'],
+  ['GOLD','#efbb62'],['SCOPE HERO','#e6a14d'],['BENCH · VOO','#5fa8c9'],['BENCH · VTI','#46799c'],
+  ['BENCH · XLK','#7b6bc9'],['WISP · FIRST LIGHT','#b3479e'],['WISP · CLEAR NIGHT','#3d5aa8']];
+const RAMPS=[
+  ['AURORA — WEEKLY |RETURN|',['#131c3f','#33307e','#63359c','#a23d9c','#e0559c','#f7a0c0','#ffe4d6']],
+  ['EMBER — DRAWDOWN DEPTH',['#1c0f06','#5e2d0e','#9c4f16','#d97a2b','#ffb347','#ffe4ad']],
+  ['ICE — CORRELATION |ρ|',['#061018','#123a54','#1e6b8f','#3fa8c4','#a8e4ef']]];
+
+// ---------- chip renderer
+function chips(el, list, {glow=false, fw=false}={}){
+  el.innerHTML = list.map(([name,tok,ground])=>{
+    const ratio = contrast(tok, GLASS_BG);
+    const badge = ground ? 'GROUND' :
+      `${ratio.toFixed(1)}:1${fw ? (fwOK(tok)?' · FW ✓':' · FW ✗') : ''}`;
+    const cls = !ground && ratio>=7 ? 'badge aaa' : 'badge';
+    const swStyle = glow ? `--gc:${tok};background:${tok}` : `background:${tok}`;
+    const swCls = glow ? 'sw glow' : 'sw';
+    return `<div class="chip"><span class="${swCls}" style="${swStyle}"></span>
+      <span class="cinfo"><span class="cname">${name}</span><br><span class="chex">${tok}</span></span>
+      <span class="${cls}">${badge}</span></div>`;
+  }).join('');
+}
+chips(document.getElementById('signal'), SIGNAL, {glow:true});
+chips(document.getElementById('cabinet'), CABINET);
+chips(document.getElementById('glass'), GLASS, {fw:true});
+document.getElementById('b-gain').textContent = contrast('#63ef98',GLASS_BG).toFixed(1)+':1 AAA';
+document.getElementById('b-loss').textContent = contrast('#ff665f',GLASS_BG).toFixed(1)+':1 AAA';
+
+// ---------- spectrum hero with absorption lines
+(function(){
+  const cv=document.getElementById('spectrum'); const w=cv.width=cv.clientWidth*2; const h=cv.height=148;
+  const x=cv.getContext('2d');
+  for(let px=0; px<w; px++){
+    const hue=px/w*360;
+    if(inBand(hue)){ x.fillStyle='#050505'; x.fillRect(px,0,1,h);
+      if(hue>=125&&hue<=165){x.fillStyle='rgba(99,239,152,.10)';x.fillRect(px,h-8,1,8);}
+      else{x.fillStyle='rgba(255,102,95,.10)';x.fillRect(px,h-8,1,8);}
+      continue; }
+    x.fillStyle=`hsl(${hue} 82% 62%)`; x.fillRect(px,0,1,h);
+  }
+  // grain
+  for(let i=0;i<900;i++){ x.fillStyle=`rgba(2,7,6,${0.08+ (i%7)/40})`;
+    x.fillRect((i*173)%w, (i*97)%h, 2, 2); }
+  // labels inside the absorption gaps
+  const gapCenter = hue => (hue/360)*w;
+  x.fillStyle='rgba(255,240,207,.85)'; x.font='600 18px ui-monospace,monospace';
+  x.textAlign='center';
+  x.fillText('GAIN', gapCenter(145), h/2+6);
+  x.fillText('LOSS', gapCenter(10), h/2+6);          // left half of the red band
+  x.fillText('LOSS', gapCenter(352.4), h/2+6);       // wrapped half at the right edge
+})();
+
+// ---------- ramp bars (piecewise RGB, same LUT logic as the lint)
+const lerp=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+function rampSamples(stops,n){ const s=stops.map(hx), out=[];
+  for(let i=0;i<n;i++){ const t=i/(n-1), segs=s.length-1;
+    const seg=Math.min(Math.floor(t*segs),segs-1), lt=t*segs-seg;
+    out.push(lerp(s[seg],s[seg+1],lt)); } return out; }
+document.getElementById('ramps').innerHTML = RAMPS.map(([name,stops])=>{
+  const samples=rampSamples(stops,64);
+  const fails=samples.filter(rgb=>{const[hh,c]=hueChroma(rgb);return hh!==null&&c>0.30&&inBand(hh)}).length;
+  const grad=samples.map((rgb,i)=>`rgb(${rgb}) ${(i/63*100).toFixed(1)}%`).join(',');
+  return `<div class="ramp"><div class="bar" style="background:linear-gradient(90deg,${grad})"></div>
+    <div class="meta"><span>${name}</span>
+    <span class="${fails? '':'clean'}">${64-fails}/64 SAMPLES OUTSIDE STOLEN BANDS ${fails?'✗':'✓'}</span></div></div>`;
+}).join('');
+
+// ---------- aurora demo (52 deterministic weekly magnitudes)
+(function(){
+  const cv=document.getElementById('aurora'); const w=cv.width=cv.clientWidth*2; const h=cv.height=176;
+  const x=cv.getContext('2d'); x.fillStyle='#020706'; x.fillRect(0,0,w,h);
+  // stars
+  for(let i=0;i<160;i++){ const sx=(i*367)%w, sy=(i*211)%h;
+    const tint=i%23===0?'79,214,232':i%41===0?'143,107,255':i%5===0?'138,205,160':'220,235,215';
+    x.fillStyle=`rgba(${tint},${0.25+(i%13)/26})`; x.fillRect(sx,sy,i%9===0?3:2,i%9===0?3:2); }
+  const mags=Array.from({length:52},(_,i)=>{ // deterministic plausible year
+    const base=Math.abs(Math.sin(i*1.7)+Math.sin(i*0.63+2))/2;
+    const spike=(i===9||i===31||i===32||i===44)?0.85:0; return Math.min(1, base*0.5+spike); });
+  const stops=RAMPS[0][1], band=h*0.54, y0=h*0.30, skew=0.30;
+  const lut=rampSamples(stops,64);
+  const colAt=t=>lut[Math.min(63,Math.round(t*63))];
+  const sw=w/52;
+  for(let i=0;i<52;i++){ const m=mags[i];
+    const dx=i*sw, dy=y0-(i/52)*h*skew;
+    x.fillStyle=`rgba(${colAt(m*0.8)},${0.20+m*0.42})`;   // stripe body
+    x.fillRect(dx,dy,sw+1,band);
+    if(m>0.5){                                            // hot weeks flare pink
+      x.fillStyle=`rgba(${colAt(0.70+m*0.14)},${0.30+m*0.35})`;
+      x.fillRect(dx+sw*0.2,dy+band*0.12,sw*0.6,band*0.76);
+      x.fillStyle=`rgba(${colAt(0.86)},0.75)`;
+      x.fillRect(dx+sw*0.4,dy+band*0.3,sw*0.2,band*0.4);
+    }
+  }
+  // grain over the band
+  for(let i=0;i<1400;i++){ x.fillStyle=`rgba(2,7,6,${0.05+(i%5)/30})`;
+    x.fillRect((i*131)%w,(i*89)%h,2,2); }
+  x.fillStyle='rgba(255,240,207,.75)'; x.font='600 15px ui-monospace,monospace';
+  x.fillText('◄ 52 WEEKS AGO', 14, h-12); x.textAlign='right';
+  x.fillText('THIS WEEK ►', w-14, h-12);
+})();
+
+// ---------- weather poles
+(function(){
+  const paint=(id, wisp, warm)=>{
+    const el=document.getElementById(id);
+    el.style.background=`radial-gradient(90% 120% at 68% 22%, ${wisp}30 0%, transparent 55%),
+      radial-gradient(70% 100% at 22% 78%, ${wisp}26 0%, transparent 58%),
+      linear-gradient(180deg,#020706 0%, ${warm?'#0a0510':'#03060f'} 100%)`;
+    for(let i=0;i<26;i++){ const s=document.createElement('span');
+      const tints=warm?['#dcebd7','#d7aa63','#ff70c8']:['#dcebd7','#4fd6e8','#8f6bff'];
+      s.style.cssText=`position:absolute;width:2px;height:2px;border-radius:50%;
+        background:${tints[i%tints.length]};opacity:${0.3+(i%11)/22};
+        left:${(i*37)%100}%;top:${(i*53)%88}%`;
+      el.appendChild(s); }
+  };
+  paint('pole-up','#b3479e',true);
+  paint('pole-down','#3d5aa8',false);
+})();
+</script>
+</body>
+</html>

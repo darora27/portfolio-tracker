@@ -1,10 +1,10 @@
 {
-  "totalBytes": 11727680,
-  "mapBytes": 11710317,
+  "totalBytes": 22660766,
+  "mapBytes": 22643542,
   "tier": {
-    "base": "1024x512",
-    "emissive": "512x256",
-    "normal": "512x256"
+    "base": "1448x724",
+    "emissive": "724x362",
+    "normal": "724x362"
   },
   "encoder": "three KTX2Exporter RGBA8/R8/RG8 + KHR_SUPERCOMPRESSION_ZSTD level 19",
   "basisAttempt": {
@@ -16,138 +16,133 @@
     {
       "base": "2048x1024",
       "derived": "1024x512",
-      "mapBytes": 44368743
+      "mapBytes": 43725764
     },
     {
       "base": "1448x724",
       "derived": "724x362",
-      "mapBytes": 22958079
-    },
-    {
-      "base": "1024x512",
-      "derived": "512x256",
-      "mapBytes": 11710317
+      "mapBytes": 22643542
     }
   ],
   "tickers": {
     "ASML": {
       "ticker": "ASML",
-      "shippedWidth": 1024,
-      "shippedHeight": 512,
-      "derivedWidth": 512,
-      "derivedHeight": 256,
+      "shippedWidth": 1448,
+      "shippedHeight": 724,
+      "derivedWidth": 724,
+      "derivedHeight": 362,
       "bytes": {
-        "base": 1194588,
-        "emissive": 104857,
-        "normal": 172157
+        "base": 2350232,
+        "emissive": 198862,
+        "normal": 325737
       },
-      "dominantHex": "#5c81ad",
-      "luminanceStdDev": 0.177095,
+      "dominantHex": "#597da9",
+      "luminanceStdDev": 0.171592,
       "seamMaxDeltaE": 0
     },
     "GOOG": {
       "ticker": "GOOG",
-      "shippedWidth": 1024,
-      "shippedHeight": 512,
-      "derivedWidth": 512,
-      "derivedHeight": 256,
+      "shippedWidth": 1448,
+      "shippedHeight": 724,
+      "derivedWidth": 724,
+      "derivedHeight": 362,
       "bytes": {
-        "base": 1302851,
-        "emissive": 108310,
-        "normal": 176036
+        "base": 2534785,
+        "emissive": 206687,
+        "normal": 336643
       },
-      "dominantHex": "#bcc7ba",
-      "luminanceStdDev": 0.115987,
+      "dominantHex": "#b8c2b5",
+      "luminanceStdDev": 0.135843,
       "seamMaxDeltaE": 0
     },
     "MSFT": {
       "ticker": "MSFT",
-      "shippedWidth": 1024,
-      "shippedHeight": 512,
-      "derivedWidth": 512,
-      "derivedHeight": 256,
+      "shippedWidth": 1448,
+      "shippedHeight": 724,
+      "derivedWidth": 724,
+      "derivedHeight": 362,
       "bytes": {
-        "base": 1374576,
-        "emissive": 116786,
-        "normal": 182429
+        "base": 2674792,
+        "emissive": 220172,
+        "normal": 351256
       },
-      "dominantHex": "#5f7271",
-      "luminanceStdDev": 0.117274,
+      "dominantHex": "#5c706f",
+      "luminanceStdDev": 0.114599,
       "seamMaxDeltaE": 0
     },
     "IBM": {
       "ticker": "IBM",
-      "shippedWidth": 1024,
-      "shippedHeight": 512,
-      "derivedWidth": 512,
-      "derivedHeight": 256,
+      "shippedWidth": 1448,
+      "shippedHeight": 724,
+      "derivedWidth": 724,
+      "derivedHeight": 362,
       "bytes": {
-        "base": 920532,
-        "emissive": 21769,
-        "normal": 142408
+        "base": 1728535,
+        "emissive": 40813,
+        "normal": 268756
       },
-      "dominantHex": "#16295d",
-      "luminanceStdDev": 0.102384,
+      "dominantHex": "#16285a",
+      "luminanceStdDev": 0.101663,
       "seamMaxDeltaE": 0
     },
     "COST": {
       "ticker": "COST",
-      "shippedWidth": 1024,
-      "shippedHeight": 512,
-      "derivedWidth": 512,
-      "derivedHeight": 256,
+      "shippedWidth": 1448,
+      "shippedHeight": 724,
+      "derivedWidth": 724,
+      "derivedHeight": 362,
       "bytes": {
-        "base": 1178687,
-        "emissive": 60956,
-        "normal": 167595
+        "base": 2304993,
+        "emissive": 115651,
+        "normal": 320222
       },
-      "dominantHex": "#645d53",
-      "luminanceStdDev": 0.123548,
+      "dominantHex": "#635b51",
+      "luminanceStdDev": 0.121395,
       "seamMaxDeltaE": 0
     },
     "INTC": {
       "ticker": "INTC",
-      "shippedWidth": 1024,
-      "shippedHeight": 512,
-      "derivedWidth": 512,
-      "derivedHeight": 256,
+      "shippedWidth": 1448,
+      "shippedHeight": 724,
+      "derivedWidth": 724,
+      "derivedHeight": 362,
       "bytes": {
-        "base": 1211739,
-        "emissive": 76586,
-        "normal": 192897
+        "base": 2310209,
+        "emissive": 142803,
+        "normal": 384551
       },
-      "dominantHex": "#464b54",
-      "luminanceStdDev": 0.104309,
+      "dominantHex": "#434952",
+      "luminanceStdDev": 0.098445,
       "seamMaxDeltaE": 0
     },
     "NBIS": {
       "ticker": "NBIS",
-      "shippedWidth": 1024,
-      "shippedHeight": 512,
-      "derivedWidth": 512,
-      "derivedHeight": 256,
+      "shippedWidth": 1448,
+      "shippedHeight": 724,
+      "derivedWidth": 724,
+      "derivedHeight": 362,
       "bytes": {
-        "base": 1414997,
-        "emissive": 68744,
-        "normal": 162847
+        "base": 2761244,
+        "emissive": 124922,
+        "normal": 315486
       },
-      "dominantHex": "#763a74",
-      "luminanceStdDev": 0.128912,
+      "dominantHex": "#723872",
+      "luminanceStdDev": 0.120147,
       "seamMaxDeltaE": 0
     },
     "CBRS": {
       "ticker": "CBRS",
-      "shippedWidth": 1024,
-      "shippedHeight": 512,
-      "derivedWidth": 512,
-      "derivedHeight": 256,
+      "shippedWidth": 1448,
+      "shippedHeight": 724,
+      "derivedWidth": 724,
+      "derivedHeight": 362,
       "bytes": {
-        "base": 1114308,
-        "emissive": 65549,
-        "normal": 178113
+        "base": 2156910,
+        "emissive": 118956,
+        "normal": 350325
       },
-      "dominantHex": "#6b5934",
-      "luminanceStdDev": 0.101584,
+      "dominantHex": "#665535",
+      "luminanceStdDev": 0.086677,
       "seamMaxDeltaE": 0
     }
   }
