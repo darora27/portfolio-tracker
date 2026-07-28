@@ -1,0 +1,12 @@
+default_permissions = "portfolio-local-dev"
+
+[permissions.portfolio-local-dev]
+extends = ":workspace"
+
+[permissions.portfolio-local-dev.network]
+enabled = true
+allow_local_binding = true
+
+[permissions.portfolio-local-dev.network.domains]
+"localhost" = "allow"
+"127.0.0.1" = "allow"
