@@ -45,7 +45,7 @@ async function authedContext(browser, viewport, extra = {}) {
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 
   // Item 1 + 2 + 3: idle first viewport with orbit motion filmstrip (CW/CCW simultaneous)
   let context = await authedContext(browser, { width: 1440, height: 900 });

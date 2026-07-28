@@ -126,7 +126,7 @@ async function main() {
   const knownLazyChunkUrls = existsSync(DESKTOP_OUTPUT)
     ? JSON.parse(readFileSync(DESKTOP_OUTPUT, "utf8")).r3fLazyChunkUrls ?? []
     : [];
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   const output = {
     measuredAt: new Date().toISOString(),
     purpose: "mobile fallback confirmation only; never used to score the desktop scene",

@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DRAFT — Test Rig Nº 1 (interactive mock)</title>
+<style>
+  :root{
+    --case:#2b2723; --panel:#f0e2c4; --ink:#2b1a10; --dish:#0a0c10;
+    --cream:#fff0cf; --amber:#ffd68c; --orange:#d96f23; --teletype:#f6d493;
+    --gain:#63ef98; --loss:#ff665f; --dim:#d5ba8c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#050708; display:flex; align-items:center; justify-content:center;
+    font-family:ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,monospace; padding:18px}
+  /* the room, dimmed */
+  body::before{content:''; position:fixed; inset:0;
+    background:radial-gradient(60% 50% at 50% 40%, #0d1116 0%, #050708 70%);}
+  .case{position:relative; width:920px; background:var(--case); border-radius:14px;
+    padding:16px 18px 14px; box-shadow:0 24px 70px rgba(0,0,0,.6), inset 0 1px 0 rgba(240,226,196,.12);}
+  .screw{position:absolute; width:11px; height:11px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #e8dcc2, #6b6154 65%, #3a332b);
+    box-shadow:inset 0 0 2px rgba(0,0,0,.6)}
+  .screw::after{content:''; position:absolute; left:1.5px; right:1.5px; top:4.5px; height:1.6px; background:#3a332b; transform:rotate(38deg)}
+  .screw.tl{top:8px;left:8px}.screw.tr{top:8px;right:8px}.screw.bl{bottom:8px;left:8px}.screw.br{bottom:8px;right:8px}
+  header{display:flex; align-items:center; gap:12px; padding:2px 4px 10px; color:var(--panel)}
+  .rocket{width:20px;height:20px;flex:none;opacity:.9}
+  h1{font-size:12px; letter-spacing:.26em; font-weight:600}
+  h1 .dim{color:#a89878}
+  .demo{margin-left:auto; font-size:9px; letter-spacing:.18em; color:var(--orange);
+    border:1px dashed rgba(217,111,35,.75); padding:2px 7px; transform:rotate(-1deg)}
+  .deck{display:grid; grid-template-columns:500px 1fr; gap:14px}
+  /* dish */
+  .dishwrap{background:var(--dish); border-radius:12px; border:1px solid rgba(240,226,196,.14);
+    box-shadow:inset 0 0 40px rgba(0,0,0,.55); position:relative; padding:8px; display:flex; align-items:center; justify-content:center}
+  canvas{display:block; border-radius:50%; cursor:grab; touch-action:none}
+  canvas.dragging{cursor:grabbing}
+  .dishstamp{position:absolute; left:14px; bottom:10px; font-size:9px; letter-spacing:.16em; color:#5d6a78}
+  /* rail */
+  .rail{display:flex; flex-direction:column; gap:10px; min-width:0}
+  .plate{background:var(--dish); border:1px solid rgba(240,226,196,.16); border-radius:9px; padding:10px 12px; position:relative}
+  .plate .tag{position:absolute; top:-8px; left:10px; font-size:8.5px; letter-spacing:.2em;
+    background:var(--case); color:var(--teletype); padding:1px 7px; border:1px solid rgba(240,226,196,.25); border-radius:3px}
+  .plate.draftplate{border:1.5px dashed rgba(255,214,140,.55)}
+  .big{font-size:26px; letter-spacing:.04em; color:var(--cream); font-weight:600}
+  .sub{font-size:10.5px; color:var(--dim); letter-spacing:.1em; margin-top:3px}
+  .pos{color:var(--gain)} .neg{color:var(--loss)}
+  .stamp{display:inline-block; font-size:9px; letter-spacing:.16em; padding:1px 7px; margin-left:8px;
+    border:1px dashed; border-radius:3px; transform:rotate(-.6deg); vertical-align:2px}
+  .rowline{display:flex; align-items:baseline; gap:10px}
+  /* rack */
+  .rack{display:flex; flex-direction:column; gap:3px}
+  .trow{display:grid; grid-template-columns:12px 44px 52px 1fr; gap:8px; align-items:center; height:22px}
+  .chip{width:10px;height:10px;border-radius:3px}
+  .tick{font-size:10.5px; color:var(--cream); letter-spacing:.08em}
+  .win{width:52px; background:transparent; border:1px solid transparent; border-radius:3px;
+    color:var(--amber); font:inherit; font-size:10.5px; text-align:right; padding:1px 3px}
+  .win:hover,.win:focus{border-color:rgba(255,214,140,.4); outline:none; background:rgba(255,214,140,.06)}
+  .gauge{position:relative; height:7px; background:rgba(240,226,196,.08); border-radius:4px; overflow:visible}
+  .gauge .fill{position:absolute; left:0; top:0; bottom:0; border-radius:4px; opacity:.85}
+  .gauge .notch{position:absolute; top:-2.5px; width:1.6px; height:12px; background:var(--cream); opacity:.75}
+  /* footer controls */
+  .controls{display:flex; align-items:center; gap:12px; margin-top:2px}
+  .switch{display:flex; align-items:center; gap:6px; font-size:9.5px; letter-spacing:.14em; color:var(--panel); cursor:pointer; user-select:none}
+  .switch input{appearance:none; width:30px; height:16px; border-radius:9px; background:#4a4238; position:relative; cursor:pointer; transition:background .15s}
+  .switch input::after{content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; border-radius:50%;
+    background:var(--panel); transition:left .15s}
+  .switch input:checked{background:var(--orange)}
+  .switch input:checked::after{left:16px}
+  .btn{font:inherit; font-size:9.5px; letter-spacing:.16em; color:var(--panel); background:#3a332b;
+    border:1px solid rgba(240,226,196,.28); border-radius:5px; padding:5px 10px; cursor:pointer}
+  .btn:hover{background:#463e34}
+  .btn.armed{color:#0a0c10; background:var(--amber); border-color:var(--amber)}
+  .tape{margin-top:12px; background:linear-gradient(180deg,#e6d7b4,#dbc9a2); color:var(--ink);
+    font-size:9.5px; letter-spacing:.06em; padding:5px 12px; transform:rotate(-.4deg);
+    box-shadow:0 2px 6px rgba(0,0,0,.4); border-left:14px solid rgba(43,26,16,.12); border-right:10px solid rgba(43,26,16,.10)}
+  .srlive{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<div class="case">
+  <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+  <header>
+    <svg class="rocket" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 2c3 2.4 4.4 5.6 4.4 9.2 0 1.5-.2 2.9-.7 4.2h-7.4c-.5-1.3-.7-2.7-.7-4.2C7.6 7.6 9 4.4 12 2z" fill="#f0e2c4"/>
+      <circle cx="12" cy="9.6" r="1.7" fill="#2b2723"/>
+      <path d="M8.3 13.5 5.6 17l3-0.4M15.7 13.5 18.4 17l-3-.4" stroke="#d96f23" stroke-width="1.4" fill="none"/>
+      <path d="M10.6 16.5h2.8L12 20.6z" fill="#d96f23"/>
+    </svg>
+    <h1>SOL-DEVAN <span class="dim">·</span> TEST RIG Nº 1 <span class="dim">· CARRIED EQUIPMENT · DRAFT</span></h1>
+    <span class="demo">DEMO DATA</span>
+  </header>
+
+  <div class="deck">
+    <div class="dishwrap">
+      <canvas id="dish" width="470" height="470" aria-label="Draft allocation dish: eight holdings orbiting one track. Use the rack inputs to adjust weights."></canvas>
+      <span class="dishstamp">ONE TRACK · DIRECTION &amp; SPEED REAL · SIZE = YOUR DRAFT</span>
+    </div>
+
+    <div class="rail">
+      <div class="plate draftplate">
+        <span class="tag">THE WEEK — DRAFT</span>
+        <div class="rowline"><span class="big" id="wk-draft">—</span><span class="stamp" style="color:var(--teletype);border-color:rgba(246,212,147,.6)">HYPOTHETICAL</span></div>
+        <div class="sub">YOUR MIX <span id="wk-real">—</span> · EDGE <span id="wk-edge">—</span> · MIX HELD</div>
+      </div>
+
+      <div class="plate">
+        <span class="tag">CONCENTRATION</span>
+        <div class="rowline"><span class="big" id="conc-top2" style="font-size:19px">—</span><span class="stamp" id="conc-stamp">—</span></div>
+        <div class="sub">HHI <span id="conc-hhi">—</span> · TOP-2 WEIGHT LIVE</div>
+      </div>
+
+      <div class="plate">
+        <span class="tag">DRIFT FROM BOOK</span>
+        <div class="rowline"><span class="big" id="drift" style="font-size:19px">—</span></div>
+        <div class="sub">OF YOUR 100, HOW MANY MOVED</div>
+      </div>
+
+      <div class="plate">
+        <span class="tag">TANK RACK — TYPE OR ARROW-KEY, ±0.5</span>
+        <div class="rack" id="rack"></div>
+      </div>
+
+      <div class="controls">
+        <label class="switch">GHOST<input type="checkbox" id="ghost" checked></label>
+        <label class="switch">MOTION<input type="checkbox" id="motion" checked></label>
+        <button class="btn" id="reset">RESET TO BOOK</button>
+        <button class="btn" id="share">COPY TEST LINK</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tape">SIMULATIONS — hypothetical portfolios for comparison only. Not advice, not predictions, not recommendations.</div>
+  <div class="srlive" aria-live="polite" id="live"></div>
+</div>
+
+<script>
+'use strict';
+// ---------- demo book (stamped DEMO DATA): units are integer half-percents, sum 200
+const H = [
+  {t:'ASML', brand:'#5c80ad', label:'#e8f3ff', real:54, week:-0.021},
+  {t:'GOOG', brand:'#bcc7ba', label:'#eef8ff', real:40, week: 0.012},
+  {t:'MSFT', brand:'#5f7271', label:'#e8f5ff', real:28, week: 0.008},
+  {t:'IBM',  brand:'#16295d', label:'#eaf2ff', real:21, week: 0.004},
+  {t:'COST', brand:'#645d53', label:'#fff2e9', real:19, week:-0.006},
+  {t:'INTC', brand:'#42474f', label:'#fff0e8', real:16, week:-0.031},
+  {t:'NBIS', brand:'#763a74', label:'#faedff', real:12, week: 0.052},
+  {t:'CBRS', brand:'#655331', label:'#fff1dd', real:10, week:-0.089},
+];
+const N = H.length, TOTAL = 200;
+let units = H.map(h => h.real);
+
+// ---------- colour math
+const hx = s => [1,3,5].map(i=>parseInt(s.slice(i,i+2),16));
+const lum = ([r,g,b]) => { const f=v=>{v/=255;return v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4};
+  return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b); };
+H.forEach(h => h.darkText = lum(hx(h.brand)) > 0.32);
+// signal magnitude ramps (rev 2)
+const GAIN=['#1f7a46','#63ef98','#a9ffcf'], LOSS=['#ff9d97','#ff665f','#b3241d'];
+const lerp=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+function rampAt(stops,t){ t=Math.max(0,Math.min(1,t)); const segs=stops.length-1;
+  const s=Math.min(Math.floor(t*segs),segs-1); return lerp(hx(stops[s]),hx(stops[s+1]),t*segs-s); }
+const MINR=0.002, MAXR=0.12;
+const norm = w => (Math.min(MAXR,Math.max(MINR,Math.abs(w)))-MINR)/(MAXR-MINR);
+const trailColor = w => `rgb(${rampAt(w>=0?GAIN:LOSS, norm(w))})`;
+
+// ---------- geometry
+const R_TRACK=150, CX=235, CY=235;
+const dia = u => u<=0 ? 0 : 14 + 110*Math.sqrt(u/TOTAL);
+// scene angular-speed mapping ×1.6, per second
+const speed = w => Math.abs(w)<=0.0005 ? 0 : (0.012 + norm(w)*(0.055-0.012))*1.6;
+const dir = w => w>0.0005 ? -1 : w<-0.0005 ? 1 : 0;   // gain = counterclockwise on screen
+H.forEach((h,i)=>{ h.theta = i*2.399963; h.off = 0; });
+
+// ---------- redistribution (largest remainder, snapshot-based)
+function applyProRata(base, i, target){
+  target = Math.max(0, Math.min(TOTAL, target));
+  const next = base.slice();
+  next[i] = target;
+  const rem = TOTAL - target, baseRem = TOTAL - base[i];
+  const others = base.map((_,j)=>j).filter(j=>j!==i);
+  if (baseRem <= 0){ // dragged held 100%: split equally
+    const q = Math.floor(rem/others.length); let extra = rem - q*others.length;
+    others.forEach(j => next[j] = q + (extra-- > 0 ? 1 : 0));
+    return next;
+  }
+  let acc = 0; const fracs = [];
+  for (const j of others){
+    const exact = base[j]*rem/baseRem, fl = Math.floor(exact);
+    next[j] = fl; acc += fl; fracs.push([exact-fl, j]);
+  }
+  fracs.sort((a,b)=>b[0]-a[0]);
+  for (let k=0; k<rem-acc; k++) next[fracs[k % fracs.length][1]] += 1;
+  return next;
+}
+function applySiphon(base, i, target, j){
+  target = Math.max(0, Math.min(TOTAL, target));
+  let delta = base[i] - target;               // what i sheds (may be negative)
+  delta = Math.min(delta, TOTAL - base[j]);   // j can absorb this much
+  delta = Math.max(delta, -base[j]);          // j can give back this much
+  const next = base.slice();
+  next[i] = base[i] - delta; next[j] = base[j] + delta;
+  return next;
+}
+
+// ---------- readouts
+const $ = id => document.getElementById(id);
+const fmtPct = v => (v>0?'▲ ':v<0?'▼ ':'◆ ') + Math.abs(v*100).toFixed(1) + '%';
+const cls = v => v>0?'pos':v<0?'neg':'';
+function stats(u){
+  const w = u.map(x=>x/TOTAL);
+  const week = w.reduce((s,x,i)=>s+x*H[i].week,0);
+  const hhi = Math.round(w.reduce((s,x)=>s+x*x,0)*10000);
+  const top2 = u.slice().sort((a,b)=>b-a).slice(0,2).reduce((s,x)=>s+x,0)/TOTAL;
+  const moved = u.reduce((s,x,i)=>s+Math.abs(x-H[i].real),0)/4;
+  return {week, hhi, top2, moved};
+}
+const realWeek = H.reduce((s,h)=>s+(h.real/TOTAL)*h.week,0);
+function verdict(hhi){
+  if (hhi<1500) return ['DIVERSIFIED','var(--cream)'];
+  if (hhi<=2500) return ['MODERATE','var(--amber)'];
+  return ['CONCENTRATED','var(--orange)'];
+}
+function refresh(announce){
+  const s = stats(units);
+  $('wk-draft').textContent = fmtPct(s.week); $('wk-draft').className = 'big ' + cls(s.week);
+  $('wk-real').textContent = fmtPct(realWeek); $('wk-real').className = cls(realWeek);
+  const edge = s.week - realWeek;
+  $('wk-edge').textContent = (edge>=0?'+':'−') + Math.abs(edge*100).toFixed(1);
+  $('wk-edge').className = cls(edge);
+  $('conc-top2').textContent = 'TOP-2 ' + (s.top2*100).toFixed(1) + '%';
+  $('conc-hhi').textContent = s.hhi.toLocaleString();
+  const [vLabel, vColor] = verdict(s.hhi);
+  const st = $('conc-stamp'); st.textContent = vLabel; st.style.color = vColor; st.style.borderColor = vColor;
+  $('drift').textContent = 'MOVED ' + s.moved.toFixed(1) + ' OF 100';
+  H.forEach((h,i)=>{
+    h.win.value = (units[i]/2).toFixed(1);
+    h.fill.style.width = (units[i]/TOTAL*100) + '%';
+  });
+  if (announce) $('live').textContent = announce;
+}
+
+// ---------- rack
+const rack = $('rack');
+H.forEach((h,i)=>{
+  const row = document.createElement('div'); row.className='trow';
+  row.innerHTML = `<span class="chip" style="background:${h.brand}"></span>
+    <span class="tick">${h.t}</span>
+    <input class="win" type="number" min="0" max="100" step="0.5" aria-label="${h.t} draft weight percent">
+    <span class="gauge"><span class="fill" style="background:${h.brand}"></span>
+      <span class="notch" style="left:${h.real/TOTAL*100}%"></span></span>`;
+  rack.appendChild(row);
+  h.win = row.querySelector('.win'); h.fill = row.querySelector('.fill');
+  h.win.addEventListener('change', ()=>{
+    const v = Math.round(parseFloat(h.win.value||'0')*2);
+    units = applyProRata(units, i, isNaN(v)?units[i]:v);
+    commit(`${h.t} ${(units[i]/2).toFixed(1)} percent. Others adjusted.`);
+  });
+});
+
+// ---------- URL state (undo = browser back)
+function hashOf(u){ return '#draft=' + u.join('.'); }
+function parseHash(){
+  const m = location.hash.match(/draft=([\d.]+)/);
+  if (!m) return null;
+  const u = m[1].split('.').map(Number);
+  return (u.length===N && u.every(x=>Number.isInteger(x)&&x>=0) &&
+          u.reduce((a,b)=>a+b,0)===TOTAL) ? u : null;
+}
+function commit(msg){
+  history.pushState(null, '', hashOf(units));
+  refresh(msg);
+}
+addEventListener('popstate', ()=>{ units = parseHash() || H.map(h=>h.real); refresh('Restored.'); });
+units = parseHash() || units;
+
+// ---------- dish rendering
+const cv = $('dish'), ctx = cv.getContext('2d');
+const DPR = Math.min(2, devicePixelRatio||1);
+cv.width = 470*DPR; cv.height = 470*DPR; cv.style.width='470px'; cv.style.height='470px';
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduced) $('motion').checked = false;
+let drag = null; // {i, base, counter}
+let last = performance.now();
+
+function circlePos(h){
+  const r = R_TRACK + h.off;
+  return [CX + Math.cos(h.theta)*r, CY + Math.sin(h.theta)*r];
+}
+function draw(now){
+  const dt = Math.min(0.05, (now-last)/1000); last = now;
+  const run = $('motion').checked && !drag;
+  // physics
+  H.forEach((h,i)=>{
+    if (units[i]<=0) return;
+    if (run) h.theta += dir(h.week)*speed(h.week)*dt;
+    // overtaking ease
+    let want = 0;
+    H.forEach((g,j)=>{
+      if (i===j || units[j]<=0) return;
+      let gap = Math.abs(((h.theta-g.theta) % (2*Math.PI) + 3*Math.PI) % (2*Math.PI) - Math.PI);
+      const need = (dia(units[i])+dia(units[j]))/(2*R_TRACK) + 0.05;
+      if (gap < need && speed(h.week) >= speed(g.week)) want = 12;
+    });
+    h.off += (want - h.off)*0.12;
+  });
+
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  ctx.clearRect(0,0,470,470);
+  // dish ground
+  ctx.fillStyle = '#0a0c10';
+  ctx.beginPath(); ctx.arc(CX,CY,232,0,7); ctx.fill();
+  // graticule: hub + one track + sparse ticks (not graph paper)
+  ctx.strokeStyle = 'rgba(255,214,140,.28)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(CX,CY,R_TRACK,0,7); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,214,140,.45)';
+  for (let a=0; a<12; a++){
+    const t = a*Math.PI/6;
+    ctx.beginPath();
+    ctx.moveTo(CX+Math.cos(t)*(R_TRACK-4), CY+Math.sin(t)*(R_TRACK-4));
+    ctx.lineTo(CX+Math.cos(t)*(R_TRACK+4), CY+Math.sin(t)*(R_TRACK+4));
+    ctx.stroke();
+  }
+  ctx.strokeStyle = 'rgba(255,214,140,.4)';
+  ctx.beginPath(); ctx.moveTo(CX-7,CY); ctx.lineTo(CX+7,CY); ctx.moveTo(CX,CY-7); ctx.lineTo(CX,CY+7); ctx.stroke();
+  // pit rail
+  ctx.strokeStyle = 'rgba(213,186,140,.25)'; ctx.setLineDash([3,4]);
+  ctx.beginPath(); ctx.arc(CX,CY,64,Math.PI*0.7,Math.PI*1.3); ctx.stroke(); ctx.setLineDash([]);
+
+  // trails (behind discs)
+  H.forEach((h,i)=>{
+    if (units[i]<=0) return;
+    const d = dir(h.week); if (!d) return;
+    const len = 0.5 + norm(h.week)*0.9, segs = 14;
+    const col = rampAt(h.week>=0?GAIN:LOSS, norm(h.week));
+    for (let s=0; s<segs; s++){
+      const a0 = h.theta - d*len*(s/segs), a1 = h.theta - d*len*((s+1)/segs);
+      const fade = 1 - s/segs;
+      ctx.strokeStyle = s===0 ? 'rgba(255,247,230,.95)' : `rgba(${col},${(0.75*fade).toFixed(3)})`;
+      ctx.lineWidth = 3*fade + 0.6;
+      const r = R_TRACK + h.off;
+      ctx.beginPath(); ctx.arc(CX,CY,r,Math.min(a0,a1),Math.max(a0,a1)); ctx.stroke();
+    }
+  });
+
+  // parked on pit rail
+  let park = 0;
+  H.forEach((h,i)=>{
+    if (units[i]>0) return;
+    const a = Math.PI*0.8 + (park++)*0.35;
+    const x = CX+Math.cos(a)*64, y = CY+Math.sin(a)*64;
+    ctx.strokeStyle = 'rgba(213,186,140,.6)'; ctx.setLineDash([2,3]);
+    ctx.beginPath(); ctx.arc(x,y,9,0,7); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = '#d5ba8c'; ctx.font = '8.5px ui-monospace,monospace'; ctx.textAlign='center';
+    ctx.fillText(h.t, x, y+20);
+    h.px = x; h.py = y;
+  });
+
+  // ghost rings + discs + labels
+  H.forEach((h,i)=>{
+    if (units[i]<=0) return;
+    const [x,y] = circlePos(h); h.px = x; h.py = y;
+    if ($('ghost').checked && h.real>0){
+      ctx.strokeStyle = 'rgba(255,240,207,.5)'; ctx.setLineDash([4,4]); ctx.lineWidth=1;
+      ctx.beginPath(); ctx.arc(x,y,dia(h.real)/2,0,7); ctx.stroke(); ctx.setLineDash([]);
+    }
+    const r = dia(units[i])/2;
+    ctx.fillStyle = h.brand;
+    ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    ctx.lineWidth = drag && drag.counter===i ? 3 : 1.5;
+    ctx.strokeStyle = drag && drag.counter===i ? '#ffd68c' : h.label;
+    ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.stroke();
+    // chevron when frozen (direction without motion)
+    if (!$('motion').checked && dir(h.week)){
+      const d = dir(h.week), a = h.theta + d*(r/(R_TRACK)+0.16);
+      const tx = CX+Math.cos(a)*(R_TRACK+h.off), ty = CY+Math.sin(a)*(R_TRACK+h.off);
+      ctx.fillStyle = 'rgba(255,240,207,.8)'; ctx.font='9px ui-monospace,monospace'; ctx.textAlign='center';
+      ctx.fillText(d<0?'▲':'▼', tx, ty+3);
+    }
+    ctx.textAlign = 'center';
+    if (2*r >= 34){
+      ctx.fillStyle = h.darkText ? '#1a130c' : h.label;
+      ctx.font = '600 10.5px ui-monospace,monospace';
+      ctx.fillText(h.t, x, y+1);
+      ctx.font = '9px ui-monospace,monospace';
+      ctx.fillText((units[i]/2).toFixed(1), x, y+12);
+    } else {
+      ctx.fillStyle = h.label; ctx.font = '600 9.5px ui-monospace,monospace';
+      ctx.fillText(h.t, x, y + r + 11);
+    }
+  });
+
+  // siphon fuel line
+  if (drag && drag.counter!=null){
+    const A = H[drag.i], B = H[drag.counter];
+    ctx.strokeStyle = 'rgba(255,214,140,.85)'; ctx.setLineDash([5,4]); ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(A.px,A.py); ctx.lineTo(B.px,B.py); ctx.stroke(); ctx.setLineDash([]);
+    const moved = (units[drag.counter]-drag.base[drag.counter])/2;
+    ctx.fillStyle = '#ffd68c'; ctx.font='600 10px ui-monospace,monospace'; ctx.textAlign='center';
+    ctx.fillText('▸ ' + moved.toFixed(1), (A.px+B.px)/2, (A.py+B.py)/2 - 6);
+  }
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+// ---------- dish interaction: grab-and-pull, siphon on hover
+function hit(x,y){
+  let best=null, bd=1e9;
+  H.forEach((h,i)=>{
+    const r = units[i]>0 ? Math.max(dia(units[i])/2, 12) : 12;
+    const d = Math.hypot(x-h.px, y-h.py);
+    if (d < r+6 && d < bd){ best=i; bd=d; }
+  });
+  return best;
+}
+function evPos(e){ const b = cv.getBoundingClientRect(); return [e.clientX-b.left, e.clientY-b.top]; }
+cv.addEventListener('pointerdown', e=>{
+  const [x,y] = evPos(e); const i = hit(x,y);
+  if (i==null) return;
+  drag = {i, base: units.slice(), counter:null, cx:H[i].px, cy:H[i].py};
+  cv.classList.add('dragging'); cv.setPointerCapture(e.pointerId);
+});
+cv.addEventListener('pointermove', e=>{
+  if (!drag) return;
+  const [x,y] = evPos(e);
+  // counterparty latch: pointer inside another live disc
+  let c = null;
+  H.forEach((h,j)=>{
+    if (j===drag.i || units[j]<=0) return;
+    if (Math.hypot(x-h.px,y-h.py) < dia(units[j])/2 + 4) c = j;
+  });
+  drag.counter = c;
+  const targetR = Math.max(6, Math.min(64, Math.hypot(x-drag.cx, y-drag.cy)));
+  const w = Math.pow((2*targetR-14)/110, 2);
+  const target = Math.round(w*TOTAL);
+  units = c!=null ? applySiphon(drag.base, drag.i, target, c)
+                  : applyProRata(drag.base, drag.i, target);
+  refresh();
+});
+addEventListener('pointerup', ()=>{
+  if (!drag) return;
+  const name = H[drag.i].t, w = (units[drag.i]/2).toFixed(1);
+  drag = null; cv.classList.remove('dragging');
+  commit(`${name} set to ${w} percent.`);
+});
+
+// ---------- reset (guarded) + share
+let armed = 0;
+$('reset').addEventListener('click', ()=>{
+  const b = $('reset');
+  if (Date.now() < armed){
+    units = H.map(h=>h.real);
+    b.textContent = 'RESET TO BOOK'; b.classList.remove('armed'); armed = 0;
+    commit('Reset to book.');
+  } else {
+    armed = Date.now()+3000; b.textContent = 'SURE? FLIP AGAIN'; b.classList.add('armed');
+    setTimeout(()=>{ if (Date.now()>=armed){ b.textContent='RESET TO BOOK'; b.classList.remove('armed'); } }, 3100);
+  }
+});
+$('share').addEventListener('click', async ()=>{
+  try { await navigator.clipboard.writeText(location.href); $('share').textContent='COPIED ✓'; }
+  catch { $('share').textContent = 'LINK IN URL BAR'; }
+  setTimeout(()=>$('share').textContent='COPY TEST LINK', 1600);
+});
+
+refresh();
+</script>
+</body>
+</html>

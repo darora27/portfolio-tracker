@@ -21,7 +21,7 @@ for (const dir of [IDLE_FILMSTRIP, ENTRY_FILMSTRIP, CAMERA_FILMSTRIP, POINTER_FI
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 
   // Before: pre-§7 /share baseline (today's committed state before Turn C)
   {

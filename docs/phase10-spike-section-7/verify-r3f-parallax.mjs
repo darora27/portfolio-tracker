@@ -21,7 +21,7 @@ function sessionToken(password) {
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   await context.addCookies([{ name: SESSION_COOKIE_NAME, value: sessionToken(OWNER_PASSWORD), domain: "localhost", path: "/" }]);
   const page = await context.newPage();

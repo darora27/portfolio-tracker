@@ -63,7 +63,7 @@ async function checkTimeout(browser) {
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   const results = {};
   try {
     // Fresh context per check (sessionStorage is per-context) so each run gets its own arrival.

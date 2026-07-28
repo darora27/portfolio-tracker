@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 const BASE_URL = process.env.PHASE10_BASE_URL ?? "http://localhost:3100";
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 
   // Parallax on the real (non-forced) desktop path, entrance dismissed
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });

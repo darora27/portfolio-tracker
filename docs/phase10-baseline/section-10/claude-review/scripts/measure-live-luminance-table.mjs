@@ -1,7 +1,7 @@
 import { chromium } from "playwright";
 import sharp from "sharp";
 const base = process.env.PHASE10_BASE_URL;
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await page.addInitScript(() => { window.localStorage.setItem("stock-market-universe-orientation-seen","true"); });
 await page.goto(base, { waitUntil: "networkidle" });

@@ -6,7 +6,7 @@ const BASE_URL = "http://localhost:3100";
 function sessionToken(password) {
   return crypto.createHmac("sha256", password).update("portfolio-tracker-owner-session").digest("hex");
 }
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 const routes = [
   ["/dev/phase10-portfolio-orrery", {width:1440,height:900}],
   ["/dev/phase10-portfolio-orrery?forceReducedMotion=1", {width:1440,height:900}],

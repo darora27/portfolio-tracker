@@ -6,7 +6,7 @@ const BASE_URL = "http://localhost:3100";
 function sessionToken(password) {
   return crypto.createHmac("sha256", password).update("portfolio-tracker-owner-session").digest("hex");
 }
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 for (const width of [390, 320]) {
   const context = await browser.newContext({ viewport: { width, height: 844 }, hasTouch: true, isMobile: true });
   await context.addCookies([{ name: "owner_session", value: sessionToken(OWNER_PASSWORD), domain: "localhost", path: "/" }]);

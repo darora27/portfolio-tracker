@@ -207,7 +207,7 @@ async function captureVariant(browser, key, { path, label }) {
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   try {
     for (const [key, variant] of Object.entries(VARIANTS)) {
       console.log(`Capturing ${key}...`);

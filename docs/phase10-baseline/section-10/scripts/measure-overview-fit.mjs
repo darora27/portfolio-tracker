@@ -15,7 +15,7 @@ import { chromium } from "playwright";
 
 const base = process.env.PHASE10_BASE_URL ?? "http://127.0.0.1:3000/share";
 const sampleCount = Number(process.env.PHASE10_SAMPLES ?? 24);
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const errors = [];
 page.on("pageerror", (error) => errors.push(String(error.message)));

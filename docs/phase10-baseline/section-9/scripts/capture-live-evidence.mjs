@@ -8,7 +8,7 @@ const mobile = path.join(root, "mobile");
 await mkdir(desktop, { recursive: true });
 await mkdir(mobile, { recursive: true });
 
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await page.addInitScript(() => {
   window.localStorage.setItem(

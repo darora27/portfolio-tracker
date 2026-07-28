@@ -7,7 +7,7 @@ const root = path.resolve("docs/phase10-baseline/section-9");
 const output = path.join(root, "pixel-samples");
 await mkdir(output, { recursive: true });
 const base = process.env.PHASE10_BASE_URL ?? "http://127.0.0.1:3000/share";
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 await page.addInitScript(() => {
   window.localStorage.setItem(

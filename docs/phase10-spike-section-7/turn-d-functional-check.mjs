@@ -14,7 +14,7 @@ function log(key, value) {
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 
   // 1. Entrance: fresh session shows overlay; reload in same context does not; new context does.
   {

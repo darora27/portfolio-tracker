@@ -213,7 +213,7 @@ async function measureMobileRun(browser, baseUrl, run) {
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   const output = { measuredAt: new Date().toISOString(), prodUrl: PROD_URL, baselineUrl: BASELINE_URL };
   try {
     output.desktop = { prod: [], baseline: [] };

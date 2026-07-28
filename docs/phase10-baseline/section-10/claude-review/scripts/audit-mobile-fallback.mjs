@@ -1,6 +1,6 @@
 import { chromium } from "playwright";
 const base = process.env.PHASE10_BASE_URL;
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 for (const width of [390, 320]) {
   const page = await browser.newPage({ viewport: { width, height: 844 } });
   await page.addInitScript(()=>{window.localStorage.setItem("stock-market-universe-orientation-seen","true");});

@@ -4,7 +4,7 @@ const OWNER_PASSWORD = process.env.OWNER_PASSWORD;
 function sessionToken(password) {
   return crypto.createHmac("sha256", password).update("portfolio-tracker-owner-session").digest("hex");
 }
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 await context.addCookies([{ name: "owner_session", value: sessionToken(OWNER_PASSWORD), domain: "localhost", path: "/" }]);
 const page = await context.newPage();

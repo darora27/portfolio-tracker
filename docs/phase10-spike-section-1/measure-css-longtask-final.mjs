@@ -155,7 +155,7 @@ async function measureRun(browser, runIndex) {
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   try {
     console.log(
       `Measuring /dev/phase10-spike-css, authenticated, ${REPETITIONS}x (phone profile: Moto G4 + CPU 4x + Slow 4G)...`,

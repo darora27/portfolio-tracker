@@ -214,7 +214,7 @@ async function measureBundle() {
 }
 
 async function main() {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   try {
     console.log("Measuring CSS 3D spike (phone profile: Moto G4 + CPU 4x + Slow 4G)...");
     const css = await measureRoute(browser, "/dev/phase10-spike-css");

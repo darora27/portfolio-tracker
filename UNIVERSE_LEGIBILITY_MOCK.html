@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legibility mock — panel + scrolling Mission Control</title>
+<style>
+  :root{
+    --void:#020706; --glass:#010806; --cream:#fff0cf; --amber:#ffd68c;
+    --hero:#f6d493; --dim:#d5ba8c; --base:#f4dba8; --orange:#d96f23;
+    --gain:#63ef98; --loss:#ff665f; --paper:#f0e2c4; --ink:#2b1a10;
+    --umber:#21120d; --trace:#e6a14d; --voo:#5fa8c9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--void); color:var(--cream);
+    font-family:ui-monospace,'SF Mono','Cascadia Mono',Menlo,Consolas,monospace}
+  .switch{position:fixed; bottom:12px; left:12px; z-index:50; display:flex; gap:6px}
+  .switch button{font:inherit; font-size:9.5px; letter-spacing:.16em; padding:5px 10px;
+    background:var(--umber); color:var(--dim); border:1px solid rgba(255,240,207,.25);
+    border-radius:4px; cursor:pointer}
+  .switch button.on{color:var(--void); background:var(--amber); border-color:var(--amber)}
+  .demo{position:fixed; bottom:14px; right:12px; z-index:50; font-size:9px; letter-spacing:.18em;
+    color:var(--orange); border:1px dashed rgba(217,111,35,.75); padding:2px 7px; transform:rotate(-1deg)}
+  .view{display:none} .view.on{display:block}
+
+  /* ---------- PANEL VIEW ---------- */
+  #scene{position:relative; height:100vh; overflow:hidden}
+  .planet{position:absolute; left:30%; top:50%; width:340px; height:340px; border-radius:50%;
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle at 34% 30%, #3d5fa8 0%, #16295d 55%, #0a1230 100%);
+    box-shadow:inset -34px -22px 60px rgba(0,0,0,.55), 0 0 46px rgba(61,95,168,.18)}
+  .planet::after{content:''; position:absolute; inset:0; border-radius:50%;
+    background:
+      radial-gradient(14px 9px at 62% 40%, rgba(143,163,214,.9) 0 45%, transparent 60%),
+      radial-gradient(20px 7px at 40% 62%, rgba(143,163,214,.7) 0 45%, transparent 60%),
+      radial-gradient(9px 9px at 55% 70%, rgba(234,242,255,.65) 0 40%, transparent 60%),
+      repeating-linear-gradient(12deg, transparent 0 26px, rgba(143,163,214,.14) 26px 28px)}
+  .ptag{position:absolute; left:30%; top:calc(50% + 196px); transform:translateX(-50%);
+    font-size:12px; letter-spacing:.12em; color:#eaf2ff; text-shadow:0 0 4px #000, 0 0 2px #000}
+  .star{position:absolute; border-radius:50%; background:#dcebd7}
+  /* rail */
+  .rail{position:absolute; right:0; top:0; bottom:0; width:380px; background:rgba(1,8,6,.92);
+    border-left:1px solid rgba(255,240,207,.18); padding:18px 18px 14px; display:flex;
+    flex-direction:column; gap:12px; backdrop-filter:blur(2px)}
+  .rhead{font-size:15px; letter-spacing:.1em; color:var(--cream)}
+  .rhead .co{color:var(--dim); font-size:11px; letter-spacing:.12em}
+  .win{font-size:10.5px; letter-spacing:.14em; color:var(--dim)}
+  .hero{font-size:56px; line-height:1; letter-spacing:.02em; font-weight:600}
+  .rowline{display:flex; gap:14px; flex-wrap:wrap; font-size:13px}
+  .rowline .lab{color:var(--dim); font-size:10px; letter-spacing:.12em; margin-right:4px}
+  .chartbox{position:relative}
+  .ctitle{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px}
+  .ctitle .t{font-size:11px; letter-spacing:.14em; color:var(--dim)}
+  .ctitle .v{font-size:14px; font-weight:600}
+  .detents{display:flex; gap:4px; margin-top:6px}
+  .detents button{font:inherit; font-size:9px; letter-spacing:.12em; padding:3px 8px;
+    background:transparent; color:var(--dim); border:1px solid rgba(255,240,207,.22); border-radius:3px; cursor:pointer}
+  .detents button.on{color:var(--void); background:var(--amber); border-color:var(--amber)}
+  .news{display:flex; flex-direction:column; gap:6px}
+  .news .h{font-size:12.5px; color:var(--cream); line-height:1.35; display:flex; gap:8px}
+  .news .d{color:var(--dim); font-size:10px; flex:none; padding-top:2px}
+  .foot{margin-top:auto; display:flex; justify-content:space-between}
+  .btn{font:inherit; font-size:10px; letter-spacing:.14em; color:var(--amber);
+    background:transparent; border:1px solid rgba(255,214,140,.4); border-radius:4px; padding:6px 10px; cursor:pointer}
+  .seclab{font-size:9.5px; letter-spacing:.2em; color:var(--dim)}
+
+  /* ---------- MISSION CONTROL VIEW ---------- */
+  #mc{height:100vh; overflow-y:auto; background:var(--void)}
+  .strip{position:sticky; top:0; z-index:10; background:rgba(2,7,6,.97); border-bottom:1px solid rgba(255,240,207,.2);
+    display:flex; align-items:center; gap:16px; padding:10px 18px; flex-wrap:wrap}
+  .strip .huge{font-size:30px; font-weight:600; letter-spacing:.02em}
+  .chips{display:flex; gap:14px; font-size:11px; flex-wrap:wrap}
+  .chips span b{font-weight:400}
+  .tabs{margin-left:auto; display:flex; gap:4px; flex-wrap:wrap}
+  .tabs a{font-size:9px; letter-spacing:.12em; color:var(--dim); text-decoration:none;
+    border:1px solid rgba(255,240,207,.2); border-radius:3px; padding:3px 7px}
+  .tabs a:hover{color:var(--void); background:var(--amber)}
+  section.bay{max-width:1180px; margin:18px auto; padding:0 18px}
+  .bayhead{display:flex; align-items:baseline; gap:10px; margin-bottom:8px}
+  .bayhead h2{font-size:12px; letter-spacing:.22em; color:var(--hero); font-weight:600}
+  .bayhead .q{font-size:10px; letter-spacing:.1em; color:var(--dim)}
+  .pane{background:var(--glass); border:1px solid rgba(255,240,207,.15); border-radius:9px; padding:14px}
+  table{width:100%; border-collapse:collapse; font-size:15px}
+  th{font-size:10px; letter-spacing:.16em; color:var(--dim); text-align:right; font-weight:400; padding:6px 10px; border-bottom:1px solid rgba(255,240,207,.15)}
+  th:first-child,td:first-child{text-align:left}
+  td{padding:8px 10px; text-align:right; border-bottom:1px solid rgba(255,240,207,.06)}
+  td .chip{display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:8px; vertical-align:0}
+  .pos{color:var(--gain)} .neg{color:var(--loss)}
+  .half{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  .gaugerow{display:flex; gap:26px; align-items:flex-end; flex-wrap:wrap}
+  .g{font-size:13px}
+  .g .lab{display:block; font-size:10px; letter-spacing:.14em; color:var(--dim); margin-bottom:4px}
+  .ddcol{width:52px; height:120px; border:1px solid rgba(255,240,207,.25); border-radius:4px; position:relative; overflow:hidden}
+  .ddcol .fill{position:absolute; left:0; right:0; bottom:0; height:52%;
+    background:linear-gradient(180deg,#d97a2b,#5e2d0e)}
+  .corr{display:grid; grid-template-columns:repeat(5,1fr); gap:3px}
+  .corr div{aspect-ratio:1; border-radius:2px; display:flex; align-items:center; justify-content:center;
+    font-size:9px; color:var(--cream)}
+  .paper{background:var(--paper); color:var(--ink); border-radius:3px; padding:12px 16px; font-size:12.5px; line-height:1.7;
+    box-shadow:0 2px 8px rgba(0,0,0,.4)}
+  .paper .ph{font-size:10px; letter-spacing:.2em; margin-bottom:6px; color:#7a5232}
+  .mcfoot{max-width:1180px; margin:10px auto 30px; padding:0 18px; display:flex; gap:10px; align-items:center;
+    font-size:9.5px; letter-spacing:.14em; color:var(--dim)}
+  .earn{font-size:13px; line-height:2}
+  .earn b{color:var(--amber); font-weight:600}
+</style>
+</head>
+<body>
+<div class="switch">
+  <button id="sw-panel" class="on">PLANET PANEL</button>
+  <button id="sw-mc">MISSION CONTROL</button>
+</div>
+<span class="demo">DEMO DATA</span>
+
+<!-- ============ PANEL VIEW ============ -->
+<div class="view on" id="v-panel">
+  <div id="scene">
+    <div class="planet" aria-hidden="true"></div>
+    <div class="ptag">IBM</div>
+    <aside class="rail" aria-label="IBM holding panel">
+      <div class="rhead">IBM <span class="co">· INTERNATIONAL BUSINESS MACHINES</span></div>
+      <div>
+        <div class="win">TODAY</div>
+        <div class="hero pos" id="p-hero">▲ 5.2%</div>
+      </div>
+      <div class="rowline">
+        <span><span class="lab">WEEK</span><span class="pos">▲ 8.1</span></span>
+        <span><span class="lab">30D</span><span class="pos">▲ 12.4</span></span>
+        <span><span class="lab">SINCE BUY</span><span class="pos">▲ 41</span> <span class="lab">SIMPLE</span></span>
+      </div>
+      <div class="chartbox">
+        <div class="ctitle"><span class="t" id="c-win">30 DAYS</span><span class="v pos" id="c-val">▲ 12.4%</span></div>
+        <canvas id="p-chart" width="344" height="170" aria-label="IBM price chart, selected window"></canvas>
+        <div class="detents" id="p-detents">
+          <button data-w="7D">7D</button><button data-w="30D" class="on">30D</button>
+          <button data-w="SINCE BUY">SINCE BUY</button><button data-w="MAX">MAX</button>
+        </div>
+      </div>
+      <div class="rowline">
+        <span><span class="lab">WEIGHT</span>7.6%</span>
+        <span><span class="lab">VOL</span>104%</span>
+        <span><span class="lab">BETA</span>−1.8</span>
+        <span><span class="lab">EARNINGS</span><span style="color:var(--amber)">T−12D</span></span>
+      </div>
+      <div>
+        <div class="seclab" style="margin-bottom:6px">NEWS</div>
+        <div class="news">
+          <div class="h"><span class="d">07-28</span>How to bank 12% on IBM stock before buying a single share</div>
+          <div class="h"><span class="d">07-28</span>Digital transformation in healthcare worth $270.9B by 2035</div>
+          <div class="h"><span class="d">07-27</span>Quantum roadmap update lands ahead of Q3 earnings</div>
+        </div>
+      </div>
+      <div class="foot">
+        <button class="btn">FULL ANALYSIS ▸</button>
+        <button class="btn">◂ BACK TO SYSTEM</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ============ MISSION CONTROL VIEW ============ -->
+<div class="view" id="v-mc">
+  <div id="mc">
+    <div class="strip">
+      <span class="win">TODAY</span><span class="huge neg">▼ 0.7%</span>
+      <div class="chips">
+        <span class="win">WEEK <b class="neg">▼ 2.4</b></span>
+        <span class="win">SINCE START · TWR <b class="neg">▼ 8.1</b></span>
+        <span class="win">VS VOO · SAME PERIOD <b class="neg">▼ 8.9</b></span>
+        <span class="win">OFF HIGH <b class="neg">▼ 15.0</b></span>
+      </div>
+      <nav class="tabs" aria-label="sections">
+        <a href="#s-orbits">ORBITS</a><a href="#s-holdings">HOLDINGS</a><a href="#s-returns">RETURNS</a>
+        <a href="#s-risk">RISK</a><a href="#s-corr">CORRELATION</a><a href="#s-news">NEWS</a><a href="#s-trades">TRADES</a>
+      </nav>
+      <span class="win" style="border:1px solid rgba(255,240,207,.3); border-radius:3px; padding:3px 8px">◂ UNIVERSE</span>
+    </div>
+
+    <section class="bay" id="s-orbits">
+      <div class="bayhead"><h2>ORBITS</h2><span class="q">the system, one ellipse per holding · click a ring → that holding · scrolls away, as asked</span></div>
+      <div class="pane"><canvas id="radar" width="1140" height="440" aria-label="orbit radar"></canvas></div>
+    </section>
+
+    <section class="bay" id="s-holdings">
+      <div class="bayhead"><h2>HOLDINGS</h2><span class="q">what you own · dollars owner-view only</span></div>
+      <div class="pane">
+        <table id="htable">
+          <thead><tr><th>HOLDING</th><th>WEIGHT</th><th>TODAY</th><th>WEEK</th><th>VALUE*</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bay" id="s-returns">
+      <div class="bayhead"><h2>RETURNS</h2><span class="q">vs the market · indexed 100 · net of flows</span></div>
+      <div class="pane">
+        <div class="ctitle"><span class="t">SINCE START · PORTFOLIO vs VOO</span><span class="v neg">▼ 8.1%</span></div>
+        <canvas id="mc-chart" width="1140" height="320" aria-label="portfolio vs VOO chart"></canvas>
+      </div>
+    </section>
+
+    <section class="bay" id="s-risk">
+      <div class="bayhead"><h2>RISK</h2><span class="q">how much can this hurt</span></div>
+      <div class="pane gaugerow">
+        <div class="g"><span class="lab">OFF HIGH</span><div class="ddcol"><div class="fill"></div></div>
+          <span class="neg" style="font-size:12px">▼ 15.0%</span> <span class="win">SINCE JUN 30</span></div>
+        <div class="g"><span class="lab">VOLATILITY · ANNUAL</span><span style="font-size:22px">36.7%</span></div>
+        <div class="g"><span class="lab">BETA · VS VOO</span><span style="font-size:22px">2.63</span></div>
+        <div class="g"><span class="lab">BEST DAY</span><span class="pos" style="font-size:16px">▲ 4.1%</span> <span class="win">JUL 03</span></div>
+        <div class="g"><span class="lab">WORST DAY</span><span class="neg" style="font-size:16px">▼ 5.9%</span> <span class="win">JUL 17</span></div>
+      </div>
+    </section>
+
+    <section class="bay" id="s-corr">
+      <div class="half">
+        <div>
+          <div class="bayhead"><h2>CORRELATION</h2><span class="q">what moves together · 30D</span></div>
+          <div class="pane"><div class="corr" id="corr"></div></div>
+        </div>
+        <div>
+          <div class="bayhead"><h2>EARNINGS</h2><span class="q">what's next</span></div>
+          <div class="pane earn">
+            <div><b>T−2D</b> · MSFT · AFTER CLOSE · EST 4.33</div>
+            <div><b>T−9D</b> · GOOG · AFTER CLOSE · EST 2.41</div>
+            <div><b>T−12D</b> · IBM · AFTER CLOSE · EST 2.20</div>
+            <div><b>T−21D</b> · NBIS · PRE-MARKET · EST −0.38</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bay" id="s-news">
+      <div class="bayhead"><h2>NEWS</h2><span class="q">held tickers only</span></div>
+      <div class="pane news" style="gap:9px">
+        <div class="h"><span class="d">07-28</span>ASML — EUV order book steadies as fab spending resumes</div>
+        <div class="h"><span class="d">07-28</span>NBIS — Nebius expands GPU capacity contracts in EU</div>
+        <div class="h"><span class="d">07-28</span>IBM — How to bank 12% on IBM stock before buying a single share</div>
+        <div class="h"><span class="d">07-27</span>INTC — Foundry roadmap update draws mixed analyst reaction</div>
+        <div class="h"><span class="d">07-27</span>COST — Membership fee increase lands without churn spike</div>
+      </div>
+    </section>
+
+    <section class="bay" id="s-trades">
+      <div class="bayhead"><h2>TRADES</h2><span class="q">the log · paper, deliberately last</span></div>
+      <div class="paper">
+        <div class="ph">TRADE LOG · SOL-DEVAN · % OF BOOK</div>
+        2026-07-14 · BUY · NBIS · +2.1% OF BOOK<br>
+        2026-07-02 · SELL · ORCL · −3.4% OF BOOK<br>
+        2026-06-24 · BUY · CBRS · +2.5% OF BOOK<br>
+        2026-06-11 · BUY · ASML · +4.0% OF BOOK
+      </div>
+    </section>
+
+    <div class="mcfoot">
+      <span style="border:1px dashed rgba(217,111,35,.7); color:var(--orange); padding:2px 7px">BRIEFING ▸</span>
+      <span style="border:1px solid rgba(255,240,207,.3); padding:2px 7px">DRAFT · TEST RIG ▸</span>
+      <span>* VALUE COLUMN IS OWNER-VIEW ONLY · /SHARE SHOWS PERCENTAGES</span>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+// ---------- view switch
+const vP=document.getElementById('v-panel'), vM=document.getElementById('v-mc');
+const bP=document.getElementById('sw-panel'), bM=document.getElementById('sw-mc');
+function show(m){ vP.classList.toggle('on',!m); vM.classList.toggle('on',m);
+  bP.classList.toggle('on',!m); bM.classList.toggle('on',m); }
+bP.onclick=()=>show(false); bM.onclick=()=>show(true);
+
+// ---------- stars for the panel scene
+const scene=document.getElementById('scene');
+for(let i=0;i<90;i++){ const s=document.createElement('span'); s.className='star';
+  const big=i%17===0; s.style.cssText=`left:${(i*61)%100}%;top:${(i*37)%100}%;width:${big?3:i%5?1:2}px;height:${big?3:i%5?1:2}px;opacity:${0.25+(i%13)/24}`;
+  scene.appendChild(s); }
+
+// ---------- chart renderer: axis, baseline, endpoints, title, hover
+function series(n, drift, wob, seed){ const out=[0]; let v=0;
+  for(let i=1;i<n;i++){ v += drift + Math.sin(i*0.9+seed)*wob + Math.sin(i*0.31+seed*2)*wob*0.6; out.push(v); }
+  return out; }
+function drawChart(cv, sets, endLabel){
+  const x=cv.getContext('2d'), W=cv.width, Hh=cv.height, padL=44, padR=54, padT=12, padB=14;
+  const all=sets.flatMap(s=>s.d); const mn=Math.min(...all), mx=Math.max(...all);
+  const lo=mn-(mx-mn||1)*0.08, hi=mx+(mx-mn||1)*0.08;
+  const X=i=>padL+(W-padL-padR)*i/(sets[0].d.length-1);
+  const Y=v=>padT+(Hh-padT-padB)*(1-(v-lo)/(hi-lo));
+  x.clearRect(0,0,W,Hh);
+  // gridlines ×3 + labels
+  x.font='10px ui-monospace,monospace'; x.textAlign='left';
+  [hi- (hi-lo)*0.12, (hi+lo)/2, lo+(hi-lo)*0.12].forEach(v=>{
+    x.strokeStyle='rgba(255,240,207,.10)';
+    x.beginPath(); x.moveTo(padL,Y(v)); x.lineTo(W-padR,Y(v)); x.stroke();
+    x.fillStyle='#d5ba8c'; x.fillText((v>0?'+':'')+v.toFixed(1)+'%', 4, Y(v)+3);
+  });
+  // zero baseline + ember below
+  if (lo<0 && hi>0){
+    x.fillStyle='rgba(143,61,39,.14)'; x.fillRect(padL,Y(0),W-padL-padR,Hh-padB-Y(0));
+    x.strokeStyle='#f4dba8'; x.lineWidth=1.5;
+    x.beginPath(); x.moveTo(padL,Y(0)); x.lineTo(W-padR,Y(0)); x.stroke();
+    x.fillStyle='#d5ba8c'; x.fillText('0%', 4, Y(0)+3);
+  }
+  // traces
+  sets.forEach(s=>{
+    x.strokeStyle=s.c; x.lineWidth=s.w||2; x.setLineDash(s.dash||[]);
+    x.beginPath(); s.d.forEach((v,i)=> i?x.lineTo(X(i),Y(v)):x.moveTo(X(i),Y(v))); x.stroke(); x.setLineDash([]);
+  });
+  // endpoints on the first (hero) trace
+  const d=sets[0].d, ev=d[d.length-1];
+  [[0,d[0]],[d.length-1,ev]].forEach(([i,v])=>{
+    x.fillStyle=sets[0].c; x.beginPath(); x.arc(X(i),Y(v),3,0,7); x.fill(); });
+  x.fillStyle = ev>=0 ? '#63ef98' : '#ff665f';
+  x.font='600 12px ui-monospace,monospace'; x.textAlign='right';
+  x.fillText((ev>=0?'▲ +':'▼ −')+Math.abs(ev).toFixed(1)+'%', W-4, Y(ev)+4);
+  cv._m={X,Y,lo,hi,d,padL,padR};
+}
+// panel chart with working detents + hover
+const P={'7D':{d:series(8,0.9,0.8,1), v:'▲ 5.9%'}, '30D':{d:series(31,0.42,0.9,2), v:'▲ 12.4%'},
+  'SINCE BUY':{d:series(64,0.66,1.0,3), v:'▲ 41.0%'}, 'MAX':{d:series(120,0.38,1.1,4), v:'▲ 44.7%'}};
+const pc=document.getElementById('p-chart');
+function setWin(w){
+  document.querySelectorAll('#p-detents button').forEach(b=>b.classList.toggle('on',b.dataset.w===w));
+  document.getElementById('c-win').textContent = w==='7D'?'7 DAYS':w==='30D'?'30 DAYS':w;
+  const ev=P[w].d[P[w].d.length-1];
+  const val=document.getElementById('c-val');
+  val.textContent=(ev>=0?'▲ ':'▼ ')+Math.abs(ev).toFixed(1)+'%';
+  val.className='v '+(ev>=0?'pos':'neg');
+  drawChart(pc,[{d:P[w].d,c:'#e6a14d'}]);
+}
+document.getElementById('p-detents').addEventListener('click',e=>{
+  if(e.target.dataset.w) setWin(e.target.dataset.w); });
+pc.addEventListener('mousemove',e=>{
+  const m=pc._m; if(!m) return; const r=pc.getBoundingClientRect();
+  const px=(e.clientX-r.left)*(pc.width/r.width);
+  const i=Math.max(0,Math.min(m.d.length-1,Math.round((px-m.padL)/(pc.width-m.padL-m.padR)*(m.d.length-1))));
+  setWin(document.querySelector('#p-detents .on').dataset.w); // redraw clean
+  const x=pc.getContext('2d'), X=m.X(i), v=m.d[i];
+  x.strokeStyle='rgba(255,240,207,.35)'; x.beginPath(); x.moveTo(X,8); x.lineTo(X,pc.height-12); x.stroke();
+  x.fillStyle='#fff0cf'; x.font='10px ui-monospace,monospace'; x.textAlign='center';
+  x.fillText(`D${i} · ${(v>=0?'▲ +':'▼ −')}${Math.abs(v).toFixed(1)}%`, Math.min(pc.width-52,Math.max(52,X)), 8+8);
+});
+pc.addEventListener('mouseleave',()=> setWin(document.querySelector('#p-detents .on').dataset.w));
+setWin('30D');
+
+// ---------- MC: radar (ONE ellipse per holding), table, big chart, corr
+const HOLD=[
+  ['ASML','#5c80ad',26.4,-0.8,-2.1],['GOOG','#bcc7ba',20.8,0.4,1.2],['COST','#645d53',12.1,-0.2,-0.6],
+  ['MSFT','#5f7271',8.2,0.3,0.8],['IBM','#16295d',7.6,5.2,8.1],['INTC','#42474f',7.2,-1.4,-3.1],
+  ['CBRS','#655331',4.8,-3.0,-8.9],['NBIS','#763a74',3.5,1.9,5.2]];
+const GAIN=['#1f7a46','#63ef98','#a9ffcf'], LOSS=['#ff9d97','#ff665f','#b3241d'];
+const hxv=s=>[1,3,5].map(i=>parseInt(s.slice(i,i+2),16));
+const lerp=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+function rampAt(st,t){ t=Math.max(0,Math.min(1,t)); const g=st.length-1;
+  const s=Math.min(Math.floor(t*g),g-1); return lerp(hxv(st[s]),hxv(st[s+1]),t*g-s); }
+const nrm=w=>(Math.min(12,Math.max(0.2,Math.abs(w)))-0.2)/11.8;
+const week=w=>`rgb(${rampAt(w>=0?GAIN:LOSS,nrm(w))})`;
+
+const rd=document.getElementById('radar'), rx=rd.getContext('2d');
+(function(){
+  const cx=rd.width/2, cy=rd.height/2+8;
+  HOLD.forEach((h,i)=>{
+    const a=54+i*30, b=a*0.36;
+    rx.strokeStyle=week(h[4]); rx.globalAlpha=0.8; rx.lineWidth=1.4;
+    rx.beginPath(); rx.ellipse(cx,cy,a,b,0,0,7); rx.stroke(); rx.globalAlpha=1;
+    const th=i*2.4+0.8, px=cx+Math.cos(th)*a, py=cy+Math.sin(th)*b;
+    rx.fillStyle=h[1]; rx.beginPath(); rx.arc(px,py,4+h[2]*0.28,0,7); rx.fill();
+    rx.strokeStyle='rgba(255,240,207,.7)'; rx.lineWidth=1; rx.stroke();
+    rx.fillStyle='#d5ba8c'; rx.font='9.5px ui-monospace,monospace'; rx.textAlign='left';
+    rx.fillText(h[0], cx+a-16, cy-b-5);
+  });
+  rx.fillStyle='#e3b65c'; rx.beginPath(); rx.arc(cx,cy,9,0,7); rx.fill();
+})();
+
+// holdings table
+const tb=document.querySelector('#htable tbody');
+tb.innerHTML=HOLD.map(h=>{
+  const t=h[3], w=h[4];
+  return `<tr><td><span class="chip" style="background:${h[1]}"></span>${h[0]}</td>
+    <td>${h[2].toFixed(1)}%</td>
+    <td class="${t>=0?'pos':'neg'}">${t>=0?'▲':'▼'} ${Math.abs(t).toFixed(1)}%</td>
+    <td class="${w>=0?'pos':'neg'}">${w>=0?'▲':'▼'} ${Math.abs(w).toFixed(1)}%</td>
+    <td>$${(h[2]*240).toFixed(0)}</td></tr>`;
+}).join('');
+
+// big chart: portfolio vs VOO
+drawChart(document.getElementById('mc-chart'),
+  [{d:series(64,-0.16,0.8,5),c:'#e6a14d',w:2.5},
+   {d:series(64,-0.02,0.35,6),c:'#5fa8c9',w:1.5,dash:[5,5]}]);
+
+// correlation mini-grid (ice ramp by |rho|, sign as glyph)
+const ICE=['#061018','#123a54','#1e6b8f','#3fa8c4','#a8e4ef'];
+const corr=document.getElementById('corr');
+const T5=['ASML','GOOG','MSFT','IBM','INTC'];
+T5.forEach((a,i)=>T5.forEach((b,j)=>{
+  const d=document.createElement('div');
+  if(i===j){ d.textContent=a; d.style.fontSize='8px'; d.style.color='#d5ba8c'; }
+  else{ const r=Math.abs(Math.sin(i*3+j*7)); const sgn=Math.sin(i+j*2)>0?'+':'−';
+    d.style.background=`rgb(${rampAt(ICE,r)})`;
+    d.textContent=sgn; d.style.color = r>0.55?'#04110d':'#eafcff'; }
+  corr.appendChild(d);
+}));
+</script>
+</body>
+</html>

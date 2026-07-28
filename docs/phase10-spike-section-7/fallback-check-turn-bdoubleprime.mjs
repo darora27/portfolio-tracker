@@ -6,7 +6,7 @@ const BASE_URL = "http://localhost:3100";
 function sessionToken(password) {
   return crypto.createHmac("sha256", password).update("portfolio-tracker-owner-session").digest("hex");
 }
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
 
 async function check(label, path, opts = {}) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
