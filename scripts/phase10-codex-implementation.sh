@@ -45,12 +45,12 @@ elif [ -n "$CODEX_RESUME_SESSION" ]; then
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
   CLI_STATUS=$?
 elif [ -n "$CODEX_MODEL" ]; then
-  codex -a never exec -C "$(pwd)" -s workspace-write --add-dir "$GIT_DIR" \
+  codex -a never exec -C "$(pwd)" --add-dir "$GIT_DIR" \
     -m "$CODEX_MODEL" - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
   CLI_STATUS=$?
 else
-  codex -a never exec -C "$(pwd)" -s workspace-write --add-dir "$GIT_DIR" - \
+  codex -a never exec -C "$(pwd)" --add-dir "$GIT_DIR" - \
     < "$PROMPT_FILE" 2>&1 | tee "$LOG_FILE"
   CLI_STATUS=$?
 fi
