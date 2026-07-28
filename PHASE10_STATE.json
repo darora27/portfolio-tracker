@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§9",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -27,9 +27,53 @@
     "id": "§9",
     "title": "Universe craft and depth",
     "spec_doc": "docs/phase10-workflow/specs/section-9.md",
-    "implementation_commit": null,
-    "review_result": null,
-    "findings": [],
+    "implementation_commit": "bc1b79c97a9487174f389430a6f5fc8447ebde05",
+    "review_result": "fail",
+    "review_doc": "docs/phase10-workflow/reviews/section-9-review.md",
+    "findings": [
+      {
+        "id": "F1",
+        "criterion": "9 (and blocks 1-5, 7, 8, 10-13, 15-17, 20-22, 25, 26, 50, 54, 56, 60, 66)",
+        "summary": "/share returns HTTP 500 on every request in the production build.",
+        "evidence": "Against the production build produced in this review turn, curl http://127.0.0.1:3100/share returns 500, as does /share?focus=portfolio&camera=command&station=manifest. Server log repeats `TypeError: l.MISSION_CONTROL_PANELS.some is not a function` (digest 69160525). MissionControl.tsx:1 gained \"use client\" in this section (absent at 77c74b3) while the server component UniverseRoute.tsx:15 still imports the runtime value MISSION_CONTROL_PANELS from it and calls .some() on it at line 43; across the client boundary that export is a client-reference proxy, not an array. / returns 200 only because the owner gate renders the sign-in form before resolveMissionPanel runs. Capture: docs/phase10-baseline/section-9/claude-review/raw-route-status.txt and share-1440x900-FAILS.png.",
+        "required_change": "Move MISSION_CONTROL_PANELS and MissionControlPanelId into a shared non-\"use client\" module imported by both UniverseRoute.tsx (server) and MissionControl.tsx (client), so no runtime value crosses the boundary. Add coverage that would catch a 500 on /share; unit tests import the modules directly under vitest where the boundary does not exist, and npm run build never prerenders /share because it is dynamic."
+      },
+      {
+        "id": "F2",
+        "criterion": "42, spec §6.2, and §1's every-object-encodes-a-real-number constraint",
+        "summary": "The planet detail benchmark overlay draws a hard-coded, fabricated VOO trace.",
+        "evidence": "src/components/observatory/orrery/PlanetDetail.tsx:102 renders the overlay as <polyline className={styles.benchmarkTrace} points=\"0,71 80,66 160,69 240,57 320,52\" />. Those coordinates are string literals derived from no input, so the same VOO line is drawn for every holding, range, and data state, beside a real portfolio trace computed by tracePoints(values).",
+        "required_change": "Drive the overlay from the real same-period VOO series, or render the toggle in its unavailable state (as SINCE BUY already does) when that series is not supplied. No invented figure may ship on a chart."
+      },
+      {
+        "id": "F3",
+        "criterion": "54 and 50",
+        "summary": "The retained long-task measurement script is a SyntaxError and cannot run; both raw output files remain NOT CAPTURED.",
+        "evidence": "node --check docs/phase10-baseline/section-9/scripts/measure-long-tasks.mjs fails with `SyntaxError: Unexpected token '}'` at line 42 — the final Math.max(...runs.map(({ maximumMs }) => maximumMs), is missing its closing parenthesis. raw-long-task-output.txt and raw-rgb-pixel-output.txt each contain only the NOT CAPTURED placeholder.",
+        "required_change": "Fix the script so it parses and runs, then commit the five fresh-context raw runs (1440x900, CPU 2x, every route-owned maximum under 50 ms) and the raw RGB sampling output, replacing both placeholder files."
+      },
+      {
+        "id": "F4",
+        "criterion": "52 (with §10.1's rule against guards that cannot fail)",
+        "summary": "The sun-invariance test varies no interaction state and cannot fail.",
+        "evidence": "src/lib/observatory/scene-model.test.ts test 'keeps sun physiology identical across interaction states' calls sunVisualParameters(-0.5, 0.7) twice with identical arguments and compares the results. No hover or focus state is varied, so it asserts determinism rather than interaction-invariance and would still pass if hover were wired into the sun's appearance. The implementation itself is correct: OrreryScene.tsx drives the sun material and corona only from healthRef and sceneModel.sun, and hover changes only dockingRing.visible.",
+        "required_change": "Vary the interaction input and compare descriptors — assert buildOverviewSceneModel({...}).sun is deeply equal with hoveredTicker unset and with the sun hovered/focused, so the test fails if any sun body parameter becomes interaction-dependent."
+      },
+      {
+        "id": "F5",
+        "criterion": "61",
+        "summary": "The public-log canary does not cover share counts.",
+        "evidence": "src/app/(depth-pull)/share/page.test.tsx covers prices (222.22), day and prev-close (333.33, 444.44), totals (999999.99, 111111.11), realized-gain magnitude (8888.88) and the trade reason (PRIVATE_TRADE_REASON). Share counts are not covered: the fixture's only share values are shares: 100 (line 57) and shares: 10 (line 68), neither distinctive, and no assertion checks their absence, so a regression leaking share counts would pass.",
+        "required_change": "Give at least one fixture position a distinctive share value in the same style as the other canaries and assert it is absent from the public render."
+      },
+      {
+        "id": "F6",
+        "criterion": "13, 25, 26, 50, 54 and spec §12",
+        "summary": "The required live evidence set is absent and could not be captured at review.",
+        "evidence": "docs/phase10-baseline/section-9/ contains no after screenshots at any viewport, no 390/320 fallback audit output, and no live 32 px sphere strip; the only image is the authored-map thumbnail proxy, which the evidence README itself states is not the live strip. Both raw output files read NOT CAPTURED. Claude Lead could not close the gap: /share returns 500 (F1) and the owner-gated /dev/phase10-portfolio-orrery renders only the sign-in form (0 canvases) without owner credentials, which this turn did not use.",
+        "required_change": "After F1 is fixed, capture and commit the complete §12 evidence set against a running production build and record the results in docs/phase10-baseline/section-9/README.md with executor suffixes."
+      }
+    ],
     "remediation_commits": [],
     "accepted_commit": null,
     "accepted_at": null,
@@ -39,7 +83,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_2). Authority order for this section: UNIVERSE_ROUND2_BRIEF.md -> UNIVERSE_IDEAS_2.md (including its §9 owner corrections and authorizations) -> PHASE10.md §9. §8 proved the universe works; §9 makes it good. Two new public disclosure surfaces are authorized in UNIVERSE_IDEAS_2.md §9.3-9.4 (public trade log: action, ticker, date, and % impact only, never shares/prices/dollars; public news for held tickers) and both require extended privacy canary coverage. Texture resolution is bound by the §9.1 correction: tune compression first, ship base at 2048x1024 and emissive/normal at 1024x512, measure and record the real total, reduce further if it exceeds ~15MB. §9's acceptance criteria forbid `expect(source).toContain(...)` as coverage for rendered behavior. Two owner observations carried forward unclosed from §8 and recorded in docs/phase10-workflow/reviews/section-8-accepted.md: D1 (unreproduced green-trail report — do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 ('website is still relatively confusing', too general to bound in §8).",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-codex-implementation-to-claude-lead.md"
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-claude-lead-to-codex-remediation.md"
   },
   "sections_history": [
     {
@@ -96,28 +140,34 @@
       "note": "The Stock Market Universe — /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes §9. See docs/phase10-workflow/reviews/section-8-accepted.md."
     }
   ],
-  "prev_actor_commit": "77c74b3d725ada00e6783822eebffcb6f3e7fbec",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 77c74b3 (`phase10(§9): specify universe craft and depth`) was HEAD at the start of this Codex Implementation `implement`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "bc1b79c97a9487174f389430a6f5fc8447ebde05",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): bc1b79c (`phase10(§9): craft the universe operations layer`) was HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "6a68758d57474f5494ff2ce38056ebb37b5aa244",
-  "production_code_changed_this_turn": true,
-  "production_code_note_prior_turn": "The prior commit was a tooling/permissions chore scoping Codex local-dev permissions. It changed no application source.",
-  "production_code_note": "Codex Implementation completed the §9 Universe craft and depth vertical slice: authored-mark texture generation and measured KTX2 ladder; pure scene descriptors; designed overview composition; seven-bay Mission Control; five-bay planet detail; news moons; DRIFT/HAZARD/SUPPLY satellites; one observed hollow-core sector system; docking/orientation completion; public ratio-only trade log and held-ticker news projections; privacy/contrast/model/DOM tests; and retained evidence scripts. The shipped texture directory is 11,727,680 bytes at the largest measured tier below the 15 MB cap (1024x512 base, 512x256 derived). Attached-browser discovery returned no backend, so live screenshots, RGB samples, mobile audits, keyboard walk-through, and long-task measurements are explicitly unverified and routed to Claude Lead review under the standing environment-only exception. No dependency manifest changed.",
+  "production_code_changed_this_turn": false,
+  "production_code_note_prior_turn": "Codex Implementation completed the §9 Universe craft and depth vertical slice at bc1b79c. This review turn changed no application source; it added only a review doc, review evidence, a handoff, and state/progress bookkeeping.",
+  "production_code_note": "Claude Lead review of §9 returned FAIL with six bounded findings. The blocking one is F1: /share returns HTTP 500 on every request in the production build because MissionControl.tsx gained a \"use client\" directive while the server component UniverseRoute.tsx still imports the runtime value MISSION_CONTROL_PANELS from it. npm test (94 files, 496 tests) and npm run build are both green — neither exercises the server/client boundary, and /share is dynamic so it is never prerendered. No live evidence for §9 could be captured at review because the route does not render and the owner-gated reference route requires credentials this turn did not use. Prior turn's implementation note, retained: Codex Implementation completed the §9 Universe craft and depth vertical slice: authored-mark texture generation and measured KTX2 ladder; pure scene descriptors; designed overview composition; seven-bay Mission Control; five-bay planet detail; news moons; DRIFT/HAZARD/SUPPLY satellites; one observed hollow-core sector system; docking/orientation completion; public ratio-only trade log and held-ticker news projections; privacy/contrast/model/DOM tests; and retained evidence scripts. The shipped texture directory is 11,727,680 bytes at the largest measured tier below the 15 MB cap (1024x512 base, 512x256 derived). Attached-browser discovery returned no backend, so live screenshots, RGB samples, mobile audits, keyboard walk-through, and long-task measurements are explicitly unverified and routed to Claude Lead review under the standing environment-only exception. No dependency manifest changed.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "94 test files passed; 496 tests passed.",
-      "finished_at": "2026-07-28T07:02:03Z"
+      "summary": "Re-run independently by Claude Lead at review: 94 test files passed; 496 of 496 tests passed.",
+      "finished_at": "2026-07-28T07:40:00Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Next.js 16.2.11 production build compiled successfully; TypeScript passed; 18 static-generation tasks completed.",
-      "finished_at": "2026-07-28T07:02:03Z"
+      "summary": "Re-run independently by Claude Lead at review: Next.js 16.2.11 production build compiled successfully; TypeScript passed; 18 static-generation tasks; 24 route entries. Note: green here does not imply the route renders — serving this same build with `npx next start` returns HTTP 500 on /share (finding F1), because neither vitest nor the build exercises the server/client component boundary and /share is dynamic so it is never prerendered.",
+      "finished_at": "2026-07-28T07:40:00Z"
+    },
+    "live_routes": {
+      "command": "npx next start -p 3100, then curl and a headless-chromium probe",
+      "status": "fail",
+      "summary": "/share -> 500 (every request, including ?station= forms); / -> 200 only because the owner gate returns the sign-in form before the crashing code path; /dashboard -> 200. Raw capture: docs/phase10-baseline/section-9/claude-review/raw-route-status.txt",
+      "finished_at": "2026-07-28T07:40:00Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T07:02:03Z",
+  "updated_at": "2026-07-28T07:40:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

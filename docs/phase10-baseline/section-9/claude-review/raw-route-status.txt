@@ -1,0 +1,48 @@
+Phase 10 §9 Claude Lead review — live route status
+Captured 2026-07-28 by claude-code/opus-5 against the production build this
+review turn produced (`npm run build`, then `npx next start -p 3100`).
+
+$ curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3100/share
+500
+
+$ curl -s -o /dev/null -w "%{http_code}" "http://127.0.0.1:3100/share?focus=portfolio&camera=command&station=manifest"
+500
+
+$ curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3100/
+200        (owner gate renders the sign-in form before UniverseRoute's
+            resolveMissionPanel is reached; the same crash occurs once
+            authenticated)
+
+$ curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3100/dashboard
+200
+
+Server log (repeats on every /share request):
+
+    ⨯ TypeError: l.MISSION_CONTROL_PANELS.some is not a function
+        at C (.next/server/chunks/ssr/_1wg-f1_._.js:1:12086) {
+      digest: '69160525'
+    }
+
+Playwright probe (1440x900, headless chromium 1.49.1):
+
+    {"route":"/share","status":500}
+    {"route":"/dev/phase10-portfolio-orrery","status":200,"canvases":0,"hasLogin":1}
+    {"consoleErrors":[
+      "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "Error: An error occurred in the Server Components render. ..."]}
+
+Screenshot of the failing route: share-1440x900-FAILS.png
+
+The owner-gated reference route /dev/phase10-portfolio-orrery renders the
+sign-in form (0 canvases) without owner credentials, so it could not be used
+as a substitute surface for the §12 evidence set. No `.env*` contents were
+read, printed, edited, staged, or committed at any point in this turn.
+
+Node syntax check of the retained measurement scripts:
+
+    capture-live-evidence.mjs   ok
+    make-thumb-strip.mjs        ok
+    measure-long-tasks.mjs      SyntaxError: Unexpected token '}'  (line 42)
+    sample-live-rgb.mjs         ok
+
+— done by claude-code/opus-5
