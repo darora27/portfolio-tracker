@@ -1,0 +1,78 @@
+{
+ "base": "http://127.0.0.1:3131/share",
+ "report": [
+  {
+   "camera": "overview",
+   "canvas": true,
+   "sun": {
+    "x": 720,
+    "y": 293.8
+   },
+   "orbitPx": {
+    "semiMajor": 52.7,
+    "semiMinor": 14.6
+   },
+   "distinctTargets": [
+    "portfolio",
+    "satellite:SUPPLY"
+   ],
+   "satellitesAcquired": [
+    "satellite:SUPPLY"
+   ],
+   "hitCounts": {
+    "portfolio": 477,
+    "satellite:SUPPLY": 3
+   },
+   "destinations": {
+    "satellite:SUPPLY": "http://127.0.0.1:3131/share?focus=portfolio&camera=command"
+   }
+  },
+  {
+   "camera": "command",
+   "canvas": true,
+   "sun": {
+    "x": 720,
+    "y": 450
+   },
+   "orbitPx": {
+    "semiMajor": 403.8,
+    "semiMinor": 123.3
+   },
+   "distinctTargets": [
+    "(none)"
+   ],
+   "satellitesAcquired": [],
+   "hitCounts": {
+    "(none)": 480
+   },
+   "destinations": {}
+  },
+  {
+   "camera": "approach",
+   "canvas": true,
+   "sun": {
+    "x": 891.4,
+    "y": 342.6
+   },
+   "orbitPx": {
+    "semiMajor": 120.4,
+    "semiMinor": 29
+   },
+   "distinctTargets": [
+    "(none)",
+    "ASML"
+   ],
+   "satellitesAcquired": [],
+   "hitCounts": {
+    "(none)": 41,
+    "ASML": 439
+   },
+   "destinations": {}
+  },
+  {
+   "camera": "sector",
+   "canvas": false,
+   "note": "no canvas in this state"
+  }
+ ]
+}

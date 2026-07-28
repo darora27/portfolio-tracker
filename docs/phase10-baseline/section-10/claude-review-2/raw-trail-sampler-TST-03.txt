@@ -1,0 +1,13 @@
+=== sample-live-rgb.mjs (section verifier, TST-03) ===
+                               ^
+
+Error: GOOG deltaE 13.022 > 8
+    at file:///Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs:168:32
+    at Array.map (<anonymous>)
+    at file:///Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs:148:29
+
+Node.js v24.18.0
+
+=== full non-throwing table (claude-review/scripts/sample-live-rgb-full-table.mjs) ===
+ORDERING_FAIL {"dir":-1,"prior":"MSFT","current":"ASML","priorL":0.279319,"curL":0.341318}
+{"viewport":"1440x900","fixtureCount":8,"everyFixtureHoldingSampled":true,"samples":[{"ticker":"ASML","weekly":-0.04816505848121355,"x":810.7172062677513,"y":302.8143130514728,"expected":"#ff716b","sampled":"#ff716b","deltaE":0,"hue":2.432,"chroma":0.58,"luminance":0.341318,"hueDistance":0.568,"deltaFail":false},{"ticker":"GOOG","weekly":-0.07058086916925177,"x":624.8157246165965,"y":228.75765460651422,"expected":"#f25a53","sampled":"#cc4e48","deltaE":13.022,"hue":2.727,"chroma":0.518,"luminance":0.18754,"hueDistance":0.273,"deltaFail":true},{"ticker":"COST","weekly":null,"x":820.3640969962083,"y":437.32264413645856,"expected":"#e3b65c","sampled":"#d6cf69","deltaE":18.122,"hue":56.147,"chroma":0.427,"luminance":0.599417,"hueDistance":null,"deltaFail":true},{"ticker":"MSFT","weekly":-0.03278729274901193,"x":942.1134732659065,"y":207.73890372755267,"expected":"#ff817b","sampled":"#db716b","deltaE":11.168,"hue":3.214,"chroma":0.439,"luminance":0.279319,"hueDistance":0.214,"deltaFail":true},{"ticker":"IBM","weekly":0.015399061032863814,"x":313.9034917833841,"y":366.73713249567425,"expected":"#2e9458","sampled":"#606a6c","deltaE":48.671,"hue":190,"chroma":0.047,"luminance":0.138776,"hueDistance":47,"deltaFail":true,"hueFail":true},{"ticker":"INTC","weekly":-0.05553266021017933,"x":1124.6846893045824,"y":481.3546172031798,"expected":"#ff6a63","sampled":"#da7b73","deltaE":23.864,"hue":4.66,"chroma":0.404,"luminance":0.303091,"hueDistance":1.66,"deltaFail":true},{"ticker":"CBRS","weekly":0.06631614654002727,"x":536.4680967379858,"y":139.87866712519,"expected":"#69f09c","sampled":"#4da96f","deltaE":28.539,"hue":142.174,"chroma":0.361,"luminance":0.311014,"hueDistance":0.826,"deltaFail":true},{"ticker":"NBIS","weekly":0.028802978863213147,"x":481.98016701738686,"y":688.4427597661446,"expected":"#3dae6a","sampled":"#379e61","deltaE":6.923,"hue":144.466,"chroma":0.404,"luminance":0.26129,"hueDistance":1.466,"deltaFail":false}],"literalReferences":{"flat":"#e3b65c","comet":"#f4f0df","sunUp":"#f5c45d","sunDown":"#d65a24"}}

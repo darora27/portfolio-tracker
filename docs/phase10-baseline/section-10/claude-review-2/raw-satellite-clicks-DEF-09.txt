@@ -1,0 +1,20 @@
+{
+ "base": "http://127.0.0.1:3131/share",
+ "camera": "overview",
+ "satellitesAcquiredByPointer": [
+  "satellite:DRIFT",
+  "satellite:HAZARD",
+  "satellite:SUPPLY"
+ ],
+ "missing": [],
+ "sightings": {
+  "satellite:SUPPLY": 13,
+  "satellite:DRIFT": 3,
+  "satellite:HAZARD": 1
+ },
+ "destinations": {
+  "satellite:SUPPLY": "http://127.0.0.1:3131/share?focus=portfolio&camera=command",
+  "satellite:DRIFT": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=scope",
+  "satellite:HAZARD": "http://127.0.0.1:3131/share?focus=portfolio&camera=command"
+ }
+}

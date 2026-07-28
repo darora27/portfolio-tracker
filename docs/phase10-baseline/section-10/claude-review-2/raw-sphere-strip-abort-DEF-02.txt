@@ -1,0 +1,9 @@
+=== capture-live-sphere-strip.mjs (section verifier, VIS-01 + DEF-02) ===
+file:///Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs:198
+    throw new Error(
+          ^
+
+Error: COST chirality failed: normal=-0.4514 mirrored=-0.4041
+    at file:///Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs:198:11
+
+Node.js v24.18.0

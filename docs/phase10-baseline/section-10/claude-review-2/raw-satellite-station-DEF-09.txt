@@ -1,0 +1,138 @@
+{
+ "base": "http://127.0.0.1:3131/share",
+ "bySatellite": {
+  "satellite:SUPPLY": {
+   "attempts": 9,
+   "stationCorrect": 7,
+   "stableHover": 9
+  }
+ },
+ "results": [
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=comms",
+   "station": "comms",
+   "expectedStation": "comms",
+   "stationCorrect": true
+  },
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=comms",
+   "station": "comms",
+   "expectedStation": "comms",
+   "stationCorrect": true
+  },
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command",
+   "station": null,
+   "expectedStation": "comms",
+   "stationCorrect": false
+  },
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=comms",
+   "station": "comms",
+   "expectedStation": "comms",
+   "stationCorrect": true
+  },
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=comms",
+   "station": "comms",
+   "expectedStation": "comms",
+   "stationCorrect": true
+  },
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=comms",
+   "station": "comms",
+   "expectedStation": "comms",
+   "stationCorrect": true
+  },
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=comms",
+   "station": "comms",
+   "expectedStation": "comms",
+   "stationCorrect": true
+  },
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command",
+   "station": null,
+   "expectedStation": "comms",
+   "stationCorrect": false
+  },
+  {
+   "satellite": "satellite:SUPPLY",
+   "stableHover": true,
+   "confirms": [
+    "satellite:SUPPLY",
+    "satellite:SUPPLY",
+    "satellite:SUPPLY"
+   ],
+   "targetImmediatelyBeforeClick": "satellite:SUPPLY",
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=comms",
+   "station": "comms",
+   "expectedStation": "comms",
+   "stationCorrect": true
+  }
+ ]
+}

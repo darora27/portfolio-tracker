@@ -1,0 +1,268 @@
+{
+ "bayQuestions": [
+  {
+   "bay": "plot",
+   "questions": [
+    "what do i own, at what weight",
+    "where is everything, and how was the week"
+   ],
+   "duplicated": [],
+   "interactiveControlCount": 79
+  },
+  {
+   "bay": "manifest",
+   "questions": [
+    "where is everything, and how was the week",
+    "what do i own, at what weight",
+    "what do i own, at what weight"
+   ],
+   "duplicated": [
+    {
+     "question": "what do i own, at what weight",
+     "times": 2
+    }
+   ],
+   "interactiveControlCount": 91
+  },
+  {
+   "bay": "scope",
+   "questions": [
+    "where is everything, and how was the week",
+    "what do i own, at what weight",
+    "am i beating the market"
+   ],
+   "duplicated": [],
+   "interactiveControlCount": 82
+  },
+  {
+   "bay": "hazard",
+   "questions": [
+    "where is everything, and how was the week",
+    "what do i own, at what weight",
+    "how much can this hurt"
+   ],
+   "duplicated": [],
+   "interactiveControlCount": 79
+  },
+  {
+   "bay": "signals",
+   "questions": [
+    "where is everything, and how was the week",
+    "what do i own, at what weight",
+    "what moves together"
+   ],
+   "duplicated": [],
+   "interactiveControlCount": 247
+  },
+  {
+   "bay": "comms",
+   "questions": [
+    "where is everything, and how was the week",
+    "what do i own, at what weight",
+    "what's being said",
+    "what's next on the calendar"
+   ],
+   "duplicated": [],
+   "interactiveControlCount": 97
+  },
+  {
+   "bay": "log",
+   "questions": [
+    "where is everything, and how was the week",
+    "what do i own, at what weight",
+    "what did i do"
+   ],
+   "duplicated": [],
+   "interactiveControlCount": 91
+  }
+ ],
+ "visted08": {
+  "viewportWidth": 1440,
+  "plot": {
+   "x": 51,
+   "y": 298,
+   "width": 718,
+   "height": 551
+  },
+  "plotFractionOfViewport": 0.499,
+  "rail": {
+   "x": 789,
+   "y": 278,
+   "width": 620,
+   "height": 515
+  },
+  "dayNumberFontSize": null,
+  "largestTypeOnScreen": [
+   {
+    "text": "-0.7%",
+    "size": 64,
+    "tag": "STRONG"
+   }
+  ]
+ },
+ "vis09": {
+  "materials": [
+   {
+    "material": "paper",
+    "background": "rgb(240, 226, 196)",
+    "color": "rgb(43, 26, 16)"
+   }
+  ],
+  "logChip": {
+   "text": "LOG",
+   "color": "rgb(240, 226, 196)",
+   "background": "rgb(43, 26, 16)",
+   "contrast": 13.02
+  },
+  "logRows": {
+   "scrollHeight": 879,
+   "clientHeight": 144,
+   "scrollable": true,
+   "overflowY": "auto"
+  }
+ },
+ "def10": {
+  "viewport": {
+   "w": 1440,
+   "h": 900
+  },
+  "panel": {
+   "x": 828,
+   "y": 104,
+   "width": 576,
+   "height": 772,
+   "fractionOfViewportWidth": 0.4,
+   "bottomWithinViewport": true,
+   "topWithinViewport": true
+  },
+  "scroll": {
+   "scrollHeight": 976,
+   "clientHeight": 770,
+   "scrollable": true,
+   "overflowY": "auto"
+  },
+  "idPlateNumber": {
+   "text": "▼ -4.4%",
+   "size": 64
+  },
+  "bodyFontSize": "16px",
+  "wordCount": 77
+ },
+ "overview": {
+  "labelCount": 8,
+  "labels": [
+   {
+    "ticker": "ASML",
+    "radiusPx": 32.37879995751234,
+    "visible": true,
+    "fontSize": "12px",
+    "x": 786,
+    "y": 334,
+    "insideViewport": true
+   },
+   {
+    "ticker": "GOOG",
+    "radiusPx": 27.06519908289812,
+    "visible": true,
+    "fontSize": "12px",
+    "x": 554,
+    "y": 288,
+    "insideViewport": true
+   },
+   {
+    "ticker": "COST",
+    "radiusPx": 27.17990974525145,
+    "visible": true,
+    "fontSize": "12px",
+    "x": 727,
+    "y": 482,
+    "insideViewport": true
+   },
+   {
+    "ticker": "MSFT",
+    "radiusPx": 15.224212239240444,
+    "visible": true,
+    "fontSize": "12px",
+    "x": 845,
+    "y": 211,
+    "insideViewport": true
+   },
+   {
+    "ticker": "IBM",
+    "radiusPx": 18.99362480570298,
+    "visible": true,
+    "fontSize": "12px",
+    "x": 301,
+    "y": 341,
+    "insideViewport": true
+   },
+   {
+    "ticker": "INTC",
+    "radiusPx": 21.514815476382978,
+    "visible": true,
+    "fontSize": "12px",
+    "x": 1160,
+    "y": 423,
+    "insideViewport": true
+   },
+   {
+    "ticker": "CBRS",
+    "radiusPx": 12.80545900908129,
+    "visible": true,
+    "fontSize": "12px",
+    "x": 653,
+    "y": 147,
+    "insideViewport": true
+   },
+   {
+    "ticker": "NBIS",
+    "radiusPx": 27.70833792249408,
+    "visible": true,
+    "fontSize": "12px",
+    "x": 258,
+    "y": 647,
+    "insideViewport": true
+   }
+  ],
+  "labelOverlaps": [],
+  "largestPlanetRadiusPx": 32.37879995751234,
+  "sun": {
+   "x": 720,
+   "y": 293.8391127724533
+  }
+ },
+ "acc07": {
+  "canvasCount": 1,
+  "hasTimestampStamp": false,
+  "timestampMatches": [],
+  "runningAnimations": 0
+ },
+ "mob03": {
+  "canvasCount": 0,
+  "scrollWidth": 390,
+  "clientWidth": 390,
+  "controlCount": 28,
+  "firstTwentyReadingOrder": [
+   "SUN / PORTFOLIO-0.7% today · Weak health · 7",
+   "ASML · ASML Holding+26.4% weight · -4.8% wee",
+   "GOOG · Alphabet+20.8% weight · -7.1% week · ",
+   "COST · Costco Wholesale+12.1% weight · Unava",
+   "MSFT · Microsoft+8.2% weight · -3.3% week · ",
+   "IBM · IBM+7.6% weight · +1.5% week · clockwi",
+   "INTC · Intel+7.2% weight · -5.6% week · coun",
+   "CBRS · Cerebras Systems+4.0% weight · +6.6% ",
+   "NBIS · Nebius Group+3.5% weight · +2.9% week",
+   "MOON / ASML · 20 TRANSMISSIONS · LARGE SIZE",
+   "MOON / GOOG · 20 TRANSMISSIONS · LARGE SIZE",
+   "MOON / COST · 20 TRANSMISSIONS · LARGE SIZE",
+   "MOON / MSFT · 20 TRANSMISSIONS · LARGE SIZE ",
+   "MOON / IBM · 20 TRANSMISSIONS · LARGE SIZE",
+   "MOON / INTC · 20 TRANSMISSIONS · LARGE SIZE",
+   "MOON / CBRS · 14 TRANSMISSIONS · LARGE SIZE",
+   "MOON / NBIS · 20 TRANSMISSIONS · LARGE SIZE ",
+   "BELT BODY / CRM · +3.8% WEIGHT · -0.1% WEEK",
+   "BELT BODY / ORCL · +2.5% WEIGHT · -1.2% WEEK",
+   "BELT BODY / SPCX · +2.4% WEIGHT · -5.3% WEEK"
+  ]
+ }
+}

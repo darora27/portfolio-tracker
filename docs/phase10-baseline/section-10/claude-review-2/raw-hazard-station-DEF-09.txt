@@ -1,0 +1,43 @@
+{
+ "base": "http://127.0.0.1:3131/share",
+ "satellite": "HAZARD",
+ "acquiredSessions": 5,
+ "correctStationSessions": 5,
+ "results": [
+  {
+   "session": 0,
+   "acquired": true,
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=hazard",
+   "station": "hazard",
+   "stationCorrect": true
+  },
+  {
+   "session": 1,
+   "acquired": true,
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=hazard",
+   "station": "hazard",
+   "stationCorrect": true
+  },
+  {
+   "session": 2,
+   "acquired": true,
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=hazard",
+   "station": "hazard",
+   "stationCorrect": true
+  },
+  {
+   "session": 3,
+   "acquired": true,
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=hazard",
+   "station": "hazard",
+   "stationCorrect": true
+  },
+  {
+   "session": 4,
+   "acquired": true,
+   "url": "http://127.0.0.1:3131/share?focus=portfolio&camera=command&station=hazard",
+   "station": "hazard",
+   "stationCorrect": true
+  }
+ ]
+}

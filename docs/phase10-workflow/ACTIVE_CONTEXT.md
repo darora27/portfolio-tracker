@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§10 — Universe colour, material, and command structure**
 - Managed range: §2–§16
-- Stage: `review`
-- Role: `claude_lead`
+- Stage: `remediate`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -37,7 +37,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_IDEAS_3.md`
 - `UNIVERSE_PALETTE_3.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-28-section-10-codex-implementation-remediate-to-claude-lead.md`
+- `docs/phase10-handoffs/2026-07-28-section-10-claude-lead-to-codex-remediation-2.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -55,12 +55,10 @@ Inserted by owner direction on 2026-07-28 (see roadmap_amendment_3). Authority o
 
 Open bounded findings:
 
-- {"id":"F1","criterion":"VIS-01","risk":"critical","evidence":"docs/phase10-baseline/section-10/claude-review/raw-luminance-VIS-01.txt","summary":"capture-live-sphere-strip.mjs aborts at ASML 0.0754. Seven of eight worlds fall outside [0.16, 0.55]; only GOOG (0.3423) passes. INTC regressed against §9 (0.0428 -> 0.0164). Measured on a real GPU with every texture loaded, stable across 20s.","required_change":"Bring all eight worlds inside [0.16, 0.55] as measured by the retained verifier, fixing INTC's regression specifically. If the window's provenance is the blocker (§9's committed strip does not reproduce the spec's quoted 0.157/0.207/0.551 figures), route the calibration to Devan rather than moving the floor."}
-- {"id":"F2","criterion":"BHV-02","risk":"critical","evidence":"docs/phase10-baseline/section-10/claude-review/raw-pointer-targets-BHV-02.txt","summary":"Satellites are not activatable by pointer. Aiming at the satellite's own reported position hits `portfolio` 60/60, and a 2,500-point full-viewport scan never acquires any satellite:* target. The candidate's own README records the cause: the DEF-05 fix gave both corona glow meshes the portfolio target, and after the §5.1 sun rescale the satellites orbit inside that footprint.","required_change":"Restore pointer activation for all three satellites from every camera state without reverting DEF-05 — give the corona pick meshes lower precedence than nearer small bodies rather than adding an invisible hit plane."}
-- {"id":"F3","criterion":"DEF-09","risk":"high","evidence":"docs/phase10-baseline/section-10/claude-review/raw-pointer-targets-BHV-02.txt","summary":"Same root cause as F2. Moons work on pointer and keyboard; satellites work on keyboard only and fail on pointer.","required_change":"Closed by F2's fix; re-verify with capture-live-evidence.mjs running to completion."}
-- {"id":"F4","criterion":"TST-03","risk":"high","evidence":"docs/phase10-baseline/section-10/claude-review/raw-trail-sampler-TST-03.txt","summary":"sample-live-rgb.mjs aborts (ASML deltaE 31.617 > 8). All three assertions fail: deltaE > 8 on seven of eight holdings (max 47.04, IBM); IBM hue lock fails at 22.88deg off the 143deg anchor at chroma 0.067; two ordering violations. The sign->hue mapping itself holds, so this is not a D1 recurrence.","required_change":"Make rendered trail pixels match rampForWeekly() within deltaE 8 and restore monotonic lightness ordering. The uniform darker-and-desaturated bias points at a render-stage transform between the ramp value and the pixel, not at the ramp LUT."}
-- {"id":"F5","criterion":"BLD-04","risk":"high","evidence":"docs/phase10-baseline/section-10/claude-review/raw-long-tasks-BLD-04.txt","summary":"Max route-owned long task 61ms; all five fresh 1440x900 CPU-2x contexts breach the 50ms ceiling (61/57/58/58/58). §9 measured 0ms on all five runs with a byte-identical script, so this is a §10 regression. §1's exception was explicitly non-precedential.","required_change":"Bring the route-owned long task back under 50ms across five fresh contexts. Do not baseline-subtract or redefine the gate, and add no post-processing pass."}
-- {"id":"F6","criterion":"VIS-12","risk":"high","evidence":"docs/phase10-baseline/section-10/claude-review/surfaces/","summary":"after/ and mobile/ were both empty in the candidate, so no VIS-12 surface had evidence, and capture-live-evidence.mjs cannot produce any because it aborts on F2. The set captured at review shows further defects: the planet-detail ID plate clipped off the top of the viewport, a LOG chip rendered dark-on-dark with a trade row clipped mid-glyph, every bay question rendered twice, and an empty MANIFEST table under the PLOT rail.","required_change":"Land F1-F5, run capture-live-evidence.mjs end-to-end so VIS-12's artifacts come from the section's own verifier, and address the clipping/duplication under DEF-10, VIS-08, VIS-09 and BHV-10."}
+- {"id":"F1","criterion":"TST-03","risk":"high","evidence":"docs/phase10-baseline/section-10/claude-review-2/raw-trail-sampler-TST-03.txt","summary":"sample-live-rgb.mjs still aborts (GOOG deltaE 13.022 > 8). 6 of 8 holdings exceed deltaE 8 (GOOG 13.02, COST 18.12, MSFT 11.56, IBM 47.04, INTC 23.86, CBRS 28.54); ASML is now exact at 0 and NBIS 6.92. IBM still fails hue lock at 22.88deg off the 143deg anchor with chroma 0.067. One loss-direction ordering violation remains: MSFT |3.28%| samples darker (L 0.2778) than ASML |4.82%| (L 0.3413). The opaque-core change fixed ASML exactly and removed one of two ordering violations, so the diagnosis was right and incomplete.","required_change":"Make rendered trail pixels match rampForWeekly() within deltaE 8 for every fixture and restore monotonic lightness ordering within each direction. IBM's near-grey sample (chroma 0.067 against an expected 143deg green) is the sharpest single lead."}
+- {"id":"F2","criterion":"BLD-04","risk":"high","evidence":"docs/phase10-baseline/section-10/claude-review-2/raw-long-tasks-BLD-04.txt","summary":"measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 62/56/56/56/57 ms, and 69/59/55/55/56 ms on an earlier identical run in the same session. Ten of ten contexts breach the 50ms ceiling. Moving the KTX2 parse/zstd decode into a module worker did not clear the gate; the measured maximum is unchanged within noise from round 1's 57-61ms. Section 9 measured maximumMs 0 on all five runs with a byte-identical script.","required_change":"Bring the route-owned long task under 50ms across five fresh contexts. Attribute the remaining ~56ms task at ~570-590ms after navigation before changing anything else. Do not baseline-subtract, redefine the gate, or add a post-processing pass."}
+- {"id":"F3","criterion":"DEF-02","risk":"high","evidence":"docs/phase10-baseline/section-10/claude-review-2/raw-strip-chirality.txt","summary":"First execution of the chirality assertion, reachable now that VIS-01 passes: capture-live-sphere-strip.mjs aborts with 'COST chirality failed: normal=-0.4514 mirrored=-0.4041'. Non-throwing full table shows 4 of 8 worlds failing (COST, MSFT, IBM, INTC). MSFT (normal -0.4784 vs mirrored +0.2493) and INTC (normal -0.2784 vs mirrored +0.2111) are decisive mirror signals; COST and IBM fail on sign within noise. ASML, GOOG, CBRS and NBIS pass.","required_change":"Make normalScore > mirroredScore hold for all eight worlds as measured by the section's own verifier, starting with MSFT and INTC where the mirror signal is unambiguous. TST-04 passes, so the guard is correct and this is a texture-generation defect."}
+- {"id":"F4","criterion":"VIS-12","risk":"high","evidence":"docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt","summary":"Partially remediated. The evidence half is closed: capture-live-evidence.mjs now runs end-to-end and produced all 16 after/ surfaces plus both mobile/ captures from the section's own verifier, and the planet-detail clipping (DEF-10) and LOG chip contrast (VIS-09) are fixed and re-verified. Two round-1 defects remain: the MANIFEST bay renders its question twice (live DOM count 2 for 'what do i own, at what weight'; MissionControl.tsx:155 renders it unconditionally while ManifestBay.tsx:21 renders it again, and the equivalent PLOT duplicate was fixed), and the MANIFEST CONTRIBUTION cell draws its coloured bar over the numeral, hiding one character of every public financial value ('-3[bar]1%', '-0[bar]5%', '+0[bar]5%').","required_change":"Render each active bay's question exactly once, and stop the CONTRIBUTION bar overlapping its value. Then re-run capture-live-evidence.mjs so the MANIFEST surface's artifact shows the fix."}
 
 Acceptance ledger:
 
@@ -105,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `43c90cbd5b95fa106c130923ebaa405643de45f8517c0f6fa902976ece2bdfe9`
-- `PHASE10_STATE.json`: `80709b094003e5d19b3fdcb9e9a761fa4992f8b44af0e9c344b8f21bb183c312`
+- `PHASE10_STATE.json`: `2f1c0f16d574e02c9056cf11fb1ad8c06d67ab865276b94681eb95c52ea4bb19`
 - `PHASE10.md`: `6b91c5b0a0708eee11034aac548b37a32febac89edf69522c19b94f0d18c8aa2`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

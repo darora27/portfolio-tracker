@@ -1,0 +1,119 @@
+{
+ "file": "docs/phase10-baseline/section-10/after/overview-1440x900.png",
+ "starCount": 275,
+ "nearestNeighbour": {
+  "mean": 37.39,
+  "stdDev": 25.96,
+  "coefficientOfVariation": 0.694,
+  "min": 1.94,
+  "max": 83.25
+ },
+ "axisAlignedNearestNeighbourFraction": 0.244,
+ "sizeHistogram": {
+  "3px": 205,
+  "2px": 26,
+  "8px": 5,
+  "1px": 20,
+  "4px": 8,
+  "6px": 3,
+  "5px": 8
+ },
+ "brightestTwelve": [
+  {
+   "x": 763,
+   "y": 860,
+   "peak": 236,
+   "w": 5,
+   "h": 8,
+   "area": 12
+  },
+  {
+   "x": 328,
+   "y": 307,
+   "peak": 235,
+   "w": 2,
+   "h": 2,
+   "area": 3
+  },
+  {
+   "x": 326,
+   "y": 334,
+   "peak": 232,
+   "w": 2,
+   "h": 2,
+   "area": 3
+  },
+  {
+   "x": 307,
+   "y": 328,
+   "peak": 227,
+   "w": 4,
+   "h": 5,
+   "area": 10
+  },
+  {
+   "x": 305,
+   "y": 321,
+   "peak": 226,
+   "w": 1,
+   "h": 2,
+   "area": 2
+  },
+  {
+   "x": 305,
+   "y": 318,
+   "peak": 224,
+   "w": 1,
+   "h": 1,
+   "area": 1
+  },
+  {
+   "x": 638,
+   "y": 859,
+   "peak": 224,
+   "w": 2,
+   "h": 2,
+   "area": 3
+  },
+  {
+   "x": 808,
+   "y": 859,
+   "peak": 224,
+   "w": 2,
+   "h": 2,
+   "area": 3
+  },
+  {
+   "x": 302,
+   "y": 329,
+   "peak": 223,
+   "w": 1,
+   "h": 1,
+   "area": 1
+  },
+  {
+   "x": 609,
+   "y": 752,
+   "peak": 221,
+   "w": 3,
+   "h": 3,
+   "area": 5
+  },
+  {
+   "x": 698,
+   "y": 752,
+   "peak": 221,
+   "w": 3,
+   "h": 3,
+   "area": 5
+  },
+  {
+   "x": 787,
+   "y": 752,
+   "peak": 221,
+   "w": 3,
+   "h": 3,
+   "area": 5
+  }
+ ]
+}
