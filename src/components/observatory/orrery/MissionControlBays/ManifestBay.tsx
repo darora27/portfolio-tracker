@@ -18,6 +18,7 @@ export function ManifestBay({
   return (
     <section className={styles.operationsBay} aria-labelledby="manifest-title">
       <h3 id="manifest-title">MANIFEST</h3>
+      <p className={styles.bayQuestion}>what do I own, at what weight</p>
       <div className={styles.manifestHeader} aria-hidden="true">
         <span>BODY</span><span>DAY</span><span>FUEL</span><span>CONTRIBUTION</span>
       </div>
@@ -36,7 +37,15 @@ export function ManifestBay({
                   style={{ "--chip": planetIdentityForTicker(holding.ticker).brandHex } as React.CSSProperties}
                 />
                 <strong>{holding.ticker}</strong>
-                <span>{signed(holding.dayReturn)}</span>
+                <span
+                  title={
+                    holding.dayReturn === null
+                      ? "Day return unavailable: source history missing"
+                      : undefined
+                  }
+                >
+                  {signed(holding.dayReturn)}
+                </span>
                 <span className={styles.fuelGauge}>
                   <i style={{ width: `${Math.min(100, holding.weight * 100)}%` }} />
                   <b>{(holding.weight * 100).toFixed(1)}%</b>

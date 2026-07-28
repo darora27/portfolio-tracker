@@ -28,6 +28,7 @@ export function PublicMissionControlContent({
   if (panel === "hazard") {
     return (
       <HazardBay
+        basePath={basePath}
         volatility={data.volatilityPct}
         beta={data.betaVsVoo ?? null}
         drawdown={data.allTimeHigh?.pct ?? null}
@@ -40,6 +41,7 @@ export function PublicMissionControlContent({
   if (panel === "signals") {
     return (
       <SignalsBay
+        basePath={basePath}
         tickers={data.correlationTickers}
         cells={data.correlationCells}
         holdings={data.publicOrreryHoldings}
@@ -48,16 +50,23 @@ export function PublicMissionControlContent({
     );
   }
   if (panel === "comms") {
-    return <CommsBay events={data.upcomingEarnings} />;
+    return (
+      <CommsBay
+        events={data.upcomingEarnings}
+        newsByHolding={data.newsByHolding ?? {}}
+        basePath={basePath}
+      />
+    );
   }
   if (panel === "log") {
-    return <LogBay entries={data.publicTradeLog ?? []} />;
+    return <LogBay entries={data.publicTradeLog ?? []} basePath={basePath} />;
   }
   if (panel === "plot") {
     const voo = data.benchmarkComparisons.find(({ ticker }) => ticker === "VOO");
     return (
       <section className={styles.operationsBay} aria-labelledby="plot-title">
         <h3 id="plot-title">PLOT</h3>
+        <p className={styles.bayQuestion}>where is everything, and how was the week</p>
         <div className={styles.plotReadouts}>
           <span>DAY <b>{pct(data.dailyChangePct)}</b></span>
           <span>TWR <b>{pct(data.twrPct)}</b></span>

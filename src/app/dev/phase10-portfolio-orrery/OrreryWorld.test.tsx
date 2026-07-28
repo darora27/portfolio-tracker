@@ -150,7 +150,7 @@ describe("Portfolio Orrery remediation route", () => {
   });
 
   it("returns from command in one gesture and keeps an explicit universe link", () => {
-    render(
+    const { rerender } = render(
       <OrreryWorld
         {...baseProps}
         basePath="/share"
@@ -164,6 +164,17 @@ describe("Portfolio Orrery remediation route", () => {
     ).toBe("/share");
     fireEvent.keyDown(window, { key: "Escape" });
     expect(push).toHaveBeenCalledWith("/share", { scroll: false });
+    rerender(
+      <OrreryWorld
+        {...baseProps}
+        basePath="/share"
+        portfolioSelected={false}
+        cameraState="overview"
+      />,
+    );
+    expect(document.activeElement).toBe(
+      screen.getByRole("link", { name: /SUN \/ PORTFOLIO/ }),
+    );
   });
 
   it("moves focus into Mission Control opened from the semantic sun", () => {

@@ -9,6 +9,8 @@ import {
   type ReactNode,
 } from "react";
 import type { PublicOrreryHolding } from "@/lib/observatory/orrery";
+import type { PublicNewsItem } from "@/lib/observatory/public-news";
+import { MISSION_CONTROL_CSS_PROPERTIES } from "@/lib/observatory/mission-control-layout";
 import { SystemPlot } from "./MissionControlBays/SystemPlot";
 import {
   MISSION_CONTROL_PANELS,
@@ -26,6 +28,9 @@ export function MissionControl({
   holdings,
   health,
   teletype,
+  dayReadout,
+  newsByHolding,
+  signalPair = null,
 }: {
   activePanel: MissionControlPanelId;
   mode: "public" | "private";
@@ -36,13 +41,26 @@ export function MissionControl({
   holdings: readonly PublicOrreryHolding[];
   health: number;
   teletype: string;
+  dayReadout?: string;
+  newsByHolding?: Readonly<Record<string, readonly PublicNewsItem[]>>;
+  signalPair?: string | null;
 }) {
-  const [activeTicker, setActiveTicker] = useState<string | null>(null);
+  const [hoveredTicker, setHoveredTicker] = useState<string | null>(null);
+  const [detailTicker, setDetailTicker] = useState<string | null>(null);
+  const [briefingOpen, setBriefingOpen] = useState(false);
+  const activeTicker = hoveredTicker ?? detailTicker;
+  const activeQuestion =
+    MISSION_CONTROL_PANELS.find(({ id }) => id === activePanel)?.question ?? "";
+  const routeToHolding = useCallback((ticker: string) => {
+    window.location.assign(
+      `${basePath}?holding=${encodeURIComponent(ticker)}&camera=approach`,
+    );
+  }, [basePath]);
   const resolveManifestTicker = useCallback((target: EventTarget | null) => {
     const element = target instanceof Element
       ? target.closest<HTMLElement>("[data-manifest-ticker]")
       : null;
-    setActiveTicker(element?.dataset.manifestTicker ?? null);
+    setHoveredTicker(element?.dataset.manifestTicker ?? null);
   }, []);
 
   return (
@@ -52,16 +70,17 @@ export function MissionControl({
       aria-modal="true"
       aria-labelledby="mission-control-title"
       data-mode={mode}
+      style={MISSION_CONTROL_CSS_PROPERTIES}
       onPointerOver={(event: PointerEvent<HTMLElement>) =>
         resolveManifestTicker(event.target)
       }
-      onPointerLeave={() => setActiveTicker(null)}
+      onPointerLeave={() => setHoveredTicker(null)}
       onFocusCapture={(event: FocusEvent<HTMLElement>) =>
         resolveManifestTicker(event.target)
       }
       onBlurCapture={(event: FocusEvent<HTMLElement>) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
-          setActiveTicker(null);
+          setHoveredTicker(null);
         }
       }}
     >
@@ -76,6 +95,23 @@ export function MissionControl({
       </header>
       <div className={styles.teletype} aria-label={teletype}>
         <span>{teletype}</span><i aria-hidden="true">█</i>
+      </div>
+      <div className={styles.commandReadouts}>
+        <strong className={styles.commandDay}>{dayReadout ?? "—"}</strong>
+        <button
+          type="button"
+          className={styles.briefingFolder}
+          aria-expanded={briefingOpen}
+          onClick={() => setBriefingOpen((current) => !current)}
+        >
+          BRIEFING {briefingOpen ? "◂" : "▸"}
+        </button>
+        {briefingOpen ? (
+          <div className={styles.briefingPaper}>
+            <b>PORTFOLIO LINK</b>
+            <span>PUBLIC RATIOS · SAME-PERIOD INDEXES · HELD NEWS</span>
+          </div>
+        ) : null}
       </div>
       <nav aria-label="Mission Control sections">
         {MISSION_CONTROL_PANELS.map((panel) => (
@@ -97,15 +133,121 @@ export function MissionControl({
       </nav>
       <div className={styles.missionMachine}>
         <aside className={styles.plotChassis} aria-label="System plot">
-          <span>PLOT FEED</span>
+          <header>
+            <b>PLOT FEED</b>
+            <span className={styles.bayQuestion}>where is everything, and how was the week</span>
+          </header>
           <SystemPlot
             holdings={holdings}
             activeTicker={activeTicker}
             health={health}
+            onSelectTicker={setDetailTicker}
+            onOpenTicker={routeToHolding}
+            signalPair={signalPair}
           />
         </aside>
-        <div className={styles.missionContent}>{content}</div>
+        <aside className={styles.missionRail} aria-label="Mission instruments">
+          <section className={styles.manifestInstrument}>
+            <header>
+              <b>MANIFEST</b>
+              <span className={styles.bayQuestion}>what do I own, at what weight</span>
+            </header>
+            <ol className={styles.radarManifest}>
+              {holdings.map((holding) => (
+                <li
+                  key={holding.ticker}
+                  data-expanded={detailTicker === holding.ticker}
+                >
+                  <button
+                    type="button"
+                    data-manifest-ticker={holding.ticker}
+                    aria-expanded={detailTicker === holding.ticker}
+                    onClick={() => setDetailTicker(
+                      detailTicker === holding.ticker ? null : holding.ticker,
+                    )}
+                    onDoubleClick={() => routeToHolding(holding.ticker)}
+                    onKeyDown={(event) => {
+                      if (event.key !== "Enter") return;
+                      event.preventDefault();
+                      routeToHolding(holding.ticker);
+                    }}
+                  >
+                    <strong>{holding.ticker}</strong>
+                    <span>{(holding.weight * 100).toFixed(1)}%</span>
+                  </button>
+                  {detailTicker === holding.ticker ? (
+                    <div className={styles.radarDetailCard}>
+                      <svg viewBox="0 0 120 28" role="img" aria-label={`${holding.ticker} indexed sparkline`}>
+                        <polyline
+                          points={sparklinePoints(holding.chart?.map(({ index }) => index) ?? [])}
+                        />
+                      </svg>
+                      <dl>
+                        <div><dt>DAY</dt><dd>{signedPercent(holding.dayReturn)}</dd></div>
+                        <div><dt>WEEK</dt><dd>{signedPercent(holding.weeklyReturn)}</dd></div>
+                        <div><dt>WEIGHT</dt><dd>{(holding.weight * 100).toFixed(1)}%</dd></div>
+                      </dl>
+                      {newsByHolding?.[holding.ticker]?.[0] ? (
+                        <a
+                          href={newsByHolding[holding.ticker][0].url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {newsByHolding[holding.ticker][0].headline}
+                        </a>
+                      ) : <span>NO TRANSMISSIONS</span>}
+                      <button type="button" onClick={() => routeToHolding(holding.ticker)}>
+                        FULL PLANET
+                      </button>
+                    </div>
+                  ) : null}
+                </li>
+              ))}
+            </ol>
+          </section>
+          <div
+            className={styles.missionContent}
+            data-material={activePanel === "log" ? "paper" : "glass"}
+          >
+            <p className={styles.activeBayQuestion}>{activeQuestion}</p>
+            {content}
+          </div>
+          <div className={styles.railStations}>
+            <Link href={`${basePath}?focus=portfolio&camera=command&station=scope`}>
+              <b>SCOPE</b><span>am I beating the market</span>
+            </Link>
+            <Link href={`${basePath}?focus=portfolio&camera=command&station=comms`}>
+              <b>LAUNCH</b><span>what’s next on the calendar</span>
+            </Link>
+          </div>
+        </aside>
+        <footer className={styles.instrumentStrip}>
+          <Link href={`${basePath}?focus=portfolio&camera=command&station=hazard`}>
+            <b>HAZARD</b><span>how much can this hurt</span>
+          </Link>
+          <Link href={`${basePath}?focus=portfolio&camera=command&station=signals`}>
+            <b>SIGNALS</b><span>what moves together</span>
+          </Link>
+        </footer>
       </div>
     </section>
   );
+}
+
+function signedPercent(value: number | null): string {
+  if (value === null) return "—";
+  return `${value >= 0 ? "+" : ""}${(value * 100).toFixed(1)}%`;
+}
+
+function sparklinePoints(values: readonly number[]): string {
+  if (values.length < 2) return "";
+  const low = Math.min(...values);
+  const span = Math.max(...values) - low || 1;
+  return values
+    .map((value, index) => {
+      const x = (index / (values.length - 1)) * 120;
+      const y = 26 - ((value - low) / span) * 24;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
 }

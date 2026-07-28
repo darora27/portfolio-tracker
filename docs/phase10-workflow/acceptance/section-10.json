@@ -19,9 +19,13 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -43,9 +47,14 @@
         "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-02 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -66,9 +75,13 @@
         "docs/phase10-baseline/section-10/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -90,9 +103,14 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -114,9 +132,14 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -138,9 +161,13 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-06 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -162,9 +189,14 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-07 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -185,9 +217,14 @@
         "docs/phase10-baseline/section-10/after/sector-map-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-08 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -208,9 +245,14 @@
         "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-09 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -231,9 +273,13 @@
         "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-10 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -254,9 +300,13 @@
         "docs/phase10-baseline/section-10/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -277,9 +327,14 @@
         "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-02 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -301,9 +356,14 @@
         "docs/phase10-baseline/section-10/after/radar-detail-card-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -325,9 +385,14 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -348,9 +413,13 @@
         "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -369,9 +438,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/scene-model.test.ts src/lib/observatory/orrery.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -390,9 +463,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/orrery/SystemsManual.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -413,9 +490,14 @@
         "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-08 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -436,9 +518,13 @@
         "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-09 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -459,9 +545,13 @@
         "docs/phase10-baseline/section-10/after/mission-control-manifest-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-10 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -480,9 +570,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/scene-model.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -503,9 +597,13 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/public-news.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -526,9 +624,13 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/orrery/SystemsManual.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -547,9 +649,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -568,9 +674,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/scene-model.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -589,9 +699,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/universe-palette.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -610,9 +724,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -634,9 +752,14 @@
         "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -658,9 +781,14 @@
         "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-02 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -681,9 +809,13 @@
         "docs/phase10-baseline/section-10/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -705,9 +837,14 @@
         "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -726,9 +863,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/universe-palette.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -749,9 +890,13 @@
         "docs/phase10-baseline/section-10/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-06 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -772,9 +917,14 @@
         "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-07 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -795,9 +945,13 @@
         "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-08 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -818,9 +972,13 @@
         "docs/phase10-baseline/section-10/after/mission-control-log-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-09 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -841,9 +999,13 @@
         "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-10 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -862,9 +1024,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -886,9 +1052,13 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-12 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -909,9 +1079,13 @@
         "docs/phase10-baseline/section-10/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-13 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -932,9 +1106,13 @@
         "docs/phase10-baseline/section-10/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-14 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -957,9 +1135,14 @@
         "docs/phase10-baseline/section-10/raw-fallback-output.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/raw-fallback-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for MOB-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -978,9 +1161,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/observatory-fallback.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1001,9 +1188,14 @@
         "docs/phase10-baseline/section-10/mobile/share-390x844.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/raw-fallback-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for MOB-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1022,9 +1214,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1043,9 +1239,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/scene-model.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1067,9 +1267,14 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1088,9 +1293,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/observatory-contrast.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1111,9 +1320,13 @@
         "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1134,9 +1347,14 @@
         "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-06 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1157,9 +1375,13 @@
         "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-07 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1178,9 +1400,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/components/observatory/orrery/MissionControl.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1199,9 +1425,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/universe-palette.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1220,9 +1450,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/universe-palette.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1241,9 +1475,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/universe-palette.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1262,9 +1500,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/universe-palette.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1283,9 +1525,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/universe-palette.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1304,9 +1550,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/scene-model.test.ts src/lib/observatory/universe-palette.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1325,9 +1575,12 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "git diff rendered-behavior assertion audit — PASS",
+          "src/lib/observatory/universe-palette.test.ts"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1349,9 +1602,14 @@
         "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for TST-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1373,9 +1631,14 @@
         "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for TST-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1394,9 +1657,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/scene-model.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1418,9 +1685,12 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/scripts/",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1441,9 +1711,13 @@
         "public/textures/planets/texture-manifest.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/lib/observatory/planet-textures.test.ts",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1462,9 +1736,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npx tsc --noEmit",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1483,9 +1761,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1504,9 +1786,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm run build",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1528,9 +1814,12 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/texture-byte-count.txt",
+          "public/textures/planets/texture-manifest.json"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1552,9 +1841,14 @@
         "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs",
+          "docs/phase10-baseline/section-10/raw-long-task-output.txt"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BLD-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1575,9 +1869,13 @@
         "docs/phase10-baseline/section-10/README.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-10/browser-backend.txt",
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/scripts/diagnose-live-scene.mjs"
+        ],
+        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BLD-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1598,9 +1896,12 @@
         "public/fonts/"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "public/fonts/chakra-petch/ChakraPetch-SemiBold.ttf",
+          "public/fonts/chakra-petch/OFL.txt"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1619,9 +1920,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "git diff --stat HEAD -- package.json package-lock.json",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1640,9 +1945,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/app/(depth-pull)/share/page.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1661,9 +1970,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/app/(depth-pull)/share/page.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1682,9 +1995,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/app/(depth-pull)/share/page.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1703,9 +2020,13 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "npm test -- --run src/app/(depth-pull)/share/page.test.tsx",
+          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1724,9 +2045,11 @@
       },
       "required_artifacts": [],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "Repository-operation audit — PASS: no .env* contents accessed or changed; vercel --prod not run"
+        ],
+        "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",

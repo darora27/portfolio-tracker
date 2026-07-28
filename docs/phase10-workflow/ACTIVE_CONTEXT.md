@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§10 — Universe colour, material, and command structure**
 - Managed range: §2–§16
-- Stage: `implement`
-- Role: `codex_implementation`
+- Stage: `review`
+- Role: `claude_lead`
 - Status: `ready`
-- Next actor: `codex`
-- Expected actor for this stage: `codex`
+- Next actor: `claude`
+- Expected actor for this stage: `claude`
 - Stop reason: none
 
 The current state is before the
@@ -37,7 +37,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_IDEAS_3.md`
 - `UNIVERSE_PALETTE_3.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-28-section-10-claude-lead-to-codex-implementation.md`
+- `docs/phase10-handoffs/2026-07-28-section-10-codex-implementation-to-claude-lead.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -100,7 +100,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `43c90cbd5b95fa106c130923ebaa405643de45f8517c0f6fa902976ece2bdfe9`
-- `PHASE10_STATE.json`: `079f18a6a6d7854cda19834ac86300440abf6e7d3973e2e06fce5ef21b3220cf`
+- `PHASE10_STATE.json`: `90e58365ead42fcc9a790e0812d6bb55515385c64cbdcc46a1ff7449f54f2d56`
 - `PHASE10.md`: `6b91c5b0a0708eee11034aac548b37a32febac89edf69522c19b94f0d18c8aa2`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

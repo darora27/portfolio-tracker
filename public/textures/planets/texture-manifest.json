@@ -1,6 +1,6 @@
 {
-  "totalBytes": 22450706,
-  "mapBytes": 22433438,
+  "totalBytes": 22570477,
+  "mapBytes": 22550455,
   "tier": {
     "base": "1448x724",
     "emissive": "724x362",
@@ -16,12 +16,12 @@
     {
       "base": "2048x1024",
       "derived": "1024x512",
-      "mapBytes": 43319630
+      "mapBytes": 43518879
     },
     {
       "base": "1448x724",
       "derived": "724x362",
-      "mapBytes": 22433438
+      "mapBytes": 22550455
     }
   ],
   "tickers": {
@@ -32,12 +32,24 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2335825,
-        "emissive": 199573,
-        "normal": 323498
+        "base": 2293075,
+        "emissive": 208880,
+        "normal": 329890
       },
-      "dominantHex": "#557aaa",
-      "luminanceStdDev": 0.181038,
+      "markCapitals": {
+        "count": 3,
+        "longitudeDegrees": [
+          -120,
+          0,
+          120
+        ],
+        "latitudeDegrees": 0,
+        "widthFraction": 0.18,
+        "edgeTreatment": "blur-threshold erosion",
+        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+      },
+      "dominantHex": "#5d82af",
+      "luminanceStdDev": 0.185222,
       "seamMaxDeltaE": 0
     },
     "GOOG": {
@@ -47,12 +59,24 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2566572,
-        "emissive": 213200,
-        "normal": 340909
+        "base": 2467120,
+        "emissive": 213722,
+        "normal": 340440
       },
-      "dominantHex": "#b9c2b7",
-      "luminanceStdDev": 0.137785,
+      "markCapitals": {
+        "count": 3,
+        "longitudeDegrees": [
+          -120,
+          0,
+          120
+        ],
+        "latitudeDegrees": 0,
+        "widthFraction": 0.18,
+        "edgeTreatment": "blur-threshold erosion",
+        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+      },
+      "dominantHex": "#bdc8be",
+      "luminanceStdDev": 0.114889,
       "seamMaxDeltaE": 0
     },
     "MSFT": {
@@ -62,12 +86,24 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2688445,
-        "emissive": 224465,
-        "normal": 354159
+        "base": 2666961,
+        "emissive": 228640,
+        "normal": 355558
       },
-      "dominantHex": "#5c706e",
-      "luminanceStdDev": 0.115812,
+      "markCapitals": {
+        "count": 3,
+        "longitudeDegrees": [
+          -120,
+          0,
+          120
+        ],
+        "latitudeDegrees": 0,
+        "widthFraction": 0.18,
+        "edgeTreatment": "blur-threshold erosion",
+        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+      },
+      "dominantHex": "#5f7372",
+      "luminanceStdDev": 0.116069,
       "seamMaxDeltaE": 0
     },
     "IBM": {
@@ -77,12 +113,24 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 1535990,
-        "emissive": 38716,
-        "normal": 244643
+        "base": 1742764,
+        "emissive": 79166,
+        "normal": 288565
       },
-      "dominantHex": "#223262",
-      "luminanceStdDev": 0.211837,
+      "markCapitals": {
+        "count": 3,
+        "longitudeDegrees": [
+          -120,
+          0,
+          120
+        ],
+        "latitudeDegrees": 0,
+        "widthFraction": 0.18,
+        "edgeTreatment": "blur-threshold erosion",
+        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+      },
+      "dominantHex": "#223c74",
+      "luminanceStdDev": 0.113662,
       "seamMaxDeltaE": 0
     },
     "COST": {
@@ -92,12 +140,24 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2299993,
-        "emissive": 120571,
-        "normal": 323802
+        "base": 2245289,
+        "emissive": 160226,
+        "normal": 338124
       },
-      "dominantHex": "#655b52",
-      "luminanceStdDev": 0.122195,
+      "markCapitals": {
+        "count": 3,
+        "longitudeDegrees": [
+          -120,
+          0,
+          120
+        ],
+        "latitudeDegrees": 0,
+        "widthFraction": 0.18,
+        "edgeTreatment": "blur-threshold erosion",
+        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+      },
+      "dominantHex": "#7f776d",
+      "luminanceStdDev": 0.14849,
       "seamMaxDeltaE": 0
     },
     "INTC": {
@@ -107,12 +167,24 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2325394,
-        "emissive": 142893,
-        "normal": 385430
+        "base": 2287744,
+        "emissive": 160399,
+        "normal": 394810
       },
-      "dominantHex": "#3f4857",
-      "luminanceStdDev": 0.098092,
+      "markCapitals": {
+        "count": 3,
+        "longitudeDegrees": [
+          -120,
+          0,
+          120
+        ],
+        "latitudeDegrees": 0,
+        "widthFraction": 0.18,
+        "edgeTreatment": "blur-threshold erosion",
+        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+      },
+      "dominantHex": "#4a535d",
+      "luminanceStdDev": 0.117422,
       "seamMaxDeltaE": 0
     },
     "NBIS": {
@@ -122,12 +194,24 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2673149,
-        "emissive": 124143,
-        "normal": 311547
+        "base": 2638265,
+        "emissive": 175750,
+        "normal": 328128
       },
-      "dominantHex": "#733c71",
-      "luminanceStdDev": 0.137494,
+      "markCapitals": {
+        "count": 3,
+        "longitudeDegrees": [
+          -120,
+          0,
+          120
+        ],
+        "latitudeDegrees": 0,
+        "widthFraction": 0.18,
+        "edgeTreatment": "blur-threshold erosion",
+        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+      },
+      "dominantHex": "#8d4e8f",
+      "luminanceStdDev": 0.144181,
       "seamMaxDeltaE": 0
     },
     "CBRS": {
@@ -137,12 +221,24 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2184071,
-        "emissive": 123534,
-        "normal": 352916
+        "base": 2096061,
+        "emissive": 143760,
+        "normal": 367118
       },
-      "dominantHex": "#675332",
-      "luminanceStdDev": 0.093008,
+      "markCapitals": {
+        "count": 3,
+        "longitudeDegrees": [
+          -120,
+          0,
+          120
+        ],
+        "latitudeDegrees": 0,
+        "widthFraction": 0.18,
+        "edgeTreatment": "blur-threshold erosion",
+        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+      },
+      "dominantHex": "#75643d",
+      "luminanceStdDev": 0.114686,
       "seamMaxDeltaE": 0
     }
   }

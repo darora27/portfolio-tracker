@@ -1,0 +1,1 @@
+export const LIVE_QUOTE_REFRESH_INTERVAL_MS = 60_000;

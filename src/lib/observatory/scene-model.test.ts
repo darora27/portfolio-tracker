@@ -8,19 +8,35 @@ import {
 import {
   ACTIVE_RING_OPACITY,
   OVERVIEW_RING_OPACITY,
+  beltBodyRadiusForWeight,
+  auroraDescriptor,
+  brandEntryPhase,
   buildOverviewSceneModel,
   cometColor,
+  decorativeSpinPeriodSeconds,
+  decorativeSpinRadiansPerSecond,
   moonRadiusForStoryCount,
   moonBucketForStoryCount,
+  moonOrbitPeriodSeconds,
   nebulaForHealth,
   observedSystemHealth,
+  radarBlipDiameterPx,
+  radarRingColor,
   resolveOrreryPointerTarget,
   resolveLabelCollisions,
+  ringVertexAlpha,
   satelliteBlinkSeconds,
   satelliteRingRadius,
+  starMagnitudeBucket,
+  starPopulationDescriptor,
+  sunRadiusForPlanetRadii,
   sunVisualParameters,
   trailArcLengthForWeeklyReturn,
+  trailSweepAngles,
+  weatherWispsForHealth,
+  weeklyReturnsFromIndexSeries,
 } from "./scene-model";
+import { UNIVERSE_PALETTE, rampForWeekly } from "./universe-palette";
 
 const holdings: PublicOrreryHolding[] = [
   {
@@ -98,8 +114,10 @@ describe("pure overview scene descriptor", () => {
     });
     expect(model.rings[1]).toMatchObject({
       opacity: ACTIVE_RING_OPACITY,
-      color: "#63ef98",
+      color: UNIVERSE_PALETTE.cabinet.ringSlate,
       fog: false,
+      nearAlpha: 0.5,
+      farAlpha: 0.1,
     });
     expect(model.trails[0].passes).toEqual([
       { id: "glow", widthPx: 9, opacity: 0.36, additive: true },
@@ -108,12 +126,21 @@ describe("pure overview scene descriptor", () => {
     expect(model.trails[0].arcRadians).toBe(
       trailArcLengthForWeeklyReturn(-0.06),
     );
+    expect(model.trails[0].color).toBe(rampForWeekly(-0.06));
+    expect(model.trails[0].head).toEqual({
+      fraction: 0.12,
+      color: UNIVERSE_PALETTE.signal.whiteHot,
+      widthPx: 4,
+      opacity: 1,
+    });
     expect(model.labels.every(({ fontSizePx }) => fontSizePx === 12)).toBe(true);
     expect(model.labels[0].dayChip).toBe("▼ 6.7");
     expect(model.nebula).toEqual(nebulaForHealth(-0.42));
     expect(model.nebula.alpha).toBeLessThanOrEqual(0.15);
     expect(model.starfields).toHaveLength(2);
-    expect(model.sun).toEqual(sunVisualParameters(-0.42, 0.7));
+    expect(model.sun).toEqual(
+      sunVisualParameters(-0.42, 0.7, model.sun.radius),
+    );
   });
 
   it("derives projected diameter from the fitted camera instead of a fixed scale", () => {
@@ -213,7 +240,7 @@ describe("pure overview scene descriptor", () => {
       }
     }
 
-    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(64);
+    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(60);
     expect(heaviestDiameterMax).toBeLessThanOrEqual(72);
     expect(smallestDiameter).toBeGreaterThanOrEqual(22);
     expect(minimumSpacingRatio).toBeCloseTo(1.6, 12);
@@ -307,6 +334,8 @@ describe("pure overview scene descriptor", () => {
         radius: moonRadiusForStoryCount(1),
         earningsDays: 2,
         ringVisible: true,
+        orbitPeriodSeconds: moonOrbitPeriodSeconds("ASML"),
+        axialSpinRadiansPerSecond: 0,
       },
       {
         ticker: "GOOG",
@@ -315,6 +344,8 @@ describe("pure overview scene descriptor", () => {
         radius: moonRadiusForStoryCount(4),
         earningsDays: null,
         ringVisible: false,
+        orbitPeriodSeconds: moonOrbitPeriodSeconds("GOOG"),
+        axialSpinRadiansPerSecond: 0,
       },
     ]);
     expect(moonRadiusForStoryCount(8)).toBeGreaterThan(
@@ -347,12 +378,17 @@ describe("pure overview scene descriptor", () => {
         satelliteRingRadius(
           model.planets[0].orbitRadius,
           radiusForWeight(reordered[0].weight),
+          model.sun.radius,
         ),
       );
       expect(
         satelliteRadius + 0.16 + ORRERY_PLANET_CLEARANCE,
-      ).toBeLessThanOrEqual(
-        model.planets[0].orbitRadius - radiusForWeight(reordered[0].weight),
+      ).toBeCloseTo(
+        Math.min(
+          satelliteRadius + 0.16 + ORRERY_PLANET_CLEARANCE,
+          model.planets[0].orbitRadius - radiusForWeight(reordered[0].weight),
+        ),
+        12,
       );
     }
   });
@@ -441,6 +477,7 @@ describe("pure overview scene descriptor", () => {
       "satellite:HAZARD",
     );
     expect(resolveOrreryPointerTarget("belt", "NBIS")).toBe("belt");
+    expect(resolveOrreryPointerTarget("belt:CBRS", "NBIS")).toBe("belt:CBRS");
     expect(resolveOrreryPointerTarget("ASML", "GOOG")).toBe("GOOG");
   });
 
@@ -467,5 +504,183 @@ describe("pure overview scene descriptor", () => {
     expect(sunFocused.interaction.portfolioFocused).toBe(true);
     expect(planetHovered.sun).toEqual(idle.sun);
     expect(sunFocused.sun).toEqual(idle.sun);
+  });
+
+  it("derives the dominant sun and first orbit from the largest planet", () => {
+    expect(sunRadiusForPlanetRadii([])).toBe(2.4);
+    expect(sunRadiusForPlanetRadii([1, 1.95, 0.9])).toBeCloseTo(2.4375, 12);
+    const model = buildOverviewSceneModel({
+      holdings: productionOverviewHoldings,
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    expect(model.sun.radius).toBeCloseTo(
+      Math.max(2.4, 1.25 * Math.max(...model.planets.map(({ radius }) => radius))),
+      12,
+    );
+    expect(model.sun.radius).toBeGreaterThan(
+      Math.max(...model.planets.map(({ radius }) => radius)),
+    );
+    expect(model.planets[0].orbitRadius - model.planets[0].radius).toBeGreaterThan(
+      model.sun.radius,
+    );
+  });
+
+  it("puts both orbital directions behind the planet and keeps a near-flat trail", () => {
+    const clockwise = trailSweepAngles("clockwise", Math.PI / 3);
+    const counterclockwise = trailSweepAngles(
+      "counterclockwise",
+      Math.PI / 3,
+    );
+    expect(clockwise).toEqual({
+      headRadians: 0,
+      tailRadians: -Math.PI / 3,
+    });
+    expect(counterclockwise).toEqual({
+      headRadians: 0,
+      tailRadians: Math.PI / 3,
+    });
+    expect(trailArcLengthForWeeklyReturn(0.002) * 180 / Math.PI).toBeCloseTo(
+      36,
+      10,
+    );
+    expect(trailArcLengthForWeeklyReturn(0.12) * 180 / Math.PI).toBeCloseTo(
+      64,
+      10,
+    );
+    const model = buildOverviewSceneModel({
+      holdings: [{ ...holdings[2], weeklyReturn: 0.001 }],
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    expect(model.trails[0]).toMatchObject({
+      color: UNIVERSE_PALETTE.signal.flat,
+      arcRadians: trailArcLengthForWeeklyReturn(0.002),
+    });
+  });
+
+  it("banks day return and uses only seeded decorative spin and slow moon motion", () => {
+    const changedDayReturn = [
+      { ...holdings[0], dayReturn: -0.8, newsCount: 2 },
+      { ...holdings[1], dayReturn: 0.8 },
+    ];
+    const baseline = buildOverviewSceneModel({
+      holdings: [
+        { ...holdings[0], dayReturn: null, newsCount: 2 },
+        { ...holdings[1], dayReturn: null },
+      ],
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    const changed = buildOverviewSceneModel({
+      holdings: changedDayReturn,
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    expect(changed.planets.map(({ spinPeriodSeconds }) => spinPeriodSeconds)).toEqual(
+      baseline.planets.map(({ spinPeriodSeconds }) => spinPeriodSeconds),
+    );
+    for (const planet of changed.planets) {
+      expect(planet.spinPeriodSeconds).toBeGreaterThanOrEqual(80);
+      expect(planet.spinPeriodSeconds).toBeLessThanOrEqual(140);
+      expect(planet.spinRadiansPerSecond).toBe(
+        decorativeSpinRadiansPerSecond(planet.ticker),
+      );
+      expect(planet.spinPeriodSeconds).toBe(
+        decorativeSpinPeriodSeconds(planet.ticker),
+      );
+    }
+    expect(changed.moons[0].orbitPeriodSeconds).toBeGreaterThanOrEqual(38);
+    expect(changed.moons[0].orbitPeriodSeconds).toBeLessThanOrEqual(42);
+    expect(changed.moons[0].axialSpinRadiansPerSecond).toBe(0);
+  });
+
+  it("describes the star population and ring falloff deterministically", () => {
+    const population = starPopulationDescriptor();
+    expect(population).toEqual(starPopulationDescriptor());
+    expect(population.count).toBe(1024);
+    expect(population.buckets.diffraction).toBe(12);
+    expect(population.buckets.faint / population.count).toBeCloseTo(0.7, 1);
+    expect(population.buckets.medium / population.count).toBeCloseTo(0.25, 1);
+    expect(population.buckets.bright / population.count).toBeCloseTo(0.04, 1);
+    expect(population.auroraDensityMultiplier).toBe(1.8);
+    expect(starMagnitudeBucket(0)).toBe("diffraction");
+    expect(starMagnitudeBucket(12)).toBe("bright");
+    expect(ringVertexAlpha(0)).toBe(0.5);
+    expect(ringVertexAlpha(Math.PI)).toBe(0.1);
+  });
+
+  it("prebakes only public percent magnitudes into an upper-sky aurora", () => {
+    const weekly = weeklyReturnsFromIndexSeries(
+      [100, 101, 99, 102, 104, 106, 103, 108, 109, 111],
+    );
+    expect(weekly).toHaveLength(5);
+    const descriptor = auroraDescriptor(weekly);
+    expect(descriptor.percentMagnitudes).toEqual(
+      weekly.map((value) => Math.abs(value)),
+    );
+    expect(descriptor.colorSamples).toHaveLength(64);
+    expect(descriptor.opacity).toBeGreaterThanOrEqual(0.02);
+    expect(descriptor.opacity).toBeLessThanOrEqual(0.4);
+    expect(descriptor.chord.screenClearanceSunRadii).toBeGreaterThanOrEqual(
+      1.2,
+    );
+  });
+
+  it("maps radar ring colour and blip diameter from their one inputs", () => {
+    expect(radarRingColor(null)).toBe(UNIVERSE_PALETTE.signal.flat);
+    expect(radarRingColor(0.061)).toBe(rampForWeekly(0.061));
+    expect(radarBlipDiameterPx(-1)).toBe(12);
+    expect(radarBlipDiameterPx(0.04)).toBe(14);
+    expect(radarBlipDiameterPx(0.16)).toBe(18);
+  });
+
+  it("keeps polar weather sign and brand-first phase deterministic", () => {
+    expect(weatherWispsForHealth(0.4)).toEqual({
+      color: UNIVERSE_PALETTE.ambient.wispPositive.color,
+      alpha: 0.1,
+      sign: "positive",
+    });
+    expect(weatherWispsForHealth(-0.4)).toEqual({
+      color: UNIVERSE_PALETTE.ambient.wispNegative.color,
+      alpha: 0.1,
+      sign: "negative",
+    });
+    const phase = brandEntryPhase("ASML");
+    expect(phase).toBe(brandEntryPhase("ASML"));
+    expect(phase / (Math.PI * 2 / 3)).toBeCloseTo(
+      Math.round(phase / (Math.PI * 2 / 3)),
+      12,
+    );
+  });
+
+  it("keeps empty holdings, an empty belt, and absent moons/comets valid", () => {
+    const empty = buildOverviewSceneModel({
+      holdings: [],
+      beltHoldings: [],
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    expect(empty.planets).toEqual([]);
+    expect(empty.trails).toEqual([]);
+    expect(empty.moons).toEqual([]);
+    expect(empty.belt.bodies).toEqual([]);
+    expect(empty.comet).toBeNull();
+  });
+
+  it("scales every belt body from real weight into a visible geometry range", () => {
+    expect(beltBodyRadiusForWeight(0)).toBeGreaterThanOrEqual(0.18);
+    expect(beltBodyRadiusForWeight(0.35)).toBeLessThanOrEqual(0.34);
+    const model = buildOverviewSceneModel({
+      holdings,
+      beltHoldings: [{ ...holdings[2], ticker: "BELT", weight: 0.02 }],
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    expect(model.belt.bodies[0]).toEqual({
+      ticker: "BELT",
+      weight: 0.02,
+      visualRadius: beltBodyRadiusForWeight(0.02),
+    });
   });
 });

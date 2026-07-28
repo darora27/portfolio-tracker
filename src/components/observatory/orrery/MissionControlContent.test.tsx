@@ -34,6 +34,35 @@ const data = {
   publicTradeLog: [
     { date: "2026-07-14", action: "buy", ticker: "MSFT", impactPct: 0.021, realizedSign: 0 },
   ],
+  upcomingEarnings: [
+    { ticker: "MSFT", date: "2026-08-03", hour: "amc", epsEstimate: 3.2 },
+  ],
+  newsByHolding: {
+    MSFT: [
+      {
+        ticker: "MSFT",
+        headline: "Public fixture headline",
+        source: "Fixture",
+        url: "https://example.com/public",
+        datetime: 1_785_000_000,
+      },
+    ],
+  },
+  chartData: [
+    { date: "2026-07-01", portfolioIndex: 100, vooIndex: 100 },
+    { date: "2026-07-02", portfolioIndex: 102, vooIndex: 101 },
+  ],
+  benchmarkComparisons: [
+    { ticker: "VOO", excessReturnPct: 0.01 },
+  ],
+  dailyChangePct: 0.01,
+  twrPct: 0.02,
+  volatilityPct: 0.2,
+  betaVsVoo: 1,
+  allTimeHigh: { pct: -0.08 },
+  winRatePct: 55,
+  bestDay: { r: 0.03 },
+  worstDay: { r: -0.025 },
 } as unknown as DashboardData;
 
 describe("public Mission Control bay treatments", () => {
@@ -63,5 +92,51 @@ describe("public Mission Control bay treatments", () => {
     expect(html).toContain("+2.1% OF BOOK");
     expect(html).not.toMatch(/\$\d/);
     expect(html).not.toContain("realized_gain");
+  });
+
+  it("labels unavailable values with their source reason and never fabricates zero", () => {
+    const unavailable = {
+      ...data,
+      publicOrreryHoldings: [
+        { ...data.publicOrreryHoldings[0], dayReturn: null },
+      ],
+    } as DashboardData;
+    const html = renderToStaticMarkup(
+      <PublicMissionControlContent
+        panel="manifest"
+        data={unavailable}
+        basePath="/share"
+      />,
+    );
+    expect(html).toContain(
+      'title="Day return unavailable: source history missing"',
+    );
+    expect(html).toContain(">—<");
+    expect(html).not.toContain(
+      'title="Day return unavailable: source history missing">+0.0%',
+    );
+  });
+
+  it("renders every bay question and its working public destination", () => {
+    const expectations = [
+      ["plot", "where is everything, and how was the week", "holding=MSFT"],
+      ["manifest", "what do I own, at what weight", "holding=MSFT"],
+      ["scope", "am I beating the market", "VOO"],
+      ["hazard", "how much can this hurt", "DRAWDOWN HISTORY"],
+      ["signals", "what moves together", "pair=MSFT-IBM"],
+      ["comms", "what’s being said", "https://example.com/public"],
+      ["log", "what did I do", "holding=MSFT"],
+    ] as const;
+    for (const [panel, question, destination] of expectations) {
+      const html = renderToStaticMarkup(
+        <PublicMissionControlContent
+          panel={panel}
+          data={data}
+          basePath="/share"
+        />,
+      );
+      expect(html, `${panel} question`).toContain(question);
+      expect(html, `${panel} destination`).toContain(destination);
+    }
   });
 });

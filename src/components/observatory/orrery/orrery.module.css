@@ -1,9 +1,17 @@
 /* Shared production and owner-gated reference-route Portfolio Orrery. */
+@font-face {
+  font-family: "Chakra Petch Observatory";
+  src: url("/fonts/chakra-petch/ChakraPetch-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
 .world {
   --phosphor: #9de7b2;
   --phosphor-dim: #79b98b;
-  --amber: #efbb62;
-  --amber-bright: #ffd68c;
+  --amber: var(--universe-glass-gold);
+  --amber-bright: var(--universe-cabinet-amber-chrome);
   --ink: #e8f1df;
   --panel: rgba(3, 14, 11, 0.82);
   --line: rgba(137, 213, 158, 0.28);
@@ -58,7 +66,7 @@
     radial-gradient(circle, rgba(157, 231, 178, 0.65) 0 1px, transparent 1.5px) 41px 23px / 137px 131px,
     radial-gradient(ellipse at 50% 62%, rgba(46, 119, 77, 0.2), transparent 40%),
     radial-gradient(ellipse at 70% 24%, rgba(114, 72, 28, 0.12), transparent 29%),
-    linear-gradient(150deg, #010504, #04110d 55%, #020706);
+    linear-gradient(150deg, #010504, #04110d 55%, var(--universe-cabinet-void));
   transform: translate3d(
     calc(var(--orrery-pointer-x) * -7px),
     calc(var(--orrery-pointer-y) * -5px),
@@ -171,17 +179,17 @@
   cursor: none;
   transform: translate(-50%, 0.25rem);
   text-shadow:
-    -2px -2px 0 #010806,
-    2px -2px 0 #010806,
-    -2px 2px 0 #010806,
-    2px 2px 0 #010806,
+    -2px -2px 0 var(--universe-cabinet-bay-glass),
+    2px -2px 0 var(--universe-cabinet-bay-glass),
+    -2px 2px 0 var(--universe-cabinet-bay-glass),
+    2px 2px 0 var(--universe-cabinet-bay-glass),
     0 0 8px rgba(1, 8, 6, 0.95);
 }
 
 .sceneLabel[data-targeted="true"] {
   color: var(--amber-bright);
   text-shadow:
-    0 1px 2px #010806,
+    0 1px 2px var(--universe-cabinet-bay-glass),
     0 0 12px rgba(255, 196, 99, 0.7);
 }
 
@@ -223,7 +231,7 @@
   border-radius: 65% 100% 100% 65%;
   background:
     radial-gradient(circle at 68% 50%, #183c43 0 2px, #98e6da 2.5px 3.5px, transparent 4px),
-    linear-gradient(90deg, #8ca89f, #f4ead1 55%, #efbb62);
+    linear-gradient(90deg, #8ca89f, #f4ead1 55%, var(--universe-glass-gold));
   clip-path: polygon(0 22%, 70% 22%, 100% 50%, 70% 78%, 0 78%, 18% 50%);
 }
 
@@ -244,10 +252,45 @@
   left: 0;
   width: 9px;
   height: 6px;
-  background: linear-gradient(90deg, transparent, #ff674d 35%, #ffd68c);
+  background: linear-gradient(90deg, transparent, #ff674d 35%, var(--universe-cabinet-amber-chrome));
   clip-path: polygon(0 50%, 100% 0, 100% 100%);
   transform-origin: right center;
   animation: rocket-flame 120ms steps(2, end) infinite;
+}
+
+.rocketPrism {
+  position: absolute;
+  top: 4px;
+  right: calc(100% - 4px);
+  width: calc(8px + var(--rocket-speed, 0) * 26px);
+  height: 10px;
+  transform-origin: right center;
+}
+
+.rocketPrism i {
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 2px;
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  opacity: calc(0.36 + var(--rocket-speed, 0) * 0.54);
+}
+
+.rocketPrism i[data-prism="cyan"] {
+  top: 1px;
+  background: linear-gradient(90deg, transparent, rgb(63 168 196));
+  transform: rotate(4deg);
+}
+
+.rocketPrism i[data-prism="violet"] {
+  top: 4px;
+  background: linear-gradient(90deg, transparent, rgb(162 61 156));
+}
+
+.rocketPrism i[data-prism="gold"] {
+  top: 7px;
+  background: linear-gradient(90deg, transparent, var(--universe-glass-gold));
+  transform: rotate(-4deg);
 }
 
 .beltLabel {
@@ -290,7 +333,7 @@
   justify-items: center;
   color: #fff0ca;
   text-align: center;
-  text-shadow: 0 0 12px #d96f23, 0 0 28px rgba(255, 165, 61, 0.75);
+  text-shadow: 0 1px 2px var(--universe-cabinet-bay-glass);
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
@@ -406,8 +449,8 @@
 
 .bodyControl:hover,
 .bodyControl:focus-visible {
-  border-color: #ffd68c;
-  outline: 2px solid #ffd68c;
+  border-color: var(--universe-cabinet-amber-chrome);
+  outline: 2px solid var(--universe-cabinet-amber-chrome);
   outline-offset: 2px;
 }
 
@@ -550,6 +593,30 @@
   animation: inspector-draw 520ms steps(5, end) both;
 }
 
+@media (min-width: 1024px) {
+  [data-camera="approach"] .inspector {
+    width: max(
+      var(--mission-detail-fraction, 40vw),
+      var(--mission-detail-min, 560px)
+    );
+    max-width: calc(100vw - 3rem);
+  }
+
+  [data-camera="approach"] .planetDetail {
+    font-size: var(--mission-body-size, 15px);
+  }
+
+  [data-camera="approach"] .detailBay {
+    gap: 0.55rem;
+    padding: 0.85rem;
+  }
+
+  [data-camera="approach"] .detailBay > span:first-child,
+  [data-camera="approach"] .detailBay h2 {
+    font-size: var(--mission-label-size, 11px);
+  }
+}
+
 .microHint {
   margin-top: 0.45rem;
   color: var(--amber-bright);
@@ -640,7 +707,7 @@
   z-index: 35;
   inset: 0;
   display: grid;
-  grid-template-rows: auto auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto auto auto minmax(0, 1fr);
   padding: clamp(1rem, 2vw, 2rem);
   color: #f1dfbd;
   background: rgba(29, 14, 8, 0.9);
@@ -694,8 +761,21 @@
   white-space: nowrap;
 }
 
+.missionControl nav a,
+.operationsBay h3,
+.plotChassis > header b,
+.manifestInstrument > header b,
+.railStations b,
+.instrumentStrip b,
+.sceneLabel,
+.detailBay > span:first-child,
+.detailBay h2 {
+  font-family: "Chakra Petch Observatory", var(--font-mono, monospace);
+  font-weight: 600;
+}
+
 .missionControl nav a[aria-current="page"] {
-  color: #fff0cf;
+  color: var(--universe-cabinet-cream);
   background: #7d3d1d;
   text-decoration: none;
 }
@@ -704,7 +784,7 @@
   min-width: 0;
   padding: 0.48rem 0.65rem;
   border-block: 1px solid rgba(235, 210, 165, 0.28);
-  color: #f6d493;
+  color: var(--universe-cabinet-teletype);
   overflow: hidden;
   font-size: 0.72rem;
   letter-spacing: 0.04em;
@@ -720,55 +800,388 @@
 
 .teletype i {
   margin-left: 0.15rem;
-  color: #fff0cf;
+  color: var(--universe-cabinet-cream);
   font-style: normal;
   animation: teletype-cursor 760ms steps(1, end) infinite;
+}
+
+.commandReadouts {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 72px;
+  padding: 0.15rem 0;
+}
+
+.commandDay {
+  color: var(--universe-cabinet-amber-chrome);
+  font-size: var(--mission-day-size, 64px);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.briefingFolder {
+  min-height: 44px;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--universe-paper-ink);
+  border-radius: 2px;
+  color: var(--universe-paper-ink);
+  background: var(--universe-paper-sheet);
+  font: 600 11px/1 var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+}
+
+.briefingPaper {
+  position: absolute;
+  z-index: 4;
+  top: calc(100% - 0.3rem);
+  left: min(19rem, 26vw);
+  display: grid;
+  gap: 0.35rem;
+  min-width: 20rem;
+  padding: 0.8rem;
+  border: 2px solid var(--universe-paper-ink);
+  border-radius: 2px;
+  color: var(--universe-paper-ink);
+  background: var(--universe-paper-sheet);
+  box-shadow: 6px 7px 0 rgba(43, 26, 16, 0.38);
+  font-size: 11px;
 }
 
 .missionMachine {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(15rem, 28%) minmax(0, 1fr);
+  grid-template-columns:
+    minmax(26rem, var(--mission-plot-fraction, 55%))
+    minmax(18rem, calc(100% - var(--mission-plot-fraction, 55%)));
+  grid-template-rows: minmax(0, 1fr) auto;
   min-height: 0;
-  border: 1px solid rgba(235, 210, 165, 0.42);
+  border: 2px solid rgba(235, 210, 165, 0.52);
   background:
     linear-gradient(rgba(237, 202, 139, 0.055) 1px, transparent 1px) 0 0 / 100% 28px,
-    #21120d;
+    var(--universe-cabinet-umber);
 }
 
+.missionMachine::before,
 .missionMachine::after {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 28%;
-  width: 1px;
-  background: rgba(235, 210, 165, 0.42);
+  z-index: 2;
+  width: 20px;
+  height: 20px;
+  border-color: var(--universe-cabinet-cream);
+  pointer-events: none;
   content: "";
 }
 
+.missionMachine::before {
+  top: -5px;
+  left: -5px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+
+.missionMachine::after {
+  right: -5px;
+  bottom: -5px;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+}
+
 .plotChassis {
+  grid-row: 1 / 3;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   min-height: 0;
+  margin: var(--mission-dominant-gutter, 20px);
   padding: 0.75rem;
+  border: 2px solid rgba(235, 210, 165, 0.55);
+  border-radius: 10px;
   color: #d8bd8b;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(40, 77, 65, 0.25), transparent 64%),
+    #030908;
+  box-shadow: inset 0 0 50px rgba(5, 22, 17, 0.8);
 }
 
-.plotChassis > span {
-  font-size: 0.62rem;
+.plotChassis > header,
+.manifestInstrument > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-size: var(--mission-label-size, 11px);
   letter-spacing: 0.12em;
 }
 
+.bayQuestion {
+  color: var(--universe-cabinet-question);
+  font-size: var(--mission-label-size, 11px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+.systemPlotFrame {
+  position: relative;
+  min-height: 280px;
+}
+
 .systemPlot {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   min-height: 280px;
 }
 
+.radarTargets {
+  position: absolute;
+  inset: 0;
+}
+
+.radarRingTarget {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid var(--radar-signal);
+  border-radius: 50%;
+  color: var(--radar-signal);
+  background: transparent;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.radarRingTarget > span {
+  position: absolute;
+  top: 50%;
+  right: -0.2rem;
+  padding: 0.12rem 0.2rem;
+  background: #030908;
+  font-size: 9px;
+  transform: translate(55%, -50%);
+}
+
+.radarBlipTarget {
+  position: absolute;
+  z-index: 2;
+  min-width: 12px;
+  min-height: 12px;
+  padding: 0;
+  border: 2px solid #fff4d7;
+  border-radius: 50%;
+  background: var(--radar-signal);
+  box-shadow: 0 0 8px var(--radar-signal);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.radarRingTarget[data-active="true"],
+.radarBlipTarget[data-active="true"],
+.radarRingTarget:focus-visible,
+.radarBlipTarget:focus-visible {
+  z-index: 3;
+  outline: 2px solid #fff4d7;
+  outline-offset: 3px;
+  filter: brightness(1.45);
+}
+
+.radarTimestamp {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  padding: 0.25rem 0.35rem;
+  border: 1px dashed var(--universe-cabinet-amber-chrome);
+  color: var(--universe-cabinet-amber-chrome);
+  font-size: 10px;
+}
+
+.radarPairLine {
+  position: absolute;
+  bottom: 0.4rem;
+  left: 0.4rem;
+  margin: 0;
+  color: var(--universe-glass-cyan);
+  font-size: var(--mission-label-size, 11px);
+}
+
+.missionRail {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 0;
+  padding:
+    var(--mission-strip-gutter, 10px)
+    var(--mission-strip-gutter, 10px)
+    0 0;
+  overflow: hidden;
+}
+
+.manifestInstrument {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(235, 210, 165, 0.36);
+  border-radius: 10px;
+  background: #030908;
+}
+
+.radarManifest {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.radarManifest > li {
+  position: relative;
+}
+
+.radarManifest > li > button {
+  display: flex;
+  width: 100%;
+  min-height: 38px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem;
+  border: 1px solid rgba(235, 210, 165, 0.25);
+  color: #f1dfbd;
+  background: #08110f;
+  font: 600 11px/1 var(--font-mono, monospace);
+}
+
+.radarManifest > li[data-expanded="true"] {
+  grid-column: 1 / -1;
+}
+
+.radarDetailCard {
+  display: grid;
+  grid-template-columns: minmax(6rem, 0.8fr) minmax(11rem, 1.2fr);
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--universe-cabinet-amber-chrome);
+  background: #050d0b;
+  font-size: var(--mission-label-size, 11px);
+}
+
+.radarDetailCard svg {
+  width: 100%;
+  height: 34px;
+}
+
+.radarDetailCard polyline {
+  fill: none;
+  stroke: var(--universe-glass-gold);
+  stroke-width: 2;
+}
+
+.radarDetailCard dl {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.radarDetailCard dl > div {
+  display: grid;
+}
+
+.radarDetailCard dt {
+  color: #a89573;
+  font-size: 9px;
+}
+
+.radarDetailCard dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.radarDetailCard a,
+.radarDetailCard > span {
+  overflow: hidden;
+  color: #e8f1df;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.radarDetailCard > button {
+  min-height: 32px;
+  border: 1px solid #d7b56e;
+  color: #f1dfbd;
+  background: var(--universe-paper-ink);
+  font: 600 10px/1 var(--font-mono, monospace);
+}
+
 .missionContent {
   min-height: 0;
-  padding: clamp(0.75rem, 1.5vw, 1.25rem);
+  margin-top: 10px;
+  padding: clamp(0.65rem, 1vw, 1rem);
   overflow: auto;
+  border: 1px solid rgba(235, 210, 165, 0.3);
+  border-radius: 10px;
+  background: #040a08;
+}
+
+.missionContent[data-material="paper"] {
+  margin-left: 0.75rem;
+  border: 2px solid var(--universe-paper-ink);
+  border-radius: 2px;
+  color: var(--universe-paper-ink);
+  background: var(--universe-paper-sheet);
+  box-shadow: -7px 7px 0 rgba(43, 26, 16, 0.35);
+  clip-path: polygon(0.6rem 0, 7rem 0, 7.6rem 0.55rem, calc(100% - 0.4rem) 0.55rem, 100% 1rem, 100% calc(100% - 0.4rem), calc(100% - 0.4rem) 100%, 0.4rem 100%, 0 calc(100% - 0.4rem), 0 0.6rem);
+}
+
+.missionContent[data-material="paper"] * {
+  color: var(--universe-paper-ink);
+  border-color: rgba(43, 26, 16, 0.42);
+}
+
+.railStations,
+.instrumentStrip {
+  display: grid;
+  gap: var(--mission-strip-gutter, 10px);
+}
+
+.railStations {
+  grid-template-columns: 0.82fr 1.18fr;
+  padding-top: var(--mission-strip-gutter, 10px);
+}
+
+.instrumentStrip {
+  grid-column: 2;
+  grid-template-columns: 0.7fr 1.3fr;
+  padding:
+    var(--mission-strip-gutter, 10px)
+    var(--mission-strip-gutter, 10px)
+    var(--mission-strip-gutter, 10px)
+    0;
+}
+
+.railStations a,
+.instrumentStrip a {
+  display: grid;
+  gap: 0.22rem;
+  min-height: 48px;
+  padding: 0.55rem;
+  border: 1px solid rgba(235, 210, 165, 0.35);
+  border-radius: 10px;
+  color: #f1dfbd;
+  background: #030908;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.railStations span,
+.instrumentStrip span {
+  overflow: hidden;
+  color: #b9a984;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .operationsBay {
@@ -790,7 +1203,7 @@
   width: max-content;
   padding: 0.36rem 0.65rem;
   border-left: 3px solid #c96d32;
-  color: #fff0cf;
+  color: var(--universe-cabinet-cream);
   background: #3c2014;
   font-size: 0.75rem;
   letter-spacing: 0.14em;
@@ -811,7 +1224,7 @@
 }
 
 .plotReadouts b {
-  color: #f6d493;
+  color: var(--universe-cabinet-teletype);
   font-size: 1rem;
   font-variant-numeric: tabular-nums;
 }
@@ -854,7 +1267,7 @@
 .manifestRows a:focus-visible {
   color: #fff4d7;
   background: rgba(205, 102, 47, 0.16);
-  outline: 1px solid #f6d493;
+  outline: 1px solid var(--universe-cabinet-teletype);
 }
 
 .planetChip {
@@ -1018,14 +1431,15 @@
   gap: 3px;
 }
 
-.signalMatrix span {
+.signalMatrix a {
   display: grid;
   min-width: 2rem;
   aspect-ratio: 1;
   place-items: center;
   border: 1px solid #8d5d3c;
-  color: #fff0cf;
+  color: var(--universe-cabinet-cream);
   background: #b66d34;
+  text-decoration: none;
 }
 
 .compositionArcs {
@@ -1050,7 +1464,9 @@
 }
 
 .commsRows li,
-.logRows li {
+.logRows li,
+.commsRows li > a,
+.logRows li > a {
   display: grid;
   grid-template-columns: 6rem 5rem minmax(8rem, 1fr) minmax(7rem, 0.7fr);
   gap: 0.8rem;
@@ -1058,6 +1474,18 @@
   align-items: center;
   padding: 0.55rem;
   border-top: 1px solid rgba(235, 210, 165, 0.2);
+}
+
+.commsRows li,
+.logRows li {
+  padding: 0;
+}
+
+.commsRows li > a,
+.logRows li > a {
+  padding: 0.55rem;
+  color: inherit;
+  text-decoration: none;
 }
 
 .commsRows li[data-soonest="true"] {
@@ -1068,6 +1496,79 @@
 
 .logRows b {
   color: #f4cf91;
+}
+
+.activeBayQuestion {
+  margin: 0 0 0.4rem;
+  color: var(--universe-cabinet-question);
+  font-size: 11px;
+  text-transform: lowercase;
+}
+
+.bayDestination {
+  display: inline-flex;
+  width: max-content;
+  min-height: 44px;
+  align-items: center;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(235, 210, 165, 0.35);
+  color: var(--universe-cabinet-cream);
+  text-decoration: none;
+}
+
+.scopeControls {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.scopeControls button {
+  min-width: 44px;
+  min-height: 38px;
+  border: 1px solid rgba(235, 210, 165, 0.3);
+  color: #e5cfaa;
+  background: #06100d;
+  font: 600 11px/1 var(--font-mono, monospace);
+}
+
+.scopeControls button[aria-pressed="true"] {
+  color: #05100c;
+  background: var(--universe-cabinet-amber-chrome);
+}
+
+.launchInstrument {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid rgba(235, 210, 165, 0.28);
+  border-radius: 10px;
+  background: #030908;
+}
+
+.commsHeadlines {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.commsHeadlines a {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 0.5rem;
+  min-height: 44px;
+  align-items: center;
+  color: #ead7b0;
+  text-decoration: none;
+}
+
+.commsHeadlines span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 15px;
 }
 
 .planetDetail {
@@ -1096,9 +1597,10 @@
 }
 
 .dayNumber {
-  color: #ffd68c;
-  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  color: var(--universe-cabinet-amber-chrome);
+  font-size: var(--mission-day-size, 64px);
   font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
 .earningsChip {
@@ -1106,8 +1608,8 @@
   top: 0.55rem;
   right: 0.55rem;
   padding: 0.2rem 0.35rem;
-  border: 1px solid #ffd68c;
-  color: #ffd68c;
+  border: 1px solid var(--universe-cabinet-amber-chrome);
+  color: var(--universe-cabinet-amber-chrome);
   font-size: 0.58rem;
 }
 
@@ -1130,7 +1632,7 @@
 .rangeDetents button[aria-pressed="true"],
 .benchmarkToggle[aria-pressed="true"] {
   color: #010504;
-  background: #ffd68c;
+  background: var(--universe-cabinet-amber-chrome);
 }
 
 .benchmarkToggle:disabled {
@@ -1149,7 +1651,7 @@
 
 .holdingScope polyline {
   fill: none;
-  stroke: #efbb62;
+  stroke: var(--universe-glass-gold);
   stroke-width: 2.5;
 }
 
@@ -1176,7 +1678,7 @@
 
 .telemetryStrip dd {
   margin: 0.15rem 0 0;
-  color: #ffd68c;
+  color: var(--universe-cabinet-amber-chrome);
   font-size: 0.68rem;
 }
 
@@ -1204,6 +1706,7 @@
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  font-size: 15px;
 }
 
 .transmissionList i {
@@ -1237,7 +1740,7 @@
   display: flex;
   min-height: 44px;
   align-items: center;
-  color: #ffd68c;
+  color: var(--universe-cabinet-amber-chrome);
   font-size: 0.62rem;
 }
 
@@ -1256,6 +1759,18 @@
   position: relative;
   z-index: 2;
   padding: 1rem;
+}
+
+.sectorExplanation {
+  position: absolute;
+  z-index: 3;
+  top: 1.2rem;
+  right: 1.2rem;
+  max-width: 32rem;
+  margin: 0;
+  color: #d9c59e;
+  font-size: 11px;
+  text-align: right;
 }
 
 .sectorMap header span {
@@ -1296,7 +1811,7 @@
 }
 
 .sectorSun[data-core="hollow"] i {
-  background: #21120d;
+  background: var(--universe-cabinet-umber);
 }
 
 .sectorSun span {
@@ -1305,7 +1820,7 @@
 }
 
 .sectorSun:focus-visible {
-  outline: 2px solid #fff0cf;
+  outline: 2px solid var(--universe-cabinet-cream);
   outline-offset: 4px;
 }
 
@@ -1318,7 +1833,7 @@
   align-items: center;
   padding: 0.5rem;
   border: 1px solid #b97743;
-  color: #fff0cf;
+  color: var(--universe-cabinet-cream);
   text-decoration: none;
 }
 
@@ -1365,9 +1880,9 @@
 .observedCore {
   width: 2.8rem;
   height: 2.8rem;
-  border: 4px solid #f5c45d;
+  border: 4px solid var(--universe-signal-sun-up);
   border-radius: 50%;
-  background: #21120d;
+  background: var(--universe-cabinet-umber);
   box-shadow: 0 0 30px rgba(245, 196, 93, 0.45);
 }
 
@@ -1774,10 +2289,107 @@
   .holdingControl {
     min-height: 58px;
   }
-  .missionControl,
   .manualBackdrop,
   .orientation {
     display: none;
+  }
+  .missionControl {
+    position: relative;
+    inset: auto;
+    grid-template-rows: auto;
+    min-height: auto;
+    padding: 1rem;
+    overflow: visible;
+    backdrop-filter: none;
+  }
+  .missionControl::before {
+    display: none;
+  }
+  .missionControl > header,
+  .commandReadouts {
+    flex-wrap: wrap;
+  }
+  .missionControl nav {
+    flex-wrap: wrap;
+  }
+  .missionControl nav a {
+    border-bottom: 1px solid rgba(235, 210, 165, 0.35);
+  }
+  .briefingPaper {
+    position: relative;
+    inset: auto;
+    min-width: 0;
+    width: 100%;
+  }
+  .missionMachine {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+  .plotChassis {
+    grid-row: auto;
+    min-height: auto;
+    margin: var(--mission-strip-gutter, 10px);
+  }
+  .systemPlotFrame {
+    min-height: auto;
+  }
+  .radarTargets {
+    position: relative;
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 0.5rem;
+  }
+  .radarPairLine {
+    position: relative;
+    inset: auto;
+    margin-top: 0.45rem;
+  }
+  .radarTargets > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    gap: 0.35rem;
+  }
+  .radarRingTarget,
+  .radarBlipTarget {
+    position: relative;
+    inset: auto !important;
+    width: 100% !important;
+    min-height: 44px;
+    height: 44px !important;
+    border-radius: 2px;
+    transform: none;
+  }
+  .radarRingTarget > span {
+    position: relative;
+    inset: auto;
+    transform: none;
+  }
+  .missionRail {
+    padding: var(--mission-strip-gutter, 10px);
+    overflow: visible;
+  }
+  .radarManifest {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .radarDetailCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .instrumentStrip {
+    grid-column: 1;
+    padding: var(--mission-strip-gutter, 10px);
+  }
+  .sectorMap {
+    position: relative;
+    inset: auto;
+    min-height: 38rem;
+  }
+  .sectorExplanation {
+    position: relative;
+    inset: auto;
+    max-width: none;
+    padding: 0 1rem;
+    text-align: left;
   }
 }
 

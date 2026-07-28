@@ -1,0 +1,17 @@
+Phase 10 §10 texture ladder — 2026-07-28 — codex/gpt-5
+
+basisu --version
+zsh:2: command not found: basisu
+exit_status=127
+
+2048x1024 base / 1024x512 derived:
+  mapBytes=43,518,879
+  result=over 30,000,000-byte ceiling
+
+1448x724 base / 724x362 derived:
+  mapBytes=22,550,455
+  measured shipped directory total=22,570,477
+  result=selected; below 30,000,000-byte ceiling
+
+Ladder step 4 was not reached.
+Source: public/textures/planets/texture-manifest.json

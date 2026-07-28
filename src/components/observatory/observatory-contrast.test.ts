@@ -1,6 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import {
+  UNIVERSE_CONTRASTS,
+  UNIVERSE_PALETTE,
+  contrastRatio as universeContrastRatio,
+} from "@/lib/observatory/universe-palette";
 
 // Regression test for the §1 refiner finding: the freshness label
 // (.freshnessLabel, using --obs-ink-faint) measured 3.82:1 against the
@@ -8,10 +13,6 @@ import path from "node:path";
 // minimum. This computes the actual contrast ratio from the token values in
 // source so a future color edit can't silently regress below 4.5:1 again.
 const css = readFileSync(path.resolve(__dirname, "observatory.module.css"), "utf8");
-const orreryCss = readFileSync(
-  path.resolve(__dirname, "orrery/orrery.module.css"),
-  "utf8",
-);
 
 function hexToRgb(hex: string): [number, number, number] {
   const clean = hex.replace("#", "");
@@ -53,13 +54,17 @@ describe("observatory.module.css — freshness label contrast", () => {
 
 describe("Stock Market Universe HUD contrast", () => {
   it("all new normal-text tokens meet 4.5:1 against the universe background", () => {
-    const background = "#010504";
-    for (const token of ["--phosphor", "--amber-bright", "--ink"]) {
-      const match = orreryCss.match(
-        new RegExp(`${token}:\\s*(#[0-9a-fA-F]{6})`),
-      );
-      if (!match) throw new Error(`token ${token} not found in orrery CSS`);
-      expect(contrastRatio(match[1], background)).toBeGreaterThanOrEqual(4.5);
+    for (const pair of UNIVERSE_CONTRASTS) {
+      expect(
+        universeContrastRatio(pair.foreground, pair.background),
+        pair.id,
+      ).toBeGreaterThanOrEqual(pair.minimum);
     }
+    expect(
+      universeContrastRatio(
+        UNIVERSE_PALETTE.paper.ink,
+        UNIVERSE_PALETTE.paper.sheet,
+      ),
+    ).toBeGreaterThanOrEqual(13);
   });
 });

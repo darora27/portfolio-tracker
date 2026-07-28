@@ -3,7 +3,6 @@ import {
   ORRERY_PLANET_CLEARANCE,
   ORRERY_SUN_CLEARANCE,
   angularSpeedForWeeklyReturn,
-  axialSpinForDayReturn,
   directionForWeeklyReturn,
   orbitRadiiForPlanetRadii,
   radiusForWeight,
@@ -11,6 +10,12 @@ import {
   type PublicOrreryHolding,
 } from "./orrery";
 import { planetIdentityForTicker } from "./planet-identity";
+import {
+  UNIVERSE_PALETTE,
+  UNIVERSE_RAMP_LUTS,
+  rampAurora,
+  rampForWeekly,
+} from "./universe-palette";
 
 export const OVERVIEW_RING_OPACITY = 0.34;
 export const ACTIVE_RING_OPACITY = 0.6;
@@ -25,12 +30,15 @@ const OVERVIEW_LABEL_HEIGHT_PX = 44;
 const OVERVIEW_LABEL_OFFSET_PX = 4;
 const OVERVIEW_VIEWPORT_PADDING_PX = 8;
 const ORBIT_PROJECTION_SAMPLES = 180;
-const MIN_TRAIL_DEGREES = 18;
-const MAX_TRAIL_DEGREES = 30;
+const MIN_TRAIL_DEGREES = 36;
+const MAX_TRAIL_DEGREES = 64;
 const MIN_TRAIL_RETURN = 0.002;
 const MAX_TRAIL_RETURN = 0.12;
 const SATELLITE_RADIUS = 0.16;
-const SUN_BODY_RADIUS = 1.28;
+const MIN_SUN_RADIUS = 2.4;
+const SUN_TO_PLANET_RATIO = 1.25;
+const STAR_COUNT = 1_024;
+const BRIGHTEST_STAR_COUNT = 12;
 
 type Point3 = { x: number; y: number; z: number };
 
@@ -82,6 +90,8 @@ export type SceneModel = {
     activeOpacity: number;
     color: string;
     fog: false;
+    nearAlpha: 0.5;
+    farAlpha: 0.1;
   }>;
   planets: Array<{
     ticker: string;
@@ -91,7 +101,8 @@ export type SceneModel = {
     initialAngle: number;
     direction: OrreryDirection;
     angularSpeed: number;
-    axialSpin: number;
+    spinPeriodSeconds: number;
+    spinRadiansPerSecond: number;
     projectedDiameterPx: number;
     screen: { x: number; y: number; depth: number };
     bounds: ScreenBounds;
@@ -104,6 +115,13 @@ export type SceneModel = {
     color: string;
     arcRadians: number;
     magnitude: number | null;
+    sweep: { headRadians: 0; tailRadians: number };
+    head: {
+      fraction: 0.12;
+      color: string;
+      widthPx: 4;
+      opacity: 1;
+    };
     fog: false;
     passes: readonly [
       { id: "glow"; widthPx: 9; opacity: 0.36; additive: true },
@@ -129,6 +147,8 @@ export type SceneModel = {
     radius: number;
     earningsDays: number | null;
     ringVisible: boolean;
+    orbitPeriodSeconds: number;
+    axialSpinRadiansPerSecond: 0;
   }>;
   satellites: Array<{
     id: "DRIFT" | "HAZARD" | "SUPPLY";
@@ -142,6 +162,11 @@ export type SceneModel = {
     viewportSpanPct: number;
     bounds: ScreenBounds;
     tickers: string[];
+    bodies: Array<{
+      ticker: string;
+      visualRadius: number;
+      weight: number;
+    }>;
   };
   overviewCamera: OverviewCameraDescriptor;
   nebula: {
@@ -154,6 +179,38 @@ export type SceneModel = {
     { id: "near"; depth: number; parallax: number },
     { id: "far"; depth: number; parallax: number },
   ];
+  starPopulation: {
+    count: 1024;
+    buckets: {
+      faint: number;
+      medium: number;
+      bright: number;
+      diffraction: 12;
+    };
+    clusterSeeds: readonly [
+      { x: number; y: number; z: number },
+      { x: number; y: number; z: number },
+      { x: number; y: number; z: number },
+    ];
+    auroraDensityMultiplier: 1.8;
+  };
+  aurora: {
+    percentMagnitudes: number[];
+    colorSamples: readonly string[];
+    opacity: number;
+    chord: {
+      screenClearanceSunRadii: number;
+      widthInOuterRadii: number;
+      heightInOuterRadii: number;
+      yInOuterRadii: number;
+      zInOuterRadii: number;
+    };
+  };
+  weatherWisps: {
+    color: string;
+    alpha: number;
+    sign: "positive" | "negative";
+  };
   comet: {
     color: string;
     action: "buy" | "sell";
@@ -447,9 +504,9 @@ function cameraForOverview(
 }
 
 export function trailColorForDirection(direction: OrreryDirection): string {
-  if (direction === "clockwise") return "#63ef98";
-  if (direction === "counterclockwise") return "#ff665f";
-  return "#e3b65c";
+  if (direction === "clockwise") return UNIVERSE_PALETTE.signal.gain;
+  if (direction === "counterclockwise") return UNIVERSE_PALETTE.signal.loss;
+  return UNIVERSE_PALETTE.signal.flat;
 }
 
 export function trailArcLengthForWeeklyReturn(
@@ -469,6 +526,171 @@ export function trailArcLengthForWeeklyReturn(
     Math.PI /
     180
   );
+}
+
+export function trailSweepAngles(
+  direction: OrreryDirection,
+  arcRadians: number,
+): { headRadians: 0; tailRadians: number } {
+  const sign = direction === "counterclockwise" ? 1 : -1;
+  return {
+    headRadians: 0,
+    tailRadians: sign * Math.abs(arcRadians),
+  };
+}
+
+function tickerHash(ticker: string): number {
+  return [...ticker.toUpperCase()].reduce(
+    (hash, character) => (hash * 31 + character.charCodeAt(0)) >>> 0,
+    7,
+  );
+}
+
+export function decorativeSpinPeriodSeconds(ticker: string): number {
+  return 80 + (tickerHash(ticker) % 6_001) / 100;
+}
+
+export function decorativeSpinRadiansPerSecond(ticker: string): number {
+  return (Math.PI * 2) / decorativeSpinPeriodSeconds(ticker);
+}
+
+export function moonOrbitPeriodSeconds(ticker: string): number {
+  return 38 + (tickerHash(`MOON-${ticker}`) % 401) / 100;
+}
+
+export function sunRadiusForPlanetRadii(
+  planetRadii: readonly number[],
+): number {
+  const largest = Math.max(0, ...planetRadii);
+  return Math.max(MIN_SUN_RADIUS, SUN_TO_PLANET_RATIO * largest);
+}
+
+export function ringVertexAlpha(angleFromPlanetRadians: number): number {
+  const normalized = (1 + Math.cos(angleFromPlanetRadians)) / 2;
+  return Number((0.1 + normalized * 0.4).toFixed(6));
+}
+
+export function starMagnitudeBucket(
+  index: number,
+  count = STAR_COUNT,
+): "faint" | "medium" | "bright" | "diffraction" {
+  const safeCount = Math.max(1, Math.floor(count));
+  const safeIndex = Math.min(safeCount - 1, Math.max(0, Math.floor(index)));
+  const diffraction = Math.min(BRIGHTEST_STAR_COUNT, safeCount);
+  const bright = Math.round(safeCount * 0.04);
+  const medium = Math.round(safeCount * 0.25);
+  if (safeIndex < diffraction) return "diffraction";
+  if (safeIndex < diffraction + bright) return "bright";
+  if (safeIndex < diffraction + bright + medium) return "medium";
+  return "faint";
+}
+
+export function starPopulationDescriptor(count = STAR_COUNT) {
+  const safeCount = Math.max(1, Math.floor(count));
+  const buckets = {
+    faint: 0,
+    medium: 0,
+    bright: 0,
+    diffraction: 0,
+  };
+  for (let index = 0; index < safeCount; index += 1) {
+    buckets[starMagnitudeBucket(index, safeCount)] += 1;
+  }
+  return {
+    count: safeCount,
+    buckets,
+    clusterSeeds: [
+      { x: -0.48, y: 0.34, z: -0.12 },
+      { x: 0.36, y: 0.48, z: -0.32 },
+      { x: 0.12, y: -0.28, z: 0.24 },
+    ] as const,
+    auroraDensityMultiplier: 1.8 as const,
+  };
+}
+
+export function weeklyReturnsFromIndexSeries(
+  values: readonly number[],
+  sessions = 5,
+): number[] {
+  const period = Math.max(1, Math.floor(sessions));
+  return values.flatMap((value, index) => {
+    const previous = values[index - period];
+    if (
+      index < period ||
+      !Number.isFinite(value) ||
+      !Number.isFinite(previous) ||
+      previous === 0
+    ) {
+      return [];
+    }
+    return [value / previous - 1];
+  });
+}
+
+export function auroraDescriptor(
+  weeklyReturns: readonly number[],
+): SceneModel["aurora"] {
+  const percentMagnitudes = weeklyReturns
+    .filter(Number.isFinite)
+    .map((value) => Math.abs(value));
+  const wildness = Math.min(
+    1,
+    Math.max(0, ...percentMagnitudes) / MAX_TRAIL_RETURN,
+  );
+  return {
+    percentMagnitudes,
+    colorSamples: UNIVERSE_RAMP_LUTS.aurora.map((_, index) => {
+      if (percentMagnitudes.length === 0) return rampAurora(0);
+      const sourceIndex = Math.min(
+        percentMagnitudes.length - 1,
+        Math.floor((index / (UNIVERSE_RAMP_LUTS.aurora.length - 1)) * percentMagnitudes.length),
+      );
+      return rampAurora(
+        Math.min(1, percentMagnitudes[sourceIndex] / MAX_TRAIL_RETURN),
+      );
+    }),
+    opacity: Number((0.02 + wildness * 0.38).toFixed(4)),
+    chord: {
+      screenClearanceSunRadii: 1.2,
+      widthInOuterRadii: 2.6,
+      heightInOuterRadii: 0.52,
+      yInOuterRadii: 0.92,
+      zInOuterRadii: -0.72,
+    },
+  };
+}
+
+export function weatherWispsForHealth(
+  healthScalar: number,
+): SceneModel["weatherWisps"] {
+  return healthScalar >= 0
+    ? {
+        color: UNIVERSE_PALETTE.ambient.wispPositive.color,
+        alpha: UNIVERSE_PALETTE.ambient.wispPositive.alpha,
+        sign: "positive",
+      }
+    : {
+        color: UNIVERSE_PALETTE.ambient.wispNegative.color,
+        alpha: UNIVERSE_PALETTE.ambient.wispNegative.alpha,
+        sign: "negative",
+      };
+}
+
+export function brandEntryPhase(ticker: string): number {
+  return (tickerHash(`CAPITAL-${ticker}`) % 3) * (Math.PI * 2 / 3);
+}
+
+export function radarRingColor(weeklyReturn: number | null): string {
+  return rampForWeekly(weeklyReturn);
+}
+
+export function radarBlipDiameterPx(weight: number): number {
+  return Math.max(12, 10 + Math.sqrt(Math.max(0, weight)) * 20);
+}
+
+export function beltBodyRadiusForWeight(weight: number): number {
+  const clamped = Math.min(0.35, Math.max(0.005, weight));
+  return Number((0.18 + Math.sqrt(clamped / 0.35) * 0.16).toFixed(4));
 }
 
 export function moonRadiusForStoryCount(storyCount: number | null): number {
@@ -500,8 +722,9 @@ export function satelliteBlinkSeconds(
 export function satelliteRingRadius(
   firstPlanetOrbitRadius: number,
   firstPlanetRadius: number,
+  sunRadius = MIN_SUN_RADIUS,
 ): number {
-  const inner = SUN_BODY_RADIUS + SATELLITE_RADIUS + ORRERY_PLANET_CLEARANCE;
+  const inner = sunRadius + SATELLITE_RADIUS + ORRERY_PLANET_CLEARANCE;
   const outer =
     firstPlanetOrbitRadius -
     firstPlanetRadius -
@@ -519,7 +742,10 @@ export function nebulaForHealth(healthScalar: number): {
 } {
   const clamped = Math.min(1, Math.max(-1, healthScalar));
   return {
-    color: clamped < 0 ? "#9c3f24" : "#d4a846",
+    color:
+      clamped < 0
+        ? UNIVERSE_PALETTE.ambient.nebulaNegative.color
+        : UNIVERSE_PALETTE.ambient.nebulaPositive.color,
     alpha: Number((0.08 + Math.abs(clamped) * 0.07).toFixed(3)),
     healthScalar: clamped,
     driftRadiansPerSecond: 0.003,
@@ -530,10 +756,10 @@ export function cometColor(
   action: "buy" | "sell",
   realizedSign: -1 | 0 | 1,
 ): string {
-  if (action === "buy") return "#f4f0df";
-  if (realizedSign > 0) return "#63ef98";
-  if (realizedSign < 0) return "#ff665f";
-  return "#f4f0df";
+  if (action === "buy") return UNIVERSE_PALETTE.signal.comet;
+  if (realizedSign > 0) return UNIVERSE_PALETTE.signal.gain;
+  if (realizedSign < 0) return UNIVERSE_PALETTE.signal.loss;
+  return UNIVERSE_PALETTE.signal.comet;
 }
 
 export function resolveOrreryPointerTarget(
@@ -543,6 +769,7 @@ export function resolveOrreryPointerTarget(
   if (
     directHit === "portfolio" ||
     directHit === "belt" ||
+    directHit?.startsWith("belt:") ||
     directHit?.startsWith("moon:") ||
     directHit?.startsWith("satellite:")
   ) {
@@ -661,17 +888,22 @@ export function observedSystemHealth(
 export function sunVisualParameters(
   healthScalar: number,
   sunspotIntensity: number,
+  radius = MIN_SUN_RADIUS,
 ) {
   const health = Math.min(1, Math.max(-1, healthScalar));
   const health01 = (health + 1) / 2;
   return {
     healthScalar: health,
-    color: health < 0 ? "#d65a24" : "#f5c45d",
+    color:
+      health < 0
+        ? UNIVERSE_PALETTE.signal.sunDown
+        : UNIVERSE_PALETTE.signal.sunUp,
     coronaWidth: Number((1.28 + health01 * 0.38).toFixed(4)),
     coronaOpacity: Number((0.018 + health01 * 0.055).toFixed(4)),
     sunspotIntensity: Math.min(1, Math.max(0, sunspotIntensity)),
     pulseDepth: Number((0.002 + health01 * 0.012).toFixed(4)),
     pulseRate: Number((0.42 + health01 * 0.95).toFixed(4)),
+    radius,
   };
 }
 
@@ -688,6 +920,7 @@ export function buildOverviewSceneModel({
   nextEarningsDays = null,
   tradeComet = null,
   orbitalPhaseRadians = 0,
+  auroraWeeklySeries = [],
 }: {
   holdings: readonly SceneHolding[];
   beltHoldings?: readonly PublicOrreryHolding[];
@@ -701,9 +934,11 @@ export function buildOverviewSceneModel({
   nextEarningsDays?: number | null;
   tradeComet?: TradeCometInput | null;
   orbitalPhaseRadians?: number;
+  auroraWeeklySeries?: readonly number[];
 }): SceneModel {
   const planetDescriptorsWithoutOrbits = holdings.map((holding, index) => {
     const radius = radiusForWeight(holding.weight);
+    const spinPeriodSeconds = decorativeSpinPeriodSeconds(holding.ticker);
     return {
       ticker: holding.ticker,
       rank: index + 1,
@@ -711,15 +946,17 @@ export function buildOverviewSceneModel({
       initialAngle: index * 2.399963,
       direction: directionForWeeklyReturn(holding.weeklyReturn),
       angularSpeed: angularSpeedForWeeklyReturn(holding.weeklyReturn),
-      axialSpin: axialSpinForDayReturn(holding.dayReturn),
+      spinPeriodSeconds,
+      spinRadiansPerSecond: decorativeSpinRadiansPerSecond(holding.ticker),
       brandHex: planetIdentityForTicker(holding.ticker).brandHex,
       encodedWeight: holding.weight,
     };
   });
   const planetRadii = planetDescriptorsWithoutOrbits.map(({ radius }) => radius);
+  const sunRadius = sunRadiusForPlanetRadii(planetRadii);
   const firstPlanetRadius = planetRadii[0] ?? 0;
   const firstPlanetOrbitRadius =
-    SUN_BODY_RADIUS +
+    sunRadius +
     SATELLITE_RADIUS * 2 +
     ORRERY_PLANET_CLEARANCE * 2 +
     firstPlanetRadius;
@@ -790,6 +1027,7 @@ export function buildOverviewSceneModel({
   const satelliteOrbit = satelliteRingRadius(
     orbitRadii[0] ?? ORRERY_SUN_CLEARANCE,
     firstPlanetRadius,
+    sunRadius,
   );
   const beltBounds = projectedOrbitBounds(
     beltRadius,
@@ -812,22 +1050,30 @@ export function buildOverviewSceneModel({
         idleOpacity: OVERVIEW_RING_OPACITY,
         activeOpacity: ACTIVE_RING_OPACITY,
         color:
-          hoveredTicker === holding.ticker
-            ? trailColorForDirection(direction)
-            : "#66756f",
+          UNIVERSE_PALETTE.cabinet.ringSlate,
         fog: false,
+        nearAlpha: 0.5,
+        farAlpha: 0.1,
       };
     }),
     planets,
     trails: holdings.map((holding) => {
       const direction = directionForWeeklyReturn(holding.weeklyReturn);
+      const arcRadians = trailArcLengthForWeeklyReturn(holding.weeklyReturn);
       return {
         ticker: holding.ticker,
         direction,
-        color: trailColorForDirection(direction),
-        arcRadians: trailArcLengthForWeeklyReturn(holding.weeklyReturn),
+        color: rampForWeekly(holding.weeklyReturn),
+        arcRadians,
         magnitude:
           holding.weeklyReturn === null ? null : Math.abs(holding.weeklyReturn),
+        sweep: trailSweepAngles(direction, arcRadians),
+        head: {
+          fraction: 0.12,
+          color: UNIVERSE_PALETTE.signal.whiteHot,
+          widthPx: 4,
+          opacity: 1,
+        },
         fog: false,
         passes: [
           { id: "glow", widthPx: 9, opacity: 0.36, additive: true },
@@ -850,6 +1096,8 @@ export function buildOverviewSceneModel({
           earningsDays,
           ringVisible:
             earningsDays !== null && earningsDays >= 0 && earningsDays <= 7,
+          orbitPeriodSeconds: moonOrbitPeriodSeconds(holding.ticker),
+          axialSpinRadiansPerSecond: 0,
         },
       ];
     }),
@@ -881,12 +1129,20 @@ export function buildOverviewSceneModel({
       viewportSpanPct: beltBounds.width / viewport.width,
       bounds: beltBounds,
       tickers: beltHoldings.map(({ ticker }) => ticker),
+      bodies: beltHoldings.map(({ ticker, weight }) => ({
+        ticker,
+        visualRadius: beltBodyRadiusForWeight(weight),
+        weight,
+      })),
     },
     nebula: nebulaForHealth(healthScalar),
     starfields: [
       { id: "near", depth: -4, parallax: 0.012 },
       { id: "far", depth: -11, parallax: 0.004 },
     ],
+    starPopulation: starPopulationDescriptor() as SceneModel["starPopulation"],
+    aurora: auroraDescriptor(auroraWeeklySeries),
+    weatherWisps: weatherWispsForHealth(healthScalar),
     comet: tradeComet
       ? {
           color: cometColor(tradeComet.action, tradeComet.realizedSign),
@@ -899,7 +1155,7 @@ export function buildOverviewSceneModel({
       hoveredTicker,
       portfolioFocused,
     },
-    sun: sunVisualParameters(healthScalar, sunspotIntensity),
+    sun: sunVisualParameters(healthScalar, sunspotIntensity, sunRadius),
   };
 }
 

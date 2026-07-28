@@ -1,0 +1,5 @@
+DEFERRED_TO_REVIEWER — 2026-07-28 — codex/gpt-5
+The prescribed browser runtime returned no available browser backends (discovery=[]).
+No live RGB, hue-lock, DeltaE, ordering, or ring-pixel result is claimed.
+Retained verifier: docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs
+Deterministic palette/scene-model verifier: npm test -- --run src/lib/observatory/universe-palette.test.ts src/lib/observatory/scene-model.test.ts

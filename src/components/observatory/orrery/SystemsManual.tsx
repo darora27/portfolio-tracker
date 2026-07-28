@@ -9,10 +9,16 @@ const ENCODINGS = [
   ["Orbit radius", "Weight rank; heaviest is innermost"],
   ["Orbit direction", "Trailing-week sign"],
   ["Orbit speed", "Trailing-week magnitude"],
-  ["Axial spin", "Today’s price-move magnitude"],
   ["Trail taper", "Direction in a still frame"],
   ["Trail length", "Trailing-week magnitude"],
-  ["Trail color", "Green gain, red loss, amber neutral"],
+  ["Trail lightness", "Trailing-week magnitude within gain or loss hue"],
+  ["Trail color", "Green gain, red loss, amber near-flat or unavailable"],
+  ["Trail head", "Fixed white-hot calibration reference"],
+  ["Ring falloff", "Nearest arc 50%; far arc 10%; decorative visibility only"],
+  ["Radar rings", "Trailing-week magnitude within gain or loss hue"],
+  ["Radar blips", "Portfolio weight"],
+  ["Radar sweep", "One revolution per 60-second live-quote refresh"],
+  ["Aurora band", "Absolute weekly portfolio-index return series; percent only"],
   ["Sun weather", "TWR-consistent portfolio health"],
   ["Sunspots", "Distance below all-time high"],
   ["Asteroid belt", "Holdings ranked ninth and beyond"],
@@ -27,7 +33,8 @@ const ENCODINGS = [
   ["Vs. portfolio", "Holding trailing week minus portfolio trailing week"],
   ["Unavailable", "Missing source history or unmatched same-period data"],
   ["Observed core", "Weight-only system; no trade history and no TWR"],
-  ["Rocket cursor", "Aim once; the rocket travels to a planet"],
+  ["Rocket cursor", "Decorative prism length follows pointer speed; no data"],
+  ["Weather wisps", "Polar magenta means positive health; indigo means negative"],
 ] as const;
 
 export function SystemsManual({

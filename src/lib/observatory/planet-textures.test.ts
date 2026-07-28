@@ -25,6 +25,14 @@ type TextureManifest = {
       derivedWidth: number;
       derivedHeight: number;
       bytes: { base: number; emissive: number; normal: number };
+      markCapitals: {
+        count: number;
+        longitudeDegrees: number[];
+        latitudeDegrees: number;
+        widthFraction: number;
+        edgeTreatment: string;
+        chirality: string;
+      };
       dominantHex: string;
       luminanceStdDev: number;
       seamMaxDeltaE: number;
@@ -89,11 +97,22 @@ describe("authored planet texture manifest", () => {
     for (const identity of PLANET_IDENTITIES) {
       const entry = manifest.tickers[identity.ticker];
       expect(entry).toBeDefined();
-      expect(deltaE(entry.dominantHex, identity.brandHex)).toBeLessThanOrEqual(
+      expect(
+        deltaE(entry.dominantHex, identity.brandHex),
+        `${identity.ticker} dominant texture hue`,
+      ).toBeLessThanOrEqual(
         12,
       );
       expect(entry.luminanceStdDev).toBeGreaterThanOrEqual(0.1);
       expect(entry.seamMaxDeltaE).toBeLessThanOrEqual(6);
+      expect(entry.markCapitals).toMatchObject({
+        count: 3,
+        longitudeDegrees: [-120, 0, 120],
+        latitudeDegrees: 0,
+        widthFraction: 0.18,
+        edgeTreatment: "blur-threshold erosion",
+        chirality: "preflopped before seam repair for KTX2 sphere UV",
+      });
 
       const thumbnail = sharp(
         path.join(
@@ -137,6 +156,6 @@ describe("authored planet texture manifest", () => {
 
   it("records the exact on-disk directory total below the binding budget", () => {
     expect(directoryBytes(textureDirectory)).toBe(manifest.totalBytes);
-    expect(manifest.totalBytes).toBeLessThanOrEqual(15_000_000);
+    expect(manifest.totalBytes).toBeLessThanOrEqual(30_000_000);
   });
 });

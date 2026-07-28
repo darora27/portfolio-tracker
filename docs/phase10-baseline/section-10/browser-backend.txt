@@ -1,0 +1,5 @@
+2026-07-28 codex/gpt-5
+browser setup: succeeded
+browser selection: No browser is available
+prescribed browser discovery: []
+result: live browser/WebGL evidence deferred_to_reviewer; no substitute browser controller used

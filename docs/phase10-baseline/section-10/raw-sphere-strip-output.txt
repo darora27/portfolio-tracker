@@ -1,0 +1,6 @@
+DEFERRED_TO_REVIEWER — 2026-07-28 — codex/gpt-5
+The prescribed browser runtime returned no available browser backends (discovery=[]).
+No live equatorial luminance or rendered chirality result is claimed.
+Retained verifier: docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs
+The script asserts [0.16, 0.55] live equatorial mean and normal-vs-mirrored mark-profile correlation for all eight worlds.
+Non-live texture proxy: npm test -- --run src/lib/observatory/planet-textures.test.ts — PASS.

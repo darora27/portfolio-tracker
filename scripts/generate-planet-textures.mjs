@@ -67,30 +67,40 @@ const IDENTITIES = [
   {
     ticker: "IBM",
     brandHex: "#16295d",
+    relightHex: "#8fa3d6",
+    contrast: { alpha: 1.18, beta: 6 },
     macroFeature: "pinstripe monolith range",
     emissiveSignature: "quantum-dome grid",
   },
   {
     ticker: "COST",
     brandHex: "#645d53",
+    relightHex: "#8a8274",
+    contrast: { alpha: 1.22, beta: 4 },
     macroFeature: "warehouse crater complex",
     emissiveSignature: "red dock lanes",
   },
   {
     ticker: "INTC",
     brandHex: "#42474f",
+    relightHex: "#5a6270",
+    contrast: { alpha: 2.05, beta: -82 },
     macroFeature: "copper reconstruction spiral",
     emissiveSignature: "blue coolant channels",
   },
   {
     ticker: "NBIS",
     brandHex: "#763a74",
+    relightHex: "#a05a9e",
+    contrast: { alpha: 1.18, beta: 5 },
     macroFeature: "newborn accretion scar",
     emissiveSignature: "violet-white compute terraces",
   },
   {
     ticker: "CBRS",
     brandHex: "#655331",
+    relightHex: "#9c7d3f",
+    contrast: { alpha: 2.15, beta: -88 },
     macroFeature: "wafer-scale core",
     emissiveSignature: "cyan coolant rivers",
   },
@@ -206,50 +216,56 @@ async function authoredBase(identity, width, height) {
   const source = await readFile(
     path.join(SOURCE, `${identity.ticker.toLowerCase()}.png`),
   );
-  // Real brand SVGs carry no contrast treatment of their own, so a dark mark
-  // composited onto a dark world is invisible (IBM navy on a navy planet, ASML
-  // blue on a blue-and-white one). Build a soft dark halo from the mark's own
-  // silhouette and lay the mark over it, so the logo separates from any terrain
-  // and reads as set into the surface rather than pasted on.
   const markSvg = await readFile(
     path.join(MARKS, `${identity.ticker.toLowerCase()}.svg`),
   );
-  const markWidth = Math.round(width * 0.26);
-  const mark = await sharp(markSvg)
+  const markWidth = Math.round(width * 0.18);
+  // The runtime's KTX2 sphere UV convention mirrors the post-composited mark.
+  // Pre-flop the vector before weathering so its final on-sphere chirality is
+  // correct; seam repair happens after this operation and never changes it.
+  const markAlpha = await sharp(markSvg)
     .resize({ width: markWidth, withoutEnlargement: false })
-    .png()
-    .toBuffer();
-  const haloWidth = Math.round(markWidth * 1.1);
-  const halo = await sharp(markSvg)
-    .resize({ width: haloWidth, withoutEnlargement: false })
+    .flop()
     .ensureAlpha()
-    .modulate({ brightness: 0.04 })
-    .blur(Math.max(1, Math.round(markWidth * 0.03)))
+    .extractChannel("alpha")
+    .blur(Math.max(0.5, markWidth * 0.006))
+    .threshold(184)
     .png()
     .toBuffer();
-  const glowWidth = Math.round(markWidth * 1.22);
-  const glow = await sharp(markSvg)
-    .resize({ width: glowWidth, withoutEnlargement: false })
-    .ensureAlpha()
-    .modulate({ brightness: 0.02 })
-    .blur(Math.max(2, Math.round(markWidth * 0.075)))
-    .png()
-    .toBuffer();
-  const needsMacroContrast =
-    identity.ticker === "INTC" || identity.ticker === "CBRS";
-  const contrast = needsMacroContrast
-    ? { alpha: 1.9, beta: -76 }
-    : { alpha: 1.08, beta: -8 };
-  const raw = await sharp(source)
+  const markMetadata = await sharp(markAlpha).metadata();
+  const markHeight = markMetadata.height;
+  if (!markHeight) throw new Error(`${identity.ticker}: mark height missing`);
+  const contrast = identity.contrast ?? { alpha: 1.08, beta: -8 };
+  const terrain = await sharp(source)
     .resize(width, height, { fit: "fill", kernel: "lanczos3" })
     .modulate({ saturation: 1.06, brightness: 0.98 })
     .linear(contrast.alpha, contrast.beta)
     .ensureAlpha()
-    .composite([
-      { input: glow, gravity: "center", blend: "over" },
-      { input: halo, gravity: "center", blend: "over" },
-      { input: mark, gravity: "center", blend: "over" },
-    ])
+    .raw()
+    .toBuffer();
+  const markTop = Math.round(height / 2 - markHeight / 2);
+  const markCenters = [1 / 6, 1 / 2, 5 / 6];
+  const composites = [];
+  for (const center of markCenters) {
+    const left = Math.round(width * center - markWidth / 2);
+    const underlying = await sharp(terrain, {
+      raw: { width, height, channels: 4 },
+    })
+      .extract({ left, top: markTop, width: markWidth, height: markHeight })
+      .removeAlpha()
+      // Tint preserves the terrain luminance under the vector, so the capital
+      // reads as material treatment instead of a flat image stamp.
+      .tint(identity.relightHex ?? identity.brandHex)
+      .linear(1.15, 18)
+      .joinChannel(markAlpha)
+      .png()
+      .toBuffer();
+    composites.push({ input: underlying, left, top: markTop, blend: "over" });
+  }
+  const raw = await sharp(terrain, {
+    raw: { width, height, channels: 4 },
+  })
+    .composite(composites)
     .raw()
     .toBuffer();
   return repairHorizontalSeam(raw, width, height);
@@ -501,6 +517,14 @@ async function generateTier(tier) {
       derivedWidth,
       derivedHeight,
       bytes,
+      markCapitals: {
+        count: 3,
+        longitudeDegrees: [-120, 0, 120],
+        latitudeDegrees: 0,
+        widthFraction: 0.18,
+        edgeTreatment: "blur-threshold erosion",
+        chirality: "preflopped before seam repair for KTX2 sphere UV",
+      },
       ...metrics,
     };
     process.stdout.write(

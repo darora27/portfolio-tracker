@@ -10,6 +10,7 @@ import {
   resolveBeltMembership,
   sunspotIntensityForDrawdown,
 } from "@/lib/observatory/orrery";
+import { weeklyReturnsFromIndexSeries } from "@/lib/observatory/scene-model";
 import { supabase } from "@/lib/supabase/client";
 import {
   MISSION_CONTROL_PANELS,
@@ -30,6 +31,7 @@ export type UniverseSearchParams = {
   station?: string | string[];
   detail?: string | string[];
   system?: string | string[];
+  pair?: string | string[];
 };
 
 function first(value: string | string[] | undefined): string | undefined {
@@ -208,7 +210,9 @@ export async function UniverseRoute({
       missionMode={authenticated && ownerGate ? "private" : "public"}
       missionPreservedQuery={{
         ...(no3d ? { no3d: "1" } : {}),
+        ...(first(params.pair) ? { pair: first(params.pair)! } : {}),
       }}
+      missionSignalPair={first(params.pair) ?? null}
       newsByHolding={data.newsByHolding ?? {}}
       upcomingEarnings={data.upcomingEarnings}
       publicTradeLog={data.publicTradeLog ?? []}
@@ -220,6 +224,9 @@ export async function UniverseRoute({
       sectorSystem={sectorSystem}
       selectedSystem={first(params.system) ?? null}
       transmissionsFirst={first(params.detail) === "transmissions"}
+      auroraWeeklySeries={weeklyReturnsFromIndexSeries(
+        data.chartData.map(({ portfolioIndex }) => portfolioIndex),
+      )}
     />
   );
 }

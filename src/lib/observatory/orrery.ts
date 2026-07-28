@@ -7,8 +7,6 @@ export const ORRERY_MIN_ANGULAR_SPEED = 0.012;
 export const ORRERY_MAX_ANGULAR_SPEED = 0.055;
 export const ORRERY_SUN_CLEARANCE = 3.4;
 export const ORRERY_PLANET_CLEARANCE = 0.18;
-export const ORRERY_MIN_AXIAL_SPIN = 0.05;
-export const ORRERY_MAX_AXIAL_SPIN = 0.55;
 export const ORRERY_BELT_HYSTERESIS_BAND = 0.005;
 export const ORRERY_PLANET_COUNT = 8;
 
@@ -16,8 +14,6 @@ const MIN_WEIGHT = 0.01;
 const MAX_WEIGHT = 0.35;
 const MIN_SPEED_RETURN = 0.002;
 const MAX_SPEED_RETURN = 0.12;
-const MIN_SPIN_RETURN = 0.001;
-const MAX_SPIN_RETURN = 0.06;
 const SUNSPOT_FULL_INTENSITY_DRAWDOWN = -0.2;
 
 const COMPANY_NAMES: Record<string, string> = {
@@ -116,20 +112,6 @@ export function orbitRadiiForPlanetRadii(
     );
   }
   return orbitRadii;
-}
-
-export function axialSpinForDayReturn(dayReturn: number | null): number {
-  if (dayReturn === null) return ORRERY_MIN_AXIAL_SPIN;
-  const clamped = Math.min(
-    MAX_SPIN_RETURN,
-    Math.max(MIN_SPIN_RETURN, Math.abs(dayReturn)),
-  );
-  const normalized =
-    (clamped - MIN_SPIN_RETURN) / (MAX_SPIN_RETURN - MIN_SPIN_RETURN);
-  return (
-    ORRERY_MIN_AXIAL_SPIN +
-    normalized * (ORRERY_MAX_AXIAL_SPIN - ORRERY_MIN_AXIAL_SPIN)
-  );
 }
 
 export function healthScalarForPortfolio(

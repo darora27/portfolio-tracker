@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { LIVE_QUOTE_REFRESH_INTERVAL_MS } from "@/lib/observatory/data-refresh";
 import { dayChange } from "@/lib/portfolio/holdings";
 import type { PositionRow } from "./PositionsTable";
 
@@ -56,7 +57,7 @@ export function LiveQuotesProvider({
       }
     }
 
-    const intervalId = setInterval(poll, 60_000);
+    const intervalId = setInterval(poll, LIVE_QUOTE_REFRESH_INTERVAL_MS);
     return () => clearInterval(intervalId);
   }, []);
 

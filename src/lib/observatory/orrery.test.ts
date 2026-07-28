@@ -2,16 +2,13 @@ import { describe, expect, it } from "vitest";
 import {
   ORRERY_FLAT_EPSILON,
   ORRERY_MAX_ANGULAR_SPEED,
-  ORRERY_MAX_AXIAL_SPIN,
   ORRERY_MAX_RADIUS,
   ORRERY_MIN_ANGULAR_SPEED,
-  ORRERY_MIN_AXIAL_SPIN,
   ORRERY_MIN_RADIUS,
   ORRERY_PLANET_CLEARANCE,
   ORRERY_PLANET_COUNT,
   ORRERY_SUN_CLEARANCE,
   angularSpeedForWeeklyReturn,
-  axialSpinForDayReturn,
   directionForWeeklyReturn,
   healthScalarForPortfolio,
   orbitRadiiForPlanetRadii,
@@ -97,17 +94,6 @@ describe("Portfolio Orrery encodings", () => {
           ORRERY_PLANET_CLEARANCE,
       );
     }
-  });
-
-  it("maps day-return magnitude to safely clamped axial spin", () => {
-    expect(axialSpinForDayReturn(null)).toBe(ORRERY_MIN_AXIAL_SPIN);
-    expect(axialSpinForDayReturn(0)).toBe(ORRERY_MIN_AXIAL_SPIN);
-    expect(axialSpinForDayReturn(-0.06)).toBe(ORRERY_MAX_AXIAL_SPIN);
-    expect(axialSpinForDayReturn(0.5)).toBe(ORRERY_MAX_AXIAL_SPIN);
-    expect(axialSpinForDayReturn(0.0305)).toBeCloseTo(0.3, 10);
-    expect(axialSpinForDayReturn(-0.03)).toBe(
-      axialSpinForDayReturn(0.03),
-    );
   });
 
   it("normalizes sun health against volatility and clamps extremes", () => {

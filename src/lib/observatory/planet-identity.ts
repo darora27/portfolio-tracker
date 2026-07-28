@@ -4,6 +4,7 @@ export type PlanetIdentity = {
   labelHex: string;
   macroFeature: string;
   emissiveSignature: string;
+  relightHex?: string;
 };
 
 /** The committed normal-text pairs used by §9 chrome. */
@@ -42,6 +43,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#eaf2ff",
     macroFeature: "pinstripe monolith range",
     emissiveSignature: "quantum-dome grid",
+    relightHex: "#8fa3d6",
   },
   {
     ticker: "COST",
@@ -49,6 +51,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#fff2e9",
     macroFeature: "warehouse crater complex",
     emissiveSignature: "red dock lanes",
+    relightHex: "#8a8274",
   },
   {
     ticker: "INTC",
@@ -56,6 +59,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#fff0e8",
     macroFeature: "copper reconstruction spiral",
     emissiveSignature: "blue coolant channels",
+    relightHex: "#5a6270",
   },
   {
     ticker: "NBIS",
@@ -63,6 +67,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#faedff",
     macroFeature: "newborn accretion scar",
     emissiveSignature: "violet-white compute terraces",
+    relightHex: "#a05a9e",
   },
   {
     ticker: "CBRS",
@@ -70,6 +75,7 @@ export const PLANET_IDENTITIES = [
     labelHex: "#fff1dd",
     macroFeature: "wafer-scale core",
     emissiveSignature: "cyan coolant rivers",
+    relightHex: "#9c7d3f",
   },
 ] as const satisfies readonly PlanetIdentity[];
 

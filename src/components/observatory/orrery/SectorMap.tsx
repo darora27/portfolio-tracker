@@ -27,6 +27,9 @@ export function SectorMap({
         <span>SECTOR CHART</span>
         <h2 id="sector-map-title">{viewingObserved ? system.name : "LOCAL SECTOR"}</h2>
       </header>
+      <p className={styles.sectorExplanation}>
+        Solid core = my portfolio · hollow core = observed public system · health uses public percent returns only
+      </p>
       <div className={styles.sectorGrid} aria-hidden="true" />
       {viewingObserved ? (
         <div className={styles.observedSystem} aria-label={`${system.name} observed system`}>
