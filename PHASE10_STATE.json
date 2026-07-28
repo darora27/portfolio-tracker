@@ -154,7 +154,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T14:30:17Z",
+  "updated_at": "2026-07-28T15:52:46Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
@@ -419,5 +419,19 @@
     ],
     "carried_authorizations": "Public trade log (action/ticker/date/% impact only) and public stock news for held tickers, both authorized 2026-07-28 and recorded in UNIVERSE_IDEAS_2.md §9.3-9.4. Both are new disclosure surfaces requiring extended canary coverage.",
     "testing_note": "§9's acceptance criteria explicitly forbid `expect(source).toContain(...)` as coverage for rendered behavior. §8 shipped five such guards; one passed while the trails it claimed to protect were fogged to invisibility."
+  },
+  "roadmap_amendment_3": {
+    "amended_at": "2026-07-28",
+    "amended_by": "Devan (owner), recorded by claude/fable-5 (cowork, owner-directed)",
+    "change": "Inserted a new §10 'Universe colour, material, and command structure'. Former §10-§15 renumbered to §11-§16 with scope and acceptance criteria unchanged: §11 /compare, §12 after-hours, §13 /research, §14 /history, §15 /trades, §16 integration.",
+    "reason": "The owner's live review of §9 produced a direction change (retro-but-colourful) plus a set of defects. The round-3 creative response (UNIVERSE_IDEAS_3.md rev 2) resolves the colour direction against the project's reserved red/green semantics via the Fraunhofer rule, and redesigns texture luminance, brand-mark integration, trail encoding, sun scale, the starfield, and Mission Control's structure. That is a section's worth of work.",
+    "why_not_folded_into_9": "Most of the owner's defects live in code §10 rewrites anyway — the trail-behind fix and the texture regeneration that corrects mirrored marks are already steps 2 and 5 of the round-3 sequence. Filing them into §9 would mean fixing them once and redesigning the same files immediately after. §9 has run seventeen turns; it closes on its own criteria and the owner's new scope becomes §10.",
+    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from §2-§15 to §2-§16; the completion check now requires §16.",
+    "direction_docs": [
+      "UNIVERSE_IDEAS_3.md",
+      "UNIVERSE_PALETTE_3.html"
+    ],
+    "verification_note": "Every quantitative claim in UNIVERSE_IDEAS_3.md was independently recomputed before adoption: all eight world luminances matched to three decimals and the L~=0.15 visible/dark split the owner reported holds 8/8; both trail-ramp dark-end contrast floors (3.80, 3.08) and the neon end (17.28) exact; hue drift 3.5 deg (gain) and 0.5 deg (loss) against a 10 deg gate; paper pair 13.02:1; luminance monotonic along both signal ramps. Round-3 revision 1's six contrast claims and sixteen glass-hue firewall checks were also verified exact in a prior pass.",
+    "carried_defects": "Ten owner-reported defects are recorded in PHASE10.md §10 'Owner defects to close in this section' rather than being filed against §9."
   }
 }

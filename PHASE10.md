@@ -798,7 +798,120 @@ solved structure; this section solves craft.
 
 ---
 
-## §10. `/compare` guided simulation story
+## §10. Universe colour, material, and command structure
+
+Inserted July 28, 2026 by owner direction. Former §10–§15 renumbered to
+§11–§16; their scope and acceptance criteria are unchanged.
+
+Authoritative sources, in order: `UNIVERSE_IDEAS_3.md` (the accepted round-3
+design, revision 2) → `UNIVERSE_PALETTE_3.html` (the computed palette board) →
+`docs/reference/` → this section. Round-3 supersedes `UNIVERSE_IDEAS_2.md`
+wherever the two conflict.
+
+### Purpose
+
+§8 built the universe; §9 gave it craft. This section gives it **colour,
+material, and a command structure** — and fixes what the owner could not use.
+
+Round 3 resolves the owner's "retro but lots of colours" direction against the
+project's reserved red/green semantics with the **Fraunhofer rule**: decorative
+and instrument light draws the full spectrum *minus two stolen bands* — green
+125°–165° and red 345°–20° at chroma > 0.30 — which belong to meaning alone.
+Only meaning burns white-hot. Ambient washes are hue-exempt but alpha-capped.
+Matter is exempt.
+
+### Work
+
+Sequenced so the contract lands before any pixel moves
+(`UNIVERSE_IDEAS_3.md` §11):
+
+1. **`src/lib/observatory/universe-palette.ts`** — one source of colour truth,
+   replacing hexes currently scattered across `scene-model.ts`,
+   `OrreryScene.tsx`, `orrery.module.css`, and the bays. Ships with the
+   two-tier firewall lint, the three decorative ramp LUTs, the two signal ramp
+   LUTs, and the extended contrast table. CSS custom properties so the 2D
+   fallback inherits the palette.
+2. **Sun scale, trails, and spin.** `sunRadius = max(2.4, 1.25 × largest
+   planet radius)`. Trail magnitude moves into hue lightness with the shipped
+   `#63ef98`/`#ff665f` as exact ramp midpoints; arcs lengthen 18–30° → 36–64°;
+   the white-hot head becomes a fixed 12% calibration reference. Trails render
+   *behind* the planet. Axial spin is **de-encoded** — decorative only, 80–140 s
+   seeded periods; moons slow to ~40 s and stop axial spin.
+3. **Star population and ring falloff** — the graph-paper cure. Magnitude
+   distribution, gaussian clustering, diffraction spikes on the brightest
+   twelve, density ×1.8 inside the aurora band; rings gain vertex-alpha falloff
+   so they stop reading as compass circles.
+4. **Mission Control restructure** — one dominant bay (PLOT at ~55%), one huge
+   number (64px day value), real material contrast (parchment for words, black
+   glass for numbers), the unread prose column deleted, radar rings coloured by
+   each holding's ramp value with click-through to that holding.
+5. **Texture regeneration** — relight the five dark worlds into the measured
+   luminance window, and carve the brand marks into the material stack.
+6. **Aurora, weather wisps, brand-first entry, radar sweep.**
+7. **Prism cursor exhaust.**
+
+### Owner defects to close in this section
+
+Reported live and carried from §9 rather than reopening it:
+
+- Trails render **ahead** of the planet (geometry sign runs with velocity).
+- Brand marks render **mirrored** — a flipY / seam-roll ordering bug in the
+  texture compositor. Add a chirality assertion to the sphere-strip capture.
+- **No trail renders** for holdings near flat; neutral must show something.
+- Asteroid-belt holdings have **no visible body and cannot be clicked**.
+- The sun **cannot be clicked** from the zoomed-out view.
+- An unexplained **orange shadow** appears in the scene.
+- The sun **occludes ASML** during rotation at close camera.
+- Zooming out reaches the sector map **with no explanation of what it is**.
+- Moons and satellites exist but **do nothing**.
+- Planet-detail text is **too small**; the panel must widen and the planet
+  shrink and move left.
+
+### Acceptance
+
+- **Behavioral:** Every planet is identifiable at OVERVIEW; belt bodies, moons,
+  satellites and the sun are activatable by pointer and keyboard from every
+  camera state; the radar's rings click through to their holding; every bay
+  answers a named question with a working destination.
+- **Visual:** Each world's equatorial-band mean luminance sits in **[0.16,
+  0.55]**, asserted from a live sphere-strip render, not from the source map.
+  Brand marks read as carved into the terrain — sharing its lighting and
+  grain — and at least one instance faces the camera within 60° at all times.
+  The sun is the largest body in the scene. Trails carry direction and
+  magnitude in a still frame. 1440×900 evidence required for every surface.
+- **Desktop-first scope:** unchanged. Below 1024px the existing tested fallback
+  ships as-is — `canvas` count 0 at 390px and 320px.
+- **Accessibility:** The semantic DOM remains the accessible source of truth.
+  No encoding lives only in colour, motion, or glow — trail magnitude is
+  carried by arc, lightness, *and* text. Reduced motion disables the sweep,
+  twinkle, and cursor exhaust while preserving every encoding. Contrast
+  verified by computed WCAG ratio from source tokens.
+- **The colour firewall:** decorative or instrument light at chroma > 0.30 must
+  fall outside hue 125°–165° and 345°–20°; ambient washes are hue-exempt but
+  alpha-capped ≤ 0.18; every sample of both signal ramps stays within ±10° of
+  its anchor. Enforced by lint over the palette module, with all five ramps
+  transit-tested at 64 samples.
+- **Financial honesty:** every visual channel encodes one real computed number.
+  Market-relative readings derive from TWR. The aurora re-encodes the weekly
+  series the SCOPE already draws — percent magnitudes only.
+- **Tests:** encoding functions pure, deterministic, clamped, unit-tested
+  against hand-computed fixtures. **Rendered behaviour is verified by
+  scene-graph or pixel assertions, never by `expect(source).toContain(...)`.**
+  The trail sampler upgrades from literal-hex matching to encoding assertions:
+  hue lock ±10°, ΔE*ab ≤ 8 against the value computed from the payload, and
+  ordering across same-direction holdings.
+- **Build:** full tests and production build pass. Texture payload measured at
+  each regeneration gate against a 30 MB ceiling; if the escalation ladder in
+  `UNIVERSE_IDEAS_3.md` §2.3 reaches its final step, record it in the progress
+  log rather than absorbing it. Route-owned long task stays under 50 ms; no
+  post-processing pass is added.
+- **Privacy:** `/share` stays public with zero dollar amounts and zero
+  owner-only fields, including in every new encoded channel and in the radar's
+  click-through detail card. Existing canary tests continue to pass.
+
+---
+
+## §11. `/compare` guided simulation story
 
 ### Purpose
 
@@ -838,7 +951,7 @@ Turn three correct simulations into an educational explanation of divergence.
 
 ---
 
-## §11. After-hours capability spike and conditional holdings slice
+## §12. After-hours capability spike and conditional holdings slice
 
 Consolidated July 25, 2026 by owner direction from the former §8
 (capability spike) and former §9 (conditional slice). The capability gate
@@ -925,7 +1038,7 @@ fake data.
 
 ---
 
-## §12. `/research` prioritization and filing context
+## §13. `/research` prioritization and filing context
 
 ### Purpose
 
@@ -962,7 +1075,7 @@ while preserving insider filings.
 
 ---
 
-## §13. `/history` event narrative
+## §14. `/history` event narrative
 
 ### Purpose
 
@@ -999,7 +1112,7 @@ evolved.
 
 ---
 
-## §14. `/trades` decision review and focused entry
+## §15. `/trades` decision review and focused entry
 
 ### Purpose
 
@@ -1037,7 +1150,7 @@ trade-entry reliability.
 
 ---
 
-## §15. Integration, local fonts, resilience, and acceptance
+## §16. Integration, local fonts, resilience, and acceptance
 
 ### Purpose
 
