@@ -10,7 +10,12 @@
     "import": "tsx scripts/import.ts",
     "backfill-sectors": "tsx scripts/backfill-sectors.ts",
     "test": "vitest run",
-    "verify:share-route": "node scripts/verify-share-route.mjs"
+    "verify:share-route": "node scripts/verify-share-route.mjs",
+    "phase10:context": "node scripts/phase10-generate-context.mjs",
+    "phase10:validate": "node scripts/phase10-validate-state.mjs",
+    "phase10:acceptance": "node scripts/phase10-acceptance.mjs",
+    "phase10:workflow:report": "node scripts/phase10-workflow-report.mjs",
+    "phase10:workflow:test": "node scripts/phase10-workflow-selftest.mjs && bash scripts/phase10-relay-selftest.sh"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.8",

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "section": "§10",
+  "spec_doc": "docs/phase10-workflow/specs/section-10.md",
+  "candidate_sha": null,
+  "criteria": [
+    {
+      "id": "BHV-01",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "One concrete, observable requirement from the section specification.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run path/to/focused.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/example-evidence.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    }
+  ]
+}

@@ -1,13 +1,16 @@
 # Phase 10 Handoff Workflow — Implementation Specification
 
-Status: specification only. Nothing in this document has been implemented,
-no application code changed, no state migrated, and Phase 10 §2 has not
-begun. This document tells Codex exactly what to build to satisfy
-`docs/phase10-workflow/DESIGN_BRIEF.md`. Every decision below is final for
-this pass — do not relitigate role division, retry policy, or file
-locations while implementing; if something here is genuinely ambiguous or
-contradicts a hard constraint, stop and report it rather than guessing (see
-§14).
+Status: historical bootstrap specification. It records how the original v2
+relay was designed and implemented before later roadmap amendments. It is not
+operational authority and its embedded file copies and original §2–§13 bounds
+must not be followed as live instructions.
+
+Current operational authority is
+`docs/phase10-workflow/workflow.json`, `PHASE10_STATE.json`, the generated
+`docs/phase10-workflow/ACTIVE_CONTEXT.md`, and the two standing prompt files.
+The workflow validator derives the terminal section and stage invariants from
+the manifest so later roadmap insertions cannot silently stale this historical
+record.
 
 Author: Claude Code, product and technical lead for this bootstrap pass.
 Written against repo state at the commit immediately preceding this file's

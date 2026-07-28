@@ -93,7 +93,7 @@ preflight() {
   require_clean_tree || return 2
 
   if ! node scripts/phase10-validate-state.mjs; then
-    echo "BLOCKED: PHASE10_STATE.json validation failed."
+    echo "BLOCKED: canonical Phase 10 workflow validation failed."
     return 2
   fi
 }

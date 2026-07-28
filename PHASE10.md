@@ -2,22 +2,15 @@
 
 Status: implementation active
 
-Implementation status: §0–§6 accepted. §1 was accepted by Codex with an
-explicit owner-approved exception to the absolute zero-long-task budget. The
-50 ms classification boundary and all observed absolute tasks remain recorded;
-for §1 only, the accepted gate is no attributable route-owned long task and no
-route-owned client hydration. §2–§6 were accepted under the Claude-lead /
-Codex-implementation workflow (accepted commits: `PHASE10_STATE.json`
-`sections_history`). §7 (Spatial Observatory) is current, at the `specify`
-stage.
+Live implementation status is generated in
+`docs/phase10-workflow/ACTIVE_CONTEXT.md` from `PHASE10_STATE.json` and the
+canonical workflow manifest. Do not maintain or infer a second current-section
+claim in this roadmap.
 
-Roadmap amendment (July 25, 2026, owner-directed): a new §7 "Spatial
-Observatory" is inserted; the former §7 (`/compare` guided simulation story)
-is renumbered to §8; the former §8 (after-hours capability spike) and former
-§9 (conditional after-hours slice) are consolidated into one §9 that
-preserves the capability gate and every reliability/privacy requirement;
-§10–§13 keep their numbers and purposes. Accepted history (§0–§6) is
-unchanged. Recorded by claude/fable-5 (cowork), directed by Devan.
+The numbered roadmap below records all owner amendments in place. Its terminal
+section is defined only by
+`docs/phase10-workflow/workflow.json` (`managed_sections.terminal`) and checked
+against the highest roadmap heading by the workflow validator.
 
 Selected direction: Field Journal structural base with Night Orbit orbital
 chapter navigation, selected-body inspector, and static concentric fallback
@@ -1197,7 +1190,7 @@ Phase 10 experience.
 
 ## Required final report
 
-After §13 acceptance, report:
+After §16 acceptance, report:
 
 1. selected direction and any combined named parts;
 2. sections completed, builders/reviewers, and accepted commits;

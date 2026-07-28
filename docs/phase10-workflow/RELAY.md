@@ -5,8 +5,9 @@ Status: owner-approved from §3 remediation review onward.
 ## Purpose
 
 `scripts/phase10-relay.sh` removes Devan from ordinary successful
-Claude-to-Codex handoffs while preserving the existing fixed roles, standing
-prompts, state validator, locks, commits, and bounded-review discipline.
+Claude-to-Codex handoffs while preserving the fixed roles, canonical workflow
+manifest, generated active-context packet, state validator, locks, commits,
+and bounded-review discipline.
 
 It is intentionally not a general autonomous orchestrator. It reads only
 durable machine state and Git state. It never interprets conversational output.
@@ -19,8 +20,11 @@ From the repository root:
 ./scripts/phase10-relay.sh --max-turns 6
 ```
 
-`6` is the default and is enough for a typical specify → implement → review →
-accept sequence with room for one remediation handoff. Valid limits are 1–20.
+`6` is the default and is enough for a typical specify → implement → review
+and accept sequence with room for one remediation loop. A passing Claude
+review accepts the candidate and initializes the next section in that same
+turn; a separate documentation-only acceptance turn is not part of the normal
+path. Valid limits are 1–20.
 
 Read-only preflight:
 
@@ -31,18 +35,21 @@ Read-only preflight:
 Network-free workflow self-test:
 
 ```bash
-./scripts/phase10-relay-selftest.sh
+npm run phase10:workflow:test
 ```
 
-The self-test uses temporary fake repositories and fake Claude/Codex
-executables. It verifies serial state transitions, STOP behavior, runner exit
+The test validates manifest/state/roadmap/prompt agreement and acceptance
+ledger rules, then uses temporary fake repositories and fake Claude/Codex
+executables to verify serial state transitions, STOP behavior, runner exit
 code propagation, and lock release without consuming model tokens.
 
 ## What one relay iteration does
 
 1. Refuses to continue if `STOP` or `PHASE10_LOCK` exists.
 2. Requires `git status --porcelain` to be empty.
-3. Runs `node scripts/phase10-validate-state.mjs`.
+3. Runs `node scripts/phase10-validate-state.mjs`, which checks the live state
+   and cross-file protocol drift, including whether `ACTIVE_CONTEXT.md` is
+   current.
 4. Reads `status`, `next_actor`, `stage`, and `current_section` from
    `PHASE10_STATE.json`.
 5. Invokes exactly one fixed runner:
@@ -50,9 +57,13 @@ code propagation, and lock release without consuming model tokens.
    - `next_actor: codex` → `scripts/phase10-codex-implementation.sh`
 6. Waits for that process to exit.
 7. Requires the lock to be released, the tree to be clean, state to validate,
-   the Git commit to change, and the state-file hash to change.
+   the Git commit to change, and the state-file hash to change. The acting
+   runner must regenerate the active packet before committing.
 8. Stops or begins the next bounded iteration based only on the newly validated
    machine state.
+
+Each fixed runner acquires `PHASE10_LOCK` with an atomic no-clobber create.
+Concurrent manual starts therefore cannot both pass a check-then-write race.
 
 ## Stop behavior
 
@@ -79,6 +90,7 @@ The relay:
 - runs one agent at a time;
 - never parses stdout/stderr to decide control flow;
 - never edits files or runs `git commit`;
+- never treats generated context or acceptance evidence as optional;
 - never swaps Claude and Codex roles;
 - never retries a failed or ambiguous turn;
 - never sleeps or guesses a usage-reset time;

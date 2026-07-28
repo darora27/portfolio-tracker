@@ -107,6 +107,9 @@ mkdir -p \
   "$RUNNER_REPO/fake-home"
 cp scripts/phase10-claude-lead.sh "$RUNNER_REPO/scripts/"
 cp scripts/phase10-codex-implementation.sh "$RUNNER_REPO/scripts/"
+cat > "$RUNNER_REPO/scripts/phase10-validate-state.mjs" <<'EOF'
+console.log("fixture workflow valid");
+EOF
 printf 'fixture\n' > "$RUNNER_REPO/docs/phase10-workflow/prompts/claude-lead.md"
 printf 'fixture\n' > "$RUNNER_REPO/docs/phase10-workflow/prompts/codex-implementation.md"
 git -C "$RUNNER_REPO" init -q
@@ -150,5 +153,24 @@ if [ -e "$RUNNER_REPO/PHASE10_LOCK" ]; then
   echo "FAIL: runner lock was not released."
   exit 1
 fi
+
+printf 'owner=existing\n' > "$RUNNER_REPO/PHASE10_LOCK"
+set +e
+(
+  cd "$RUNNER_REPO"
+  PATH="$RUNNER_REPO/fake-bin:$PATH" HOME="$RUNNER_REPO/fake-home" \
+    ./scripts/phase10-claude-lead.sh >/dev/null 2>&1
+)
+LOCK_STATUS=$?
+set -e
+if [ "$LOCK_STATUS" -ne 1 ]; then
+  echo "FAIL: runner should refuse an existing lock; got $LOCK_STATUS."
+  exit 1
+fi
+if [ "$(cat "$RUNNER_REPO/PHASE10_LOCK")" != "owner=existing" ]; then
+  echo "FAIL: runner overwrote an existing lock."
+  exit 1
+fi
+rm "$RUNNER_REPO/PHASE10_LOCK"
 
 echo "Phase 10 relay self-test passed."

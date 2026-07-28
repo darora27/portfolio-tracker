@@ -1,14 +1,16 @@
 # Phase 10 Progress Log
 
-Read this file first in every Phase 10 session, before doing anything else.
-Then read `AGENTS.md`, `PRODUCT_DIRECTION.md`,
-`docs/PHASE10_UX_ARCHITECTURE.md`, `docs/PHASE10_AGENT_WORKFLOW.md`,
-`PHASE10.md`, and `PHASE10_STATE.json`.
+This is the append-only human history. It is no longer recurring turn context.
+After the mandatory `STOP` check, read
+`docs/phase10-workflow/workflow.json`, `PHASE10_STATE.json`, and the generated
+`docs/phase10-workflow/ACTIVE_CONTEXT.md`. Read this full log only when the
+active packet or a task needs historical evidence.
 
 Work only the current section recorded in `PHASE10_STATE.json`. Claude and
 Codex work as a relay and never access this repository simultaneously. Every
-completed checklist item gets an executor suffix. Builder/refiner sections use
-one green commit per section: `phase10(§N): <summary>`.
+completed checklist item gets an executor suffix. Current commit and
+verification rules are canonical in
+`docs/phase10-workflow/workflow.json`.
 
 ---
 
@@ -931,3 +933,58 @@ latest handoff doc for current status instead.
 - Handoff to §10 `specify`:
   `docs/phase10-handoffs/2026-07-28-section-10-claude-lead-accept-to-claude-lead-specify.md`
 - Machine state: `PHASE10_STATE.json` (`sections_history` §9, `section` §10)
+
+### Phase 10 workflow control-plane upgrade — July 28, 2026
+
+- [x] Converted live workflow constants, roles, stages, transitions,
+  verification policy, global gates, context routing, and the terminal section
+  into the canonical machine-readable
+  `docs/phase10-workflow/workflow.json` — done by codex/gpt-5
+- [x] Added generated `ACTIVE_CONTEXT.md` plus cross-file validation so stale
+  state, roadmap bounds, terminal markers, prompts, policy files, or generated
+  context stop a runner before a model turn is spent — done by codex/gpt-5
+- [x] Reduced recurring reading to the live control packet and exact
+  state-routed inputs; retained the full progress log, product direction, UX
+  architecture, roadmap, and bootstrap specification as on-demand historical
+  evidence — done by codex/gpt-5
+- [x] Added the design-proof gate and reusable template covering intent,
+  annotated references, negative patterns, design grammar, state matrix,
+  desktop/mobile proof surfaces, owner decision, freeze boundary, and explicit
+  acceptance mapping — done by codex/gpt-5
+- [x] Added executable section acceptance ledgers with stable criteria,
+  dimensions, risks, verifier types, retained artifacts, separate implementer
+  and reviewer evidence, browser-only deferral rules, candidate SHA binding,
+  and persistent post-acceptance validation — done by codex/gpt-5
+- [x] Collapsed a passing review and acceptance into one Claude Lead turn while
+  preserving two independent full `npm test` / `npm run build` gates. The
+  legacy `accept` stage remains only for already-routed or explicit exception
+  recovery — done by codex/gpt-5
+- [x] Added a bounded, owner-directed provider-outage preparation lane that
+  permits useful audits and draft inputs without role reassignment,
+  self-approval, application changes, or live state advancement — done by
+  codex/gpt-5
+- [x] Strengthened runner preflight to check `STOP` first and reject stale
+  canonical workflow/context before acquiring the lock or invoking either
+  provider; kept the relay serial, prose-blind, non-retrying, and
+  non-committing — done by codex/gpt-5
+- [x] Added network-free workflow and relay self-tests plus a read-only health
+  report that exposes live route, always-read packet size, artifact counts, and
+  review hotspots. At implementation time it correctly reports §8 with six
+  recorded review outcomes and §9 with five — done by codex/gpt-5
+- [x] Verification: `npm run phase10:validate` PASS;
+  `npm run phase10:workflow:test` PASS (workflow + relay);
+  shell and Node syntax checks PASS; `git diff --check` PASS;
+  `npm run build` PASS including TypeScript, 18 static-page tasks, `/share`
+  200, and Mission Control manifest 200 — done by codex/gpt-5
+- [x] Full `npm test` remains exactly at the owner-approved §10 inherited
+  baseline: 497 passed / 2 failed of 499, with only
+  `planet-textures.test.ts` failing on the 22,450,706-byte legacy 15 MB cap and
+  low luminance standard deviation (first observed value 0.098092). No
+  application source, texture, test, state route, or acceptance criterion was
+  changed — done by codex/gpt-5
+- [x] `npm run lint` identified only pre-existing application debt outside this
+  workflow diff: 3 errors and 3 warnings in
+  `TimelineChapter.tsx`, `CountUpSettle.tsx`, `PortfolioOrrery.tsx`,
+  `generate-planet-textures.mjs`, `OrreryWorld.tsx`, and
+  `PlanetDetail.tsx`; no new workflow script lint finding — done by
+  codex/gpt-5

@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "managed_sections": {
+    "first": 2,
+    "terminal": 16
+  },
+  "files": {
+    "state": "PHASE10_STATE.json",
+    "roadmap": "PHASE10.md",
+    "progress": "PHASE10_PROGRESS.md",
+    "active_context": "docs/phase10-workflow/ACTIVE_CONTEXT.md",
+    "handoff_template": "docs/phase10-handoffs/TEMPLATE.md",
+    "acceptance_directory": "docs/phase10-workflow/acceptance",
+    "design_gate": "docs/phase10-workflow/DESIGN_GATE.md",
+    "design_proof_template": "docs/phase10-workflow/design-proofs/TEMPLATE.md",
+    "provider_outage": "docs/phase10-workflow/PROVIDER_OUTAGE.md"
+  },
+  "stages": {
+    "specify": {
+      "role": "claude_lead",
+      "next_actor": "claude"
+    },
+    "implement": {
+      "role": "codex_implementation",
+      "next_actor": "codex"
+    },
+    "review": {
+      "role": "claude_lead",
+      "next_actor": "claude"
+    },
+    "remediate": {
+      "role": "codex_implementation",
+      "next_actor": "codex"
+    },
+    "accept": {
+      "role": "claude_lead",
+      "next_actor": "claude",
+      "legacy_or_exception_only": true
+    }
+  },
+  "transitions": {
+    "specify_pass": "implement",
+    "implement_pass": "review",
+    "review_fail": "remediate",
+    "remediate_pass": "review",
+    "review_pass": "accept_and_advance",
+    "accept": "accept_and_advance"
+  },
+  "verification": {
+    "implementation_candidate": [
+      "npm test",
+      "npm run build"
+    ],
+    "independent_final_review": [
+      "npm test",
+      "npm run build"
+    ],
+    "documentation_only_acceptance": [],
+    "policy": "Two independent full gates remain mandatory: the implementation actor verifies the candidate before committing, and the lead independently verifies the final candidate during review. A passing review records acceptance in the same turn; no third full run exists only for bookkeeping."
+  },
+  "acceptance_ledger": {
+    "schema_version": 1,
+    "required_from_section": 10,
+    "path_pattern": "docs/phase10-workflow/acceptance/section-{N}.json",
+    "spec_path_pattern": "docs/phase10-workflow/specs/section-{N}.md",
+    "dimensions": [
+      "behavioral",
+      "visual",
+      "mobile",
+      "accessibility",
+      "tests",
+      "build",
+      "privacy"
+    ],
+    "risks": [
+      "critical",
+      "high",
+      "medium",
+      "low"
+    ],
+    "statuses": [
+      "not_run",
+      "pass",
+      "fail",
+      "blocked",
+      "deferred_to_reviewer",
+      "not_applicable"
+    ]
+  },
+  "global_gates": [
+    {
+      "id": "G-STOP",
+      "rule": "STOP is checked before any other repository read or write."
+    },
+    {
+      "id": "G-SERIAL",
+      "rule": "Exactly one coding agent may access the repository at a time; PHASE10_LOCK and the process check enforce this."
+    },
+    {
+      "id": "G-CLEAN",
+      "rule": "The worktree is clean at turn start and fully committed at turn end."
+    },
+    {
+      "id": "G-BOUNDARY",
+      "rule": "Security, privacy, authentication, financial correctness, and data integrity outrank product and visual choices."
+    },
+    {
+      "id": "G-VERIFY",
+      "rule": "Implementation and remediation candidates require full tests and production build; final review repeats both independently."
+    },
+    {
+      "id": "G-EVIDENCE",
+      "rule": "No visual, browser, mobile, accessibility, privacy, fallback, or performance check may be claimed without retained evidence."
+    },
+    {
+      "id": "G-SCOPE",
+      "rule": "Review findings cite a declared acceptance criterion; remediation changes only bounded findings."
+    },
+    {
+      "id": "G-SECRETS",
+      "rule": "Never read, print, edit, stage, or commit .env* contents, and never run vercel --prod."
+    },
+    {
+      "id": "G-PUBLIC",
+      "rule": "New routes are owner-gated by default and new public data requires an explicit privacy decision and regression coverage."
+    },
+    {
+      "id": "G-DESIGN",
+      "rule": "A user-facing section must satisfy the design-proof gate or cite an owner-approved equivalent before production implementation."
+    }
+  ],
+  "context": {
+    "always_read": [
+      "AGENTS.md",
+      "PHASE10_STATE.json",
+      "docs/phase10-workflow/ACTIVE_CONTEXT.md"
+    ],
+    "active_context_hash_sources": [
+      "docs/phase10-workflow/README.md",
+      "docs/PHASE10_AGENT_WORKFLOW.md",
+      "docs/phase10-workflow/DESIGN_GATE.md",
+      "docs/phase10-workflow/design-proofs/TEMPLATE.md",
+      "docs/phase10-workflow/PROVIDER_OUTAGE.md",
+      "docs/phase10-workflow/prompts/claude-lead.md",
+      "docs/phase10-workflow/prompts/codex-implementation.md",
+      "docs/phase10-handoffs/TEMPLATE.md",
+      "docs/phase10-workflow/acceptance/README.md"
+    ],
+    "read_when_named_by_active_context": [
+      "current section specification",
+      "current section direction documents",
+      "current handoff",
+      "relevant product or UX source sections"
+    ],
+    "history_on_demand": [
+      "PHASE10_PROGRESS.md",
+      "PRODUCT_DIRECTION.md",
+      "docs/PHASE10_UX_ARCHITECTURE.md",
+      "docs/PHASE10_AGENT_WORKFLOW.md",
+      "PHASE10.md",
+      "docs/phase10-workflow/IMPLEMENTATION_SPEC.md"
+    ]
+  },
+  "drift_checks": {
+    "roadmap_terminal_phrase": "After §{terminal} acceptance, report:",
+    "prompt_terminal_token": "workflow.managed_sections.terminal",
+    "operational_prompts": [
+      "docs/phase10-workflow/prompts/claude-lead.md",
+      "docs/phase10-workflow/prompts/codex-implementation.md"
+    ]
+  }
+}

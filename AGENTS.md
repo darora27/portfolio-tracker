@@ -15,12 +15,15 @@ Before doing anything:
 1. Check that `STOP` does not exist at the repo root. If it does, stop
    immediately — do not read further files, do not touch git, do not
    touch `PHASE10_STATE.json`.
-2. Read the current `PHASE10_PROGRESS.md` before doing anything else.
-3. For any Phase 10 work, also read `PRODUCT_DIRECTION.md`,
-   `docs/PHASE10_UX_ARCHITECTURE.md`, `docs/PHASE10_AGENT_WORKFLOW.md`,
-   `PHASE10.md`, and `PHASE10_STATE.json`. These carry the selected product
-   direction and role-specific workflow that generic frontend advice must not
-   override.
+2. Read `docs/phase10-workflow/workflow.json`, `PHASE10_STATE.json`, and the
+   generated `docs/phase10-workflow/ACTIVE_CONTEXT.md`. Run
+   `npm run phase10:validate` before changing Phase 10 files; stale generated
+   context or protocol drift is a hard stop.
+3. Read the current section specification, direction documents, handoff, and
+   relevant product/UX source sections named by `ACTIVE_CONTEXT.md`.
+   `PHASE10_PROGRESS.md`, the full historical direction/architecture docs, and
+   `docs/phase10-workflow/IMPLEMENTATION_SPEC.md` are history/on-demand
+   evidence, not recurring prompt payload.
 4. From Phase 10 §2 onward, follow the Claude-lead / Codex-implementation
    workflow in `docs/PHASE10_AGENT_WORKFLOW.md` and the standing prompt
    files in `docs/phase10-workflow/prompts/`. §0 and §1 used an earlier
@@ -30,9 +33,10 @@ Before doing anything:
    Devan may invoke those fixed runners manually or through the bounded
    state-driven `scripts/phase10-relay.sh`; the relay never changes roles,
    parses agent prose, retries, commits, or runs agents concurrently.
-5. Work sections in order; one commit per section
-   (`phase10(§N): <summary>`); `npm test` and `npm run build` must be green
-   before every commit.
+5. Work sections in order. Implementation/remediation candidates use
+   `phase10(§N): <summary>` and must pass `npm test` plus `npm run build`.
+   Review/workflow-only commits use the documented review/workflow prefixes
+   and must not conceal a known red gate.
 6. Append your tool/model name to every checklist item you complete
    (e.g. `— done by claude-code/sonnet-5`, `— done by codex/<model>`).
 7. Never run alongside another agent on this repo — confirm no other
@@ -42,5 +46,7 @@ Before doing anything:
 8. Never run `vercel --prod`; never print, edit, stage, or commit
    `.env*` contents; new routes are owner-gated by default unless the
    phase spec says otherwise.
-9. Leave the repo green (tests + build passing) and committed before
-   stopping for any reason — rate limit, budget, or end of task.
+9. Leave the repo fully committed before stopping. Leave tests/build green
+   unless `ACTIVE_CONTEXT.md` names a current, owner-approved, time-boxed
+   inherited-red exception; in that case do not add failures, record the exact
+   unchanged failure set, and close it in the owning section.

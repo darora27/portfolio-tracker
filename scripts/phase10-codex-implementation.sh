@@ -6,6 +6,11 @@
 set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
+if [ -e STOP ]; then
+  echo "STOP is present. Codex will not start."
+  exit 3
+fi
+
 LOCK_FILE="PHASE10_LOCK"
 PROMPT_FILE="docs/phase10-workflow/prompts/codex-implementation.md"
 CODEX_MODEL="${PHASE10_CODEX_MODEL:-}"
@@ -15,25 +20,30 @@ LOG_DIR="$HOME/.phase10-workflow-logs"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/$(date -u +%Y%m%dT%H%M%SZ)-codex-implementation.log"
 
-if [ -e "$LOCK_FILE" ]; then
+if ! node scripts/phase10-validate-state.mjs; then
+  echo "Phase 10 workflow validation failed. Refusing to start Codex."
+  exit 2
+fi
+
+release_lock() {
+  rm -f "$LOCK_FILE"
+}
+
+if ! (set -o noclobber; : > "$LOCK_FILE") 2>/dev/null; then
   echo "PHASE10_LOCK already exists. Another turn may be in progress, or a"
   echo "previous run did not clean up. Contents:"
-  cat "$LOCK_FILE"
+  sed -n '1,20p' "$LOCK_FILE" 2>/dev/null || true
   echo "If you are certain no agent is running, remove PHASE10_LOCK by hand"
   echo "and re-run this script."
   exit 1
 fi
+trap release_lock EXIT INT TERM
 
 cat > "$LOCK_FILE" <<LOCKEOF
 owner=codex
 timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 task=phase10-codex-implementation-turn
 LOCKEOF
-
-release_lock() {
-  rm -f "$LOCK_FILE"
-}
-trap release_lock EXIT INT TERM
 
 echo "Starting Codex Implementation turn. Log: $LOG_FILE"
 if [ -n "$CODEX_RESUME_SESSION" ] && [ -n "$CODEX_MODEL" ]; then

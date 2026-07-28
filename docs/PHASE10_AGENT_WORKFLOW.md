@@ -1,195 +1,282 @@
-# Phase 10 Agent Workflow
+# Phase 10 agent workflow
 
-Status: active from §2 onward. §0 and §1 used an earlier Builder → Critic
-→ Refiner → Acceptance sequence, preserved as history in
-`PHASE10_STATE.json`'s `legacy` key, `docs/phase10-reviews/`, and
-`docs/phase10-handoffs/`. Do not follow that older sequence for any new
-work.
+Status: active from §2 onward.
 
-Full implementation-ready detail for this workflow — schema, prompt
-files, runners, acceptance tests — lives in `docs/phase10-workflow/`,
-specified in `docs/phase10-workflow/IMPLEMENTATION_SPEC.md`. This document
-is the durable, human-readable summary `AGENTS.md` points agents to before
-Phase 10 work.
+The machine-readable authority is
+`docs/phase10-workflow/workflow.json`. Live routing and required reading are
+generated into `docs/phase10-workflow/ACTIVE_CONTEXT.md`. The original
+workflow implementation plan remains in
+`docs/phase10-workflow/IMPLEMENTATION_SPEC.md` as historical evidence only.
 
-Applies after: Devan records the Phase 10 visual-direction selection
-(already done — see `PRODUCT_DIRECTION.md` and `PHASE10_STATE.json`).
+§0 and §1 used an earlier Builder → Critic → Refiner → Acceptance sequence.
+That history remains under `PHASE10_STATE.json`'s `legacy` key and in the
+historical review/handoff directories; it is not an operational sequence for
+new work.
 
 ## 1. Operating principles
 
-- One coding agent process may access this repository at a time, enforced
-  by `PHASE10_LOCK` at the repo root.
-- Work one `PHASE10.md` section at a time, in order.
-- A section is a vertical product slice, not a role-specific partial
-  change.
-- Security, privacy, financial correctness, accessibility, and green
-  verification are release gates.
-- Claude and Codex have different, fixed jobs. Roles never reassign — a
-  blocked reviewer never silently becomes the implementer, or vice versa.
-- The durable repository state (`PHASE10_STATE.json`, git history,
-  committed docs) — not chat history or a resume prompt — is the source
-  of truth.
-- A turn may be triggered directly by Devan or serially by the bounded
-  `scripts/phase10-relay.sh`. The relay reads only validated
-  `PHASE10_STATE.json` fields and Git state; it never reads agent prose,
-  retries, sleeps, commits, edits files, changes roles, or runs agents
-  concurrently. Each agent still performs its own preflight checks and
-  records its own outcome as its last action.
-- Stop safely when state is surprising. Do not "repair" an unexpected
-  dirty worktree, bypass a failed test, or guess at an ambiguous failure
-  to keep the relay moving. An ambiguous outcome is `blocked`, not a
-  guess.
+- One coding-agent process may access the repository at a time, enforced by
+  `PHASE10_LOCK` plus the actor's process check.
+- `STOP` is always checked before any other repository read or write.
+- `PHASE10_STATE.json` routes the next turn. The canonical manifest defines
+  valid stages, roles, actors, terminal section, gates, and verification
+  policy.
+- Generated `ACTIVE_CONTEXT.md` is a small routing packet, not a new hand-edited
+  source of truth. Its hashes are validated before every turn.
+- Historical documents are read when the active task names them, not injected
+  into every turn.
+- Security, privacy, authentication, financial correctness, data integrity,
+  accessibility, and honest failure states remain release gates.
+- Claude and Codex keep separate jobs. Neither reviews and accepts its own
+  implementation.
+- Ambiguous outcomes stop as `blocked`; the relay never guesses from prose,
+  retries automatically, changes roles, or runs agents concurrently.
 
 ## 2. Roles
 
-Two fixed roles, one CLI each:
+1. **Claude Lead** (`claude-code`) owns product intent, section
+   specifications, design-proof sufficiency, acceptance criteria, independent
+   review, and final acceptance.
+2. **Codex Implementation** (`codex`) implements the accepted specification,
+   records implementer evidence, and remediates only Claude's bounded findings.
 
-1. **Claude Lead** (`claude-code`, run via
-   `scripts/phase10-claude-lead.sh`) — product and technical lead.
-   Decides what each section accomplishes; writes precise requirements
-   and acceptance criteria (`specify`); reviews Codex's implementation
-   against those criteria only — bounded review, no unrelated audits, no
-   bonus findings (`review`); accepts a passing implementation and
-   initializes the next section (`accept`).
-2. **Codex Implementation** (`codex`, run via
-   `scripts/phase10-codex-implementation.sh`) — implementation lead.
-   Implements to Claude's spec, runs tests/build/mobile/browser checks
-   (`implement`); fixes only the bounded findings Claude raised in
-   review, nothing more (`remediate`).
+The ordinary cycle is:
 
-Cycle per section: Claude specifies → Codex implements → Claude reviews →
-[Codex remediates → Claude re-reviews]\* → Claude accepts → next section
-initialized. The bracketed remediate/re-review loop repeats only while
-Claude's review returns bounded findings; a review with zero findings
-goes straight to accept.
+Claude specifies → Codex implements → Claude reviews and accepts
 
-## 3. Required sequence and the state machine
+If review fails:
 
-Every implementation section follows `PHASE10_STATE.json`'s state
-machine, defined in full in `docs/phase10-workflow/IMPLEMENTATION_SPEC.md`
-§3. In summary:
+Claude reviews → Codex remediates → Claude re-reviews and accepts
 
-| stage | role | who acts | produces |
+A passing review records acceptance and initializes the next section in the
+same Claude turn. This removes a documentation-only model invocation and a
+third redundant full test/build run. The two independent gates remain: Codex
+verifies the candidate before committing, and Claude repeats the full suite and
+build during final review.
+
+The `accept` stage remains valid only for state already routed there or for an
+explicit owner-exception/blocked recovery. It is not part of the normal
+passing path.
+
+## 3. Canonical state machine
+
+The manifest's `stages` and `transitions` objects are authoritative. Human
+summary:
+
+| stage | role | actor | normal outcome |
 |---|---|---|---|
-| `specify` | `claude_lead` | Claude | section spec + acceptance criteria doc, committed |
-| `implement` | `codex_implementation` | Codex | implementation to spec, tests/build green, committed |
-| `review` | `claude_lead` | Claude | PASS (→ `accept`) or bounded findings (→ `remediate`) |
-| `remediate` | `codex_implementation` | Codex | fixes to findings only, tests/build green, committed |
-| `accept` | `claude_lead` | Claude | acceptance record, committed; next section initialized to `specify` |
+| `specify` | `claude_lead` | Claude | spec + acceptance ledger → `implement` |
+| `implement` | `codex_implementation` | Codex | verified candidate → `review` |
+| `review` | `claude_lead` | Claude | fail → `remediate`; pass → accept and advance |
+| `remediate` | `codex_implementation` | Codex | verified bounded fixes → `review` |
+| `accept` | `claude_lead` | Claude | legacy/exception acceptance → advance |
 
-No section advances while `status` is anything other than `ready` at the
-`accept` stage's completion. No stage may be skipped except the
-documented `review`→`accept` skip when a review has zero findings.
+Never hardcode the final section in prose or prompts. Read
+`workflow.managed_sections.terminal`; validation ensures it matches the highest
+roadmap heading.
 
-## 4. Bounded review discipline
+## 4. Active context
 
-Claude's `review` stage evaluates the implementation against the
-*specific acceptance criteria Claude itself wrote in the `specify`
-stage* — it does not introduce new criteria, unrelated taste findings, or
-expand scope. Findings must cite the specific acceptance criterion they
-fail. Every finding recorded is one Codex will be asked to fix in
-`remediate` — do not record advisory or optional findings.
+Run:
 
-## 5. Durable machine-readable handoff
+```bash
+npm run phase10:context
+npm run phase10:validate
+```
 
-`PHASE10_STATE.json` (schema_version 2) is the machine-readable handoff.
-Full schema, allowed values, invariants, and a worked example are in
-`docs/phase10-workflow/IMPLEMENTATION_SPEC.md` §3. The complete
-`schema_version: 1` history for §0 and §1 is preserved under the file's
-`legacy` key — never delete it.
+The generator writes `docs/phase10-workflow/ACTIVE_CONTEXT.md` from:
 
-## 6. Standing prompts and one-command runners
+- `docs/phase10-workflow/workflow.json`;
+- `PHASE10_STATE.json`; and
+- `PHASE10.md`.
 
-Each role's complete standing instructions — including its own preflight
-checks (STOP, lock, clean tree, retry/handoff discipline) and per-stage
-behavior — live in:
+It also hashes the operational workflow, design gate, actor prompts, handoff
+contract, and acceptance-ledger instructions named by
+`workflow.context.active_context_hash_sources`. A policy edit therefore makes
+the active packet mechanically stale until it is regenerated.
 
-- `docs/phase10-workflow/prompts/claude-lead.md`
-- `docs/phase10-workflow/prompts/codex-implementation.md`
+It contains the current route, exact required sources, current inherited
+conditions, global gates, transition summary, verification policy, and hashes
+of its inputs. The validator fails if the packet is missing or stale.
 
-Devan runs exactly one of two commands to take a turn:
+Agents always read:
+
+1. `AGENTS.md`;
+2. `PHASE10_STATE.json`; and
+3. `docs/phase10-workflow/ACTIVE_CONTEXT.md`.
+
+They then read only the current spec, direction package, handoff, and relevant
+product/UX sections named there. Full progress and legacy records stay
+available for a targeted historical question.
+
+## 5. Design-proof gate
+
+Before specifying user-facing production work, Claude applies
+`docs/phase10-workflow/DESIGN_GATE.md`.
+
+The proof names intent, annotated references, rejected patterns, design
+grammar, representative states, exact proof surfaces, the owner decision, and
+the boundary between defect remediation and a new creative direction. Existing
+owner-approved direction packages may satisfy it only when the spec explicitly
+maps every required item.
+
+A material unresolved design decision routes to Devan before implementation.
+This prevents a technically passing section from being repeatedly reopened by
+late creative direction.
+
+## 6. Executable acceptance ledger
+
+Starting with the section configured by
+`workflow.acceptance_ledger.required_from_section`, every spec creates:
+
+`docs/phase10-workflow/acceptance/section-N.json`
+
+Each concrete requirement has:
+
+- a stable ID;
+- one of the seven acceptance dimensions;
+- a risk level;
+- an observable description;
+- a command/browser/visual/manual verifier;
+- required artifacts; and
+- separate implementer and reviewer results.
+
+Codex may fill only implementer results. Claude records the candidate SHA and
+fills reviewer results independently. A pass without evidence is invalid.
+
+Commands:
+
+```bash
+npm run phase10:acceptance -- new \
+  --section N \
+  --spec docs/phase10-workflow/specs/section-N.md
+
+npm run phase10:acceptance -- check \
+  docs/phase10-workflow/acceptance/section-N.json \
+  --require implementer
+
+npm run phase10:acceptance -- check \
+  docs/phase10-workflow/acceptance/section-N.json \
+  --require reviewer
+```
+
+The ledger does not replace human visual judgment. It prevents objective gates
+such as privacy, contrast, geometry, dimensions, payload size, and performance
+from being discovered one at a time across repeated review turns.
+
+## 7. Bounded review
+
+Claude reviews against the declared spec and ledger only. Each failure cites
+the exact criterion, evidence, and required change. Findings are complete for
+every criterion that could be exercised in that review; advisory ideas and
+future-scope suggestions do not become remediation findings.
+
+If a blocking failure prevents later criteria from being exercised, the review
+lists those criteria explicitly as unperformed. Codex fixes the blocker and
+must run the newly reachable verifier matrix before returning the candidate.
+
+## 8. Verification and acceptance
+
+Implementation and remediation candidates:
+
+- run `npm test`;
+- run `npm run build`;
+- complete implementer ledger evidence;
+- capture required live/browser/visual artifacts; and
+- commit only when the candidate satisfies the section's gates.
+
+Final review:
+
+- independently runs `npm test` and `npm run build`;
+- independently exercises high-risk and user-visible ledger criteria;
+- records the candidate's real SHA;
+- completes reviewer evidence; and
+- on pass, records acceptance and initializes the next section in the same
+  commit.
+
+The accepted history record retains the canonical acceptance-ledger path from
+the manifest's configured starting section onward. Validation requires its
+candidate SHA to equal `accepted_commit` and all reviewer criteria to remain
+complete, even after live state moves to the next section.
+
+No third full run is required solely to move fields between state records. A
+current owner-approved inherited-red exception must be named in
+`ACTIVE_CONTEXT.md`; it never generalizes and no new failure may be hidden
+inside it.
+
+## 9. Runners and relay
+
+One-turn runners:
 
 - `./scripts/phase10-claude-lead.sh`
 - `./scripts/phase10-codex-implementation.sh`
 
-Both scripts do nothing but acquire `PHASE10_LOCK`, invoke the fixed CLI
-non-interactively with the fixed prompt file, and release the lock on
-exit via a trap — they never parse output or make decisions. Full detail:
-`docs/phase10-workflow/IMPLEMENTATION_SPEC.md` §7.
-
-For serial unattended handoffs across a bounded number of turns, Devan may
-instead run:
+Bounded serial relay:
 
 ```bash
 ./scripts/phase10-relay.sh --max-turns 6
 ```
 
-The relay selects only the runner named by validated `next_actor`, verifies a
-clean tree and a real commit/state transition after every turn, and stops on
-`STOP`, `blocked`, `complete`, `next_actor: devan`, a non-zero runner exit,
-missing progress, a stale lock, or the turn limit. Full operating detail:
-`docs/phase10-workflow/RELAY.md`.
+Read-only check:
 
-## 7. Retry and failure discipline
+```bash
+./scripts/phase10-relay.sh --check
+```
 
-- Zero retries are automatic. Neither fixed runner nor the bounded relay
-  retries or sleeps. The relay's next iteration is a new state-authorized
-  workflow turn, not a retry of the prior turn.
-- At most one manual retry per turn: if a turn ends ambiguously (process
-  crash, non-zero exit with no state update, or an unclear result),
-  Devan may run the same one-command runner a second time. The agent's
-  own preflight checks the handoff directory for a same-day, same-section
-  attempt already blocked and treats a second consecutive attempt as the
-  authorized retry; a third consecutive attempt at the same section is
-  refused by the agent itself, which writes a `blocked` handoff instead
-  of proceeding.
-- Any ambiguous failure is `blocked`, never guessed. Rate limits are not
-  detected by parsing CLI output; if a turn's outcome is unclear, it is
-  `blocked` and Devan is told to check plainly.
+The relay validates canonical state and active-context freshness before and
+after every turn. It selects only the actor named by validated state, requires
+one real commit plus state progress, and stops on STOP, lock, dirty tree,
+invalid state, blocked/complete/Devan routing, non-zero runner exit, missing
+progress, or its turn limit.
 
-## 8. Verification and commit discipline
+## 10. Failure and retry discipline
 
-- Builder-equivalent (`specify`, `implement`, `remediate`) commits use
-  `phase10(§N): <summary>`.
-- Review-only (`review`, `accept`) commits that change no implementation
-  source use `phase10(review §N): <summary>`.
-- Tests and production build must be green before every implementation
-  commit.
-- A section's final accepted commit is recorded in `PHASE10_STATE.json`.
-- Before/after screenshot paths are recorded for every UI-bearing section
-  per `PHASE10.md`'s acceptance dimensions.
-- No section starts from an uncommitted previous section.
-- The completing actor never writes its own commit's hash into
-  `PHASE10_STATE.json` (a commit cannot contain its own hash). The next
-  actor records the previous actor's commit hash as the first part of
-  its own turn, using `git log -1 --format=%H` against the clean tree it
-  started from, folded into that same turn's eventual commit.
+- Zero retries are automatic.
+- Devan may manually authorize one retry after an ambiguous failure.
+- A third consecutive attempt at the same blocked turn is refused.
+- No sleep loop estimates quota reset.
+- No actor changes role because a provider is unavailable.
+- Safe drafting during provider downtime may occur only outside the live state
+  transition and still requires the assigned lead/owner approval before
+  implementation. A drafter cannot accept its own implementation.
 
-## 9. Manual fallback
+The bounded preparation rules and draft contract live in
+`docs/phase10-workflow/PROVIDER_OUTAGE.md`. This lane is manual and
+owner-directed; the relay never enters it.
 
-Manual operation remains possible at all times:
+## 11. Commit and handoff discipline
 
-1. Devan (or anyone with repo access) checks `STOP`, `PHASE10_LOCK`,
-   `PHASE10_STATE.json`, and a clean worktree by hand.
-2. Devan runs the named role's runner script.
-3. Devan verifies the state transition and repository status after the
-   agent exits.
-4. Devan runs the next role's runner only after the previous process has
-   fully exited and the lock is released.
+- Implementation/remediation: `phase10(§N): <summary>`.
+- Review/acceptance: `phase10(review §N): <summary>`.
+- Workflow infrastructure: `phase10(workflow): <summary>`.
+- The accepted implementation SHA is the candidate at the start of the passing
+  review; a commit never attempts to contain its own hash.
+- Handoffs remain under `docs/phase10-handoffs/` and carry only outcome,
+  evidence, current route, and next action. They do not restate the protocol.
+- Regenerate active context after every state or roadmap change and before the
+  turn's final validation/commit.
 
-The same schema and bounded-review discipline apply; manual operation
-does not waive any gate.
+## 12. Manual fallback
 
-The relay is optional. A user can return to these manual steps after any relay
-stop without migrating or repairing state.
+Manual operation remains:
 
-## 10. Superseded
+1. Check STOP, lock, clean tree, workflow validation, and process list.
+2. Run the actor named by state.
+3. Inspect the state transition and current acceptance ledger.
+4. Run the next actor only after the prior process exits and releases the lock.
 
-This document replaces the Builder → Critic → Refiner → Acceptance
-workflow that governed Phase 10 §0 and §1. That original content remains
-readable via `git log -p -- docs/PHASE10_AGENT_WORKFLOW.md` and is
-summarized under `PHASE10_STATE.json`'s `legacy` key. `scripts/agent-relay.sh`
-(the Phase 9 convenience loop this document previously audited) is
-likewise superseded for Phase 10 work by the two fixed-agent runners in
-§6, but is left in place untouched — deleting it is out of this
-document's scope.
+Manual operation never waives a gate.
+
+## 13. Workflow health report
+
+Run:
+
+```bash
+npm run phase10:workflow:report
+```
+
+The read-only report validates the control plane and prints the live route,
+always-read packet size, artifact counts, and sections with three or more
+recorded review outcomes. Use `-- --json` for machine-readable output. Review
+hotspots are a signal to improve the next specification, design proof, or
+verifier matrix; they are not permission to relax acceptance.
