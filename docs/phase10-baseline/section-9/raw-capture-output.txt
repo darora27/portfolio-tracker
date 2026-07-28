@@ -1,0 +1,2 @@
+{"viewport":"390x844","canvasCount":0,"scrollWidth":390,"clientWidth":390,"targetCount":22,"minimumTarget":44}
+{"viewport":"320x844","canvasCount":0,"scrollWidth":320,"clientWidth":320,"targetCount":22,"minimumTarget":44}

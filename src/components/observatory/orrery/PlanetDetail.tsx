@@ -44,7 +44,6 @@ export function PlanetDetail({
   transmissionsFirst?: boolean;
 }) {
   const [range, setRange] = useState<Range>("30d");
-  const [benchmark, setBenchmark] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const transmissionsRef = useRef<HTMLElement>(null);
   const fullSeries = holding.chart ?? [];
@@ -54,10 +53,6 @@ export function PlanetDetail({
     return fullSeries;
   }, [fullSeries, range]);
   const values = series.map(({ index }) => index);
-
-  useEffect(() => {
-    if (range === "since") setBenchmark(false);
-  }, [range]);
 
   useEffect(() => {
     if (!transmissionsFirst) return;
@@ -99,17 +94,16 @@ export function PlanetDetail({
         </div>
         <svg className={styles.holdingScope} viewBox="0 0 320 130" role="img" aria-label={`${holding.ticker} ${range} indexed return trace`}>
           <line x1="0" y1="65" x2="320" y2="65" />
-          {benchmark ? <polyline className={styles.benchmarkTrace} points="0,71 80,66 160,69 240,57 320,52" /> : null}
           <polyline points={tracePoints(values)} />
         </svg>
         <button
           className={styles.benchmarkToggle}
           type="button"
-          disabled={range === "since"}
-          aria-pressed={benchmark}
-          onClick={() => setBenchmark((current) => !current)}
+          disabled
+          aria-pressed="false"
+          title="Same-period VOO series is not supplied for this holding view."
         >
-          VOO {range === "since" ? "UNAVAILABLE" : benchmark ? "ON" : "OFF"}
+          VOO UNAVAILABLE
         </button>
       </section>
 

@@ -15,9 +15,18 @@ for (let run = 1; run <= 5; run += 1) {
     window.__phase10LongTasks = [];
     new PerformanceObserver((list) => {
       window.__phase10LongTasks.push(
-        ...list.getEntries().map(({ duration, startTime }) => ({
+        ...list.getEntries().map(({ duration, startTime, attribution }) => ({
           duration,
           startTime,
+          attribution: attribution.map(
+            ({ name, entryType, containerType, containerName, containerId }) => ({
+              name,
+              entryType,
+              containerType,
+              containerName,
+              containerId,
+            }),
+          ),
         })),
       );
     }).observe({ type: "longtask", buffered: true });
@@ -38,6 +47,6 @@ console.log(JSON.stringify({
   viewport: "1440x900",
   cpuThrottle: 2,
   freshContexts: 5,
-  maximumMs: Math.max(...runs.map(({ maximumMs }) => maximumMs),
+  maximumMs: Math.max(...runs.map(({ maximumMs }) => maximumMs)),
 }));
 await browser.close();

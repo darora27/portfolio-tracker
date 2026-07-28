@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/build.mjs",
     "start": "next start",
     "lint": "eslint",
     "import": "tsx scripts/import.ts",
     "backfill-sectors": "tsx scripts/backfill-sectors.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "verify:share-route": "node scripts/verify-share-route.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.8",

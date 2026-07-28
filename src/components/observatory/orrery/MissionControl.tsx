@@ -10,20 +10,11 @@ import {
 } from "react";
 import type { PublicOrreryHolding } from "@/lib/observatory/orrery";
 import { SystemPlot } from "./MissionControlBays/SystemPlot";
+import {
+  MISSION_CONTROL_PANELS,
+  type MissionControlPanelId,
+} from "./mission-control-panels";
 import styles from "./orrery.module.css";
-
-export const MISSION_CONTROL_PANELS = [
-  { id: "plot", label: "PLOT 00" },
-  { id: "manifest", label: "MANIFEST 01" },
-  { id: "scope", label: "SCOPE 02" },
-  { id: "hazard", label: "HAZARD 03" },
-  { id: "signals", label: "SIGNALS 04" },
-  { id: "comms", label: "COMMS 05" },
-  { id: "log", label: "LOG 06" },
-] as const;
-
-export type MissionControlPanelId =
-  (typeof MISSION_CONTROL_PANELS)[number]["id"];
 
 export function MissionControl({
   activePanel,

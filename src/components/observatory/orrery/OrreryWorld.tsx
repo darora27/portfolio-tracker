@@ -26,8 +26,8 @@ import {
 import { FirstVisitOrientation } from "./FirstVisitOrientation";
 import {
   MissionControl,
-  type MissionControlPanelId,
 } from "./MissionControl";
+import type { MissionControlPanelId } from "./mission-control-panels";
 import { OrrerySceneLoader } from "./OrrerySceneLoader";
 import { PlanetDetail } from "./PlanetDetail";
 import { SectorMap } from "./SectorMap";

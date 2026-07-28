@@ -32,6 +32,9 @@ describe("PlanetDetail", () => {
       .filter((word) => word && !/[\d%β▲▼◆◒⌁]/.test(word));
     expect(visibleWords.length).toBeLessThanOrEqual(60);
     expect(screen.getByText("NO TRANSMISSIONS")).toBeTruthy();
+    const benchmark = screen.getByRole("button", { name: "VOO UNAVAILABLE" });
+    expect((benchmark as HTMLButtonElement).disabled).toBe(true);
+    expect(container.querySelectorAll("svg polyline")).toHaveLength(1);
     fireEvent.click(screen.getByRole("button", { name: "SINCE BUY · SIMPLE" }));
     expect(
       (screen.getByRole("button", { name: "VOO UNAVAILABLE" }) as HTMLButtonElement)

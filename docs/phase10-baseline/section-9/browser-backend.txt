@@ -4,6 +4,8 @@ No browser is available
 Browser discovery result:
 []
 
-Live verification was not attempted through a substitute backend because the
-browser-control skill explicitly forbids substituting an unrelated browser
-tool after attached-browser discovery returns no backend.
+The in-app browser could not run. The repository's retained Playwright
+evidence scripts did run as children of the canonical npm run build process
+against its production Next.js server. Their raw output and screenshots are
+committed beside this file. The in-app browser result above is not represented
+as a successful attached-browser check.

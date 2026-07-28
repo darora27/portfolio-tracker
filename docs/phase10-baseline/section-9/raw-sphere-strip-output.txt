@@ -1,0 +1,1 @@
+{"viewport":"1440x900","tileSize":"32x32","order":["ASML","GOOG","COST","MSFT","INTC","IBM","CBRS","NBIS"],"output":"/Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-9/after/live-sphere-strip-32.png"}

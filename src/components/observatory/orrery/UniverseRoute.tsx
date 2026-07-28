@@ -14,7 +14,7 @@ import { supabase } from "@/lib/supabase/client";
 import {
   MISSION_CONTROL_PANELS,
   type MissionControlPanelId,
-} from "./MissionControl";
+} from "./mission-control-panels";
 import { OrreryWorld, type OrreryCameraState } from "./OrreryWorld";
 import { PublicMissionControlContent } from "./PublicMissionControlContent";
 import { additionalSectorSystem } from "@/lib/observatory/sector-systems";

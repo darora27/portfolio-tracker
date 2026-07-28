@@ -35,6 +35,7 @@ import {
   ACTIVE_RING_OPACITY,
   OVERVIEW_RING_OPACITY,
   buildOverviewSceneModel,
+  resolveOrreryPointerTarget,
   resolveLabelCollisions,
   type SceneModel,
   type TradeCometInput,
@@ -387,6 +388,7 @@ export default function OrreryScene({
       healthScalar: healthRef.current.h,
       sunspotIntensity: healthRef.current.sunspotIntensity,
       hoveredTicker: hoveredTickerRef.current,
+      portfolioFocused: portfolioFocusedRef.current,
       viewport: {
         width: Math.max(1, mount.clientWidth),
         height: Math.max(1, mount.clientHeight),
@@ -497,6 +499,7 @@ export default function OrreryScene({
       fragmentShader: SUN_FRAGMENT_SHADER,
     });
     const sun = new Mesh(sunGeometry, sunMaterial);
+    sun.visible = false;
     sun.userData.orreryTarget = "portfolio";
     scene.add(sun);
 
@@ -608,6 +611,7 @@ export default function OrreryScene({
         fragmentShader: PLANET_FRAGMENT_SHADER,
       });
       const planet = new Mesh(planetGeometry, material);
+      planet.visible = false;
       planet.position.set(orbitRadius, 0, 0);
       planet.scale.setScalar(descriptor.radius);
       planet.userData.orreryTarget = holding.ticker;
@@ -620,6 +624,7 @@ export default function OrreryScene({
       label.tabIndex = -1;
       label.className = styles.sceneLabel;
       label.textContent = holding.ticker;
+      label.dataset.sceneTicker = holding.ticker;
       label.style.setProperty(
         "--planet-label-color",
         labelDescriptor.color,
@@ -758,32 +763,44 @@ export default function OrreryScene({
       scene.add(cometGroup);
     }
 
-    let textureFrame = requestAnimationFrame(() => {
-      textureFrame = requestAnimationFrame(() => {
-        const loader = new KTX2Loader().detectSupport(renderer);
-        for (const planet of planetRuntimes) {
-          const ticker = planet.holding.ticker.toLowerCase();
-          const uniforms = planet.mesh.material.uniforms;
-          Promise.all([
-            loader.loadAsync(`/textures/planets/${ticker}-base.ktx2`),
-            loader.loadAsync(`/textures/planets/${ticker}-emissive.ktx2`),
-            loader.loadAsync(`/textures/planets/${ticker}-normal.ktx2`),
-          ])
-            .then(([base, emissive, normal]) => {
-              base.colorSpace = SRGBColorSpace;
-              emissive.colorSpace = SRGBColorSpace;
-              loadedTextures.push(base, emissive, normal);
-              uniforms.uBaseMap.value = base;
-              uniforms.uEmissiveMap.value = emissive;
-              uniforms.uNormalMap.value = normal;
-              uniforms.uHasTextures.value = 1;
-            })
-            .catch(() => {
-              // Unknown/new top-eight tickers keep deterministic shader art.
-            });
-        }
+    let textureCancelled = false;
+    const textureLoader = new KTX2Loader().detectSupport(renderer);
+    const nextTextureFrame = () =>
+      new Promise<void>((resolve) => {
+        textureFrame = requestAnimationFrame(() => resolve());
       });
-    });
+    const loadTextures = async () => {
+      await nextTextureFrame();
+      await nextTextureFrame();
+      for (const planet of planetRuntimes) {
+        const ticker = planet.holding.ticker.toLowerCase();
+        const uniforms = planet.mesh.material.uniforms;
+        try {
+          const [base, emissive, normal] = await Promise.all([
+            textureLoader.loadAsync(`/textures/planets/${ticker}-base.ktx2`),
+            textureLoader.loadAsync(`/textures/planets/${ticker}-emissive.ktx2`),
+            textureLoader.loadAsync(`/textures/planets/${ticker}-normal.ktx2`),
+          ]);
+          if (textureCancelled) {
+            base.dispose();
+            emissive.dispose();
+            normal.dispose();
+            return;
+          }
+          base.colorSpace = SRGBColorSpace;
+          loadedTextures.push(base, emissive, normal);
+          uniforms.uBaseMap.value = base;
+          uniforms.uEmissiveMap.value = emissive;
+          uniforms.uNormalMap.value = normal;
+          uniforms.uHasTextures.value = 1;
+        } catch {
+          // Unknown/new top-eight tickers keep deterministic shader art.
+        }
+        await nextTextureFrame();
+      }
+    };
+    let textureFrame = 0;
+    void loadTextures();
 
     const raycaster = new Raycaster();
     const pointer = new Vector2(2, 2);
@@ -871,8 +888,9 @@ export default function OrreryScene({
       raycaster.setFromCamera(pointer, camera);
       const hit = raycaster.intersectObjects(pickTargets, false)[0]?.object.userData
         .orreryTarget as string | undefined;
-      const target = magneticTarget() ?? hit;
+      const target = resolveOrreryPointerTarget(hit, magneticTarget());
       localTarget = target;
+      mount.dataset.orreryTarget = target ?? "";
       const ticker =
         target?.startsWith("moon:")
           ? target.slice(5)
@@ -982,8 +1000,10 @@ export default function OrreryScene({
 
     let previousTime = performance.now();
     let animationFrame = 0;
+    let shaderWarmupStage = 0;
     const render = (now: number) => {
       const delta = Math.min(0.05, (now - previousTime) / 1000);
+      const time = now / 1000;
       previousTime = now;
       const selected = selectedTickerRef.current;
       const hovered = hoveredTickerRef.current;
@@ -1041,6 +1061,18 @@ export default function OrreryScene({
           ? `${planet.holding.ticker} ${planet.labelDescriptor.dayChip}`
           : planet.holding.ticker;
         planet.label.dataset.targeted = targeted ? "true" : "false";
+        planet.label.dataset.planetCenterX = String(
+          (projected.x * 0.5 + 0.5) * labelRect.width,
+        );
+        planet.label.dataset.planetCenterY = String(
+          (-projected.y * 0.5 + 0.5) * labelRect.height,
+        );
+        planet.label.dataset.planetRadiusPx = String(
+          Math.hypot(
+            (labelPosition.x - projected.x) * labelRect.width * 0.5,
+            (labelPosition.y - projected.y) * labelRect.height * 0.5,
+          ) / 1.45,
+        );
         planet.label.hidden = projected.z > 1;
       }
       const resolvedLabels = resolveLabelCollisions(labelCandidates);
@@ -1093,6 +1125,41 @@ export default function OrreryScene({
             ? 1
             : 0.35 + 0.65 * (0.5 + Math.sin(time * Math.PI * 2 / descriptor.blinkSeconds) * 0.5);
       });
+      const canvasRect = renderer.domElement.getBoundingClientRect();
+      sun.getWorldPosition(projected);
+      projected.project(camera);
+      mount.dataset.evidenceSunX = String(
+        (projected.x * 0.5 + 0.5) * canvasRect.width,
+      );
+      mount.dataset.evidenceSunY = String(
+        (-projected.y * 0.5 + 0.5) * canvasRect.height,
+      );
+      const firstMoon = moonRuntimes[0];
+      if (firstMoon) {
+        firstMoon.mesh.getWorldPosition(projected);
+        projected.project(camera);
+        mount.dataset.evidenceMoonX = String(
+          (projected.x * 0.5 + 0.5) * canvasRect.width,
+        );
+        mount.dataset.evidenceMoonY = String(
+          (-projected.y * 0.5 + 0.5) * canvasRect.height,
+        );
+        mount.dataset.evidenceMoonTarget = `moon:${firstMoon.descriptor.ticker}`;
+      }
+      const hazardSatellite = satelliteRuntimes.find(
+        ({ descriptor }) => descriptor.id === "HAZARD",
+      );
+      if (hazardSatellite) {
+        hazardSatellite.craft.getWorldPosition(projected);
+        projected.project(camera);
+        mount.dataset.evidenceSatelliteX = String(
+          (projected.x * 0.5 + 0.5) * canvasRect.width,
+        );
+        mount.dataset.evidenceSatelliteY = String(
+          (-projected.y * 0.5 + 0.5) * canvasRect.height,
+        );
+        mount.dataset.evidenceSatelliteTarget = "satellite:HAZARD";
+      }
       if (sceneModel.comet && cometGroup.visible) {
         const cometProgress = Math.min(1, (now - cometStartedAt) / 2400);
         cometGroup.position.x =
@@ -1138,7 +1205,6 @@ export default function OrreryScene({
       lookAt.lerp(lookAtTarget, cameraAmount);
       camera.lookAt(lookAt);
 
-      const time = now / 1000;
       const health = healthRef.current;
       const dockingActive =
         localTarget === "portfolio" ||
@@ -1170,12 +1236,22 @@ export default function OrreryScene({
         pointerY * -sceneModel.starfields[1].parallax;
       nebula.rotation.z += delta * sceneModel.nebula.driftRadiansPerSecond;
       renderer.render(scene, camera);
+      if (shaderWarmupStage === 0) {
+        sun.visible = true;
+        shaderWarmupStage = 1;
+      } else if (shaderWarmupStage === 1) {
+        planetRuntimes.forEach(({ mesh }) => {
+          mesh.visible = true;
+        });
+        shaderWarmupStage = 2;
+      }
       animationFrame = requestAnimationFrame(render);
     };
     animationFrame = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animationFrame);
+      textureCancelled = true;
       cancelAnimationFrame(textureFrame);
       window.clearTimeout(dockingHintTimer);
       resizeObserver.disconnect();
@@ -1223,6 +1299,7 @@ export default function OrreryScene({
       cometTailGeometry?.dispose();
       cometMaterial?.dispose();
       fallbackTexture.dispose();
+      textureLoader.dispose();
       renderer.dispose();
       labelLayer.remove();
       renderer.domElement.remove();

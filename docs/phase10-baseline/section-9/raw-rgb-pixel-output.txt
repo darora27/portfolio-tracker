@@ -1,6 +1,1 @@
-NOT CAPTURED IN CODEX IMPLEMENTATION ENVIRONMENT.
-
-Reason: attached-browser discovery returned [] after the browser runtime
-reported "No browser is available". Run scripts/sample-live-rgb.mjs in Claude
-Lead review. Do not PASS ring/trail or docking visibility without retained raw
-output and screenshots.
+{"viewport":"1440x900","changedAnnulusPixels":3078,"signedTrailPixels":3397,"dockingVisible":true,"trailsVisible":true}

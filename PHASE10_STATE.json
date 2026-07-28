@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§9",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -74,7 +74,9 @@
         "required_change": "After F1 is fixed, capture and commit the complete §12 evidence set against a running production build and record the results in docs/phase10-baseline/section-9/README.md with executor suffixes."
       }
     ],
-    "remediation_commits": [],
+    "remediation_commits": [
+      "Codex §9 bounded remediation for review findings F1-F6; hash to be filled by the next actor via git log -1."
+    ],
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
@@ -83,7 +85,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_2). Authority order for this section: UNIVERSE_ROUND2_BRIEF.md -> UNIVERSE_IDEAS_2.md (including its §9 owner corrections and authorizations) -> PHASE10.md §9. §8 proved the universe works; §9 makes it good. Two new public disclosure surfaces are authorized in UNIVERSE_IDEAS_2.md §9.3-9.4 (public trade log: action, ticker, date, and % impact only, never shares/prices/dollars; public news for held tickers) and both require extended privacy canary coverage. Texture resolution is bound by the §9.1 correction: tune compression first, ship base at 2048x1024 and emissive/normal at 1024x512, measure and record the real total, reduce further if it exceeds ~15MB. §9's acceptance criteria forbid `expect(source).toContain(...)` as coverage for rendered behavior. Two owner observations carried forward unclosed from §8 and recorded in docs/phase10-workflow/reviews/section-8-accepted.md: D1 (unreproduced green-trail report — do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 ('website is still relatively confusing', too general to bound in §8).",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-claude-lead-to-codex-remediation.md"
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-codex-implementation-remediate-to-claude-lead.md"
   },
   "sections_history": [
     {
@@ -140,34 +142,40 @@
       "note": "The Stock Market Universe — /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes §9. See docs/phase10-workflow/reviews/section-8-accepted.md."
     }
   ],
-  "prev_actor_commit": "bc1b79c97a9487174f389430a6f5fc8447ebde05",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): bc1b79c (`phase10(§9): craft the universe operations layer`) was HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "518165b395e0966fa14b1cae13e26d7a1632df5f",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 518165b (`phase10(review §9): fail with bounded remediation handoff`) was HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "6a68758d57474f5494ff2ce38056ebb37b5aa244",
-  "production_code_changed_this_turn": false,
-  "production_code_note_prior_turn": "Codex Implementation completed the §9 Universe craft and depth vertical slice at bc1b79c. This review turn changed no application source; it added only a review doc, review evidence, a handoff, and state/progress bookkeeping.",
-  "production_code_note": "Claude Lead review of §9 returned FAIL with six bounded findings. The blocking one is F1: /share returns HTTP 500 on every request in the production build because MissionControl.tsx gained a \"use client\" directive while the server component UniverseRoute.tsx still imports the runtime value MISSION_CONTROL_PANELS from it. npm test (94 files, 496 tests) and npm run build are both green — neither exercises the server/client boundary, and /share is dynamic so it is never prerendered. No live evidence for §9 could be captured at review because the route does not render and the owner-gated reference route requires credentials this turn did not use. Prior turn's implementation note, retained: Codex Implementation completed the §9 Universe craft and depth vertical slice: authored-mark texture generation and measured KTX2 ladder; pure scene descriptors; designed overview composition; seven-bay Mission Control; five-bay planet detail; news moons; DRIFT/HAZARD/SUPPLY satellites; one observed hollow-core sector system; docking/orientation completion; public ratio-only trade log and held-ticker news projections; privacy/contrast/model/DOM tests; and retained evidence scripts. The shipped texture directory is 11,727,680 bytes at the largest measured tier below the 15 MB cap (1024x512 base, 512x256 derived). Attached-browser discovery returned no backend, so live screenshots, RGB samples, mobile audits, keyboard walk-through, and long-task measurements are explicitly unverified and routed to Claude Lead review under the standing environment-only exception. No dependency manifest changed.",
+  "production_code_changed_this_turn": true,
+  "production_code_note_prior_turn": "Claude Lead review of §9 returned FAIL with six bounded findings: the production /share server/client boundary crash, a fabricated VOO trace, a broken retained long-task script and missing raw output, a hollow sun-invariance test, a missing share-count privacy canary, and the absent §12 live evidence set.",
+  "production_code_note": "Codex Implementation remediated only review findings F1-F6. Mission Control panel metadata now lives in a shared non-client module and the canonical production build permanently probes /share plus the manifest station for HTTP 200. The fabricated VOO polyline is removed and its unavailable control is explicit. The long-task and RGB scripts execute and retain raw live output. Sun invariance now varies real scene interaction descriptors. The public fixture has a distinctive share-count canary. The complete §12 evidence set is committed: 14 desktop/live-sphere frames, two exact mobile frames, five fresh CPU-2x long-task contexts, RGB sampling, production scene diagnostics, deterministic keyboard/Enter/Escape/history checks, reduced-motion checks, and console results. Live verification also exposed and resolved three direct blockers within F6's required criteria: a render-loop temporal-dead-zone crash, magnetic planet targeting overriding direct moon/satellite hits, and cold-frame shader/texture work exceeding the 50 ms gate. No dependency manifest changed.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Re-run independently by Claude Lead at review: 94 test files passed; 496 of 496 tests passed.",
-      "finished_at": "2026-07-28T07:40:00Z"
+      "summary": "Codex Implementation ran the full Vitest suite after the bounded F1-F6 remediation: 94 test files passed; 497 of 497 tests passed.",
+      "finished_at": "2026-07-28T08:12:14Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Re-run independently by Claude Lead at review: Next.js 16.2.11 production build compiled successfully; TypeScript passed; 18 static-generation tasks; 24 route entries. Note: green here does not imply the route renders — serving this same build with `npx next start` returns HTTP 500 on /share (finding F1), because neither vitest nor the build exercises the server/client component boundary and /share is dynamic so it is never prerendered.",
-      "finished_at": "2026-07-28T07:40:00Z"
+      "summary": "Codex Implementation ran the final Next.js 16.2.11 production build: compilation and TypeScript passed, all 18 static-generation tasks completed, and the post-build production smoke returned HTTP 200 for /share and /share?focus=portfolio&camera=command&station=manifest.",
+      "finished_at": "2026-07-28T08:14:45Z"
     },
     "live_routes": {
-      "command": "npx next start -p 3100, then curl and a headless-chromium probe",
-      "status": "fail",
-      "summary": "/share -> 500 (every request, including ?station= forms); / -> 200 only because the owner gate returns the sign-in form before the crashing code path; /dashboard -> 200. Raw capture: docs/phase10-baseline/section-9/claude-review/raw-route-status.txt",
-      "finished_at": "2026-07-28T07:40:00Z"
+      "command": "npm run build post-build production smoke via scripts/verify-share-route.mjs",
+      "status": "pass",
+      "summary": "/share -> 200 and /share?focus=portfolio&camera=command&station=manifest -> 200 against the exact completed production build. The route probe is now part of every npm run build.",
+      "finished_at": "2026-07-28T08:14:45Z"
+    },
+    "live_evidence": {
+      "command": "retained Playwright scripts against the production build-owned Next server",
+      "status": "pass",
+      "summary": "Complete §12 evidence retained under docs/phase10-baseline/section-9: all required 1440x900 surfaces, exact 390x844 and 320x844 fallbacks, live 32px sphere strip, five CPU-2x fresh-context long-task runs (maximum 0ms), live RGB ring/trail sampling, deterministic keyboard/Enter/Escape/history audit, reduced-motion audit with zero canvas and zero running animations, and zero console warnings/errors.",
+      "finished_at": "2026-07-28T08:10:00Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T07:40:00Z",
+  "updated_at": "2026-07-28T08:15:06Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

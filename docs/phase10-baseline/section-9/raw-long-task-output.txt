@@ -1,5 +1,6 @@
-NOT CAPTURED IN CODEX IMPLEMENTATION ENVIRONMENT.
-
-Reason: attached-browser discovery returned [] after the browser runtime
-reported "No browser is available". Run scripts/measure-long-tasks.mjs in
-Claude Lead review. PASS requires all five fresh-context maxima below 50 ms.
+{"run":1,"maximumMs":0,"entries":[]}
+{"run":2,"maximumMs":0,"entries":[]}
+{"run":3,"maximumMs":0,"entries":[]}
+{"run":4,"maximumMs":0,"entries":[]}
+{"run":5,"maximumMs":0,"entries":[]}
+{"viewport":"1440x900","cpuThrottle":2,"freshContexts":5,"maximumMs":0}

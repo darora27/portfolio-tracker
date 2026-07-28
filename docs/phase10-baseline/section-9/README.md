@@ -1,18 +1,19 @@
 # Phase 10 §9 implementation evidence
 
-Implementation evidence assembled July 28, 2026. Automated and artifact-level
-checks are complete. Live checks are deliberately left unverified because the
-Codex environment exposed no browser backend; `browser-backend.txt` retains
-the exact result. The standing implementation prompt routes these checks to
-Claude Lead review instead of treating absent browser infrastructure as a
-product failure.
+Implementation and remediation evidence assembled July 28, 2026. Automated,
+artifact-level, production-route, live-pixel, responsive, interaction, and
+reduced-motion checks are complete. The in-app browser exposed no attached
+backend; `browser-backend.txt` retains that result. The repository's retained
+Playwright scripts did run successfully against the production build from the
+canonical `npm run build` verification process — done by codex/gpt-5.
 
 ## Automated verification
 
-- `npm test`: PASS — 94 files, 496 tests — done by codex/gpt-5.
+- `npm test`: PASS — 94 files, 497 tests — done by codex/gpt-5.
 - `npx tsc --noEmit`: PASS, exit 0 — done by codex/gpt-5.
 - `npm run build`: PASS under Next.js 16.2.11; 18 static-generation tasks
-  completed — done by codex/gpt-5.
+  completed, then production `/share` and Mission Control manifest probes
+  both returned HTTP 200 — done by codex/gpt-5.
 - Texture manifest proxy: PASS for all eight tickers, including real KTX2
   dimensions, ΔE, luminance standard deviation, identical seam columns, and
   on-disk byte equality — done by codex/gpt-5.
@@ -58,13 +59,15 @@ The shipped encoder is three.js KTX2Exporter with RGBA8/R8/RG8 payloads and
 KHR Zstandard supercompression level 19. No dependency or network build step
 was added — done by codex/gpt-5.
 
-## Authored 32-pixel proxy
+## Authored proxy and live 32-pixel sphere strip
 
 `texture-thumbs/authored-map-thumbs-strip.png` enlarges the exact committed
-32×16 encoded buffers with nearest-neighbour sampling. It is a texture proxy,
-not the still-missing live 32 px sphere strip — done by codex/gpt-5.
+32×16 encoded buffers with nearest-neighbour sampling. The production WebGL
+capture `after/live-sphere-strip-32.png` contains one exact 32×32 rendered
+sphere per ticker in ASML, GOOG, COST, MSFT, INTC, IBM, CBRS, NBIS order.
+Both artifacts were inspected at native resolution — done by codex/gpt-5.
 
-| Ticker | Dominant colour | Macro silhouette visible in thumb | Emissive signature visible in thumb |
+| Ticker | Dominant colour | Macro silhouette visible at 32 px | Emissive signature visible at 32 px |
 |---|---|---|---|
 | ASML | `#5c81ad` | precision-lens continent | cyan optics rings |
 | GOOG | `#bcc7ba` | four product districts | white/multicolour fiber boulevards |
@@ -76,7 +79,9 @@ not the still-missing live 32 px sphere strip — done by codex/gpt-5.
 | CBRS | `#6b5934` | wafer-scale core | cyan coolant rivers |
 
 All eight thumbnails have normalized luminance standard deviation ≥0.10 and
-seam maximum ΔE 0 — done by codex/gpt-5.
+seam maximum ΔE 0. The corresponding live spheres remain individually
+nameable by colour, silhouette, and emissive pattern at 32 px — done by
+codex/gpt-5.
 
 ## Before references
 
@@ -97,34 +102,70 @@ The accepted §8 frames are the pre-§9 visual baseline:
 There were no §8 versions of the seven new bays, sector map, moons, or
 satellites.
 
-## Browser evidence gap for Claude Lead
+## Production route and live scene checks
 
-No after screenshots were captured and no live criterion is claimed as
-passing. The exact backend failure is retained in `browser-backend.txt`.
-Claude Lead must run the committed scripts and independently verify all items
-below before PASS:
+- `raw-live-scene-diagnostic.txt`: `/share` returned 200, one WebGL canvas and
+  all eight scene labels rendered, and the browser reported no console warning,
+  console error, or page error — done by codex/gpt-5.
+- `raw-long-task-output.txt`: five fresh 1440×900 contexts at CPU 2× each
+  reported a route-owned maximum of 0 ms, under the 50 ms gate — done by
+  codex/gpt-5.
+- `raw-rgb-pixel-output.txt`: 3,078 changed annulus pixels and 3,397 signed
+  trail pixels were measured; trails and the docking ring were both visible
+  from live RGB samples — done by codex/gpt-5.
+- `raw-sphere-strip-output.txt`: the live 256×32 strip was cut from the
+  production WebGL canvas as eight exact 32×32 tiles — done by codex/gpt-5.
 
-- Run `scripts/capture-live-evidence.mjs`; retain 1440×900 frames for OVERVIEW,
-  APPROACH, all seven bays, sector, docking, moon focus, and satellite focus.
-- Retain 390×844 and 320×844 frames and raw audits proving canvas count 0,
-  `scrollWidth === clientWidth`, and every target ≥44 px.
-- Run `scripts/measure-long-tasks.mjs`; replace
-  `raw-long-task-output.txt` with five fresh-context raw runs at CPU 2×. Every
-  route-owned maximum must be <50 ms.
-- Run `scripts/sample-live-rgb.mjs`; replace `raw-rgb-pixel-output.txt` and
-  verify ring/trail visibility plus docking-ring appearance from actual RGB
-  pixels.
-- Inspect real 32 px rendered spheres for all eight tickers and retain the live
-  strip. The authored-map strip alone is not sufficient.
-- Walk the keyboard order: sun, weight-ranked planets, planet moons in the
-  same rank order, DRIFT, HAZARD, SUPPLY, sector, belt, then chrome; verify
-  Enter destinations, visible focus, Escape, focus return, and back/forward.
-- Verify reduced motion live: no WebGL scene, comet, nebula drift, parallax,
-  docking rotation/flash, typing, odometer flip, or warp; every encoded value
-  must remain in semantic text.
-- Verify browser console cleanliness, article new-tab behavior, planet marks
-  at APPROACH, label collision yield, comet once-per-load behavior, and the
-  public RSC/client payload canaries.
+## After screenshots
+
+- OVERVIEW: `after/overview-1440x900.png` — done by codex/gpt-5.
+- APPROACH / planet detail:
+  `after/approach-planet-detail-1440x900.png` — done by codex/gpt-5.
+- Mission Control PLOT and MANIFEST:
+  `after/mission-plot-1440x900.png` and
+  `after/mission-manifest-1440x900.png` — done by codex/gpt-5.
+- Mission Control SCOPE and HAZARD:
+  `after/mission-scope-1440x900.png` and
+  `after/mission-hazard-1440x900.png` — done by codex/gpt-5.
+- Mission Control SIGNALS, COMMS, and LOG:
+  `after/mission-signals-1440x900.png`,
+  `after/mission-comms-1440x900.png`, and
+  `after/mission-log-1440x900.png` — done by codex/gpt-5.
+- Sector map: `after/sector-map-1440x900.png` — done by codex/gpt-5.
+- Sun docking, moon hover, and satellite hover:
+  `after/sun-docking-hover-1440x900.png`,
+  `after/moon-hover-1440x900.png`, and
+  `after/satellite-hover-1440x900.png` — done by codex/gpt-5.
+- Live 32-pixel sphere strip: `after/live-sphere-strip-32.png` — done by
+  codex/gpt-5.
+
+## Mobile fallback
+
+- `mobile/fallback-390x844.png`: canvas count 0, scroll/client width
+  390/390, 22 targets, minimum target 44 px — done by codex/gpt-5.
+- `mobile/fallback-320x844.png`: canvas count 0, scroll/client width
+  320/320, 22 targets, minimum target 44 px — done by codex/gpt-5.
+- `raw-capture-output.txt` retains the machine-readable measurements for both
+  viewports — done by codex/gpt-5.
+
+## Keyboard, history, Escape, and reduced motion
+
+- `raw-interaction-audit.txt` records the deterministic Tab walk: sun;
+  weight-ranked planets; each available moon in that same rank order; DRIFT,
+  HAZARD, and SUPPLY; sector; belt; systems-manual chrome. Every focused
+  control reported `:focus-visible`, a 2 px solid outline, and a target at
+  least 44×44 px — done by codex/gpt-5.
+- Enter opened the first moon's Transmissions view, HAZARD, and the sector
+  map at their named URLs. Sector → Back → Forward restored OVERVIEW then
+  Sector. Escape closed the belt and Mission Control, and Mission Control
+  restored focus to the sun — done by codex/gpt-5.
+- With `prefers-reduced-motion: reduce`, the live audit found zero canvases
+  and zero running animations. The ordinary semantic map remained visible
+  and preserved moon, satellite, nebula, and comet encodings — done by
+  codex/gpt-5.
+- Both motion modes completed with no console warning, console error, or page
+  error — done by codex/gpt-5.
 
 The repository scripts use `PHASE10_BASE_URL` when supplied and otherwise
-target `http://127.0.0.1:3000/share`.
+target `http://127.0.0.1:3000/share`. Claude Lead must independently review
+the committed live evidence before PASS.

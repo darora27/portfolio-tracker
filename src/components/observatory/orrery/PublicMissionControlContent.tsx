@@ -1,5 +1,5 @@
 import type { DashboardData } from "@/lib/dashboard-data";
-import type { MissionControlPanelId } from "./MissionControl";
+import type { MissionControlPanelId } from "./mission-control-panels";
 import { CommsBay } from "./MissionControlBays/CommsBay";
 import { HazardBay } from "./MissionControlBays/HazardBay";
 import { LogBay } from "./MissionControlBays/LogBay";

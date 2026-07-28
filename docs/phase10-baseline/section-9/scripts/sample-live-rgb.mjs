@@ -9,13 +9,34 @@ await mkdir(output, { recursive: true });
 const base = process.env.PHASE10_BASE_URL ?? "http://127.0.0.1:3000/share";
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.addInitScript(() => {
+  window.localStorage.setItem(
+    "stock-market-universe-orientation-seen",
+    "true",
+  );
+});
 await page.goto(base, { waitUntil: "networkidle" });
 await page.locator("canvas").waitFor({ state: "visible" });
+await page.waitForTimeout(1_200);
 
 const idlePath = path.join(output, "overview-idle.png");
 const dockedPath = path.join(output, "overview-docked.png");
 await page.screenshot({ path: idlePath });
-await page.locator("[data-portfolio-sun]").focus();
+const canvasBox = await page.locator("canvas").boundingBox();
+if (!canvasBox) throw new Error("Canvas has no live bounding box.");
+const sunPoint = await page.locator("[data-evidence-sun-x]").evaluate(
+  (element) => ({
+    x: Number(element.dataset.evidenceSunX),
+    y: Number(element.dataset.evidenceSunY),
+  }),
+);
+const centerX = canvasBox.x + sunPoint.x;
+const centerY = canvasBox.y + sunPoint.y;
+await page.mouse.move(centerX, centerY);
+await page.waitForFunction(() =>
+  document.querySelector("[data-docking='true']"),
+);
+await page.waitForTimeout(400);
 await page.screenshot({ path: dockedPath });
 
 async function pixels(file) {
@@ -30,8 +51,6 @@ const idle = await pixels(idlePath);
 const docked = await pixels(dockedPath);
 let changedAnnulusPixels = 0;
 let signedTrailPixels = 0;
-const centerX = 720;
-const centerY = 450;
 for (let y = 0; y < idle.info.height; y += 1) {
   for (let x = 0; x < idle.info.width; x += 1) {
     const offset = (y * idle.info.width + x) * 3;

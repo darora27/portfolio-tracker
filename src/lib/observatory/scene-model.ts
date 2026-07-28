@@ -119,6 +119,10 @@ export type SceneModel = {
     ticker: string;
     date: string;
   } | null;
+  interaction: {
+    hoveredTicker: string | null;
+    portfolioFocused: boolean;
+  };
   sun: ReturnType<typeof sunVisualParameters>;
 };
 
@@ -212,6 +216,21 @@ export function cometColor(
   return "#f4f0df";
 }
 
+export function resolveOrreryPointerTarget(
+  directHit: string | undefined,
+  magneticTarget: string | undefined,
+): string | undefined {
+  if (
+    directHit === "portfolio" ||
+    directHit === "belt" ||
+    directHit?.startsWith("moon:") ||
+    directHit?.startsWith("satellite:")
+  ) {
+    return directHit;
+  }
+  return magneticTarget ?? directHit;
+}
+
 export function formatDayChip(value: number | null): string {
   if (value === null) return "—";
   const glyph = value > 0 ? "▲" : value < 0 ? "▼" : "◆";
@@ -303,6 +322,7 @@ export function buildOverviewSceneModel({
   healthScalar,
   sunspotIntensity,
   hoveredTicker = null,
+  portfolioFocused = false,
   viewport = { width: 1440, height: 900 },
   driftExcessReturn = null,
   portfolioVolatility = null,
@@ -314,6 +334,7 @@ export function buildOverviewSceneModel({
   healthScalar: number;
   sunspotIntensity: number;
   hoveredTicker?: string | null;
+  portfolioFocused?: boolean;
   viewport?: { width: number; height: number };
   driftExcessReturn?: number | null;
   portfolioVolatility?: number | null;
@@ -460,6 +481,10 @@ export function buildOverviewSceneModel({
           date: tradeComet.date,
         }
       : null,
+    interaction: {
+      hoveredTicker,
+      portfolioFocused,
+    },
     sun: sunVisualParameters(healthScalar, sunspotIntensity),
   };
 }

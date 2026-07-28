@@ -34,7 +34,7 @@ import {
   RESEARCH_INTRO,
 } from "@/lib/research-copy";
 import { todayInTimeZone } from "@/lib/date";
-import type { MissionControlPanelId } from "./MissionControl";
+import type { MissionControlPanelId } from "./mission-control-panels";
 import styles from "./orrery.module.css";
 
 type TradeRow = Database["public"]["Tables"]["trades"]["Row"];

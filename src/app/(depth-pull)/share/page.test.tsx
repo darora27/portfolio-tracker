@@ -54,7 +54,7 @@ const publicFixture = {
       dayPct: -0.014,
       prevClose: 444.44,
       weight: 0.42,
-      shares: 100,
+      shares: 24680.13579,
     },
     {
       ticker: "MSFT",
@@ -213,6 +213,7 @@ describe("/share Stock Market Universe rendered output", () => {
       expect(html).not.toContain("222.22");
       expect(html).not.toContain("333.33");
       expect(html).not.toContain("444.44");
+      expect(html).not.toContain("24680.13579");
     },
   );
 
@@ -225,6 +226,7 @@ describe("/share Stock Market Universe rendered output", () => {
     expect(log).toContain("LOG");
     expect(log).toContain("+2.1% OF BOOK");
     expect(log).not.toContain("PRIVATE_TRADE_REASON");
+    expect(log).not.toContain("24680.13579");
 
     const hazard = await renderShare({ focus: "portfolio", station: "hazard" });
     expect(hazard).toContain("HAZARD");

@@ -14,6 +14,7 @@ import {
   moonBucketForStoryCount,
   nebulaForHealth,
   observedSystemHealth,
+  resolveOrreryPointerTarget,
   resolveLabelCollisions,
   satelliteBlinkSeconds,
   satelliteRingRadius,
@@ -262,9 +263,37 @@ describe("pure overview scene descriptor", () => {
     });
   });
 
+  it("keeps directly hit instruments activatable inside a planet magnetic field", () => {
+    expect(resolveOrreryPointerTarget("moon:ASML", "ASML")).toBe("moon:ASML");
+    expect(resolveOrreryPointerTarget("satellite:HAZARD", "ASML")).toBe(
+      "satellite:HAZARD",
+    );
+    expect(resolveOrreryPointerTarget("belt", "NBIS")).toBe("belt");
+    expect(resolveOrreryPointerTarget("ASML", "GOOG")).toBe("GOOG");
+  });
+
   it("keeps sun physiology identical across interaction states", () => {
-    const beforeHover = sunVisualParameters(-0.5, 0.7);
-    const afterHover = sunVisualParameters(-0.5, 0.7);
-    expect(afterHover).toEqual(beforeHover);
+    const idle = buildOverviewSceneModel({
+      holdings,
+      healthScalar: -0.5,
+      sunspotIntensity: 0.7,
+    });
+    const planetHovered = buildOverviewSceneModel({
+      holdings,
+      healthScalar: -0.5,
+      sunspotIntensity: 0.7,
+      hoveredTicker: "ASML",
+    });
+    const sunFocused = buildOverviewSceneModel({
+      holdings,
+      healthScalar: -0.5,
+      sunspotIntensity: 0.7,
+      portfolioFocused: true,
+    });
+
+    expect(planetHovered.interaction.hoveredTicker).toBe("ASML");
+    expect(sunFocused.interaction.portfolioFocused).toBe(true);
+    expect(planetHovered.sun).toEqual(idle.sun);
+    expect(sunFocused.sun).toEqual(idle.sun);
   });
 });
