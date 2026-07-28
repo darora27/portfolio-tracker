@@ -3,7 +3,7 @@
   "phase": 10,
   "current_section": "§8",
   "role": "claude_lead",
-  "stage": "review",
+  "stage": "accept",
   "status": "ready",
   "next_actor": "claude",
   "selected_direction": {
@@ -27,32 +27,10 @@
     "id": "§8",
     "title": "The Stock Market Universe — /share rebuilt",
     "spec_doc": "docs/phase10-workflow/specs/section-8.md",
-    "implementation_commit": "333566a46c6a2c5509c27ecf136e6ede25d41624",
-    "review_result": "fail",
-    "review_doc": "docs/phase10-workflow/reviews/section-8-review-3.md",
-    "findings": [
-      {
-        "id": 1,
-        "severity": "severe",
-        "summary": "/share renders full owner-only Mission Control content (exact dollar amounts, trade reasons) whenever the visiting browser carries a valid owner session cookie, because UniverseRoute.tsx's owner-content branch checks only `authenticated`, never `ownerGate`/basePath.",
-        "criterion": "section-8.md §14 item 47 (Privacy); PRODUCT_DIRECTION.md Decision hierarchy rank 1",
-        "required_change": "Scope the OwnerMissionControlContent branch in UniverseRoute.tsx to `portfolioSelected && authenticated && ownerGate`; flip the /share authenticated-viewer test to assert public-only content; keep/add the equivalent authenticated-full-content test scoped to /."
-      },
-      {
-        "id": 2,
-        "severity": "moderate",
-        "summary": "OrreryWorld's top header always renders \"Public universe / read-only\" regardless of viewer identity, including on the authenticated, owner-gated /.",
-        "criterion": "round-two owner decision E1 (\"identity-aware private Mission Control\")",
-        "required_change": "Derive the header text from viewer identity/route (missionMode/ownerGate/basePath) instead of the referenceStudy-only flag."
-      },
-      {
-        "id": 3,
-        "severity": "moderate",
-        "summary": "The Systems Manual button and the holding inspector's \"Return to overview\" control share the same bottom-right CSS anchor and visually/functionally overlap in APPROACH at 1440x900; clicks in the overlap region open the manual instead of returning to OVERVIEW.",
-        "criterion": "section-8.md §14 item 3 (Behavioral); undermines round-two finding E4",
-        "required_change": "Reposition .manualButton and/or .inspector so the two 44x44 controls never overlap while the inspector is open; add evidence the full \"Return to overview\" target resolves to itself."
-      }
-    ],
+    "implementation_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
+    "review_result": "pass",
+    "review_doc": "docs/phase10-workflow/reviews/section-8-review-4.md",
+    "findings": [],
     "prior_findings_resolved": [
       {
         "id": 1,
@@ -65,13 +43,31 @@
         "summary": "criterion 37 dashboard-data.source.test.ts was source-substring-only, not behavioral.",
         "resolved_by_commit": "3c5363042f4e21dc7a283c54acf750fe0a912dc0",
         "verified_live_in": "docs/phase10-workflow/reviews/section-8-review-2.md"
+      },
+      {
+        "id": 3,
+        "summary": "review-3 finding 1 (severe): /share leaked full owner-only Mission Control content, including exact dollar amounts, to a browser carrying a valid owner session cookie (UniverseRoute.tsx's owner-content branch checked only `authenticated`, never `ownerGate`).",
+        "resolved_by_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
+        "verified_live_in": "docs/phase10-workflow/reviews/section-8-review-4.md"
+      },
+      {
+        "id": 4,
+        "summary": "review-3 finding 2 (moderate): OrreryWorld's header always read \"Public universe / read-only\" regardless of viewer identity, including on the authenticated, owner-gated /.",
+        "resolved_by_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
+        "verified_live_in": "docs/phase10-workflow/reviews/section-8-review-4.md"
+      },
+      {
+        "id": 5,
+        "summary": "review-3 finding 3 (moderate): the Systems Manual button and the holding inspector's \"Return to overview\" control shared the same bottom-right CSS anchor and overlapped in APPROACH at 1440x900, stealing clicks meant for the return control.",
+        "resolved_by_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
+        "verified_live_in": "docs/phase10-workflow/reviews/section-8-review-4.md"
       }
     ],
     "remediation_commits": [
       "3c53630 — phase10(§8): remediate desktop fallback and data coverage (findings 1-2)",
       "d992510 — phase10(§8): remediate owner universe feedback (A2, A3, B1, B2, C1, C2)",
       "333566a — phase10(§8): remediate shared universe and native textures (E1-E5; E6 not started per lower-priority budget rule)",
-      "pending next-actor hash — phase10(§8): remediate review-3 findings 1-3 (owner-content route gating, header identity text, manual-button/inspector overlap)"
+      "c2485af — phase10(§8): remediate privacy identity and control overlap (review-3 findings 1-3: owner-content route gating, header identity text, manual-button/inspector overlap)"
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -81,7 +77,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-8-codex-implementation-remediate-to-claude-lead.md",
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-8-claude-lead-to-claude-lead-accept.md",
     "owner_feedback": {
       "recorded_at": "2026-07-27",
       "recorded_by": "claude/fable-5 (cowork, owner-directed)",
@@ -177,24 +173,24 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "15bb49d669a78a90c2a3ea90e263cc0b25cfb477",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 15bb49d (`phase10(review §8): fail re-review with bounded remediation handoff`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
-  "last_green_commit": "333566a46c6a2c5509c27ecf136e6ede25d41624",
-  "production_code_changed_this_turn": true,
-  "production_code_note_prior_turn": "The prior turn (Claude Lead, §8 review stage, commit 15bb49d) changed no implementation source and returned 3 bounded findings: public-route owner-content leakage under an authenticated cookie, incorrect private-route header identity, and a manual-button/inspector overlap.",
-  "production_code_note": "This turn (Codex Implementation, §8 remediate stage) fixed only review-3 findings 1-3: owner Mission Control content and private mission mode now require the owner-gated route as well as authentication; OrreryWorld renders identity-accurate public/private header text; and the Systems Manual control is anchored top-right instead of sharing the inspector's bottom-right anchor. Route, source-isolation, identity-copy, and CSS-anchor regression tests were updated. The sandbox denied both 0.0.0.0:3100 and 127.0.0.1:3100 with listen EPERM, so Claude Lead must independently perform the authenticated / to /share live privacy sequence and the 1440x900 full-target elementFromPoint check.",
+  "prev_actor_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): c2485af (`phase10(§8): remediate privacy identity and control overlap`) is HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "last_green_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
+  "production_code_changed_this_turn": false,
+  "production_code_note_prior_turn": "The prior turn (Codex Implementation, §8 remediate stage, commit c2485af) fixed review-3 findings 1-3: owner Mission Control content and private mission mode now require the owner-gated route as well as authentication; OrreryWorld renders identity-accurate public/private header text; and the Systems Manual control is anchored top-right instead of sharing the inspector's bottom-right anchor. Route, source-isolation, identity-copy, and CSS-anchor regression tests were updated. Codex's sandbox denied both 0.0.0.0:3100 and 127.0.0.1:3100 with listen EPERM, so it deferred the live authenticated /-to-/share privacy sequence and the 1440x900 full-target elementFromPoint check to Claude Lead.",
+  "production_code_note": "This turn (Claude Lead, §8 review stage) changed no implementation source, only the review doc and this state file. Independently built and ran a real production server (temporary, unsaved, process-only OWNER_PASSWORD override; no .env* file ever read/printed/edited) and drove it with temporary, unsaved Playwright scripts to verify all three review-3 findings live: (1) an authenticated cookie from / no longer surfaces any owner Mission Control content, currency pattern, or owner marker on /share under any station (dashboard/history/trades/research); (2) / renders \"Private universe / owner access\" and /share renders \"Public universe / read-only\" in the same authenticated context; (3) at /share?planet=MSFT, 1440x900, 10 elementFromPoint samples (4 corners + center of each control) confirm the Systems Manual button and \"Return to overview\" link no longer overlap and each resolves to itself. All three findings are resolved with zero new findings. Result: PASS, review recorded in docs/phase10-workflow/reviews/section-8-review-4.md.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex Implementation ran the full Vitest suite after remediation: 87 test files passed; 470 of 470 tests passed.",
-      "finished_at": "2026-07-28T01:25:27Z"
+      "summary": "Claude Lead independently re-ran the full Vitest suite against commit c2485af: 87 test files passed; 470 of 470 tests passed.",
+      "finished_at": "2026-07-28T01:57:53Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex Implementation ran the Next.js 16.2.11 Turbopack production build: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
-      "finished_at": "2026-07-28T01:25:27Z"
+      "summary": "Claude Lead independently re-ran the Next.js 16.2.11 Turbopack production build against commit c2485af: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
+      "finished_at": "2026-07-28T01:57:53Z"
     },
     "long_task_gate": {
       "command": "CDP Emulation.setCPUThrottlingRate(2) + PerformanceObserver('longtask'), 5 fresh contexts, 1440x900, against a real npm run start server on /share",
@@ -213,10 +209,16 @@
       "status": "pass",
       "summary": "Claude Lead independently verified live: canvas count 0 at both 390x844 and 320x844; scrollWidth - clientWidth === 0 at both widths; visual inspection confirms a genuinely reflowed semantic list carrying every encoded value as text. Zero console warnings/errors across all captured contexts.",
       "finished_at": "2026-07-27T23:28:54Z"
+    },
+    "review_3_findings_live_check": {
+      "command": "npm run start -- -p 3100 (temporary process-only OWNER_PASSWORD, no .env* accessed) + several temporary unsaved Playwright scripts",
+      "status": "pass",
+      "summary": "Claude Lead independently verified all 3 review-3 findings live, per docs/phase10-workflow/reviews/section-8-review-4.md: (1) authenticated cookie from / no longer surfaces owner content, data-mode=\"private\", or any currency pattern on /share across all 4 Mission Control stations; (2) / renders \"Private universe / owner access\" and /share renders \"Public universe / read-only\" in the same authenticated context; (3) at /share?planet=MSFT 1440x900, 10 elementFromPoint samples (4 corners + center per control) confirm the Systems Manual button and \"Return to overview\" link no longer overlap and each resolves to itself. Zero console warnings/errors.",
+      "finished_at": "2026-07-28T01:57:53Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T01:25:27Z",
+  "updated_at": "2026-07-28T01:57:53Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
