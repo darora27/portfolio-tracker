@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§9",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -29,17 +29,18 @@
     "spec_doc": "docs/phase10-workflow/specs/section-9.md",
     "implementation_commit": "bc1b79c97a9487174f389430a6f5fc8447ebde05",
     "review_result": "fail",
-    "review_doc": "docs/phase10-workflow/reviews/section-9-review-2.md",
+    "review_doc": "docs/phase10-workflow/reviews/section-9-review-3.md",
     "findings": [
       {
-        "id": "F7",
-        "criterion": "1 and 17",
-        "summary": "The outermost planet (NBIS) and its tag leave the 1440x900 viewport at OVERVIEW, so only seven of eight planets are nameable at rest and one planet is clipped.",
-        "evidence": "Measured live against a production build at exactly 1440x900, sampling every DOM scene label's bounding rect and each planet's projected centre and radius 24 times over 12 seconds. Seven planets stay fully inside the frame (label bottoms 338-748, label lefts 275-1150). NBIS reaches label bottom 935 (viewport height 900), label left -8, and planet left edge -10 — the tag is cut off the bottom edge by up to 35 px and off the left edge by up to 8 px, and the sphere crosses the left edge by up to 10 px. Not transient: all three committed OVERVIEW-camera frames (after/overview-1440x900.png, after/moon-hover-1440x900.png, after/satellite-hover-1440x900.png) and both pixel-samples/overview-*.png show the eighth planet clipped in the bottom-left corner with no visible tag. raw-live-scene-diagnostic.txt records sceneLabelCount 8, which counts DOM labels and does not test whether they are on screen, and docs/phase10-baseline/section-9/README.md records no result for criterion 1 or 17. No test catches it: scene-model.ts exposes belt.viewportSpanPct as the constant OVERVIEW_BELT_SPAN_PCT = 0.88 echoed back, and scene-model.test.ts:101-102 asserts that value is between 0.85 and 0.92 — the constant checked against itself. The constant drives world scale at scene-model.ts:350 under a flat-plane assumption, but the rendered scene uses a perspective camera over a tilted orbital plane, so the near arc of the outermost orbit projects outside the predicted extent. Not a remediation regression — it was unobservable while /share returned 500, and both criteria were named in F1's blocked list.",
-        "required_change": "Make the OVERVIEW composition fit the 1440x900 frame with every planet and every tag fully inside it — e.g. derive the scale from the projected extent of the outermost orbit at the OVERVIEW camera rather than a flat belt-diameter constant, and/or clamp tag placement to the viewport. Assert it where it can fail: extend buildOverviewSceneModel to expose the projected bounding box of every planet and label at the OVERVIEW camera, and unit-test that all eight fall inside 1440x900 across a full orbital phase sweep, not against a hard-coded span constant. Recapture after/overview-1440x900.png and record the criterion 1 and 17 results in docs/phase10-baseline/section-9/README.md with executor suffixes. Do not change trail/orbit sign->colour or sign->direction mapping (spec §1.1, D1)."
+        "id": "F8",
+        "criterion": "18",
+        "summary": "The heaviest planet projects to 32.6 px instead of the required ~68 px, and two planets fall below the 22 px floor, at 1440x900.",
+        "evidence": "Measured live against a production build I started myself at exactly 1440x900, 24 samples over 12 seconds, reading each planet's projected radius per frame from the live renderer (docs/phase10-baseline/section-9/scripts/measure-overview-fit.mjs, output in claude-review/raw-overview-fit-review-3.json). Mean projected diameters by weight rank: ASML 32.6, GOOG 29.8, COST 29.1, MSFT 21.4, IBM 23.7, INTC 25.0, CBRS 16.1, NBIS 25.0. The heaviest holding renders at 48% of the required ~68 px; MSFT and CBRS are below the 22 px floor, CBRS by 27%; the smallest diameter in any frame is 16.04 px. The scene model now contradicts its own number: for the eight-planet overviewHoldings fixture it reports planets[0].projectedDiameterPx = 68.08 while its own newly added projected bounds give that same planet a real width of 41.15 px at the same OVERVIEW camera. projectedDiameterPx is still radius * 2 * OVERVIEW_PLANET_PIXELS_PER_WORLD_UNIT (scene-model.ts:677), a fixed 37 px-per-world-unit constant independent of the camera, the holding count and orbital phase; it was roughly right for the pre-F7 hard-coded camera, and the fitted camera now sits 1.172x farther out. No test catches it: scene-model.test.ts:111-112 asserts projectedDiameterPx is close to 68.08 and the last planet's is >= 22, which is the constant checked against itself and cannot fail for any camera — the same defect F7 identified in belt.viewportSpanPct, left in place one field over. Not a regression introduced by the F7 remediation and not caught by Claude Lead in rounds 1 or 2: under the pre-F7 camera the same live measure would have been ~38 px heaviest and ~19 px smallest, already failing both halves. The remediation made it ~15% worse by fitting the camera farther out, and its projected bounds are the instrument that first made the failure measurable.",
+        "required_change": "Make the OVERVIEW composition satisfy criterion 18 as measured by the model's own projection at the fitted OVERVIEW camera — heaviest planet ~68 px diameter, no planet below 22 px, at 1440x900 — while criterion 17 continues to hold (belt span 85-92%, nothing clipped) and spec §4.2's ring spacing stays >= 1.6x the sum of adjacent planet radii. Replace the vacuous assertion: make projectedDiameterPx derive from the same projection as bounds (or delete it in favour of bounds.width) so one number describes the planet, and assert the ~68 px / >= 22 px gate across the full orbital phase sweep the way F7's fit is now asserted, not against a fixed px-per-world-unit constant. Two traps: (1) uniformly enlarging planets does nothing, because ORRERY_RING_SPACING is itself derived from ORRERY_MAX_RADIUS (orrery.ts:10-11), so raising the radius grows every orbit by the same factor, the belt-span fit pushes the camera back by that same factor, and on-screen diameter is unchanged — what must change is the ratio of planet radius to orbit spacing, e.g. spacing each gap from its own adjacent pair of radii, which is literally what §4.2's '1.6x the sum of adjacent planet radii' describes, rather than from MAX_RADIUS * 2 * 1.6 uniformly; (2) do not satisfy criterion 18 by narrowing the belt or moving the camera in — criterion 17's 85-92% span is not negotiable against it. If after removing the uniform-scale trap the ~68 px target still cannot be reached while holding criterion 17's belt span and §4.2's spacing rule with eight planets, do NOT silently trade one criterion against the other: stop, record the measured achievable ceiling and the binding constraint, set status to blocked, and hand off to Devan — that is a spec conflict for the owner to resolve. Finally, recapture docs/phase10-baseline/section-9/after/overview-1440x900.png once the composition is final (it is still the pre-F7 frame showing the clipped eighth planet, which F7's required change already asked for and the browser-permission block prevented) and record the criterion 1, 17 and 18 results in docs/phase10-baseline/section-9/README.md with executor suffixes. Do not change trail/orbit sign->colour or sign->direction mapping (spec §1.1, D1)."
       }
     ],
     "resolved_findings": [
+      "F7 outermost planet and tag leaving the 1440x900 viewport — FIXED and confirmed live by Claude Lead. buildOverviewSceneModel now solves an OVERVIEW camera descriptor from the perspective-projected belt, outer-orbit, planet-radius and label extents, exposes real projected bounding boxes, and shares one viewport-clamping label layout with OrreryScene, which consumes the same camera descriptor. Measured at exactly 1440x900 over 24 samples / 12 s against a production server Claude Lead started: 8/8 labels and 8/8 planets fully inside the frame (label edges left 108.0, top 151.2, right 1175.2, bottom 671.3; planet edges left 112.4, top 127.5, right 1170.0, bottom 618.4), zero hidden labels, zero console errors. Criterion 1 passes and criterion 17's clipping clause passes. Criterion 17's belt-span clause also passes and is now assertable: belt.viewportSpanPct is computed from the real projection at 88.00% (86.4 -> 1353.6 px), and the live renderer was confirmed to sit at that fitted camera independently — the rendered sun disc measures 55 px across, giving 21.5 px per world unit against 21.97 predicted, a 2% agreement. The new coverage is real: a 360-step orbital phase sweep asserting every planet and label bounding box against the frame, plus a parity test projecting through an actual three.js PerspectiveCamera that matches the pure model to eight decimals. Trail/orbit sign->colour and sign->direction mapping are byte-unchanged. The one outstanding piece of F7's required change — recapturing after/overview-1440x900.png — is carried into F8, since the F8 fix will change the composition again.",
       "F1 /share 500 — FIXED and confirmed live: MISSION_CONTROL_PANELS and MissionControlPanelId moved to the non-client module mission-control-panels.ts; /share plus all seven ?station= bays return 200 against a production server Claude Lead started independently, with an empty server error log. npm run build is now node scripts/build.mjs, which runs next build then scripts/verify-share-route.mjs and fails the build unless /share and the manifest station return 200 — real coverage the vitest suite could not provide.",
       "F2 fabricated VOO trace — FIXED: the literal polyline is deleted; the control renders its authorized unavailable state (VOO UNAVAILABLE, disabled, reason in the title) and PlanetDetail.test.tsx asserts exactly one polyline plus the disabled control.",
       "F3 broken measurement script — FIXED: node --check passes on all seven retained scripts; measure-long-tasks.mjs is a real longtask PerformanceObserver at 1440x900, CPU 2x, five fresh contexts; raw-long-task-output.txt holds five real 0 ms runs and raw-rgb-pixel-output.txt holds live sampling (3,078 annulus, 3,397 trail pixels). Both placeholders are gone.",
@@ -50,7 +51,7 @@
     ],
     "remediation_commits": [
       "7e37bdda62b0cf9d283b54410f96cffa5828d673",
-      "Codex §9 bounded remediation for F7 overview viewport fit; hash to be filled by the next actor via git log -1."
+      "78da83f16c0f4bbb0b6dc6962186a92f8501285c"
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -60,7 +61,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_2). Authority order for this section: UNIVERSE_ROUND2_BRIEF.md -> UNIVERSE_IDEAS_2.md (including its §9 owner corrections and authorizations) -> PHASE10.md §9. §8 proved the universe works; §9 makes it good. Two new public disclosure surfaces are authorized in UNIVERSE_IDEAS_2.md §9.3-9.4 (public trade log: action, ticker, date, and % impact only, never shares/prices/dollars; public news for held tickers) and both require extended privacy canary coverage. Texture resolution is bound by the §9.1 correction: tune compression first, ship base at 2048x1024 and emissive/normal at 1024x512, measure and record the real total, reduce further if it exceeds ~15MB. §9's acceptance criteria forbid `expect(source).toContain(...)` as coverage for rendered behavior. Two owner observations carried forward unclosed from §8 and recorded in docs/phase10-workflow/reviews/section-8-accepted.md: D1 (unreproduced green-trail report — do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 ('website is still relatively confusing', too general to bound in §8).",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-codex-implementation-remediate-2-to-claude-lead.md"
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-claude-lead-to-codex-remediation-3.md"
   },
   "sections_history": [
     {
@@ -117,40 +118,40 @@
       "note": "The Stock Market Universe — /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes §9. See docs/phase10-workflow/reviews/section-8-accepted.md."
     }
   ],
-  "prev_actor_commit": "094150b4ac90c744347e4434961ebb2d09bd6031",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 094150b (`phase10(review §9): fail on overview viewport fit`) was HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "78da83f16c0f4bbb0b6dc6962186a92f8501285c",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 78da83f (`phase10(§9): remediate overview viewport fit`) was HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "6a68758d57474f5494ff2ce38056ebb37b5aa244",
-  "production_code_changed_this_turn": true,
-  "production_code_note_prior_turn": "Claude Lead review round 2 changed no application source — this turn's commit touches only the review doc, this state file, and the handoff. All six prior findings (F1-F6) are verified resolved. One new bounded finding, F7: with /share finally rendering, live measurement at 1440x900 shows the outermost planet NBIS and its tag leaving the viewport, failing criteria 1 and 17. Both criteria were in F1's blocked list and were unobservable during the prior review.",
-  "production_code_note": "Codex Implementation remediated only F7. The pure scene model now derives the OVERVIEW camera distance and vertical target from perspective-projected belt, outer-orbit, planet-radius, and label extents; exposes real projected bounding boxes for the belt, every planet, and every resting label; and clamps collision-resolved labels inside the viewport. OrreryScene consumes that same camera descriptor and label layout. A 360-step orbital phase sweep proves all eight planets and tags remain inside 1440x900 while the projected belt spans 88%; a Three.js camera parity test verifies the pure projection matches the live renderer math. Trail/orbit sign-to-colour and sign-to-direction mapping are unchanged. Live screenshot recapture remains explicitly unverified because both available browser paths were denied by this CLI environment.",
+  "production_code_changed_this_turn": false,
+  "production_code_note_prior_turn": "Codex Implementation remediated only F7. The pure scene model now derives the OVERVIEW camera distance and vertical target from perspective-projected belt, outer-orbit, planet-radius, and label extents; exposes real projected bounding boxes for the belt, every planet, and every resting label; and clamps collision-resolved labels inside the viewport. OrreryScene consumes that same camera descriptor and label layout. Live screenshot recapture was left unverified because both browser paths were denied in that CLI environment; Claude Lead performed it independently this turn.",
+  "production_code_note": "Claude Lead review round 3 changed no application source — this turn's commit touches only the review doc, this state file, the handoff, and three new review-evidence files under docs/phase10-baseline/section-9/ (the measurement script, its raw output, and a post-F7 1440x900 OVERVIEW frame). F7 is verified resolved live: 8/8 planets and 8/8 tags fully inside 1440x900 over 24 samples, belt span 88.00% from the real projection, live camera confirmed at the fitted distance to within 2% via the rendered sun disc. One new bounded finding, F8, against criterion 18: the heaviest planet projects to 32.6 px against a required ~68 px and two planets fall below the 22 px floor. It is not a regression from the F7 remediation (it failed before at ~38 px / ~19 px and Claude Lead missed it in rounds 1-2), but the remediation worsened it ~15% by fitting the camera 1.172x farther out and added the projected bounds that first made it measurable. The test that covers criterion 18 asserts a camera-independent constant against itself, the same defect F7 found in belt.viewportSpanPct.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex Implementation ran the full Vitest suite after the bounded F7 remediation: 94 test files passed; 499 of 499 tests passed.",
-      "finished_at": "2026-07-28T13:28:49Z"
+      "summary": "Claude Lead independently ran the full Vitest suite at the reviewed commit 78da83f: 94 test files passed; 499 of 499 tests passed.",
+      "finished_at": "2026-07-28T16:31:00Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex Implementation ran the final Next.js 16.2.11 production build: compilation and TypeScript passed, 18 static-generation tasks completed, and the post-build smoke reported 'Share route smoke: PASS (/share 200; Mission Control manifest 200)'.",
-      "finished_at": "2026-07-28T13:26:20Z"
+      "summary": "Claude Lead independently ran the Next.js 16.2.11 production build at the reviewed commit: compilation and TypeScript passed, 18 static-generation tasks completed, and the post-build smoke reported 'Share route smoke: PASS (/share 200; Mission Control manifest 200)'.",
+      "finished_at": "2026-07-28T16:33:00Z"
     },
     "live_routes": {
-      "command": "npm run build post-build production smoke via scripts/verify-share-route.mjs",
+      "command": "npm run build post-build smoke via scripts/verify-share-route.mjs, plus an independent npx next start on port 3131",
       "status": "pass",
-      "summary": "/share and /share?focus=portfolio&camera=command&station=manifest returned 200 against the completed production build.",
-      "finished_at": "2026-07-28T13:26:20Z"
+      "summary": "/share returned 200 against the completed production build in both the build's own smoke and the separate production server Claude Lead started for live measurement.",
+      "finished_at": "2026-07-28T16:34:00Z"
     },
     "live_evidence": {
-      "command": "in-app browser discovery, then retained Playwright Chromium against localhost",
-      "status": "not_run",
-      "summary": "Environment-only evidence gap: in-app browser discovery returned no available backend, and standalone Playwright Chromium failed before page creation with mach_port_rendezvous bootstrap_check_in Permission denied (1100). The F7 model assertions pass, but no live 1440x900 geometry measurement or post-remediation screenshot was produced; Claude Lead must perform both independently before PASS.",
-      "finished_at": "2026-07-28T13:23:12Z"
+      "command": "docs/phase10-baseline/section-9/scripts/measure-overview-fit.mjs against npx next start at 1440x900, plus a Playwright screenshot and PIL pixel measurement",
+      "status": "pass",
+      "summary": "The environment-only browser gap Codex hit did not recur for Claude Lead. 24 samples over 12 s at exactly 1440x900: all 8 labels and all 8 planets fully inside the viewport, zero hidden labels, zero console errors — F7 resolved. The same run measured projected planet diameters, which is what F8 fails on (heaviest 32.6 px against a required ~68 px; CBRS 16.1 px and MSFT 21.4 px below the 22 px floor). Raw output in docs/phase10-baseline/section-9/claude-review/raw-overview-fit-review-3.json; frame in the same directory as overview-1440x900-review-3.png, sips-verified at 1440x900. The live camera was confirmed to match the model's fitted descriptor within 2% by measuring the rendered sun disc (55 px across, 21.5 px per world unit against 21.97 predicted).",
+      "finished_at": "2026-07-28T16:40:00Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T13:28:54Z",
+  "updated_at": "2026-07-28T16:42:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

@@ -1,0 +1,233 @@
+{
+  "url": "http://127.0.0.1:3131/share",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sampleCount": 24,
+  "labelCount": 8,
+  "criterion1_allLabelsInsideViewport": true,
+  "criterion17_allPlanetsInsideViewport": true,
+  "criterion18_heaviestProjectedDiameterPx": 32.57,
+  "criterion18_lightestProjectedDiameterPx": 25.01,
+  "anyLabelHidden": false,
+  "consoleErrors": [],
+  "rows": [
+    {
+      "ticker": "ASML",
+      "weightRank": 1,
+      "texts": [
+        "ASML"
+      ],
+      "hiddenCount": 0,
+      "label": {
+        "minLeft": 763.2,
+        "minTop": 313.66,
+        "maxRight": 814.94,
+        "maxBottom": 368.55
+      },
+      "planet": {
+        "minLeft": 769.83,
+        "minTop": 270,
+        "maxRight": 810.25,
+        "maxBottom": 313.21
+      },
+      "projectedDiameterPx": {
+        "min": 32.39,
+        "max": 32.75,
+        "mean": 32.57
+      },
+      "labelFullyInsideViewport": true,
+      "planetFullyInsideViewport": true
+    },
+    {
+      "ticker": "GOOG",
+      "weightRank": 2,
+      "texts": [
+        "GOOG"
+      ],
+      "hiddenCount": 0,
+      "label": {
+        "minLeft": 560.81,
+        "minTop": 290.67,
+        "maxRight": 631.7,
+        "maxBottom": 359.22
+      },
+      "planet": {
+        "minLeft": 566.09,
+        "minTop": 250.63,
+        "maxRight": 623.19,
+        "maxBottom": 304.48
+      },
+      "projectedDiameterPx": {
+        "min": 29.45,
+        "max": 30.24,
+        "mean": 29.83
+      },
+      "labelFullyInsideViewport": true,
+      "planetFullyInsideViewport": true
+    },
+    {
+      "ticker": "COST",
+      "weightRank": 3,
+      "texts": [
+        "COST"
+      ],
+      "hiddenCount": 0,
+      "label": {
+        "minLeft": 719.52,
+        "minTop": 438.56,
+        "maxRight": 763.52,
+        "maxBottom": 482.56
+      },
+      "planet": {
+        "minLeft": 727.22,
+        "minTop": 398.88,
+        "maxRight": 756.35,
+        "maxBottom": 428.02
+      },
+      "projectedDiameterPx": {
+        "min": 29.14,
+        "max": 29.14,
+        "mean": 29.14
+      },
+      "labelFullyInsideViewport": true,
+      "planetFullyInsideViewport": true
+    },
+    {
+      "ticker": "MSFT",
+      "weightRank": 4,
+      "texts": [
+        "MSFT"
+      ],
+      "hiddenCount": 0,
+      "label": {
+        "minLeft": 766.64,
+        "minTop": 217.11,
+        "maxRight": 870.34,
+        "maxBottom": 271.73
+      },
+      "planet": {
+        "minLeft": 778.57,
+        "minTop": 187.12,
+        "maxRight": 860.16,
+        "maxBottom": 218.92
+      },
+      "projectedDiameterPx": {
+        "min": 21.23,
+        "max": 21.55,
+        "mean": 21.38
+      },
+      "labelFullyInsideViewport": true,
+      "planetFullyInsideViewport": true
+    },
+    {
+      "ticker": "IBM",
+      "weightRank": 5,
+      "texts": [
+        "IBM"
+      ],
+      "hiddenCount": 0,
+      "label": {
+        "minLeft": 344.28,
+        "minTop": 307.94,
+        "maxRight": 403.97,
+        "maxBottom": 383.92
+      },
+      "planet": {
+        "minLeft": 350.97,
+        "minTop": 275.71,
+        "maxRight": 390.62,
+        "maxBottom": 330.83
+      },
+      "projectedDiameterPx": {
+        "min": 23.26,
+        "max": 24.06,
+        "mean": 23.66
+      },
+      "labelFullyInsideViewport": true,
+      "planetFullyInsideViewport": true
+    },
+    {
+      "ticker": "INTC",
+      "weightRank": 6,
+      "texts": [
+        "INTC"
+      ],
+      "hiddenCount": 0,
+      "label": {
+        "minLeft": 1121.06,
+        "minTop": 337.55,
+        "maxRight": 1175.19,
+        "maxBottom": 461.55
+      },
+      "planet": {
+        "minLeft": 1134.93,
+        "minTop": 304.54,
+        "maxRight": 1170.03,
+        "maxBottom": 408.27
+      },
+      "projectedDiameterPx": {
+        "min": 24.05,
+        "max": 25.83,
+        "mean": 24.95
+      },
+      "labelFullyInsideViewport": true,
+      "planetFullyInsideViewport": true
+    },
+    {
+      "ticker": "CBRS",
+      "weightRank": 7,
+      "texts": [
+        "CBRS"
+      ],
+      "hiddenCount": 0,
+      "label": {
+        "minLeft": 650.75,
+        "minTop": 151.17,
+        "maxRight": 843.05,
+        "maxBottom": 200.14
+      },
+      "planet": {
+        "minLeft": 664.44,
+        "minTop": 127.54,
+        "maxRight": 829.73,
+        "maxBottom": 148.53
+      },
+      "projectedDiameterPx": {
+        "min": 16.04,
+        "max": 16.19,
+        "mean": 16.08
+      },
+      "labelFullyInsideViewport": true,
+      "planetFullyInsideViewport": true
+    },
+    {
+      "ticker": "NBIS",
+      "weightRank": 8,
+      "texts": [
+        "NBIS"
+      ],
+      "hiddenCount": 0,
+      "label": {
+        "minLeft": 151.47,
+        "minTop": 559.17,
+        "maxRight": 305.45,
+        "maxBottom": 686.89
+      },
+      "planet": {
+        "minLeft": 155.44,
+        "minTop": 525.88,
+        "maxRight": 291.09,
+        "maxBottom": 633.91
+      },
+      "projectedDiameterPx": {
+        "min": 24.68,
+        "max": 25.24,
+        "mean": 25.01
+      },
+      "labelFullyInsideViewport": true,
+      "planetFullyInsideViewport": true
+    }
+  ]
+}
