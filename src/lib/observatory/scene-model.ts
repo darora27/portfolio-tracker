@@ -1,7 +1,6 @@
 import {
   ORRERY_MAX_ANGULAR_SPEED,
   ORRERY_PLANET_CLEARANCE,
-  ORRERY_SUN_CLEARANCE,
   angularSpeedForWeeklyReturn,
   axialSpinForDayReturn,
   directionForWeeklyReturn,
@@ -17,12 +16,48 @@ export const ACTIVE_RING_OPACITY = 0.6;
 export const OVERVIEW_BELT_SPAN_PCT = 0.88;
 export const OVERVIEW_PLANET_PIXELS_PER_WORLD_UNIT = 37;
 
+const OVERVIEW_FOV_DEGREES = 42;
+const OVERVIEW_CAMERA_HEIGHT_RATIO = 0.82;
+const OVERVIEW_CAMERA_DEPTH_RATIO = 1.62;
+const OVERVIEW_CAMERA_NEAR = 0.1;
+const OVERVIEW_LABEL_WIDTH_PX = 44;
+const OVERVIEW_LABEL_HEIGHT_PX = 44;
+const OVERVIEW_LABEL_OFFSET_PX = 4;
+const OVERVIEW_VIEWPORT_PADDING_PX = 8;
+const ORBIT_PROJECTION_SAMPLES = 180;
 const MIN_TRAIL_DEGREES = 18;
 const MAX_TRAIL_DEGREES = 30;
 const MIN_TRAIL_RETURN = 0.002;
 const MAX_TRAIL_RETURN = 0.12;
 const SATELLITE_RADIUS = 0.16;
 const SUN_BODY_RADIUS = 1.28;
+
+type Point3 = { x: number; y: number; z: number };
+
+export type ScreenBounds = {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+  width: number;
+  height: number;
+};
+
+export type OverviewCameraDescriptor = {
+  fovDegrees: number;
+  near: number;
+  far: number;
+  position: Point3;
+  target: Point3;
+};
+
+type ProjectionContext = {
+  camera: OverviewCameraDescriptor;
+  focalLengthPx: number;
+  forward: Point3;
+  right: Point3;
+  up: Point3;
+};
 
 export type SceneHolding = PublicOrreryHolding & {
   newsCount?: number;
@@ -58,6 +93,8 @@ export type SceneModel = {
     angularSpeed: number;
     axialSpin: number;
     projectedDiameterPx: number;
+    screen: { x: number; y: number; depth: number };
+    bounds: ScreenBounds;
     brandHex: string;
     encodedWeight: number;
   }>;
@@ -80,8 +117,10 @@ export type SceneModel = {
     dayChip: string;
     defaultSide: "anti-sun";
     screen: { x: number; y: number; depth: number };
+    bounds: ScreenBounds;
     opacity: number;
     yielded: boolean;
+    clamped: boolean;
   }>;
   moons: Array<{
     ticker: string;
@@ -101,8 +140,10 @@ export type SceneModel = {
   belt: {
     radius: number;
     viewportSpanPct: number;
+    bounds: ScreenBounds;
     tickers: string[];
   };
+  overviewCamera: OverviewCameraDescriptor;
   nebula: {
     color: string;
     alpha: number;
@@ -125,6 +166,244 @@ export type SceneModel = {
   };
   sun: ReturnType<typeof sunVisualParameters>;
 };
+
+function vectorLength(vector: Point3): number {
+  return Math.hypot(vector.x, vector.y, vector.z);
+}
+
+function normalizeVector(vector: Point3): Point3 {
+  const length = vectorLength(vector) || 1;
+  return {
+    x: vector.x / length,
+    y: vector.y / length,
+    z: vector.z / length,
+  };
+}
+
+function crossProduct(left: Point3, right: Point3): Point3 {
+  return {
+    x: left.y * right.z - left.z * right.y,
+    y: left.z * right.x - left.x * right.z,
+    z: left.x * right.y - left.y * right.x,
+  };
+}
+
+function dotProduct(left: Point3, right: Point3): number {
+  return left.x * right.x + left.y * right.y + left.z * right.z;
+}
+
+function projectionContext(
+  camera: OverviewCameraDescriptor,
+  viewport: { width: number; height: number },
+): ProjectionContext {
+  const forward = normalizeVector({
+    x: camera.target.x - camera.position.x,
+    y: camera.target.y - camera.position.y,
+    z: camera.target.z - camera.position.z,
+  });
+  const right = normalizeVector(crossProduct(forward, { x: 0, y: 1, z: 0 }));
+  return {
+    camera,
+    forward,
+    right,
+    up: normalizeVector(crossProduct(right, forward)),
+    focalLengthPx:
+      viewport.height /
+      (2 * Math.tan((camera.fovDegrees * Math.PI) / 360)),
+  };
+}
+
+function projectOverviewPoint(
+  point: Point3,
+  context: ProjectionContext,
+  viewport: { width: number; height: number },
+): { x: number; y: number; depth: number } {
+  const relative = {
+    x: point.x - context.camera.position.x,
+    y: point.y - context.camera.position.y,
+    z: point.z - context.camera.position.z,
+  };
+  const depth = Math.max(0.001, dotProduct(relative, context.forward));
+  return {
+    x:
+      viewport.width / 2 +
+      (dotProduct(relative, context.right) / depth) * context.focalLengthPx,
+    y:
+      viewport.height / 2 -
+      (dotProduct(relative, context.up) / depth) * context.focalLengthPx,
+    depth,
+  };
+}
+
+function boundsFromEdges(
+  left: number,
+  top: number,
+  right: number,
+  bottom: number,
+): ScreenBounds {
+  return {
+    left,
+    top,
+    right,
+    bottom,
+    width: right - left,
+    height: bottom - top,
+  };
+}
+
+function mergeBounds(bounds: readonly ScreenBounds[]): ScreenBounds {
+  return boundsFromEdges(
+    Math.min(...bounds.map(({ left }) => left)),
+    Math.min(...bounds.map(({ top }) => top)),
+    Math.max(...bounds.map(({ right }) => right)),
+    Math.max(...bounds.map(({ bottom }) => bottom)),
+  );
+}
+
+function projectedOrbitBounds(
+  radius: number,
+  camera: OverviewCameraDescriptor,
+  viewport: { width: number; height: number },
+): ScreenBounds {
+  const context = projectionContext(camera, viewport);
+  const points = Array.from({ length: ORBIT_PROJECTION_SAMPLES }, (_, index) => {
+    const angle = (index / ORBIT_PROJECTION_SAMPLES) * Math.PI * 2;
+    return projectOverviewPoint(
+      {
+        x: Math.cos(angle) * radius,
+        y: 0,
+        z: -Math.sin(angle) * radius,
+      },
+      context,
+      viewport,
+    );
+  });
+  return boundsFromEdges(
+    Math.min(...points.map(({ x }) => x)),
+    Math.min(...points.map(({ y }) => y)),
+    Math.max(...points.map(({ x }) => x)),
+    Math.max(...points.map(({ y }) => y)),
+  );
+}
+
+function projectedPlanetBounds(
+  world: Point3,
+  radius: number,
+  camera: OverviewCameraDescriptor,
+  viewport: { width: number; height: number },
+  context = projectionContext(camera, viewport),
+): { screen: { x: number; y: number; depth: number }; bounds: ScreenBounds } {
+  const screen = projectOverviewPoint(world, context, viewport);
+  const projectedRadius =
+    (context.focalLengthPx * radius) /
+    Math.max(0.001, screen.depth - radius);
+  return {
+    screen,
+    bounds: boundsFromEdges(
+      screen.x - projectedRadius,
+      screen.y - projectedRadius,
+      screen.x + projectedRadius,
+      screen.y + projectedRadius,
+    ),
+  };
+}
+
+function labelBounds(screen: { x: number; y: number }): ScreenBounds {
+  return boundsFromEdges(
+    screen.x - OVERVIEW_LABEL_WIDTH_PX / 2,
+    screen.y + OVERVIEW_LABEL_OFFSET_PX,
+    screen.x + OVERVIEW_LABEL_WIDTH_PX / 2,
+    screen.y + OVERVIEW_LABEL_OFFSET_PX + OVERVIEW_LABEL_HEIGHT_PX,
+  );
+}
+
+function cameraForOverview(
+  outerPlanetRadius: number,
+  beltRadius: number,
+  maxPlanetRadius: number,
+  viewport: { width: number; height: number },
+): OverviewCameraDescriptor {
+  const cameraAt = (
+    distanceScale: number,
+    targetY: number,
+  ): OverviewCameraDescriptor => ({
+    fovDegrees: OVERVIEW_FOV_DEGREES,
+    near: OVERVIEW_CAMERA_NEAR,
+    far: Math.max(70, outerPlanetRadius * distanceScale * 4),
+    position: {
+      x: 0,
+      y: outerPlanetRadius * OVERVIEW_CAMERA_HEIGHT_RATIO * distanceScale,
+      z: outerPlanetRadius * OVERVIEW_CAMERA_DEPTH_RATIO * distanceScale,
+    },
+    target: { x: 0, y: targetY, z: 0 },
+  });
+
+  let distanceScale = 1;
+  let targetY = 0;
+  for (let iteration = 0; iteration < 2; iteration += 1) {
+    let nearScale = 0.5;
+    let farScale = 4;
+    for (let step = 0; step < 20; step += 1) {
+      const candidateScale = (nearScale + farScale) / 2;
+      const bounds = projectedOrbitBounds(
+        beltRadius,
+        cameraAt(candidateScale, targetY),
+        viewport,
+      );
+      if (bounds.width / viewport.width > OVERVIEW_BELT_SPAN_PCT) {
+        nearScale = candidateScale;
+      } else {
+        farScale = candidateScale;
+      }
+    }
+    distanceScale = (nearScale + farScale) / 2;
+
+    let lowTarget = -outerPlanetRadius;
+    let highTarget = outerPlanetRadius;
+    for (let step = 0; step < 20; step += 1) {
+      const candidateTarget = (lowTarget + highTarget) / 2;
+      const camera = cameraAt(distanceScale, candidateTarget);
+      const context = projectionContext(camera, viewport);
+      const planetBounds: ScreenBounds[] = [];
+      const tagBounds: ScreenBounds[] = [];
+      for (let sample = 0; sample < ORBIT_PROJECTION_SAMPLES; sample += 1) {
+        const angle = (sample / ORBIT_PROJECTION_SAMPLES) * Math.PI * 2;
+        const world = {
+          x: Math.cos(angle) * outerPlanetRadius,
+          y: 0,
+          z: -Math.sin(angle) * outerPlanetRadius,
+        };
+        planetBounds.push(
+          projectedPlanetBounds(
+            world,
+            maxPlanetRadius,
+            camera,
+            viewport,
+            context,
+          ).bounds,
+        );
+        tagBounds.push(
+          labelBounds(
+            projectOverviewPoint(
+              { ...world, y: -maxPlanetRadius * 1.45 },
+              context,
+              viewport,
+            ),
+          ),
+        );
+      }
+      const content = mergeBounds([...planetBounds, ...tagBounds]);
+      if ((content.top + content.bottom) / 2 < viewport.height / 2) {
+        lowTarget = candidateTarget;
+      } else {
+        highTarget = candidateTarget;
+      }
+    }
+    targetY = (lowTarget + highTarget) / 2;
+  }
+
+  return cameraAt(distanceScale, targetY);
+}
 
 export function trailColorForDirection(direction: OrreryDirection): string {
   if (direction === "clockwise") return "#63ef98";
@@ -284,6 +563,45 @@ export function resolveLabelCollisions<
   return resolved;
 }
 
+export function layoutOverviewLabels<
+  T extends {
+    ticker: string;
+    screen: { x: number; y: number; depth: number };
+    opacity: number;
+    yielded: boolean;
+  },
+>(
+  labels: readonly T[],
+  viewport: { width: number; height: number },
+): Array<T & { bounds: ScreenBounds; clamped: boolean }> {
+  return resolveLabelCollisions(labels).map((label) => {
+    const minimumX =
+      OVERVIEW_VIEWPORT_PADDING_PX + OVERVIEW_LABEL_WIDTH_PX / 2;
+    const maximumX =
+      viewport.width -
+      OVERVIEW_VIEWPORT_PADDING_PX -
+      OVERVIEW_LABEL_WIDTH_PX / 2;
+    const minimumY =
+      OVERVIEW_VIEWPORT_PADDING_PX - OVERVIEW_LABEL_OFFSET_PX;
+    const maximumY =
+      viewport.height -
+      OVERVIEW_VIEWPORT_PADDING_PX -
+      OVERVIEW_LABEL_OFFSET_PX -
+      OVERVIEW_LABEL_HEIGHT_PX;
+    const screen = {
+      ...label.screen,
+      x: Math.min(maximumX, Math.max(minimumX, label.screen.x)),
+      y: Math.min(maximumY, Math.max(minimumY, label.screen.y)),
+    };
+    return {
+      ...label,
+      screen,
+      bounds: labelBounds(screen),
+      clamped: screen.x !== label.screen.x || screen.y !== label.screen.y,
+    };
+  });
+}
+
 export function observedSystemHealth(
   holdings: readonly { weight: number; dayReturn: number | null }[],
 ): number | null {
@@ -328,6 +646,7 @@ export function buildOverviewSceneModel({
   portfolioVolatility = null,
   nextEarningsDays = null,
   tradeComet = null,
+  orbitalPhaseRadians = 0,
 }: {
   holdings: readonly SceneHolding[];
   beltHoldings?: readonly PublicOrreryHolding[];
@@ -340,36 +659,91 @@ export function buildOverviewSceneModel({
   portfolioVolatility?: number | null;
   nextEarningsDays?: number | null;
   tradeComet?: TradeCometInput | null;
+  orbitalPhaseRadians?: number;
 }): SceneModel {
   const outerPlanetRadius = orbitRadiusForRank(Math.max(1, holdings.length));
   const beltRadius = outerPlanetRadius + 1.05;
-  const labels = holdings.map((holding, index) => {
-    const angle = index * 2.399963;
-    const orbitRadius = orbitRadiusForRank(index + 1);
-    const projectedScale =
-      (viewport.width * OVERVIEW_BELT_SPAN_PCT) / (beltRadius * 2);
+  const planetDescriptors = holdings.map((holding, index) => {
+    const radius = radiusForWeight(holding.weight);
     return {
       ticker: holding.ticker,
-      color: planetIdentityForTicker(holding.ticker).labelHex,
-      fontSizePx: 12 as const,
-      dayChip: formatDayChip(holding.dayReturn),
-      defaultSide: "anti-sun" as const,
-      screen: {
-        x: Math.cos(angle) * orbitRadius * projectedScale,
-        y: Math.sin(angle) * orbitRadius * projectedScale * 0.52 + 28,
-        depth: Math.sin(angle),
-      },
-      opacity: 1,
-      yielded: false,
+      rank: index + 1,
+      radius,
+      orbitRadius: orbitRadiusForRank(index + 1),
+      initialAngle: index * 2.399963,
+      direction: directionForWeeklyReturn(holding.weeklyReturn),
+      angularSpeed: angularSpeedForWeeklyReturn(holding.weeklyReturn),
+      axialSpin: axialSpinForDayReturn(holding.dayReturn),
+      projectedDiameterPx:
+        radius * 2 * OVERVIEW_PLANET_PIXELS_PER_WORLD_UNIT,
+      brandHex: planetIdentityForTicker(holding.ticker).brandHex,
+      encodedWeight: holding.weight,
     };
   });
+  const overviewCamera = cameraForOverview(
+    outerPlanetRadius,
+    beltRadius,
+    Math.max(...planetDescriptors.map(({ radius }) => radius), 0),
+    viewport,
+  );
+  const overviewProjection = projectionContext(overviewCamera, viewport);
+  const planets = planetDescriptors.map((planet) => {
+    const angle = planet.initialAngle + orbitalPhaseRadians;
+    const projected = projectedPlanetBounds(
+      {
+        x: Math.cos(angle) * planet.orbitRadius,
+        y: 0,
+        z: -Math.sin(angle) * planet.orbitRadius,
+      },
+      planet.radius,
+      overviewCamera,
+      viewport,
+      overviewProjection,
+    );
+    return {
+      ...planet,
+      ...projected,
+    };
+  });
+  const labels = layoutOverviewLabels(
+    holdings.map((holding, index) => {
+      const angle = planets[index].initialAngle + orbitalPhaseRadians;
+      const orbitRadius = orbitRadiusForRank(index + 1);
+      const screen = projectOverviewPoint(
+        {
+          x: Math.cos(angle) * orbitRadius,
+          y: -planets[index].radius * 1.45,
+          z: -Math.sin(angle) * orbitRadius,
+        },
+        overviewProjection,
+        viewport,
+      );
+      return {
+        ticker: holding.ticker,
+        color: planetIdentityForTicker(holding.ticker).labelHex,
+        fontSizePx: 12 as const,
+        dayChip: formatDayChip(holding.dayReturn),
+        defaultSide: "anti-sun" as const,
+        screen,
+        opacity: 1,
+        yielded: false,
+      };
+    }),
+    viewport,
+  );
   const firstRadius = radiusForWeight(holdings[0]?.weight ?? 0.01);
   const satelliteOrbit = satelliteRingRadius(
     orbitRadiusForRank(1),
     firstRadius,
   );
+  const beltBounds = projectedOrbitBounds(
+    beltRadius,
+    overviewCamera,
+    viewport,
+  );
   return {
     viewport,
+    overviewCamera,
     rings: holdings.map((holding, index) => {
       const direction = directionForWeeklyReturn(holding.weeklyReturn);
       return {
@@ -389,23 +763,7 @@ export function buildOverviewSceneModel({
         fog: false,
       };
     }),
-    planets: holdings.map((holding, index) => {
-      const radius = radiusForWeight(holding.weight);
-      return {
-        ticker: holding.ticker,
-        rank: index + 1,
-        radius,
-        orbitRadius: orbitRadiusForRank(index + 1),
-        initialAngle: index * 2.399963,
-        direction: directionForWeeklyReturn(holding.weeklyReturn),
-        angularSpeed: angularSpeedForWeeklyReturn(holding.weeklyReturn),
-        axialSpin: axialSpinForDayReturn(holding.dayReturn),
-        projectedDiameterPx:
-          radius * 2 * OVERVIEW_PLANET_PIXELS_PER_WORLD_UNIT,
-        brandHex: planetIdentityForTicker(holding.ticker).brandHex,
-        encodedWeight: holding.weight,
-      };
-    }),
+    planets,
     trails: holdings.map((holding) => {
       const direction = directionForWeeklyReturn(holding.weeklyReturn);
       return {
@@ -422,7 +780,7 @@ export function buildOverviewSceneModel({
         ],
       };
     }),
-    labels: resolveLabelCollisions(labels),
+    labels,
     moons: holdings.flatMap((holding) => {
       const storyCount = holding.newsCount ?? 0;
       const radius = moonRadiusForStoryCount(storyCount);
@@ -465,7 +823,8 @@ export function buildOverviewSceneModel({
     ],
     belt: {
       radius: beltRadius,
-      viewportSpanPct: OVERVIEW_BELT_SPAN_PCT,
+      viewportSpanPct: beltBounds.width / viewport.width,
+      bounds: beltBounds,
       tickers: beltHoldings.map(({ ticker }) => ticker),
     },
     nebula: nebulaForHealth(healthScalar),

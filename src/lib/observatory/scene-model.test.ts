@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { PerspectiveCamera, Vector3 } from "three";
 import {
   ORRERY_PLANET_CLEARANCE,
   orbitRadiusForRank,
@@ -55,6 +56,17 @@ const holdings: PublicOrreryHolding[] = [
   },
 ];
 
+const overviewHoldings: PublicOrreryHolding[] = [
+  { ...holdings[0], ticker: "ASML", weight: 0.35 },
+  { ...holdings[1], ticker: "GOOG", weight: 0.22 },
+  { ...holdings[1], ticker: "COST", companyName: "Costco Wholesale", weight: 0.16 },
+  { ...holdings[1], ticker: "MSFT", companyName: "Microsoft", weight: 0.1 },
+  { ...holdings[0], ticker: "INTC", companyName: "Intel", weight: 0.07 },
+  { ...holdings[1], ticker: "IBM", companyName: "IBM", weight: 0.05 },
+  { ...holdings[2], ticker: "CBRS", weight: 0.03 },
+  { ...holdings[2], ticker: "NBIS", companyName: "Nebius Group", weight: 0.02 },
+];
+
 describe("pure overview scene descriptor", () => {
   it("encodes rings, trails, labels, planets, nebula, and sun without a renderer", () => {
     const model = buildOverviewSceneModel({
@@ -100,6 +112,100 @@ describe("pure overview scene descriptor", () => {
     expect(model.planets.at(-1)?.projectedDiameterPx).toBeGreaterThanOrEqual(22);
     expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.85);
     expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.92);
+  });
+
+  it("keeps every planet and resting label inside 1440x900 across a full orbital phase sweep", () => {
+    const viewport = { width: 1440, height: 900 };
+    const seenPlanets = new Set<string>();
+    const seenLabels = new Set<string>();
+
+    for (let phaseIndex = 0; phaseIndex < 360; phaseIndex += 1) {
+      const model = buildOverviewSceneModel({
+        holdings: overviewHoldings,
+        healthScalar: 0,
+        sunspotIntensity: 0,
+        viewport,
+        orbitalPhaseRadians: (phaseIndex / 360) * Math.PI * 2,
+      });
+
+      expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.85);
+      expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.92);
+      expect(model.belt.viewportSpanPct).toBeCloseTo(
+        model.belt.bounds.width / viewport.width,
+        12,
+      );
+
+      for (const planet of model.planets) {
+        seenPlanets.add(planet.ticker);
+        expect(planet.bounds.left, `${planet.ticker} planet left`).toBeGreaterThanOrEqual(0);
+        expect(planet.bounds.top, `${planet.ticker} planet top`).toBeGreaterThanOrEqual(0);
+        expect(planet.bounds.right, `${planet.ticker} planet right`).toBeLessThanOrEqual(
+          viewport.width,
+        );
+        expect(planet.bounds.bottom, `${planet.ticker} planet bottom`).toBeLessThanOrEqual(
+          viewport.height,
+        );
+      }
+
+      for (const label of model.labels) {
+        seenLabels.add(label.ticker);
+        expect(label.bounds.left, `${label.ticker} label left`).toBeGreaterThanOrEqual(0);
+        expect(label.bounds.top, `${label.ticker} label top`).toBeGreaterThanOrEqual(0);
+        expect(label.bounds.right, `${label.ticker} label right`).toBeLessThanOrEqual(
+          viewport.width,
+        );
+        expect(label.bounds.bottom, `${label.ticker} label bottom`).toBeLessThanOrEqual(
+          viewport.height,
+        );
+      }
+    }
+
+    expect([...seenPlanets]).toEqual(overviewHoldings.map(({ ticker }) => ticker));
+    expect([...seenLabels]).toEqual(overviewHoldings.map(({ ticker }) => ticker));
+  });
+
+  it("matches the renderer camera projection used by the live scene", () => {
+    const viewport = { width: 1440, height: 900 };
+    const model = buildOverviewSceneModel({
+      holdings: overviewHoldings,
+      healthScalar: 0,
+      sunspotIntensity: 0,
+      viewport,
+    });
+    const descriptor = model.overviewCamera;
+    const camera = new PerspectiveCamera(
+      descriptor.fovDegrees,
+      viewport.width / viewport.height,
+      descriptor.near,
+      descriptor.far,
+    );
+    camera.position.set(
+      descriptor.position.x,
+      descriptor.position.y,
+      descriptor.position.z,
+    );
+    camera.lookAt(
+      descriptor.target.x,
+      descriptor.target.y,
+      descriptor.target.z,
+    );
+    camera.updateMatrixWorld(true);
+
+    for (const planet of model.planets) {
+      const projected = new Vector3(
+        Math.cos(planet.initialAngle) * planet.orbitRadius,
+        0,
+        -Math.sin(planet.initialAngle) * planet.orbitRadius,
+      ).project(camera);
+      expect(planet.screen.x).toBeCloseTo(
+        (projected.x * 0.5 + 0.5) * viewport.width,
+        8,
+      );
+      expect(planet.screen.y).toBeCloseTo(
+        (-projected.y * 0.5 + 0.5) * viewport.height,
+        8,
+      );
+    }
   });
 
   it("keeps adjacent rings at least 1.6 times the sum of planet radii apart", () => {

@@ -30,6 +30,31 @@ canonical `npm run build` verification process — done by codex/gpt-5.
   labels against both possible dark surfaces, plus orientation, teletype,
   active bay, and bay nameplate text — done by codex/gpt-5.
 
+## F7 overview viewport remediation
+
+- Criterion 1 automated geometry: PASS. The pure scene model now exposes each
+  resting label's projected bounding box, and a degree-by-degree 360° orbital
+  phase sweep keeps all eight labels inside the 1440×900 frame. Runtime label
+  layout consumes the same viewport clamp after collision yield — done by
+  codex/gpt-5.
+- Criterion 17 automated geometry: PASS. The OVERVIEW camera now derives its
+  distance and vertical target from the perspective-projected belt, outer
+  orbit, maximum planet radius, and label extent. The belt's measured
+  projected bounding-box width is 88% of 1440 px, and every planet's
+  conservative projected bounding box stays inside 1440×900 throughout the
+  same 360° sweep — done by codex/gpt-5.
+- Projection parity: PASS. A unit test constructs the same three.js
+  `PerspectiveCamera` the live scene consumes and verifies its projected
+  planet centres match the pure model — done by codex/gpt-5.
+- Live verification and screenshot recapture: NOT PERFORMED in this Codex
+  environment. The in-app browser reported no available backend; the retained
+  Playwright Chromium binary then failed before opening a page with
+  `mach_port_rendezvous.cc ... bootstrap_check_in ... Permission denied
+  (1100)`. Therefore `after/overview-1440x900.png` remains the pre-F7 frame
+  inspected in review 2 and must not be treated as post-remediation evidence.
+  Claude Lead must independently run the live 1440×900 geometry check and
+  overwrite that screenshot before PASS — recorded by codex/gpt-5.
+
 ## Texture ladder and encoder
 
 The authored 2048×1024 source plates remain committed. The largest shipped

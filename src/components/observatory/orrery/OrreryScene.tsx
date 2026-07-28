@@ -35,8 +35,8 @@ import {
   ACTIVE_RING_OPACITY,
   OVERVIEW_RING_OPACITY,
   buildOverviewSceneModel,
+  layoutOverviewLabels,
   resolveOrreryPointerTarget,
-  resolveLabelCollisions,
   type SceneModel,
   type TradeCometInput,
 } from "@/lib/observatory/scene-model";
@@ -401,16 +401,28 @@ export default function OrreryScene({
 
     const outerRadius =
       sceneModel.planets.at(-1)?.orbitRadius ?? ORRERY_SUN_CLEARANCE;
-    const camera = new PerspectiveCamera(42, 1, 0.1, 70);
+    const overviewCamera = sceneModel.overviewCamera;
+    const camera = new PerspectiveCamera(
+      overviewCamera.fovDegrees,
+      1,
+      overviewCamera.near,
+      overviewCamera.far,
+    );
     const overviewPosition = new Vector3(
-      0,
-      outerRadius * 0.82,
-      outerRadius * 1.62,
+      overviewCamera.position.x,
+      overviewCamera.position.y,
+      overviewCamera.position.z,
+    );
+    const overviewLookAt = new Vector3(
+      overviewCamera.target.x,
+      overviewCamera.target.y,
+      overviewCamera.target.z,
     );
     camera.position.copy(overviewPosition);
+    camera.lookAt(overviewLookAt);
     const cameraTarget = overviewPosition.clone();
-    const lookAt = new Vector3();
-    const lookAtTarget = new Vector3();
+    const lookAt = overviewLookAt.clone();
+    const lookAtTarget = overviewLookAt.clone();
     let zoomScale = 1;
     let dragTilt = 0;
 
@@ -1075,7 +1087,10 @@ export default function OrreryScene({
         );
         planet.label.hidden = projected.z > 1;
       }
-      const resolvedLabels = resolveLabelCollisions(labelCandidates);
+      const resolvedLabels = layoutOverviewLabels(labelCandidates, {
+        width: labelRect.width,
+        height: labelRect.height,
+      });
       for (const resolved of resolvedLabels) {
         const runtime = planetRuntimes.find(
           ({ holding }) => holding.ticker === resolved.ticker,
@@ -1198,7 +1213,11 @@ export default function OrreryScene({
           .multiplyScalar(zoomScale)
           .applyAxisAngle(new Vector3(0, 1, 0), tiltRadians);
         cameraTarget.x += pointerX * 0.12;
-        lookAtTarget.set(pointerX * 0.15, pointerY * 0.08, 0);
+        lookAtTarget.set(
+          overviewLookAt.x + pointerX * 0.15,
+          overviewLookAt.y + pointerY * 0.08,
+          overviewLookAt.z,
+        );
       }
       const cameraAmount = 1 - Math.exp(-delta * (state === "approach" ? 3.7 : 5));
       camera.position.lerp(cameraTarget, cameraAmount);

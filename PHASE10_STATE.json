@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§9",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -49,7 +49,8 @@
       "Also confirmed this turn now that the route renders: criteria 4 and 14 pass on direct inspection of the shipped bytes — all eight KTX2 base maps decode to authored 1024x512 plates carrying a correctly spelled, legible embossed mark; criteria 21 and 22 (operations-room chrome, bays' named treatments); criteria 28 and 66 (orientation line at OVERVIEW and in the 390 px fallback); criterion 39 (teletype quotes TWR and same-period excess); criterion 60 (live public-payload scan across five surfaces found zero dollar amounts and zero owner-only fields)."
     ],
     "remediation_commits": [
-      "7e37bdda62b0cf9d283b54410f96cffa5828d673"
+      "7e37bdda62b0cf9d283b54410f96cffa5828d673",
+      "Codex §9 bounded remediation for F7 overview viewport fit; hash to be filled by the next actor via git log -1."
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -59,7 +60,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_2). Authority order for this section: UNIVERSE_ROUND2_BRIEF.md -> UNIVERSE_IDEAS_2.md (including its §9 owner corrections and authorizations) -> PHASE10.md §9. §8 proved the universe works; §9 makes it good. Two new public disclosure surfaces are authorized in UNIVERSE_IDEAS_2.md §9.3-9.4 (public trade log: action, ticker, date, and % impact only, never shares/prices/dollars; public news for held tickers) and both require extended privacy canary coverage. Texture resolution is bound by the §9.1 correction: tune compression first, ship base at 2048x1024 and emissive/normal at 1024x512, measure and record the real total, reduce further if it exceeds ~15MB. §9's acceptance criteria forbid `expect(source).toContain(...)` as coverage for rendered behavior. Two owner observations carried forward unclosed from §8 and recorded in docs/phase10-workflow/reviews/section-8-accepted.md: D1 (unreproduced green-trail report — do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 ('website is still relatively confusing', too general to bound in §8).",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-claude-lead-to-codex-remediation-2.md"
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-9-codex-implementation-remediate-2-to-claude-lead.md"
   },
   "sections_history": [
     {
@@ -116,40 +117,40 @@
       "note": "The Stock Market Universe — /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes §9. See docs/phase10-workflow/reviews/section-8-accepted.md."
     }
   ],
-  "prev_actor_commit": "7e37bdda62b0cf9d283b54410f96cffa5828d673",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 7e37bdd (`phase10(§9): remediate review findings`) was HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from. The same hash is now recorded in section.remediation_commits, replacing the placeholder Codex left for this turn to fill.",
+  "prev_actor_commit": "094150b4ac90c744347e4434961ebb2d09bd6031",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 094150b (`phase10(review §9): fail on overview viewport fit`) was HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "6a68758d57474f5494ff2ce38056ebb37b5aa244",
-  "production_code_changed_this_turn": false,
-  "production_code_note_prior_turn": "Codex Implementation remediated only review findings F1-F6. Mission Control panel metadata now lives in a shared non-client module and the canonical production build permanently probes /share plus the manifest station for HTTP 200. The fabricated VOO polyline is removed and its unavailable control is explicit. The long-task and RGB scripts execute and retain raw live output. Sun invariance now varies real scene interaction descriptors. The public fixture has a distinctive share-count canary. The complete §12 evidence set is committed. Live verification also exposed and resolved three direct blockers within F6's required criteria: a render-loop temporal-dead-zone crash, magnetic planet targeting overriding direct moon/satellite hits, and cold-frame shader/texture work exceeding the 50 ms gate. No dependency manifest changed.",
-  "production_code_note": "Claude Lead review round 2 changed no application source — this turn's commit touches only the review doc, this state file, and the handoff. All six prior findings (F1-F6) are verified resolved. One new bounded finding, F7: with /share finally rendering, live measurement at 1440x900 shows the outermost planet NBIS and its tag leaving the viewport, failing criteria 1 and 17. Both criteria were in F1's blocked list and were unobservable during the prior review.",
+  "production_code_changed_this_turn": true,
+  "production_code_note_prior_turn": "Claude Lead review round 2 changed no application source — this turn's commit touches only the review doc, this state file, and the handoff. All six prior findings (F1-F6) are verified resolved. One new bounded finding, F7: with /share finally rendering, live measurement at 1440x900 shows the outermost planet NBIS and its tag leaving the viewport, failing criteria 1 and 17. Both criteria were in F1's blocked list and were unobservable during the prior review.",
+  "production_code_note": "Codex Implementation remediated only F7. The pure scene model now derives the OVERVIEW camera distance and vertical target from perspective-projected belt, outer-orbit, planet-radius, and label extents; exposes real projected bounding boxes for the belt, every planet, and every resting label; and clamps collision-resolved labels inside the viewport. OrreryScene consumes that same camera descriptor and label layout. A 360-step orbital phase sweep proves all eight planets and tags remain inside 1440x900 while the projected belt spans 88%; a Three.js camera parity test verifies the pure projection matches the live renderer math. Trail/orbit sign-to-colour and sign-to-direction mapping are unchanged. Live screenshot recapture remains explicitly unverified because both available browser paths were denied by this CLI environment.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Claude Lead independently ran the full Vitest suite at 7e37bdd: 94 test files passed; 497 of 497 tests passed.",
-      "finished_at": "2026-07-28T08:57:24Z"
+      "summary": "Codex Implementation ran the full Vitest suite after the bounded F7 remediation: 94 test files passed; 499 of 499 tests passed.",
+      "finished_at": "2026-07-28T13:28:49Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Claude Lead independently ran the Next.js 16.2.11 production build at 7e37bdd: compilation and TypeScript passed, 18 static-generation tasks completed, and the new post-build smoke reported 'Share route smoke: PASS (/share 200; Mission Control manifest 200)'.",
-      "finished_at": "2026-07-28T09:05:00Z"
+      "summary": "Codex Implementation ran the final Next.js 16.2.11 production build: compilation and TypeScript passed, 18 static-generation tasks completed, and the post-build smoke reported 'Share route smoke: PASS (/share 200; Mission Control manifest 200)'.",
+      "finished_at": "2026-07-28T13:26:20Z"
     },
     "live_routes": {
-      "command": "npx next start -H 127.0.0.1 -p 3117 + independent curl probes",
+      "command": "npm run build post-build production smoke via scripts/verify-share-route.mjs",
       "status": "pass",
-      "summary": "Claude Lead started its own production server rather than relying on the build's smoke: /share, all seven ?station= bays (plot, manifest, scope, hazard, signals, comms, log), /share?focus=ASML&camera=approach, /share?camera=sector, and / all returned 200, with zero errors in the server log. F1 is confirmed fixed in production.",
-      "finished_at": "2026-07-28T09:12:00Z"
+      "summary": "/share and /share?focus=portfolio&camera=command&station=manifest returned 200 against the completed production build.",
+      "finished_at": "2026-07-28T13:26:20Z"
     },
     "live_evidence": {
-      "command": "Claude Lead inspection of the committed §12 set, plus independent Playwright geometry measurement and KTX2 base-map decoding",
-      "status": "fail",
-      "summary": "The committed evidence set is complete and genuine: 14 frames verified at exactly 1440x900 with sips, exact 390/320 fallbacks with canvas 0 and scrollWidth == clientWidth, a live eight-tile 32px sphere strip, real five-context long-task and RGB output, and full keyboard/reduced-motion audits. Independent checks added this turn: all eight shipped KTX2 base maps decoded to authored 1024x512 plates with correctly spelled legible marks (criteria 4, 14), and a live public-payload scan across five surfaces found zero dollar amounts and zero owner-only fields (criterion 60). The failure is F7: live geometry measurement (24 samples over 12 s at 1440x900) shows NBIS's tag reaching bottom 935 of 900 and left -8, and its sphere crossing the left edge at -10, so criteria 1 and 17 fail.",
-      "finished_at": "2026-07-28T09:30:00Z"
+      "command": "in-app browser discovery, then retained Playwright Chromium against localhost",
+      "status": "not_run",
+      "summary": "Environment-only evidence gap: in-app browser discovery returned no available backend, and standalone Playwright Chromium failed before page creation with mach_port_rendezvous bootstrap_check_in Permission denied (1100). The F7 model assertions pass, but no live 1440x900 geometry measurement or post-remediation screenshot was produced; Claude Lead must perform both independently before PASS.",
+      "finished_at": "2026-07-28T13:23:12Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T09:35:00Z",
+  "updated_at": "2026-07-28T13:28:54Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
