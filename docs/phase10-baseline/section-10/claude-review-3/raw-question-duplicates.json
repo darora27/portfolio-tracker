@@ -1,0 +1,107 @@
+{
+ "plot": {
+  "count": 1,
+  "rows": [
+   {
+    "tag": "P",
+    "cls": "orrery-module__nrz9QG__bayQuestion",
+    "x": 810,
+    "y": 489,
+    "path": "div.orrery-module__nrz9QG__missionContent > section.orrery-module__nrz9QG__operationsBay > p.orrery-module__nrz9QG__bayQuestion"
+   }
+  ]
+ },
+ "manifest": {
+  "count": 1,
+  "rows": [
+   {
+    "tag": "P",
+    "cls": "orrery-module__nrz9QG__bayQuestion",
+    "x": 810,
+    "y": 489,
+    "path": "div.orrery-module__nrz9QG__missionContent > section.orrery-module__nrz9QG__operationsBay > p.orrery-module__nrz9QG__bayQuestion"
+   }
+  ]
+ },
+ "scope": {
+  "count": 2,
+  "rows": [
+   {
+    "tag": "P",
+    "cls": "orrery-module__nrz9QG__bayQuestion",
+    "x": 810,
+    "y": 489,
+    "path": "div.orrery-module__nrz9QG__missionContent > section.orrery-module__nrz9QG__operationsBay > p.orrery-module__nrz9QG__bayQuestion"
+   },
+   {
+    "tag": "SPAN",
+    "cls": "",
+    "x": 799,
+    "y": 767,
+    "path": "div.orrery-module__nrz9QG__railStations > a > span"
+   }
+  ]
+ },
+ "hazard": {
+  "count": 2,
+  "rows": [
+   {
+    "tag": "P",
+    "cls": "orrery-module__nrz9QG__bayQuestion",
+    "x": 810,
+    "y": 489,
+    "path": "div.orrery-module__nrz9QG__missionContent > section.orrery-module__nrz9QG__operationsBay > p.orrery-module__nrz9QG__bayQuestion"
+   },
+   {
+    "tag": "SPAN",
+    "cls": "",
+    "x": 799,
+    "y": 833,
+    "path": "footer.orrery-module__nrz9QG__instrumentStrip > a > span"
+   }
+  ]
+ },
+ "signals": {
+  "count": 2,
+  "rows": [
+   {
+    "tag": "P",
+    "cls": "orrery-module__nrz9QG__bayQuestion",
+    "x": 810,
+    "y": 489,
+    "path": "div.orrery-module__nrz9QG__missionContent > section.orrery-module__nrz9QG__operationsBay > p.orrery-module__nrz9QG__bayQuestion"
+   },
+   {
+    "tag": "SPAN",
+    "cls": "",
+    "x": 1019,
+    "y": 833,
+    "path": "footer.orrery-module__nrz9QG__instrumentStrip > a > span"
+   }
+  ]
+ },
+ "comms": {
+  "count": 1,
+  "rows": [
+   {
+    "tag": "P",
+    "cls": "orrery-module__nrz9QG__bayQuestion",
+    "x": 810,
+    "y": 489,
+    "path": "div.orrery-module__nrz9QG__missionContent > section.orrery-module__nrz9QG__operationsBay > p.orrery-module__nrz9QG__bayQuestion"
+   }
+  ]
+ },
+ "log": {
+  "count": 1,
+  "rows": [
+   {
+    "tag": "P",
+    "cls": "orrery-module__nrz9QG__bayQuestion",
+    "x": 823,
+    "y": 490,
+    "path": "div.orrery-module__nrz9QG__missionContent > section.orrery-module__nrz9QG__operationsBay > p.orrery-module__nrz9QG__bayQuestion"
+   }
+  ]
+ }
+}

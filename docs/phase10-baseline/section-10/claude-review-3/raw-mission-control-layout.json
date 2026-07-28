@@ -1,0 +1,118 @@
+{
+ "overlay": {
+  "w": 1440,
+  "h": 900
+ },
+ "dayReadout": null,
+ "bays": [
+  {
+   "label": "",
+   "cls": "stage",
+   "w": 1440,
+   "h": 900,
+   "area": 1296000
+  },
+  {
+   "label": "PUBLIC LINK",
+   "cls": "missionControl",
+   "w": 1440,
+   "h": 900,
+   "area": 1296000
+  },
+  {
+   "label": "PLOT",
+   "cls": "operationsBay",
+   "w": 580,
+   "h": 271,
+   "area": 157207
+  },
+  {
+   "label": "MANIFEST",
+   "cls": "manifestInstrument",
+   "w": 610,
+   "h": 126,
+   "area": 77182
+  },
+  {
+   "label": "SIGNALS",
+   "cls": "",
+   "w": 390,
+   "h": 56,
+   "area": 21893
+  },
+  {
+   "label": "LAUNCH",
+   "cls": "",
+   "w": 354,
+   "h": 56,
+   "area": 19872
+  },
+  {
+   "label": "SCOPE",
+   "cls": "",
+   "w": 246,
+   "h": 56,
+   "area": 13809
+  },
+  {
+   "label": "HAZARD",
+   "cls": "",
+   "w": 210,
+   "h": 56,
+   "area": 11788
+  }
+ ],
+ "fontSizes": [
+  64,
+  32,
+  16,
+  12,
+  11.5,
+  11,
+  10.6,
+  10.4,
+  9
+ ],
+ "longestTexts": [
+  {
+   "text": "SOL-DEVAN · DAY -0.7% · TWR -8.1% · VS VOO -8.9% SAME PERIOD · DRAWDOWN -15.0%",
+   "fontSize": 11.5,
+   "words": 16
+  },
+  {
+   "text": "where is everything, and how was the week",
+   "fontSize": 11,
+   "words": 8
+  },
+  {
+   "text": "what do I own, at what weight",
+   "fontSize": 11,
+   "words": 7
+  },
+  {
+   "text": "am I beating the market",
+   "fontSize": 11,
+   "words": 5
+  },
+  {
+   "text": "what’s next on the calendar",
+   "fontSize": 11,
+   "words": 5
+  },
+  {
+   "text": "how much can this hurt",
+   "fontSize": 11,
+   "words": 5
+  },
+  {
+   "text": "Return to universe",
+   "fontSize": 10.4,
+   "words": 3
+  },
+  {
+   "text": "what moves together",
+   "fontSize": 11,
+   "words": 3
+  }
+ ]
+}

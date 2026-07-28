@@ -1,0 +1,10 @@
+file:///Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs:168
+  if (result.deltaE > 8) throw new Error(`${descriptor.ticker} deltaE ${result.deltaE} > 8`);
+                               ^
+
+Error: ASML deltaE 60.479 > 8
+    at file:///Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs:168:32
+    at Array.map (<anonymous>)
+    at file:///Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs:148:29
+
+Node.js v24.18.0

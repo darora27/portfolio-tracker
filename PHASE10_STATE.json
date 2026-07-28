@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§10",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -31,46 +31,47 @@
     "design_proof": "docs/phase10-workflow/design-proofs/section-10.md",
     "implementation_commit": "3d1882a116ef116f21a529eaa050f17f88875def",
     "review_result": "fail",
-    "review_doc": "docs/phase10-workflow/reviews/section-10-review-2.md",
+    "review_doc": "docs/phase10-workflow/reviews/section-10-review-3.md",
     "findings": [
       {
         "id": "F1",
         "criterion": "TST-03",
         "risk": "high",
-        "evidence": "docs/phase10-baseline/section-10/claude-review-2/raw-trail-sampler-TST-03.txt",
-        "summary": "sample-live-rgb.mjs still aborts (GOOG deltaE 13.022 > 8). 6 of 8 holdings exceed deltaE 8 (GOOG 13.02, COST 18.12, MSFT 11.56, IBM 47.04, INTC 23.86, CBRS 28.54); ASML is now exact at 0 and NBIS 6.92. IBM still fails hue lock at 22.88deg off the 143deg anchor with chroma 0.067. One loss-direction ordering violation remains: MSFT |3.28%| samples darker (L 0.2778) than ASML |4.82%| (L 0.3413). The opaque-core change fixed ASML exactly and removed one of two ordering violations, so the diagnosis was right and incomplete.",
-        "required_change": "Make rendered trail pixels match rampForWeekly() within deltaE 8 for every fixture and restore monotonic lightness ordering within each direction. IBM's near-grey sample (chroma 0.067 against an expected 143deg green) is the sharpest single lead."
+        "evidence": "docs/phase10-baseline/section-10/claude-review-3/raw-trail-sampler-TST-03.txt",
+        "summary": "sample-live-rgb.mjs still aborts (ASML deltaE 60.479 > 8). 7 of 8 holdings exceed deltaE 8 (ASML 60.72, GOOG 22.77, COST 12.29, MSFT 26.49, IBM 25.01, CBRS 33.90, NBIS 8.74); only INTC passes at 3.39. Hue lock fails on ASML (35.86deg off, chroma 0.165), MSFT (chroma 0.212) and IBM (14.93deg off). Two loss-direction ordering violations remain. Worse than round 2 (6 of 8), though the live payload moved between rounds so the two tables compare only in aggregate. Retained 9x9 pixel neighbourhoods and 120px crops show three separable mechanisms: the data-trail-sample point the app publishes for ASML sits inside the planet disc, so no trail pixel exists to sample there; the additive glow pass over the 0.09-width opaque core washes GOOG, MSFT, IBM and COST lighter than their model colour in a consistent direction; and the core is sub-pixel at the OVERVIEW camera on the outer orbits, so CBRS (a uniform #995047 across a one-pixel line) and NBIS blend with the void and read darker.",
+        "required_change": "Make rendered trail pixels match rampForWeekly() within deltaE 8 for every fixture and restore monotonic lightness ordering within each direction. Do not change the verifier, its thresholds, or its sample points. The misplaced ASML sample point must be understood first - it is the only holding whose failure the colour pipeline alone cannot explain."
       },
       {
         "id": "F2",
         "criterion": "BLD-04",
         "risk": "high",
-        "evidence": "docs/phase10-baseline/section-10/claude-review-2/raw-long-tasks-BLD-04.txt",
-        "summary": "measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 62/56/56/56/57 ms, and 69/59/55/55/56 ms on an earlier identical run in the same session. Ten of ten contexts breach the 50ms ceiling. Moving the KTX2 parse/zstd decode into a module worker did not clear the gate; the measured maximum is unchanged within noise from round 1's 57-61ms. Section 9 measured maximumMs 0 on all five runs with a byte-identical script.",
-        "required_change": "Bring the route-owned long task under 50ms across five fresh contexts. Attribute the remaining ~56ms task at ~570-590ms after navigation before changing anything else. Do not baseline-subtract, redefine the gate, or add a post-processing pass."
+        "evidence": "docs/phase10-baseline/section-10/claude-review-3/raw-long-task-attribution.json",
+        "summary": "measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 61/57/55/55/55 ms. Five of five breach the 50ms ceiling, unchanged within noise from round 2 (62/56/56/56/57). A CDP CPU profile on the same rig attributes the breaching task to Three.js WebGLRenderer shader-program acquisition, not texture upload: N at chunks/2tdjt19k1le0z.js:357 holds 34.3ms of self time inside the 68ms window, with getParameters and getProgramCacheKey on the same line, and about 50ms of self time across the 700-900ms bins. texSubImage2D never exceeds 2.5ms in any 100ms bin, so the round-2 staggered map binding worked and was not the cause.",
+        "required_change": "Bring the route-owned long task under 50ms across five fresh contexts, working from the shader-program attribution rather than a fresh guess. Do not baseline-subtract, redefine the gate, or add a post-processing pass. The material and program permutation count, and when programs are first compiled, are what the profile points at."
       },
       {
         "id": "F3",
         "criterion": "DEF-02",
         "risk": "high",
-        "evidence": "docs/phase10-baseline/section-10/claude-review-2/raw-strip-chirality.txt",
-        "summary": "First execution of the chirality assertion, reachable now that VIS-01 passes: capture-live-sphere-strip.mjs aborts with 'COST chirality failed: normal=-0.4514 mirrored=-0.4041'. Non-throwing full table shows 4 of 8 worlds failing (COST, MSFT, IBM, INTC). MSFT (normal -0.4784 vs mirrored +0.2493) and INTC (normal -0.2784 vs mirrored +0.2111) are decisive mirror signals; COST and IBM fail on sign within noise. ASML, GOOG, CBRS and NBIS pass.",
-        "required_change": "Make normalScore > mirroredScore hold for all eight worlds as measured by the section's own verifier, starting with MSFT and INTC where the mirror signal is unambiguous. TST-04 passes, so the guard is correct and this is a texture-generation defect."
+        "evidence": "docs/phase10-baseline/section-10/claude-review-3/raw-strip-chirality-full-table.json",
+        "summary": "REGRESSION. capture-live-sphere-strip.mjs aborts with COST chirality failed: normal=-0.4561 mirrored=-0.4153. The full table fails 6 of 8 worlds (COST, MSFT, IBM, INTC, CBRS, NBIS) against 4 of 8 in round 2; CBRS (-0.1557 vs -0.0455) and NBIS (0.3887 vs 0.3901) moved from pass to fail. The decisive MSFT mirror signal is essentially unmoved (-0.4784/+0.2493 to -0.5005/+0.3117), so the alpha-mask compositor change did not alter the chirality of the mark that reaches the screen. IBM, INTC and NBIS fail inside noise, meaning those marks carry almost no measurable luminance signal in the sampled band - a second, separable problem. TST-04 passes, so the verifier is correct and this remains a texture-generation defect.",
+        "required_change": "Make normalScore > mirroredScore hold for all eight worlds as measured by the section verifier. MSFT is the unambiguous mirror case and the right starting point; the three near-zero worlds need the mark to produce a measurable signal before their result means anything. Do not weaken the assertion."
       },
       {
         "id": "F4",
         "criterion": "VIS-12",
         "risk": "high",
-        "evidence": "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
-        "summary": "Partially remediated. The evidence half is closed: capture-live-evidence.mjs now runs end-to-end and produced all 16 after/ surfaces plus both mobile/ captures from the section's own verifier, and the planet-detail clipping (DEF-10) and LOG chip contrast (VIS-09) are fixed and re-verified. Two round-1 defects remain: the MANIFEST bay renders its question twice (live DOM count 2 for 'what do i own, at what weight'; MissionControl.tsx:155 renders it unconditionally while ManifestBay.tsx:21 renders it again, and the equivalent PLOT duplicate was fixed), and the MANIFEST CONTRIBUTION cell draws its coloured bar over the numeral, hiding one character of every public financial value ('-3[bar]1%', '-0[bar]5%', '+0[bar]5%').",
-        "required_change": "Render each active bay's question exactly once, and stop the CONTRIBUTION bar overlapping its value. Then re-run capture-live-evidence.mjs so the MANIFEST surface's artifact shows the fix."
+        "evidence": "docs/phase10-baseline/section-10/claude-review-3/raw-question-duplicates.json",
+        "summary": "Two-thirds closed. capture-live-evidence.mjs ran end to end and reproduced all 16 after/ surfaces plus both mobile/ captures, and a live geometry probe measures 0px horizontal overlap between every CONTRIBUTION numeral and its signed bar across all 13 rendered rows - the defect that hid one character of every public financial value is fixed. Still open: round 2 required each active bay to render its question exactly once, and only MANIFEST was fixed. PLOT, MANIFEST, COMMS and LOG render once, but SCOPE, HAZARD and SIGNALS each render theirs twice when active - once in operationsBay > p.bayQuestion and once in the persistent railStations or instrumentStrip link.",
+        "required_change": "Suppress the persistent rail and instrument-strip question for SCOPE, HAZARD and SIGNALS while that bay is the active one, using the same active-panel rule already applied to PLOT and MANIFEST, then re-run capture-live-evidence.mjs. Nothing else in VIS-12 is outstanding."
       }
     ],
     "remediation_commits": [
       "3d1882a116ef116f21a529eaa050f17f88875def",
-      "Codex §10 remediation round 2 for F1-F4; hash to be filled by the next actor via git log -1."
+      "61db1d68fe5afb5a3c6ec2f04da79389ea432277",
+      "3bdf46895ceeaaa4e125bac80f64776f3fb63423"
     ],
-    "unperformed_criteria_note": "Round 1's critical blockers are closed, so the capture matrix now runs end-to-end and 26 criteria carry reviewer results (21 pass, 4 fail, 1 blocked). VIS-04 (critical) is recorded blocked, not passed: its ramp-lightness half is exactly what TST-03 measures and TST-03 fails. Sixteen criteria remain explicit work rather than implicit passes: DEF-01 DEF-03 DEF-04 DEF-06 DEF-07 BHV-05 BHV-09 BHV-10 VIS-02 VIS-06 VIS-07 VIS-08 VIS-10 VIS-13 VIS-14 BLD-05. DEF-04's pointer and keyboard halves are confirmed (belt bodies acquire in the full-viewport scan and hold their tab-order place); only its visible-body half remains. Round 1's VIS-06 'even dot lattice' observation is withdrawn as unsubstantiated - the lattice is a reticle overlay, not the starfield, and the component analysis was contaminated by UI glyphs.",
+    "unperformed_criteria_note": "Round-3 review established or re-established at candidate 3bdf468: BLD-01 pass (npm test 526/526, re-run independently), BLD-02 pass (npm run build exit 0), VIS-01 pass (all eight equatorial-band means 0.1968-0.4358, inside [0.16, 0.55], after the full texture regeneration), TST-04 pass, and MOB-01 pass (canvas 0, no horizontal overflow, minimum target 44 at both 390 and 320px), plus the four failures above. VIS-04 stays BLOCKED rather than passed: its ramp-lightness half is exactly what TST-03 measures. DEF-03 moves from not_run to BLOCKED - COST carries a null weekly return and does render a visible minimum-arc trail, but its rendered pixels sit inside the TST-03 failing set at deltaE 12.29, so the flat-token half resolves with F1. Sixteen criteria carry round-2 reviewer results at the earlier candidate 3d1882a and were not independently re-exercised this turn: DEF-05 DEF-08 DEF-09 DEF-10 BHV-01 BHV-02 BHV-03 BHV-04 BHV-08 VIS-03 VIS-09 MOB-03 ACC-03 ACC-05 ACC-06 ACC-07. Fifteen have never been performed: DEF-01, the visible-body half of DEF-04, DEF-06, DEF-07, BHV-05, BHV-09, BHV-10, VIS-02, VIS-06, VIS-07, VIS-08, VIS-10, VIS-13, VIS-14, BLD-05. A live Mission Control layout measurement was attempted for VIS-08 and is retained, but it could not separate the dominant PLOT chassis from the active-bay container reliably enough to grade the criterion, so VIS-08 is recorded as not performed rather than guessed. All of these remain explicit work, never implicit passes.",
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
@@ -78,8 +79,9 @@
       "UNIVERSE_PALETTE_3.html"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-10-codex-implementation-remediate-2-to-claude-lead.md",
-    "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_3). Authority order for this section: UNIVERSE_IDEAS_3.md (round-3 design, revision 2) -> UNIVERSE_PALETTE_3.html (the computed palette board) -> docs/reference/ -> PHASE10.md §10. Round 3 supersedes UNIVERSE_IDEAS_2.md wherever the two conflict. INHERITED RED, NOT A §10 DEFECT: npm test is red at this section start with exactly two failures in src/lib/observatory/planet-textures.test.ts - manifest.totalBytes 22,450,706 against §9’s 15,000,000 cap, and INTC 0.098092 / CBRS 0.093008 luminanceStdDev against §9’s 0.1 floor. Both were introduced by owner texture commits after §9’s reviewed implementation and are §10 work item 5 (texture regeneration): §10 must raise the byte ceiling in planet-textures.test.ts to the 30 MB figure PHASE10.md §10’s Build dimension already states, and must VERIFY - not assume - that relighting INTC and CBRS lifts them into the required luminance window. Ten owner defects reported live against §9 are carried into PHASE10.md §10 “Owner defects to close in this section” rather than reopening §9. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (“website is still relatively confusing”). §9’s testing prohibition carries forward and is restated in §10’s Acceptance: expect(source).toContain(...) is not valid coverage for rendered behaviour."
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-10-claude-lead-to-codex-remediation-3.md",
+    "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_3). Authority order for this section: UNIVERSE_IDEAS_3.md (round-3 design, revision 2) -> UNIVERSE_PALETTE_3.html (the computed palette board) -> docs/reference/ -> PHASE10.md §10. Round 3 supersedes UNIVERSE_IDEAS_2.md wherever the two conflict. INHERITED RED, NOT A §10 DEFECT: npm test is red at this section start with exactly two failures in src/lib/observatory/planet-textures.test.ts - manifest.totalBytes 22,450,706 against §9’s 15,000,000 cap, and INTC 0.098092 / CBRS 0.093008 luminanceStdDev against §9’s 0.1 floor. Both were introduced by owner texture commits after §9’s reviewed implementation and are §10 work item 5 (texture regeneration): §10 must raise the byte ceiling in planet-textures.test.ts to the 30 MB figure PHASE10.md §10’s Build dimension already states, and must VERIFY - not assume - that relighting INTC and CBRS lifts them into the required luminance window. Ten owner defects reported live against §9 are carried into PHASE10.md §10 “Owner defects to close in this section” rather than reopening §9. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (“website is still relatively confusing”). §9’s testing prohibition carries forward and is restated in §10’s Acceptance: expect(source).toContain(...) is not valid coverage for rendered behaviour.",
+    "remediation_commits_note": "61db1d6 is the round-2 remediation commit (the placeholder the previous turn could not fill). 3bdf468 is the HEAD reviewed as the round-3 candidate; git diff 61db1d6 3bdf468 -- src/ public/ scripts/ package.json package-lock.json is empty, so the reviewed application source is exactly the round-2 remediation. The six commits between them are owner design documents, the owner feedback ledger, the §11 roadmap insertion, and a launch-argument-only change to the retained Playwright verifiers."
   },
   "sections_history": [
     {
@@ -142,35 +144,35 @@
       "note": "Universe craft and depth. One implementation round, five review rounds, four remediation rounds; findings F1-F9 all resolved and each independently confirmed by Claude Lead. The authoritative review (section-9-review-5.md) recorded BLOCKED rather than PASS: F9 closed, but §9 criteria 48, 53 and 55 were red on the tree because of five owner texture commits landed on top of the reviewed implementation. Accepted at 589be88 rather than HEAD by explicit owner decision (Option 1, docs/phase10-handoffs/2026-07-28-section-9-devan-to-claude-lead-resume.md): 589be88 is the last commit at which §9 satisfies its own criteria (11,727,680 texture bytes vs the 15,000,000 cap; minimum luminanceStdDev 0.101584 vs the 0.1 floor), both re-verified at acceptance directly from the manifest and the git tree. src/ is byte-identical between 589be88 and HEAD (git diff --name-only 589be88 HEAD -- src/ is empty), so the accepted implementation is exactly the reviewed one. main is deliberately left RED on npm test (2 failed / 497 passed of 499, both in planet-textures.test.ts) under a documented, time-boxed, non-generalizing owner exception; closing criteria 48 and 55 is §10 work item 5 and must NOT be raised as findings against §10’s implementer. §9’s after/overview-1440x900.png is deliberately not recaptured. See docs/phase10-workflow/reviews/section-9-accepted.md."
     }
   ],
-  "prev_actor_commit": "5b0c0e6290c0728cf9d3b3c1f37c8c48d66095a8",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md section 8 (the completing actor never writes its own commit's hash): 5b0c0e6 was HEAD at the start of this Codex remediation-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from. It is the Claude Lead review round-2 handoff commit.",
+  "prev_actor_commit": "3bdf46895ceeaaa4e125bac80f64776f3fb63423",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md section 8 (the completing actor never writes its own commit hash): 3bdf468 was HEAD at the start of this Claude Lead review round-3 turn, resolved with git log -1 --format=%H against the clean tree this turn started from. It is also the reviewed candidate.",
   "last_green_commit": "3d1882a116ef116f21a529eaa050f17f88875def",
   "last_green_commit_note_2": "Moved from 457f90f to the round-2 candidate 3d1882a. Claude Lead independently re-ran both binding gates at 3d1882a: npm test 526/526 across 99 files, npm run build passed with the route list unchanged and the /share + Mission Control manifest smoke green. The review still FAILS on four live criteria that no unit test covers; green gates and a failing review are not in conflict.",
-  "production_code_changed_this_turn": true,
-  "production_code_note_prior_turn": "Claude Lead review round 2 changed no application source. It ran the complete live matrix the previous turn could not reach - every retained section verifier unmodified against a production server on a real GPU - closed both critical round-1 findings plus DEF-09, and raised four bounded findings: the trail sampler still fails on 6 of 8 holdings, the route-owned long task still breaches 50ms on 10 of 10 contexts, mark chirality fails on 4 of 8 worlds on its first-ever execution, and two of round 1's surfaced Mission Control defects remain.",
-  "production_code_note": "Codex Implementation remediated only round-2 findings F1-F4. The measurable trail core now uses the opaque queue and a wider overview ribbon while its glow remains additive. Decoded base, emissive and normal planet maps bind one per animation frame instead of producing one batched first-upload frame. The supplied-mark compositor now preserves its pre-flopped alpha mask by tinting and joining alpha in separate Sharp pipelines, and all 24 KTX2 assets plus thumbnails were regenerated within the 30 MB budget and luminance floor. MANIFEST renders its active question once and contribution labels sit opposite their signed bars. Acceptance, the final 526-test run, TypeScript and the production build are green. Live reruns remain explicitly deferred because both the in-app browser backend and standalone Chromium were unavailable in this CLI environment.",
+  "production_code_changed_this_turn": false,
+  "production_code_note_prior_turn": "Codex Implementation remediated only round-2 findings F1-F4. The measurable trail core now uses the opaque queue and a wider overview ribbon while its glow remains additive. Decoded base, emissive and normal planet maps bind one per animation frame instead of producing one batched first-upload frame. The supplied-mark compositor now preserves its pre-flopped alpha mask by tinting and joining alpha in separate Sharp pipelines, and all 24 KTX2 assets plus thumbnails were regenerated within the 30 MB budget and luminance floor. MANIFEST renders its active question once and contribution labels sit opposite their signed bars. Acceptance, the final 526-test run, TypeScript and the production build are green. Live reruns remain explicitly deferred because both the in-app browser backend and standalone Chromium were unavailable in this CLI environment.",
+  "production_code_note": "Claude Lead review round 3 changed no application source. It ran every retained section verifier unmodified against a production server on a real GPU, independently re-ran both binding gates green, closed VIS-01 and MOB-01 against the regenerated textures, and returned four bounded findings: the trail sampler now fails 7 of 8 holdings with three separable mechanisms identified from retained pixel neighbourhoods, the route-owned long task still breaches 50ms and is attributed by CPU profile to Three.js shader-program compilation rather than texture upload, mark chirality regressed from four to six failing worlds, and three bays still print their question twice although the contribution-numeral defect is fixed.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Codex Implementation's final binding Vitest run passed 99 of 99 test files and 526 of 526 tests. The immediately preceding full run had one unrelated transient FirstVisitOrientation localStorage assertion failure; that unchanged test passed in isolation and the final full rerun was completely green.",
-      "finished_at": "2026-07-28T22:16:41Z"
+      "summary": "Claude Lead independently re-ran the full suite at the reviewed candidate: 99 of 99 test files and 526 of 526 tests passed in 4.91s with zero failures.",
+      "finished_at": "2026-07-28T23:31:39Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Codex Implementation ran the final Next.js 16.2.11 production build: compilation and TypeScript passed, 18 static page tasks generated, the route list remained unchanged, and the build script's /share 200 plus Mission Control manifest smoke check passed.",
-      "finished_at": "2026-07-28T22:16:41Z"
+      "summary": "Claude Lead independently re-ran the Next.js 16.2.11 production build at the reviewed candidate: exit 0, compiled successfully, 18 static page tasks generated, route list unchanged, and the build script /share 200 plus Mission Control manifest 200 smoke check passed.",
+      "finished_at": "2026-07-28T23:31:39Z"
     },
     "live_evidence": {
-      "command": "in-app browser selection/discovery, then retained sample-live-rgb.mjs, capture-live-sphere-strip.mjs, measure-long-tasks.mjs and capture-live-evidence.mjs against a ready production server at http://127.0.0.1:3131/share",
-      "status": "not_run",
-      "summary": "Environment-only evidence gap: in-app browser selection returned No browser is available and discovery=[], while the four retained Playwright probes were blocked at Chromium launch before navigation by MachPortRendezvousServer bootstrap_check_in Permission denied (1100). TST-03, DEF-02, BLD-04, VIS-12 and the newly reachable VIS-04 live check remain deferred_to_reviewer; no live pass is claimed.",
-      "finished_at": "2026-07-28T22:16:41Z"
+      "command": "sample-live-rgb.mjs, capture-live-sphere-strip.mjs, measure-long-tasks.mjs and capture-live-evidence.mjs run unmodified against a production server at http://127.0.0.1:3131/share, plus retained reviewer diagnostic probes",
+      "status": "fail",
+      "summary": "The full live matrix ran end to end on a real GPU. VIS-01, TST-04 and MOB-01 pass; TST-03, DEF-02, BLD-04 and VIS-12 fail; VIS-04 and DEF-03 are blocked behind TST-03. All raw output, non-throwing full tables, CPU-profile attribution and pixel crops are retained under docs/phase10-baseline/section-10/claude-review-3/.",
+      "finished_at": "2026-07-28T23:31:39Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T23:22:27Z",
+  "updated_at": "2026-07-28T23:31:39Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

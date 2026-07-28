@@ -1,0 +1,109 @@
+{
+ "viewport": "1440x900",
+ "base": "http://127.0.0.1:3131/share",
+ "luminanceWindow": [
+  0.16,
+  0.55
+ ],
+ "measurements": [
+  {
+   "ticker": "ASML",
+   "equatorialMean": 0.430258,
+   "inWindow": true
+  },
+  {
+   "ticker": "GOOG",
+   "equatorialMean": 0.331401,
+   "inWindow": true
+  },
+  {
+   "ticker": "COST",
+   "equatorialMean": 0.352225,
+   "inWindow": true
+  },
+  {
+   "ticker": "MSFT",
+   "equatorialMean": 0.43583,
+   "inWindow": true
+  },
+  {
+   "ticker": "IBM",
+   "equatorialMean": 0.299245,
+   "inWindow": true
+  },
+  {
+   "ticker": "INTC",
+   "equatorialMean": 0.196798,
+   "inWindow": true
+  },
+  {
+   "ticker": "CBRS",
+   "equatorialMean": 0.247042,
+   "inWindow": true
+  },
+  {
+   "ticker": "NBIS",
+   "equatorialMean": 0.371039,
+   "inWindow": true
+  }
+ ],
+ "luminanceFailures": [],
+ "chirality": [
+  {
+   "ticker": "ASML",
+   "normalScore": 0.108625,
+   "mirroredScore": -0.191066,
+   "pass": true
+  },
+  {
+   "ticker": "GOOG",
+   "normalScore": 0.093218,
+   "mirroredScore": -0.242511,
+   "pass": true
+  },
+  {
+   "ticker": "COST",
+   "normalScore": -0.456185,
+   "mirroredScore": -0.415417,
+   "pass": false
+  },
+  {
+   "ticker": "MSFT",
+   "normalScore": -0.500468,
+   "mirroredScore": 0.311674,
+   "pass": false
+  },
+  {
+   "ticker": "IBM",
+   "normalScore": -0.001968,
+   "mirroredScore": 0.003678,
+   "pass": false
+  },
+  {
+   "ticker": "INTC",
+   "normalScore": 0.161371,
+   "mirroredScore": 0.164343,
+   "pass": false
+  },
+  {
+   "ticker": "CBRS",
+   "normalScore": -0.15572,
+   "mirroredScore": -0.045507,
+   "pass": false
+  },
+  {
+   "ticker": "NBIS",
+   "normalScore": 0.388734,
+   "mirroredScore": 0.390108,
+   "pass": false
+  }
+ ],
+ "chiralityFailures": [
+  "COST",
+  "MSFT",
+  "IBM",
+  "INTC",
+  "CBRS",
+  "NBIS"
+ ]
+}

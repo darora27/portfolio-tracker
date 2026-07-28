@@ -1,0 +1,176 @@
+{
+ "plot": [
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what do I own, at what weight",
+   "x": 1190,
+   "y": 300,
+   "w": 198,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "where is everything, and how was the week",
+   "x": 810,
+   "y": 489,
+   "w": 568,
+   "h": 17
+  }
+ ],
+ "manifest": [
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "where is everything, and how was the week",
+   "x": 475,
+   "y": 312,
+   "w": 280,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what do I own, at what weight",
+   "x": 810,
+   "y": 489,
+   "w": 568,
+   "h": 17
+  }
+ ],
+ "scope": [
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "where is everything, and how was the week",
+   "x": 475,
+   "y": 312,
+   "w": 280,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what do I own, at what weight",
+   "x": 1190,
+   "y": 300,
+   "w": 198,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "am I beating the market",
+   "x": 810,
+   "y": 489,
+   "w": 568,
+   "h": 17
+  }
+ ],
+ "hazard": [
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "where is everything, and how was the week",
+   "x": 475,
+   "y": 312,
+   "w": 280,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what do I own, at what weight",
+   "x": 1190,
+   "y": 300,
+   "w": 198,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "how much can this hurt",
+   "x": 810,
+   "y": 489,
+   "w": 568,
+   "h": 17
+  }
+ ],
+ "signals": [
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "where is everything, and how was the week",
+   "x": 475,
+   "y": 312,
+   "w": 280,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what do I own, at what weight",
+   "x": 1190,
+   "y": 300,
+   "w": 198,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what moves together",
+   "x": 810,
+   "y": 489,
+   "w": 568,
+   "h": 17
+  }
+ ],
+ "comms": [
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "where is everything, and how was the week",
+   "x": 475,
+   "y": 312,
+   "w": 280,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what do I own, at what weight",
+   "x": 1190,
+   "y": 300,
+   "w": 198,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what’s being said",
+   "x": 810,
+   "y": 489,
+   "w": 568,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what’s next on the calendar",
+   "x": 1183,
+   "y": 527,
+   "w": 184,
+   "h": 24
+  }
+ ],
+ "log": [
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "where is everything, and how was the week",
+   "x": 475,
+   "y": 312,
+   "w": 280,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what do I own, at what weight",
+   "x": 1190,
+   "y": 300,
+   "w": 198,
+   "h": 17
+  },
+  {
+   "cls": "orrery-module__nrz9QG__bayQuestion",
+   "text": "what did I do",
+   "x": 823,
+   "y": 490,
+   "w": 554,
+   "h": 17
+  }
+ ]
+}

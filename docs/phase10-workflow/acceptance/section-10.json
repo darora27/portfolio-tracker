@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "§10",
   "spec_doc": "docs/phase10-workflow/specs/section-10.md",
-  "candidate_sha": "3d1882a116ef116f21a529eaa050f17f88875def",
+  "candidate_sha": "3bdf46895ceeaaa4e125bac80f64776f3fb63423",
   "criteria": [
     {
       "id": "DEF-01",
@@ -59,11 +59,11 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-2/raw-strip-chirality.txt",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-sphere-strip-abort-DEF-02.txt",
-          "docs/phase10-workflow/reviews/section-10-review-2.md"
+          "docs/phase10-baseline/section-10/claude-review-3/raw-sphere-strip.txt",
+          "docs/phase10-baseline/section-10/claude-review-3/raw-strip-chirality-full-table.json",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "F3 (round 2). First execution of this assertion: VIS-01's luminance loop now passes for all eight worlds, so capture-live-sphere-strip.mjs reaches its chirality block and aborts there — 'COST chirality failed: normal=-0.4514 mirrored=-0.4041'. Non-throwing full table: 4 of 8 fail (COST, MSFT, IBM, INTC). MSFT (normal -0.4784 vs mirrored +0.2493) and INTC (normal -0.2784 vs mirrored +0.2111) are decisive mirror signals; COST and IBM sit in noise. ASML, GOOG, CBRS and NBIS pass. Not previously performed — F2/F3 of round 1 aborted the matrix before this ran. — reviewed by claude-code/opus-5"
+        "notes": "F3 (round 3). capture-live-sphere-strip.mjs unmodified aborts with COST chirality failed: normal=-0.4561 mirrored=-0.4153. Non-throwing full table shows 6 of 8 worlds failing (COST, MSFT, IBM, INTC, CBRS, NBIS) against 4 of 8 in round 2 - CBRS and NBIS regressed from pass to fail. MSFT remains the decisive mirror signal (normal -0.5005 vs mirrored +0.3117) and is essentially unmoved from round 2 (-0.4784 / +0.2493), so the alpha-mask compositor change did not alter the rendered mark chirality. IBM (-0.0020 / +0.0037), INTC (0.1614 / 0.1643) and NBIS (0.3887 / 0.3901) fail inside noise, meaning those worlds carry almost no measurable mark signal in the sampled band. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -88,9 +88,13 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "blocked",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-neighbourhood.json",
+          "docs/phase10-baseline/section-10/claude-review-3/trail-crops/",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
+        ],
+        "notes": "Partially substantiated. The visible-trail half is confirmed live: COST carries a null weekly return and still renders a clearly visible minimum-arc trail at 1440x900. The flat-token half cannot be confirmed this round - the rendered pixels around COST sample #ffec79/#fff87f against the flat token #e3b65c at deltaE 12.29, which is inside TST-03s failing set. Resolves with F1. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -800,10 +804,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-2/raw-strip-chirality.txt",
-          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png"
+          "docs/phase10-baseline/section-10/claude-review-3/raw-strip-chirality-full-table.json",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "Round-1 F1 closed. All eight worlds are inside [0.16, 0.55] as measured by the section's own formula: ASML 0.4368, GOOG 0.3399, COST 0.3463, MSFT 0.4617, IBM 0.2951, INTC 0.2432, CBRS 0.2951, NBIS 0.2734. INTC's regression is reversed (0.0164 -> 0.2432). The verifier's luminance loop runs to completion and writes the strip; the accepted window was not moved. — reviewed by claude-code/opus-5"
+        "notes": "Re-verified at the round-3 candidate after the full texture regeneration. All eight worlds sit inside [0.16, 0.55] from the live sphere-strip render: ASML 0.4303, GOOG 0.3314, COST 0.3522, MSFT 0.4358, IBM 0.2992, INTC 0.1968, CBRS 0.2470, NBIS 0.3710. Zero luminance failures. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -891,10 +895,10 @@
       "reviewer": {
         "status": "blocked",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-2/raw-trail-sampler-TST-03.txt",
-          "docs/phase10-workflow/reviews/section-10-review-2.md"
+          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-sampler-full-table.json",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "Blocked by the confirmed TST-03 failure. VIS-04's 'ramp lightness for magnitude' half is exactly what the trail sampler measures, and it fails on 6 of 8 holdings with an ordering violation, so this criterion cannot pass at this candidate. The arc-angle and 12%-head halves were not separately measured this turn. Re-run after TST-03 is fixed. — reviewed by claude-code/opus-5"
+        "notes": "Still blocked, not passed. The arc, direction and fixed-head halves are covered by the passing scene-model assertions, but the ramp-lightness half of this criterion is exactly what TST-03 measures on the live render, and TST-03 fails on 7 of 8 holdings this round. VIS-04 cannot be resolved until F1 closes. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1114,13 +1118,14 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-3/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/claude-review-3/raw-manifest-vis12.json",
+          "docs/phase10-baseline/section-10/claude-review-3/raw-question-duplicates.json",
           "docs/phase10-baseline/section-10/after/",
           "docs/phase10-baseline/section-10/mobile/",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
-          "docs/phase10-baseline/section-10/claude-review-2/crop-manifest-contribution.png",
-          "docs/phase10-workflow/reviews/section-10-review-2.md"
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "F4 (round 2), partially remediated. The evidence half is closed: capture-live-evidence.mjs now runs end-to-end and produced all 16 after/ surfaces plus both mobile/ captures from the section's own verifier. Two of the defects round 1's F6 required to be addressed remain live: (1) the MANIFEST bay renders its question twice — live DOM count 2 for 'what do i own, at what weight' when station=manifest, because MissionControl.tsx:155 renders it unconditionally while ManifestBay.tsx:21 renders it again; the PLOT duplicate and .activeBayQuestion were fixed, this one was missed; (2) the MANIFEST bay's CONTRIBUTION cell draws its coloured bar over the numeral, obscuring one character of a public financial value ('-3[bar]1%', '-0[bar]5%', '+0[bar]5%'). — reviewed by claude-code/opus-5"
+        "notes": "F4 (round 3). The evidence half is closed and the contribution half is fixed: capture-live-evidence.mjs ran end-to-end and reproduced all 16 after/ surfaces plus both mobile/ captures, and a live geometry probe measures 0px horizontal overlap between the CONTRIBUTION numeral and its signed bar on all 13 rendered rows, with every value legible. The question half is only partially remediated: PLOT, MANIFEST, COMMS and LOG each render their question exactly once, but SCOPE, HAZARD and SIGNALS each render theirs twice when active - once in the active operationsBay and once in the persistent rail/instrument-strip link - which is the same duplication the round-2 finding required to be removed for every bay. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1204,9 +1209,11 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/raw-mobile-MOB-01.txt"
+          "docs/phase10-baseline/section-10/claude-review-3/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/mobile/",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "Live at 390x844 and 320x844: canvas count 0, scrollWidth === clientWidth, 27 focusable targets, minimum target dimension 44px, zero undersized. — reviewed by claude-code/opus-5"
+        "notes": "Re-verified live at the round-3 candidate from the section verifier: 390x844 gives canvasCount 0, scrollWidth 390 == clientWidth 390, 27 targets, minimum target 44; 320x844 gives canvasCount 0, scrollWidth 320 == clientWidth 320, 27 targets, minimum target 44. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1686,10 +1693,13 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-2/raw-trail-sampler-TST-03.txt",
-          "docs/phase10-workflow/reviews/section-10-review-2.md"
+          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-sampler-TST-03.txt",
+          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-sampler-full-table.json",
+          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-neighbourhood.json",
+          "docs/phase10-baseline/section-10/claude-review-3/trail-crops/",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "F1 (round 2). sample-live-rgb.mjs still aborts: GOOG deltaE 13.022 > 8. Full table: 6 of 8 holdings exceed deltaE 8 (GOOG 13.02, COST 18.12, MSFT 11.56, IBM 47.04, INTC 23.86, CBRS 28.54); ASML is now exact (0) and NBIS 6.92. IBM still fails hue lock at 22.88deg off the 143deg anchor with chroma 0.067. One ordering violation remains in the loss direction: MSFT |3.28%| samples darker (L 0.2778) than ASML |4.82%| (L 0.3413). Improved from 7 failures to 6, but the criterion is unmet. — reviewed by claude-code/opus-5"
+        "notes": "F1 (round 3). sample-live-rgb.mjs unmodified still aborts: ASML deltaE 60.479 > 8. Non-throwing full table: 7 of 8 holdings exceed deltaE 8 (ASML 60.72, GOOG 22.77, COST 12.29, MSFT 26.49, IBM 25.01, CBRS 33.90, NBIS 8.74); only INTC passes at 3.39. Hue lock fails on ASML (35.86deg off, chroma 0.165), MSFT (7deg but chroma 0.212) and IBM (14.93deg off). Two loss-direction ordering violations remain (MSFT |1.11%| L 0.4805 vs GOOG |3.93%| L 0.5093; ASML |12.13%| L 0.0228 vs INTC |18.16%| L 0.1025). Worse than round 2 (6 of 8). Raw 9x9 neighbourhood dumps and 120px crops around every sample point are retained and name three distinct mechanisms; see the review document. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1718,10 +1728,11 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-2/raw-sphere-strip-abort-DEF-02.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs"
+          "docs/phase10-baseline/section-10/claude-review-3/raw-sphere-strip.txt",
+          "docs/phase10-baseline/section-10/claude-review-3/raw-strip-chirality-full-table.json",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "The sphere-strip capture does measure per-world equatorial luminance AND assert chirality, and the chirality assertion demonstrably fires — it is what aborts the run at COST. The regression guard this criterion asks for exists and works; DEF-02 records the defect the guard caught. — reviewed by claude-code/opus-5"
+        "notes": "Re-confirmed at the round-3 candidate: the retained sphere-strip capture measures per-world equatorial-band mean luminance for all eight worlds and asserts mark chirality, and it is the assertion that aborts this round. The verifier is correct; DEF-02 is the texture-generation defect it detects. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1850,9 +1861,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/raw-luminance-VIS-01.txt"
+          "npm test — 99 files, 526 tests, 0 failures",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "Independently re-run: npm test green, 99 files / 525 of 525 tests. §9's inherited red is closed. — reviewed by claude-code/opus-5"
+        "notes": "Independently re-run by the reviewer at the candidate: npm test passed 99 of 99 files and 526 of 526 tests in 4.91s with zero failures. Section 9s inherited red is closed on the tree. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1877,9 +1889,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/raw-luminance-VIS-01.txt"
+          "npm run build — exit 0, 18 static page tasks, route list unchanged, /share 200",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "Independently re-run: npm run build passed (Next.js 16.2.11, 18 static page tasks, route list unchanged, /share 200 + Mission Control manifest smoke). — reviewed by claude-code/opus-5"
+        "notes": "Independently re-run by the reviewer at the candidate: npm run build exited 0 on Next.js 16.2.11, compiled successfully, generated 18 static page tasks, left the route list unchanged, and the build scripts share-route smoke check passed (/share 200; Mission Control manifest 200). — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1936,10 +1949,11 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-2/raw-long-tasks-BLD-04.txt",
-          "docs/phase10-workflow/reviews/section-10-review-2.md"
+          "docs/phase10-baseline/section-10/claude-review-3/raw-long-tasks-BLD-04.txt",
+          "docs/phase10-baseline/section-10/claude-review-3/raw-long-task-attribution.json",
+          "docs/phase10-workflow/reviews/section-10-review-3.md"
         ],
-        "notes": "F2 (round 2). measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 62/56/56/56/57 ms. An earlier identical run in the same session gave 69/59/55/55/56 ms. Every context breaches the 50ms ceiling. Moving the KTX2 parse/zstd decode into a module worker did not clear the gate; §9 measured maximumMs 0 on all five runs with a byte-identical script. — reviewed by claude-code/opus-5"
+        "notes": "F2 (round 3). measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 61/57/55/55/55 ms. Five of five breach the 50ms ceiling; unchanged within noise from round 2 (62/56/56/56/57). A CDP CPU profile on the same rig attributes the breaching task to Three.js WebGLRenderer shader-program acquisition, not texture upload: within the 68ms window, N @ chunk 2tdjt19k1le0z.js:357 holds 34.3ms of self time, with getParameters and getProgramCacheKey on the same line; the 700-900ms bins carry ~50ms of self time in that one frame. texSubImage2D never exceeds 2.5ms in any bin, so the round-2 staggered map binding worked and was not the cause. — reviewed by claude-code/opus-5"
       }
     },
     {

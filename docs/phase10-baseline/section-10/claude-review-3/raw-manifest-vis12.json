@@ -1,0 +1,195 @@
+{
+  "questionCounts": {
+    "plot": 1,
+    "manifest": 1,
+    "scope": 2,
+    "hazard": 2,
+    "signals": 2,
+    "comms": 0,
+    "log": 1
+  },
+  "contribution": [
+    {
+      "text": "-3.1%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1275,
+        "right": 1281,
+        "width": 6
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "-0.5%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1280,
+        "right": 1281,
+        "width": 1
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "+0.5%",
+      "valueRect": {
+        "left": 1194,
+        "right": 1281,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1281,
+        "right": 1282,
+        "width": 1
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "+0.5%",
+      "valueRect": {
+        "left": 1194,
+        "right": 1281,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1281,
+        "right": 1282,
+        "width": 1
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "-1.6%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1278,
+        "right": 1281,
+        "width": 3
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "-3.4%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1274,
+        "right": 1281,
+        "width": 7
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "+0.1%",
+      "valueRect": {
+        "left": 1194,
+        "right": 1281,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1281,
+        "right": 1282,
+        "width": 0
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "+0.3%",
+      "valueRect": {
+        "left": 1194,
+        "right": 1281,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1281,
+        "right": 1282,
+        "width": 1
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "-1.3%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1279,
+        "right": 1281,
+        "width": 3
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "-0.5%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1280,
+        "right": 1281,
+        "width": 1
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "-0.8%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1280,
+        "right": 1281,
+        "width": 2
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "-0.1%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1281,
+        "right": 1281,
+        "width": 0
+      },
+      "horizontalOverlapPx": 0
+    },
+    {
+      "text": "-0.0%",
+      "valueRect": {
+        "left": 1281,
+        "right": 1368,
+        "width": 87
+      },
+      "barRect": {
+        "left": 1281,
+        "right": 1281,
+        "width": 0
+      },
+      "horizontalOverlapPx": 0
+    }
+  ]
+}
