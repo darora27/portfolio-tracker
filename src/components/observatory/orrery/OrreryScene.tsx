@@ -36,6 +36,7 @@ import {
   OVERVIEW_RING_OPACITY,
   buildOverviewSceneModel,
   layoutOverviewLabels,
+  projectSphereScreenBounds,
   resolveOrreryPointerTarget,
   type SceneModel,
   type TradeCometInput,
@@ -1054,6 +1055,33 @@ export default function OrreryScene({
         );
         planet.path.visible = state !== "approach";
         planet.mesh.getWorldPosition(worldPosition);
+        const liveProjection = projectSphereScreenBounds(
+          {
+            x: worldPosition.x,
+            y: worldPosition.y,
+            z: worldPosition.z,
+          },
+          planet.mesh.scale.x,
+          {
+            fovDegrees: camera.fov,
+            near: camera.near,
+            far: camera.far,
+            position: {
+              x: camera.position.x,
+              y: camera.position.y,
+              z: camera.position.z,
+            },
+            target: {
+              x: lookAt.x,
+              y: lookAt.y,
+              z: lookAt.z,
+            },
+          },
+          {
+            width: labelRect.width,
+            height: labelRect.height,
+          },
+        );
         projected.copy(worldPosition).project(camera);
         labelPosition
           .copy(worldPosition)
@@ -1074,16 +1102,13 @@ export default function OrreryScene({
           : planet.holding.ticker;
         planet.label.dataset.targeted = targeted ? "true" : "false";
         planet.label.dataset.planetCenterX = String(
-          (projected.x * 0.5 + 0.5) * labelRect.width,
+          liveProjection.screen.x,
         );
         planet.label.dataset.planetCenterY = String(
-          (-projected.y * 0.5 + 0.5) * labelRect.height,
+          liveProjection.screen.y,
         );
         planet.label.dataset.planetRadiusPx = String(
-          Math.hypot(
-            (labelPosition.x - projected.x) * labelRect.width * 0.5,
-            (labelPosition.y - projected.y) * labelRect.height * 0.5,
-          ) / 1.45,
+          liveProjection.bounds.width / 2,
         );
         planet.label.hidden = projected.z > 1;
       }

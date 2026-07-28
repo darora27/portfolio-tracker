@@ -7,6 +7,13 @@ backend; `browser-backend.txt` retains that result. The repository's retained
 Playwright scripts did run successfully against the production build from the
 canonical `npm run build` verification process — done by codex/gpt-5.
 
+The later F8 projected-size remediation changes the OVERVIEW composition after
+those retained live captures. Its automated geometry, tests, build, and
+production-route smoke are complete, but its new live frame is not: this
+Codex environment denied both localhost bindings and exposed no browser
+backend. The exact gap is recorded below and in `browser-backend.txt`; no prior
+image is represented as post-F8 evidence — done by codex/gpt-5.
+
 ## Automated verification
 
 - `npm test`: PASS — 94 files, 497 tests — done by codex/gpt-5.
@@ -54,6 +61,35 @@ canonical `npm run build` verification process — done by codex/gpt-5.
   inspected in review 2 and must not be treated as post-remediation evidence.
   Claude Lead must independently run the live 1440×900 geometry check and
   overwrite that screenshot before PASS — recorded by codex/gpt-5.
+
+## F8 projected-size remediation
+
+- Criterion 1 model geometry: PASS. Across a 360-step orbital-phase sweep at
+  1440×900, every resting ticker label remains inside the viewport after the
+  shared collision-yield and viewport-clamp layout — done by codex/gpt-5.
+- Criterion 17 model geometry: PASS. The perspective-projected belt spans
+  88.00% of viewport width, every planet remains inside 1440×900 across the
+  same sweep, and adjacent ring gaps equal
+  `1.6 × (current radius + next radius) + 0.18`, preserving the stronger
+  clearance already covered by the suite — done by codex/gpt-5.
+- Criterion 18 model geometry: PASS. `projectedDiameterPx` is now the same
+  camera-derived width as `bounds.width`, not a fixed pixels-per-world-unit
+  constant. Across the full sweep the heaviest fixture planet ranges from
+  64.93–71.78 px (centred on the ≈68 px target), and the smallest diameter
+  reached by any planet is 24.46 px, above the 22 px floor — done by
+  codex/gpt-5.
+- The uniform-scale trap is removed. Planet radii use a clamped
+  square-root-of-weight scale, and each orbit gap is derived from its own
+  adjacent pair of radii instead of one `ORRERY_MAX_RADIUS`-derived global
+  spacing. The fitted camera still targets the belt's 88% span — done by
+  codex/gpt-5.
+- Live measurement and `after/overview-1440x900.png` recapture: NOT
+  PERFORMED. `next start` was denied with `listen EPERM` for both
+  `0.0.0.0:3132` and `127.0.0.1:3132`; the in-app browser returned
+  `No browser is available`. The existing image remains pre-F8 and must not
+  be used to pass criteria 1, 17, or 18 for this composition. Claude Lead must
+  independently run the retained 1440×900 measurement and overwrite the
+  image before PASS — recorded by codex/gpt-5.
 
 ## Texture ladder and encoder
 

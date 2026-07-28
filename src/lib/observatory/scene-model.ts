@@ -1,10 +1,11 @@
 import {
   ORRERY_MAX_ANGULAR_SPEED,
   ORRERY_PLANET_CLEARANCE,
+  ORRERY_SUN_CLEARANCE,
   angularSpeedForWeeklyReturn,
   axialSpinForDayReturn,
   directionForWeeklyReturn,
-  orbitRadiusForRank,
+  orbitRadiiForPlanetRadii,
   radiusForWeight,
   type OrreryDirection,
   type PublicOrreryHolding,
@@ -14,7 +15,6 @@ import { planetIdentityForTicker } from "./planet-identity";
 export const OVERVIEW_RING_OPACITY = 0.34;
 export const ACTIVE_RING_OPACITY = 0.6;
 export const OVERVIEW_BELT_SPAN_PCT = 0.88;
-export const OVERVIEW_PLANET_PIXELS_PER_WORLD_UNIT = 37;
 
 const OVERVIEW_FOV_DEGREES = 42;
 const OVERVIEW_CAMERA_HEIGHT_RATIO = 0.82;
@@ -286,7 +286,22 @@ function projectedOrbitBounds(
   );
 }
 
-function projectedPlanetBounds(
+function projectedAxisSlopes(
+  offset: number,
+  depth: number,
+  radius: number,
+): { minimum: number; maximum: number } {
+  const denominator = Math.max(0.001, depth * depth - radius * radius);
+  const tangent = radius * Math.sqrt(
+    Math.max(0, offset * offset + depth * depth - radius * radius),
+  );
+  return {
+    minimum: (offset * depth - tangent) / denominator,
+    maximum: (offset * depth + tangent) / denominator,
+  };
+}
+
+function projectedPlanetBoundsWithContext(
   world: Point3,
   radius: number,
   camera: OverviewCameraDescriptor,
@@ -294,18 +309,44 @@ function projectedPlanetBounds(
   context = projectionContext(camera, viewport),
 ): { screen: { x: number; y: number; depth: number }; bounds: ScreenBounds } {
   const screen = projectOverviewPoint(world, context, viewport);
-  const projectedRadius =
-    (context.focalLengthPx * radius) /
-    Math.max(0.001, screen.depth - radius);
+  const relative = {
+    x: world.x - camera.position.x,
+    y: world.y - camera.position.y,
+    z: world.z - camera.position.z,
+  };
+  const horizontal = projectedAxisSlopes(
+    dotProduct(relative, context.right),
+    screen.depth,
+    radius,
+  );
+  const vertical = projectedAxisSlopes(
+    dotProduct(relative, context.up),
+    screen.depth,
+    radius,
+  );
   return {
     screen,
     bounds: boundsFromEdges(
-      screen.x - projectedRadius,
-      screen.y - projectedRadius,
-      screen.x + projectedRadius,
-      screen.y + projectedRadius,
+      viewport.width / 2 + horizontal.minimum * context.focalLengthPx,
+      viewport.height / 2 - vertical.maximum * context.focalLengthPx,
+      viewport.width / 2 + horizontal.maximum * context.focalLengthPx,
+      viewport.height / 2 - vertical.minimum * context.focalLengthPx,
     ),
   };
+}
+
+export function projectSphereScreenBounds(
+  world: Point3,
+  radius: number,
+  camera: OverviewCameraDescriptor,
+  viewport: { width: number; height: number },
+): { screen: { x: number; y: number; depth: number }; bounds: ScreenBounds } {
+  return projectedPlanetBoundsWithContext(
+    world,
+    radius,
+    camera,
+    viewport,
+  );
 }
 
 function labelBounds(screen: { x: number; y: number }): ScreenBounds {
@@ -374,7 +415,7 @@ function cameraForOverview(
           z: -Math.sin(angle) * outerPlanetRadius,
         };
         planetBounds.push(
-          projectedPlanetBounds(
+          projectedPlanetBoundsWithContext(
             world,
             maxPlanetRadius,
             camera,
@@ -661,25 +702,39 @@ export function buildOverviewSceneModel({
   tradeComet?: TradeCometInput | null;
   orbitalPhaseRadians?: number;
 }): SceneModel {
-  const outerPlanetRadius = orbitRadiusForRank(Math.max(1, holdings.length));
-  const beltRadius = outerPlanetRadius + 1.05;
-  const planetDescriptors = holdings.map((holding, index) => {
+  const planetDescriptorsWithoutOrbits = holdings.map((holding, index) => {
     const radius = radiusForWeight(holding.weight);
     return {
       ticker: holding.ticker,
       rank: index + 1,
       radius,
-      orbitRadius: orbitRadiusForRank(index + 1),
       initialAngle: index * 2.399963,
       direction: directionForWeeklyReturn(holding.weeklyReturn),
       angularSpeed: angularSpeedForWeeklyReturn(holding.weeklyReturn),
       axialSpin: axialSpinForDayReturn(holding.dayReturn),
-      projectedDiameterPx:
-        radius * 2 * OVERVIEW_PLANET_PIXELS_PER_WORLD_UNIT,
       brandHex: planetIdentityForTicker(holding.ticker).brandHex,
       encodedWeight: holding.weight,
     };
   });
+  const planetRadii = planetDescriptorsWithoutOrbits.map(({ radius }) => radius);
+  const firstPlanetRadius = planetRadii[0] ?? 0;
+  const firstPlanetOrbitRadius =
+    SUN_BODY_RADIUS +
+    SATELLITE_RADIUS * 2 +
+    ORRERY_PLANET_CLEARANCE * 2 +
+    firstPlanetRadius;
+  const orbitRadii = orbitRadiiForPlanetRadii(
+    planetRadii,
+    firstPlanetOrbitRadius,
+  );
+  const planetDescriptors = planetDescriptorsWithoutOrbits.map(
+    (planet, index) => ({
+      ...planet,
+      orbitRadius: orbitRadii[index],
+    }),
+  );
+  const outerPlanetRadius = orbitRadii.at(-1) ?? ORRERY_SUN_CLEARANCE;
+  const beltRadius = outerPlanetRadius + 1.05;
   const overviewCamera = cameraForOverview(
     outerPlanetRadius,
     beltRadius,
@@ -689,7 +744,7 @@ export function buildOverviewSceneModel({
   const overviewProjection = projectionContext(overviewCamera, viewport);
   const planets = planetDescriptors.map((planet) => {
     const angle = planet.initialAngle + orbitalPhaseRadians;
-    const projected = projectedPlanetBounds(
+    const projected = projectedPlanetBoundsWithContext(
       {
         x: Math.cos(angle) * planet.orbitRadius,
         y: 0,
@@ -703,12 +758,13 @@ export function buildOverviewSceneModel({
     return {
       ...planet,
       ...projected,
+      projectedDiameterPx: projected.bounds.width,
     };
   });
   const labels = layoutOverviewLabels(
     holdings.map((holding, index) => {
       const angle = planets[index].initialAngle + orbitalPhaseRadians;
-      const orbitRadius = orbitRadiusForRank(index + 1);
+      const orbitRadius = planets[index].orbitRadius;
       const screen = projectOverviewPoint(
         {
           x: Math.cos(angle) * orbitRadius,
@@ -731,10 +787,9 @@ export function buildOverviewSceneModel({
     }),
     viewport,
   );
-  const firstRadius = radiusForWeight(holdings[0]?.weight ?? 0.01);
   const satelliteOrbit = satelliteRingRadius(
-    orbitRadiusForRank(1),
-    firstRadius,
+    orbitRadii[0] ?? ORRERY_SUN_CLEARANCE,
+    firstPlanetRadius,
   );
   const beltBounds = projectedOrbitBounds(
     beltRadius,
@@ -748,7 +803,7 @@ export function buildOverviewSceneModel({
       const direction = directionForWeeklyReturn(holding.weeklyReturn);
       return {
         ticker: holding.ticker,
-        radius: orbitRadiusForRank(index + 1),
+        radius: planets[index].orbitRadius,
         widthPx: 1.5,
         opacity:
           hoveredTicker === holding.ticker

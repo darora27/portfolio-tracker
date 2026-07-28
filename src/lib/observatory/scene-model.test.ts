@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import { PerspectiveCamera, Vector3 } from "three";
 import {
   ORRERY_PLANET_CLEARANCE,
-  orbitRadiusForRank,
   radiusForWeight,
   type PublicOrreryHolding,
 } from "./orrery";
@@ -102,14 +101,20 @@ describe("pure overview scene descriptor", () => {
     expect(model.sun).toEqual(sunVisualParameters(-0.42, 0.7));
   });
 
-  it("projects the heaviest world at about 68px and keeps the lightest above 22px", () => {
+  it("derives projected diameter from the fitted camera instead of a fixed scale", () => {
     const model = buildOverviewSceneModel({
-      holdings,
+      holdings: overviewHoldings,
       healthScalar: 0,
       sunspotIntensity: 0,
     });
-    expect(model.planets[0].projectedDiameterPx).toBeCloseTo(68.08, 1);
-    expect(model.planets.at(-1)?.projectedDiameterPx).toBeGreaterThanOrEqual(22);
+    expect(model.planets[0].projectedDiameterPx).toBe(
+      model.planets[0].bounds.width,
+    );
+    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(64);
+    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(72);
+    expect(
+      Math.min(...model.planets.map(({ projectedDiameterPx }) => projectedDiameterPx)),
+    ).toBeGreaterThanOrEqual(22);
     expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.85);
     expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.92);
   });
@@ -134,9 +139,25 @@ describe("pure overview scene descriptor", () => {
         model.belt.bounds.width / viewport.width,
         12,
       );
+      expect(
+        model.planets[0].projectedDiameterPx,
+        "ASML projected diameter",
+      ).toBeGreaterThanOrEqual(64);
+      expect(
+        model.planets[0].projectedDiameterPx,
+        "ASML projected diameter",
+      ).toBeLessThanOrEqual(72);
 
       for (const planet of model.planets) {
         seenPlanets.add(planet.ticker);
+        expect(
+          planet.projectedDiameterPx,
+          `${planet.ticker} projected diameter`,
+        ).toBe(planet.bounds.width);
+        expect(
+          planet.projectedDiameterPx,
+          `${planet.ticker} projected diameter floor`,
+        ).toBeGreaterThanOrEqual(22);
         expect(planet.bounds.left, `${planet.ticker} planet left`).toBeGreaterThanOrEqual(0);
         expect(planet.bounds.top, `${planet.ticker} planet top`).toBeGreaterThanOrEqual(0);
         expect(planet.bounds.right, `${planet.ticker} planet right`).toBeLessThanOrEqual(
@@ -217,8 +238,13 @@ describe("pure overview scene descriptor", () => {
     for (let index = 0; index < model.planets.length - 1; index += 1) {
       const current = model.planets[index];
       const next = model.planets[index + 1];
-      expect(next.orbitRadius - current.orbitRadius).toBeGreaterThanOrEqual(
+      const spacing = next.orbitRadius - current.orbitRadius;
+      expect(spacing).toBeCloseTo(
         1.6 * (current.radius + next.radius) + ORRERY_PLANET_CLEARANCE,
+        12,
+      );
+      expect(spacing).toBeGreaterThan(
+        1.6 * (current.radius + next.radius),
       );
     }
   });
@@ -279,14 +305,14 @@ describe("pure overview scene descriptor", () => {
       const satelliteRadius = model.satellites[0].orbitRadius;
       expect(satelliteRadius).toBe(
         satelliteRingRadius(
-          orbitRadiusForRank(1),
+          model.planets[0].orbitRadius,
           radiusForWeight(reordered[0].weight),
         ),
       );
       expect(
         satelliteRadius + 0.16 + ORRERY_PLANET_CLEARANCE,
       ).toBeLessThanOrEqual(
-        orbitRadiusForRank(1) - radiusForWeight(reordered[0].weight),
+        model.planets[0].orbitRadius - radiusForWeight(reordered[0].weight),
       );
     }
   });

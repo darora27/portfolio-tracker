@@ -1,14 +1,12 @@
 import { trailingReturn } from "@/lib/portfolio/trailing-return";
 
 export const ORRERY_FLAT_EPSILON = 0.0005;
-export const ORRERY_MIN_RADIUS = 0.34;
-export const ORRERY_MAX_RADIUS = 0.92;
+export const ORRERY_MIN_RADIUS = 0.9;
+export const ORRERY_MAX_RADIUS = 1.8;
 export const ORRERY_MIN_ANGULAR_SPEED = 0.012;
 export const ORRERY_MAX_ANGULAR_SPEED = 0.055;
 export const ORRERY_SUN_CLEARANCE = 3.4;
 export const ORRERY_PLANET_CLEARANCE = 0.18;
-export const ORRERY_RING_SPACING =
-  ORRERY_MAX_RADIUS * 2 * 1.6 + ORRERY_PLANET_CLEARANCE;
 export const ORRERY_MIN_AXIAL_SPIN = 0.05;
 export const ORRERY_MAX_AXIAL_SPIN = 0.55;
 export const ORRERY_BELT_HYSTERESIS_BAND = 0.005;
@@ -65,8 +63,10 @@ export function companyNameForTicker(ticker: string): string {
 }
 export function radiusForWeight(weight: number): number {
   const clamped = Math.min(MAX_WEIGHT, Math.max(MIN_WEIGHT, weight));
-  const normalized = (clamped - MIN_WEIGHT) / (MAX_WEIGHT - MIN_WEIGHT);
-  return ORRERY_MIN_RADIUS + Math.sqrt(normalized) * (ORRERY_MAX_RADIUS - ORRERY_MIN_RADIUS);
+  return Math.max(
+    ORRERY_MIN_RADIUS,
+    Math.sqrt(clamped / MAX_WEIGHT) * ORRERY_MAX_RADIUS,
+  );
 }
 
 export function directionForWeeklyReturn(
@@ -88,13 +88,32 @@ export function angularSpeedForWeeklyReturn(weeklyReturn: number | null): number
     normalized * (ORRERY_MAX_ANGULAR_SPEED - ORRERY_MIN_ANGULAR_SPEED);
 }
 
-export function orbitRadiusForRank(rank: number): number {
-  if (rank < 1 || !Number.isInteger(rank)) {
+export function orbitRadiiForPlanetRadii(
+  planetRadii: readonly number[],
+  firstOrbitRadius = ORRERY_SUN_CLEARANCE,
+): number[] {
+  if (
+    planetRadii.some(
+      (radius) => !Number.isFinite(radius) || radius < 0,
+    )
+  ) {
     throw new RangeError(
-      `orbitRadiusForRank: rank must be a positive integer, got ${rank}`,
+      "orbitRadiiForPlanetRadii: every radius must be finite and non-negative",
     );
   }
-  return ORRERY_SUN_CLEARANCE + (rank - 1) * ORRERY_RING_SPACING;
+  const orbitRadii: number[] = [];
+  for (const [index, radius] of planetRadii.entries()) {
+    if (index === 0) {
+      orbitRadii.push(Math.max(ORRERY_SUN_CLEARANCE, firstOrbitRadius));
+      continue;
+    }
+    orbitRadii.push(
+      orbitRadii[index - 1] +
+        1.6 * (planetRadii[index - 1] + radius) +
+        ORRERY_PLANET_CLEARANCE,
+    );
+  }
+  return orbitRadii;
 }
 
 export function axialSpinForDayReturn(dayReturn: number | null): number {

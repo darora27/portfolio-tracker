@@ -9,13 +9,12 @@ import {
   ORRERY_MIN_RADIUS,
   ORRERY_PLANET_CLEARANCE,
   ORRERY_PLANET_COUNT,
-  ORRERY_RING_SPACING,
   ORRERY_SUN_CLEARANCE,
   angularSpeedForWeeklyReturn,
   axialSpinForDayReturn,
   directionForWeeklyReturn,
   healthScalarForPortfolio,
-  orbitRadiusForRank,
+  orbitRadiiForPlanetRadii,
   radiusForWeight,
   resolveBeltMembership,
   sunspotIntensityForDrawdown,
@@ -28,7 +27,10 @@ describe("Portfolio Orrery encodings", () => {
     expect(radiusForWeight(0.01)).toBe(ORRERY_MIN_RADIUS);
     expect(radiusForWeight(0.35)).toBeCloseTo(ORRERY_MAX_RADIUS, 12);
     expect(radiusForWeight(1)).toBeCloseTo(ORRERY_MAX_RADIUS, 12);
-    expect(radiusForWeight(0.18)).toBeCloseTo(0.7501, 4);
+    expect(radiusForWeight(0.18)).toBeCloseTo(
+      Math.sqrt(0.18 / 0.35) * ORRERY_MAX_RADIUS,
+      12,
+    );
   });
 
   it("maps positive, negative, flat, and unavailable returns to explicit directions", () => {
@@ -61,33 +63,39 @@ describe("Portfolio Orrery encodings", () => {
     expect(weeklyReturnForPrices([{ date: "2026-07-17", price: 110 }])).toBeNull();
   });
 
-  it("assigns one monotonically spaced orbit per positive integer rank", () => {
-    expect(orbitRadiusForRank(1)).toBe(ORRERY_SUN_CLEARANCE);
-    expect(orbitRadiusForRank(8)).toBe(
-      ORRERY_SUN_CLEARANCE + 7 * ORRERY_RING_SPACING,
-    );
-    expect(
-      Array.from({ length: ORRERY_PLANET_COUNT }, (_, index) =>
-        orbitRadiusForRank(index + 1),
-      ),
-    ).toEqual(
-      [...Array.from({ length: ORRERY_PLANET_COUNT }, (_, index) =>
-        orbitRadiusForRank(index + 1),
-      )].sort((a, b) => a - b),
-    );
-    for (const invalid of [0, -1, 1.5]) {
-      expect(() => orbitRadiusForRank(invalid)).toThrow(RangeError);
+  it("assigns monotonically spaced orbits from each adjacent radius pair", () => {
+    const planetRadii = [
+      ORRERY_MAX_RADIUS,
+      1.25,
+      1.1,
+      ORRERY_MIN_RADIUS,
+    ];
+    const orbitRadii = orbitRadiiForPlanetRadii(planetRadii);
+    expect(orbitRadii[0]).toBe(ORRERY_SUN_CLEARANCE);
+    expect(orbitRadii).toEqual([...orbitRadii].sort((a, b) => a - b));
+    for (let index = 0; index < orbitRadii.length - 1; index += 1) {
+      expect(orbitRadii[index + 1] - orbitRadii[index]).toBeCloseTo(
+        1.6 * (planetRadii[index] + planetRadii[index + 1]) +
+          ORRERY_PLANET_CLEARANCE,
+        12,
+      );
     }
+    expect(() => orbitRadiiForPlanetRadii([1, Number.NaN])).toThrow(
+      RangeError,
+    );
   });
 
   it("keeps adjacent maximum-size planet surfaces physically separated", () => {
-    expect(ORRERY_RING_SPACING).toBeGreaterThanOrEqual(
-      ORRERY_MAX_RADIUS * 2 + ORRERY_PLANET_CLEARANCE,
+    const planetRadii = Array.from(
+      { length: ORRERY_PLANET_COUNT },
+      () => ORRERY_MAX_RADIUS,
     );
-    for (let rank = 1; rank < ORRERY_PLANET_COUNT; rank += 1) {
-      expect(orbitRadiusForRank(rank + 1) - orbitRadiusForRank(rank)).toBeCloseTo(
-        ORRERY_RING_SPACING,
-        12,
+    const orbitRadii = orbitRadiiForPlanetRadii(planetRadii);
+    for (let index = 0; index < orbitRadii.length - 1; index += 1) {
+      expect(orbitRadii[index + 1] - orbitRadii[index]).toBeGreaterThanOrEqual(
+        planetRadii[index] +
+          planetRadii[index + 1] +
+          ORRERY_PLANET_CLEARANCE,
       );
     }
   });
