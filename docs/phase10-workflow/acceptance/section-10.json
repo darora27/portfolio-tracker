@@ -1,0 +1,1738 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "section": "§10",
+  "spec_doc": "docs/phase10-workflow/specs/section-10.md",
+  "candidate_sha": null,
+  "criteria": [
+    {
+      "id": "DEF-01",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Trails render behind the planet for both orbital directions: the geometry sweep sign is flipped (the direction token is unchanged), asserted from the scene model for clockwise and counterclockwise fixtures and visible in a 1440x900 still.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-02",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Brand marks render with correct chirality on the rendered sphere for all eight worlds, proven by a chirality assertion added to the sphere-strip capture, not by eye.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
+        "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-03",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "A holding whose weekly magnitude is at or below the 0.2% clamp floor still renders a visible trail, at minimum arc in the flat token #e3b65c. Rendering nothing is a failure.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-04",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Every asteroid-belt holding has a visible body at OVERVIEW and is activatable by pointer and keyboard. The root cause is investigated and recorded rather than worked around; adding an invisible hit plane that makes empty space clickable is not an acceptable fix.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-05",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "The sun is activatable by pointer and keyboard from every camera state including fully zoomed out. Spec section 0.1 records that the sun is already in pickTargets, so the recorded root cause must explain the observed failure.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-06",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "The unexplained orange shadow reported in the scene is root-caused, named in the evidence README, and removed.",
+      "verifier": {
+        "kind": "visual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-07",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "The sun does not occlude ASML during rotation at the close camera, re-verified after the sun rescale, which makes the risk worse before it makes it better.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/approach-asml-1440x900.png",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-08",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Zooming out to the sector map presents an in-scene explanation of what the sector map is, without requiring a click, present in the semantic DOM. One of D2's three closing requirements.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/sector-map-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-09",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Every moon and satellite has a working destination reachable by pointer and keyboard, and its encoded readout is present as text.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "DEF-10",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "The planet-detail panel is at least 40% of the viewport with a 560px minimum, the planet is shrunk and moved left, body text is 15px, the ID-plate number is 64px, bay labels are at least 11px, and the 60-word budget still holds.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-01",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Every planet is identifiable at OVERVIEW without hovering; all eight labels are legible simultaneously at 1440x900.",
+      "verifier": {
+        "kind": "visual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-02",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "Belt bodies, moons, satellites and the sun are activatable by pointer AND keyboard from every camera state, each with a visible focus indicator.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-03",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Radar rings and blips click through to their holding: the manifest row expands in place into a detail card, and Enter or double-click opens the full planet view. Both paths work from the keyboard.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png",
+        "docs/phase10-baseline/section-10/after/radar-detail-card-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-04",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Every bay renders the question it answers and has a working destination per spec section 7.6. A bay that answers nothing is deleted, not decorated. One of D2's three closing requirements.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/mission-control-manifest-1440x900.png",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-05",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "Brand-first entry: the planet view arrives with the nearest carved capital facing the camera, then resumes decorative spin. The phase is still set under reduced motion; only the transition is not animated.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-06",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Axial spin is decorative only: prograde, seeded 80-140s periods, with no dependence on dayReturn. Moons orbit at approximately 40s periods and have no axial spin. axialSpinForDayReturn is deleted, not retuned.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts src/lib/observatory/orrery.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-07",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "The encoding ledger, Systems Manual and fallback prose no longer list spin, while day return is still present in the hover chip, the manifest, the teletype and the fallback text. The freed channel is banked; nothing takes it.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/SystemsManual.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-08",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "Every camera state (OVERVIEW, APPROACH, COMMAND, SECTOR) is one gesture - Escape or empty-space double-click - from OVERVIEW.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-09",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "The radar sweep's period equals the data-refresh interval, and that relationship is stated in the Systems Manual, so the sweep honestly encodes staleness.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-10",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "Mission Control's word budget holds: the far-left prose column is deleted, nameplates are at most 2 words, no sentence appears outside the teletype, and headlines wrap once.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/mission-control-manifest-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-11",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "Empty states render without throwing: no moon, no comet and an empty belt are all valid frames.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-12",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "A texture, news or quote source failure degrades gracefully - deterministic shader art for an unloaded map, no moon and a NO TRANSMISSIONS line for absent news - and never blanks the scene or blocks Mission Control.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/public-news.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FIN-01",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Every visual channel introduced or changed by section 10 encodes one real computed number and is named in the Systems Manual: trail lightness and arc from weekly magnitude, radar ring colour from that holding's week, blip size from weight, aurora from the weekly series, wisp hue from health sign, sweep period from refresh interval.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/SystemsManual.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FIN-02",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "Market-relative readings derive from TWR over the same period, never from simple return. Any since-purchase number stays labelled SIMPLE and is never placed beside a benchmark measured from a different start date.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FIN-03",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "The aurora re-encodes the weekly series the SCOPE already draws, in percent magnitudes only. No dollar quantity reaches it.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FIN-04",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "rampForWeekly consumes the real clamped weekly magnitude (0.2%-12%) and returns exactly #63ef98 and #ff665f at t = 0.5, so continuity with every prior screenshot is preserved.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/universe-palette.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FIN-05",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Unavailable values render an em dash with the reason reachable, never 0.0% and never a fabricated figure.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-01",
+      "dimension": "visual",
+      "risk": "critical",
+      "description": "Each of the eight worlds' equatorial-band mean relative luminance sits in [0.16, 0.55], asserted from the live sphere-strip render rather than from the source map, because the render includes lighting.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt",
+        "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-02",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Marks read as carved into the terrain - sharing its lighting and grain, embossed into the normal map, edge-eroded - at three capitals 120 degrees apart within +/-18 degrees latitude, with at least one instance facing the camera within 60 degrees at all times.",
+      "verifier": {
+        "kind": "visual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
+        "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-03",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "The sun is the largest body in the scene at every camera state, with sunRadius = max(2.4, 1.25 x largest planet radius) derived in the scene model and never hard-coded.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-04",
+      "dimension": "visual",
+      "risk": "critical",
+      "description": "Trails carry direction and magnitude in a single still frame at 1440x900: arc between 36 and 64 degrees, ramp lightness for magnitude, and a fixed 12% white-hot head acting as a calibration reference.",
+      "verifier": {
+        "kind": "visual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png",
+        "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-05",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Both signal ramps ship with the shipped hexes as exact midpoints, monotonic luminance along each ramp, and dark ends floored at least 3:1 against the void #020706 (computed 3.80 gain / 3.08 loss).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/universe-palette.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-06",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "The starfield is a population, not a pattern: magnitude distribution of roughly 70% 1px / 25% 2px / 4% 3px, gaussian clustering over a uniform floor, 4-point diffraction spikes on the brightest twelve, and 1.8x density inside the aurora band.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-07",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Orbit rings carry vertex-alpha falloff from about 0.50 in the arc nearest their planet to about 0.10 at the far side, and stay slate. No per-holding hue appears in the 3D scene.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-08",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Mission Control has one dominant bay (PLOT at approximately 55%, full height, left), no two bays the same size, deliberately unequal gutters, and a type scale spanning 64 -> 15 -> 11px with the day number at 64px.",
+      "verifier": {
+        "kind": "visual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-09",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "The material split is visible: black-glass instruments with CRT-curved bezels versus parchment LOG and BRIEFING (#f0e2c4 paper, #2b1a10 ink), with the unread prose column deleted rather than shrunk.",
+      "verifier": {
+        "kind": "visual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/mission-control-log-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-10",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Radar rings take their holding's signal-ramp colour at its current week value, each with a small ticker label at the ring's outer edge, and blip size is proportional to weight.",
+      "verifier": {
+        "kind": "visual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-11",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Chrome colour is constant across health states: forced-negative and forced-positive health fixtures produce identical chrome tokens, with only the plot and scope trace tinting.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-12",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "1440x900 evidence exists for every named surface: OVERVIEW, planet detail, each Mission Control bay, the sector map, the sun docking state, and the radar click-through detail card. Section 9's stale overview capture is not a section 10 baseline.",
+      "verifier": {
+        "kind": "visual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-13",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "The aurora renders as an upper-sky chord whose nearest screen-space approach to the sun's disc is at least 1.2 sun radii, at alpha no greater than 0.40. The void and nebula caps are unchanged.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-14",
+      "dimension": "visual",
+      "risk": "low",
+      "description": "The prism cursor exhaust renders with length proportional to pointer speed and is fully disabled under reduced motion. It is the one object in section 10 permitted to encode no data, and it is the designated tail if the section runs out of room.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "MOB-01",
+      "dimension": "mobile",
+      "risk": "critical",
+      "description": "canvas count is 0 at 390px and 320px, with no horizontal overflow (scrollWidth === clientWidth) and no target under 44x44 CSS pixels, re-verified live rather than assumed.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/mobile/share-390x844.png",
+        "docs/phase10-baseline/section-10/mobile/share-320x844.png",
+        "docs/phase10-baseline/section-10/raw-fallback-output.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "MOB-02",
+      "dimension": "mobile",
+      "risk": "medium",
+      "description": "The fallback's structure is unchanged and now inherits the palette through --universe-* custom properties rather than duplicated hex literals.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/observatory-fallback.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "MOB-03",
+      "dimension": "mobile",
+      "risk": "high",
+      "description": "Every new semantic control and explanation added by section 10 appears in the 390px fallback as ordinary list content in reading order.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/mobile/share-390x844.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-01",
+      "dimension": "accessibility",
+      "risk": "critical",
+      "description": "The semantic DOM remains the accessible source of truth: every encoding introduced or changed by section 10 exists as text in the DOM.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-02",
+      "dimension": "accessibility",
+      "risk": "critical",
+      "description": "Trail magnitude is carried by arc, lightness AND text. No encoding lives only in colour, motion or glow.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-03",
+      "dimension": "accessibility",
+      "risk": "high",
+      "description": "Radar rings, belt bodies, moons, satellites and the sun are real focusable controls in a deterministic, documented order, each with a visible focus ring. The keyboard walk-through is recorded.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-04",
+      "dimension": "accessibility",
+      "risk": "critical",
+      "description": "Contrast of every new or changed text token is verified by computed WCAG ratio from source tokens - including the parchment pair (13.02:1 expected), Chakra Petch nameplates, the bay question lines and the 64px readout - at 4.5:1 for normal text and 3:1 for large text. Never by eye.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/observatory-contrast.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-05",
+      "dimension": "accessibility",
+      "risk": "high",
+      "description": "prefers-reduced-motion disables the sweep, twinkle, cursor exhaust, brand-first phase animation and warp streak, while preserving every encoding those channels carry. Asserted by test, not only by screenshot.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/observatory-fallback.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-06",
+      "dimension": "accessibility",
+      "risk": "high",
+      "description": "The radar canvas stays aria-hidden, MANIFEST remains its complete text equivalent, and the click-through is reachable from the MANIFEST rows by keyboard rather than pointer-only.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-07",
+      "dimension": "accessibility",
+      "risk": "medium",
+      "description": "Under reduced motion a timestamp stamp replaces the radar sweep, so staleness is still conveyed.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlContent.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-08",
+      "dimension": "accessibility",
+      "risk": "high",
+      "description": "Mission Control keeps its dialog semantics: role=dialog, aria-modal, labelled by its title, Escape closes, and focus returns to the sun control.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControl.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FWL-01",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "Firewall outward direction: every cabinet, glass and ambient token, and every one of 64 samples of rampAurora, rampEmber and rampIce, at chroma above 0.30 falls outside hue 125-165 and 345-20 degrees. Matter and paper are exempt but asserted anyway with the result recorded.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/universe-palette.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FWL-02",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "Ambient washes are hue-exempt but alpha-capped at 0.18, with the aurora's 0.40 cap as the single declared exception, named as an exception in the test's message.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/universe-palette.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FWL-03",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "Firewall inward direction: every one of 64 samples of rampGain and rampLoss stays within 10 degrees of its anchor (143 gain / 3 loss), with monotonic luminance and dark ends at least 3:1 on the void.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/universe-palette.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FWL-04",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "All five ramps are transit-tested at 64 samples and the results are asserted, not merely printed.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/universe-palette.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "FWL-05",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "universe-palette.ts is the single source of colour truth: no hex literal equal to a palette token value appears in scene-model.ts, OrreryScene.tsx, orrery.module.css or MissionControlBays/*. This guard asserts source structure, not rendered behaviour, and says so in its description.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/universe-palette.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-01",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "Every new or changed encoding function is pure, deterministic, clamped and unit-tested against hand-computed fixtures including clamp boundaries and the null case: rampForWeekly, trail arc length, ring falloff alpha, star magnitude bucket, spin period, moon orbit period, aurora sample, wisp hue, radar ring colour, blip radius, sun radius.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts src/lib/observatory/universe-palette.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-02",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "No new expect(source).toContain(...) or file-text toMatch is added as coverage for rendered behaviour. The FWL-05 hex guard is the one declared structural exception and identifies itself as such.",
+      "verifier": {
+        "kind": "manual",
+        "command": null
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-03",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "The trail sampler asserts hue lock within 10 degrees, deltaE*ab no greater than 8 against the payload-derived expectation from rampForWeekly, and ordering across same-direction holdings - for every holding in the fixture, not a sampled subset. Literal-hex baselines survive only for flat, comet and sun tokens.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt",
+        "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-04",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "The sphere-strip capture measures per-world equatorial-band mean luminance AND asserts mark chirality, so the mirrored-mark defect cannot regress silently.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt",
+        "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-05",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "Rendered behaviour is asserted from the scene model, the DOM or live pixels - specifically sun radius, trail colour across both signs and both clamp boundaries, trail arc range, trail-behind geometry, the fixed 12% head, the flat-token sub-clamp trail, ring alpha endpoints, star buckets, aurora chord clearance, wisp hue and spin period independence from dayReturn.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-06",
+      "dimension": "tests",
+      "risk": "medium",
+      "description": "Every live measurement script is retained in the repository with its raw output committed.",
+      "verifier": {
+        "kind": "manual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/scripts/",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-07",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "planet-textures.test.ts's byte ceiling reads 30_000_000 (structure otherwise unchanged), and all eight worlds meet the unchanged luminanceStdDev >= 0.1 floor - verified after regeneration, not assumed, because mean luminance and standard deviation move independently.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/planet-textures.test.ts"
+      },
+      "required_artifacts": [
+        "public/textures/planets/texture-manifest.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-08",
+      "dimension": "tests",
+      "risk": "medium",
+      "description": "npx tsc --noEmit exits 0.",
+      "verifier": {
+        "kind": "command",
+        "command": "npx tsc --noEmit"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-01",
+      "dimension": "build",
+      "risk": "critical",
+      "description": "npm test is green with zero failures before the implementation commit, closing section 9's inherited red (the 15MB byte cap and the INTC/CBRS luminanceStdDev floor). The section 9 owner exception that permitted a red main ends here and does not generalize.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-02",
+      "dimension": "build",
+      "risk": "critical",
+      "description": "npm run build passes.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm run build"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-03",
+      "dimension": "build",
+      "risk": "high",
+      "description": "The texture payload is measured at each regeneration gate against the 30MB ceiling, every measured total is recorded, and reaching ladder step 4 is written to PHASE10_PROGRESS.md rather than absorbed silently. If no ETC1S encoder can be obtained, the exact command output is recorded verbatim.",
+      "verifier": {
+        "kind": "manual",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/texture-byte-count.txt",
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-04",
+      "dimension": "build",
+      "risk": "high",
+      "description": "The route-owned long task stays under 50ms across five fresh contexts at 1440x900 with CPU 2x throttling, with raw per-run output committed. Not baseline-subtracted, not redefined. No post-processing pass is added.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/raw-long-task-output.txt",
+        "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-05",
+      "dimension": "build",
+      "risk": "medium",
+      "description": "Textures still stream after first paint; the first contentful frame does not block on any map, and a world with an unloaded map renders its deterministic shader art rather than black.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-10/README.md"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-06",
+      "dimension": "build",
+      "risk": "high",
+      "description": "Chakra Petch is self-hosted and vendored as a static asset with its OFL licence committed. No next/font/google change and no new build-time network dependency; section 16 owns the local-font migration.",
+      "verifier": {
+        "kind": "manual",
+        "command": null
+      },
+      "required_artifacts": [
+        "public/fonts/"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-07",
+      "dimension": "build",
+      "risk": "high",
+      "description": "No new production dependency. Any encoder added for the byte ladder is a devDependency, and a vendored Basis transcoder is a static asset rather than a runtime package import.",
+      "verifier": {
+        "kind": "command",
+        "command": "git diff --stat HEAD -- package.json package-lock.json"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "PRV-01",
+      "dimension": "privacy",
+      "risk": "critical",
+      "description": "/share stays public and read-only with zero dollar amounts and zero owner-only fields in HTML, RSC payload and client bundle - including in every new encoded channel: trail lightness, radar ring colour, blip size, aurora and wisps.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/app/(depth-pull)/share/page.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "PRV-02",
+      "dimension": "privacy",
+      "risk": "critical",
+      "description": "The radar click-through detail card shows nothing the public manifest does not already show.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/app/(depth-pull)/share/page.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "PRV-03",
+      "dimension": "privacy",
+      "risk": "high",
+      "description": "The existing canary tests continue to pass and are extended to the radar detail card and the aurora payload.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/app/(depth-pull)/share/page.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "PRV-04",
+      "dimension": "privacy",
+      "risk": "critical",
+      "description": "The owner gate on / is retained - the owner Mission Control branch checks both authenticated and ownerGate - and a valid owner session cookie presented to /share still yields public content only. This is the section 8 severe regression; its regression test must still pass.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/app/(depth-pull)/share/page.test.tsx"
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "PRV-05",
+      "dimension": "privacy",
+      "risk": "critical",
+      "description": "No .env* contents are read, printed, edited, staged or committed, and vercel --prod is never run.",
+      "verifier": {
+        "kind": "manual",
+        "command": null
+      },
+      "required_artifacts": [],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    }
+  ]
+}
