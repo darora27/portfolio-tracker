@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "§10",
   "spec_doc": "docs/phase10-workflow/specs/section-10.md",
-  "candidate_sha": null,
+  "candidate_sha": "457f90f6dff6c4e64bde22cee0c9725b32ce0c36",
   "criteria": [
     {
       "id": "DEF-01",
@@ -30,7 +30,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -59,7 +59,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -86,7 +86,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -115,7 +115,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -144,7 +144,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -172,7 +172,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -201,7 +201,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -227,9 +227,11 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-08 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/surfaces/sector-map-1440x900.png"
+        ],
+        "notes": "The sector map states what it is in-scene without a click: 'SECTOR CHART / LOCAL SECTOR' plus the solid-core / hollow-core / public-percent legend, present in the semantic DOM. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -255,9 +257,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-09 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-pointer-targets-BHV-02.txt",
+          "docs/phase10-workflow/reviews/section-10-review.md"
+        ],
+        "notes": "F3. Same root cause as F2. Moons pass on pointer and keyboard; satellites pass on keyboard only (Enter -> ?focus=portfolio&camera=command&station=hazard confirmed) and fail on pointer. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -284,7 +289,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -311,7 +316,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -337,9 +342,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-02 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-pointer-targets-BHV-02.txt",
+          "docs/phase10-workflow/reviews/section-10-review.md"
+        ],
+        "notes": "F2. Satellites are not pointer-activatable. Aiming at the satellite's own reported position hits `portfolio` 60/60; a 2,500-point full-viewport scan never acquires any satellite:* target. Root cause is recorded in the candidate's own README: the DEF-05 fix gave both corona glow meshes the portfolio target, and after the §5.1 sun rescale the satellites orbit inside that footprint (HAZARD at x=667 vs sun centre x=720). Keyboard path unaffected. Planets, belt bodies, moons and the sun all acquire. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -366,9 +374,11 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+        ],
+        "notes": "Radar ring expands in place by keyboard; Enter opens ?holding=ASML&camera=approach. Both paths keyboard-reachable. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -397,7 +407,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -424,7 +434,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -449,7 +459,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -474,7 +484,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -500,9 +510,11 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-08 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+        ],
+        "notes": "Escape returns to /share from both the belt and Mission Control, with focusReturnedToSun true. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -529,7 +541,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -556,7 +568,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -581,7 +593,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -608,7 +620,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -635,7 +647,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -660,7 +672,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -685,7 +697,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -710,7 +722,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -735,7 +747,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -762,9 +774,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-luminance-VIS-01.txt",
+          "docs/phase10-workflow/reviews/section-10-review.md"
+        ],
+        "notes": "F1. capture-live-sphere-strip.mjs aborts: ASML 0.0754 outside [0.16,0.55]. Full table: 7 of 8 worlds outside the window (only GOOG 0.3423 passes); INTC regressed 0.0428 -> 0.0164 against §9's committed strip measured with the identical formula. Stable over 20s, real GPU (ANGLE/Apple M2), all 24 .ktx2 HTTP 200, zero console errors. If the window's provenance is the blocker, route it to Devan; do not move the floor. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -793,7 +808,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -820,7 +835,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -849,7 +864,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -874,7 +889,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -901,7 +916,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -929,7 +944,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -956,7 +971,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -983,7 +998,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1010,7 +1025,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1035,7 +1050,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1061,9 +1076,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-12 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/surfaces/",
+          "docs/phase10-workflow/reviews/section-10-review.md"
+        ],
+        "notes": "F6. after/ and mobile/ were both empty in the candidate: no VIS-12 surface had evidence. capture-live-evidence.mjs cannot produce any because it aborts on F2 before its first screenshot. This review captured the set by patching only the satellite block; further defects visible in it (planet-detail header clipped off-viewport, LOG chip dark-on-dark and a trade row clipped, every bay question rendered twice, empty MANIFEST table under the PLOT rail) are recorded as evidence, not as new criteria. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1090,7 +1108,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1117,7 +1135,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1145,9 +1163,11 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for MOB-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-mobile-MOB-01.txt"
+        ],
+        "notes": "Live at 390x844 and 320x844: canvas count 0, scrollWidth === clientWidth, 27 focusable targets, minimum target dimension 44px, zero undersized. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1172,7 +1192,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1200,7 +1220,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1225,7 +1245,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1250,7 +1270,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1277,9 +1297,11 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+        ],
+        "notes": "28 scene controls in a deterministic tab order (sun, 8 planets, 8 moons, 5 belt bodies, 3 satellites, sector, belt, manual); every entry focusVisible true with a 2px solid outline and >=44px target. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1304,7 +1326,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1329,9 +1351,11 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+        ],
+        "notes": "Under prefers-reduced-motion: canvasCount 0, runningAnimations [], and moon/satellite/nebula/comet encodings all preserved. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1357,9 +1381,11 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-06 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+        ],
+        "notes": "Radar canvas stays aria-hidden and the detail card expands from the MANIFEST rows by keyboard (manifestExpandedByKeyboard true). — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1386,7 +1412,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1411,7 +1437,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1436,7 +1462,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1461,7 +1487,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1486,7 +1512,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1511,7 +1537,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1536,7 +1562,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1561,7 +1587,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1585,7 +1611,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1612,9 +1638,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for TST-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-trail-sampler-TST-03.txt",
+          "docs/phase10-workflow/reviews/section-10-review.md"
+        ],
+        "notes": "F4. sample-live-rgb.mjs aborts (ASML deltaE 31.617 > 8). All three assertions fail: deltaE > 8 on 7 of 8 holdings (max 47.04 IBM); IBM hue lock fails at 22.88deg off the 143deg anchor with chroma 0.067; 2 ordering violations (gain CBRS 0.355 < NBIS 0.402; loss ASML 0.517 > MSFT 0.379). Sign->hue mapping itself holds, so this is not a D1 recurrence. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1643,7 +1672,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1668,7 +1697,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1695,7 +1724,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1722,7 +1751,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1747,7 +1776,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1770,9 +1799,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-luminance-VIS-01.txt"
+        ],
+        "notes": "Independently re-run: npm test green, 99 files / 525 of 525 tests. §9's inherited red is closed. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1795,9 +1826,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-luminance-VIS-01.txt"
+        ],
+        "notes": "Independently re-run: npm run build passed (Next.js 16.2.11, 18 static page tasks, route list unchanged, /share 200 + Mission Control manifest smoke). — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1824,7 +1857,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1851,9 +1884,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BLD-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review/raw-long-tasks-BLD-04.txt",
+          "docs/phase10-workflow/reviews/section-10-review.md"
+        ],
+        "notes": "F5. Max route-owned long task 61ms; all five fresh 1440x900 CPU-2x contexts breach the 50ms ceiling (61/57/58/58/58). §9 measured maximumMs 0 on all five runs with a byte-identical script, so this is a §10 regression, not inherited. §1's exception was explicitly non-precedential. Not baseline-subtracted. — reviewed by claude-code/opus-5"
       }
     },
     {
@@ -1880,7 +1916,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1906,7 +1942,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1931,7 +1967,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1956,7 +1992,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1981,7 +2017,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2006,7 +2042,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2031,7 +2067,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2054,7 +2090,7 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [],
-        "notes": null
+        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
       }
     }
   ]

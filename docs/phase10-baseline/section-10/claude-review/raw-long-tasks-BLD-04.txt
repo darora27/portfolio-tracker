@@ -1,0 +1,16 @@
+Phase 10 §10 review — Claude Lead, 2026-07-28, candidate 457f90f
+--- retained verifier: measure-long-tasks.mjs (BLD-04), 5 fresh contexts, 1440x900, CPU 2x ---
+{"run":1,"maximumMs":61,"entries":[{"duration":59,"startTime":524.9000000059605,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]},{"duration":61,"startTime":584.5,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":2,"maximumMs":57,"entries":[{"duration":57,"startTime":644.2000000178814,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]},{"duration":52,"startTime":701.4000000059605,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":3,"maximumMs":58,"entries":[{"duration":58,"startTime":599.9000000059605,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":4,"maximumMs":58,"entries":[{"duration":58,"startTime":565,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]},{"duration":52,"startTime":623.8999999761581,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":5,"maximumMs":58,"entries":[{"duration":58,"startTime":871.3000000119209,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]},{"duration":53,"startTime":930.1999999880791,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"viewport":"1440x900","cpuThrottle":2,"freshContexts":5,"maximumMs":61}
+
+--- §9 accepted baseline for comparison (byte-identical script, docs/phase10-baseline/section-9/raw-long-task-output.txt) ---
+{"run":1,"maximumMs":0,"entries":[]}
+{"run":2,"maximumMs":0,"entries":[]}
+{"run":3,"maximumMs":0,"entries":[]}
+{"run":4,"maximumMs":0,"entries":[]}
+{"run":5,"maximumMs":0,"entries":[]}
+{"viewport":"1440x900","cpuThrottle":2,"freshContexts":5,"maximumMs":0}

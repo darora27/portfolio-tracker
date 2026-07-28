@@ -1,0 +1,40 @@
+Phase 10 §10 review — Claude Lead independent live run, 2026-07-28, candidate 457f90f
+Rig: Playwright chromium headless, ANGLE (Apple, Apple M2, OpenGL 4.1), next start production build, 1440x900
+
+--- retained verifier: capture-live-sphere-strip.mjs (VIS-01 / TST-04) ---
+          ^
+
+Error: ASML live equatorial luminance 0.0762 outside [0.16, 0.55]
+    at file:///Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs:104:11
+
+Node.js v24.18.0
+
+--- full eight-world table, same formula, non-throwing ---
+┌─────────┬────────┬──────────┬────────┬────────────────┬──────────┐
+│ (index) │ ticker │ radiusPx │ tilePx │ equatorialMean │ inWindow │
+├─────────┼────────┼──────────┼────────┼────────────────┼──────────┤
+│ 0       │ 'ASML' │ 32.48    │ 72     │ 0.0765         │ false    │
+│ 1       │ 'GOOG' │ 26.88    │ 60     │ 0.3423         │ true     │
+│ 2       │ 'COST' │ 27.18    │ 60     │ 0.0779         │ false    │
+│ 3       │ 'MSFT' │ 15.31    │ 34     │ 0.0763         │ false    │
+│ 4       │ 'IBM'  │ 19.16    │ 43     │ 0.0169         │ false    │
+│ 5       │ 'INTC' │ 21.86    │ 49     │ 0.0164         │ false    │
+│ 6       │ 'CBRS' │ 12.85    │ 29     │ 0.0631         │ false    │
+│ 7       │ 'NBIS' │ 27.86    │ 62     │ 0.0497         │ false    │
+└─────────┴────────┴──────────┴────────┴────────────────┴──────────┘
+FAIL: ASML=0.0765 COST=0.0779 MSFT=0.0763 IBM=0.0169 INTC=0.0164 CBRS=0.0631 NBIS=0.0497
+
+--- calibration: §9 committed strip measured with the identical formula ---
+strip: 256x32 tiles: 8
+┌─────────┬──────┬────────┬────────────────┬──────────┐
+│ (index) │ tile │ ticker │ equatorialMean │ inWindow │
+├─────────┼──────┼────────┼────────────────┼──────────┤
+│ 0       │ 0    │ 'ASML' │ 0.105          │ false    │
+│ 1       │ 1    │ 'GOOG' │ 0.3842         │ true     │
+│ 2       │ 2    │ 'COST' │ 0.013          │ false    │
+│ 3       │ 3    │ 'MSFT' │ 0.0386         │ false    │
+│ 4       │ 4    │ 'INTC' │ 0.0428         │ false    │
+│ 5       │ 5    │ 'IBM'  │ 0.0026         │ false    │
+│ 6       │ 6    │ 'CBRS' │ 0.0215         │ false    │
+│ 7       │ 7    │ 'NBIS' │ 0.01           │ false    │
+└─────────┴──────┴────────┴────────────────┴──────────┘

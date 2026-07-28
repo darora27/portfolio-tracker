@@ -1,0 +1,11 @@
+Phase 10 §10 review — Claude Lead, 2026-07-28, candidate 457f90f
+--- satellite pointer acquisition probe (BHV-02 / DEF-09) ---
+satellite pointer acquired: false
+targets hit while aiming at satellite: {"portfolio":60}
+moon pointer acquired: true {"moon:ASML":1}
+=== focusable scene controls ===
+
+--- full-viewport pointer scan at 22px, distinct targets acquired ---
+belt label elements found: [{"t":"CRM","x":1286.546875,"y":299.015625},{"t":"ORCL","x":849.40625,"y":749.90625},{"t":"SPCX","x":100.421875,"y":374.34375},{"t":"KYMR","x":596,"y":130.5625},{"t":"MEI","x":1184.78125,"y":225.71875}]
+distinct pointer targets acquired in full-viewport scan: ["ASML","CBRS","COST","GOOG","IBM","INTC","MSFT","NBIS","belt:CRM","belt:KYMR","belt:MEI","belt:ORCL","belt:SPCX","portfolio"]
+belt bodies acquired by pointer: {}
