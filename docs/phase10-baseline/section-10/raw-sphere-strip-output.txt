@@ -7,5 +7,7 @@ No live equatorial luminance or rendered chirality result is claimed.
 Retained verifier: docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs
 The script asserts [0.16, 0.55] live equatorial mean and normal-vs-mirrored mark-profile correlation for all eight worlds.
 Non-live texture proxy: npm test -- --run src/lib/observatory/planet-textures.test.ts — PASS.
-Calibration uses per-world linear shader exposure without changing the accepted
-floor or the source texture statistics; exact rationale is in README.md.
+The generator's one-stage alpha join had emitted a three-channel rectangular
+terrain patch, so pre-flopping the SVG never reached the shipped maps. Tinting
+and alpha joining are now separate stages; all 24 maps changed, the shipped
+total is 23,075,805 bytes, and every luminanceStdDev remains >= 0.1.

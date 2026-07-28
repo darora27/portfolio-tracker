@@ -4,12 +4,11 @@ browser selection: No browser is available
 prescribed browser discovery: []
 standalone retained Playwright fallback:
   production server: http://127.0.0.1:3131/share — ready
-  attempted scripts:
-    measure-live-luminance-table.mjs
+  round-2 remediation scripts attempted against the rebuilt candidate:
     sample-live-rgb.mjs
-    probe-satellite-acquisition.mjs
+    capture-live-sphere-strip.mjs
     measure-long-tasks.mjs
+    capture-live-evidence.mjs
   result: Chromium was blocked before navigation by the CLI sandbox
   exact fatal: bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permission denied (1100)
-  revisions attempted: chromium_headless_shell-1148 and chromium_headless_shell-1234
 result: live browser/WebGL evidence deferred_to_reviewer; no rendered pass claimed

@@ -58,7 +58,10 @@ export function ManifestBay({
                       [contribution < 0 ? "right" : "left"]: "50%",
                     }}
                   />
-                  <b>{contribution >= 0 ? "+" : ""}{(contribution * 100).toFixed(1)}%</b>
+                  <b data-sign={contribution < 0 ? "negative" : "positive"}>
+                    {contribution >= 0 ? "+" : ""}
+                    {(contribution * 100).toFixed(1)}%
+                  </b>
                 </span>
               </Link>
             </li>

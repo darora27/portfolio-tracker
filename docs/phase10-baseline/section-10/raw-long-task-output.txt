@@ -6,5 +6,8 @@ bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permiss
 No PerformanceObserver long-task result is claimed.
 Retained verifier: docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs
 Required matrix remains five fresh 1440x900 contexts at CPU 2x with an unmodified 50ms ceiling.
-The raw zstd KTX2 parse/decode path now runs in planet-texture.worker.ts after
-two animation frames; the committed maps and first-paint fallback are unchanged.
+The prior worker removed fetch/parse/zstd decode from the main thread, but its
+three decoded maps were still bound as one batch. The next render therefore
+uploaded base, emissive, and normal together at the reviewer's observed
+~570-590ms point. The candidate now binds one map per animation frame, retaining
+the worker, shader-art first frame, unmodified 50ms gate, and no post-process.

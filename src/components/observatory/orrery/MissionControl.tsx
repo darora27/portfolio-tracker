@@ -152,7 +152,11 @@ export function MissionControl({
           <section className={styles.manifestInstrument}>
             <header>
               <b>MANIFEST</b>
-              <span className={styles.bayQuestion}>what do I own, at what weight</span>
+              {activePanel === "manifest" ? null : (
+                <span className={styles.bayQuestion}>
+                  what do I own, at what weight
+                </span>
+              )}
             </header>
             <ol className={styles.radarManifest}>
               {holdings.map((holding) => (

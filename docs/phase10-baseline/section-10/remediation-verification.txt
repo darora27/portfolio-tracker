@@ -1,36 +1,42 @@
-Phase 10 §10 remediation verification — 2026-07-28 — codex/gpt-5
+Phase 10 §10 remediation round-2 verification — 2026-07-28 — codex/gpt-5
 
 Deterministic gates
   npx tsc --noEmit
     PASS
   npm test
-    PASS — 99 test files / 526 tests
+    PASS — final binding run: 99 test files / 526 tests
+    Note — the immediately preceding full run had one unrelated transient
+    FirstVisitOrientation localStorage assertion failure; that unchanged test
+    passed in isolation and the final full rerun passed 526/526.
   npm run build
     PASS — Next.js 16.2.11 production build and /share smoke
 
-Focused remediation matrix
+Focused round-2 remediation matrix
   scene-model.test.ts
-    PASS — corona-specific hit priority, solid-sun priority, trail core
-    compositing, and per-world render exposure propagation
+    PASS — trail direction, ramp colour, arc, head, and flat-token invariants
   MissionControl.interaction.test.tsx
-    PASS — active LOG and PLOT questions each render once
+    PASS — active PLOT and MANIFEST questions each render exactly once
   MissionControlContent.test.tsx
     PASS — all bay questions and direct public destinations remain present
   planet-textures.test.ts
-    PASS — source texture statistics and 30 MB ceiling unchanged
-  production worker bundle
-    PASS — Turbopack emitted the module-worker bootstrap and bundled KTX parser
-    plus zstd decoder; raw TypeScript is not the executed worker entrypoint
+    PASS — 23,075,805 shipped bytes; all eight luminanceStdDev values >= 0.1
+  supplied-mark compositor
+    PASS — tinting and alpha join are separate stages; all 24 maps changed
+  production texture-upload staging
+    PASS — decoded base, emissive, and normal maps bind one per animation frame
 
 Browser gate
   In-app browser selection: No browser is available
   Discovery: []
   Retained Playwright probes: attempted against 127.0.0.1:3131/share
+    sample-live-rgb.mjs
+    capture-live-sphere-strip.mjs
+    measure-long-tasks.mjs
+    capture-live-evidence.mjs
   Chromium launch: BLOCKED before navigation
   Exact fatal:
     bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>:
     Permission denied (1100)
   Result:
-    All live WebGL, pixel, geometry, pointer, mobile, accessibility, fallback,
-    and long-task criteria remain deferred_to_reviewer. No rendered pass is
-    claimed by this file.
+    TST-03, DEF-02, BLD-04, VIS-12, and the newly reachable VIS-04 live check
+    remain deferred_to_reviewer. No rendered pass is claimed by this file.

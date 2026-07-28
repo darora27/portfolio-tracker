@@ -5,13 +5,15 @@ zsh:2: command not found: basisu
 exit_status=127
 
 2048x1024 base / 1024x512 derived:
-  mapBytes=43,518,879
+  mapBytes=44,461,239
   result=over 30,000,000-byte ceiling
 
 1448x724 base / 724x362 derived:
-  mapBytes=22,550,455
-  measured shipped directory total=22,570,477
+  mapBytes=23,055,826
+  measured shipped directory total=23,075,805
   result=selected; below 30,000,000-byte ceiling
 
 Ladder step 4 was not reached.
 Source: public/textures/planets/texture-manifest.json
+Round-2 regeneration includes the corrected, pre-flopped supplied-mark alpha
+masks in base, emissive, and normal maps. — verified by codex/gpt-5

@@ -235,6 +235,7 @@ async function authoredBase(identity, width, height) {
   const markMetadata = await sharp(markAlpha).metadata();
   const markHeight = markMetadata.height;
   if (!markHeight) throw new Error(`${identity.ticker}: mark height missing`);
+  const markMask = await sharp(markAlpha).raw().toBuffer();
   const contrast = identity.contrast ?? { alpha: 1.08, beta: -8 };
   const terrain = await sharp(source)
     .resize(width, height, { fit: "fill", kernel: "lanczos3" })
@@ -248,7 +249,7 @@ async function authoredBase(identity, width, height) {
   const composites = [];
   for (const center of markCenters) {
     const left = Math.round(width * center - markWidth / 2);
-    const underlying = await sharp(terrain, {
+    const tintedTerrain = await sharp(terrain, {
       raw: { width, height, channels: 4 },
     })
       .extract({ left, top: markTop, width: markWidth, height: markHeight })
@@ -257,7 +258,14 @@ async function authoredBase(identity, width, height) {
       // reads as material treatment instead of a flat image stamp.
       .tint(identity.relightHex ?? identity.brandHex)
       .linear(1.15, 18)
-      .joinChannel(markAlpha)
+      .raw()
+      .toBuffer();
+    const underlying = await sharp(tintedTerrain, {
+      raw: { width: markWidth, height: markHeight, channels: 3 },
+    })
+      .joinChannel(markMask, {
+        raw: { width: markWidth, height: markHeight, channels: 1 },
+      })
       .png()
       .toBuffer();
     composites.push({ input: underlying, left, top: markTop, blend: "over" });

@@ -1316,8 +1316,23 @@
   text-align: center;
 }
 
+.bilateralBar b {
+  position: absolute;
+  inset-block: 0;
+  width: 50%;
+}
+
+.bilateralBar b[data-sign="negative"] {
+  right: 0;
+}
+
+.bilateralBar b[data-sign="positive"] {
+  left: 0;
+}
+
 .bilateralBar::after {
   position: absolute;
+  z-index: 1;
   top: 0;
   bottom: 0;
   left: 50%;
@@ -1327,6 +1342,7 @@
 
 .bilateralBar i {
   position: absolute;
+  z-index: 0;
   inset-block: 0;
   background: #5f9b71;
 }

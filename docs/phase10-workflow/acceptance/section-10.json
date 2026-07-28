@@ -54,7 +54,7 @@
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
           "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-02 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F3 round-2 remediation corrected the supplied-mark compositor: the one-stage Sharp pipeline emitted three channels and dropped the alpha mask, so pre-flopping never reached the KTX bytes. Tint and one-channel alpha join are now separate stages; all 24 maps changed, texture tests pass, and the 23,075,805-byte payload remains below 30 MB. The retained live chirality verifier was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so DEF-02 remains deferred_to_reviewer rather than passed. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -795,7 +795,7 @@
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
           "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "F1 remediated with per-world linear shader exposure calibrated from the reviewer's live linear-luminance table to approximately 0.20-0.22 for the seven dark worlds; GOOG remains unchanged. The accepted floor, hue and texture statistics are unchanged. Live remeasurement was attempted but Chromium was sandbox-blocked before navigation, so VIS-01 remains deferred_to_reviewer and no pixel pass is claimed. — recorded by codex/gpt-5"
+        "notes": "Round-2 mark-compositor remediation regenerated all 24 maps, so the prior live luminance result cannot be preserved as implementer evidence. The non-live texture gate passes with luminanceStdDev 0.103866-0.179004 and 23,075,805 shipped bytes. capture-live-sphere-strip.mjs was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so VIS-01 remains deferred_to_reviewer and no pixel pass is claimed. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "pass",
@@ -827,7 +827,7 @@
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
           "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-02 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "Round-2 compositor remediation now applies the supplied, pre-flopped silhouette as a real alpha mask before deriving emissive and normal maps; all 24 maps changed and deterministic texture gates pass. The retained live carved-mark verifier was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so VIS-02 remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -886,7 +886,7 @@
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F1 round-2 remediation makes the trail core a genuinely opaque Three.js pass and widens its overview ribbon while retaining the separate additive glow; the scene-model arc, ramp, direction and 12% head assertions pass. sample-live-rgb.mjs was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so the now-reachable live VIS-04 check remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "blocked",
@@ -1109,7 +1109,7 @@
           "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "F6's surfaced layout defects were remediated (bounded planet detail, farther/tangent camera, readable LOG chip, whole-row scroll, one bay question, no redundant PLOT MANIFEST). The retained capture was attempted, but Chromium was sandbox-blocked before navigation; after/ cannot truthfully be populated in this CLI, so VIS-12 remains deferred_to_reviewer. — recorded by codex/gpt-5"
+        "notes": "F4 round-2 remediation makes MANIFEST follow PLOT's active-question rule and places each CONTRIBUTION value in the half opposite its signed bar; the rendered-DOM integration test passes. capture-live-evidence.mjs was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so VIS-12 remains deferred_to_reviewer rather than self-passed. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1681,7 +1681,7 @@
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "F4 remediated at the render stage: the measurable 3px core is opaque normal blending and the 9px glow remains additive; the scene-model assertion passes. Live deltaE/hue/order sampling was attempted but Chromium was sandbox-blocked before navigation, so TST-03 remains deferred_to_reviewer. — recorded by codex/gpt-5"
+        "notes": "F1 round-2 remediation fixes the incomplete core treatment: the core now leaves Three.js's transparent queue and its overview ribbon is widened, while the atmospheric glow stays additive; focused scene-model and full tests pass. sample-live-rgb.mjs was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so deltaE, hue and ordering remain deferred_to_reviewer rather than claimed. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1792,10 +1792,10 @@
         "status": "pass",
         "evidence": [
           "npm test -- --run src/lib/observatory/planet-textures.test.ts",
-          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
+          "Round-2 remediation gate — PASS: npm test (99 files, 526 tests)",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "Verified by codex/gpt-5."
+        "notes": "Regenerated after the mark-compositor correction: 23,075,805 shipped bytes, 30,000,000-byte ceiling unchanged, and all eight luminanceStdDev values pass at 0.103866-0.179004. — verified by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1901,7 +1901,7 @@
           "docs/phase10-baseline/section-10/texture-byte-count.txt",
           "public/textures/planets/texture-manifest.json"
         ],
-        "notes": "Verified by codex/gpt-5."
+        "notes": "Both regeneration ladder measurements are retained: 44,461,239 map bytes at 2048x1024 (rejected) and 23,055,826 map bytes / 23,075,805 shipped bytes at 1448x724 (selected). Ladder step 4 was not reached. — verified by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -1931,7 +1931,7 @@
           "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs",
           "docs/phase10-baseline/section-10/raw-long-task-output.txt"
         ],
-        "notes": "F5 root cause remediated: raw KTX2 fetch/parse/zstd decode now runs in a bundled module worker after first paint and transfers decoded buffers to the UI thread; production build confirms the worker bundle and no post-processing was added. The five-context PerformanceObserver matrix was attempted but Chromium was sandbox-blocked before navigation, so BLD-04 remains deferred_to_reviewer. — recorded by codex/gpt-5"
+        "notes": "F2 round-2 attribution: the worker removed fetch/parse/zstd decode, but the first planet's decoded base, emissive and normal maps were still bound together, making the next render upload all three at the reviewer's ~570-590ms task point. The candidate binds one map per animation frame, preserving first-paint shader art, the unmodified absolute 50ms gate, and no post-process. The five-context verifier was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so BLD-04 remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1962,7 +1962,7 @@
           "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/diagnose-live-scene.mjs"
         ],
-        "notes": "Texture work remains scheduled after two animation frames; deterministic shader art is bound before the module worker begins fetching and decoding maps. Production build passes. Live first-paint/network sequencing remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
+        "notes": "Texture work remains scheduled after two animation frames; deterministic shader art is bound before the module worker begins fetching/decoding, and decoded base, emissive and normal maps now bind one per subsequent frame. The production build passes. Live first-paint/network sequencing was attempted but remains deferred because in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100). — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",

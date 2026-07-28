@@ -802,12 +802,12 @@ export default function OrreryScene({
           orbitRadius,
           trailDescriptor.arcRadians,
           trailDescriptor.direction,
-          pass.id === "glow" ? 0.16 : 0.052,
+          pass.id === "glow" ? 0.16 : 0.09,
         );
         trailGeometries.push(geometry);
         const material = new MeshBasicMaterial({
           color: trailDescriptor.color,
-          transparent: true,
+          transparent: pass.additive,
           opacity: pass.opacity,
           fog: trailDescriptor.fog,
           blending: pass.additive ? AdditiveBlending : NormalBlending,
@@ -1121,9 +1121,19 @@ export default function OrreryScene({
           }
           base.colorSpace = SRGBColorSpace;
           loadedTextures.push(base, emissive, normal);
+
+          // Binding all three decoded maps together made the following render
+          // upload a full planet texture batch in one >50 ms main-thread task.
+          // Give each map its own frame so uploads remain incremental.
           uniforms.uBaseMap.value = base;
+          await nextTextureFrame();
+          if (textureCancelled) return;
           uniforms.uEmissiveMap.value = emissive;
+          await nextTextureFrame();
+          if (textureCancelled) return;
           uniforms.uNormalMap.value = normal;
+          await nextTextureFrame();
+          if (textureCancelled) return;
           uniforms.uHasTextures.value = 1;
         } catch {
           // Unknown/new top-eight tickers keep deterministic shader art.

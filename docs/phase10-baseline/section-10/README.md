@@ -9,7 +9,7 @@ The deterministic implementation matrix is green:
 - `npm test`: 99 test files / 526 tests passed at the remediation gate.
 - `npm run build`: passed, including `/share` and Mission Control route smoke.
 - `npx tsc --noEmit`: passed.
-- Planet textures: 22,570,477 bytes shipped at 1448×724 base / 724×362 derived, below the 30,000,000-byte ceiling.
+- Planet textures: 23,075,805 bytes shipped at 1448×724 base / 724×362 derived, below the 30,000,000-byte ceiling.
 - No production dependency changed.
 
 ## Live-browser environment gap
@@ -58,13 +58,47 @@ The deterministic remediation matrix is retained in
 production build are green. Live remeasurement remains explicitly assigned to
 the reviewer because of the browser environment gap above.
 
+## Review remediation round 2
+
+The four bounded round-2 findings were addressed without changing their gates:
+
+- `TST-03`: the 3px model core is now a genuinely opaque Three.js pass rather
+  than an opacity-1 member of the transparent render queue, and its overview
+  ribbon increases centre-pixel coverage at the verifier's sample point. The
+  retained live pixel result remains deferred to the reviewer; the additive
+  atmospheric glow remains separate.
+- `BLD-04`: the remaining task was attributed to the first decoded planet's
+  base, emissive, and normal maps being bound together, making the next frame
+  upload all three at the reviewer's observed ~570–590ms point. They now bind
+  one per animation frame. The worker, shader-art first paint, absolute 50ms
+  threshold, and no-post-processing rule are unchanged.
+- `DEF-02`: the supplied-mark mask had been joined in the same Sharp pipeline
+  that removed terrain alpha; Sharp emitted three channels, dropping the mask.
+  The resulting rectangular patch was invariant under `.flop()`, which is why
+  the manifest claimed a chirality correction while the KTX files did not
+  change. Tinting and the one-channel alpha join are now separate stages. All
+  24 maps changed after regeneration, and the intended pre-flop is now present
+  in the shipped texture data.
+- `VIS-12`: MANIFEST now follows PLOT's active-question rule, so its question
+  renders once. CONTRIBUTION values occupy the half opposite their signed bar,
+  keeping the coloured fill and centre detent away from every numeral.
+
+Focused tests, TypeScript, the full 99-file / 526-test suite, and the production
+build pass. The four retained browser verifiers were attempted against the
+rebuilt candidate and all hit the same environment-only Chromium launch block
+before navigation, so live results remain deferred rather than self-passed.
+
 ## Root-cause record
 
 - `DEF-04` belt visibility: belt entries shared a uniformly tiny low-detail rock and only the aggregate belt control was obvious in the semantic map. Each belt holding now receives a weight-scaled icosahedral body, a direct raycast target, a ticker label, and a direct semantic link.
 - `DEF-05` sun activation: the solid sun was already in `pickTargets`, but the visibly larger corona meshes had no `orreryTarget`, so much of the apparent sun was non-interactive. Both glow meshes now resolve to the portfolio target; the semantic sun link remains the keyboard source of truth.
 - `DEF-06` orange shadow: the detached blob was the large second layer of the centred `.sunTelemetry` text shadow, not scene lighting. That layer was removed; the sun’s bounded geometry glow remains.
 - `DEF-07` close-camera occlusion: the radial approach camera kept the enlarged sun directly behind the selected planet. The approach now moves outward and along the orbital tangent, while the wider inspector occupies the right side.
-- `DEF-02` mirrored marks: the compositor’s mark orientation preceded KTX2 sphere UV application in the wrong handedness. Marks are now pre-flopped before weathering and seam repair. The retained sphere-strip verifier compares normal and mirrored live profiles for all eight worlds.
+- `DEF-02` mirrored marks: the compositor’s intended pre-flop was not reaching
+  texture bytes because the one-stage alpha join dropped the mask. The
+  corrected two-stage compositor now carries the pre-flopped silhouette through
+  weathering, seam repair, and all derived maps. The retained sphere-strip
+  verifier compares normal and mirrored live profiles for all eight worlds.
 
 ## Texture regeneration
 

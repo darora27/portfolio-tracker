@@ -6,5 +6,7 @@ bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permiss
 No live RGB, hue-lock, DeltaE, ordering, or ring-pixel result is claimed.
 Retained verifier: docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs
 Deterministic palette/scene-model verifier: npm test -- --run src/lib/observatory/universe-palette.test.ts src/lib/observatory/scene-model.test.ts
-The core pass now uses normal blending at opacity 1 while the surrounding glow
-remains additive; the scene-model assertion is green.
+The core pass is now genuinely opaque (`transparent=false`) and widened to
+increase centre-pixel coverage; the surrounding glow remains additive.
+Live pixel confirmation remains deferred to the reviewer.
+The scene-model assertion and full test suite are green.

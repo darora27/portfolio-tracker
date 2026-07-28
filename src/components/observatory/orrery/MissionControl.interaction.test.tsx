@@ -147,8 +147,8 @@ describe("MissionControl interactions", () => {
     }).toEqual(before);
   });
 
-  it("renders the active bay question once", () => {
-    render(
+  it("renders each active bay question once", () => {
+    const { rerender } = render(
       <MissionControl
         activePanel="plot"
         mode="public"
@@ -163,6 +163,23 @@ describe("MissionControl interactions", () => {
 
     expect(
       screen.getAllByText("where is everything, and how was the week"),
+    ).toHaveLength(1);
+
+    rerender(
+      <MissionControl
+        activePanel="manifest"
+        mode="public"
+        content={<p>what do I own, at what weight</p>}
+        closeHref="/share"
+        basePath="/share"
+        holdings={[holding]}
+        health={0.2}
+        teletype="SOL-DEVAN · DAY +1.0%"
+      />,
+    );
+
+    expect(
+      screen.getAllByText("what do I own, at what weight"),
     ).toHaveLength(1);
   });
 });
