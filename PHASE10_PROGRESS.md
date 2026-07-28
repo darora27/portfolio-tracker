@@ -873,3 +873,61 @@ latest handoff doc for current status instead.
 - Blocked handoff this decides:
   `docs/phase10-handoffs/2026-07-25-section-7-claude-lead-to-devan-blocked.md`
 - Machine state: `PHASE10_STATE.json` (`section.owner_decision`)
+
+### §9 accepted at `589be88`, §10 initialized — July 28, 2026
+
+- [x] Executed Devan's Option 1 owner decision on the blocked §9 review:
+  accept §9 at `589be88fa40bf42566c3834ae72fdd3923335511` and let §10 own the
+  texture work — done by claude-code/opus-5
+- [x] Recorded the deviation openly rather than glossing it: the authoritative
+  §9 review (`section-9-review-5.md`) reads **BLOCKED**, not `pass`. Zero
+  findings remain against §9's implementation, but the standing `accept`-stage
+  precondition is met in substance and not in form, and the acceptance record
+  says so — done by claude-code/opus-5
+- [x] Independently re-verified the two facts the acceptance rests on, rather
+  than taking the prior review's word: `git diff --name-only 589be88 HEAD --
+  src/` is **empty** (the accepted implementation is byte-identical to HEAD's),
+  and criteria 48 and 55 are green at `589be88` — texture total 11,727,680
+  bytes matching `manifest.totalBytes` exactly and ≤ the 15,000,000 cap, minimum
+  `luminanceStdDev` 0.101584 ≥ the 0.1 floor, with **no** ticker below it — done
+  by claude-code/opus-5
+- [x] Re-ran verification on the current tree: `npm run build` **PASS**
+  (Next.js 16.2.11, TypeScript clean, 18 static-page tasks, 24 route entries,
+  post-build smoke `/share` 200 and Mission Control manifest 200); `npm test`
+  **FAIL — 2 failed / 497 passed of 499**, 1 failed file of 94, both failures
+  the known owner-caused assertions in `planet-textures.test.ts` and nothing
+  else — done by claude-code/opus-5
+- [x] Left `main` deliberately RED on `npm test` under Devan's documented,
+  time-boxed, **non-generalizing** exception — the first Phase 10 section
+  accepted in that state. The alternative (reverting the owner's texture
+  commits) was offered and declined. Criteria 48 and 55 are §10 work item 5 and
+  must **not** be raised as findings against §10's implementer — done by
+  claude-code/opus-5
+- [x] Confirmed §9's `after/overview-1440x900.png` stays un-recaptured by owner
+  endorsement: any capture now renders §10's round-3 textures, so filing one as
+  §9's "after" frame would misrepresent it —
+  `claude-review/overview-1440x900-review-5.png` stands as the record — done by
+  claude-code/opus-5
+- [x] Wrote `docs/phase10-workflow/reviews/section-9-accepted.md` — done by
+  claude-code/opus-5
+- [x] Moved §9 into `sections_history`, reset `section` to a fresh §10 record,
+  reset `verification` to `not_run`, recorded `prev_actor_commit` `dd20717`, and
+  moved `last_green_commit` from `6a68758` to `589be88` — done by
+  claude-code/opus-5
+- [x] State routed to `§10` / `specify` / `claude_lead` / `ready` /
+  `next_actor: claude`, `stop_reason: null`. No §10 work done — initializing its
+  state is the full extent of the accept turn — done by claude-code/opus-5
+- [x] Changed no application source, no test, no acceptance criterion and no
+  texture. Validator exit 0 — done by claude-code/opus-5
+
+### §9 acceptance evidence
+
+- Acceptance record: `docs/phase10-workflow/reviews/section-9-accepted.md`
+- Authoritative review: `docs/phase10-workflow/reviews/section-9-review-5.md`
+- Owner decision this executes:
+  `docs/phase10-handoffs/2026-07-28-section-9-devan-to-claude-lead-resume.md`
+- Blocked handoff it resolves:
+  `docs/phase10-handoffs/2026-07-28-section-9-claude-lead-to-devan-blocked.md`
+- Handoff to §10 `specify`:
+  `docs/phase10-handoffs/2026-07-28-section-10-claude-lead-accept-to-claude-lead-specify.md`
+- Machine state: `PHASE10_STATE.json` (`sections_history` §9, `section` §10)
