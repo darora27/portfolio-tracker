@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§8",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -67,7 +67,8 @@
       "3c53630 — phase10(§8): remediate desktop fallback and data coverage (findings 1-2)",
       "d992510 — phase10(§8): remediate owner universe feedback (A2, A3, B1, B2, C1, C2)",
       "333566a — phase10(§8): remediate shared universe and native textures (E1-E5; E6 not started per lower-priority budget rule)",
-      "c2485af — phase10(§8): remediate privacy identity and control overlap (review-3 findings 1-3: owner-content route gating, header identity text, manual-button/inspector overlap)"
+      "c2485af — phase10(§8): remediate privacy identity and control overlap (review-3 findings 1-3: owner-content route gating, header identity text, manual-button/inspector overlap)",
+      "pending next-actor hash — phase10(§8): remediate universe interaction defects (owner round-3 F1-F6)"
     ],
     "accepted_commit": null,
     "accepted_at": null,
@@ -77,7 +78,7 @@
     ],
     "note": "Inserted by owner direction on 2026-07-27, replacing `/compare` in this slot. The former §8-§13 were renumbered to §9-§14 with their scope, work, and acceptance criteria unchanged; no spec files existed for any of them, so the renumbering touched only PHASE10.md headings, this state file, and the validator's section bounds. Authority order for this section: UNIVERSE_DIRECTION.md -> UNIVERSE_IDEAS.md -> PHASE10.md §8. Where PRODUCT_DIRECTION.md still describes /share as a five-chapter Field Journal with an Orrery entrance, those two documents supersede it; PRODUCT_DIRECTION.md itself was deliberately not rewritten in this owner turn.",
     "visual_reference_dir": "docs/reference/ (see its README.md — one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-8-devan-to-codex-implementation-remediate-3.md",
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-8-codex-implementation-remediate-3-to-claude-lead.md",
     "owner_feedback": {
       "recorded_at": "2026-07-27",
       "recorded_by": "claude/fable-5 (cowork, owner-directed)",
@@ -201,24 +202,24 @@
       "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     }
   ],
-  "prev_actor_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): c2485af (`phase10(§8): remediate privacy identity and control overlap`) is HEAD at the start of this Claude Lead `review`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
+  "prev_actor_commit": "8dae6fb6580054d42bc2227a080d4b6dd1acd7fd",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md §8 (the completing actor never writes its own commit's hash): 8dae6fb (`phase10(owner §8): record round-three universe defects`) is HEAD at the start of this Codex Implementation `remediate`-stage turn, resolved with `git log -1 --format=%H` against the clean tree this turn started from.",
   "last_green_commit": "c2485af680b65ec6e1faa27082075e71075265fa",
-  "production_code_changed_this_turn": false,
-  "production_code_note_prior_turn": "The prior turn (Codex Implementation, §8 remediate stage, commit c2485af) fixed review-3 findings 1-3: owner Mission Control content and private mission mode now require the owner-gated route as well as authentication; OrreryWorld renders identity-accurate public/private header text; and the Systems Manual control is anchored top-right instead of sharing the inspector's bottom-right anchor. Route, source-isolation, identity-copy, and CSS-anchor regression tests were updated. Codex's sandbox denied both 0.0.0.0:3100 and 127.0.0.1:3100 with listen EPERM, so it deferred the live authenticated /-to-/share privacy sequence and the 1440x900 full-target elementFromPoint check to Claude Lead.",
-  "production_code_note": "This turn (Claude Lead, §8 review stage) changed no implementation source, only the review doc and this state file. Independently built and ran a real production server (temporary, unsaved, process-only OWNER_PASSWORD override; no .env* file ever read/printed/edited) and drove it with temporary, unsaved Playwright scripts to verify all three review-3 findings live: (1) an authenticated cookie from / no longer surfaces any owner Mission Control content, currency pattern, or owner marker on /share under any station (dashboard/history/trades/research); (2) / renders \"Private universe / owner access\" and /share renders \"Public universe / read-only\" in the same authenticated context; (3) at /share?planet=MSFT, 1440x900, 10 elementFromPoint samples (4 corners + center of each control) confirm the Systems Manual button and \"Return to overview\" link no longer overlap and each resolves to itself. All three findings are resolved with zero new findings. Result: PASS, review recorded in docs/phase10-workflow/reviews/section-8-review-4.md.",
+  "production_code_changed_this_turn": true,
+  "production_code_note_prior_turn": "The prior owner-directed turn recorded §8 round-three defects F1-F6 and reopened the accepted section for bounded Codex remediation; it changed no implementation source.",
+  "production_code_note": "This Codex Implementation remediation fixes only owner round-three defects F1-F6: overview orbit/trail legibility is restored with regression thresholds; orbit rings clear during APPROACH so close planets cannot intersect them without changing spacing; APPROACH and COMMAND each retain one-gesture Escape and explicit return controls with coverage; belt labels activate the panel and belt rocks receive a 32px screen-space magnetic hit area while the existing semantic belt control remains keyboard reachable; sun hover renders a separate dashed docking ring without altering health physiology; and fixed-size, identity-tinted ticker tags project below each planet with their contrast plate off the texture. Full tests/build pass. Live visual, pointer, browser-history, console, mobile, and screenshot checks remain unverified in this turn because the sandbox denied localhost binding on both 0.0.0.0:3100 and 127.0.0.1:3100 with listen EPERM; Claude Lead must perform them independently before PASS.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Claude Lead independently re-ran the full Vitest suite against commit c2485af: 87 test files passed; 470 of 470 tests passed.",
-      "finished_at": "2026-07-28T01:57:53Z"
+      "summary": "Codex Implementation ran the full Vitest suite after owner round-three remediation: 87 test files passed; 474 of 474 tests passed.",
+      "finished_at": "2026-07-28T03:02:50Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Claude Lead independently re-ran the Next.js 16.2.11 Turbopack production build against commit c2485af: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
-      "finished_at": "2026-07-28T01:57:53Z"
+      "summary": "Codex Implementation ran the Next.js 16.2.11 Turbopack production build after owner round-three remediation: compiled successfully, TypeScript passed, and 18 route-generation tasks completed. Both / and /share remain dynamic routes.",
+      "finished_at": "2026-07-28T03:03:01Z"
     },
     "long_task_gate": {
       "command": "CDP Emulation.setCPUThrottlingRate(2) + PerformanceObserver('longtask'), 5 fresh contexts, 1440x900, against a real npm run start server on /share",
@@ -243,10 +244,16 @@
       "status": "pass",
       "summary": "Claude Lead independently verified all 3 review-3 findings live, per docs/phase10-workflow/reviews/section-8-review-4.md: (1) authenticated cookie from / no longer surfaces owner content, data-mode=\"private\", or any currency pattern on /share across all 4 Mission Control stations; (2) / renders \"Private universe / owner access\" and /share renders \"Public universe / read-only\" in the same authenticated context; (3) at /share?planet=MSFT 1440x900, 10 elementFromPoint samples (4 corners + center per control) confirm the Systems Manual button and \"Return to overview\" link no longer overlap and each resolves to itself. Zero console warnings/errors.",
       "finished_at": "2026-07-28T01:57:53Z"
+    },
+    "owner_round_3_live_check": {
+      "command": "npm run start -- -p 3100; npm run start -- -H 127.0.0.1 -p 3100",
+      "status": "not_run",
+      "summary": "Environment-only gap: both production-server bind attempts failed with listen EPERM before a browser could connect. Claude Lead must independently verify F1-F6 live at 1440x900, including still-frame ring/trail legibility, no approach-state orbit intersections, Escape/visible-control/browser-Back/empty-space returns, lower-belt pointer activation plus keyboard access, sun docking hover that does not change physiology, below-body labels with unobscured textures, screenshots, and zero console errors. Existing mobile/reduced-motion behavior was not changed but must be rechecked at 390x844 and 320x844 before PASS.",
+      "finished_at": "2026-07-28T03:00:51Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-28T02:55:02Z",
+  "updated_at": "2026-07-28T03:03:05Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

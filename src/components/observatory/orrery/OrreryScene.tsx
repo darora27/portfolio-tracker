@@ -141,6 +141,7 @@ type PlanetRuntime = {
   holding: PublicOrreryHolding;
   orbit: Group;
   mesh: Mesh<SphereGeometry, ShaderMaterial>;
+  path: Mesh<RingGeometry, MeshBasicMaterial>;
   label: HTMLButtonElement;
   initialAngle: number;
   direction: ReturnType<typeof directionForWeeklyReturn>;
@@ -213,8 +214,8 @@ function createTrailGeometry(
     const t1 = (index + 1) / segments;
     const a0 = sign * length * t0;
     const a1 = sign * length * t1;
-    const w0 = 0.085 * (1 - t0) + 0.005;
-    const w1 = 0.085 * (1 - t1) + 0.005;
+    const w0 = 0.14 * (1 - t0) + 0.012;
+    const w1 = 0.14 * (1 - t1) + 0.012;
     const point = (angle: number, width: number) => [
       Math.cos(angle) * (radius + width),
       0.025,
@@ -396,7 +397,27 @@ export default function OrreryScene({
     const glowOuter = new Mesh(sunGeometry, glowMaterialOuter);
     scene.add(glowInner, glowOuter);
 
+    const dockingRingMaterial = new MeshBasicMaterial({
+      color: "#ffe4ad",
+      transparent: true,
+      opacity: 0.78,
+      blending: AdditiveBlending,
+      depthWrite: false,
+      side: 2,
+    });
+    const dockingRing = new Group();
+    for (let index = 0; index < 18; index += 1) {
+      const dash = new Mesh(
+        new RingGeometry(2.28, 2.34, 10, 1, index * (Math.PI / 9), Math.PI / 18),
+        dockingRingMaterial,
+      );
+      dockingRing.add(dash);
+    }
+    dockingRing.visible = false;
+    scene.add(dockingRing);
+
     const orbitGeometries: RingGeometry[] = [];
+    const orbitMaterials: MeshBasicMaterial[] = [];
     const trailGeometries: BufferGeometry[] = [];
     const trailMaterials: MeshBasicMaterial[] = [];
     const loadedTextures: Texture[] = [];
@@ -417,12 +438,12 @@ export default function OrreryScene({
         new MeshBasicMaterial({
           color: "#6da184",
           transparent: true,
-          opacity: 0.2,
+          opacity: 0.34,
           depthWrite: false,
           side: 2,
         }),
       );
-      trailMaterials.push(path.material);
+      orbitMaterials.push(path.material);
       plane.add(path);
 
       const direction = directionForWeeklyReturn(holding.weeklyReturn);
@@ -441,7 +462,7 @@ export default function OrreryScene({
               ? "#ff665f"
               : "#e3b65c",
         transparent: true,
-        opacity: 0.72,
+        opacity: 0.96,
         blending: AdditiveBlending,
         depthWrite: false,
         side: 2,
@@ -480,12 +501,17 @@ export default function OrreryScene({
       label.tabIndex = -1;
       label.className = styles.sceneLabel;
       label.textContent = holding.ticker;
+      label.style.setProperty(
+        "--planet-label-color",
+        new Color(palette[1]).lerp(new Color("#ffffff"), 0.72).getStyle(),
+      );
       label.addEventListener("click", () => launchRocket(holding.ticker));
       labelLayer.appendChild(label);
       return {
         holding,
         orbit,
         mesh: planet,
+        path,
         label,
         initialAngle,
         direction,
@@ -499,7 +525,7 @@ export default function OrreryScene({
     const rockGeometry = new IcosahedronGeometry(0.11, 0);
     const rockMaterial = new MeshBasicMaterial({ color: "#b38a57" });
     const beltRocks: Mesh[] = [];
-    const beltLabels: HTMLSpanElement[] = [];
+    const beltLabels: HTMLButtonElement[] = [];
     sceneBelt.forEach((holding, index) => {
       const angle = (index / Math.max(1, sceneBelt.length)) * Math.PI * 2 + index * 0.23;
       const rock = new Mesh(rockGeometry, rockMaterial);
@@ -508,9 +534,12 @@ export default function OrreryScene({
       rock.userData.orreryTarget = "belt";
       beltGroup.add(rock);
       beltRocks.push(rock);
-      const label = document.createElement("span");
+      const label = document.createElement("button");
+      label.type = "button";
+      label.tabIndex = -1;
       label.className = `${styles.sceneLabel} ${styles.beltLabel}`;
       label.textContent = holding.ticker;
+      label.addEventListener("click", () => callbacksRef.current.onSelectBelt());
       labelLayer.appendChild(label);
       beltLabels.push(label);
     });
@@ -547,8 +576,10 @@ export default function OrreryScene({
     const pointer = new Vector2(2, 2);
     const worldPosition = new Vector3();
     const projected = new Vector3();
+    const labelPosition = new Vector3();
     const pickTargets: Mesh[] = [sun, ...planetRuntimes.map(({ mesh }) => mesh), ...beltRocks];
     let localHovered: string | null = null;
+    let localTarget: string | undefined;
     let pointerX = 0;
     let pointerY = 0;
     let pointerClientX = -1000;
@@ -604,20 +635,31 @@ export default function OrreryScene({
           nearest = { ticker: planet.holding.ticker, distance };
         }
       }
-      return nearest?.ticker;
+      if (nearest) return nearest.ticker;
+      for (const rock of beltRocks) {
+        rock.getWorldPosition(projected);
+        projected.project(camera);
+        const x = (projected.x * 0.5 + 0.5) * rect.width;
+        const y = (-projected.y * 0.5 + 0.5) * rect.height;
+        if (Math.hypot(pointerClientX - x, pointerClientY - y) <= 32) {
+          return "belt";
+        }
+      }
+      return undefined;
     };
     const pick = () => {
       raycaster.setFromCamera(pointer, camera);
       const hit = raycaster.intersectObjects(pickTargets, false)[0]?.object.userData
         .orreryTarget as string | undefined;
       const target = magneticTarget() ?? hit;
+      localTarget = target;
       const ticker = target && target !== "portfolio" && target !== "belt" ? target : null;
       if (ticker !== localHovered) {
         localHovered = ticker;
         callbacksRef.current.onHover(ticker);
       }
       if (!reducedMotion) {
-        rocket.dataset.targeted = ticker ? "true" : "false";
+        rocket.dataset.targeted = target ? "true" : "false";
       }
       renderer.domElement.style.cursor = reducedMotion
         ? target
@@ -647,6 +689,7 @@ export default function OrreryScene({
     };
     const onPointerLeave = () => {
       pointer.set(2, 2);
+      localTarget = undefined;
       localHovered = null;
       callbacksRef.current.onHover(null);
       if (!rocketFlight) rocket.dataset.visible = "false";
@@ -716,10 +759,15 @@ export default function OrreryScene({
         planet.mesh.material.uniforms.uDim.value +=
           (dimTarget - planet.mesh.material.uniforms.uDim.value) *
           (1 - Math.exp(-delta * 5));
-        planet.mesh.getWorldPosition(projected);
-        projected.project(camera);
-        planet.label.style.left = `${(projected.x * 0.5 + 0.5) * 100}%`;
-        planet.label.style.top = `${(-projected.y * 0.5 + 0.5) * 100}%`;
+        planet.path.visible = state !== "approach";
+        planet.mesh.getWorldPosition(worldPosition);
+        projected.copy(worldPosition).project(camera);
+        labelPosition
+          .copy(worldPosition)
+          .addScaledVector(camera.up, -planet.mesh.scale.x * 1.45)
+          .project(camera);
+        planet.label.style.left = `${(labelPosition.x * 0.5 + 0.5) * 100}%`;
+        planet.label.style.top = `${(-labelPosition.y * 0.5 + 0.5) * 100}%`;
         planet.label.dataset.targeted = targeted ? "true" : "false";
         planet.label.hidden = projected.z > 1;
       }
@@ -791,6 +839,8 @@ export default function OrreryScene({
 
       const time = now / 1000;
       const health = healthRef.current;
+      dockingRing.visible = localTarget === "portfolio";
+      dockingRing.rotation.z = reducedMotion ? 0 : time * 0.16;
       sunMaterial.uniforms.uTime.value = time;
       sunMaterial.uniforms.uHealth.value = health.h;
       sunMaterial.uniforms.uSunspots.value = health.sunspotIntensity;
@@ -825,6 +875,7 @@ export default function OrreryScene({
       for (const planet of planetRuntimes) planet.mesh.material.dispose();
       for (const texture of loadedTextures) texture.dispose();
       for (const geometry of orbitGeometries) geometry.dispose();
+      for (const material of orbitMaterials) material.dispose();
       for (const geometry of trailGeometries) geometry.dispose();
       for (const material of trailMaterials) material.dispose();
       starField.geometry.dispose();
@@ -834,6 +885,10 @@ export default function OrreryScene({
       sunMaterial.dispose();
       glowMaterialInner.dispose();
       glowMaterialOuter.dispose();
+      dockingRing.children.forEach((child) => {
+        if (child instanceof Mesh) child.geometry.dispose();
+      });
+      dockingRingMaterial.dispose();
       rockGeometry.dispose();
       rockMaterial.dispose();
       fallbackTexture.dispose();

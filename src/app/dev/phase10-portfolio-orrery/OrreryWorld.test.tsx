@@ -150,6 +150,23 @@ describe("Portfolio Orrery remediation route", () => {
     expect(push).toHaveBeenCalledWith("/", { scroll: false });
   });
 
+  it("returns from command in one gesture and keeps an explicit universe link", () => {
+    render(
+      <OrreryWorld
+        {...baseProps}
+        basePath="/share"
+        portfolioSelected
+        cameraState="command"
+        missionControlContent={<p>Public portfolio analysis</p>}
+      />,
+    );
+    expect(
+      screen.getByRole("link", { name: "Return to universe" }).getAttribute("href"),
+    ).toBe("/share");
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(push).toHaveBeenCalledWith("/share", { scroll: false });
+  });
+
   it("moves focus into Mission Control opened from the semantic sun", () => {
     render(
       <OrreryWorld

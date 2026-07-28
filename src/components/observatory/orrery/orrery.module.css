@@ -162,13 +162,14 @@
   min-height: 44px;
   padding: 0;
   border: 0;
-  color: #e8f1df;
+  color: var(--planet-label-color, #e8f1df);
   background: transparent;
   font: 700 0.58rem/1 var(--font-mono, ui-monospace, monospace);
+  isolation: isolate;
   letter-spacing: 0.07em;
   pointer-events: auto;
   cursor: none;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0.25rem);
   text-shadow:
     0 1px 2px #010806,
     0 0 8px rgba(1, 8, 6, 0.95);
@@ -179,6 +180,17 @@
   text-shadow:
     0 1px 2px #010806,
     0 0 12px rgba(255, 196, 99, 0.7);
+}
+
+.sceneLabel::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0.8rem 0.2rem;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  background: rgba(1, 8, 6, 0.82);
+  box-shadow: 0 0 8px rgba(1, 8, 6, 0.92);
+  content: "";
 }
 
 .rocketCursor {

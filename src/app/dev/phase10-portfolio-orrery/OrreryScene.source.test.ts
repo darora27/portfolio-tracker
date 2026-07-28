@@ -25,6 +25,18 @@ describe("Portfolio Orrery direct-Three architecture", () => {
     expect(source).toContain("planet.position.set(orbitRadius, 0, 0)");
   });
 
+  it("keeps overview rings and trails legible and clears rings near approached planets", () => {
+    expect(source).toContain("opacity: 0.34");
+    expect(source).toContain("opacity: 0.96");
+    expect(source).toContain("planet.path.visible = state !== \"approach\"");
+    expect(source).toContain("0.14 * (1 - t0)");
+  });
+
+  it("places identity-tinted ticker tags below planets instead of over their textures", () => {
+    expect(source).toContain("--planet-label-color");
+    expect(source).toContain("addScaledVector(camera.up, -planet.mesh.scale.x * 1.45)");
+  });
+
   it("keeps planets orbiting while pointer selection travels by rocket", () => {
     expect(source).not.toContain("if (stabilized)");
     expect(source).toContain('planet.direction === "clockwise" ? -1 : 1');
@@ -45,6 +57,14 @@ describe("Portfolio Orrery direct-Three architecture", () => {
     expect(source).toContain("magneticTarget");
     expect(source).toContain('cameraStateRef.current !== "overview"');
     expect(source).toContain("callbacksRef.current.onExitOverview()");
+    expect(source).toContain('return "belt"');
+    expect(source).toContain("label.addEventListener(\"click\", () => callbacksRef.current.onSelectBelt())");
+  });
+
+  it("uses instrumentation-only docking feedback for sun hover", () => {
+    expect(source).toContain("const dockingRing = new Group()");
+    expect(source).toContain('dockingRing.visible = localTarget === "portfolio"');
+    expect(source).toContain("dockingRing.rotation.z");
   });
 
   it("builds the required star, rim, glow, and procedural-material system", () => {
