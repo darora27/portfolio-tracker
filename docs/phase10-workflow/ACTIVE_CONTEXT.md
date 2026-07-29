@@ -9,9 +9,9 @@ them.
 ## Live route
 
 - Phase: 10
-- Current section: **§10 — Universe colour, material, and command structure**
+- Current section: **§11 — Universe legibility and the draft rig**
 - Managed range: §2–§17
-- Stage: `accept`
+- Stage: `specify`
 - Role: `claude_lead`
 - Status: `ready`
 - Next actor: `claude`
@@ -34,11 +34,12 @@ Always read:
 
 Then read the current, specifically routed sources:
 
-- `docs/phase10-workflow/specs/section-10.md`
-- `UNIVERSE_IDEAS_3.md`
-- `UNIVERSE_PALETTE_3.html`
+- `UNIVERSE_IDEAS_5.md`
+- `UNIVERSE_IDEAS_4.md`
+- `UNIVERSE_LEGIBILITY_MOCK.html`
+- `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md`
+- `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-accept-to-claude-lead-specify.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -52,18 +53,15 @@ payload:
 
 ## Current section conditions
 
-Inserted by owner direction on 2026-07-28 (see roadmap_amendment_3). Authority order for this section: UNIVERSE_IDEAS_3.md (round-3 design, revision 2) -> UNIVERSE_PALETTE_3.html (the computed palette board) -> docs/reference/ -> PHASE10.md §10. Round 3 supersedes UNIVERSE_IDEAS_2.md wherever the two conflict. INHERITED RED, NOT A §10 DEFECT: npm test is red at this section start with exactly two failures in src/lib/observatory/planet-textures.test.ts - manifest.totalBytes 22,450,706 against §9’s 15,000,000 cap, and INTC 0.098092 / CBRS 0.093008 luminanceStdDev against §9’s 0.1 floor. Both were introduced by owner texture commits after §9’s reviewed implementation and are §10 work item 5 (texture regeneration): §10 must raise the byte ceiling in planet-textures.test.ts to the 30 MB figure PHASE10.md §10’s Build dimension already states, and must VERIFY - not assume - that relighting INTC and CBRS lifts them into the required luminance window. Ten owner defects reported live against §9 are carried into PHASE10.md §10 “Owner defects to close in this section” rather than reopening §9. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (“website is still relatively confusing”). §9’s testing prohibition carries forward and is restated in §10’s Acceptance: expect(source).toContain(...) is not valid coverage for rendered behaviour.
+Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for this section: UNIVERSE_IDEAS_5.md (legibility) -> UNIVERSE_IDEAS_4.md (the draft rig) -> OWNER_FEEDBACK_LEDGER.md -> the two owner-reviewed prototypes UNIVERSE_LEGIBILITY_MOCK.html and UNIVERSE_DRAFT_RIG.html -> PHASE10.md §11. main is GREEN at this section start: npm test 527/527 across 99 files and npm run build exit 0, both re-run by the accept turn at dbdeb39. §9's inherited red is closed and no exception is inherited. §9's testing prohibition carries forward: expect(source).toContain(...) is not valid coverage for rendered behaviour. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (the website is still relatively confusing). §11 runs under single_provider_mode: its compensating controls are mandatory, and its must_wait_for_codex list binds - the privacy boundary, the financial math core, and any gate weakening or exception.
 
 Open bounded findings:
 
-- {"id":"F1","criterion":"TST-03","risk":"high","bucket":"A authorised, remediation failed; mechanism now disproven","evidence":"docs/phase10-baseline/section-10/claude-review-5/raw-remediation-landed.json","summary":"The authorised taper-floor fix (0.45 -> 0.85) landed and reached the render: IBM improved 3.522 -> 0.396 and every ribbon widened 1.89x. NBIS moved 33.846 -> 30.522 and sample-live-rgb.mjs still aborts at deltaE 33.123. Round 4's sub-pixel partial-coverage attribution is disproven. The 49px cross-section through NBIS's published sample point is a ~12px band peaking at red 93 against the model's 179, with zero pixels within 2 of the model; INTC at the same expected colour shows a 14px plateau at exactly 179. No DOM layer overlies the point (elementsFromPoint returns only the canvas over MAIN at rgb(1,5,4); panel-free pixel identical to shipped). The same NBIS arc does reach #aa231b, deltaE 3.44, 165px away. The opaque core is not at the published sample point on the outermost orbit; only the glow shoulders are.","required_change":"OWNER DECISION REQUIRED. The real mechanism is a registration error between the published data-trail-sample-x/y and where the opaque trail core renders on the outermost orbit — in the sample-point projection or the ribbon's angular sweep, not in trailRibbonHalfWidths. Bounded and specific, but new work not covered by the authorised bucket-A scope, and the triage rule has stopped §10 remediation. Do not change the verifier, its thresholds, or its sample points."}
-- {"id":"F2","criterion":"BLD-04","risk":"high","bucket":"B — owner-approved carry to §11, unchanged","evidence":"docs/phase10-baseline/section-10/claude-review-5/raw-long-tasks-BLD-04.txt","summary":"measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 65/57/58/58/57 ms. Five of five breach the 50 ms ceiling, unmoved across five rounds (57-61, 56-62, 55-61, 56-60, 57-65). Measurement refreshed at this candidate so §11 acceptance attaches a current figure.","required_change":"No new decision needed. Carried to §11 per the owner's approved triage, not closed. §11 deletes the embedded legacy dashboard and its Recharts instances, pauses the off-screen radar, and lazy-mounts below-fold sections. Must appear in §11 acceptance. Do not baseline-subtract or redefine the gate."}
-- {"id":"F3a","criterion":"DEF-02, VIS-02, BHV-05","risk":"high","bucket":"B — owner-approved carry to §11, unchanged","evidence":"docs/phase10-baseline/section-10/claude-review-5/raw-strip-chirality-full-table.json","summary":"The shipped-view chirality verifier still aborts on COST and still fails the same 6 of 8 worlds, with every margin moved by under 0.006. The inspector panel still covers 96.8-100% of the sampled band at the approach camera. Unchanged from round 4.","required_change":"No new decision needed. Carried to §11 per the owner's approved triage. §11's planet-panel rebuild keeps the planet visible and shrinks the panel, after which DEF-02, VIS-02 and BHV-05 become measurable in the shipped view. §11 must re-run the verifier and record the result."}
-- {"id":"F3b","criterion":"DEF-02","risk":"high","bucket":"A authorised, remediation failed; mechanism now disproven","evidence":"docs/phase10-baseline/section-10/claude-review-5/raw-panel-occlusion.json","summary":"The authorised handedness fix landed: sharp().flop() changes the generator's mark alpha by MAD 113.3 (MSFT) and 74.9 (CBRS) of 255, the two shipped 32x16 base thumbnails changed while untouched GOOG's is byte-identical at 0.000, and six KTX2 maps plus the manifest chirality strings changed. The panel-free correlation margin moved 0.018 (MSFT) and 0.021 (CBRS) — inside the 0.002-0.011 round-to-round drift of the five untouched worlds — and did NOT invert sign. Mirroring a mark must invert a correlation that reads that mark. The verifier's column-mean greyscale profile across the equatorial band is dominated by macro terrain, and the carved capital, which VIS-02 requires to share the terrain's lighting and be edge-eroded, contributes at or below that noise. The correlation cannot discriminate mark handedness, so it substantiates neither a pass nor a fail for any world, and round 4's 'genuinely mirrored marks' diagnosis is unsupported. Fourth consecutive round in which DEF-02 was attributed to texture generation and a regeneration moved the number by less than the noise.","required_change":"OWNER DECISION REQUIRED. Nothing inside §10's scope makes this criterion measurable. A verifier that samples the mark directly, rather than a terrain-dominated equatorial column profile, is new verifier work — which a review may not design and a remediation may not introduce. Do not weaken the assertion."}
+None.
 
 Acceptance ledger:
 
-- `docs/phase10-workflow/acceptance/section-10.json`
+- Created by the lead with the section specification.
 
 ## Global gates
 
@@ -104,7 +102,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `1309554aff11cf29f03fa96cbf554363349bcd64158821f102522cc088f56d70`
-- `PHASE10_STATE.json`: `9a60f81b9ead47b60e57eac2eaeb565c3fe66edbdfe23706aa79af7c2067c477`
+- `PHASE10_STATE.json`: `952db3f40cfc13a64a3d5136b6fd8cc0c30b87997922c3394b6ebdc5e5836b41`
 - `PHASE10.md`: `c892047abfcaee0f146c1882b349b7cc1c267d354e22bae05712130a91e7d571`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

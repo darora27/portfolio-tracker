@@ -7,7 +7,7 @@ ends — this file is where it survives.
 **Every agent working a Phase 10 section should read this alongside the section
 spec.** If an item here contradicts an older document, this file is newer.
 
-Last updated: July 28, 2026.
+Last updated: July 29, 2026.
 
 ---
 
@@ -50,7 +50,23 @@ These are decided. Do not reopen without asking.
 
 ## 3. Open owner items — not yet built
 
-### 3.1 From the July 28 legibility review (newest)
+### 3.1 From the July 29 §10 acceptance review (newest)
+
+- **The trails are too long.** Owner: *"Why are the trails so long? It seems
+  like they are too long and cheap looking now… the trails don't even seem like
+  they fit the vibe of the project anymore, they were a lot better before."*
+  Round 3 lengthened arcs from 18–30° to 36–64° to give the lightness ramp room.
+  Shorten them — by eye, somewhere between the two — and reconcile against the
+  ramp, which may no longer need the extra length now that hue carries
+  magnitude. §11.
+- **No logos are visible on any planet.** At OVERVIEW planets render at roughly
+  30–60 px, too small for a mark; up close the panel blocks the view. The carved
+  marks may be entirely correct and simply unviewable. **Do not regenerate
+  textures against this again before it is measurable** — four rounds already
+  did, and each moved the score by less than the measurement noise. §11's panel
+  rebuild is the first chance to find out.
+
+### 3.2 From the July 28 legibility review
 
 - **The planet panel is slightly too big.** Layout is right — planet on the
   left, panel on the right — but the panel should shrink somewhat.
@@ -63,7 +79,7 @@ These are decided. Do not reopen without asking.
   read what it means. Needs a plain-language explanation of what correlation
   tells him about his own portfolio, not a better chart.
 
-### 3.2 Carried, unresolved
+### 3.3 Carried, unresolved
 
 - **D1 — the green-trail report.** Owner saw a green trail on a holding down
   for the week. Never reproduced; source mapping is correct and every committed

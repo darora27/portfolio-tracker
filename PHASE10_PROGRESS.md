@@ -988,3 +988,76 @@ latest handoff doc for current status instead.
   `generate-planet-textures.mjs`, `OrreryWorld.tsx`, and
   `PlanetDetail.tsx`; no new workflow script lint finding — done by
   codex/gpt-5
+
+### §10 accepted at `3d85341`, §11 initialized — July 29, 2026
+
+- [x] Executed Devan's accept decision on the failed §10 review: accept §10 at
+  `3d853411651217ef18e9480b725b3289848b4d27`, reclassify both remaining bucket-A
+  items to bucket B, and carry six criteria to §11 with their measurements
+  attached — done by claude-code/opus-5
+- [x] Recorded the deviation openly rather than glossing it: the authoritative
+  §10 review (`section-10-review-5.md`) reads **FAIL**, not `pass`, and this
+  acceptance rests on direct owner observation contradicting two instruments —
+  NBIS trail brightness the owner reads as matching its neighbours where the
+  verifier reads red 93 against a model 179, and a planet neither the owner nor
+  the verifier can see because the inspector panel covers 96.8–100% of the
+  sampled band — done by claude-code/opus-5
+- [x] **No gate was weakened, redefined, or baseline-subtracted, and no owner
+  exception was recorded** — unlike §1 and §9, this acceptance sets no
+  precedent. The six criteria (`TST-03`, `VIS-04`, `DEF-02`, `VIS-02`,
+  `BHV-05`, `BLD-04`) are recorded in the ledger as `carried_by_owner`, the
+  status the owner added in `dbdeb39` so a carry could not be disguised as a
+  pass, and each must appear in §11's acceptance — done by claude-code/opus-5
+- [x] Independently verified the two facts the acceptance rests on rather than
+  taking the review's word: `git diff --name-only 3d85341 HEAD -- src/ public/
+  package.json package-lock.json` is **empty**, so the accepted implementation
+  is byte-identical to HEAD; the only executable difference is the owner's
+  `scripts/phase10-workflow-lib.mjs` ledger-status change — done by
+  claude-code/opus-5
+- [x] Re-ran both gates on the current tree: `npm test` **PASS — 527/527 across
+  99 files, zero failures**; `npm run build` **PASS** (exit 0, Next.js 16.2.11,
+  24 route entries unchanged, post-build smoke `/share` 200 and Mission Control
+  manifest 200). `phase10:acceptance --require reviewer` valid — done by
+  claude-code/opus-5
+- [x] **§9's inherited red is discharged.** The two `planet-textures.test.ts`
+  assertions that left `main` red at §10's start now pass: `totalBytes`
+  22,803,051 against §10's raised 30 MB ceiling and minimum `luminanceStdDev`
+  0.106628 (CBRS) against the 0.1 floor. `main` is green, and §11 inherits no
+  exception — done by claude-code/opus-5
+- [x] Wrote `docs/phase10-workflow/reviews/section-10-accepted.md` — done by
+  claude-code/opus-5
+- [x] Moved §10 into `sections_history` with its acceptance ledger retained and
+  `single_provider_mode: false` (implemented by codex/gpt-5, reviewed by
+  claude-code/opus-5 — full cross-model independence), reset `section` to a
+  fresh §11 record, reset `verification` to `not_run`, recorded
+  `prev_actor_commit` `dbdeb39`, and moved `last_green_commit` from `3d1882a`
+  to `3d85341` — done by claude-code/opus-5
+- [x] Recorded the six carried criteria with their measurements, verifiers, and
+  §11 resolutions in `section.carried_from_section_10`, and the new owner
+  feedback (trails too long and read as cheap; no logos visible on any planet)
+  in both the state and `OWNER_FEEDBACK_LEDGER.md` §3.1 — done by
+  claude-code/opus-5
+- [x] Activated the owner-armed `single_provider_mode`, whose trigger was
+  literally "§10 is accepted". This turn executed that trigger; it did not
+  authorise the mode and changed no role value in the state machine. §11 is the
+  first section under it — done by claude-code/opus-5
+- [x] State routed to `§11` / `specify` / `claude_lead` / `ready` /
+  `next_actor: claude`, `stop_reason: null`. No §11 work done — initializing its
+  state is the full extent of the accept turn — done by claude-code/opus-5
+- [x] Changed no application source, no test, no acceptance criterion and no
+  texture. Validator exit 0 — done by claude-code/opus-5
+
+### §10 acceptance evidence
+
+- Acceptance record: `docs/phase10-workflow/reviews/section-10-accepted.md`
+- Authoritative review (FAIL): `docs/phase10-workflow/reviews/section-10-review-5.md`
+- Owner decision this executes:
+  `docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md`
+- Blocked handoff it resolves:
+  `docs/phase10-handoffs/2026-07-29-section-10-claude-lead-to-devan-blocked-2.md`
+- Triage rule and classification: `docs/phase10-workflow/SECTION_10_TRIAGE.md`
+- Acceptance ledger: `docs/phase10-workflow/acceptance/section-10.json`
+  (71 `pass`, 6 `carried_by_owner`)
+- Handoff to §11 `specify`:
+  `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-accept-to-claude-lead-specify.md`
+- Machine state: `PHASE10_STATE.json` (`sections_history` §10, `section` §11)
