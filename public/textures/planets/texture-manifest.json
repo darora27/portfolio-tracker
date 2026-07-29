@@ -1,6 +1,6 @@
 {
-  "totalBytes": 23075805,
-  "mapBytes": 23055826,
+  "totalBytes": 22804307,
+  "mapBytes": 22784196,
   "tier": {
     "base": "1448x724",
     "emissive": "724x362",
@@ -16,12 +16,12 @@
     {
       "base": "2048x1024",
       "derived": "1024x512",
-      "mapBytes": 44461239
+      "mapBytes": 44024873
     },
     {
       "base": "1448x724",
       "derived": "724x362",
-      "mapBytes": 23055826
+      "mapBytes": 22784196
     }
   ],
   "tickers": {
@@ -32,9 +32,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2358000,
-        "emissive": 208877,
-        "normal": 329266
+        "base": 2332771,
+        "emissive": 209343,
+        "normal": 328665
       },
       "markCapitals": {
         "count": 3,
@@ -44,12 +44,12 @@
           120
         ],
         "latitudeDegrees": 0,
-        "widthFraction": 0.18,
+        "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+        "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#5c81ae",
-      "luminanceStdDev": 0.179004,
+      "dominantHex": "#5e82af",
+      "luminanceStdDev": 0.185874,
       "seamMaxDeltaE": 0
     },
     "GOOG": {
@@ -59,9 +59,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2568479,
-        "emissive": 214263,
-        "normal": 340537
+        "base": 2556011,
+        "emissive": 213891,
+        "normal": 340033
       },
       "markCapitals": {
         "count": 3,
@@ -71,12 +71,12 @@
           120
         ],
         "latitudeDegrees": 0,
-        "widthFraction": 0.18,
+        "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+        "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#bcc6bb",
-      "luminanceStdDev": 0.116302,
+      "dominantHex": "#bdc7bc",
+      "luminanceStdDev": 0.114081,
       "seamMaxDeltaE": 0
     },
     "MSFT": {
@@ -86,9 +86,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2719850,
-        "emissive": 229540,
-        "normal": 354577
+        "base": 2718134,
+        "emissive": 230278,
+        "normal": 355018
       },
       "markCapitals": {
         "count": 3,
@@ -98,12 +98,12 @@
           120
         ],
         "latitudeDegrees": 0,
-        "widthFraction": 0.18,
+        "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+        "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#5e7270",
-      "luminanceStdDev": 0.114444,
+      "dominantHex": "#5f7271",
+      "luminanceStdDev": 0.115122,
       "seamMaxDeltaE": 0
     },
     "IBM": {
@@ -113,9 +113,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 1767422,
-        "emissive": 78933,
-        "normal": 288526
+        "base": 1607784,
+        "emissive": 93168,
+        "normal": 290972
       },
       "markCapitals": {
         "count": 3,
@@ -125,12 +125,12 @@
           120
         ],
         "latitudeDegrees": 0,
-        "widthFraction": 0.18,
+        "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+        "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#223c74",
-      "luminanceStdDev": 0.112918,
+      "dominantHex": "#2b437c",
+      "luminanceStdDev": 0.15623,
       "seamMaxDeltaE": 0
     },
     "COST": {
@@ -140,9 +140,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2324284,
-        "emissive": 158349,
-        "normal": 337437
+        "base": 2301209,
+        "emissive": 159412,
+        "normal": 337563
       },
       "markCapitals": {
         "count": 3,
@@ -152,12 +152,12 @@
           120
         ],
         "latitudeDegrees": 0,
-        "widthFraction": 0.18,
+        "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+        "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#7e766a",
-      "luminanceStdDev": 0.141095,
+      "dominantHex": "#80786c",
+      "luminanceStdDev": 0.149836,
       "seamMaxDeltaE": 0
     },
     "INTC": {
@@ -167,9 +167,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2366789,
-        "emissive": 160110,
-        "normal": 394530
+        "base": 2372883,
+        "emissive": 160907,
+        "normal": 394532
       },
       "markCapitals": {
         "count": 3,
@@ -179,12 +179,12 @@
           120
         ],
         "latitudeDegrees": 0,
-        "widthFraction": 0.18,
+        "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+        "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#495059",
-      "luminanceStdDev": 0.106646,
+      "dominantHex": "#4a525a",
+      "luminanceStdDev": 0.110471,
       "seamMaxDeltaE": 0
     },
     "NBIS": {
@@ -194,9 +194,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2656033,
-        "emissive": 175870,
-        "normal": 328136
+        "base": 2563374,
+        "emissive": 174633,
+        "normal": 327650
       },
       "markCapitals": {
         "count": 3,
@@ -206,12 +206,12 @@
           120
         ],
         "latitudeDegrees": 0,
-        "widthFraction": 0.18,
+        "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+        "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#8d4e8f",
-      "luminanceStdDev": 0.143545,
+      "dominantHex": "#8e5294",
+      "luminanceStdDev": 0.165306,
       "seamMaxDeltaE": 0
     },
     "CBRS": {
@@ -221,9 +221,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2188403,
-        "emissive": 140676,
-        "normal": 366939
+        "base": 2207248,
+        "emissive": 141869,
+        "normal": 366848
       },
       "markCapitals": {
         "count": 3,
@@ -233,12 +233,12 @@
           120
         ],
         "latitudeDegrees": 0,
-        "widthFraction": 0.18,
+        "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "preflopped before seam repair for KTX2 sphere UV"
+        "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#746138",
-      "luminanceStdDev": 0.103866,
+      "dominantHex": "#74623a",
+      "luminanceStdDev": 0.106308,
       "seamMaxDeltaE": 0
     }
   }

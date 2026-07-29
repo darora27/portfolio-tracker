@@ -48,6 +48,7 @@ import {
   resolveOrreryRaycastTarget,
   ringVertexAlpha,
   starMagnitudeBucket,
+  trailRibbonHalfWidths,
   type SceneModel,
   type TradeCometInput,
 } from "@/lib/observatory/scene-model";
@@ -323,30 +324,86 @@ function createTrailGeometry(
   length: number,
   direction: SceneModel["trails"][number]["direction"],
   maximumWidth: number,
+  minimumWidth = 0,
 ): BufferGeometry {
   const positions: number[] = [];
   const segments = 28;
   const sign = direction === "counterclockwise" ? 1 : -1;
+  const quad = (
+    outer0: readonly number[],
+    inner0: readonly number[],
+    outer1: readonly number[],
+    inner1: readonly number[],
+  ) => {
+    positions.push(
+      ...outer0,
+      ...inner0,
+      ...outer1,
+      ...inner0,
+      ...inner1,
+      ...outer1,
+    );
+  };
   for (let index = 0; index < segments; index += 1) {
     const t0 = index / segments;
     const t1 = (index + 1) / segments;
     const a0 = sign * length * t0;
     const a1 = sign * length * t1;
-    const w0 = maximumWidth * (1 - t0) + 0.008;
-    const w1 = maximumWidth * (1 - t1) + 0.008;
-    const point = (angle: number, width: number) => [
-      Math.cos(angle) * (radius + width),
-      0.025,
-      Math.sin(angle) * (radius + width),
-      Math.cos(angle) * (radius - width),
-      0.025,
-      Math.sin(angle) * (radius - width),
-    ];
-    const p0 = point(a0, w0);
-    const p1 = point(a1, w1);
-    positions.push(
-      ...p0.slice(0, 3), ...p0.slice(3), ...p1.slice(0, 3),
-      ...p0.slice(3), ...p1.slice(3), ...p1.slice(0, 3),
+    // Preserve a visible taper without letting the outer-orbit core collapse
+    // below a pixel at the established OVERVIEW camera.
+    const widths0 = trailRibbonHalfWidths(
+      t0,
+      maximumWidth,
+      minimumWidth,
+    );
+    const widths1 = trailRibbonHalfWidths(
+      t1,
+      maximumWidth,
+      minimumWidth,
+    );
+    const outer0 = widths0.outer;
+    const outer1 = widths1.outer;
+    const inner0 = widths0.inner;
+    const inner1 = widths1.inner;
+    const radial = (angle: number, offset: number) =>
+      [
+        Math.cos(angle) * (radius + offset),
+        0.025,
+        Math.sin(angle) * (radius + offset),
+      ] as const;
+    const vertical = (angle: number, offset: number) =>
+      [
+        Math.cos(angle) * radius,
+        0.025 + offset,
+        Math.sin(angle) * radius,
+      ] as const;
+
+    // Pair the orbital-plane ribbon with a vertical ribbon so its core remains
+    // measurable where perspective foreshortens the plane. The glow uses
+    // minimumWidth to occupy only the annulus outside the opaque core.
+    quad(
+      radial(a0, outer0),
+      radial(a0, inner0),
+      radial(a1, outer1),
+      radial(a1, inner1),
+    );
+    quad(
+      radial(a0, -outer0),
+      radial(a0, -inner0),
+      radial(a1, -outer1),
+      radial(a1, -inner1),
+    );
+    quad(
+      vertical(a0, outer0),
+      vertical(a0, inner0),
+      vertical(a1, outer1),
+      vertical(a1, inner1),
+    );
+    quad(
+      vertical(a0, -outer0),
+      vertical(a0, -inner0),
+      vertical(a1, -outer1),
+      vertical(a1, -inner1),
     );
   }
   const geometry = new BufferGeometry();
@@ -623,6 +680,7 @@ export default function OrreryScene({
     });
     const nebula = new Mesh(nebulaGeometry, nebulaMaterial);
     nebula.position.set(-outerRadius * 0.25, -1.7, -outerRadius * 0.45);
+    nebula.visible = false;
     scene.add(nebula);
     const auroraBytes = new Uint8Array(
       sceneModel.aurora.colorSamples.flatMap((hex) => {
@@ -662,6 +720,7 @@ export default function OrreryScene({
       outerRadius * sceneModel.aurora.chord.zInOuterRadii,
     );
     aurora.rotation.z = -0.12;
+    aurora.visible = false;
     scene.add(aurora);
     mount.dataset.auroraClearanceSunRadii = String(
       sceneModel.aurora.chord.screenClearanceSunRadii,
@@ -675,6 +734,8 @@ export default function OrreryScene({
       opacity: sceneModel.weatherWisps.alpha,
       blending: AdditiveBlending,
       depthWrite: false,
+      fog: false,
+      side: 2,
     });
     const weatherWisps = new Group();
     for (const pole of [-1, 1]) {
@@ -682,6 +743,7 @@ export default function OrreryScene({
       wisp.position.y = pole * sceneModel.sun.radius * 1.18;
       weatherWisps.add(wisp);
     }
+    weatherWisps.visible = false;
     scene.add(weatherWisps);
     mount.dataset.weatherWispSign = sceneModel.weatherWisps.sign;
     mount.dataset.weatherWispAlpha = String(sceneModel.weatherWisps.alpha);
@@ -709,10 +771,14 @@ export default function OrreryScene({
       opacity: 0.12,
       blending: AdditiveBlending,
       depthWrite: false,
+      fog: false,
+      side: 2,
     });
     const glowMaterialOuter = glowMaterialInner.clone();
     const glowInner = new Mesh(sunGeometry, glowMaterialInner);
     const glowOuter = new Mesh(sunGeometry, glowMaterialOuter);
+    glowInner.visible = false;
+    glowOuter.visible = false;
     glowInner.userData.orreryTarget = "portfolio-glow";
     glowOuter.userData.orreryTarget = "portfolio-glow";
     scene.add(glowInner, glowOuter);
@@ -723,6 +789,7 @@ export default function OrreryScene({
       opacity: 0.78,
       blending: AdditiveBlending,
       depthWrite: false,
+      fog: false,
       side: 2,
     });
     const dockingRing = new Group();
@@ -798,11 +865,13 @@ export default function OrreryScene({
       const orbit = new Group();
       orbit.rotation.y = initialAngle;
       const trailMeshes = trailDescriptor.passes.map((pass) => {
+        const isGlow = pass.id === "glow";
         const geometry = createTrailGeometry(
           orbitRadius,
           trailDescriptor.arcRadians,
           trailDescriptor.direction,
-          pass.id === "glow" ? 0.16 : 0.09,
+          isGlow ? 0.25 : 0.15,
+          isGlow ? 0.15 : 0,
         );
         trailGeometries.push(geometry);
         const material = new MeshBasicMaterial({
@@ -816,6 +885,7 @@ export default function OrreryScene({
         });
         trailMaterials.push(material);
         const mesh = new Mesh(geometry, material);
+        mesh.visible = false;
         orbit.add(mesh);
         return mesh;
       });
@@ -837,6 +907,7 @@ export default function OrreryScene({
       });
       trailMaterials.push(headMaterial);
       const headMesh = new Mesh(headGeometry, headMaterial);
+      headMesh.visible = false;
       orbit.add(headMesh);
       trailMeshes.push(headMesh);
       const brandColor = new Color(descriptor.brandHex);
@@ -899,13 +970,18 @@ export default function OrreryScene({
     });
 
     const moonGeometry = new IcosahedronGeometry(1, 2);
-    const moonMaterial = new MeshBasicMaterial({ color: "#b9aa8c" });
+    const moonMaterial = new MeshBasicMaterial({
+      color: "#b9aa8c",
+      fog: false,
+      side: 2,
+    });
     const moonRuntimes = sceneModel.moons.flatMap((moon) => {
       const planet = planetRuntimes.find(
         ({ holding }) => holding.ticker === moon.ticker,
       );
       if (!planet) return [];
       const group = new Group();
+      group.visible = false;
       group.position.copy(planet.mesh.position);
       const mesh = new Mesh(moonGeometry, moonMaterial);
       mesh.scale.setScalar(moon.radius);
@@ -921,6 +997,7 @@ export default function OrreryScene({
             transparent: true,
             opacity: 0.85,
             blending: AdditiveBlending,
+            fog: false,
             side: 2,
           }),
         );
@@ -933,14 +1010,21 @@ export default function OrreryScene({
     });
 
     const satelliteGeometry = new IcosahedronGeometry(0.16, 0);
-    const satelliteMaterial = new MeshBasicMaterial({ color: "#e9c780" });
+    const satelliteMaterial = new MeshBasicMaterial({
+      color: "#e9c780",
+      fog: false,
+      side: 2,
+    });
     const satelliteLightMaterial = new MeshBasicMaterial({
       color: "#fff4cb",
       transparent: true,
       opacity: 1,
+      fog: false,
+      side: 2,
     });
     const satelliteRuntimes = sceneModel.satellites.map((satellite) => {
       const group = new Group();
+      group.visible = false;
       group.rotation.y = satellite.phase;
       const craft = new Mesh(satelliteGeometry, satelliteMaterial);
       craft.position.x = satellite.orbitRadius;
@@ -958,8 +1042,13 @@ export default function OrreryScene({
 
     const beltRadius = sceneModel.belt.radius;
     const beltGroup = new Group();
+    beltGroup.visible = false;
     const rockGeometry = new IcosahedronGeometry(1, 1);
-    const rockMaterial = new MeshBasicMaterial({ color: "#b38a57" });
+    const rockMaterial = new MeshBasicMaterial({
+      color: "#b38a57",
+      fog: false,
+      side: 2,
+    });
     const beltRocks: Mesh[] = [];
     const beltLabels: HTMLButtonElement[] = [];
     sceneBelt.forEach((holding, index) => {
@@ -990,6 +1079,7 @@ export default function OrreryScene({
     scene.add(beltGroup);
 
     const cometGroup = new Group();
+    cometGroup.visible = false;
     const cometHeadGeometry = sceneModel.comet
       ? new IcosahedronGeometry(0.13, 1)
       : null;
@@ -1414,7 +1504,8 @@ export default function OrreryScene({
           ? ACTIVE_RING_OPACITY
           : OVERVIEW_RING_OPACITY;
         planet.path.rotation.y = planet.orbit.rotation.y;
-        planet.path.visible = state !== "approach";
+        planet.path.visible =
+          shaderWarmupStage >= 2 && state !== "approach";
         planet.mesh.getWorldPosition(worldPosition);
         const liveProjection = projectSphereScreenBounds(
           {
@@ -1473,7 +1564,8 @@ export default function OrreryScene({
         );
         planet.orbit.updateWorldMatrix(true, false);
         const trailSampleAngle =
-          planet.trailDescriptor.sweep.tailRadians * 0.35;
+          planet.trailDescriptor.sweep.tailRadians *
+          planet.trailDescriptor.sampleFraction;
         trailSamplePosition
           .set(
             Math.cos(trailSampleAngle) * planet.descriptor.orbitRadius,
@@ -1644,7 +1736,7 @@ export default function OrreryScene({
         localTarget === "portfolio" ||
         portfolioFocusedRef.current ||
         now < dockingFlashUntil;
-      dockingRing.visible = dockingActive;
+      dockingRing.visible = shaderWarmupStage >= 4 && dockingActive;
       mount.dataset.docking = dockingActive ? "true" : "false";
       dockingRing.rotation.z = reducedMotion ? 0 : time * 0.16;
       sunMaterial.uniforms.uTime.value = time;
@@ -1668,13 +1760,42 @@ export default function OrreryScene({
       aurora.position.x = reducedMotion ? 0 : Math.sin(time * 0.025) * outerRadius * 0.04;
       renderer.render(scene, camera);
       if (shaderWarmupStage === 0) {
-        sun.visible = true;
+        nebula.visible = true;
+        aurora.visible = true;
+        weatherWisps.visible = true;
+        glowInner.visible = true;
+        glowOuter.visible = true;
         shaderWarmupStage = 1;
       } else if (shaderWarmupStage === 1) {
+        // The ring shader becomes visible through the render-loop gate on the
+        // next frame. Keeping one program family per frame prevents first-load
+        // WebGLPrograms acquisition from becoming a single long task.
+        shaderWarmupStage = 2;
+      } else if (shaderWarmupStage === 2) {
+        planetRuntimes.forEach(({ trailMeshes }) => {
+          trailMeshes.forEach((mesh) => {
+            mesh.visible = true;
+          });
+        });
+        shaderWarmupStage = 3;
+      } else if (shaderWarmupStage === 3) {
+        moonRuntimes.forEach(({ group }) => {
+          group.visible = true;
+        });
+        satelliteRuntimes.forEach(({ group }) => {
+          group.visible = true;
+        });
+        beltGroup.visible = true;
+        cometGroup.visible = Boolean(sceneModel.comet);
+        shaderWarmupStage = 4;
+      } else if (shaderWarmupStage === 4) {
+        sun.visible = true;
+        shaderWarmupStage = 5;
+      } else if (shaderWarmupStage === 5) {
         planetRuntimes.forEach(({ mesh }) => {
           mesh.visible = true;
         });
-        shaderWarmupStage = 2;
+        shaderWarmupStage = 6;
       }
       animationFrame = requestAnimationFrame(render);
     };

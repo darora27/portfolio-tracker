@@ -219,7 +219,10 @@ export function MissionControl({
           </div>
           <div className={styles.railStations}>
             <Link href={`${basePath}?focus=portfolio&camera=command&station=scope`}>
-              <b>SCOPE</b><span>am I beating the market</span>
+              <b>SCOPE</b>
+              {activePanel === "scope"
+                ? null
+                : <span>am I beating the market</span>}
             </Link>
             <Link href={`${basePath}?focus=portfolio&camera=command&station=comms`}>
               <b>LAUNCH</b><span>what’s next on the calendar</span>
@@ -228,10 +231,16 @@ export function MissionControl({
         </aside>
         <footer className={styles.instrumentStrip}>
           <Link href={`${basePath}?focus=portfolio&camera=command&station=hazard`}>
-            <b>HAZARD</b><span>how much can this hurt</span>
+            <b>HAZARD</b>
+            {activePanel === "hazard"
+              ? null
+              : <span>how much can this hurt</span>}
           </Link>
           <Link href={`${basePath}?focus=portfolio&camera=command&station=signals`}>
-            <b>SIGNALS</b><span>what moves together</span>
+            <b>SIGNALS</b>
+            {activePanel === "signals"
+              ? null
+              : <span>what moves together</span>}
           </Link>
         </footer>
       </div>

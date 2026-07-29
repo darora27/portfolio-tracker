@@ -109,9 +109,9 @@ describe("authored planet texture manifest", () => {
         count: 3,
         longitudeDegrees: [-120, 0, 120],
         latitudeDegrees: 0,
-        widthFraction: 0.18,
+        widthFraction: 0.24,
         edgeTreatment: "blur-threshold erosion",
-        chirality: "preflopped before seam repair for KTX2 sphere UV",
+        chirality: "source-forward before seam repair for DataTexture UV",
       });
 
       const thumbnail = sharp(

@@ -51,10 +51,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
           "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "F3 round-2 remediation corrected the supplied-mark compositor: the one-stage Sharp pipeline emitted three channels and dropped the alpha mask, so pre-flopping never reached the KTX bytes. Tint and one-channel alpha join are now separate stages; all 24 maps changed, texture tests pass, and the 23,075,805-byte payload remains below 30 MB. The retained live chirality verifier was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so DEF-02 remains deferred_to_reviewer rather than passed. — recorded by codex/gpt-5"
+        "notes": "F3 round-3 remediation removes the incorrect pre-flop from DataTexture's flipY=false path, widens capitals to 24%, and strengthens terrain-derived mark contrast before emissive/normal derivation. All 24 maps changed; 22,804,307 shipped bytes and every luminanceStdDev >= 0.1 pass deterministically. The unchanged live chirality verifier was attempted but both permitted browser paths were unavailable before navigation (in-app discovery=[]; Chromium MachPort Permission denied 1100). This uses the ledger schema's only complete non-pass environment-gap value; PHASE10_STATE remains blocked and DEF-02 must not be routed to reviewer or treated as passed. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -83,9 +84,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "F1 round-3 remediation makes the opaque flat-token core perspective-stable and removes glow overlap; pure width/sample invariants and the full test suite pass. The unchanged live trail and evidence scripts were attempted but could not navigate (in-app discovery=[]; Chromium MachPort Permission denied 1100), so the flat-token rendered-pixel half remains ungraded with TST-03. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "blocked",
@@ -795,11 +797,12 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
           "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "Round-2 mark-compositor remediation regenerated all 24 maps, so the prior live luminance result cannot be preserved as implementer evidence. The non-live texture gate passes with luminanceStdDev 0.103866-0.179004 and 23,075,805 shipped bytes. capture-live-sphere-strip.mjs was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so VIS-01 remains deferred_to_reviewer and no pixel pass is claimed. — recorded by codex/gpt-5"
+        "notes": "Round-3 F3 remediation regenerated all 24 maps, so the prior candidate's live luminance pass cannot be preserved. The non-live texture gate passes at 22,804,307 bytes with luminanceStdDev 0.106308-0.185874. capture-live-sphere-strip.mjs was attempted unchanged but both browser paths failed before navigation; VIS-01 remains ungraded and no live luminance pass is claimed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "pass",
@@ -828,10 +831,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
           "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "Round-2 compositor remediation now applies the supplied, pre-flopped silhouette as a real alpha mask before deriving emissive and normal maps; all 24 maps changed and deterministic texture gates pass. The retained live carved-mark verifier was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so VIS-02 remains deferred_to_reviewer. — recorded by codex/gpt-5"
+        "notes": "Round-3 F3 remediation keeps supplied marks source-forward, widens them to 24%, strengthens terrain-derived contrast, and derives emissive/normal maps from the composited base; all 24 maps changed and deterministic texture gates pass. The retained live carved-mark verifier could not navigate under either browser path, so VIS-02 remains ungraded and no rendered material claim is made. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",
@@ -887,10 +891,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "F1 round-2 remediation makes the trail core a genuinely opaque Three.js pass and widens its overview ribbon while retaining the separate additive glow; the scene-model arc, ramp, direction and 12% head assertions pass. sample-live-rgb.mjs was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so the now-reachable live VIS-04 check remains deferred_to_reviewer. — recorded by codex/gpt-5"
+        "notes": "F1 round-3 remediation keeps the core opaque, adds a perspective-stable crossed ribbon with taper floor, and moves additive glow into a hollow annulus outside it; the sample sits beyond the 12% head. Scene-model arc/ramp/direction/head/width assertions pass. sample-live-rgb.mjs could not navigate under either browser path, so VIS-04 remains ungraded with TST-03 and no still-frame pass is claimed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "blocked",
@@ -1110,10 +1115,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "F4 round-2 remediation makes MANIFEST follow PLOT's active-question rule and places each CONTRIBUTION value in the half opposite its signed bar; the rendered-DOM integration test passes. capture-live-evidence.mjs was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so VIS-12 remains deferred_to_reviewer rather than self-passed. — recorded by codex/gpt-5"
+        "notes": "F4 round-3 remediation applies the active-question suppression rule to SCOPE, HAZARD and SIGNALS. Rendered-DOM coverage now exercises PLOT, MANIFEST, SCOPE, HAZARD and SIGNALS and sees one active question each; server-rendered DOM confirms the three corrected stations. capture-live-evidence.mjs could not navigate under either browser path, so the required refreshed 1440x900 artifacts remain unavailable and VIS-12 is not passed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1684,11 +1690,12 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "F1 round-2 remediation fixes the incomplete core treatment: the core now leaves Three.js's transparent queue and its overview ribbon is widened, while the atmospheric glow stays additive; focused scene-model and full tests pass. sample-live-rgb.mjs was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so deltaE, hue and ordering remain deferred_to_reviewer rather than claimed. — recorded by codex/gpt-5"
+        "notes": "F1 round-3 remediation corrects all three diagnosed mechanisms without changing the verifier: sample metadata targets the stable arc body, the opaque crossed core has a measurable taper floor, and additive glow occupies only the annulus outside it. Pure invariants and 527/527 tests pass. sample-live-rgb.mjs was attempted unchanged but neither browser path could navigate, so deltaE, hue lock and ordering remain ungraded and are not passed. This uses the ledger schema's environment-gap value while PHASE10_STATE remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1940,11 +1947,12 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs",
           "docs/phase10-baseline/section-10/raw-long-task-output.txt"
         ],
-        "notes": "F2 round-2 attribution: the worker removed fetch/parse/zstd decode, but the first planet's decoded base, emissive and normal maps were still bound together, making the next render upload all three at the reviewer's ~570-590ms task point. The candidate binds one map per animation frame, preserving first-paint shader art, the unmodified absolute 50ms gate, and no post-process. The five-context verifier was attempted against the rebuilt candidate, but in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100), so BLD-04 remains deferred_to_reviewer. — recorded by codex/gpt-5"
+        "notes": "F2 round-3 remediation follows the reviewer CPU profile: first-load program families reveal one per frame and compatible basic materials share fog/side parameters, reducing WebGLPrograms cache-key/compile work without threshold changes, baseline subtraction or a post-process. The unchanged five-context verifier was attempted against the final production server, but both browser paths failed before navigation; BLD-04 remains ungraded and no timing pass is claimed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1973,10 +1981,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/diagnose-live-scene.mjs"
         ],
-        "notes": "Texture work remains scheduled after two animation frames; deterministic shader art is bound before the module worker begins fetching/decoding, and decoded base, emissive and normal maps now bind one per subsequent frame. The production build passes. Live first-paint/network sequencing was attempted but remains deferred because in-app discovery=[] and Chromium was sandbox-blocked before navigation (Permission denied 1100). — recorded by codex/gpt-5"
+        "notes": "Texture work remains scheduled after two animation frames; shader art is bound before the worker begins fetch/decode, and decoded maps still bind one per frame. Round-3 shader-family staging affects first paint, so the prior candidate's evidence cannot be preserved. The production build passes, but live first-paint/network sequencing could not navigate under either browser path; BLD-05 remains ungraded. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "not_run",

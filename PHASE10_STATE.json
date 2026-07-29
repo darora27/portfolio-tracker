@@ -4,8 +4,8 @@
   "current_section": "§10",
   "role": "codex_implementation",
   "stage": "remediate",
-  "status": "ready",
-  "next_actor": "codex",
+  "status": "blocked",
+  "next_actor": "devan",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -79,7 +79,7 @@
       "UNIVERSE_PALETTE_3.html"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-10-claude-lead-to-codex-remediation-3.md",
+    "handoff": "docs/phase10-handoffs/2026-07-28-section-10-codex-implementation-to-devan-blocked.md",
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_3). Authority order for this section: UNIVERSE_IDEAS_3.md (round-3 design, revision 2) -> UNIVERSE_PALETTE_3.html (the computed palette board) -> docs/reference/ -> PHASE10.md §10. Round 3 supersedes UNIVERSE_IDEAS_2.md wherever the two conflict. INHERITED RED, NOT A §10 DEFECT: npm test is red at this section start with exactly two failures in src/lib/observatory/planet-textures.test.ts - manifest.totalBytes 22,450,706 against §9’s 15,000,000 cap, and INTC 0.098092 / CBRS 0.093008 luminanceStdDev against §9’s 0.1 floor. Both were introduced by owner texture commits after §9’s reviewed implementation and are §10 work item 5 (texture regeneration): §10 must raise the byte ceiling in planet-textures.test.ts to the 30 MB figure PHASE10.md §10’s Build dimension already states, and must VERIFY - not assume - that relighting INTC and CBRS lifts them into the required luminance window. Ten owner defects reported live against §9 are carried into PHASE10.md §10 “Owner defects to close in this section” rather than reopening §9. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (“website is still relatively confusing”). §9’s testing prohibition carries forward and is restated in §10’s Acceptance: expect(source).toContain(...) is not valid coverage for rendered behaviour.",
     "remediation_commits_note": "61db1d6 is the round-2 remediation commit (the placeholder the previous turn could not fill). 3bdf468 is the HEAD reviewed as the round-3 candidate; git diff 61db1d6 3bdf468 -- src/ public/ scripts/ package.json package-lock.json is empty, so the reviewed application source is exactly the round-2 remediation. The six commits between them are owner design documents, the owner feedback ledger, the §11 roadmap insertion, and a launch-argument-only change to the retained Playwright verifiers."
   },
@@ -144,35 +144,35 @@
       "note": "Universe craft and depth. One implementation round, five review rounds, four remediation rounds; findings F1-F9 all resolved and each independently confirmed by Claude Lead. The authoritative review (section-9-review-5.md) recorded BLOCKED rather than PASS: F9 closed, but §9 criteria 48, 53 and 55 were red on the tree because of five owner texture commits landed on top of the reviewed implementation. Accepted at 589be88 rather than HEAD by explicit owner decision (Option 1, docs/phase10-handoffs/2026-07-28-section-9-devan-to-claude-lead-resume.md): 589be88 is the last commit at which §9 satisfies its own criteria (11,727,680 texture bytes vs the 15,000,000 cap; minimum luminanceStdDev 0.101584 vs the 0.1 floor), both re-verified at acceptance directly from the manifest and the git tree. src/ is byte-identical between 589be88 and HEAD (git diff --name-only 589be88 HEAD -- src/ is empty), so the accepted implementation is exactly the reviewed one. main is deliberately left RED on npm test (2 failed / 497 passed of 499, both in planet-textures.test.ts) under a documented, time-boxed, non-generalizing owner exception; closing criteria 48 and 55 is §10 work item 5 and must NOT be raised as findings against §10’s implementer. §9’s after/overview-1440x900.png is deliberately not recaptured. See docs/phase10-workflow/reviews/section-9-accepted.md."
     }
   ],
-  "prev_actor_commit": "3bdf46895ceeaaa4e125bac80f64776f3fb63423",
-  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md section 8 (the completing actor never writes its own commit hash): 3bdf468 was HEAD at the start of this Claude Lead review round-3 turn, resolved with git log -1 --format=%H against the clean tree this turn started from. It is also the reviewed candidate.",
+  "prev_actor_commit": "4904b7115083231379da13dc691e77fc22f34886",
+  "prev_actor_commit_note": "Recorded this turn per docs/PHASE10_AGENT_WORKFLOW.md section 8 (the completing actor never writes its own commit hash): 4904b7115083231379da13dc691e77fc22f34886 was HEAD at the start of this Codex Implementation round-3 remediation turn, resolved with git log -1 --format=%H against the clean tree this turn started from.",
   "last_green_commit": "3d1882a116ef116f21a529eaa050f17f88875def",
   "last_green_commit_note_2": "Moved from 457f90f to the round-2 candidate 3d1882a. Claude Lead independently re-ran both binding gates at 3d1882a: npm test 526/526 across 99 files, npm run build passed with the route list unchanged and the /share + Mission Control manifest smoke green. The review still FAILS on four live criteria that no unit test covers; green gates and a failing review are not in conflict.",
-  "production_code_changed_this_turn": false,
+  "production_code_changed_this_turn": true,
   "production_code_note_prior_turn": "Codex Implementation remediated only round-2 findings F1-F4. The measurable trail core now uses the opaque queue and a wider overview ribbon while its glow remains additive. Decoded base, emissive and normal planet maps bind one per animation frame instead of producing one batched first-upload frame. The supplied-mark compositor now preserves its pre-flopped alpha mask by tinting and joining alpha in separate Sharp pipelines, and all 24 KTX2 assets plus thumbnails were regenerated within the 30 MB budget and luminance floor. MANIFEST renders its active question once and contribution labels sit opposite their signed bars. Acceptance, the final 526-test run, TypeScript and the production build are green. Live reruns remain explicitly deferred because both the in-app browser backend and standalone Chromium were unavailable in this CLI environment.",
-  "production_code_note": "Claude Lead review round 3 changed no application source. It ran every retained section verifier unmodified against a production server on a real GPU, independently re-ran both binding gates green, closed VIS-01 and MOB-01 against the regenerated textures, and returned four bounded findings: the trail sampler now fails 7 of 8 holdings with three separable mechanisms identified from retained pixel neighbourhoods, the route-owned long task still breaches 50ms and is attributed by CPU profile to Three.js shader-program compilation rather than texture upload, mark chirality regressed from four to six failing worlds, and three bays still print their question twice although the contribution-numeral defect is fixed.",
+  "production_code_note": "Codex Implementation changed only the four bounded round-3 findings. F1 moves the published trail sample outside the inner planet disc, keeps a measurable crossed-ribbon opaque core, and makes its additive glow hollow. F2 stages WebGL program families across animation frames and consolidates basic-material program keys. F3 removes the pre-flop that inverted source marks for DataTexture.flipY=false, widens and strengthens the marks, and regenerates all planet maps and thumbnails within the 30 MB budget and luminance floor. F4 suppresses the SCOPE, HAZARD, and SIGNALS persistent questions while their bay is active. The final deterministic gates pass at 99 files / 527 tests and a clean Next.js 16.2.11 build. No live-render pass is claimed: the required unchanged Playwright matrix cannot navigate because this CLI host exposes no in-app browser and denies Chromium MachPort bootstrap access.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Claude Lead independently re-ran the full suite at the reviewed candidate: 99 of 99 test files and 526 of 526 tests passed in 4.91s with zero failures.",
-      "finished_at": "2026-07-28T23:31:39Z"
+      "summary": "Codex Implementation final binding run after all round-3 source and asset changes: 99 of 99 test files and 527 of 527 tests passed with zero failures.",
+      "finished_at": "2026-07-29T00:13:08Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Claude Lead independently re-ran the Next.js 16.2.11 production build at the reviewed candidate: exit 0, compiled successfully, 18 static page tasks generated, route list unchanged, and the build script /share 200 plus Mission Control manifest 200 smoke check passed.",
-      "finished_at": "2026-07-28T23:31:39Z"
+      "summary": "Codex Implementation final binding build after all round-3 source and asset changes: exit 0, Next.js 16.2.11 compiled successfully, TypeScript passed, 18 static page tasks generated, route list remained unchanged, and the build script /share 200 plus Mission Control manifest 200 smoke check passed.",
+      "finished_at": "2026-07-29T00:13:08Z"
     },
     "live_evidence": {
-      "command": "sample-live-rgb.mjs, capture-live-sphere-strip.mjs, measure-long-tasks.mjs and capture-live-evidence.mjs run unmodified against a production server at http://127.0.0.1:3131/share, plus retained reviewer diagnostic probes",
-      "status": "fail",
-      "summary": "The full live matrix ran end to end on a real GPU. VIS-01, TST-04 and MOB-01 pass; TST-03, DEF-02, BLD-04 and VIS-12 fail; VIS-04 and DEF-03 are blocked behind TST-03. All raw output, non-throwing full tables, CPU-profile attribution and pixel crops are retained under docs/phase10-baseline/section-10/claude-review-3/.",
-      "finished_at": "2026-07-28T23:31:39Z"
+      "command": "sample-live-rgb.mjs, capture-live-sphere-strip.mjs, measure-long-tasks.mjs and capture-live-evidence.mjs attempted unmodified against a production server at http://127.0.0.1:3132/share",
+      "status": "blocked",
+      "summary": "Every required live verifier was attempted, but all four standalone Chromium launches exited before navigation with bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permission denied (1100). The in-app browser setup also reported no browser available, and its permitted discovery call returned an empty list. TST-03, VIS-04, DEF-03, BLD-04, DEF-02, VIS-01, VIS-02, BLD-05, and refreshed VIS-12 artifacts therefore remain ungraded; no live pass is claimed.",
+      "finished_at": "2026-07-29T00:13:08Z"
     }
   },
-  "stop_reason": null,
-  "updated_at": "2026-07-28T23:31:39Z",
+  "stop_reason": "Round-3 remediation code and deterministic gates are complete, but every required unchanged live verifier is blocked before navigation: the in-app browser has no available session (discovery returned an empty list), and Chromium is denied MachPort bootstrap access by the CLI host (Permission denied 1100). The lead handoff makes these live results non-deferrable, so Devan must rerun or authorize the required live matrix in a browser-capable host before §10 can return to review.",
+  "updated_at": "2026-07-29T00:13:08Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

@@ -148,38 +148,29 @@ describe("MissionControl interactions", () => {
   });
 
   it("renders each active bay question once", () => {
-    const { rerender } = render(
-      <MissionControl
-        activePanel="plot"
-        mode="public"
-        content={<p>where is everything, and how was the week</p>}
-        closeHref="/share"
-        basePath="/share"
-        holdings={[holding]}
-        health={0.2}
-        teletype="SOL-DEVAN · DAY +1.0%"
-      />,
-    );
+    const activeQuestions = [
+      ["plot", "where is everything, and how was the week"],
+      ["manifest", "what do I own, at what weight"],
+      ["scope", "am I beating the market"],
+      ["hazard", "how much can this hurt"],
+      ["signals", "what moves together"],
+    ] as const;
+    const view = render(<div />);
 
-    expect(
-      screen.getAllByText("where is everything, and how was the week"),
-    ).toHaveLength(1);
-
-    rerender(
-      <MissionControl
-        activePanel="manifest"
-        mode="public"
-        content={<p>what do I own, at what weight</p>}
-        closeHref="/share"
-        basePath="/share"
-        holdings={[holding]}
-        health={0.2}
-        teletype="SOL-DEVAN · DAY +1.0%"
-      />,
-    );
-
-    expect(
-      screen.getAllByText("what do I own, at what weight"),
-    ).toHaveLength(1);
+    for (const [activePanel, question] of activeQuestions) {
+      view.rerender(
+        <MissionControl
+          activePanel={activePanel}
+          mode="public"
+          content={<p>{question}</p>}
+          closeHref="/share"
+          basePath="/share"
+          holdings={[holding]}
+          health={0.2}
+          teletype="SOL-DEVAN · DAY +1.0%"
+        />,
+      );
+      expect(screen.getAllByText(question), activePanel).toHaveLength(1);
+    }
   });
 });

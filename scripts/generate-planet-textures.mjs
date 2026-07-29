@@ -219,13 +219,12 @@ async function authoredBase(identity, width, height) {
   const markSvg = await readFile(
     path.join(MARKS, `${identity.ticker.toLowerCase()}.svg`),
   );
-  const markWidth = Math.round(width * 0.18);
-  // The runtime's KTX2 sphere UV convention mirrors the post-composited mark.
-  // Pre-flop the vector before weathering so its final on-sphere chirality is
-  // correct; seam repair happens after this operation and never changes it.
+  const markWidth = Math.round(width * 0.24);
+  // DataTexture preserves authored row and column order (flipY=false). Keep the
+  // source-forward alpha mask here; pre-flopping it mirrored the mark that
+  // reached the rendered sphere. Seam repair does not change handedness.
   const markAlpha = await sharp(markSvg)
     .resize({ width: markWidth, withoutEnlargement: false })
-    .flop()
     .ensureAlpha()
     .extractChannel("alpha")
     .blur(Math.max(0.5, markWidth * 0.006))
@@ -257,7 +256,7 @@ async function authoredBase(identity, width, height) {
       // Tint preserves the terrain luminance under the vector, so the capital
       // reads as material treatment instead of a flat image stamp.
       .tint(identity.relightHex ?? identity.brandHex)
-      .linear(1.15, 18)
+      .linear(1.35, 34)
       .raw()
       .toBuffer();
     const underlying = await sharp(tintedTerrain, {
@@ -529,9 +528,9 @@ async function generateTier(tier) {
         count: 3,
         longitudeDegrees: [-120, 0, 120],
         latitudeDegrees: 0,
-        widthFraction: 0.18,
+        widthFraction: 0.24,
         edgeTreatment: "blur-threshold erosion",
-        chirality: "preflopped before seam repair for KTX2 sphere UV",
+        chirality: "source-forward before seam repair for DataTexture UV",
       },
       ...metrics,
     };

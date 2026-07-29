@@ -32,7 +32,9 @@ import {
   starPopulationDescriptor,
   sunRadiusForPlanetRadii,
   sunVisualParameters,
+  TRAIL_SAMPLE_FRACTION,
   trailArcLengthForWeeklyReturn,
+  trailRibbonHalfWidths,
   trailSweepAngles,
   weatherWispsForHealth,
   weeklyReturnsFromIndexSeries,
@@ -138,6 +140,13 @@ describe("pure overview scene descriptor", () => {
       widthPx: 4,
       opacity: 1,
     });
+    expect(model.trails[0].sampleFraction).toBe(TRAIL_SAMPLE_FRACTION);
+    expect(
+      Math.abs(
+        model.trails[0].sweep.tailRadians *
+          model.trails[0].sampleFraction,
+      ),
+    ).toBeGreaterThan(model.trails[0].arcRadians * 0.5);
     expect(model.labels.every(({ fontSizePx }) => fontSizePx === 12)).toBe(true);
     expect(model.labels[0].dayChip).toBe("▼ 6.7");
     expect(model.nebula).toEqual(nebulaForHealth(-0.42));
@@ -574,6 +583,29 @@ describe("pure overview scene descriptor", () => {
       color: UNIVERSE_PALETTE.signal.flat,
       arcRadians: trailArcLengthForWeeklyReturn(0.002),
     });
+  });
+
+  it("keeps the sampled trail core measurable without glow overlap", () => {
+    expect(trailRibbonHalfWidths(-1, 0.15)).toEqual({
+      inner: 0,
+      outer: 0.15,
+    });
+    expect(trailRibbonHalfWidths(2, 0.15)).toEqual({
+      inner: 0,
+      outer: 0.0675,
+    });
+    const core = trailRibbonHalfWidths(
+      TRAIL_SAMPLE_FRACTION,
+      0.15,
+    );
+    const glow = trailRibbonHalfWidths(
+      TRAIL_SAMPLE_FRACTION,
+      0.25,
+      0.15,
+    );
+    expect(core.outer).toBeGreaterThan(0.09);
+    expect(glow.inner).toBeCloseTo(core.outer, 12);
+    expect(glow.outer).toBeGreaterThan(glow.inner);
   });
 
   it("banks day return and uses only seeded decorative spin and slow moon motion", () => {

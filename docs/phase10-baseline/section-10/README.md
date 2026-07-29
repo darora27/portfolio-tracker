@@ -24,6 +24,36 @@ Permission denied (1100)`. Exact evidence is retained in `browser-backend.txt`.
 
 Criteria whose truth depends on live WebGL pixels, computed geometry, pointer acquisition, mobile layout, reduced-motion rendering, or long-task entries are recorded as `deferred_to_reviewer`. Their retained verifier scripts are under `scripts/`; the corresponding raw output files record the exact environment-only gap.
 
+## Review remediation round 3 — blocked on required live proof
+
+The four round-3 findings were remediated in code without changing a retained
+verifier, threshold, or assertion:
+
+- `TST-03`: the published sample moves onto the stable body of the arc; the
+  crossed core keeps outer-orbit coverage measurable, and the hollow additive
+  glow no longer overlaps or washes the core.
+- `BLD-04`: scene program families reveal over separate animation frames and
+  compatible basic materials share shader parameters, directly addressing the
+  reviewer’s WebGLPrograms attribution.
+- `DEF-02`: supplied marks remain source-forward for DataTexture’s
+  `flipY=false` path, widen to 24%, and carry stronger terrain-derived
+  contrast through base, emissive, and normal maps.
+- `VIS-12`: SCOPE, HAZARD, and SIGNALS now suppress their persistent question
+  while active; rendered-DOM coverage exercises all five stations that can
+  duplicate the active question.
+
+The final deterministic matrix is green at 99 files / 527 tests, TypeScript,
+and the production build. The regenerated payload is 22,804,307 bytes at
+1448×724 base / 724×362 derived; all eight `luminanceStdDev` values remain
+above 0.1.
+
+Live proof is nevertheless blocking in this remediation round. The connected
+browser reported no available session and every unchanged retained Playwright
+script was rejected before navigation by the host sandbox’s Mach-port
+restriction. The handoff for this round says those results may no longer be
+deferred to review, so no live pass is claimed and the workflow routes to
+Devan. Exact evidence is in `remediation-round-3-verification.txt`.
+
 ## Review remediation
 
 The six bounded Claude Lead findings were addressed without changing the
@@ -94,11 +124,14 @@ before navigation, so live results remain deferred rather than self-passed.
 - `DEF-05` sun activation: the solid sun was already in `pickTargets`, but the visibly larger corona meshes had no `orreryTarget`, so much of the apparent sun was non-interactive. Both glow meshes now resolve to the portfolio target; the semantic sun link remains the keyboard source of truth.
 - `DEF-06` orange shadow: the detached blob was the large second layer of the centred `.sunTelemetry` text shadow, not scene lighting. That layer was removed; the sun’s bounded geometry glow remains.
 - `DEF-07` close-camera occlusion: the radial approach camera kept the enlarged sun directly behind the selected planet. The approach now moves outward and along the orbital tangent, while the wider inspector occupies the right side.
-- `DEF-02` mirrored marks: the compositor’s intended pre-flop was not reaching
-  texture bytes because the one-stage alpha join dropped the mask. The
-  corrected two-stage compositor now carries the pre-flopped silhouette through
-  weathering, seam repair, and all derived maps. The retained sphere-strip
-  verifier compares normal and mirrored live profiles for all eight worlds.
+- `DEF-02` mirrored marks: round 2 fixed the dropped alpha mask, but round 3
+  proved the pre-flopped silhouette itself remained mirrored for MSFT while
+  several other worlds carried too little mark signal to grade. The final
+  generator keeps the supplied mask source-forward for DataTexture’s
+  `flipY=false` UV path, widens it to 24%, and strengthens its terrain-derived
+  contrast before emissive/normal derivation. The retained sphere-strip
+  verifier still compares normal and mirrored live profiles for all eight
+  worlds and remains required before this remediation can advance.
 
 ## Texture regeneration
 

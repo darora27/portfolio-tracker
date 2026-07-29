@@ -12,3 +12,25 @@ standalone retained Playwright fallback:
   result: Chromium was blocked before navigation by the CLI sandbox
   exact fatal: bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permission denied (1100)
 result: live browser/WebGL evidence deferred_to_reviewer; no rendered pass claimed
+
+2026-07-28 remediation round 3 — codex/gpt-5
+browser setup: succeeded
+browser selection: No browser is available
+prescribed browser discovery: []
+production server: http://127.0.0.1:3132/share — ready
+unchanged retained scripts attempted:
+  sample-live-rgb.mjs
+  capture-live-sphere-strip.mjs
+  measure-long-tasks.mjs
+  capture-live-evidence.mjs
+standalone result:
+  all four exited before navigation
+exact fatal:
+  bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>:
+  Permission denied (1100)
+additional safe check:
+  a second cached full Chrome-for-Testing executable also closed before a page
+  opened under the same host restriction
+workflow result:
+  BLOCKED, not deferred — the round-3 lead handoff explicitly requires live
+  results in this remediation turn. No rendered or performance pass claimed.

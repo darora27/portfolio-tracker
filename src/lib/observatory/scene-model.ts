@@ -20,6 +20,7 @@ import {
 export const OVERVIEW_RING_OPACITY = 0.34;
 export const ACTIVE_RING_OPACITY = 0.6;
 export const OVERVIEW_BELT_SPAN_PCT = 0.88;
+export const TRAIL_SAMPLE_FRACTION = 0.62;
 
 const OVERVIEW_FOV_DEGREES = 42;
 const OVERVIEW_CAMERA_HEIGHT_RATIO = 0.82;
@@ -117,6 +118,7 @@ export type SceneModel = {
     arcRadians: number;
     magnitude: number | null;
     sweep: { headRadians: 0; tailRadians: number };
+    sampleFraction: typeof TRAIL_SAMPLE_FRACTION;
     head: {
       fraction: 0.12;
       color: string;
@@ -537,6 +539,19 @@ export function trailSweepAngles(
   return {
     headRadians: 0,
     tailRadians: sign * Math.abs(arcRadians),
+  };
+}
+
+export function trailRibbonHalfWidths(
+  fraction: number,
+  maximumWidth: number,
+  minimumWidth = 0,
+): { inner: number; outer: number } {
+  const clampedFraction = Math.min(1, Math.max(0, fraction));
+  const taper = 0.45 + 0.55 * (1 - clampedFraction);
+  return {
+    inner: Math.max(0, minimumWidth) * taper,
+    outer: Math.max(0, maximumWidth) * taper,
   };
 }
 
@@ -1080,6 +1095,7 @@ export function buildOverviewSceneModel({
         magnitude:
           holding.weeklyReturn === null ? null : Math.abs(holding.weeklyReturn),
         sweep: trailSweepAngles(direction, arcRadians),
+        sampleFraction: TRAIL_SAMPLE_FRACTION,
         head: {
           fraction: 0.12,
           color: UNIVERSE_PALETTE.signal.whiteHot,

@@ -1,0 +1,94 @@
+Phase 10 §10 remediation round-3 verification — 2026-07-28 — codex/gpt-5
+
+Bounded remediation
+  F1 / TST-03 — implemented
+    - The published trail sample now targets 62% of the rendered arc, beyond
+      the inner-world planet disc and outside the fixed 12% white-hot head.
+    - The opaque core is a crossed radial/vertical ribbon with a measurable
+      taper floor; the additive glow is a hollow annulus outside that core and
+      cannot wash the sampled core toward white.
+    - Pure scene-model coverage asserts the sample position, taper clamp,
+      minimum core width, and non-overlapping glow boundary.
+    — done by codex/gpt-5
+  F2 / BLD-04 — implemented
+    - First-load WebGL program families are revealed one per animation frame:
+      stars, ambient basic materials, ring shader, trails, small-body basic
+      materials, sun shader, then planet shader.
+    - Small-body MeshBasicMaterial variants now share fog=false and DoubleSide
+      parameters, reducing program-key permutations without adding a pass or
+      changing the absolute threshold.
+    — done by codex/gpt-5
+  F3 / DEF-02 — implemented
+    - DataTexture uses flipY=false and preserves authored column order, so the
+      generator no longer pre-flops supplied marks.
+    - Capitals widen from 18% to 24% of the map and retain stronger
+      terrain-derived contrast before normal/emissive derivation.
+    - All 24 maps and eight thumbnails were regenerated. The manifest records
+      source-forward chirality and every luminanceStdDev remains >= 0.1.
+    — done by codex/gpt-5
+  F4 / VIS-12 — implemented
+    - SCOPE, HAZARD, and SIGNALS suppress their persistent rail/strip question
+      while active, matching the accepted PLOT/MANIFEST rule.
+    - The rendered-DOM test now exercises PLOT, MANIFEST, SCOPE, HAZARD, and
+      SIGNALS and observes exactly one active question for each.
+    — done by codex/gpt-5
+
+Deterministic gates
+  npx tsc --noEmit
+    PASS — exit 0.
+    — done by codex/gpt-5
+  npm test
+    PASS — final binding run: 99 test files / 527 tests / 0 failures.
+    — done by codex/gpt-5
+  npm run build
+    PASS — Next.js 16.2.11 production build, 18 static page tasks, unchanged
+    route list, /share 200 and Mission Control manifest 200 smoke.
+    — done by codex/gpt-5
+  texture regeneration
+    PASS — selected 1448x724 base / 724x362 derived after measuring the
+    2048x1024 and 1448x724 ladder gates; 22,804,307 shipped bytes, below
+    30,000,000. Per-world luminanceStdDev range 0.106308–0.185874.
+    — done by codex/gpt-5
+  server-rendered Mission Control DOM
+    PASS — after removing script/style payload text, SCOPE, HAZARD, and
+    SIGNALS each expose their active question exactly once.
+    — done by codex/gpt-5
+
+Required live matrix — BLOCKED before navigation
+  Production server:
+    http://127.0.0.1:3132/share — ready from the final production build.
+  In-app browser:
+    setup succeeded; browser selection returned "No browser is available";
+    the one permitted discovery call returned [].
+  Retained scripts attempted unchanged:
+    sample-live-rgb.mjs
+    measure-long-tasks.mjs
+    capture-live-sphere-strip.mjs
+    capture-live-evidence.mjs
+  Each standalone attempt:
+    exit 1 before navigation.
+  Exact fatal:
+    bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>:
+    Permission denied (1100)
+  A second cached full Chrome-for-Testing executable was also tried through
+  Playwright and was closed by the same host restriction before a page opened.
+  Result:
+    TST-03, VIS-04, DEF-03, BLD-04, DEF-02, VIS-01, VIS-02, BLD-05, and the
+    refreshed VIS-12 artifacts cannot be graded in this turn. No browser,
+    visual, texture-render, or performance pass is claimed.
+    — recorded by codex/gpt-5
+
+Workflow consequence
+  The round-3 handoff explicitly says live results are no longer deferrable to
+  the reviewer. The candidate therefore remains at stage=remediate with
+  status=blocked and next_actor=devan, despite green deterministic gates.
+
+Acceptance ledger check
+  npm run phase10:acceptance -- check
+    docs/phase10-workflow/acceptance/section-10.json --require implementer
+  PASS — the schema's complete non-pass environment-gap value is used for all
+  nine live-dependent implementer results:
+    DEF-02 DEF-03 VIS-01 VIS-02 VIS-04 VIS-12 TST-03 BLD-04 BLD-05
+  Each note says the state remains blocked for Devan and must not route to
+  review. The checker was not bypassed and no live-dependent result is a pass.
+    — recorded by codex/gpt-5
