@@ -4,6 +4,25 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+## Live Verification
+
+- Verification runs by **executing retained scripts with `node`**, not
+  through any agent's built-in browser tool.
+- **"No browser is available", an empty `[]` device list, or any "no
+  backend" response from an agent's browser surface is a limit of that
+  agent's tooling — it is NOT grounds for marking a live criterion
+  deferred, blocked, or unverifiable.** Fall back to the retained scripts
+  below instead of stopping.
+- This host launches Chromium fine. Verified 2026-07-29: `131.0.6778.33`,
+  screenshot captured, pixel read matched expected value. Playwright is at
+  `~/Library/Caches/ms-playwright/`.
+- Running a repository file as a command is not substituting a browser
+  controller. It is permitted and expected.
+- Run procedure: `npm run build && npm run start`, then
+  `node docs/phase10-baseline/<section>/scripts/<name>.mjs`, then read the
+  final machine-readable line. Never measure against `next dev` — HMR and
+  on-demand compilation invalidate the sub-50ms route long-task rule.
+
 # Multi-agent protocol (Phase 10)
 
 This repo is worked on by two different coding-agent CLIs (Claude Code and
