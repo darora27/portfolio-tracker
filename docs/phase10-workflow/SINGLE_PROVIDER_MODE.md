@@ -108,3 +108,32 @@ single-provider section — worthwhile if that section touched anything on the
 Remove this mode's active flag from state; leave the per-section
 `single_provider_mode` markers in `sections_history` permanently as historical
 record.
+
+---
+
+## PHASE10_SWAP_ROLES — implemented, does not work, do not use
+
+Added July 29, 2026 to put the sighted agent on implementation, since Claude can
+drive a browser on this host and Codex cannot. **It fails, twice over:**
+
+1. **Lock ownership** — fixed in `a690a41`. The lock recorded which CLI ran, not
+   which role was performed, so a swapped turn refused its own lock. The
+   `PHASE10_LOCK_OWNER` / `PHASE10_LOCK_TASK` overrides resolve this.
+2. **Prompt identity — unresolved.** The standing prompts declare their actor in
+   their first line (*"You are OpenAI Codex acting as the implementation
+   lead"*). A swapped agent reads that, correctly concludes it is the wrong
+   actor, and stops without doing work. No lock or environment change reaches
+   this; the prompt text itself is the blocker.
+
+Making the swap work requires **actor-neutral prompt variants** — the same
+stage instructions with the identity assertion removed and the role named by
+stage rather than by vendor. That is a real piece of work and should be done
+deliberately, not improvised.
+
+**Until then the flag is inert in practice.** Leave it off. The default
+arrangement — Codex implements, Claude reviews — is unaffected and remains the
+proven path.
+
+The underlying motivation stands and is worth revisiting: implementing blind and
+reviewing sighted costs roughly one review round per visual defect, which is a
+large part of why §10 needed five rounds and §11 is on its second.
