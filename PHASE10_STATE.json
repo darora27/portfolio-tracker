@@ -181,6 +181,14 @@
       "verified_before_delivery": "425/425 tests across 84 files, tsc clean, eslint no new findings",
       "not_covered": "F2 (ASML left-third anchor) and F3 (mark visibility at approach) — camera work that cannot be honestly verified without pixels; both remain in this routed remediation and must be done WITH captures.",
       "note": "F1 is remediated in code but NOT closed: after this drop Devan reported Mission Control fonts still too small (FB-05, 4th report). Treat F1 as needing root-cause on Mission Control surfaces, not another size nudge."
+    },
+    "mark_repair": {
+      "authorised_by": "Devan, July 29 2026 — \"go and try to fix those two SVGs but if you fail after one attempt then just rely on colour and shape for identity\"",
+      "attempts_used": 1,
+      "finding": "Both supplied mark SVGs shipped their own background plate: ibm.svg had a full-canvas white <rect>, nbis.svg a full-bleed #e0ff4f rounded rect. Alpha was therefore ~100%, so the compositor received a solid block instead of a letterform. This is why four rounds of texture regeneration changed nothing.",
+      "repair": "Plates removed. Letterforms recoloured to read on a dark world: IBM #231F20 -> #F4F7FA, NBIS #052b42 -> #E0FF4F.",
+      "measured": "Rasterised alpha coverage at 512px width — IBM 100.00% -> 4.88%, NBIS 98.62% -> 20.98%.",
+      "next": "Regenerate the two planet textures, then capture. The standing do-not-regenerate rule was conditional on the marks being measurable; they now are."
     }
   },
   "sections_history": [

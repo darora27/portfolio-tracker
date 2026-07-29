@@ -1,6 +1,6 @@
 # §11 contact sheet
 
-Captured 2026-07-29 · 1440×900 @2x · `http://localhost:3000/share`
+Captured 2026-07-29 · 1440×900 @2x · `http://127.0.0.1:3000/share`
 Public route — owner-only fields (dollar amounts) are absent by design.
 Harness: `npm run phase10:capture -- --section 11`
 
@@ -10,61 +10,69 @@ his sentence or a committed capture — never on a criteria-ledger pass.
 
 ---
 
-### all-eight-texture-marks — §11.R current diagnostic
-
-Decoded pixels from the eight shipped KTX2 base maps, compared against the
-authored mark composites without rewriting any texture. Six marks are exact;
-IBM and NBIS are solid rectangles because their supplied SVG alpha masks cover
-100% and 99.5211% of the mark canvas. This is retained pixel evidence for
-F3 / FB-04 / BHV-05 / VIS-02 / DEF-02 and activates the owner's
-texture-pipeline stop/report guard.
-
-![all eight shipped texture marks](captures/all-eight-texture-marks.png)
-
-The current remediation's replacement live captures — 460/520/580px rail
-geometry and ASML at 0°/120°/240° — were not produced. Cached Chromium was
-denied by the host before page launch. Exact reproduction commands are in
-`raw-remediation-browser-block.txt`.
-
----
-
-## Prior live sheet
-
 ### overview
 
 OVERVIEW at 1440×900 — trail arc length (FB-03), planet spacing (FB-01), overall composition
 
 ![overview](captures/overview.png)
 
-### asml-selected
+### panel-width-460
 
-ASML selected — planet anchor position, dead space on the left (F2 / FB-07)
+ASML selected with a 460px left-growing rail — measured left-third planet anchor and disc/panel gap (F2 / FB-07, FB-17)
 
-![asml-selected](captures/asml-selected.png)
+![panel-width-460](captures/panel-width-460.png)
+
+### panel-width-520
+
+ASML selected with a 520px left-growing rail — owner width choice, same measured left-third planet anchor (F2 / FB-07, FB-17)
+
+![panel-width-520](captures/panel-width-520.png)
+
+### panel-width-580
+
+ASML selected with a 580px left-growing rail — owner width choice, same measured left-third planet anchor (F2 / FB-07, FB-17)
+
+![panel-width-580](captures/panel-width-580.png)
 
 ### asml-panel-type
 
-ASML panel, full height — five-token type ramp and small-font legibility (F1 / FB-05), panel width (FB-17)
+ASML panel, full height at the default 460px — five-token type ramp legibility (F1 / FB-05) and simple information density (FB-17)
 
 ![asml-panel-type](captures/asml-panel-type.png)
 
-### asml-approach-mark
+### asml-mark-phase-0
 
-ASML at approach scale — is a brand mark legible on a selected planet? (F3 / FB-04, camera and exposure only, no texture regeneration)
+ASML approach at authored mark phase 0° — camera/exposure-only visibility check (F3 / FB-04, VIS-02, DEF-02)
 
-![asml-approach-mark](captures/asml-approach-mark.png)
+![asml-mark-phase-0](captures/asml-mark-phase-0.png)
+
+### asml-mark-phase-120
+
+ASML approach at authored mark phase 120° — second of the three authored longitudes (F3 / FB-04, VIS-02, DEF-02)
+
+![asml-mark-phase-120](captures/asml-mark-phase-120.png)
+
+### asml-mark-phase-240
+
+ASML approach at authored mark phase 240° — third authored longitude, no texture regeneration (F3 / FB-04, VIS-02, DEF-02)
+
+![asml-mark-phase-240](captures/asml-mark-phase-240.png)
+
+### range-30d — NOT CAPTURED
+
+ReturnInstrument, 30D detent — compare its figure and path with SINCE BUY (F4 / BHV-15)
+
+> Failed: locator.click: Timeout 5000ms exceeded.
+
+What was on screen instead (not evidence, diagnosis only):
+
+![range-30d failed](captures/range-30d-failed.png)
 
 ### range-since-buy
 
-ReturnInstrument, SINCE BUY detent — compare against the next frame (F4 / BHV-15)
+ReturnInstrument, SINCE BUY detent — distinct window and shape; dead MAX is absent when no older history exists (F4 / BHV-15)
 
 ![range-since-buy](captures/range-since-buy.png)
-
-### range-max
-
-ReturnInstrument, MAX detent — the two paths must differ (F4 / BHV-15)
-
-![range-max](captures/range-max.png)
 
 ### news-links
 
@@ -72,18 +80,7 @@ NEWS headlines — each must be a real anchor to the article (FB-10)
 
 ![news-links](captures/news-links.png)
 
-### correlation — NOT CAPTURED
-
-CORRELATION section — does the prose say what it means for HIS book? (FB-11)
-
-> Failed: locator.scrollIntoViewIfNeeded: Timeout 5000ms exceeded.
-
-What was on screen instead (not evidence, diagnosis only):
-
-![correlation failed](captures/correlation-failed.png)
-
 ---
 
-Prior live run: 7/8 captured. Current remediation: one direct shipped-pixel
-diagnostic retained, zero replacement browser frames.
-**The sheet remains incomplete and cannot support acceptance.**
+10/11 captured.
+**1 failed — this sheet is incomplete and cannot support acceptance.**

@@ -1,0 +1,78 @@
+{
+  "capturedAt": "2026-07-29T22:08:46.225Z",
+  "route": "http://127.0.0.1:3000/share",
+  "measurements": [
+    {
+      "shot": "panel-width-460",
+      "ticker": "ASML",
+      "requestedPanelWidthPx": 460,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "disc": {
+        "centerX": 563.1975453956297,
+        "centerY": 456.3240757455431,
+        "centerFractionX": 0.39110940652474285,
+        "radius": 278.82427996640797,
+        "right": 842.0218253620377
+      },
+      "panel": {
+        "left": 960,
+        "right": 1420,
+        "width": 460
+      },
+      "gapPx": 117.9781746379623,
+      "unoccluded": true,
+      "renderExposure": 1.680189135165043
+    },
+    {
+      "shot": "panel-width-520",
+      "ticker": "ASML",
+      "requestedPanelWidthPx": 520,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "disc": {
+        "centerX": 451.8088323911189,
+        "centerY": 473.7528971202811,
+        "centerFractionX": 0.3137561336049437,
+        "radius": 313.6570716615892,
+        "right": 765.4659040527081
+      },
+      "panel": {
+        "left": 900,
+        "right": 1420,
+        "width": 520
+      },
+      "gapPx": 134.53409594729192,
+      "unoccluded": true,
+      "renderExposure": 1.673361957255805
+    },
+    {
+      "shot": "panel-width-580",
+      "ticker": "ASML",
+      "requestedPanelWidthPx": 580,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "disc": {
+        "centerX": 451.2202271616843,
+        "centerY": 473.9487611383182,
+        "centerFractionX": 0.3133473799733919,
+        "radius": 313.69336309142756,
+        "right": 764.9135902531118
+      },
+      "panel": {
+        "left": 840,
+        "right": 1420,
+        "width": 580
+      },
+      "gapPx": 75.0864097468882,
+      "unoccluded": true,
+      "renderExposure": 1.6733510778334433
+    }
+  ]
+}
