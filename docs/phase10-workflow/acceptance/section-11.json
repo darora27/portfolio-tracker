@@ -619,10 +619,12 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "src/components/observatory/orrery/PlanetDetail.test.tsx",
+          "scripts/phase10-capture.mjs",
+          "docs/phase10-baseline/section-11/raw-remediation-3-focused-tests.txt",
+          "docs/phase10-baseline/section-11/raw-remediation-3-long-tasks.txt"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "F6 remediation renders the already-computed 30D figure in the Windows line with the required null guard. The capture harness now targets the chart detent by button role so the new summary label cannot masquerade as a reachable chart control. The rendered-DOM test passes, but VIS-11 is not graded from DOM/source: this agent sandbox rejected cached Chromium at MachPortRendezvous before navigation. `deferred_to_reviewer` is the acceptance schema's only permitted non-pass implementer value; no reviewer deferral occurs because PHASE10_STATE.json is blocked at needs-capture with next_actor=devan. Exact command after `npm run build && npm run start`: `npm run phase10:capture -- --section 11 --base http://127.0.0.1:3000`. The production dataset still has no holding with >30 chart points, so the chart's distinct 30D detent remains honestly unavailable and the range-30d shot should fail honestly; no fixture data was faked and no visual pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -1255,10 +1257,9 @@
       "implementer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-npm-test.txt",
-          "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
+          "docs/phase10-baseline/section-11/raw-remediation-3-npm-test.txt"
         ],
-        "notes": "Final remediation continuation run passed 106 files and 548 tests after restoring IBM's last-known-green recognizable texture artifacts. The earlier regenerated IBM result (0.095739 against the unchanged 0.1 floor) is retained in the continuation evidence rather than concealed. Recorded by codex/gpt-5."
+        "notes": "Remediation turn 3 passed 106 test files and 549 tests with zero failures or skips. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "pass",
@@ -1379,10 +1380,9 @@
       "implementer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-npm-build.txt",
-          "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
+          "docs/phase10-baseline/section-11/raw-remediation-3-npm-build.txt"
         ],
-        "notes": "Final remediation continuation production build passed with TypeScript, 18/18 static pages, and the /share smoke check. Recorded by codex/gpt-5."
+        "notes": "Remediation turn 3 production build passed with TypeScript, 18/18 static pages, and the /share smoke check. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "pass",
@@ -1417,11 +1417,12 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-long-task-output.txt",
           "docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "docs/phase10-baseline/section-11/scripts/profile-long-task.mjs",
+          "docs/phase10-baseline/section-11/raw-remediation-3-profile-launch.txt",
+          "docs/phase10-baseline/section-11/raw-remediation-3-long-tasks.txt"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "F5 remediation replaces reveal-by-family with one-material-at-a-time WebGLRenderer.compileAsync warmup through KHR_parallel_shader_compile, then starts incremental texture loading only after warmup completes. The unchanged <50ms gate was not weakened, redefined, or baseline-subtracted. Both the direct profiler and retained five-context verifier were attempted against the production build, but this agent sandbox rejected cached Chromium at MachPortRendezvous before navigation, so no post-change timing or attribution is claimed. `deferred_to_reviewer` is the acceptance schema's only permitted non-pass implementer value; no reviewer deferral occurs because PHASE10_STATE.json is blocked at needs-capture with next_actor=devan. Exact command after `npm run build && npm run start`: `PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/profile-long-task.mjs && PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs`. No performance pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",

@@ -73,6 +73,9 @@ export function PlanetDetail({
 
       <p className={styles.planetWindows}>
         <span>WEEK <b>{signedPercent(holding.weeklyReturn)}</b></span>
+        {thirtyDayReturn !== null ? (
+          <span data-window="30d">30D <b>{signedPercent(thirtyDayReturn)}</b></span>
+        ) : null}
         <span>SINCE BUY <b>{signedPercent(sinceBuyReturn)} (SIMPLE)</b></span>
       </p>
 

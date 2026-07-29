@@ -16,6 +16,7 @@ import {
   MeshBasicMaterial,
   NoColorSpace,
   NormalBlending,
+  type Object3D,
   PerspectiveCamera,
   PlaneGeometry,
   Points,
@@ -302,6 +303,7 @@ function createStarPopulation(
         depthWrite: false,
       }),
     );
+    points.visible = false;
     group.add(points);
     return points;
   });
@@ -319,6 +321,7 @@ function createStarPopulation(
       depthWrite: false,
     }),
   );
+  spikes.visible = false;
   group.add(spikes);
   return { group, points: pointLayers, spikes };
 }
@@ -1237,7 +1240,6 @@ export default function OrreryScene({
       }
     };
     let textureFrame = 0;
-    void loadTextures();
 
     const raycaster = new Raycaster();
     const pointer = new Vector2(2, 2);
@@ -1468,9 +1470,110 @@ export default function OrreryScene({
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(mount);
 
+    type ShaderWarmupJob = {
+      label: string;
+      object: Object3D;
+      reveal: () => void;
+    };
+    const warmedObjects = new WeakSet<Object3D>();
+    let dockingProgramReady = false;
+    const shaderWarmupJobs: ShaderWarmupJob[] = [];
+    const enqueueReveal = (
+      label: string,
+      object: Object3D,
+      reveal = () => {
+        object.visible = true;
+      },
+    ) => {
+      shaderWarmupJobs.push({ label, object, reveal });
+    };
+
+    starPopulation.points.forEach((points, index) => {
+      enqueueReveal(`stars-${index + 1}`, points);
+    });
+    enqueueReveal("star-spikes", starPopulation.spikes);
+    enqueueReveal("sun", sun);
+    planetRuntimes.forEach(({ mesh }, index) => {
+      enqueueReveal(`planet-${index + 1}`, mesh);
+    });
+    planetRuntimes.forEach(({ path }, index) => {
+      enqueueReveal(`ring-${index + 1}`, path, () => {
+        warmedObjects.add(path);
+      });
+    });
+    planetRuntimes.forEach(({ trailMeshes }, planetIndex) => {
+      trailMeshes.forEach((mesh, passIndex) => {
+        enqueueReveal(
+          `trail-${planetIndex + 1}-${passIndex + 1}`,
+          mesh,
+        );
+      });
+    });
+    enqueueReveal("nebula", nebula);
+    enqueueReveal("aurora", aurora);
+    enqueueReveal("weather-wisps", weatherWisps);
+    enqueueReveal("sun-glow-inner", glowInner);
+    enqueueReveal("sun-glow-outer", glowOuter);
+    enqueueReveal("docking-ring", dockingRing, () => {
+      dockingProgramReady = true;
+    });
+    moonRuntimes.forEach(({ group }, index) => {
+      enqueueReveal(`moon-${index + 1}`, group);
+    });
+    if (satelliteRuntimes[0]) {
+      enqueueReveal("satellites", satelliteRuntimes[0].group, () => {
+        satelliteRuntimes.forEach(({ group }) => {
+          group.visible = true;
+        });
+      });
+    }
+    if (beltRocks.length) enqueueReveal("belt", beltGroup);
+    if (cometGroup.children.length) {
+      enqueueReveal("comet", cometGroup, () => {
+        cometGroup.visible = Boolean(sceneModel.comet);
+      });
+    }
+
+    mount.dataset.shaderWarmupComplete = "false";
+    mount.dataset.shaderWarmupTotal = String(shaderWarmupJobs.length);
+    let shaderWarmupIndex = 0;
+    let shaderWarmupRunning = false;
+    let textureLoadStarted = false;
+    const completeShaderWarmupJob = (job: ShaderWarmupJob) => {
+      if (textureCancelled) return;
+      job.reveal();
+      shaderWarmupRunning = false;
+      mount.dataset.shaderWarmupCurrent = String(shaderWarmupIndex);
+      if (shaderWarmupIndex < shaderWarmupJobs.length) return;
+      mount.dataset.shaderWarmupComplete = "true";
+      if (!textureLoadStarted) {
+        textureLoadStarted = true;
+        void loadTextures();
+      }
+    };
+    const advanceShaderWarmup = () => {
+      if (
+        shaderWarmupRunning ||
+        shaderWarmupIndex >= shaderWarmupJobs.length
+      ) {
+        return;
+      }
+      const job = shaderWarmupJobs[shaderWarmupIndex];
+      shaderWarmupIndex += 1;
+      shaderWarmupRunning = true;
+      mount.dataset.shaderWarmupLabel = job.label;
+      try {
+        void renderer
+          .compileAsync(job.object, camera, scene)
+          .then(() => completeShaderWarmupJob(job))
+          .catch(() => completeShaderWarmupJob(job));
+      } catch {
+        completeShaderWarmupJob(job);
+      }
+    };
+
     let previousTime = performance.now();
     let animationFrame = 0;
-    let shaderWarmupStage = 0;
     let brandEntryTicker: string | null = null;
     const render = (now: number) => {
       const delta = Math.min(0.05, (now - previousTime) / 1000);
@@ -1533,7 +1636,7 @@ export default function OrreryScene({
           : OVERVIEW_RING_OPACITY;
         planet.path.rotation.y = planet.orbit.rotation.y;
         planet.path.visible =
-          shaderWarmupStage >= 2 && state !== "approach";
+          warmedObjects.has(planet.path) && state !== "approach";
         planet.mesh.getWorldPosition(worldPosition);
         const liveProjection = projectSphereScreenBounds(
           {
@@ -1812,7 +1915,7 @@ export default function OrreryScene({
         localTarget === "portfolio" ||
         portfolioFocusedRef.current ||
         now < dockingFlashUntil;
-      dockingRing.visible = shaderWarmupStage >= 4 && dockingActive;
+      dockingRing.visible = dockingProgramReady && dockingActive;
       mount.dataset.docking = dockingActive ? "true" : "false";
       dockingRing.rotation.z = reducedMotion ? 0 : time * 0.16;
       sunMaterial.uniforms.uTime.value = time;
@@ -1835,44 +1938,11 @@ export default function OrreryScene({
       nebula.rotation.z += delta * sceneModel.nebula.driftRadiansPerSecond;
       aurora.position.x = reducedMotion ? 0 : Math.sin(time * 0.025) * outerRadius * 0.04;
       renderer.render(scene, camera);
-      if (shaderWarmupStage === 0) {
-        nebula.visible = true;
-        aurora.visible = true;
-        weatherWisps.visible = true;
-        glowInner.visible = true;
-        glowOuter.visible = true;
-        shaderWarmupStage = 1;
-      } else if (shaderWarmupStage === 1) {
-        // The ring shader becomes visible through the render-loop gate on the
-        // next frame. Keeping one program family per frame prevents first-load
-        // WebGLPrograms acquisition from becoming a single long task.
-        shaderWarmupStage = 2;
-      } else if (shaderWarmupStage === 2) {
-        planetRuntimes.forEach(({ trailMeshes }) => {
-          trailMeshes.forEach((mesh) => {
-            mesh.visible = true;
-          });
-        });
-        shaderWarmupStage = 3;
-      } else if (shaderWarmupStage === 3) {
-        moonRuntimes.forEach(({ group }) => {
-          group.visible = true;
-        });
-        satelliteRuntimes.forEach(({ group }) => {
-          group.visible = true;
-        });
-        beltGroup.visible = true;
-        cometGroup.visible = Boolean(sceneModel.comet);
-        shaderWarmupStage = 4;
-      } else if (shaderWarmupStage === 4) {
-        sun.visible = true;
-        shaderWarmupStage = 5;
-      } else if (shaderWarmupStage === 5) {
-        planetRuntimes.forEach(({ mesh }) => {
-          mesh.visible = true;
-        });
-        shaderWarmupStage = 6;
-      }
+      // F5 / BLD-04: compile one material-bearing object at a time through
+      // Three's KHR_parallel_shader_compile path. The old reveal-by-family
+      // path still acquired every instance's WebGLProgram in one render task;
+      // this queue warms each material separately, then reveals it.
+      advanceShaderWarmup();
       animationFrame = requestAnimationFrame(render);
     };
     animationFrame = requestAnimationFrame(render);

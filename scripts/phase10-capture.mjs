@@ -262,7 +262,10 @@ const SHOTS = {
       ready: SCENE_READY,
       act: async (page) => {
         await clickTicker(page, "ASML");
-        await page.getByText("30D", { exact: true }).first().click({ timeout: 5_000 });
+        // The Windows summary now also contains literal "30D" text (F6).
+        // Target the chart control by role so a summary label can never make
+        // this interaction capture look reachable when the detent is absent.
+        await page.getByRole("button", { name: "30D" }).click({ timeout: 5_000 });
         await page.waitForTimeout(900);
       },
       clip: "panel",

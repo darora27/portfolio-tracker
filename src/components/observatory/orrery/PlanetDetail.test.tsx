@@ -29,6 +29,8 @@ describe("PlanetDetail", () => {
     expect(screen.getByText("TODAY")).toBeTruthy();
     expect(screen.getByText("▼ 1.2%")).toBeTruthy();
     expect(screen.getByText("WEEK")).toBeTruthy();
+    expect(container.querySelector('[data-window="30d"]')?.textContent)
+      .toMatch(/^30D [▲▼◆] \d+\.\d%$/);
     expect(screen.getAllByText("SINCE BUY")).toHaveLength(2);
     expect(screen.getByText("WEIGHT")).toBeTruthy();
     expect(screen.getByText("21.0%")).toBeTruthy();
@@ -38,6 +40,18 @@ describe("PlanetDetail", () => {
     expect(screen.queryByRole("heading", { name: "NEWS" })).toBeNull();
     expect(screen.getByRole("link", { name: "FULL ANALYSIS ▸" })).toBeTruthy();
     expect(screen.getByRole("link", { name: "◂ BACK TO SYSTEM" })).toBeTruthy();
+  });
+
+  it("omits the 30D window when no return can be computed", () => {
+    const { container } = render(
+      <PlanetDetail
+        holding={{ ...holding, chart: [] }}
+        news={[]}
+        basePath="/share"
+        forceNo3d={false}
+      />,
+    );
+    expect(container.querySelector('[data-window="30d"]')).toBeNull();
   });
 
   it("changes both chart title and path when a range detent changes", () => {
