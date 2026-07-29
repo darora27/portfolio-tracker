@@ -297,7 +297,7 @@ export function validateAcceptanceLedger(workflow, ledger, options = {}) {
         const allowedCompleteStatuses =
           actor === "implementer"
             ? ["pass", "not_applicable", "deferred_to_reviewer"]
-            : ["pass", "not_applicable"];
+            : ["pass", "not_applicable", "carried_by_owner"];
         add(
           allowedCompleteStatuses.includes(result?.status),
           `${prefix} ${actor}.status must be ${allowedCompleteStatuses.join(", ")}`,
@@ -305,11 +305,12 @@ export function validateAcceptanceLedger(workflow, ledger, options = {}) {
         add(
             result?.status === "not_applicable" ||
             result?.status === "deferred_to_reviewer" ||
+            result?.status === "carried_by_owner" ||
             evidence.length > 0,
           `${prefix} ${actor} pass requires retained evidence`,
         );
         if (
-          ["not_applicable", "deferred_to_reviewer"].includes(result?.status)
+          ["not_applicable", "deferred_to_reviewer", "carried_by_owner"].includes(result?.status)
         ) {
           add(
             typeof result?.notes === "string" && result.notes.length > 0,

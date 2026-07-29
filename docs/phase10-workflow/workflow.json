@@ -86,7 +86,8 @@
       "fail",
       "blocked",
       "deferred_to_reviewer",
-      "not_applicable"
+      "not_applicable",
+      "carried_by_owner"
     ]
   },
   "global_gates": [

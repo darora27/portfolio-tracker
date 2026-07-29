@@ -23,7 +23,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -31,7 +32,9 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png",
-          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json"
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png",
+          "docs/phase10-baseline/section-10/README.md"
         ],
         "notes": "Re-established at this candidate: scene-model.test.ts's both-directions-behind-the-planet assertion is green in this turn's independent npm test run, and the trail-behind geometry is visible in the round-5 1440x900 overview capture with the wider ribbon. — recorded by claude-code/opus-5"
       }
@@ -56,12 +59,14 @@
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
-          "public/textures/planets/texture-manifest.json"
+          "public/textures/planets/texture-manifest.json",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
         "notes": "F3b's owner-authorized remediation applies a horizontal UV handedness correction only to the reviewer-proven MSFT and CBRS marks. Regeneration changed exactly their six KTX2 maps and two thumbnails; the 22,803,051-byte payload and all eight luminanceStdDev values (0.106628-0.185874) pass deterministically. The owner-approved handoff assigns live verification to Claude Lead because Chromium cannot launch in the Codex macOS sandbox, so the unchanged sphere-strip verifier remains required and DEF-02 is not claimed as a live pass. The panel-occluded F3a half is an approved carry to §11. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "fail",
+        "status": "carried_by_owner",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/raw-sphere-strip.txt",
           "docs/phase10-baseline/section-10/claude-review-5/raw-strip-chirality-full-table.json",
@@ -69,9 +74,11 @@
           "docs/phase10-baseline/section-10/claude-review-5/raw-remediation-landed.json",
           "docs/phase10-baseline/section-10/claude-review-5/panel-free-msft.png",
           "docs/phase10-baseline/section-10/claude-review-5/panel-free-cbrs.png",
-          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "Round 5, unmodified verifier: still aborts on COST; the shipped view still fails the same 6 of 8 with margins moved by under 0.006. F3b's authorised flop landed (mark alpha changes by MAD 113.3/74.9; the MSFT and CBRS shipped thumbnails changed while untouched GOOG's is byte-identical at 0.000) yet the panel-free margin moved 0.018/0.021 - inside the 0.002-0.011 round-to-round drift of the five untouched worlds, and with no sign inversion. The correlation is therefore not sensitive to mark handedness, so round 4's F3b diagnosis is unsupported and this verifier cannot substantiate a pass or a fail for any world. F3a's panel occlusion is unchanged and remains the owner-approved §11 carry. See review round 5 section 4. — recorded by claude-code/opus-5"
+        "notes": "Carried to §11 by owner decision 2026-07-29. Unjudgeable in §10: the inspector panel covers 96.8-100% of the verifier sampled band, and the owner independently reports he cannot see the planet either. §11 planet-panel rebuild makes it measurable; §11 acceptance must re-run the shipped-view verifier. Measurement at accept: 6 of 8 worlds fail, margins moved under 0.006 across two authorised fixes."
       }
     },
     {
@@ -92,7 +99,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "F1 round-3 remediation makes the opaque flat-token core perspective-stable and removes glow overlap; pure width/sample invariants and the full test suite pass. The unchanged live trail and evidence scripts were attempted but could not navigate (in-app discovery=[]; Chromium MachPort Permission denied 1100), so the flat-token rendered-pixel half remains ungraded with TST-03. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
@@ -100,7 +108,8 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-full-table.json",
-          "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png"
+          "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "Re-established at this candidate after the taper change: COST (null weekly) still samples the flat token #e3b65c live at deltaE 0, and the model test remains green. The wider taper did not suppress the clamp-floor trail. — recorded by claude-code/opus-5"
       }
@@ -192,7 +201,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-06 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -224,7 +234,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
-          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+          "docs/phase10-baseline/section-10/after/approach-asml-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-07 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -256,7 +267,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
-          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+          "docs/phase10-baseline/section-10/after/sector-map-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-08 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -323,7 +335,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
         ],
         "notes": "The inspector is now viewport-bounded and scrollable; the approach camera moves farther outward and looks farther along the tangent. Full tests/build pass. Live geometry and screenshot verification was attempted but Chromium was sandbox-blocked before navigation, so DEF-10 remains deferred_to_reviewer. — recorded by codex/gpt-5"
       },
@@ -354,7 +367,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -422,7 +436,9 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
-          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+          "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png",
+          "docs/phase10-baseline/section-10/after/radar-detail-card-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -456,7 +472,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/scripts/audit-live-interactions.mjs",
-          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+          "docs/phase10-baseline/section-10/after/mission-control-manifest-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -489,17 +506,19 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
         ],
         "notes": "The deterministic brand-entry phase remains green in scene-model.test.ts. Its shipped-view half is blocked by the reviewer-measured inspector-panel occlusion and is an owner-approved bucket-B carry to §11's smaller fixed rail. The owner-approved handoff assigns the live rerun to Claude Lead; no BHV-05 live pass is claimed here. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "blocked",
+        "status": "carried_by_owner",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/raw-panel-occlusion.json",
-          "docs/phase10-baseline/section-10/claude-review-5/panel-free-msft.png"
+          "docs/phase10-baseline/section-10/claude-review-5/panel-free-msft.png",
+          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
         ],
-        "notes": "Unchanged from round 4. Same geometry as VIS-02 and the same owner-approved §11 carry. The deterministic brand-entry phase half remains green in scene-model.test.ts; under reduced motion there is no 3D planet view for the clause to apply to. — recorded by claude-code/opus-5"
+        "notes": "Carried to §11 by owner decision 2026-07-29. Blocked by the same panel occlusion as DEF-02."
       }
     },
     {
@@ -605,7 +624,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-09 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -636,7 +656,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/mission-control-manifest-1440x900.png"
         ],
         "notes": "The duplicated shell-level bay question is removed; PLOT renders its question once and keeps a two-word direct holding action instead of the redundant MANIFEST table. DOM tests for one question and every destination pass. Live word-budget capture remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
@@ -865,7 +886,8 @@
           "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
-          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png"
         ],
         "notes": "Round-3 F3 remediation regenerated all 24 maps, so the prior candidate's live luminance pass cannot be preserved. The non-live texture gate passes at 22,804,307 bytes with luminanceStdDev 0.106308-0.185874. capture-live-sphere-strip.mjs was attempted unchanged but both browser paths failed before navigation; VIS-01 remains ungraded and no live luminance pass is claimed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
@@ -873,7 +895,9 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/raw-strip-chirality-full-table.json",
-          "docs/phase10-baseline/section-10/claude-review-5/scripts/probe-strip-chirality-full-table.mjs"
+          "docs/phase10-baseline/section-10/claude-review-5/scripts/probe-strip-chirality-full-table.mjs",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png"
         ],
         "notes": "Re-established at this candidate after the two-texture regeneration: all eight equatorial luminance means stay inside the 0.16-0.55 window (0.2162-0.4619). CBRS moved 0.2639 -> 0.3172 and remains in window; no world approaches a bound. — recorded by claude-code/opus-5"
       }
@@ -898,19 +922,23 @@
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
-          "public/textures/planets/texture-manifest.json"
+          "public/textures/planets/texture-manifest.json",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
+          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
         ],
         "notes": "The bounded texture correction changes only MSFT/CBRS handedness while preserving carved albedo, normal and emissive derivation; focused texture gates pass. The reviewer measured the current shipped-view crop as 96.8-100% inspector chrome for six worlds, so the rendered-material half remains an owner-approved carry to §11's smaller fixed rail. Claude Lead must run the unchanged live verifier after that rebuild; no VIS-02 live pass is claimed here. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "blocked",
+        "status": "carried_by_owner",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/raw-panel-occlusion.json",
           "docs/phase10-baseline/section-10/claude-review-5/panel-free-msft.png",
           "docs/phase10-baseline/section-10/claude-review-5/panel-free-cbrs.png",
-          "docs/phase10-baseline/section-10/claude-review-5/panel-free-asml.png"
+          "docs/phase10-baseline/section-10/claude-review-5/panel-free-asml.png",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
+          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
         ],
-        "notes": "Unchanged from round 4 and still owner-approved as an §11 carry: the carved capital faces the camera on the hemisphere the inspector panel covers, so no shipped-view verifier reads it for six of eight worlds. Round 5 adds that the panel-free profile is dominated by terrain rather than the mark, which is why flipping a mark does not move it. — recorded by claude-code/opus-5"
+        "notes": "Carried to §11 by owner decision 2026-07-29. Blocked by the same panel occlusion as DEF-02."
       }
     },
     {
@@ -930,7 +958,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -964,19 +993,22 @@
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
-          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "F1's owner-authorized remediation raises the existing taper floor from 0.45 to 0.85, taking opaque-core half-width at the unchanged 0.62 sample fraction from 0.09885 to 0.13605 while preserving a 15% taper. Arc, ramp, direction, 12% head, live sampler, sample points and thresholds are unchanged; scene-model tests pass. Claude Lead owns the live rerun under the approved browser division of labour, so no still-frame VIS-04 pass is claimed. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "blocked",
+        "status": "carried_by_owner",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-TST-03.txt",
           "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-full-table.json",
           "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json",
-          "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png"
+          "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png",
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "Unchanged from round 4. Its ramp-lightness half is TST-03, still failing on NBIS alone; arc and the fixed 12% head remain green in scene-model.test.ts. Not graded rather than guessed. — recorded by claude-code/opus-5"
+        "notes": "Carried to §11 by owner decision 2026-07-29. Blocked on TST-03 remaining NBIS sample, which the owner reports renders correctly."
       }
     },
     {
@@ -1023,7 +1055,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-06 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -1085,7 +1118,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
         ],
         "notes": "The redundant PLOT-side MANIFEST table is removed while a compact two-word direct action preserves click-through; the existing 55% chassis geometry and type-scale model are unchanged. Live visual verification remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
@@ -1116,7 +1150,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/mission-control-log-1440x900.png"
         ],
         "notes": "The LOG chip now explicitly restores paper-on-ink contrast after the parchment descendant rule, and trade rows scroll on whole-row boundaries. DOM tests/build pass; live parchment capture remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
@@ -1147,7 +1182,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-10 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -1208,7 +1244,8 @@
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
           "docs/phase10-baseline/section-10/remediation-verification.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/"
         ],
         "notes": "F4 round-3 remediation applies the active-question suppression rule to SCOPE, HAZARD and SIGNALS. Rendered-DOM coverage now exercises PLOT, MANIFEST, SCOPE, HAZARD and SIGNALS and sees one active question each; server-rendered DOM confirms the three corrected stations. capture-live-evidence.mjs could not navigate under either browser path, so the required refreshed 1440x900 artifacts remain unavailable and VIS-12 is not passed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
@@ -1241,7 +1278,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-13 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -1271,7 +1309,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-14 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -1304,7 +1343,9 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
-          "docs/phase10-baseline/section-10/raw-fallback-output.txt"
+          "docs/phase10-baseline/section-10/raw-fallback-output.txt",
+          "docs/phase10-baseline/section-10/mobile/share-390x844.png",
+          "docs/phase10-baseline/section-10/mobile/share-320x844.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for MOB-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -1364,7 +1405,8 @@
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
-          "docs/phase10-baseline/section-10/raw-fallback-output.txt"
+          "docs/phase10-baseline/section-10/raw-fallback-output.txt",
+          "docs/phase10-baseline/section-10/mobile/share-390x844.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for MOB-03 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -1510,7 +1552,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -1573,7 +1616,8 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs",
+          "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png"
         ],
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for ACC-07 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
@@ -1834,7 +1878,7 @@
         "notes": "F1's owner-authorized remediation changes only trailRibbonHalfWidths' taper floor (0.45 to 0.85); the retained sampler, sample points, deltaE<=8 threshold, hue lock, ordering assertion and payload-derived expectations are unchanged. Focused scene-model tests pass. The owner-approved handoff assigns the unchanged live sampler to Claude Lead because Chromium cannot launch in the Codex macOS sandbox, so TST-03 remains deferred_to_reviewer and is not claimed as a pass. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "fail",
+        "status": "carried_by_owner",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-TST-03.txt",
           "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-full-table.json",
@@ -1843,9 +1887,10 @@
           "docs/phase10-baseline/section-10/claude-review-5/raw-trail-neighbourhood.json",
           "docs/phase10-baseline/section-10/claude-review-5/raw-trail-overlay.json",
           "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png",
-          "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs"
+          "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "Round 5, unmodified verifier: still aborts on NBIS at deltaE 33.123. The authorised taper fix reached the render (IBM 3.522 -> 0.396; NBIS 33.846 -> 30.522), but round 4's sub-pixel-coverage attribution is disproven. The 49px cross-section through NBIS's published sample point peaks at red 93 against the model's 179 with zero pixels within 2 of it, while INTC at the same expected colour shows a 14px plateau at exactly 179. The same NBIS arc does reach #aa231b (deltaE 3.44) 165px away, and no DOM layer overlies the point. See review round 5 section 3. — recorded by claude-code/opus-5"
+        "notes": "Carried to §11 by owner decision 2026-07-29. The verifier contradicts direct observation: it reports NBIS at red 93 against a model 179, while the owner comparing it against neighbouring red trails reports identical brightness. The authorised taper fix widened every ribbon 1.89x and took IBM to deltaE 0.396, proving the fix worked and width was never the cause. §11 must re-derive the sampler point/expected value against the rebuilt view."
       }
     },
     {
@@ -2072,7 +2117,8 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/texture-byte-count.txt",
-          "public/textures/planets/texture-manifest.json"
+          "public/textures/planets/texture-manifest.json",
+          "docs/phase10-baseline/section-10/README.md"
         ],
         "notes": "Both bounded-regeneration ladder measurements are retained: 44,022,056 map bytes at 2048x1024 (rejected) and 22,782,956 map bytes / 22,803,051 shipped bytes at 1448x724 (selected). Ladder step 4 was not reached. — verified by codex/gpt-5"
       },
@@ -2112,12 +2158,13 @@
         "notes": "Owner-approved bucket-B carry to §11, not closed: the retained unchanged verifier measured 59/59/56/60/59 ms against the unchanged <50 ms ceiling after four attempts. §11 owns deletion of the embedded legacy dashboard and Recharts instances, pausing the off-screen radar, and lazy-mounting below-fold sections. No threshold change, baseline subtraction, new timing claim, or §10 performance code change is made here. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "fail",
+        "status": "carried_by_owner",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-5/raw-long-tasks-BLD-04.txt",
-          "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs"
+          "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs",
+          "docs/phase10-baseline/section-10/raw-long-task-output.txt"
         ],
-        "notes": "Round 5, unmodified script, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 65/57/58/58/57 ms. Five of five still breach the 50 ms ceiling, unmoved across five rounds. Owner-approved bucket-B carry to §11; measurement refreshed at this candidate so §11 acceptance attaches a current figure. Not closed, not redefined. — recorded by claude-code/opus-5"
+        "notes": "Carried to §11 by owner decision 2026-07-29. Route-owned long task 65/57/58/58/57 ms against the unchanged 50 ms ceiling, unmoved across five rounds. Round-3 CDP profile attributes it to Three.js shader-program acquisition (34.3 ms self time), texture upload cleared. §11 deletes the embedded legacy dashboard and its Recharts instances, pauses the off-screen radar, and lazy-mounts below-fold sections. §11 acceptance must clear this gate; it is not weakened or baseline-subtracted."
       }
     },
     {
@@ -2169,7 +2216,8 @@
         "status": "pass",
         "evidence": [
           "public/fonts/chakra-petch/ChakraPetch-SemiBold.ttf",
-          "public/fonts/chakra-petch/OFL.txt"
+          "public/fonts/chakra-petch/OFL.txt",
+          "public/fonts/"
         ],
         "notes": "Verified by codex/gpt-5."
       },
