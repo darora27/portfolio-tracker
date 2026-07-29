@@ -30,6 +30,10 @@ export const UNIVERSE_PALETTE = {
     void: "#020706",
     ringSlate: "#66756f",
     question: "#c9b48e",
+    windowWord: "#d5ba8c",
+    chartBaseline: "#f4dba8",
+    caseShell: "#2b2723",
+    dishGlass: "#0a0c10",
   },
   glass: {
     cyan: "#4fd6e8",
@@ -269,6 +273,36 @@ export const UNIVERSE_CONTRASTS = [
     foreground: UNIVERSE_PALETTE.cabinet.amberChrome,
     background: UNIVERSE_PALETTE.cabinet.umber,
     minimum: 3,
+  },
+  {
+    id: "window-word-on-glass",
+    foreground: UNIVERSE_PALETTE.cabinet.windowWord,
+    background: UNIVERSE_PALETTE.cabinet.bayGlass,
+    minimum: 10,
+  },
+  {
+    id: "chart-baseline-on-glass",
+    foreground: UNIVERSE_PALETTE.cabinet.chartBaseline,
+    background: UNIVERSE_PALETTE.cabinet.bayGlass,
+    minimum: 3,
+  },
+  {
+    id: "body-cream-on-glass",
+    foreground: UNIVERSE_PALETTE.cabinet.cream,
+    background: UNIVERSE_PALETTE.cabinet.bayGlass,
+    minimum: 4.5,
+  },
+  {
+    id: "stencil-on-case-shell",
+    foreground: UNIVERSE_PALETTE.paper.sheet,
+    background: UNIVERSE_PALETTE.cabinet.caseShell,
+    minimum: 4.5,
+  },
+  {
+    id: "amber-on-dish-glass",
+    foreground: UNIVERSE_PALETTE.glass.scopeHero,
+    background: UNIVERSE_PALETTE.cabinet.dishGlass,
+    minimum: 4.5,
   },
 ] as const;
 

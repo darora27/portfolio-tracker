@@ -1,0 +1,22 @@
+{
+  "status": "pass",
+  "commands": [
+    "npm test -- --run src/lib/finnhub-news.test.ts src/lib/observatory/public-news.test.ts",
+    "npx vitest run src/components/observatory/orrery/PlanetDetail.test.tsx src/components/observatory/orrery/MissionControlContent.test.tsx"
+  ],
+  "results": {
+    "data_layer_files": 2,
+    "data_layer_tests": 6,
+    "data_layer_failures": 0,
+    "rendered_component_files": 2,
+    "rendered_component_tests": 5,
+    "rendered_component_failures": 0
+  },
+  "assertions": [
+    "Only absolute http(s) URLs survive the Finnhub parser and public held-ticker projection.",
+    "Empty and malformed URLs never render as headlines.",
+    "Currency-bearing headlines are excluded from the public projection so /share retains its zero-dollar contract.",
+    "Planet NEWS is omitted when no linkable headlines remain.",
+    "Every retained headline in the planet panel and room is an anchor carrying its usable URL."
+  ]
+}

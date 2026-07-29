@@ -1,0 +1,16 @@
+{
+  "status": "non_live_partition_pass_live_browser_deferred",
+  "public_scan": {
+    "currency_matches": 0,
+    "owner_field_keys": 0,
+    "value_heading": false,
+    "draft_markup": false
+  },
+  "owner_only_locations": {
+    "VALUE": "MissionControlRoomContent mode=private branch",
+    "DRAFT": "MissionControl mode=private branch",
+    "trade_desk": "MissionControlRoomContent mode=private branch"
+  },
+  "authentication_split_changed": false,
+  "live_authenticated_vs_public_browser_diff": "deferred_to_reviewer"
+}

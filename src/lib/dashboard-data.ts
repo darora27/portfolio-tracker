@@ -55,6 +55,7 @@ import {
 } from "@/lib/observatory/public-trade-log";
 import {
   groupNewsByTicker,
+  isPublicNewsHeadline,
   type PublicNewsItem,
 } from "@/lib/observatory/public-news";
 import aiExposureByTicker from "../../data/ai-exposure.json";
@@ -231,6 +232,7 @@ export async function getDashboardData(): Promise<DashboardData> {
       ticker,
       (newsByTicker[index] ?? []).filter(
         (item) =>
+          isPublicNewsHeadline(item.headline) &&
           item.datetime >= nowSeconds - 7 * 24 * 60 * 60 &&
           item.datetime <= nowSeconds,
       ).length,

@@ -1,0 +1,14 @@
+PRV-13 command evidence — PASS
+
+Full command:
+  npm test
+
+Result:
+  Test Files 103 passed (103)
+  Tests      537 passed (537)
+  Failures   0
+
+The existing /share privacy canaries remain present and unchanged. Additional
+§11 coverage filters unusable links and currency-bearing third-party headlines
+at the public news projection, preventing non-owner dollar strings from
+violating the route-wide zero-dollar contract.

@@ -1,0 +1,14 @@
+{
+  "status": "non_live_pass_live_bundle_review_deferred",
+  "deleted": [
+    "src/components/observatory/orrery/OwnerMissionControlContent.tsx"
+  ],
+  "active_replacement": "src/components/observatory/orrery/MissionControlRoomContent.tsx",
+  "redistributed_owner_data": {
+    "position_value": "Owner-only VALUE column in HOLDINGS",
+    "trade_entry": "Owner-only OPEN TRADE DESK destination",
+    "young_xirr": "XIRR — (needs 90d)"
+  },
+  "active_route_imports_legacy_component": false,
+  "live_browser_bundle_verification": "deferred_to_reviewer"
+}

@@ -1,0 +1,19 @@
+BHV-30 / TST-10 command evidence — PASS
+
+Command:
+  npm test -- --run src/lib/observatory/draft-ledger.test.ts
+
+Result:
+  Test Files 1 passed (1)
+  Tests      5 passed (5)
+
+The deterministic suite executes 5,000 seeded grow, shrink, siphon, type,
+keyboard-step, and zero operations. After every operation it asserts:
+  - exactly eight integer half-percent balances;
+  - every balance is non-negative;
+  - the ledger sum is exactly 200;
+  - largest-remainder initialization is stable;
+  - pro-rata breathing preserves the untouched mix within half-unit rounding;
+  - siphoning changes exactly the selected pair;
+  - either side of a siphon may reach zero and re-enter;
+  - the compact URL representation round-trips and rejects invalid books.

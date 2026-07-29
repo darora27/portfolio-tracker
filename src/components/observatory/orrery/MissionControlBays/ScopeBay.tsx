@@ -56,7 +56,11 @@ export function ScopeBay({ data }: { data: readonly ChartPoint[] }) {
           <LineChart data={[...visibleData]} margin={{ top: 8, right: 10, bottom: 8, left: -18 }}>
             <CartesianGrid stroke="rgba(232,196,141,.13)" strokeDasharray="2 4" />
             <ReferenceArea y1={minimum} y2={100} fill="#8f3d27" fillOpacity={0.16} />
-            <ReferenceLine y={100} stroke="#f4dba8" strokeWidth={1.5} />
+            <ReferenceLine
+              y={100}
+              stroke="var(--universe-cabinet-chart-baseline)"
+              strokeWidth={1.5}
+            />
             <XAxis dataKey="date" hide />
             <YAxis domain={["auto", "auto"]} tick={{ fill: "#cdb98f", fontSize: 10 }} />
             <Line dataKey="portfolioIndex" stroke={UNIVERSE_PALETTE.glass.scopeHero} strokeWidth={2.5} dot={false} isAnimationActive={false} />

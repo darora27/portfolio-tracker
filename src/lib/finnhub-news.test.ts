@@ -28,6 +28,9 @@ describe("parseNewsResponse", () => {
       { headline: "Good", url: "https://a", datetime: 1 },
       { headline: 5, url: "https://b", datetime: 2 },
       { url: "https://c", datetime: 3 },
+      { headline: "Empty", url: "", datetime: 4 },
+      { headline: "Relative", url: "/news", datetime: 5 },
+      { headline: "Script", url: "javascript:alert(1)", datetime: 6 },
     ];
     expect(parseNewsResponse(json)).toEqual([{ headline: "Good", source: "", url: "https://a", datetime: 1 }]);
   });

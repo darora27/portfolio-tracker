@@ -19,7 +19,8 @@ describe("SystemsManual", () => {
     expect(screen.getByRole("dialog", { name: "Systems manual" })).toBeTruthy();
     expect(screen.queryByText("Axial spin")).toBeNull();
     expect(screen.getByText("Trail lightness")).toBeTruthy();
-    expect(screen.getAllByText(/Trailing-week magnitude within gain/)).toHaveLength(2);
+    expect(screen.getAllByText(/Trailing-week magnitude within gain/)).toHaveLength(1);
+    expect(screen.getByRole("button", { name: "SHOW ORIENTATION" })).toBeTruthy();
     expect(screen.getByText("Weather wisps")).toBeTruthy();
     expect(screen.getByText(/magenta means positive health/)).toBeTruthy();
     expect(screen.getByText("Radar sweep")).toBeTruthy();

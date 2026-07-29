@@ -1,0 +1,16 @@
+PRV-10 command evidence — PASS
+
+Command:
+  npm test -- --run src/components/observatory/orrery/MissionControl.test.tsx
+
+Result:
+  Test Files 1 passed (1)
+  Tests      2 passed (2)
+
+Production unauthenticated HTML checks:
+  /share                                      200, no DRAFT marker
+  /share?focus=portfolio&camera=command       200, no DRAFT marker
+
+Both responses contain no RESET TO BOOK, COPY TEST LINK, simulation banner,
+draftRig marker, or owner field key. MissionControl's public render branch
+emits neither a DRAFT latch nor rig markup.

@@ -47,45 +47,21 @@ afterEach(() => {
 });
 
 describe("MissionControl interactions", () => {
-  it("expands the MANIFEST text equivalent with public-safe detail", () => {
+  it("draws one accessible radar ellipse per holding", () => {
     const { container } = render(
       <MissionControl
         activePanel="plot"
         mode="public"
-        content={<div>PUBLIC PANEL</div>}
+        content={<div>PUBLIC ROOM</div>}
         closeHref="/share"
         basePath="/share"
         holdings={[holding]}
         health={0.2}
-        teletype="SOL-DEVAN · DAY +1.0%"
-        dayReadout="+1.0%"
-        newsByHolding={{
-          MSFT: [
-            {
-              ticker: "MSFT",
-              headline: "Public transmission headline",
-              source: "Fixture",
-              url: "https://example.com/public",
-              datetime: 1_785_000_000,
-            },
-          ],
-        }}
       />,
     );
     expect(screen.getByRole("dialog", { name: "Mission Control" })).toBeTruthy();
-    const manifestRow = container.querySelector<HTMLButtonElement>(
-      'button[data-manifest-ticker="MSFT"]',
-    );
-    expect(manifestRow).toBeTruthy();
-    fireEvent.click(manifestRow!);
-    expect(screen.getByText("+3.0%")).toBeTruthy();
-    expect(screen.getAllByText("60.0%")).toHaveLength(2);
-    expect(
-      screen
-        .getByRole("link", { name: "Public transmission headline" })
-        .getAttribute("href"),
-    ).toBe("https://example.com/public");
-    expect(container.textContent).not.toMatch(/\$\d/);
+    expect(container.querySelectorAll('[data-radar-ellipse="true"]')).toHaveLength(1);
+    expect(container.querySelectorAll('[data-radar-ticker="MSFT"]')).toHaveLength(2);
   });
 
   it("opens and folds the parchment briefing on demand", () => {
@@ -93,84 +69,37 @@ describe("MissionControl interactions", () => {
       <MissionControl
         activePanel="log"
         mode="public"
-        content={<div><p>what did I do</p><div>LOG PANEL</div></div>}
+        content={<div>TRADES ROOM</div>}
         closeHref="/share"
         basePath="/share"
         holdings={[]}
         health={0}
-        teletype="SOL-DEVAN · DAY —"
       />,
     );
     const briefing = screen.getByRole("button", { name: "BRIEFING ▸" });
     fireEvent.click(briefing);
-    expect(screen.getByText("PUBLIC RATIOS · SAME-PERIOD INDEXES · HELD NEWS")).toBeTruthy();
+    expect(screen.getByText(/RETURNS ARE WINDOWED/)).toBeTruthy();
     expect(briefing.getAttribute("aria-expanded")).toBe("true");
-    expect(screen.getAllByText("what did I do")).toHaveLength(1);
   });
 
-  it("keeps cabinet chrome constant when portfolio health changes", () => {
-    const { container, rerender } = render(
-      <MissionControl
-        activePanel="plot"
-        mode="public"
-        content={<div>PUBLIC PANEL</div>}
-        closeHref="/share"
-        basePath="/share"
-        holdings={[holding]}
-        health={0.8}
-        teletype="SOL-DEVAN · DAY +1.0%"
-      />,
-    );
+  it("keeps room chrome constant when portfolio health changes", () => {
+    const props = {
+      activePanel: "plot" as const,
+      mode: "public" as const,
+      content: <div>PUBLIC ROOM</div>,
+      closeHref: "/share",
+      basePath: "/share",
+      holdings: [holding],
+    };
+    const { container, rerender } = render(<MissionControl {...props} health={0.8} />);
     const before = {
       dialog: container.querySelector("[role=dialog]")?.getAttribute("class"),
-      plot: container.querySelector("[aria-label='System plot']")?.getAttribute("class"),
-      rail: container.querySelector("[aria-label='Mission instruments']")?.getAttribute("class"),
+      orbits: container.querySelector("#orbits")?.getAttribute("class"),
     };
-
-    rerender(
-      <MissionControl
-        activePanel="plot"
-        mode="public"
-        content={<div>PUBLIC PANEL</div>}
-        closeHref="/share"
-        basePath="/share"
-        holdings={[holding]}
-        health={-0.8}
-        teletype="SOL-DEVAN · DAY -1.0%"
-      />,
-    );
-
+    rerender(<MissionControl {...props} health={-0.8} />);
     expect({
       dialog: container.querySelector("[role=dialog]")?.getAttribute("class"),
-      plot: container.querySelector("[aria-label='System plot']")?.getAttribute("class"),
-      rail: container.querySelector("[aria-label='Mission instruments']")?.getAttribute("class"),
+      orbits: container.querySelector("#orbits")?.getAttribute("class"),
     }).toEqual(before);
-  });
-
-  it("renders each active bay question once", () => {
-    const activeQuestions = [
-      ["plot", "where is everything, and how was the week"],
-      ["manifest", "what do I own, at what weight"],
-      ["scope", "am I beating the market"],
-      ["hazard", "how much can this hurt"],
-      ["signals", "what moves together"],
-    ] as const;
-    const view = render(<div />);
-
-    for (const [activePanel, question] of activeQuestions) {
-      view.rerender(
-        <MissionControl
-          activePanel={activePanel}
-          mode="public"
-          content={<p>{question}</p>}
-          closeHref="/share"
-          basePath="/share"
-          holdings={[holding]}
-          health={0.2}
-          teletype="SOL-DEVAN · DAY +1.0%"
-        />,
-      );
-      expect(screen.getAllByText(question), activePanel).toHaveLength(1);
-    }
   });
 });

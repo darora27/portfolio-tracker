@@ -28,15 +28,28 @@ export function SystemPlot({
   signalPair?: string | null;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [visualEnabled, setVisualEnabled] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     setVisualEnabled(window.matchMedia("(min-width: 1024px)").matches);
   }, []);
 
   useEffect(() => {
-    if (!visualEnabled) return;
+    const frame = frameRef.current;
+    if (!frame || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry?.isIntersecting ?? false),
+      { threshold: 0.01 },
+    );
+    observer.observe(frame);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visualEnabled || !visible) return;
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
     if (
@@ -86,19 +99,10 @@ export function SystemPlot({
       }
       holdings.forEach((holding, index) => {
         const radius = maximum * ((index + 1) / Math.max(holdings.length, 1));
-        context.strokeStyle = radarRingColor(holding.weeklyReturn);
-        context.beginPath();
-        context.arc(cx, cy, radius, 0, Math.PI * 2);
-        context.stroke();
         const angle = index * 0.89;
         const x = cx + Math.cos(angle) * radius;
         const y = cy + Math.sin(angle) * radius;
         if (pairTickers.includes(holding.ticker)) pairPoints.push({ x, y });
-        const active = activeTicker === holding.ticker;
-        context.fillStyle = active ? "#fff4d7" : "#cf7b46";
-        context.beginPath();
-        context.arc(x, y, active ? 6 : 3, 0, Math.PI * 2);
-        context.fill();
       });
       if (pairPoints.length === 2) {
         context.strokeStyle = UNIVERSE_PALETTE.glass.cyan;
@@ -114,7 +118,7 @@ export function SystemPlot({
     };
     draw();
     return () => window.cancelAnimationFrame(animation);
-  }, [activeTicker, health, holdings, signalPair, visualEnabled]);
+  }, [health, holdings, signalPair, visible, visualEnabled]);
 
   const onKeyDown = (
     event: KeyboardEvent<HTMLButtonElement>,
@@ -127,8 +131,10 @@ export function SystemPlot({
 
   return (
     <div
+      ref={frameRef}
       className={styles.systemPlotFrame}
       data-refresh-interval-ms={LIVE_QUOTE_REFRESH_INTERVAL_MS}
+      data-animation-state={visible ? "running" : "paused"}
     >
       {visualEnabled ? (
         <canvas
@@ -154,6 +160,7 @@ export function SystemPlot({
                 type="button"
                 className={styles.radarRingTarget}
                 data-radar-ticker={holding.ticker}
+                data-radar-ellipse="true"
                 data-active={selected}
                 style={{
                   width: `${ringSize}%`,

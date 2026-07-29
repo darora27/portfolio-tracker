@@ -1,0 +1,12 @@
+BLD-10 non-live route audit
+
+The production server artifacts for:
+  .next/server/app/(depth-pull)/share
+
+contain no occurrence of:
+  recharts
+  OwnerMissionControlContent
+  PublicMissionControlContent
+
+Recharts remains available to unrelated routes, including /share/full. The
+active §11 /share Mission Control route has no Recharts instance.

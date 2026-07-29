@@ -1,0 +1,12 @@
+{
+  "status": "non_live_runtime_pass_live_browser_deferred",
+  "test": "src/components/observatory/orrery/LazyMissionSection.test.tsx",
+  "assertions": {
+    "reserved_min_height_px": 560,
+    "initial_state": "INSTRUMENT STANDBY, data-lazy-mounted=false",
+    "observer_root_margin": "480px 0px",
+    "approach_state": "child mounted, data-lazy-mounted=true",
+    "observer_disconnected_after_mount": true
+  },
+  "live_layout_shift_measurement": "deferred_to_reviewer"
+}

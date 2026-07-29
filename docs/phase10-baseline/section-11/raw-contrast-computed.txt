@@ -1,0 +1,21 @@
+ACC-12 command evidence — PASS
+
+Command:
+  npm test -- --run src/lib/observatory/universe-palette.test.ts
+
+Result:
+  Test Files 1 passed (1)
+  Tests      8 passed (8)
+
+Computed ratios from source tokens:
+  window-word-on-glass       #d5ba8c / #010806  10.81:1  (min 10)
+  chart-baseline-on-glass    #f4dba8 / #010806  14.97:1  (min 3)
+  body-cream-on-glass        #fff0cf / #010806  17.92:1  (min 4.5)
+  stencil-on-case-shell      #f0e2c4 / #2b2723  11.56:1  (min 4.5)
+  amber-on-dish-glass        #e6a14d / #0a0c10   8.92:1  (min 4.5)
+
+Planet labelHex rims on dish glass #0a0c10:
+  ASML 17.42  GOOG 18.18  MSFT 17.65  IBM 17.38
+  COST 17.83  INTC 17.60  NBIS 17.36  CBRS 17.59
+
+Every declared contrast and every labelHex rim passed its source-token floor.

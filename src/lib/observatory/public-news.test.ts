@@ -24,6 +24,20 @@ describe("public held-ticker news projection", () => {
             datetime: nowSeconds - 8 * 24 * 60 * 60,
           },
         ],
+        GOOG: [
+          {
+            headline: "Dead link",
+            source: "Wire",
+            url: "",
+            datetime: nowSeconds,
+          },
+          {
+            headline: "Could this become a $10,000 position?",
+            source: "Wire",
+            url: "https://example.com/currency",
+            datetime: nowSeconds - 1,
+          },
+        ],
         PRIVATE: [
           {
             headline: "Not held",
@@ -33,11 +47,12 @@ describe("public held-ticker news projection", () => {
           },
         ],
       },
-      ["IBM", "MSFT"],
+      ["IBM", "MSFT", "GOOG"],
       NOW,
     );
     expect(grouped.IBM).toHaveLength(3);
     expect(grouped.MSFT).toEqual([]);
+    expect(grouped.GOOG).toEqual([]);
     expect(grouped.PRIVATE).toBeUndefined();
     expect(Object.keys(grouped.IBM[0]).sort()).toEqual([
       "datetime",

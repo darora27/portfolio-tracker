@@ -163,15 +163,18 @@ describe("private / owner universe", () => {
       station: "comms",
     });
     expect(html).toContain('data-mode="private"');
-    expect(html).toContain("OWNER LINK");
-    expect(html).toContain("Owner research station");
-    expect(html).toContain('href="/?focus=portfolio');
+    expect(html).toContain("Private universe / owner access");
+    expect(html).toContain('href="#news"');
+    expect(html).toContain("HOLDINGS");
+    expect(html).not.toContain("Owner research station");
+    expect(getResearchData).not.toHaveBeenCalled();
   });
 
   it("restores a selected holding without changing the root route", async () => {
     const html = await renderHome({ holding: "IBM", no3d: "1" });
     expect(html).toContain("IBM · IBM");
-    expect(html).toContain("TELEMETRY");
+    expect(html).toContain("Holding stats");
+    expect(html).toContain("FULL ANALYSIS");
     expect(html).toContain('href="/?no3d=1"');
   });
 

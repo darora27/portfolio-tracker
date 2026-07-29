@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { PLANET_IDENTITIES } from "@/lib/observatory/planet-identity";
+import { UNIVERSE_ORIENTATION_EVENT } from "./FirstVisitOrientation";
 import styles from "./orrery.module.css";
 
 const ENCODINGS = [
@@ -14,9 +15,9 @@ const ENCODINGS = [
   ["Trail lightness", "Trailing-week magnitude within gain or loss hue"],
   ["Trail color", "Green gain, red loss, amber near-flat or unavailable"],
   ["Trail head", "Fixed white-hot calibration reference"],
-  ["Ring falloff", "Nearest arc 50%; far arc 10%; decorative visibility only"],
-  ["Radar rings", "Trailing-week magnitude within gain or loss hue"],
-  ["Radar blips", "Portfolio weight"],
+  ["Orbit path", "Peak 55% beside its planet; far side remains visible at 22%"],
+  ["Orbit radar paths", "One path per holding; color carries trailing-week direction"],
+  ["Orbit radar bodies", "Portfolio weight"],
   ["Radar sweep", "One revolution per 60-second live-quote refresh"],
   ["Aurora band", "Absolute weekly portfolio-index return series; percent only"],
   ["Sun weather", "TWR-consistent portfolio health"],
@@ -24,9 +25,9 @@ const ENCODINGS = [
   ["Asteroid belt", "Holdings ranked ninth and beyond"],
   ["Moon size", "Trailing-seven-day headline volume bucket"],
   ["Moon ring", "Earnings scheduled within seven days"],
-  ["DRIFT", "Same-period TWR excess return versus VOO"],
-  ["HAZARD blink", "Annualized volatility bucket"],
-  ["SUPPLY", "Next held-ticker earnings countdown"],
+  ["Returns", "Same-period TWR excess return versus VOO"],
+  ["Risk refresh", "Annualized volatility bucket"],
+  ["Earnings", "Next held-ticker earnings countdown"],
   ["Nebula hue", "Portfolio health scalar sign"],
   ["Trade comet", "Trade action and realized-gain sign only"],
   ["% of book", "Trade total divided by post-trade portfolio cost basis"],
@@ -117,6 +118,16 @@ export function SystemsManual({
                 </div>
               ))}
             </dl>
+            <button
+              type="button"
+              className={styles.hudButton}
+              onClick={() => {
+                onClose();
+                window.dispatchEvent(new Event(UNIVERSE_ORIENTATION_EVENT));
+              }}
+            >
+              SHOW ORIENTATION
+            </button>
             <button type="button" onClick={onClose} className={styles.hudButton}>
               Close manual
             </button>

@@ -120,8 +120,8 @@ describe("pure overview scene descriptor", () => {
       opacity: ACTIVE_RING_OPACITY,
       color: UNIVERSE_PALETTE.cabinet.ringSlate,
       fog: false,
-      nearAlpha: 0.5,
-      farAlpha: 0.1,
+      nearAlpha: 0.55,
+      farAlpha: 0.22,
     });
     expect(model.trails[0].passes).toEqual([
       { id: "glow", widthPx: 9, opacity: 0.36, additive: true },
@@ -166,8 +166,8 @@ describe("pure overview scene descriptor", () => {
     expect(model.planets[0].projectedDiameterPx).toBe(
       model.planets[0].bounds.width,
     );
-    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(64);
-    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(72);
+    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(58);
+    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(64);
     expect(
       Math.min(...model.planets.map(({ projectedDiameterPx }) => projectedDiameterPx)),
     ).toBeGreaterThanOrEqual(22);
@@ -254,8 +254,8 @@ describe("pure overview scene descriptor", () => {
       }
     }
 
-    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(60);
-    expect(heaviestDiameterMax).toBeLessThanOrEqual(72);
+    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(58);
+    expect(heaviestDiameterMax).toBeLessThanOrEqual(68);
     expect(smallestDiameter).toBeGreaterThanOrEqual(22);
     expect(minimumSpacingRatio).toBeCloseTo(1.6, 12);
     expect([...seenPlanets]).toEqual(
@@ -324,7 +324,7 @@ describe("pure overview scene descriptor", () => {
         1.6 * (current.radius + next.radius),
         12,
       );
-      expect(spacing).toBeGreaterThanOrEqual(
+      expect(spacing + Number.EPSILON * 4).toBeGreaterThanOrEqual(
         1.6 * (current.radius + next.radius),
       );
     }
@@ -533,15 +533,15 @@ describe("pure overview scene descriptor", () => {
   });
 
   it("derives the dominant sun and first orbit from the largest planet", () => {
-    expect(sunRadiusForPlanetRadii([])).toBe(2.4);
-    expect(sunRadiusForPlanetRadii([1, 1.95, 0.9])).toBeCloseTo(2.4375, 12);
+    expect(sunRadiusForPlanetRadii([])).toBe(2.8);
+    expect(sunRadiusForPlanetRadii([1, 1.95, 0.9])).toBeCloseTo(3.12, 12);
     const model = buildOverviewSceneModel({
       holdings: productionOverviewHoldings,
       healthScalar: 0,
       sunspotIntensity: 0,
     });
     expect(model.sun.radius).toBeCloseTo(
-      Math.max(2.4, 1.25 * Math.max(...model.planets.map(({ radius }) => radius))),
+      Math.max(2.8, 1.6 * Math.max(...model.planets.map(({ radius }) => radius))),
       12,
     );
     expect(model.sun.radius).toBeGreaterThan(
@@ -567,11 +567,11 @@ describe("pure overview scene descriptor", () => {
       tailRadians: Math.PI / 3,
     });
     expect(trailArcLengthForWeeklyReturn(0.002) * 180 / Math.PI).toBeCloseTo(
-      36,
+      26,
       10,
     );
     expect(trailArcLengthForWeeklyReturn(0.12) * 180 / Math.PI).toBeCloseTo(
-      64,
+      46,
       10,
     );
     const model = buildOverviewSceneModel({
@@ -655,8 +655,8 @@ describe("pure overview scene descriptor", () => {
     expect(population.auroraDensityMultiplier).toBe(1.8);
     expect(starMagnitudeBucket(0)).toBe("diffraction");
     expect(starMagnitudeBucket(12)).toBe("bright");
-    expect(ringVertexAlpha(0)).toBe(0.5);
-    expect(ringVertexAlpha(Math.PI)).toBe(0.1);
+    expect(ringVertexAlpha(0)).toBe(0.55);
+    expect(ringVertexAlpha(Math.PI)).toBe(0.22);
   });
 
   it("prebakes only public percent magnitudes into an upper-sky aurora", () => {

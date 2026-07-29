@@ -1,0 +1,15 @@
+BHV-22 command evidence — PASS
+
+Command:
+  npm test -- --run src/components/observatory/orrery/SectorMap.test.tsx
+
+Result:
+  Test Files 1 passed (1)
+  Tests      1 passed (1)
+
+Retained machinery:
+  - SectorMap.tsx and sector-systems.ts remain present.
+  - The component test renders OBSERVATORY-GROWTH and its camera=sector link.
+  - UniverseRoute exports AUTHORED_SYSTEMS_ENABLED=false.
+  - With that flag false, camera=sector is rejected and no authored-system
+    control is passed to the shipped UI.

@@ -3,23 +3,22 @@ import { cookies } from "next/headers";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
-import { getHistoryData } from "@/lib/history-data";
-import { getResearchData } from "@/lib/research-data";
 import {
   healthScalarForPortfolio,
   resolveBeltMembership,
   sunspotIntensityForDrawdown,
 } from "@/lib/observatory/orrery";
 import { weeklyReturnsFromIndexSeries } from "@/lib/observatory/scene-model";
-import { supabase } from "@/lib/supabase/client";
 import {
   MISSION_CONTROL_PANELS,
   type MissionControlPanelId,
 } from "./mission-control-panels";
 import { OrreryWorld, type OrreryCameraState } from "./OrreryWorld";
-import { PublicMissionControlContent } from "./PublicMissionControlContent";
+import { MissionControlRoomContent } from "./MissionControlRoomContent";
 import { additionalSectorSystem } from "@/lib/observatory/sector-systems";
 import { todayInTimeZone } from "@/lib/date";
+
+export const AUTHORED_SYSTEMS_ENABLED = false;
 
 export type UniverseSearchParams = {
   camera?: string | string[];
@@ -32,6 +31,7 @@ export type UniverseSearchParams = {
   detail?: string | string[];
   system?: string | string[];
   pair?: string | string[];
+  draft?: string | string[];
 };
 
 function first(value: string | string[] | undefined): string | undefined {
@@ -100,7 +100,7 @@ export async function UniverseRoute({
     requestedCamera === "approach" ||
     requestedCamera === "command" ||
     requestedCamera === "overview" ||
-    requestedCamera === "sector"
+    (AUTHORED_SYSTEMS_ENABLED && requestedCamera === "sector")
       ? requestedCamera
       : selectedTicker
         ? "approach"
@@ -133,59 +133,17 @@ export async function UniverseRoute({
       data.allTimeHigh?.pct ?? 0,
     ),
   };
-  const sectorSystem = additionalSectorSystem(data.publicOrreryHoldings);
-  let missionControlContent = (
-    <PublicMissionControlContent
-      panel={activeMissionPanel}
+  const sectorSystem = AUTHORED_SYSTEMS_ENABLED
+    ? additionalSectorSystem(data.publicOrreryHoldings)
+    : undefined;
+  const missionMode = authenticated && ownerGate ? "private" : "public";
+  const missionControlContent = (
+    <MissionControlRoomContent
       data={data}
       basePath={basePath}
+      mode={missionMode}
     />
   );
-
-  if (portfolioSelected && authenticated && ownerGate) {
-    const { OwnerMissionControlContent } = await import(
-      "./OwnerMissionControlContent"
-    );
-    if (activeMissionPanel === "scope") {
-      missionControlContent = (
-        <OwnerMissionControlContent
-          panel="scope"
-          data={data}
-          history={await getHistoryData()}
-        />
-      );
-    } else if (activeMissionPanel === "comms") {
-      missionControlContent = (
-        <OwnerMissionControlContent
-          panel="comms"
-          data={data}
-          research={await getResearchData()}
-        />
-      );
-    } else if (activeMissionPanel === "log") {
-      const [{ data: trades, error }, { data: setting }] = await Promise.all([
-        supabase.from("trades").select("*").order("date", { ascending: false }),
-        supabase
-          .from("settings")
-          .select("value")
-          .eq("key", "share_hide_dollars")
-          .maybeSingle(),
-      ]);
-      if (error) throw error;
-      missionControlContent = (
-        <OwnerMissionControlContent
-          panel="log"
-          data={data}
-          trades={trades ?? []}
-          hideDollars={setting?.value ?? true}
-        />
-      );
-    } else {
-      missionControlContent = (
-        <OwnerMissionControlContent panel={activeMissionPanel} data={data} />
-      );
-    }
-  }
 
   return (
     <OrreryWorld
@@ -201,18 +159,20 @@ export async function UniverseRoute({
       portfolioSummary={{
         returnPct: data.twrPct,
         dayReturnPct: data.dailyChangePct,
+        weekReturnPct: data.twr7d,
         marketRelativePct: voo.excessReturnPct,
         topTwoWeight: data.top2ConcentrationPct,
         drawdownPct: data.allTimeHigh?.pct ?? null,
       }}
       missionControlContent={missionControlContent}
       activeMissionPanel={activeMissionPanel}
-      missionMode={authenticated && ownerGate ? "private" : "public"}
+      missionMode={missionMode}
       missionPreservedQuery={{
         ...(no3d ? { no3d: "1" } : {}),
         ...(first(params.pair) ? { pair: first(params.pair)! } : {}),
       }}
       missionSignalPair={first(params.pair) ?? null}
+      draftParam={missionMode === "private" ? first(params.draft) ?? null : null}
       newsByHolding={data.newsByHolding ?? {}}
       upcomingEarnings={data.upcomingEarnings}
       publicTradeLog={data.publicTradeLog ?? []}

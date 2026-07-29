@@ -22,6 +22,15 @@ const holdings = [
   },
 ] as const;
 
+const radarHoldings = [
+  "MSFT", "ASML", "GOOG", "IBM", "COST", "INTC", "NBIS", "CBRS",
+].map((ticker, index) => ({
+  ...holdings[0],
+  ticker,
+  companyName: ticker,
+  weight: (8 - index) / 36,
+})) as typeof holdings[number][];
+
 beforeEach(() => {
   vi.stubGlobal(
     "matchMedia",
@@ -105,5 +114,50 @@ describe("SystemPlot", () => {
       screen.getByRole("button", { name: /MSFT radar ring/ }),
     ).toBeTruthy();
     expect(screen.getByText("MSFT-IBM PAIR LINE")).toBeTruthy();
+  });
+
+  it("renders exactly one ellipse and one blip per holding", () => {
+    const { container } = render(
+      <SystemPlot
+        holdings={radarHoldings}
+        activeTicker={null}
+        health={0}
+        onSelectTicker={vi.fn()}
+        onOpenTicker={vi.fn()}
+      />,
+    );
+    expect(container.querySelectorAll("[data-radar-ellipse=true]")).toHaveLength(8);
+    expect(screen.getAllByRole("button", { name: /radar blip/ })).toHaveLength(8);
+  });
+
+  it("marks the radar paused when its runtime observer reports it off-screen", async () => {
+    let notify: IntersectionObserverCallback = () => undefined;
+    const disconnect = vi.fn();
+    class MockIntersectionObserver {
+      root = null;
+      rootMargin = "0px";
+      thresholds = [0.01];
+      constructor(callback: IntersectionObserverCallback) {
+        notify = callback;
+      }
+      observe = vi.fn();
+      disconnect = disconnect;
+      unobserve = vi.fn();
+      takeRecords = vi.fn(() => []);
+    }
+    vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
+    const { container } = render(
+      <SystemPlot
+        holdings={holdings}
+        activeTicker={null}
+        health={0}
+        onSelectTicker={vi.fn()}
+        onOpenTicker={vi.fn()}
+      />,
+    );
+    notify([{ isIntersecting: false } as IntersectionObserverEntry], {} as IntersectionObserver);
+    await waitFor(() => expect(
+      container.querySelector("[data-animation-state=paused]"),
+    ).toBeTruthy());
   });
 });

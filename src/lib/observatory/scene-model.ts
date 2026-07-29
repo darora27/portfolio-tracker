@@ -17,8 +17,10 @@ import {
   rampForWeekly,
 } from "./universe-palette";
 
-export const OVERVIEW_RING_OPACITY = 0.34;
-export const ACTIVE_RING_OPACITY = 0.6;
+export const OVERVIEW_RING_ALPHA = { peak: 0.55, floor: 0.22 } as const;
+export const OVERVIEW_RING_OPACITY = 1;
+export const ACTIVE_RING_OPACITY =
+  0.7 / OVERVIEW_RING_ALPHA.peak;
 export const OVERVIEW_BELT_SPAN_PCT = 0.88;
 export const TRAIL_SAMPLE_FRACTION = 0.62;
 
@@ -31,14 +33,14 @@ const OVERVIEW_LABEL_HEIGHT_PX = 44;
 const OVERVIEW_LABEL_OFFSET_PX = 4;
 const OVERVIEW_VIEWPORT_PADDING_PX = 8;
 const ORBIT_PROJECTION_SAMPLES = 180;
-const MIN_TRAIL_DEGREES = 36;
-const MAX_TRAIL_DEGREES = 64;
+export const MIN_TRAIL_DEGREES = 26;
+export const MAX_TRAIL_DEGREES = 46;
 const MIN_TRAIL_RETURN = 0.002;
 const MAX_TRAIL_RETURN = 0.12;
 const TRAIL_TAPER_FLOOR = 0.85;
 const SATELLITE_RADIUS = 0.16;
-const MIN_SUN_RADIUS = 2.4;
-const SUN_TO_PLANET_RATIO = 1.25;
+export const MIN_SUN_RADIUS = 2.8;
+export const SUN_TO_PLANET_RATIO = 1.6;
 const STAR_COUNT = 1_024;
 const BRIGHTEST_STAR_COUNT = 12;
 
@@ -92,8 +94,8 @@ export type SceneModel = {
     activeOpacity: number;
     color: string;
     fog: false;
-    nearAlpha: 0.5;
-    farAlpha: 0.1;
+    nearAlpha: 0.55;
+    farAlpha: 0.22;
   }>;
   planets: Array<{
     ticker: string;
@@ -590,7 +592,10 @@ export function sunRadiusForPlanetRadii(
 
 export function ringVertexAlpha(angleFromPlanetRadians: number): number {
   const normalized = (1 + Math.cos(angleFromPlanetRadians)) / 2;
-  return Number((0.1 + normalized * 0.4).toFixed(6));
+  return Number((
+    OVERVIEW_RING_ALPHA.floor +
+    normalized * (OVERVIEW_RING_ALPHA.peak - OVERVIEW_RING_ALPHA.floor)
+  ).toFixed(6));
 }
 
 export function starMagnitudeBucket(
@@ -894,10 +899,32 @@ export function layoutOverviewLabels<
       x: Math.min(maximumX, Math.max(minimumX, label.screen.x)),
       y: Math.min(maximumY, Math.max(minimumY, label.screen.y)),
     };
+    const portfolioObstacle = {
+      left: viewport.width / 2 - 84,
+      right: viewport.width / 2 + 84,
+      top: viewport.height / 2 - 42,
+      bottom: viewport.height / 2 + 42,
+    };
+    let bounds = labelBounds(screen);
+    let yieldedToPortfolio = false;
+    if (
+      bounds.right >= portfolioObstacle.left &&
+      bounds.left <= portfolioObstacle.right &&
+      bounds.bottom >= portfolioObstacle.top &&
+      bounds.top <= portfolioObstacle.bottom
+    ) {
+      screen.y = Math.min(
+        maximumY,
+        portfolioObstacle.bottom + OVERVIEW_LABEL_HEIGHT_PX / 2 + 10,
+      );
+      bounds = labelBounds(screen);
+      yieldedToPortfolio = true;
+    }
     return {
       ...label,
       screen,
-      bounds: labelBounds(screen),
+      bounds,
+      yielded: label.yielded || yieldedToPortfolio,
       clamped: screen.x !== label.screen.x || screen.y !== label.screen.y,
     };
   });
@@ -1086,8 +1113,8 @@ export function buildOverviewSceneModel({
         color:
           UNIVERSE_PALETTE.cabinet.ringSlate,
         fog: false,
-        nearAlpha: 0.5,
-        farAlpha: 0.1,
+        nearAlpha: OVERVIEW_RING_ALPHA.peak,
+        farAlpha: OVERVIEW_RING_ALPHA.floor,
       };
     }),
     planets,

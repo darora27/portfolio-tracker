@@ -1,0 +1,11 @@
+{
+  "status": "non_live_runtime_pass_live_browser_deferred",
+  "test": "src/components/observatory/orrery/MissionControlBays/SystemPlot.test.tsx",
+  "runtime_sequence": [
+    "Render SystemPlot with a mocked IntersectionObserver runtime.",
+    "Deliver an off-screen intersection entry.",
+    "Observe data-animation-state change from running to paused."
+  ],
+  "result": "pass",
+  "live_requestAnimationFrame_profile": "deferred_to_reviewer"
+}

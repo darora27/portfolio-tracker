@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-07-28",
+  "actor": "codex/gpt-5",
+  "target": "http://localhost:3000/share",
+  "selection_error": "No browser is available",
+  "available_browser_backends": [],
+  "standalone_browser_fallback_used": false,
+  "reason": "The Browser skill requires reporting an unavailable backend rather than substituting standalone Playwright or an unrelated browser controller.",
+  "effect": "All accepted browser and visual criteria are deferred_to_reviewer. Command criteria continue normally.",
+  "fabricated_artifacts": []
+}

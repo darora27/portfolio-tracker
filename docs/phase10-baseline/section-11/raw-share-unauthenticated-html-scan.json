@@ -1,0 +1,31 @@
+{
+  "status": "pass",
+  "method": "Production Next server HTTP response parsed with JSDOM; script/style nodes removed for visible-text scan, while owner field keys were also scanned in raw HTML.",
+  "responses": [
+    {
+      "url": "http://localhost:3000/share",
+      "http_status": 200,
+      "html_bytes": 91565,
+      "visible_currency_matches": [],
+      "visible_owner_markers": [],
+      "visible_value_heading": false,
+      "raw_owner_field_keys": []
+    },
+    {
+      "url": "http://localhost:3000/share?focus=portfolio&camera=command",
+      "http_status": 200,
+      "html_bytes": 101299,
+      "visible_currency_matches": [],
+      "visible_owner_markers": [],
+      "visible_value_heading": false,
+      "raw_owner_field_keys": []
+    }
+  ],
+  "raw_non_rsc_currency_tokens": [],
+  "raw_rsc_reference_tokens_ignored": [
+    "$0",
+    "$1",
+    "$7"
+  ],
+  "retired_compare_status": 404
+}

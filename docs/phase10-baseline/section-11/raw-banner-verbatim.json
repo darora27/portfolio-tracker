@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "expected": "SIMULATIONS — hypothetical portfolios for comparison only. Not advice, not predictions, not recommendations.",
+  "commands": [
+    "npm test -- --run src/lib/compare-copy.test.ts",
+    "npx vitest run src/components/observatory/orrery/DraftRig.test.tsx"
+  ],
+  "constant_test": "byte-identical",
+  "rendered_component_text_test": "byte-identical",
+  "alternate_banner_instances": 0
+}

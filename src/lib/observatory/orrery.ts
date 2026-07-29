@@ -1,8 +1,8 @@
 import { trailingReturn } from "@/lib/portfolio/trailing-return";
 
 export const ORRERY_FLAT_EPSILON = 0.0005;
-export const ORRERY_MIN_RADIUS = 0.9;
-export const ORRERY_MAX_RADIUS = 1.95;
+export const ORRERY_MIN_RADIUS = 0.8;
+export const ORRERY_MAX_RADIUS = 1.7;
 export const ORRERY_MIN_ANGULAR_SPEED = 0.012;
 export const ORRERY_MAX_ANGULAR_SPEED = 0.055;
 export const ORRERY_SUN_CLEARANCE = 3.4;

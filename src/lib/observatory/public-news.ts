@@ -1,4 +1,4 @@
-import type { NewsItem } from "@/lib/finnhub-news";
+import { isUsableNewsUrl, type NewsItem } from "@/lib/finnhub-news";
 
 export type PublicNewsItem = {
   headline: string;
@@ -11,6 +11,10 @@ export type PublicNewsItem = {
 type NewsByTicker =
   | Readonly<Record<string, readonly NewsItem[]>>
   | ReadonlyMap<string, readonly NewsItem[]>;
+
+export function isPublicNewsHeadline(headline: string): boolean {
+  return !/(?:[$€£¥]\s*\d|\b(?:USD|EUR|GBP|JPY)\s+\d)/i.test(headline);
+}
 
 function entriesForTicker(
   newsByTicker: NewsByTicker,
@@ -41,6 +45,8 @@ export function groupNewsByTicker(
         entriesForTicker(newsByTicker, ticker)
           .filter(
             (item) =>
+              isUsableNewsUrl(item.url) &&
+              isPublicNewsHeadline(item.headline) &&
               Number.isFinite(item.datetime) &&
               item.datetime >= earliest &&
               item.datetime <= nowSeconds,

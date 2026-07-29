@@ -1,0 +1,42 @@
+BLD-12 final production-build evidence — PASS
+
+Command:
+  npm run build
+
+Result:
+  Next.js 16.2.11
+  Compiled successfully
+  TypeScript finished
+  Static pages generated: 18/18
+  Exit code: 0
+
+Route manifest:
+  /
+  /_not-found
+  /api/auth/login
+  /api/auth/logout
+  /api/cron/snapshot
+  /api/export/history.csv
+  /api/export/trades.csv
+  /api/quotes
+  /api/settings
+  /api/trades
+  /dashboard
+  /dev/observatory-shell
+  /dev/phase10-portfolio-orrery
+  /dev/phase10-spike-css
+  /dev/phase10-spike-css-world
+  /dev/phase10-spike-r3f-world
+  /dev/surface-scratch
+  /history
+  /research
+  /share
+  /share/full
+  /stock/[ticker]
+  /trades
+
+Expected §11 delta:
+  /compare is absent (retired).
+
+Smoke:
+  Share route smoke: PASS (/share 200; Mission Control manifest 200)

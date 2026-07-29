@@ -1,0 +1,16 @@
+{
+  "status": "pass",
+  "command": "npm test -- --run src/lib/observatory/mission-control-layout.test.ts src/components/observatory/orrery/MissionControlBays/SystemPlot.test.tsx",
+  "result": {
+    "files_passed": 2,
+    "tests_passed": 5,
+    "failures": 0
+  },
+  "rendered_dom": {
+    "holdings": 8,
+    "elements_with_data_radar_ellipse": 8,
+    "radar_blip_buttons": 8,
+    "ellipse_per_holding": 1
+  },
+  "canvas_role": "Sweep, center core, and optional pair line only; it draws no ring or blip duplicates."
+}

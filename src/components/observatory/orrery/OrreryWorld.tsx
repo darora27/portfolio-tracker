@@ -65,17 +65,19 @@ function formatPercent(value: number | null, digits = 1): string {
   return `${sign}${(value * 100).toFixed(digits)}%`;
 }
 
+function formatWeightPercent(value: number): string {
+  return `${(value * 100).toFixed(1)}%`;
+}
+
 function formatTelemetryPercent(value: number | null | undefined): string {
   if (value === null || value === undefined) return "—";
   return `${value >= 0 ? "+" : ""}${(value * 100).toFixed(1)}%`;
 }
 
-function healthLabel(h: number): string {
-  if (h >= 0.6) return "Strong";
-  if (h >= 0.18) return "Steady";
-  if (h > -0.18) return "Flat";
-  if (h > -0.6) return "Weak";
-  return "Struggling";
+function formatSignalPercent(value: number | null | undefined): string {
+  if (value === null || value === undefined) return "—";
+  const direction = value > 0 ? "▲" : value < 0 ? "▼" : "◆";
+  return `${direction} ${Math.abs(value * 100).toFixed(1)}%`;
 }
 
 export function OrreryWorld({
@@ -106,6 +108,7 @@ export function OrreryWorld({
   transmissionsFirst = false,
   auroraWeeklySeries = [],
   missionSignalPair = null,
+  draftParam = null,
 }: {
   holdings: readonly PublicOrreryHolding[];
   orreryBelt?: BeltResolution;
@@ -117,6 +120,7 @@ export function OrreryWorld({
   portfolioSummary: {
     returnPct: number;
     dayReturnPct?: number;
+    weekReturnPct?: number | null;
     marketRelativePct: number | null;
     topTwoWeight: number;
     drawdownPct?: number | null;
@@ -140,6 +144,7 @@ export function OrreryWorld({
   transmissionsFirst?: boolean;
   auroraWeeklySeries?: readonly number[];
   missionSignalPair?: string | null;
+  draftParam?: string | null;
 }) {
   const router = useRouter();
   const worldRef = useRef<HTMLElement>(null);
@@ -285,10 +290,6 @@ export function OrreryWorld({
         </div>
         <p className={styles.status}>OVERVIEW · {planets.length} PLANETS · {beltHoldings.length} BELT</p>
       </header>
-      <p className={styles.orientationLine}>
-        SUN = WHOLE PORTFOLIO · PLANET = ONE HOLDING · CLICK EITHER TO OPEN
-      </p>
-
       <section className={styles.stage} aria-label="Portfolio solar system">
         <div className={styles.canvasLayer} aria-hidden="true" onDoubleClick={returnToOverview}>
           {cameraState !== "sector" ? <OrrerySceneLoader
@@ -318,9 +319,7 @@ export function OrreryWorld({
               const station = id === "DRIFT" ? "scope" : id === "HAZARD" ? "hazard" : "comms";
               router.push(`${basePath}?focus=portfolio&camera=command&station=${station}${forceNo3d ? "&no3d=1" : ""}`, { scroll: false });
             }}
-            onOpenSector={() =>
-              router.push(`${basePath}?camera=sector${forceNo3d ? "&no3d=1" : ""}`, { scroll: false })
-            }
+            onOpenSector={() => undefined}
             onExitOverview={returnToOverview}
           /> : null}
         </div>
@@ -335,10 +334,12 @@ export function OrreryWorld({
           />
         ) : null}
 
-        <div className={styles.sunTelemetry} aria-hidden="true">
-          <span>PORTFOLIO</span>
-          <strong>{formatPercent(portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct)}</strong>
-          <em>{healthLabel(health.h)}</em>
+        <div className={styles.sunTelemetry} aria-hidden="true" data-label-obstacle="portfolio-readout">
+          <strong>
+            PORTFOLIO · TODAY {formatSignalPercent(
+              portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct,
+            )}
+          </strong>
         </div>
 
         <nav className={styles.semanticMap} aria-label="Portfolio bodies">
@@ -353,7 +354,7 @@ export function OrreryWorld({
             scroll={false}
           >
             <span>SUN / PORTFOLIO</span>
-            {formatPercent(portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct)} today · {healthLabel(health.h)} health · {(health.sunspotIntensity * 100).toFixed(0)}% sunspot intensity
+            TODAY {formatPercent(portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct)} · SUNSPOT INTENSITY {(health.sunspotIntensity * 100).toFixed(0)}%
           </Link>
           <ol className={styles.holdingList}>
             {planets.map((holding) => {
@@ -375,10 +376,10 @@ export function OrreryWorld({
                   >
                     <span className={styles.ticker}>{holding.ticker} · {holding.companyName}</span>
                     <span className={styles.orbitFacts}>
-                      {formatPercent(holding.weight)} weight · {formatPercent(holding.weeklyReturn)} week · {directionForWeeklyReturn(holding.weeklyReturn)}
+                      WEIGHT {formatWeightPercent(holding.weight)} · WEEK {formatPercent(holding.weeklyReturn)} · {directionForWeeklyReturn(holding.weeklyReturn)}
                     </span>
                     <span className={styles.orbitFacts}>
-                      {formatPercent(holding.dayReturn)} today · trail {rampForWeekly(holding.weeklyReturn)} · {(trailArcLengthForWeeklyReturn(holding.weeklyReturn) * 180 / Math.PI).toFixed(0)}° arc
+                      TODAY {formatPercent(holding.dayReturn)} · TRAIL {rampForWeekly(holding.weeklyReturn)} · {(trailArcLengthForWeeklyReturn(holding.weeklyReturn) * 180 / Math.PI).toFixed(0)}° ARC
                     </span>
                   </Link>
                 </li>
@@ -402,7 +403,7 @@ export function OrreryWorld({
                     scroll={false}
                     data-moon={holding.ticker}
                   >
-                    MOON / {holding.ticker} · {(holding.newsCount ?? newsByHolding[holding.ticker]?.length)} TRANSMISSIONS · {(moonBucketForStoryCount(holding.newsCount ?? newsByHolding[holding.ticker]?.length ?? 0) ?? "none").toUpperCase()} SIZE
+                    NEWS / {holding.ticker} · {(holding.newsCount ?? newsByHolding[holding.ticker]?.length)} HEADLINES · {(moonBucketForStoryCount(holding.newsCount ?? newsByHolding[holding.ticker]?.length ?? 0) ?? "none").toUpperCase()} SIZE
                     {holding.nextEarningsDays !== null && holding.nextEarningsDays !== undefined ? ` · T−${holding.nextEarningsDays}D` : ""}
                   </Link>
                 </li>
@@ -422,7 +423,7 @@ export function OrreryWorld({
                   scroll={false}
                   data-belt-holding={holding.ticker}
                 >
-                  BELT BODY / {holding.ticker} · {formatPercent(holding.weight)} WEIGHT · {formatPercent(holding.weeklyReturn)} WEEK
+                  BELT BODY / {holding.ticker} · WEIGHT {formatWeightPercent(holding.weight)} · WEEK {formatPercent(holding.weeklyReturn)}
                 </Link>
               </li>
             ))}
@@ -430,32 +431,21 @@ export function OrreryWorld({
           <ol className={styles.instrumentList}>
             <li>
               <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=scope${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false}>
-                SATELLITE / DRIFT · VS VOO {formatPercent(portfolioSummary.marketRelativePct)}
+                RETURNS / VS VOO · SAME PERIOD {formatPercent(portfolioSummary.marketRelativePct)}
               </Link>
             </li>
             <li>
               <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=hazard${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false}>
-                SATELLITE / HAZARD · VOL {formatPercent(portfolioVolatility)} · BETA {portfolioBeta?.toFixed(2) ?? "Unavailable"}
+                RISK / VOL · SINCE START {formatPercent(portfolioVolatility)} · BETA · SAME PERIOD VOO {portfolioBeta?.toFixed(2) ?? "Unavailable"}
                 {satelliteBlinkSeconds(portfolioVolatility) === null ? " · NAV STATIC" : ` · NAV ${satelliteBlinkSeconds(portfolioVolatility)}S`}
               </Link>
             </li>
             <li>
               <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=comms${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false}>
-                SATELLITE / SUPPLY · {nextEarningsHolding ? `T−${nextEarningsHolding.nextEarningsDays}D · ${nextEarningsHolding.ticker}` : "NO UPCOMING EARNINGS"}
+                EARNINGS / {nextEarningsHolding ? `T−${nextEarningsHolding.nextEarningsDays}D · ${nextEarningsHolding.ticker}` : "NO UPCOMING EARNINGS"}
               </Link>
             </li>
           </ol>
-          {sectorSystem ? (
-            <Link
-              className={styles.bodyControl}
-              href={`${basePath}?camera=sector${forceNo3d ? "&no3d=1" : ""}`}
-              prefetch={false}
-              scroll={false}
-              data-sector-system={sectorSystem.slug}
-            >
-              SECTOR / {sectorSystem.name} · {sectorSystem.health === null ? "—" : formatPercent(sectorSystem.health)} HEALTH · OBSERVED · NO TWR
-            </Link>
-          ) : null}
           <button type="button" className={styles.bodyControl} onClick={() => setBeltOpen(true)}>
             ASTEROID BELT · {beltHoldings.length} OBJECTS
           </button>
@@ -493,8 +483,8 @@ export function OrreryWorld({
               {beltHoldings.map((holding) => (
                 <li key={holding.ticker}>
                   <strong>{holding.ticker}</strong>
-                  <span>{formatPercent(holding.weight)} weight</span>
-                  <span>{formatPercent(holding.weeklyReturn)} week · {directionForWeeklyReturn(holding.weeklyReturn)}</span>
+                  <span>WEIGHT {formatWeightPercent(holding.weight)}</span>
+                  <span>WEEK {formatPercent(holding.weeklyReturn)} · {directionForWeeklyReturn(holding.weeklyReturn)}</span>
                 </li>
               ))}
             </ul>
@@ -515,10 +505,14 @@ export function OrreryWorld({
           preservedQuery={missionPreservedQuery}
           holdings={planets}
           health={health.h}
-          teletype={`SOL-DEVAN · DAY ${formatTelemetryPercent(portfolioSummary.dayReturnPct)} · TWR ${formatTelemetryPercent(portfolioSummary.returnPct)} · VS VOO ${formatTelemetryPercent(portfolioSummary.marketRelativePct)} SAME PERIOD · DRAWDOWN ${formatTelemetryPercent(portfolioSummary.drawdownPct)}`}
-          dayReadout={formatTelemetryPercent(portfolioSummary.dayReturnPct)}
+          dayReadout={formatSignalPercent(portfolioSummary.dayReturnPct)}
+          weekReadout={formatSignalPercent(portfolioSummary.weekReturnPct)}
+          twrReadout={formatSignalPercent(portfolioSummary.returnPct)}
+          marketReadout={formatSignalPercent(portfolioSummary.marketRelativePct)}
+          offHighReadout={formatSignalPercent(portfolioSummary.drawdownPct)}
           newsByHolding={newsByHolding}
           signalPair={missionSignalPair}
+          draftParam={draftParam}
         />
       ) : null}
       <FirstVisitOrientation disabled={forceNo3d} />

@@ -19,9 +19,12 @@
         "docs/phase10-baseline/section-11/raw-naming-sweep.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -43,9 +46,12 @@
         "docs/phase10-baseline/section-11/raw-ten-second-test.md"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -67,9 +73,12 @@
         "docs/phase10-baseline/section-11/after/mission-control-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -91,9 +100,12 @@
         "docs/phase10-baseline/section-11/after/planet-detail-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -115,9 +127,12 @@
         "docs/phase10-baseline/section-11/after/mission-control-strip-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -139,9 +154,12 @@
         "docs/phase10-baseline/section-11/after/panel-chart-detents.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -163,9 +181,12 @@
         "docs/phase10-baseline/section-11/after/planet-detail-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -186,9 +207,12 @@
         "docs/phase10-baseline/section-11/raw-error-furniture.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -210,9 +234,12 @@
         "docs/phase10-baseline/section-11/raw-correlation-copy.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -234,9 +261,11 @@
         "docs/phase10-baseline/section-11/after/news-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-news-hyperlinks.json"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -257,9 +286,12 @@
         "docs/phase10-baseline/section-11/raw-legend-first-visit.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -280,9 +312,12 @@
         "docs/phase10-baseline/section-11/raw-zoom-rubber-band.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -303,9 +338,11 @@
         "docs/phase10-baseline/section-11/raw-sector-map-flag.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-sector-map-flag.txt"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -326,9 +363,11 @@
         "docs/phase10-baseline/section-11/raw-draft-ledger-property.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-draft-ledger-property.txt"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -350,9 +389,13 @@
         "docs/phase10-baseline/section-11/after/draft-rig-siphon.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-draft-ledger-property.txt",
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -374,9 +417,12 @@
         "docs/phase10-baseline/section-11/raw-draft-reduced-motion.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -397,9 +443,12 @@
         "docs/phase10-baseline/section-11/raw-draft-live-readouts.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -420,9 +469,12 @@
         "docs/phase10-baseline/section-11/raw-draft-url-history.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -443,9 +495,12 @@
         "docs/phase10-baseline/section-11/raw-draft-reset-latch.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -476,9 +531,12 @@
         "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
       },
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -500,9 +558,12 @@
         "docs/phase10-baseline/section-11/after/planet-detail-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -524,9 +585,12 @@
         "docs/phase10-baseline/section-11/after/planet-detail-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -548,9 +612,12 @@
         "docs/phase10-baseline/section-11/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -571,9 +638,12 @@
         "docs/phase10-baseline/section-11/after/planet-detail-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -596,9 +666,12 @@
         "docs/phase10-baseline/section-11/raw-chart-geometry.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -621,9 +694,12 @@
         "docs/phase10-baseline/section-11/raw-descent-geometry.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -645,9 +721,12 @@
         "docs/phase10-baseline/section-11/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -669,9 +748,11 @@
         "docs/phase10-baseline/section-11/after/orbits-radar-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-radar-ellipse-count.json"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -693,9 +774,12 @@
         "docs/phase10-baseline/section-11/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -717,9 +801,12 @@
         "docs/phase10-baseline/section-11/after/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -741,9 +828,12 @@
         "docs/phase10-baseline/section-11/after/draft-rig-ghost-off.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -775,9 +865,12 @@
         "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
       },
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -808,9 +901,12 @@
         "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
       },
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -842,9 +938,12 @@
         "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
       },
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -867,9 +966,12 @@
         "docs/phase10-baseline/section-11/raw-mobile-overflow-targets.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -891,9 +993,12 @@
         "docs/phase10-baseline/section-11/after/fallback-390x844.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -914,9 +1019,12 @@
         "docs/phase10-baseline/section-11/raw-draft-keyboard-path.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -937,9 +1045,12 @@
         "docs/phase10-baseline/section-11/raw-draft-aria-live.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -960,9 +1071,11 @@
         "docs/phase10-baseline/section-11/raw-contrast-computed.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-contrast-computed.txt"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -984,9 +1097,12 @@
         "docs/phase10-baseline/section-11/after/mission-control-reduced-motion.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -1007,9 +1123,11 @@
         "docs/phase10-baseline/section-11/raw-draft-ledger-property.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-draft-ledger-property.txt"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -1030,9 +1148,11 @@
         "docs/phase10-baseline/section-11/raw-draft-identity-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-draft-identity-test.txt"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -1053,9 +1173,12 @@
         "docs/phase10-baseline/section-11/raw-source-assertion-audit.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-source-assertion-audit.txt",
+          "docs/phase10-baseline/section-11/raw-npm-test.txt"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -1076,9 +1199,11 @@
         "docs/phase10-baseline/section-11/raw-npm-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-npm-test.txt"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -1110,9 +1235,13 @@
         "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
       },
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs",
+          "docs/phase10-baseline/section-11/raw-trail-sampler-derivation.md",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -1134,9 +1263,14 @@
         "docs/phase10-baseline/section-11/raw-recharts-route-audit.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-legacy-dashboard-removal.json",
+          "docs/phase10-baseline/section-11/raw-recharts-route-audit.txt",
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -1158,9 +1292,14 @@
         "docs/phase10-baseline/section-11/raw-lazy-mount.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-radar-pause.json",
+          "docs/phase10-baseline/section-11/raw-lazy-mount.json",
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -1181,9 +1320,11 @@
         "docs/phase10-baseline/section-11/raw-npm-build.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-npm-build.txt"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -1214,9 +1355,13 @@
         "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
       },
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-long-task-output.txt",
+          "docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -1237,9 +1382,12 @@
         "docs/phase10-baseline/section-11/raw-public-draft-gating.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-public-draft-gating.txt",
+          "docs/phase10-baseline/section-11/raw-share-unauthenticated-html-scan.json"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -1260,9 +1408,11 @@
         "docs/phase10-baseline/section-11/raw-banner-verbatim.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-banner-verbatim.json"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -1283,9 +1433,13 @@
         "docs/phase10-baseline/section-11/raw-rig-dollar-scan.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-rig-dollar-scan.json",
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",
@@ -1307,9 +1461,12 @@
         "docs/phase10-baseline/section-11/raw-share-unauthenticated-html-scan.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-share-privacy-canary.txt",
+          "docs/phase10-baseline/section-11/raw-share-unauthenticated-html-scan.json"
+        ],
+        "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
         "status": "not_run",
@@ -1330,9 +1487,14 @@
         "docs/phase10-baseline/section-11/raw-field-partition-diff.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-field-partition-diff.json",
+          "docs/phase10-baseline/section-11/raw-share-unauthenticated-html-scan.json",
+          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
+          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+        ],
+        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
         "status": "not_run",

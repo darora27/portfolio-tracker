@@ -115,7 +115,7 @@ describe("Portfolio Orrery remediation route", () => {
     );
   });
 
-  it("renders the five-bay planet detail with the four-field telemetry strip", () => {
+  it("renders the labelled holding rail and plain action buttons", () => {
     render(<OrreryWorld {...baseProps} selectedTicker="MSFT" />);
     const heading = screen.getByRole("heading", { level: 2, name: /MSFT · Microsoft/ });
     expect(heading).toBeTruthy();
@@ -128,8 +128,8 @@ describe("Portfolio Orrery remediation route", () => {
     ]) {
       expect(screen.getByText(label)).toBeTruthy();
     }
-    expect(document.querySelectorAll("aside section")).toHaveLength(5);
-    expect(screen.getByRole("link", { name: "OPEN IN MISSION CONTROL ▸" }).getAttribute("href"))
+    expect(screen.queryByText("VOO UNAVAILABLE")).toBeNull();
+    expect(screen.getByRole("link", { name: "FULL ANALYSIS ▸" }).getAttribute("href"))
       .toContain("station=manifest");
   });
 
@@ -143,7 +143,7 @@ describe("Portfolio Orrery remediation route", () => {
       />,
     );
     expect(
-      screen.getByRole("link", { name: "◂ SYSTEM" }).getAttribute("href"),
+      screen.getByRole("link", { name: "◂ BACK TO SYSTEM" }).getAttribute("href"),
     ).toBe("/");
     fireEvent.keyDown(window, { key: "Escape" });
     expect(push).toHaveBeenCalledWith("/", { scroll: false });
@@ -160,7 +160,7 @@ describe("Portfolio Orrery remediation route", () => {
       />,
     );
     expect(
-      screen.getByRole("link", { name: "Return to universe" }).getAttribute("href"),
+      screen.getByRole("link", { name: "◂ UNIVERSE" }).getAttribute("href"),
     ).toBe("/share");
     fireEvent.keyDown(window, { key: "Escape" });
     expect(push).toHaveBeenCalledWith("/share", { scroll: false });

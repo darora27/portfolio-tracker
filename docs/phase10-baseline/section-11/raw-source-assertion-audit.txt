@@ -1,0 +1,11 @@
+TST-12 command evidence — PASS
+
+Audit:
+  git diff --unified=0 | rg '^\+.*expect\([^\n]*(source|readFile|textContent)[^\n]*\)\.toContain'
+
+New §11 source-string rendered-behaviour guards found: 0
+
+The repository still contains older, pre-§11 source-contract tests. None was
+introduced or used to grade §11 rendered behaviour. New rendered behaviour is
+covered through component DOM, runtime observer, server-rendered HTML, or
+deferred live browser/pixel/geometry verification as appropriate.

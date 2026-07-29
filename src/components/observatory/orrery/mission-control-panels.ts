@@ -1,11 +1,11 @@
 export const MISSION_CONTROL_PANELS = [
-  { id: "plot", label: "PLOT 00", question: "where is everything, and how was the week" },
-  { id: "manifest", label: "MANIFEST 01", question: "what do I own, at what weight" },
-  { id: "scope", label: "SCOPE 02", question: "am I beating the market" },
-  { id: "hazard", label: "HAZARD 03", question: "how much can this hurt" },
-  { id: "signals", label: "SIGNALS 04", question: "what moves together" },
-  { id: "comms", label: "COMMS 05", question: "what’s being said" },
-  { id: "log", label: "LOG 06", question: "what did I do" },
+  { id: "plot", anchor: "orbits", label: "ORBITS", question: "where is everything, and how was the week" },
+  { id: "manifest", anchor: "holdings", label: "HOLDINGS", question: "what do I own, at what weight" },
+  { id: "scope", anchor: "returns", label: "RETURNS", question: "am I beating the market" },
+  { id: "hazard", anchor: "risk", label: "RISK", question: "how much can this hurt" },
+  { id: "signals", anchor: "correlation", label: "CORRELATION", question: "what moves together" },
+  { id: "comms", anchor: "news", label: "NEWS", question: "what’s being said" },
+  { id: "log", anchor: "trades", label: "TRADES", question: "what did I do" },
 ] as const;
 
 export type MissionControlPanelId =

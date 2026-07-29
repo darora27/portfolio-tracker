@@ -8,6 +8,18 @@ export type NewsItem = {
   ticker?: string;
 };
 
+export function isUsableNewsUrl(value: unknown): value is string {
+  if (typeof value !== "string" || value.trim() !== value || value === "") {
+    return false;
+  }
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Parses Finnhub's /company-news response — an array of articles, newest
  * first by `datetime`, capped at `maxItems`.
@@ -22,7 +34,11 @@ export function parseNewsResponse(json: unknown, maxItems = 5): NewsItem[] {
   for (const entry of json) {
     if (typeof entry !== "object" || entry === null) continue;
     const row = entry as Record<string, unknown>;
-    if (typeof row.headline !== "string" || typeof row.url !== "string" || typeof row.datetime !== "number") {
+    if (
+      typeof row.headline !== "string" ||
+      !isUsableNewsUrl(row.url) ||
+      typeof row.datetime !== "number"
+    ) {
       continue;
     }
     items.push({

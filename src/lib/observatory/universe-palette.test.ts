@@ -18,6 +18,7 @@ import {
   relativeLuminance,
   type FirewallToken,
 } from "./universe-palette";
+import { PLANET_IDENTITIES } from "./planet-identity";
 
 function tokenRows(
   tier: string,
@@ -148,6 +149,15 @@ describe("the Fraunhofer universe palette", () => {
     expect(
       contrastRatio(UNIVERSE_PALETTE.paper.ink, UNIVERSE_PALETTE.paper.sheet),
     ).toBeCloseTo(13.02, 1);
+    for (const identity of PLANET_IDENTITIES) {
+      expect(
+        contrastRatio(
+          identity.labelHex,
+          UNIVERSE_PALETTE.cabinet.dishGlass,
+        ),
+        `${identity.ticker} rim on dish glass`,
+      ).toBeGreaterThanOrEqual(4.5);
+    }
   });
 
   it("emits one serializable CSS custom-property contract", () => {

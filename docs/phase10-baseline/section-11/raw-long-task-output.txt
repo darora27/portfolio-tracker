@@ -1,0 +1,14 @@
+BLD-04 — DEFERRED_TO_REVIEWER
+
+The exact §10 measurement script was retained without modification.
+
+section-10 SHA-256:
+  c009d7b738b464a720111659d2ef441d107c894ae2399dbad8eebf23e4e4e17a
+section-11 SHA-256:
+  c009d7b738b464a720111659d2ef441d107c894ae2399dbad8eebf23e4e4e17a
+
+No timings are reported. The accepted verifier requires five fresh browser
+contexts at 1440x900 with CPU 2x throttling. Browser discovery returned zero
+available backends, and the Browser skill prohibits substituting standalone
+Playwright after that failure. The unchanged <50ms gate remains for reviewer
+execution.

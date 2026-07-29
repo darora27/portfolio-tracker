@@ -1,0 +1,12 @@
+TST-11 command evidence — PASS
+
+Command:
+  npm test -- --run src/lib/observatory/draft-return.test.ts
+
+Result:
+  Test Files 1 passed (1)
+  Tests      1 passed (1)
+
+The DRAFT mix-held return is compared with simulateRebalanced using the same
+eight-ticker close map and a single window-start rebalance. The Vitest
+expectation uses nine decimal places, satisfying the 1e-9 identity gate.

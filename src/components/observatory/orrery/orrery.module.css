@@ -758,7 +758,7 @@
   padding: 0.45rem 0.75rem;
   border: 1px solid rgba(235, 210, 165, 0.35);
   border-bottom: 0;
-  color: #d5ba8c;
+  color: var(--universe-cabinet-window-word);
   background: #3b1f12;
   text-decoration: none;
   white-space: nowrap;
@@ -2492,5 +2492,1064 @@
   }
   .closeLink {
     margin-left: 0.5rem;
+  }
+}
+
+/* Phase 10 §11 — readable holding rail and one shared return instrument. */
+@media (min-width: 1024px) {
+  [data-camera="approach"] .inspector {
+    top: 5.75rem;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    width: min(360px, 26vw);
+    max-width: 380px;
+    padding: 0.75rem;
+    overflow-y: auto;
+  }
+}
+
+.planetDetail {
+  gap: 0.55rem;
+  color: #edf3e9;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 15px;
+}
+
+.planetDetailHeader {
+  position: relative;
+  display: grid;
+  min-height: 40px;
+  align-content: center;
+  padding-right: 7.5rem;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.32);
+}
+
+.planetDetailHeader h2 {
+  margin: 0;
+  font-family: "Chakra Petch Observatory", var(--font-mono, monospace);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.planetDetailHeader .earningsChip {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.planetHero {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  min-height: 64px;
+}
+
+.planetHero > span,
+.planetWindows > span,
+.planetStats > span {
+  color: var(--universe-cabinet-window-word);
+  font: 600 11px/1.2 var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+}
+
+.planetHero strong {
+  color: var(--universe-signal-flat);
+  font: 600 56px/1 "Chakra Petch Observatory", var(--font-mono, monospace);
+  letter-spacing: -0.065em;
+}
+
+.planetHero strong[data-signal="positive"],
+.returnInstrument [data-signal="positive"] {
+  color: var(--universe-signal-gain);
+}
+
+.planetHero strong[data-signal="negative"],
+.returnInstrument [data-signal="negative"] {
+  color: var(--universe-signal-loss);
+}
+
+.planetWindows,
+.planetStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.9rem;
+  margin: 0;
+  padding: 0.45rem 0;
+  border-block: 1px solid rgba(213, 186, 140, 0.16);
+  font-size: 13px;
+}
+
+.planetWindows b,
+.planetStats b {
+  color: #f5ead1;
+  font-variant-numeric: tabular-nums;
+}
+
+.returnInstrument {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.35rem 0;
+}
+
+.returnInstrument > header {
+  display: flex;
+  min-height: 24px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.returnInstrument h3 {
+  margin: 0;
+  color: var(--universe-cabinet-chart-baseline);
+  font: 600 13px/1.2 "Chakra Petch Observatory", var(--font-mono, monospace);
+  letter-spacing: 0.06em;
+}
+
+.returnInstrument > header button,
+.rangeDetents button {
+  min-height: 32px;
+  padding: 0.25rem 0.35rem;
+  border: 1px solid rgba(213, 186, 140, 0.3);
+  color: var(--universe-cabinet-window-word);
+  background: #04100c;
+  font: 600 10px/1 var(--font-mono, monospace);
+}
+
+.rangeDetents button[aria-pressed="true"],
+.returnInstrument > header button[aria-pressed="true"] {
+  color: #201209;
+  background: var(--universe-cabinet-chart-baseline);
+}
+
+.returnPlot {
+  display: block;
+  width: 100%;
+  height: 170px;
+  overflow: visible;
+  cursor: crosshair;
+}
+
+.returnInstrument[data-room-scale="true"] .returnPlot {
+  height: 320px;
+}
+
+.returnPlot text {
+  fill: var(--universe-cabinet-window-word);
+  font: 10px var(--font-mono, monospace);
+}
+
+.returnBelowBaseline {
+  fill: rgba(217, 111, 35, 0.08);
+}
+
+.returnHairline {
+  stroke: rgba(244, 219, 168, 0.1);
+  stroke-width: 1;
+}
+
+.returnBaseline {
+  stroke: var(--universe-cabinet-chart-baseline);
+  stroke-width: 1.5;
+}
+
+.returnPortfolioTrace {
+  fill: none;
+  stroke: var(--universe-glass-scope-hero);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.returnBenchmarkTrace {
+  fill: none;
+  stroke: var(--universe-glass-benchmark-voo);
+  stroke-dasharray: 7 5;
+  stroke-width: 2;
+}
+
+.returnEndpoint {
+  fill: var(--universe-cabinet-cream);
+  stroke: var(--universe-paper-ink);
+  stroke-width: 1;
+}
+
+.returnEndChip rect,
+.returnCrosshair rect {
+  fill: #06110e;
+  stroke: var(--universe-cabinet-window-word);
+}
+
+.returnEndChip[data-signal="positive"] text {
+  fill: var(--universe-signal-gain);
+}
+
+.returnEndChip[data-signal="negative"] text {
+  fill: var(--universe-signal-loss);
+}
+
+.returnCrosshair {
+  pointer-events: none;
+}
+
+.returnCrosshair > line {
+  stroke: rgba(244, 240, 223, 0.45);
+  stroke-dasharray: 2 3;
+}
+
+.returnCrosshair > circle {
+  fill: var(--universe-signal-white-hot);
+}
+
+.benchmarkConclusion,
+.xirrReadout {
+  margin: 0;
+  color: var(--universe-glass-benchmark-voo);
+  font: 600 11px/1.2 var(--font-mono, monospace);
+}
+
+.planetNews {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.planetNews h3 {
+  margin: 0;
+  color: var(--universe-cabinet-window-word);
+  font: 600 11px/1.2 var(--font-mono, monospace);
+  letter-spacing: 0.1em;
+}
+
+.planetNews ol {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.planetNews a {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 0.4rem;
+  min-height: 28px;
+  align-items: center;
+  color: #edf3e9;
+  text-decoration: none;
+}
+
+.planetNews time {
+  color: var(--universe-cabinet-window-word);
+  font: 10px var(--font-mono, monospace);
+}
+
+.planetNews a span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.planetFooter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.planetFooter a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem;
+  border: 1px solid rgba(213, 186, 140, 0.35);
+  color: var(--universe-cabinet-chart-baseline);
+  font: 600 10px/1.2 var(--font-mono, monospace);
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Mission Control is a descending room; only the 64px strip is pinned. */
+.missionControl {
+  display: block;
+  padding: 0;
+  overflow-y: auto;
+  color: #f1dfbd;
+  background: rgba(1, 7, 5, 0.985);
+  backdrop-filter: blur(14px);
+  scroll-behavior: smooth;
+}
+
+.missionControl::before {
+  display: none;
+}
+
+.missionControl > .missionStrip {
+  position: sticky;
+  z-index: 42;
+  top: 0;
+  display: grid;
+  grid-template-columns: 9rem minmax(20rem, 0.9fr) minmax(34rem, 1.35fr) auto;
+  min-height: 64px;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid rgba(244, 219, 168, 0.5);
+  background: rgba(8, 20, 15, 0.98);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
+}
+
+.missionHero {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.missionHero span,
+.missionReadoutChips span {
+  color: var(--universe-cabinet-window-word);
+  font: 600 10px/1.2 var(--font-mono, monospace);
+  letter-spacing: 0.06em;
+}
+
+.missionHero strong {
+  color: var(--universe-cabinet-chart-baseline);
+  font: 600 24px/1 "Chakra Petch Observatory", var(--font-mono, monospace);
+}
+
+.missionReadoutChips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.2rem 0.65rem;
+}
+
+.missionReadoutChips b {
+  color: #f5ead1;
+  font-variant-numeric: tabular-nums;
+}
+
+.missionControl .missionStrip nav {
+  display: flex;
+  gap: 2px;
+  padding: 0;
+  overflow-x: auto;
+}
+
+.missionControl .missionStrip nav a {
+  min-height: 34px;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid rgba(213, 186, 140, 0.28);
+  font-size: 9px;
+}
+
+.missionExit {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--universe-cabinet-chart-baseline);
+  font: 600 10px/1 var(--font-mono, monospace);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.missionDescent {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.4rem 0 3rem;
+}
+
+.missionDescent > h2 {
+  margin: 0 0 1rem;
+  color: var(--universe-cabinet-cream);
+  font-size: 28px;
+}
+
+.missionDescentSection {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(213, 186, 140, 0.32);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(35, 72, 58, 0.16), transparent 62%),
+    #030b08;
+  scroll-margin-top: 72px;
+}
+
+.missionSectionHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.22);
+}
+
+.missionSectionHeading h3 {
+  margin: 0;
+  color: var(--universe-cabinet-cream);
+  font: 600 15px/1.3 "Chakra Petch Observatory", var(--font-mono, monospace);
+  letter-spacing: 0.12em;
+}
+
+.missionSectionHeading p {
+  margin: 0;
+  color: var(--universe-cabinet-question);
+  font-size: 12px;
+}
+
+.missionSectionStandby {
+  display: grid;
+  min-height: 9rem;
+  place-items: center;
+  color: rgba(213, 186, 140, 0.45);
+  font: 600 11px var(--font-mono, monospace);
+}
+
+.orbitsSection {
+  min-height: 480px;
+}
+
+.orbitsSection .systemPlotFrame {
+  min-height: 410px;
+}
+
+.holdingsTableWrap {
+  overflow-x: auto;
+}
+
+.holdingsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.holdingsTable th,
+.holdingsTable td {
+  height: 34px;
+  padding: 0 0.65rem;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.15);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.holdingsTable th:first-child {
+  text-align: left;
+}
+
+.holdingsTable thead th {
+  color: var(--universe-cabinet-window-word);
+  font: 600 10px var(--font-mono, monospace);
+}
+
+.holdingsTable a {
+  color: var(--universe-cabinet-cream);
+  text-decoration: none;
+}
+
+.riskInstruments {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.riskInstruments article {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  border: 1px solid rgba(213, 186, 140, 0.2);
+}
+
+.riskInstruments span {
+  color: var(--universe-cabinet-window-word);
+  font: 600 10px var(--font-mono, monospace);
+}
+
+.riskInstruments strong {
+  font-size: 25px;
+}
+
+.riskInstruments i {
+  position: relative;
+  height: 5px;
+  background: rgba(213, 186, 140, 0.16);
+}
+
+.riskInstruments i::after {
+  display: block;
+  width: var(--meter);
+  height: 100%;
+  background: var(--universe-glass-scope-hero);
+  content: "";
+}
+
+.missionHalfRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.correlationExplanation {
+  max-width: 48ch;
+  margin: 0;
+  color: #d7dfd3;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.roomCorrelation {
+  display: grid;
+  gap: 2px;
+}
+
+.roomCorrelation span {
+  display: grid;
+  min-width: 28px;
+  aspect-ratio: 1;
+  place-items: center;
+  color: #eff9f1;
+  background: #24604a;
+  font: 10px var(--font-mono, monospace);
+}
+
+.roomEarnings,
+.roomNews,
+.roomTrades ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roomEarnings li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.8rem;
+  min-height: 32px;
+  align-items: center;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.14);
+}
+
+.roomNews a {
+  display: grid;
+  grid-template-columns: 4rem 4rem minmax(0, 1fr);
+  gap: 0.7rem;
+  min-height: 32px;
+  align-items: center;
+  color: #edf3e9;
+  text-decoration: none;
+}
+
+.roomNews time {
+  color: var(--universe-cabinet-window-word);
+  font: 10px var(--font-mono, monospace);
+}
+
+.roomTrades {
+  color: var(--universe-paper-ink);
+  background: var(--universe-paper-sheet);
+  box-shadow: 7px 8px 0 rgba(43, 26, 16, 0.38);
+}
+
+.roomTrades .missionSectionHeading {
+  border-color: rgba(43, 26, 16, 0.35);
+}
+
+.roomTrades .missionSectionHeading h3,
+.roomTrades a {
+  color: var(--universe-paper-ink);
+}
+
+.roomTrades li {
+  display: grid;
+  grid-template-columns: 7rem 4rem 1fr auto;
+  min-height: 32px;
+  align-items: center;
+  border-bottom: 1px solid rgba(43, 26, 16, 0.25);
+}
+
+.missionFooter {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem;
+  border: 1px solid rgba(213, 186, 140, 0.32);
+}
+
+.missionFooter > span {
+  margin-left: auto;
+  color: var(--universe-cabinet-window-word);
+  font: 10px var(--font-mono, monospace);
+}
+
+.missionFooter .briefingPaper {
+  top: auto;
+  bottom: calc(100% + 0.4rem);
+  left: 0;
+}
+
+.draftLatch {
+  min-height: 44px;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--universe-cabinet-burnt-orange);
+  color: var(--universe-cabinet-cream);
+  background: var(--universe-cabinet-case-shell);
+  font: 600 11px var(--font-mono, monospace);
+}
+
+/* Owner-only carried DRAFT equipment. */
+.draftBackdrop {
+  position: fixed;
+  z-index: 80;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 4, 3, 0.76);
+}
+
+.draftRig {
+  position: relative;
+  width: min(900px, calc(100vw - 2rem));
+  max-height: min(570px, calc(100vh - 2rem));
+  overflow: auto;
+  border: 8px solid var(--universe-cabinet-case-shell);
+  border-radius: 12px;
+  color: var(--universe-paper-ink);
+  background: var(--universe-paper-sheet);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.72),
+    inset 0 0 0 2px #7b6b54;
+  animation: draft-case-settle 360ms ease-out both;
+}
+
+.draftRig::before,
+.draftRig::after {
+  position: absolute;
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #a59270;
+  border-radius: 50%;
+  background: var(--universe-cabinet-case-shell);
+  content: "";
+}
+
+.draftRig::before {
+  top: 7px;
+  left: 7px;
+}
+
+.draftRig::after {
+  right: 7px;
+  bottom: 7px;
+}
+
+.draftLid {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  min-height: 48px;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.55rem 1.5rem;
+  color: var(--universe-cabinet-cream);
+  background: var(--universe-cabinet-case-shell);
+  box-shadow: inset 0 -5px #171513;
+}
+
+.draftLid span,
+.draftLid button,
+.simulationTape {
+  font: 600 10px/1.2 var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+}
+
+.draftLid h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.draftLid button {
+  min-height: 34px;
+  border: 1px solid var(--universe-cabinet-burnt-orange);
+  color: var(--universe-cabinet-cream);
+  background: #171513;
+}
+
+.simulationTape {
+  margin: 0.55rem 1.4rem;
+  padding: 0.42rem 0.65rem;
+  border: 1px dashed #715c3f;
+  background: #dfc99e;
+  transform: rotate(-0.25deg);
+}
+
+.draftWorkbench {
+  display: grid;
+  grid-template-columns: 1.18fr 0.82fr;
+  gap: 0.8rem;
+  padding: 0 1rem 0.7rem;
+}
+
+.draftDishColumn {
+  min-width: 0;
+}
+
+.draftSwitches {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.35rem;
+}
+
+.draftSwitches button,
+.draftFooter button {
+  min-height: 34px;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--universe-paper-ink);
+  color: var(--universe-paper-ink);
+  background: #e0cba2;
+  font: 600 10px var(--font-mono, monospace);
+}
+
+.draftSwitches button[aria-checked="true"] {
+  color: var(--universe-cabinet-cream);
+  background: var(--universe-cabinet-case-shell);
+}
+
+.draftDish {
+  position: relative;
+  width: min(100%, 440px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 8px solid var(--universe-cabinet-case-shell);
+  border-radius: 50%;
+  color: var(--universe-cabinet-cream);
+  background:
+    radial-gradient(circle, transparent 0 2px, rgba(244, 219, 168, 0.2) 2px 3px, transparent 3px),
+    var(--universe-cabinet-dish-glass);
+  box-shadow: inset 0 0 35px rgba(79, 214, 232, 0.08);
+}
+
+.draftCrosshair::before,
+.draftCrosshair::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: rgba(244, 219, 168, 0.15);
+  content: "";
+}
+
+.draftCrosshair::before {
+  width: 68%;
+  height: 1px;
+  transform: translate(-50%, -50%);
+}
+
+.draftCrosshair::after {
+  width: 1px;
+  height: 68%;
+  transform: translate(-50%, -50%);
+}
+
+.draftOrbitTrack {
+  position: absolute;
+  inset: 16%;
+  border: 1px dashed rgba(244, 219, 168, 0.5);
+  border-radius: 50%;
+}
+
+.draftRunner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+  transform: rotate(var(--draft-angle)) translateX(145px) rotate(calc(-1 * var(--draft-angle)));
+  transform-origin: center;
+}
+
+.draftDish[data-motion="true"] .draftRunner {
+  animation: draft-orbit var(--draft-speed) linear infinite;
+}
+
+.draftRunner[data-direction="reverse"] {
+  animation-direction: reverse !important;
+}
+
+.draftRunner[data-zero="true"] {
+  top: auto;
+  bottom: 18px;
+  left: var(--draft-pit-x);
+  transform: none;
+  animation: none !important;
+}
+
+.draftBody,
+.draftGhost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.draftGhost {
+  border: 1.5px dashed var(--universe-cabinet-chart-baseline);
+  pointer-events: none;
+}
+
+.draftDirection {
+  position: absolute;
+  z-index: 2;
+  top: -9px;
+  left: 12px;
+  color: var(--universe-cabinet-chart-baseline);
+  font: 700 16px/1 var(--font-mono, monospace);
+  pointer-events: none;
+}
+
+.draftRunner[data-direction="reverse"] .draftDirection {
+  right: 12px;
+  left: auto;
+}
+
+.draftBody {
+  display: grid;
+  min-width: 14px;
+  min-height: 14px;
+  place-items: center;
+  padding: 0;
+  border: 1.5px solid;
+  font: 600 10px var(--font-mono, monospace);
+  box-shadow: 0 0 8px rgba(255, 240, 207, 0.16);
+  touch-action: none;
+}
+
+.draftBody > i {
+  position: absolute;
+  z-index: -1;
+  right: 85%;
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--draft-trail));
+}
+
+.draftBody:focus-visible {
+  outline: 3px solid var(--universe-cabinet-cream);
+  outline-offset: 4px;
+}
+
+.draftBody[data-counterparty="true"] {
+  box-shadow: 0 0 16px var(--universe-glass-scope-hero);
+}
+
+.draftRunner > b {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  color: var(--universe-cabinet-cream);
+  font: 600 9px var(--font-mono, monospace);
+  transform: translateX(-50%);
+}
+
+.siphonReadout,
+.draftTruth {
+  position: absolute;
+  left: 50%;
+  margin: 0;
+  padding: 0.2rem 0.35rem;
+  font: 600 9px var(--font-mono, monospace);
+  transform: translateX(-50%);
+}
+
+.siphonReadout {
+  top: 14%;
+  border: 1px dashed var(--universe-glass-scope-hero);
+  color: var(--universe-glass-scope-hero);
+}
+
+.draftTruth {
+  bottom: 5%;
+  width: 74%;
+  color: var(--universe-cabinet-window-word);
+  text-align: center;
+}
+
+.pitRail {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid #6d6257;
+  color: #5d554d;
+  font: 600 9px var(--font-mono, monospace);
+}
+
+.draftReadouts {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+}
+
+.draftReadouts > section {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid #7b6345;
+}
+
+.draftReadouts span {
+  color: #715c3f;
+  font: 600 9px var(--font-mono, monospace);
+}
+
+.draftReadouts strong {
+  font: 700 18px/1.1 "Chakra Petch Observatory", var(--font-mono, monospace);
+}
+
+.draftReadouts p {
+  margin: 0;
+  font: 600 10px var(--font-mono, monospace);
+}
+
+.tankRack {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tankRack li {
+  display: grid;
+  grid-template-columns: 3.2rem 3.4rem minmax(0, 1fr);
+  min-height: 24px;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.tankRack label {
+  font: 700 10px var(--font-mono, monospace);
+}
+
+.tankRack input {
+  width: 100%;
+  min-height: 24px;
+  border: 1px solid #7b6345;
+  color: var(--universe-paper-ink);
+  background: #f7ebd0;
+  font: 600 10px var(--font-mono, monospace);
+}
+
+.tankRack i {
+  position: relative;
+  height: 7px;
+  background:
+    linear-gradient(90deg, var(--universe-cabinet-burnt-orange) 0 var(--draft-fill), #c9b994 var(--draft-fill));
+}
+
+.tankRack i::after {
+  position: absolute;
+  top: -3px;
+  left: var(--real-notch);
+  width: 2px;
+  height: 13px;
+  background: var(--universe-cabinet-cream);
+  box-shadow: 0 0 0 1px var(--universe-paper-ink);
+  content: "";
+}
+
+.draftFooter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-top: 2px solid var(--universe-cabinet-case-shell);
+  background: #d5c096;
+}
+
+.draftFooter button[data-armed="true"] {
+  color: var(--universe-cabinet-cream);
+  background: #9c341c;
+}
+
+.draftFooter > span {
+  margin-left: auto;
+  font: 600 9px var(--font-mono, monospace);
+}
+
+@keyframes draft-case-settle {
+  from { opacity: 0; transform: translateY(-18px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes draft-orbit {
+  from { transform: rotate(var(--draft-angle)) translateX(145px) rotate(calc(-1 * var(--draft-angle))); }
+  to { transform: rotate(calc(var(--draft-angle) + 360deg)) translateX(145px) rotate(calc(-1 * (var(--draft-angle) + 360deg))); }
+}
+
+@media (max-width: 1023px) {
+  .missionControl > .missionStrip {
+    position: sticky;
+    grid-template-columns: 1fr auto;
+    min-height: 64px;
+  }
+  .missionReadoutChips,
+  .missionStrip nav {
+    grid-column: 1 / -1;
+  }
+  .missionDescent {
+    width: min(100% - 1rem, 700px);
+  }
+  .missionHalfRow,
+  .riskInstruments {
+    grid-template-columns: 1fr;
+  }
+  .orbitsSection {
+    min-height: auto;
+  }
+  .orbitsSection .systemPlotFrame {
+    min-height: auto;
+  }
+  .draftWorkbench {
+    grid-template-columns: 1fr;
+  }
+  .draftDish {
+    width: min(440px, 90vw);
+  }
+}
+
+@media (max-width: 600px) {
+  .planetFooter {
+    grid-template-columns: 1fr;
+  }
+  .missionReadoutChips {
+    grid-template-columns: 1fr;
+  }
+  .roomNews a,
+  .roomTrades li {
+    grid-template-columns: 4rem minmax(0, 1fr);
+  }
+  .roomNews span,
+  .roomTrades b {
+    grid-column: 1 / -1;
+  }
+  .draftRunner {
+    transform: rotate(var(--draft-angle)) translateX(31vw) rotate(calc(-1 * var(--draft-angle)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .missionControl {
+    scroll-behavior: auto;
+  }
+  .draftRig,
+  .draftRunner {
+    animation: none !important;
   }
 }

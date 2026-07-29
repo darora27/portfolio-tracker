@@ -1,0 +1,7 @@
+{
+  "status": "non_live_rendered_dom_pass_live_browser_deferred",
+  "test": "src/components/observatory/orrery/DraftRig.test.tsx",
+  "scan_pattern": "(?:[$€£¥]\\s*\\d|\\bUSD\\s+\\d)",
+  "rendered_dom_matches": [],
+  "live_owner_page_scan": "deferred_to_reviewer"
+}

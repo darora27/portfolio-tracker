@@ -1,7 +1,6 @@
 // @vitest-environment jsdom
-import { render, screen } from "@testing-library/react";
-import { fireEvent } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it } from "vitest";
 import { PlanetDetail } from "./PlanetDetail";
 
 const holding = {
@@ -14,46 +13,78 @@ const holding = {
   betaVsVoo: 1.03,
   dayReturn: -0.012,
   nextEarningsDays: 2,
-  chart: [
-    { date: "2026-07-01", index: 100 },
-    { date: "2026-07-02", index: 101 },
-  ],
+  chart: Array.from({ length: 40 }, (_, index) => ({
+    date: `2026-06-${String(index + 1).padStart(2, "0")}`,
+    index: 100 + Math.sin(index / 3) * 4 + index * 0.2,
+  })),
 };
 
+afterEach(cleanup);
+
 describe("PlanetDetail", () => {
-  it("renders exactly five bays and enforces the since-buy benchmark rule", async () => {
+  it("renders the labelled ten-second stack without error furniture", () => {
     const { container } = render(
       <PlanetDetail holding={holding} news={[]} basePath="/share" forceNo3d />,
     );
-    expect(container.querySelectorAll("section")).toHaveLength(5);
-    expect(container.querySelector("p")).toBeNull();
-    const visibleWords = (container.textContent ?? "")
-      .split(/\s+/)
-      .filter((word) => word && !/[\d%β▲▼◆◒⌁]/.test(word));
-    expect(visibleWords.length).toBeLessThanOrEqual(60);
-    expect(screen.getByText("NO TRANSMISSIONS")).toBeTruthy();
-    const benchmark = screen.getByRole("button", { name: "VOO UNAVAILABLE" });
-    expect((benchmark as HTMLButtonElement).disabled).toBe(true);
-    expect(container.querySelectorAll("svg polyline")).toHaveLength(1);
-    fireEvent.click(screen.getByRole("button", { name: "SINCE BUY · SIMPLE" }));
-    expect(
-      (screen.getByRole("button", { name: "VOO UNAVAILABLE" }) as HTMLButtonElement)
-        .disabled,
-    ).toBe(true);
+    expect(screen.getByText("TODAY")).toBeTruthy();
+    expect(screen.getByText("▼ 1.2%")).toBeTruthy();
+    expect(screen.getByText("WEEK")).toBeTruthy();
+    expect(screen.getAllByText("SINCE BUY")).toHaveLength(2);
+    expect(screen.getByText("WEIGHT")).toBeTruthy();
+    expect(screen.getByText("21.0%")).toBeTruthy();
+    expect(container.textContent).not.toContain("VOO UNAVAILABLE");
+    expect(container.textContent).not.toContain("NO TRANSMISSIONS");
+    expect(container.textContent).not.toContain("SYSTEMS MANUAL");
+    expect(screen.queryByRole("heading", { name: "NEWS" })).toBeNull();
+    expect(screen.getByRole("link", { name: "FULL ANALYSIS ▸" })).toBeTruthy();
+    expect(screen.getByRole("link", { name: "◂ BACK TO SYSTEM" })).toBeTruthy();
   });
 
-  it("expands transmissions in place while retaining button focus", async () => {
-    render(
+  it("changes both chart title and path when a range detent changes", () => {
+    const { container } = render(
+      <PlanetDetail holding={holding} news={[]} basePath="/share" forceNo3d={false} />,
+    );
+    const instrument = container.querySelector<HTMLElement>("[data-chart-signature]");
+    const before = instrument?.dataset.chartSignature;
+    expect(screen.getByText(/30 DAYS/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "7D" }));
+    expect(screen.getByText(/7 DAYS/)).toBeTruthy();
+    expect(instrument?.dataset.chartSignature).not.toBe(before);
+    fireEvent.click(screen.getByRole("button", { name: "SINCE BUY" }));
+    expect(screen.getByText(/^SINCE BUY ·/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "MAX" }));
+    expect(screen.getByText(/^MAX ·/)).toBeTruthy();
+    expect(screen.queryByRole("button", { name: /VOO/ })).toBeNull();
+
+    const plot = container.querySelector("svg");
+    expect(plot?.querySelectorAll("line")).toHaveLength(4);
+    expect(plot?.querySelectorAll("circle")).toHaveLength(2);
+    expect(plot?.querySelectorAll("path")).toHaveLength(1);
+  });
+
+  it("renders only linkable NEWS and omits the whole zone when none remain", () => {
+    const { rerender } = render(
       <PlanetDetail
         holding={holding}
-        news={[{ ticker: "MSFT", headline: "Cloud signal", source: "Wire", url: "https://example.test/news", datetime: 1785200000 }]}
+        news={[
+          { ticker: "MSFT", headline: "Cloud signal", source: "Wire", url: "https://example.test/news", datetime: 1785200000 },
+          { ticker: "MSFT", headline: "Dead signal", source: "Wire", url: "", datetime: 1785200001 },
+        ]}
         basePath="/share"
         forceNo3d={false}
       />,
     );
-    const more = screen.getByRole("button", { name: "MORE ▸" });
-    more.focus();
-    fireEvent.click(more);
-    expect(document.activeElement).toBe(screen.getByRole("button", { name: "LESS ◂" }));
+    expect(screen.getByRole("link", { name: /Cloud signal/ }).getAttribute("href"))
+      .toBe("https://example.test/news");
+    expect(screen.queryByText("Dead signal")).toBeNull();
+    rerender(
+      <PlanetDetail
+        holding={holding}
+        news={[{ ticker: "MSFT", headline: "Dead signal", source: "Wire", url: "", datetime: 1785200001 }]}
+        basePath="/share"
+        forceNo3d={false}
+      />,
+    );
+    expect(screen.queryByRole("heading", { name: "NEWS" })).toBeNull();
   });
 });

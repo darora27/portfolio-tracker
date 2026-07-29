@@ -1,0 +1,171 @@
+{
+  "recorded_at": "2026-07-28",
+  "actor": "codex/gpt-5",
+  "policy": "These checks retain admissible non-live evidence but do not promote an accepted browser or visual verifier to pass.",
+  "criteria": {
+    "BHV-10": {
+      "non_live": "MissionControl, PlanetDetail, room-content, fallback, and Systems Manual component output uses the plain names; a production SSR corpus scan found zero banned whole-word nouns.",
+      "missing": "Hydrated client and accessible-name sweep plus screenshot."
+    },
+    "BHV-11": {
+      "non_live": "PlanetDetail DOM tests locate TODAY hero, chart title and changed path signature, WEIGHT, VOL, BETA, earnings, linkable NEWS, and footer destinations.",
+      "missing": "Fresh 1440x900 ten-second visual inspection."
+    },
+    "BHV-12": {
+      "non_live": "Component output attaches TODAY, WEEK, SINCE BUY, SINCE START, and SAME PERIOD labels; HOLDINGS uses adjacent column headers.",
+      "missing": "Hydrated DOM pixel-distance sweep proving every figure is within 20px of exactly one legal window attachment."
+    },
+    "BHV-13": {
+      "non_live": "The inspector is a narrow rail and the camera retains the approach framing logic.",
+      "missing": "Live disc-versus-panel rectangle invariant at every permitted zoom."
+    },
+    "BHV-14": {
+      "non_live": "MissionControl component tests cover all section anchor hrefs and the existing interaction suite covers ESC routing.",
+      "missing": "Live native scroll, sticky-strip height, radar scroll-away, tab jump, and ESC-at-depth observation."
+    },
+    "BHV-15": {
+      "non_live": "PlanetDetail DOM test changes 30D to 7D and observes both title and SVG path-signature changes; SINCE BUY and MAX titles are exercised; absent benchmark data produces no VOO button.",
+      "missing": "Live all-detent rendered-shape and title-figure capture."
+    },
+    "BHV-16": {
+      "non_live": "PlanetDetail DOM test finds no duplicate hero, SYSTEMS MANUAL chip, empty NEWS zone, or NO TRANSMISSIONS frame.",
+      "missing": "Hydrated production browser confirmation."
+    },
+    "BHV-17": {
+      "non_live": "PlanetDetail and ReturnInstrument DOM tests find no VOO UNAVAILABLE element and no benchmark toggle without a complete same-period series.",
+      "missing": "Hydrated production browser zero-as-measurement sweep."
+    },
+    "BHV-18": {
+      "non_live": "MissionControlRoomContent static DOM contains the adjacent phrases 'fewer independent paths' and 'not cause, certainty, or what happens next'.",
+      "missing": "Live adjacency and visual readability check."
+    },
+    "BHV-20": {
+      "non_live": "FirstVisitOrientation tests pass localStorage persistence, first-interaction dismissal, no replay, and manual event re-summoning support.",
+      "missing": "Fresh-profile and returning-profile browser sequence."
+    },
+    "BHV-21": {
+      "non_live": "AUTHORED_SYSTEMS_ENABLED is false, camera=sector is rejected by the shipped route, and the active UI has no sector link.",
+      "missing": "Live wheel/pinch rubber-band and unreachable-control sweep."
+    },
+    "BHV-31": {
+      "non_live": "Ledger tests prove pro-rata and pair-only siphon math including zero; DraftRig DOM retains labelled zero bodies and a PIT RAIL.",
+      "missing": "Pointer siphon, zero docking, and re-entry in a real browser plus screenshot."
+    },
+    "BHV-32": {
+      "non_live": "Reduced-motion DraftRig DOM freezes MOTION, retains eight data-direction values, eight direction chevrons, eight static trail tokens, ghost rings, and size encoding.",
+      "missing": "Reduced-motion rendered screenshot and readability judgment."
+    },
+    "BHV-33": {
+      "non_live": "THE WEEK, CONCENTRATION, and DRIFT are derived directly from the same units state updated during pointer movement.",
+      "missing": "Mid-drag live rendered readout samples."
+    },
+    "BHV-34": {
+      "non_live": "Ledger URL encode/decode round-trips eight integers; DraftRig DOM writes draft= and COPY TEST LINK writes that URL.",
+      "missing": "Real browser Back, Forward, and fresh-context restoration sequence."
+    },
+    "BHV-35": {
+      "non_live": "DraftRig DOM proves one RESET click only arms SURE? FLIP AGAIN and the second click resets.",
+      "missing": "Real browser arm-window timing and Back un-reset sequence."
+    },
+    "BHV-05": {
+      "non_live": "The carried brand-facing phase code remains and reduced motion changes transition motion rather than phase assignment.",
+      "missing": "Live selected-sphere mark-facing measurement."
+    },
+    "VIS-10": {
+      "non_live": "Declared panel rail max-width is 360px, below the 380px ceiling.",
+      "missing": "Live panel width and selected-planet screen-x pixels."
+    },
+    "VIS-11": {
+      "non_live": "PlanetDetail DOM order is header, hero, windows, chart, stats, optional news, footer; CSS declares 15px body and 56px hero.",
+      "missing": "Live word count, per-figure uniqueness, and computed size/layout sweep."
+    },
+    "VIS-12": {
+      "non_live": "Component tests show unsigned WEIGHT, PORTFOLIO · TODAY signal with no mood, and XIRR — (needs 90d) for a 34-day fixture.",
+      "missing": "Live overview and room figure-format screenshot."
+    },
+    "VIS-13": {
+      "non_live": "Panel and camera implementation are present.",
+      "missing": "1440x900 planet-visible screenshot."
+    },
+    "VIS-14": {
+      "non_live": "ReturnInstrument DOM has three hairlines, one zero baseline, two endpoint circles, an end chip, amber portfolio trace, and 170/320 CSS heights.",
+      "missing": "Panel-scale and room-scale chart crops."
+    },
+    "VIS-15": {
+      "non_live": "MissionControlRoomContent order and declared min-heights match ORBITS, HOLDINGS, RETURNS, RISK, CORRELATION/EARNINGS, NEWS, TRADES; strip declares 64px.",
+      "missing": "Live full-descent geometry and screenshots."
+    },
+    "VIS-16": {
+      "non_live": "Scene-model tokens are peak 0.55 and floor 0.22 with a 90-degree active arc.",
+      "missing": "At least two live ring pixel samples and frame-level graph-paper judgment."
+    },
+    "VIS-18": {
+      "non_live": "Scene model uses sunRadius=max(2.8, 1.6×largest planet radius).",
+      "missing": "Live sun and largest-planet pixel diameters."
+    },
+    "VIS-19": {
+      "non_live": "The central PORTFOLIO readout is supplied to label layout as an explicit obstacle.",
+      "missing": "Live label/readout rectangle collision result."
+    },
+    "VIS-20": {
+      "non_live": "DraftRig DOM proves eight concentric dashed ghost elements and eight real-notch rack markers, then zero ghost elements after toggle-off.",
+      "missing": "Ghost-on and ghost-off screenshots."
+    },
+    "VIS-04": {
+      "non_live": "Scene constants retain the gain/loss magnitude ramp, white-hot head, and 26–46 degree arc band.",
+      "missing": "1440x900 pixels and sampler result."
+    },
+    "VIS-02": {
+      "non_live": "No planet textures were regenerated; carried surface and normal-map machinery remains.",
+      "missing": "Live 32px sphere strip and selected-planet carved-mark capture."
+    },
+    "DEF-02": {
+      "non_live": "No texture or chirality threshold was altered.",
+      "missing": "Direct live mark sampling for all eight worlds."
+    },
+    "MOB-10": {
+      "non_live": "Existing fallback implementation and its regression tests remain; no WebGL is emitted on forced fallback.",
+      "missing": "390x844 and 1024x900 rendered overflow/44px target audit and screenshots."
+    },
+    "MOB-11": {
+      "non_live": "Fallback source output was updated to uppercase TODAY/WEEK/WEIGHT and unsigned weight formatting.",
+      "missing": "390x844 hydrated DOM naming/window sweep."
+    },
+    "ACC-10": {
+      "non_live": "DraftRig DOM test proves Arrow ±0.5%, Shift uses ten half-units, Space latches a counterparty, Enter focuses the ticker's number input, and CSS declares a 3px focus-visible ring.",
+      "missing": "Real keyboard Tab path and visible-focus observation."
+    },
+    "ACC-11": {
+      "non_live": "DraftRig DOM exposes aria-live=polite and verifies the committed text 'ASML 30.0%. Others adjusted.'.",
+      "missing": "Rendered browser accessibility-tree observation."
+    },
+    "ACC-13": {
+      "non_live": "Reduced-motion selectors freeze the case/rig animation and preserve all DOM destinations and facts.",
+      "missing": "Live reduced-motion room audit and screenshot."
+    },
+    "TST-03": {
+      "non_live": "Exact §10 sampler retained; thresholds unchanged.",
+      "missing": "Re-derived live sample point, expected value, hue, and DeltaE table."
+    },
+    "BLD-10": {
+      "non_live": "OwnerMissionControlContent is deleted; active /share production artifacts contain no Recharts or legacy Mission Control component names.",
+      "missing": "Live browser bundle/network confirmation."
+    },
+    "BLD-11": {
+      "non_live": "Runtime component tests drive IntersectionObserver to pause radar and mount a reserved-height lazy section.",
+      "missing": "Live animation-frame and layout-shift observation."
+    },
+    "BLD-04": {
+      "non_live": "Exact prior measurement script retained with identical SHA-256.",
+      "missing": "Five fresh CPU-2x browser timings."
+    },
+    "PRV-12": {
+      "non_live": "Rendered DraftRig component DOM contains no currency pattern.",
+      "missing": "Live authenticated rig scan."
+    },
+    "PRV-14": {
+      "non_live": "Production unauthenticated HTML contains no owner field keys; owner VALUE, DRAFT, and trade-desk branches remain mode=private only.",
+      "missing": "Live authenticated/public browser field-partition diff."
+    }
+  }
+}

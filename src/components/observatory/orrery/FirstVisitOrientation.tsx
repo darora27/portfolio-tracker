@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import styles from "./orrery.module.css";
 
 export const UNIVERSE_ORIENTATION_STORAGE_KEY =
   "stock-market-universe-orientation-seen";
+export const UNIVERSE_ORIENTATION_EVENT = "stock-market-universe:orientation";
 
 const BEATS = [
   "This is a portfolio.",
@@ -47,6 +48,12 @@ export function FirstVisitOrientation({
   }, [disabled]);
 
   useEffect(() => {
+    const summon = () => setBeat(0);
+    window.addEventListener(UNIVERSE_ORIENTATION_EVENT, summon);
+    return () => window.removeEventListener(UNIVERSE_ORIENTATION_EVENT, summon);
+  }, []);
+
+  useLayoutEffect(() => {
     if (beat === null) return;
     const timer = window.setTimeout(
       () => (beat === BEATS.length - 1 ? finish() : setBeat(beat + 1)),

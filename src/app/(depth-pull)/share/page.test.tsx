@@ -189,19 +189,27 @@ describe("/share Stock Market Universe rendered output", () => {
   it("restores holding selection and the forced fallback", async () => {
     const html = await renderShare({ holding: "IBM", no3d: "1" });
     expect(html).toContain("IBM · IBM");
-    expect(html).toContain("TELEMETRY");
+    expect(html).toContain("Holding stats");
     expect(html).toContain("PUBLIC_IBM_TRANSMISSION");
     expect(html).toContain('data-force-no-3d="true"');
   });
 
-  it.each(["plot", "manifest", "scope", "hazard", "signals", "comms", "log"])(
+  it.each([
+    ["plot", "orbits"],
+    ["manifest", "holdings"],
+    ["scope", "returns"],
+    ["hazard", "risk"],
+    ["signals", "correlation"],
+    ["comms", "news"],
+    ["log", "trades"],
+  ])(
     "renders the public-safe %s station without owner canaries",
-    async (station) => {
+    async (station, anchor) => {
       const html = await renderShare({ focus: "portfolio", station });
 
       expect(html).toContain("Mission Control");
       expect(html).toContain('data-mode="public"');
-      expect(html).toContain(`station=${station}`);
+      expect(html).toContain(`href="#${anchor}"`);
       expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
       expect(html).not.toContain("PRIVATE_RESEARCH_MARKER");
       expect(html).not.toContain("PRIVATE_SIMULATION_MARKER");
@@ -219,17 +227,16 @@ describe("/share Stock Market Universe rendered output", () => {
 
   it("shows only percentage, weight, and derived telemetry in public stations", async () => {
     const plot = await renderShare({ focus: "portfolio", station: "plot" });
-    expect(plot).toContain("PLOT FEED");
-    expect(plot).toContain("MANIFEST");
+    expect(plot).toContain("ORBITS");
+    expect(plot).toContain("HOLDINGS");
 
     const log = await renderShare({ focus: "portfolio", station: "log" });
-    expect(log).toContain("LOG");
-    expect(log).toContain("+2.1% OF BOOK");
+    expect(log).toContain("TRADES");
     expect(log).not.toContain("PRIVATE_TRADE_REASON");
     expect(log).not.toContain("24680.13579");
 
     const hazard = await renderShare({ focus: "portfolio", station: "hazard" });
-    expect(hazard).toContain("HAZARD");
+    expect(hazard).toContain("RISK");
     expect(hazard).toContain("+37.0%");
     expect(hazard).not.toContain("Owner source");
   });
@@ -240,7 +247,8 @@ describe("/share Stock Market Universe rendered output", () => {
 
     expect(html).toContain('data-mode="public"');
     expect(html).toContain("Public universe / read-only");
-    expect(html).toContain("COMMS");
+    expect(html).toContain("NEWS");
+    expect(html).not.toContain("DRAFT");
     expect(html).not.toContain("OWNER LINK");
     expect(html).not.toContain("Owner research station");
     expect(html).not.toContain("OWNER_RESEARCH_HEADLINE");

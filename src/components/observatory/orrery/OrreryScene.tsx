@@ -1431,15 +1431,10 @@ export default function OrreryScene({
     };
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
-      if (
-        event.deltaY > 0 &&
-        zoomScale >= 1.18 &&
-        cameraStateRef.current === "overview"
-      ) {
-        callbacksRef.current.onOpenSector();
-        return;
-      }
-      zoomScale = Math.max(0.88, Math.min(1.18, zoomScale + Math.sign(event.deltaY) * 0.035));
+      const requested = zoomScale + Math.sign(event.deltaY) * 0.035;
+      const bounded = Math.max(0.88, Math.min(1.18, requested));
+      zoomScale += (bounded - zoomScale) * 0.72;
+      if (Math.abs(zoomScale - bounded) < 0.001) zoomScale = bounded;
     };
     const onDoubleClick = () => callbacksRef.current.onExitOverview();
     renderer.domElement.addEventListener("pointermove", onPointerMove, { passive: true });
