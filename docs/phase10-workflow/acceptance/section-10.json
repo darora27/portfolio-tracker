@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "§10",
   "spec_doc": "docs/phase10-workflow/specs/section-10.md",
-  "candidate_sha": "0ef1433b51e18d772156ccc8be9d3ed077bc6d34",
+  "candidate_sha": "3d853411651217ef18e9480b725b3289848b4d27",
   "criteria": [
     {
       "id": "DEF-01",
@@ -30,12 +30,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
-          "docs/phase10-baseline/section-10/claude-review-4/def-04-overview.png",
-          "docs/phase10-baseline/section-10/after/overview-1440x900.png",
-          "docs/phase10-baseline/section-10/README.md"
+          "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json"
         ],
-        "notes": "scene-model.test.ts green (\"puts both orbital directions behind the planet\") and the trail-behind geometry is visible in the regenerated 1440x900 still. — recorded by claude-code/opus-5"
+        "notes": "Re-established at this candidate: scene-model.test.ts's both-directions-behind-the-planet assertion is green in this turn's independent npm test run, and the trail-behind geometry is visible in the round-5 1440x900 overview capture with the wider ribbon. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -65,13 +63,15 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-strip-chirality-full-table.json",
-          "docs/phase10-baseline/section-10/claude-review-4/raw-chirality-crop-geometry.json",
-          "docs/phase10-baseline/section-10/claude-review-4/raw-panel-occlusion.json",
-          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
-          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+          "docs/phase10-baseline/section-10/claude-review-5/raw-sphere-strip.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-strip-chirality-full-table.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-panel-occlusion.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-remediation-landed.json",
+          "docs/phase10-baseline/section-10/claude-review-5/panel-free-msft.png",
+          "docs/phase10-baseline/section-10/claude-review-5/panel-free-cbrs.png",
+          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs"
         ],
-        "notes": "6 of 8 fail. The verifier sampled band is 96.8-100% inspector-panel chrome for those six; panel-free, two reverse to pass and MSFT/CBRS remain genuinely mirrored. See review round 4 section 5. — recorded by claude-code/opus-5"
+        "notes": "Round 5, unmodified verifier: still aborts on COST; the shipped view still fails the same 6 of 8 with margins moved by under 0.006. F3b's authorised flop landed (mark alpha changes by MAD 113.3/74.9; the MSFT and CBRS shipped thumbnails changed while untouched GOOG's is byte-identical at 0.000) yet the panel-free margin moved 0.018/0.021 - inside the 0.002-0.011 round-to-round drift of the five untouched worlds, and with no sign inversion. The correlation is therefore not sensitive to mark handedness, so round 4's F3b diagnosis is unsupported and this verifier cannot substantiate a pass or a fail for any world. F3a's panel occlusion is unchanged and remains the owner-approved §11 carry. See review round 5 section 4. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -99,11 +99,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
-          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-sampler-full-table.json",
-          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-full-table.json",
+          "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png"
         ],
-        "notes": "Both halves now hold: model test green, and COST (null weekly) samples the flat token #e3b65c live at deltaE 0. — recorded by claude-code/opus-5"
+        "notes": "Re-established at this candidate after the taper change: COST (null weekly) still samples the flat token #e3b65c live at deltaE 0, and the model test remains green. The wider taper did not suppress the clamp-floor trail. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -138,7 +137,7 @@
           "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "All five belt bodies render visibly (peak luma 73.8-204.4 against a void reference of 10) and all five are in the 28-stop tab order at 44px targets. No invisible hit plane involved. — recorded by claude-code/opus-5"
+        "notes": "All five belt bodies render visibly (peak luma 73.8-204.4 against a void reference of 10) and all five are in the 28-stop tab order at 44px targets. No invisible hit plane involved. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -172,7 +171,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -203,7 +202,7 @@
           "docs/phase10-baseline/section-10/README.md",
           "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
-        "notes": "Root-caused in the evidence README as the second .sunTelemetry text-shadow layer, not scene lighting, and removed: orrery.module.css now carries a single shadow layer. — recorded by claude-code/opus-5"
+        "notes": "Root-caused in the evidence README as the second .sunTelemetry text-shadow layer, not scene lighting, and removed: orrery.module.css now carries a single shadow layer. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -236,7 +235,7 @@
           "docs/phase10-baseline/section-10/after/approach-asml-1440x900.png",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "ASML at the close camera, 12 samples over 12s: 0 sun-like pixels at the planet centre in every sample. — recorded by claude-code/opus-5"
+        "notes": "ASML at the close camera, 12 samples over 12s: 0 sun-like pixels at the planet centre in every sample. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -268,7 +267,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
           "docs/phase10-baseline/section-10/after/sector-map-1440x900.png"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -303,7 +302,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
           "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -335,7 +334,7 @@
           "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -366,7 +365,7 @@
           "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -401,7 +400,7 @@
           "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -435,7 +434,7 @@
           "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png",
           "docs/phase10-baseline/section-10/after/radar-detail-card-1440x900.png"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -469,7 +468,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -497,11 +496,10 @@
       "reviewer": {
         "status": "blocked",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-panel-occlusion.json",
-          "docs/phase10-baseline/section-10/claude-review-4/raw-remaining-criteria.json",
-          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
+          "docs/phase10-baseline/section-10/claude-review-5/raw-panel-occlusion.json",
+          "docs/phase10-baseline/section-10/claude-review-5/panel-free-msft.png"
         ],
-        "notes": "Same geometry as VIS-02. The deterministic brand-entry phase half is green in scene-model.test.ts; under reduced motion there is no 3D planet view for the clause to apply to. — recorded by claude-code/opus-5"
+        "notes": "Unchanged from round 4. Same geometry as VIS-02 and the same owner-approved §11 carry. The deterministic brand-entry phase half remains green in scene-model.test.ts; under reduced motion there is no 3D planet view for the clause to apply to. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -528,7 +526,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -555,7 +553,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -587,7 +585,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
           "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -617,7 +615,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
           "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -648,7 +646,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-remaining-criteria.json",
           "docs/phase10-baseline/section-10/after/mission-control-manifest-1440x900.png"
         ],
-        "notes": "No far-left prose column; 26 text nodes; the only non-teletype multi-word strings are the seven designed bay questions. — recorded by claude-code/opus-5"
+        "notes": "No far-left prose column; 26 text nodes; the only non-teletype multi-word strings are the seven designed bay questions. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -675,7 +673,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -705,7 +703,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -735,7 +733,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -762,7 +760,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -789,7 +787,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -816,7 +814,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -843,7 +841,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -874,11 +872,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-strip-chirality-full-table.json",
-          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt",
-          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png"
+          "docs/phase10-baseline/section-10/claude-review-5/raw-strip-chirality-full-table.json",
+          "docs/phase10-baseline/section-10/claude-review-5/scripts/probe-strip-chirality-full-table.mjs"
         ],
-        "notes": "All eight equatorial-band means inside [0.16, 0.55] (0.1968-0.4358). — recorded by claude-code/opus-5"
+        "notes": "Re-established at this candidate after the two-texture regeneration: all eight equatorial luminance means stay inside the 0.16-0.55 window (0.2162-0.4619). CBRS moved 0.2639 -> 0.3172 and remains in window; no world approaches a bound. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -908,13 +905,12 @@
       "reviewer": {
         "status": "blocked",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-chirality-crop-geometry.json",
-          "docs/phase10-baseline/section-10/claude-review-4/raw-panel-occlusion.json",
-          "docs/phase10-baseline/section-10/claude-review-4/panel-free-msft.png",
-          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
-          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
+          "docs/phase10-baseline/section-10/claude-review-5/raw-panel-occlusion.json",
+          "docs/phase10-baseline/section-10/claude-review-5/panel-free-msft.png",
+          "docs/phase10-baseline/section-10/claude-review-5/panel-free-cbrs.png",
+          "docs/phase10-baseline/section-10/claude-review-5/panel-free-asml.png"
         ],
-        "notes": "The carved capital faces the camera on the hemisphere the inspector panel covers; no shipped-view verifier can read it for six of eight worlds. Not graded rather than guessed. — recorded by claude-code/opus-5"
+        "notes": "Unchanged from round 4 and still owner-approved as an §11 carry: the carved capital faces the camera on the hemisphere the inspector panel covers, so no shipped-view verifier reads it for six of eight worlds. Round 5 adds that the panel-free profile is dominated by terrain rather than the mark, which is why flipping a mark does not move it. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -945,7 +941,7 @@
           "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -975,11 +971,12 @@
       "reviewer": {
         "status": "blocked",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-sampler-full-table.json",
-          "docs/phase10-baseline/section-10/after/overview-1440x900.png",
-          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-TST-03.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-full-table.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json",
+          "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png"
         ],
-        "notes": "Its ramp-lightness half is TST-03, now failing on NBIS alone. Arc and 12% head halves are green in scene-model.test.ts. — recorded by claude-code/opus-5"
+        "notes": "Unchanged from round 4. Its ramp-lightness half is TST-03, still failing on NBIS alone; arc and the fixed 12% head remain green in scene-model.test.ts. Not graded rather than guessed. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1006,7 +1003,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1036,7 +1033,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
           "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1067,7 +1064,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
           "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1098,7 +1095,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-remaining-criteria.json",
           "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
         ],
-        "notes": "One dominant bay (systemPlotFrame 690x506, full height), no two bays the same size, unequal gutters, day readout at 64px. Deviations from the criterion own approximations recorded rather than smoothed: dominant bay 47.9% of viewport / 49.9% of chassis against \"approximately 55%\", and type scale 64/32/16/12/11 against the stated 64/15/11. — recorded by claude-code/opus-5"
+        "notes": "One dominant bay (systemPlotFrame 690x506, full height), no two bays the same size, unequal gutters, day readout at 64px. Deviations from the criterion own approximations recorded rather than smoothed: dominant bay 47.9% of viewport / 49.9% of chassis against \"approximately 55%\", and type scale 64/32/16/12/11 against the stated 64/15/11. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1130,7 +1127,7 @@
           "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1161,7 +1158,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/vis-10-signals-radar.png",
           "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
         ],
-        "notes": "Every ring border colour is its holding exact ramp value; blip diameter falls monotonically with weight, 20->14px across 26.4%->3.5%. — recorded by claude-code/opus-5"
+        "notes": "Every ring border colour is its holding exact ramp value; blip diameter falls monotonically with weight, 20->14px across 26.4%->3.5%. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1188,7 +1185,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1224,7 +1221,7 @@
           "docs/phase10-baseline/section-10/after/",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "F4 closed. All seven bays render their question exactly once; 0px numeral/bar overlap across all 13 rows; capture-live-evidence.mjs reproduced all 16 after/ surfaces and both mobile/ captures. — recorded by claude-code/opus-5"
+        "notes": "F4 closed. All seven bays render their question exactly once; 0px numeral/bar overlap across all 13 rows; capture-live-evidence.mjs reproduced all 16 after/ surfaces and both mobile/ captures. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1254,7 +1251,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
           "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1284,7 +1281,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-cursor-exhaust.json",
           "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
-        "notes": "Prism length 12.8px after slow travel and 33.6px after a fast jump; no exhaust node at all under reduced motion. — recorded by claude-code/opus-5"
+        "notes": "Prism length 12.8px after slow travel and 33.6px after a fast jump; no exhaust node at all under reduced motion. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1319,7 +1316,7 @@
           "docs/phase10-baseline/section-10/mobile/share-320x844.png",
           "docs/phase10-baseline/section-10/raw-fallback-output.txt"
         ],
-        "notes": "390x844 and 320x844: canvas 0, scrollWidth === clientWidth, 27 targets, minimum target 44. — recorded by claude-code/opus-5"
+        "notes": "390x844 and 320x844: canvas 0, scrollWidth === clientWidth, 27 targets, minimum target 44. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1346,7 +1343,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1378,7 +1375,7 @@
           "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1405,7 +1402,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1432,7 +1429,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1466,7 +1463,7 @@
           "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1493,7 +1490,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1524,7 +1521,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
           "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1556,7 +1553,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
           "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1587,7 +1584,7 @@
           "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1614,7 +1611,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1639,9 +1636,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1666,9 +1664,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1693,9 +1692,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1720,9 +1720,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1747,9 +1748,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1774,9 +1776,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1800,9 +1803,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "The only readFileSync on source in the section 10 test diff is the FWL-05 hex guard, which identifies itself as structural; every other added string assertion reads rendered markup. — recorded by claude-code/opus-5"
+        "notes": "The only readFileSync on source in the section 10 test diff is the FWL-05 hex guard, which identifies itself as structural; every other added string assertion reads rendered markup. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1832,13 +1836,16 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-sampler-TST-03.txt",
-          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-sampler-full-table.json",
-          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-neighbourhood.json",
-          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-TST-03.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-sampler-full-table.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-remediation-landed.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-neighbourhood.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-trail-overlay.json",
+          "docs/phase10-baseline/section-10/claude-review-5/trail-mechanism-overview.png",
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs"
         ],
-        "notes": "7 of 8 now pass and ordering is monotonic; NBIS alone fails at deltaE 33.85 on a uniform 0.52x partial-coverage blend. See review round 4 section 3. — recorded by claude-code/opus-5"
+        "notes": "Round 5, unmodified verifier: still aborts on NBIS at deltaE 33.123. The authorised taper fix reached the render (IBM 3.522 -> 0.396; NBIS 33.846 -> 30.522), but round 4's sub-pixel-coverage attribution is disproven. The 49px cross-section through NBIS's published sample point peaks at red 93 against the model's 179 with zero pixels within 2 of it, while INTC at the same expected colour shows a 14px plateau at exactly 179. The same NBIS arc does reach #aa231b (deltaE 3.44) 165px away, and no DOM layer overlies the point. See review round 5 section 3. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1870,9 +1877,10 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-sphere-strip.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-strip-chirality-full-table.json",
           "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt",
-          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs"
+          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "The retained capture measures per-world equatorial luminance and asserts chirality; it is the chirality assertion that aborts. — recorded by claude-code/opus-5"
+        "notes": "The retained capture measures per-world equatorial luminance and asserts chirality; it is the chirality assertion that aborts. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1897,9 +1905,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1928,9 +1937,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-surfaces.txt",
           "docs/phase10-baseline/section-10/scripts/",
-          "docs/phase10-baseline/section-10/README.md"
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "All seven retained verifiers plus this round five probes are committed with their raw output under claude-review-4/. — recorded by claude-code/opus-5"
+        "notes": "All seven retained verifiers plus this round five probes are committed with their raw output under claude-review-4/. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1958,9 +1968,10 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
-          "public/textures/planets/texture-manifest.json"
+          "public/textures/planets/texture-manifest.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Read directly rather than inferred: planet-textures.test.ts asserts manifest.totalBytes <= 30_000_000 and luminanceStdDev >= 0.1 per world; all three tests pass. — recorded by claude-code/opus-5"
+        "notes": "Read directly rather than inferred: planet-textures.test.ts asserts manifest.totalBytes <= 30_000_000 and luminanceStdDev >= 0.1 per world; all three tests pass. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1984,9 +1995,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-established at this candidate by the reviewer's own independent npm test (99/99 files, 527/527 tests) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2010,9 +2022,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "npm test re-run independently: 99/99 files, 527/527 tests, 0 failures. — recorded by claude-code/opus-5"
+        "notes": "npm test re-run independently: 99/99 files, 527/527 tests, 0 failures. Re-established at this candidate by the reviewer's own independent npm run build (exit 0, route list unchanged, /share 200, Mission Control manifest 200) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2036,9 +2049,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "npm run build re-run independently: exit 0, route list unchanged, /share 200 and Mission Control manifest 200. — recorded by claude-code/opus-5"
+        "notes": "npm run build re-run independently: exit 0, route list unchanged, /share 200 and Mission Control manifest 200. Re-established at this candidate by the reviewer's own independent npm run build (exit 0, route list unchanged, /share 200, Mission Control manifest 200) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2066,9 +2080,10 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/texture-byte-count.txt"
+          "docs/phase10-baseline/section-10/texture-byte-count.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "23,075,805 then 22,804,307 bytes recorded against the 30MB ceiling, and the unavailable basisu --version recorded verbatim with the reason ladder step 4 was not reached. — recorded by claude-code/opus-5"
+        "notes": "23,075,805 then 22,804,307 bytes recorded against the 30MB ceiling, and the unavailable basisu --version recorded verbatim with the reason ladder step 4 was not reached. Re-established at this candidate by the reviewer's own independent npm run build (exit 0, route list unchanged, /share 200, Mission Control manifest 200) run this round. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2099,11 +2114,10 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-long-tasks-BLD-04.txt",
-          "docs/phase10-baseline/section-10/raw-long-task-output.txt",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-long-tasks-BLD-04.txt",
           "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs"
         ],
-        "notes": "56-60ms across five fresh contexts, 5 of 5 breaching, unmoved across four remediation attempts. See review round 4 section 4. — recorded by claude-code/opus-5"
+        "notes": "Round 5, unmodified script, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 65/57/58/58/57 ms. Five of five still breach the 50 ms ceiling, unmoved across five rounds. Owner-approved bucket-B carry to §11; measurement refreshed at this candidate so §11 acceptance attaches a current figure. Not closed, not redefined. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2136,7 +2150,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/bld-05-textures-blocked.png",
           "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "With all 24 texture requests aborted the canvas still paints, all 8 scene labels render, zero page errors, non-zero channel means: deterministic shader art rather than black. — recorded by claude-code/opus-5"
+        "notes": "With all 24 texture requests aborted the canvas still paints, all 8 scene labels render, zero page errors, non-zero channel means: deterministic shader art rather than black. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2163,9 +2177,11 @@
         "status": "pass",
         "evidence": [
           "public/fonts/chakra-petch/OFL.txt",
-          "public/fonts/"
+          "public/fonts/",
+          "public/textures/planets/texture-manifest.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Chakra Petch TTF and OFL.txt committed as static assets; next/font/google unchanged in layout.tsx, so section 16 still owns the local-font migration. — recorded by claude-code/opus-5"
+        "notes": "Chakra Petch TTF and OFL.txt committed as static assets; next/font/google unchanged in layout.tsx, so section 16 still owns the local-font migration. Re-read from the regenerated manifest at this candidate: totalBytes 22,803,051, minimum luminanceStdDev 0.106628 (CBRS), maximum seamMaxDeltaE 0.00. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2190,9 +2206,11 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "public/textures/planets/texture-manifest.json",
+          "docs/phase10-baseline/section-10/claude-review-5/raw-gates.txt"
         ],
-        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. Re-read from the regenerated manifest at this candidate: totalBytes 22,803,051, minimum luminanceStdDev 0.106628 (CBRS), maximum seamMaxDeltaE 0.00. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2220,7 +2238,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Canary suite green (11/11) and independently re-checked live against an unauthenticated production fetch of /share and /: zero owner-only field names (totalValue, totalCost, costBasis, shares, realizedGain, invested, marketValue, bookCost all absent) and no portfolio dollar amount. Every $<digit> match in the public HTML is a React Server Component payload marker ($0/$1/$7/$L6) except one figure inside a syndicated third-party news headline, which carries no portfolio information and falls under the owner authorised public-news decision. Recorded rather than smoothed over. — recorded by claude-code/opus-5"
+        "notes": "Canary suite green (11/11) and independently re-checked live against an unauthenticated production fetch of /share and /: zero owner-only field names (totalValue, totalCost, costBasis, shares, realizedGain, invested, marketValue, bookCost all absent) and no portfolio dollar amount. Every $<digit> match in the public HTML is a React Server Component payload marker ($0/$1/$7/$L6) except one figure inside a syndicated third-party news headline, which carries no portfolio information and falls under the owner authorised public-news decision. Recorded rather than smoothed over. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2248,7 +2266,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Canary suite green; the radar detail card renders only percentage, weight and derived telemetry already present in the public manifest. — recorded by claude-code/opus-5"
+        "notes": "Canary suite green; the radar detail card renders only percentage, weight and derived telemetry already present in the public manifest. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2276,7 +2294,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "The existing canaries pass and cover the radar detail card and aurora payload; 11 of 11 tests in share/page.test.tsx. — recorded by claude-code/opus-5"
+        "notes": "The existing canaries pass and cover the radar detail card and aurora payload; 11 of 11 tests in share/page.test.tsx. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2304,7 +2322,7 @@
           "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt",
           "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Independently re-exercised live: a request carrying owner-session cookies returns a byte-identical response to the no-cookie request (cmp identical, 55,254 bytes both). The section 8 severe regression stays closed. — recorded by claude-code/opus-5"
+        "notes": "Independently re-exercised live: a request carrying owner-session cookies returns a byte-identical response to the no-cookie request (cmp identical, 55,254 bytes both). The section 8 severe regression stays closed. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2329,7 +2347,7 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt"
         ],
-        "notes": "No .env* file was read, printed, edited, staged or committed at any point this turn, and no deployment command was run. — recorded by claude-code/opus-5"
+        "notes": "No .env* file was read, printed, edited, staged or committed at any point this turn, and no deployment command was run. Result carried unchanged from the round-4 review at 0ef1433: the round-5 delta is confined to trailRibbonHalfWidths' taper floor, the MSFT and CBRS texture maps, and their tests, none of which this criterion depends on. — recorded by claude-code/opus-5"
       }
     }
   ]

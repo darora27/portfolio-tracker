@@ -1,0 +1,63 @@
+# §10 round-5 review — reviewer's own independent gate runs
+# Candidate: 3d853411651217ef18e9480b725b3289848b4d27 (HEAD at turn start)
+# Reviewer: claude-code/opus-5
+
+## npm test
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  99 passed (99)
+      Tests  527 passed (527)
+   Start at  22:39:25
+   Duration  5.05s (transform 2.72s, setup 0ms, import 5.78s, tests 8.58s, environment 10.34s)
+
+
+## npm run build (tail)
+✓ Generating static pages using 7 workers (18/18) in 498ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/cron/snapshot
+├ ƒ /api/export/history.csv
+├ ƒ /api/export/trades.csv
+├ ƒ /api/quotes
+├ ƒ /api/settings
+├ ƒ /api/trades
+├ ƒ /compare
+├ ƒ /dashboard
+├ ƒ /dev/observatory-shell
+├ ƒ /dev/phase10-portfolio-orrery
+├ ƒ /dev/phase10-spike-css
+├ ƒ /dev/phase10-spike-css-world
+├ ƒ /dev/phase10-spike-r3f-world
+├ ƒ /dev/surface-scratch
+├ ƒ /history
+├ ƒ /research
+├ ƒ /share
+├ ƒ /share/full
+├ ƒ /stock/[ticker]
+└ ƒ /trades
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Share route smoke: PASS (/share 200; Mission Control manifest 200)
+
+## texture manifest gates, read at this candidate
+totalBytes            22803051 (ceiling raised to 30,000,000 by §10 work item 5)
+tier                  {"base":"1448x724","emissive":"724x362","normal":"724x362"}
+min luminanceStdDev   0.106628 (floor 0.1)
+max seamMaxDeltaE     0.000 (ceiling 6)
+   ASML  lumSD=0.185874 seam=0.00 | source-forward before seam repair for DataTexture UV
+   GOOG  lumSD=0.114081 seam=0.00 | source-forward before seam repair for DataTexture UV
+   MSFT  lumSD=0.114704 seam=0.00 | preflopped before seam repair for DataTexture UV
+   IBM   lumSD=0.156230 seam=0.00 | source-forward before seam repair for DataTexture UV
+   COST  lumSD=0.149836 seam=0.00 | source-forward before seam repair for DataTexture UV
+   INTC  lumSD=0.110471 seam=0.00 | source-forward before seam repair for DataTexture UV
+   NBIS  lumSD=0.165306 seam=0.00 | source-forward before seam repair for DataTexture UV
+   CBRS  lumSD=0.106628 seam=0.00 | preflopped before seam repair for DataTexture UV
