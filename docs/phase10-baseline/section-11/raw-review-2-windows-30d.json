@@ -1,0 +1,19 @@
+{
+  "criterion": "VIS-11",
+  "reviewed_by": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode)",
+  "candidate_sha": "b21339e66f1bfa173c0413bf5bda909e54c52d0c",
+  "summary": "The spec's §3.2 Windows zone requires 'WEEK ... 30D ... SINCE BUY (SIMPLE)' as one 13px line, each figure appearing exactly once. The shipped PlanetDetail.tsx computes `thirtyDayReturn` (line 46) but never renders it anywhere in the component -- the rendered Windows line is only 'WEEK <val>' and 'SINCE BUY <val> (SIMPLE)'. Confirmed by source read and live DOM capture (no '30D' text node anywhere in the panel for any of the 8 live holdings).",
+  "compounding_defect": "Separately, the chart's own 30D detent (ReturnInstrument.tsx) is gated on `points.length > 30`. A live sweep of all 8 production holdings on /share found none with a chart series longer than 30 sessions -- every holding renders only 7D and SINCE BUY detents (COST renders only SINCE BUY). So even after the dead Windows-zone variable is wired up, the chart's own 30D detent is currently unreachable for the live dataset. This may be expected if the seeded price history genuinely does not span 30 sessions per holding, but it means the 30D word in the window vocabulary (CLAUDE.md, spec §2.2/§3.2) never appears anywhere in the shipped panel today.",
+  "live_sweep": {
+    "ASML": {"dataRange": "since", "buttons": ["7D", "SINCE BUY"]},
+    "GOOG": {"dataRange": "since", "buttons": ["7D", "SINCE BUY"]},
+    "COST": {"dataRange": "since", "buttons": ["SINCE BUY"]},
+    "MSFT": {"dataRange": "since", "buttons": ["7D", "SINCE BUY"]},
+    "IBM": {"dataRange": "since", "buttons": ["7D", "SINCE BUY"]},
+    "INTC": {"dataRange": "since", "buttons": ["7D", "SINCE BUY"]},
+    "CRM": {"dataRange": "since", "buttons": ["7D", "SINCE BUY"]},
+    "CBRS": {"dataRange": "since", "buttons": ["7D", "SINCE BUY"]}
+  },
+  "required_change": "Render `thirtyDayReturn` in the Windows zone per spec (guard for null the same way WEEK/SINCE BUY already do). Separately investigate why no holding's chart series exceeds 30 points -- if the snapshot history genuinely is that short, name it in the handoff rather than silently shipping a window word that can never appear; if it is a data-plumbing bug capping the series, fix the source so 30D becomes reachable.",
+  "pass": false
+}

@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§11",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -31,7 +31,7 @@
     "design_proof": "docs/phase10-workflow/design-proofs/section-11.md",
     "implementation_commit": "a690a41f2f12ef335fd9f5288f90f6a4fa154ca4",
     "review_result": "fail",
-    "review_doc": "docs/phase10-workflow/reviews/section-11-review.md",
+    "review_doc": "docs/phase10-workflow/reviews/section-11-review-2.md",
     "findings": [
       {
         "id": "F1",
@@ -84,14 +84,35 @@
         "remediation_result": "Verified from the owner-directed Fable drop: MAX is removed when it duplicates SINCE BUY and is retained only when pre-purchase history makes the figure and SVG path distinct.",
         "remediation_evidence": "docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx; docs/phase10-baseline/section-11/raw-remediation-focused-tests.txt",
         "ledger_rows": []
+      },
+      {
+        "id": "F5",
+        "criterion": "BLD-04",
+        "risk": "high",
+        "evidence": "docs/phase10-baseline/section-11/raw-review-2-long-tasks.json",
+        "summary": "Fresh 5-context 1440x900 CPU-2x measurement (unmodified measure-long-tasks.mjs, pinned measurement contract) still finds 57-60ms against the unchanged <50ms gate -- the sixth consecutive failing round. Package C's three named refunds (radar IntersectionObserver pause, below-fold lazy-mount, legacy dashboard/Recharts removal) did not clear it.",
+        "required_change": "Profile the current candidate directly (do not assume the §10 profile still applies) and address the actual attributed cost -- the spec named Three.js shader-program acquisition as the next lever if the three refunds did not clear the gate. Do not baseline-subtract or redefine the 50ms boundary; that remains a must_wait_for_codex action.",
+        "ledger_rows": [
+          "LT-01"
+        ]
+      },
+      {
+        "id": "F6",
+        "criterion": "VIS-11",
+        "risk": "high",
+        "evidence": "docs/phase10-baseline/section-11/raw-review-2-windows-30d.json",
+        "summary": "Spec section 3.2 requires the panel's Windows line to show WEEK, 30D, and SINCE BUY. PlanetDetail.tsx computes thirtyDayReturn (line 46) but never renders it -- confirmed by source read and a live DOM sweep of all 8 production holdings on /share, none of which show a 30D figure. This is also why the phase10:capture range-30d shot fails: no live holding's chart series currently exceeds 30 points, so the chart's own 30D detent is unreachable too -- noted as data-volume context, not asserted as a required second fix.",
+        "required_change": "Render thirtyDayReturn in the Windows zone (null-guard like WEEK/SINCE BUY already do). Re-run the range-30d capture against a holding whose series can exercise it, or record explicitly if the current dataset cannot and name it as a data-volume note in the handoff.",
+        "ledger_rows": []
       }
     ],
     "remediation_commits": [
       "4658020094eb9c630d5ef2fd4e064726d6eca087",
       "93994aeea6748cef0064807273704989a4dbd7d1",
-      "d7589a812fb2512a7ca7ab0b80fe10adf2dd4ff6"
+      "d7589a812fb2512a7ca7ab0b80fe10adf2dd4ff6",
+      "b21339e66f1bfa173c0413bf5bda909e54c52d0c"
     ],
-    "unperformed_criteria_note": "The affected remediation matrix is explicit: F1/BHV-11 is owner-carried to §12a after root cause; F2/VIS-10 is owner-carried with committed 1440x900 pixel geometry and the owner's position verdict, while the incompatible original width clause is not passed; F3/VIS-02, BHV-05, and DEF-02 are owner-carried after the one authorised repair attempt, with IBM still failing the current direct shipped-texture verifier; F4/BHV-15 passes rendered interaction coverage. Section-wide browser and visual entries outside these findings remain for independent review. BLD-04 remains blocked with its retained host launch failure. Review cannot accept with any visual not_run, deferred, or blocked entry and must repair the incomplete contact sheet.",
+    "unperformed_criteria_note": "Review turn 2 stopped after recording every currently evidenced failure (F5/BLD-04, F6/VIS-11) plus reconfirming F4/BHV-15 (pass) and PRV-10 (pass) live, and re-grading F1-F3's five owner-carried criteria (BHV-11, VIS-10, VIS-02, DEF-02, BHV-05) as carried_by_owner per the implementer handoff's explicit instruction. TST-13, BLD-12, and PRV-13 retain their review-1 pass, re-substantiated by this turn's fresh npm test/npm run build. All other criteria remain not_run and are not implicit passes -- the next reviewer must run the full newly-reachable matrix after remediation. See docs/phase10-workflow/reviews/section-11-review-2.md.",
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
@@ -101,7 +122,7 @@
       "UNIVERSE_DRAFT_RIG.html"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-29-section-11-codex-remediation-continuation-to-claude-lead.md",
+    "handoff": "docs/phase10-handoffs/2026-07-29-section-11-claude-lead-review-2-to-codex-implementation.md",
     "note": "Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for this section: UNIVERSE_IDEAS_5.md (legibility) -> UNIVERSE_IDEAS_4.md (the draft rig) -> OWNER_FEEDBACK_LEDGER.md -> the two owner-reviewed prototypes UNIVERSE_LEGIBILITY_MOCK.html and UNIVERSE_DRAFT_RIG.html -> PHASE10.md §11. main is GREEN at this section start: npm test 527/527 across 99 files and npm run build exit 0, both re-run by the accept turn at dbdeb39. §9's inherited red is closed and no exception is inherited. §9's testing prohibition carries forward: expect(source).toContain(...) is not valid coverage for rendered behaviour. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (the website is still relatively confusing). §11 runs under single_provider_mode: its compensating controls are mandatory, and its must_wait_for_codex list binds - the privacy boundary, the financial math core, and any gate weakening or exception.",
     "carried_from_section_10": {
       "rule": "Six §10 criteria were carried by owner decision on 2026-07-29, not closed. Every one MUST appear in §11 acceptance with the measurement below attached, and §11 must re-run the named verifier and record the result. None may be closed by assertion.",
@@ -270,34 +291,34 @@
       "note": "Universe colour, material, and command structure. One implementation round, five review rounds, four remediation rounds, an owner bounded-triage rule, an owner triage approval and two owner decisions. The authoritative review (section-10-review-5.md) records FAIL, not pass: 71 of 77 criteria pass and six are carried to §11 unclosed (TST-03, VIS-04, DEF-02, VIS-02, BHV-05, BLD-04), each recorded in the ledger as carried_by_owner with its failing measurement attached. Accepted at 3d85341 by explicit owner decision (docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md), which rests on direct owner observation contradicting two instruments: the owner reports NBIS trail brightness matching its neighbours where the verifier reports red 93 against a model 179, and reports he cannot see any planet or mark at all because the inspector panel occludes them — the same 96.8-100% band occlusion that makes the chirality verifier unable to measure what it samples. NO owner exception was recorded and NO gate, threshold, verifier or sample point was weakened, redefined or baseline-subtracted; the six criteria are carried forward and must appear in §11 acceptance. Verified independently at acceptance rather than assumed: git diff --name-only 3d85341 HEAD -- src/ public/ package.json package-lock.json is empty, so the accepted implementation is byte-identical to HEAD, and npm test (527/527 across 99 files) plus npm run build both pass at HEAD. §9's inherited red is closed by this section: totalBytes 22,803,051 against §10's raised 30 MB ceiling and minimum luminanceStdDev 0.106628 against the 0.1 floor. Implemented by codex/gpt-5 and reviewed by claude-code/opus-5 across two providers — full cross-model independence, so single_provider_mode is false. See docs/phase10-workflow/reviews/section-10-accepted.md, section-10-review.md through section-10-review-5.md, and docs/phase10-workflow/SECTION_10_TRIAGE.md."
     }
   ],
-  "prev_actor_commit": "d7589a812fb2512a7ca7ab0b80fe10adf2dd4ff6",
-  "prev_actor_commit_note": "Recorded per the Codex Implementation standing prompt: d7589a812fb2512a7ca7ab0b80fe10adf2dd4ff6 was HEAD at the start of this owner-unblocked §11 bounded remediation continuation.",
+  "prev_actor_commit": "b21339e66f1bfa173c0413bf5bda909e54c52d0c",
+  "prev_actor_commit_note": "b21339e66f1bfa173c0413bf5bda909e54c52d0c was HEAD at the start of this review turn (review stage, turn 2 for §11).",
   "last_green_commit": "3d853411651217ef18e9480b725b3289848b4d27",
   "last_green_commit_note_2": "Moved from 3d1882a to §10's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. §9's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against §10's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
-  "production_code_changed_this_turn": true,
-  "production_code_note": "The executable remediation candidate began at d7589a8. This continuation restored only IBM's last-known-green shipped base/emissive/normal maps and 32px proxy after the owner-authorised regeneration regressed the unchanged recognizability gate (luminanceStdDev 0.095739 < 0.1). The repaired IBM SVG source remains intact, NBIS remains regenerated, no new logo attempt was made, and the manifest now records IBM's restored 0.15623 result.",
+  "production_code_changed_this_turn": false,
+  "production_code_note": "Review-only turn: no src/ or public/ files were touched. This turn ran npm test and npm run build independently (both pass, unchanged from the candidate), ran the retained BLD-04 script live, swept all 8 production holdings' return-instrument DOM live, verified PRV-10's gating live and by source, regenerated the section-11 contact sheet (10/11, range-30d still fails and is root-caused to F6 rather than the harness), and updated the acceptance ledger's reviewer column.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "§11.R continuation final run: 106 test files passed; 548 tests passed; zero failures or skips. The first run honestly failed IBM's unchanged 0.1 recognizability floor at 0.095739; restoring only IBM's last-known-green shipped colour/silhouette artifacts raised the recorded proxy to 0.15623 and the focused plus full suites passed.",
-      "finished_at": "2026-07-29T22:35:03Z"
+      "summary": "Independent review-turn run: 106 test files passed; 548 tests passed; zero failures or skips. Unchanged from the candidate's own claim.",
+      "finished_at": "2026-07-29T22:39:19Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "§11.R continuation final run: Next.js 16.2.11 production build exited 0; TypeScript and 18/18 static pages passed; /share smoke passed.",
-      "finished_at": "2026-07-29T22:35:03Z"
+      "summary": "Independent review-turn run: Next.js 16.2.11 production build exited 0; TypeScript clean; 18/18 static pages; /share smoke passed.",
+      "finished_at": "2026-07-29T22:40:00Z"
     },
     "live_evidence": {
-      "command": "npm run build && npm run start; npm run phase10:capture -- --section 11 --base http://127.0.0.1:3000",
+      "command": "npm run start; npm run phase10:capture -- --section 11 --base http://127.0.0.1:3000; node docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs",
       "status": "partial",
-      "summary": "This continuation's production server started but Chromium again closed before page launch, so no fresh live pass is claimed. The executable candidate already contains committed owner-run production captures from the same harness: F2 geometry measures ASML at x=31.4%/31.3% for the 520/580px rails, both unoccluded, and the owner confirmed the position. F3 remains an owner-carried failure, and the reviewer must complete every still-unperformed visual/browser criterion plus the contact sheet's failed range-30d shot.",
-      "finished_at": "2026-07-29T22:35:03Z"
+      "summary": "Live production server launched successfully and Chromium ran without the launch failures prior turns hit. Contact sheet regenerated at 10/11 (range-30d fails, root-caused to F6/VIS-11, not a harness defect). BLD-04 measured fresh and fails (57-60ms vs the 50ms gate, see F5). BHV-15 and PRV-10 reconfirmed live and pass. Full 54-criterion matrix was not exhaustively re-run this turn; see unperformed_criteria_note and the review doc's Unperformed matrix.",
+      "finished_at": "2026-07-29T22:54:00Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-29T22:35:03Z",
+  "updated_at": "2026-07-29T22:54:34Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

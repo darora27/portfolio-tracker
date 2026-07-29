@@ -1,0 +1,16 @@
+{
+  "criterion": "BLD-04",
+  "reviewed_by": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode)",
+  "candidate_sha": "b21339e66f1bfa173c0413bf5bda909e54c52d0c",
+  "command": "PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs",
+  "gate": "maximumMs < 50, absolute, not baseline-subtracted",
+  "runs": [
+    {"run": 1, "maximumMs": 60},
+    {"run": 2, "maximumMs": 57},
+    {"run": 3, "maximumMs": 58},
+    {"run": 4, "maximumMs": 60},
+    {"run": 5, "maximumMs": 58}
+  ],
+  "pass": false,
+  "note": "Unmoved across six measured rounds since §10 (65/57/58/58/57 at carry -> 60/57/58/60/58 now). Package C's three named refunds (radar IntersectionObserver pause, below-fold lazy-mount, legacy dashboard/Recharts removal) did not clear the gate. The §10 CDP profile attributed the residual cost to Three.js shader-program acquisition; this section's spec named that as the next lever if the refunds did not clear it, and it was not attempted."
+}

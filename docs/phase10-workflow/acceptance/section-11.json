@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "§11",
   "spec_doc": "docs/phase10-workflow/specs/section-11.md",
-  "candidate_sha": "d7589a812fb2512a7ca7ab0b80fe10adf2dd4ff6",
+  "candidate_sha": "b21339e66f1bfa173c0413bf5bda909e54c52d0c",
   "criteria": [
     {
       "id": "BHV-10",
@@ -56,11 +56,14 @@
         "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. The owner re-reported Mission Control small text after the five-token ramp and directed the semantic-role remap to §12a. §11.R root-caused the gap: the value gate constrains legal sizes, but Mission Control still maps reading surfaces to the smallest 11px role. No one-off size nudge was made. Recorded by codex/gpt-5."
       },
       "reviewer": {
-        "status": "fail",
+        "status": "carried_by_owner",
         "evidence": [
-          "OWNER_FEEDBACK_LEDGER.md"
+          "OWNER_FEEDBACK_LEDGER.md",
+          "docs/phase10-baseline/section-11/raw-mission-control-type-root-cause.md",
+          "docs/phase10-baseline/section-11/captures/asml-panel-type.png",
+          "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
         ],
-        "notes": "Owner visual review of this candidate reports that the small text remains unreadable: \"the small fonts need to be a good bit larger so that you can even see what they have to say at all.\" That directly fails the no-squint ten-second requirement. Reviewed by codex/gpt-5 using the portfolio-ux repository fallback."
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): per the owner-directed scope note routed to this section (PHASE10_STATE.json section.owner_scope_note / section.findings), this item is owner-carried, not closed. Reviewer lane applies carried_by_owner per the codex remediation handoff's explicit instruction; grading it 'pass' would misrepresent the owner's own verdict."
       }
     },
     {
@@ -166,12 +169,12 @@
         "notes": "Owner-directed Fable remediation removes MAX when it would duplicate SINCE BUY and renders both only with pre-purchase history. The retained rendered-DOM contract proves different figures and SVG paths in that second case; the focused run passed. Recorded by codex/gpt-5."
       },
       "reviewer": {
-        "status": "fail",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-return-toggle.json",
-          "docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx"
+          "docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx",
+          "live capture: 7D<->SINCE BUY toggle on ASML changes both data-chart-signature and the h3 title/figure"
         ],
-        "notes": "Executable rendered-DOM observation shows SINCE BUY and MAX have byte-identical plotted path signatures and the same +23.7% answer. The control changes only the title word, not both the figure and shape as required. Reviewed by codex/gpt-5."
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): re-confirmed live on the candidate. Retained rendered-interaction test (case A/B) plus a fresh live click-through on /share ASML: toggling 7D<->SINCE BUY changes both the SVG path signature and the title figure. 30D/MAX do not currently render for any live holding (see VIS-11 finding) so only the two reachable detents were exercised, but both change consequence as required. No dead detent observed."
       }
     },
     {
@@ -550,9 +553,16 @@
         "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. The owner spent the one authorised mark-repair attempt, then explicitly retired logo identity to colour and silhouette so the relay could continue. The regenerated IBM artifact regressed the unchanged 32px recognizability gate, so this turn restored its last-known-green colour/silhouette maps without changing the repaired SVG source; the current verifier therefore records IBM as intentionally not matching that repaired mark mask. The three ASML phase captures do not establish a visible mark. No visibility pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "carried_by_owner",
+        "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md",
+          "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
+          "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-0.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-120.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-240.png"
+        ],
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): same owner retirement. Brand-first entry phase depends on a visible mark, which remains unresolved by owner decision."
       }
     },
     {
@@ -581,11 +591,16 @@
         "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. Committed 1440x900 production captures measure ASML at x=31.4% with the 520px rail and x=31.3% with the 580px rail, both unoccluded; the owner then said the planet position is correct for the most part. The original <=380px rail clause is not relabelled as a pass: the owner's newer width request superseded that target and FB-17 remains scheduled for §12a. Recorded by codex/gpt-5."
       },
       "reviewer": {
-        "status": "fail",
+        "status": "carried_by_owner",
         "evidence": [
-          "OWNER_FEEDBACK_LEDGER.md"
+          "OWNER_FEEDBACK_LEDGER.md",
+          "docs/phase10-baseline/section-11/raw-panel-geometry.json",
+          "docs/phase10-baseline/section-11/captures/panel-width-460.png",
+          "docs/phase10-baseline/section-11/captures/panel-width-520.png",
+          "docs/phase10-baseline/section-11/captures/panel-width-580.png",
+          "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
         ],
-        "notes": "Owner visual review names ASML and reports the planet renders middle to middle-right with large unused space on the left, failing the specified x≈30% left-third anchor. Reviewed by codex/gpt-5 using the portfolio-ux repository fallback."
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): per the owner-directed scope note routed to this section (PHASE10_STATE.json section.owner_scope_note / section.findings), this item is owner-carried, not closed. Reviewer lane applies carried_by_owner per the codex remediation handoff's explicit instruction; grading it 'pass' would misrepresent the owner's own verdict."
       }
     },
     {
@@ -610,9 +625,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-2-windows-30d.json"
+        ],
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): source read (PlanetDetail.tsx:46,74-77) plus live DOM capture across all 8 production holdings on /share confirm the spec's required 'WEEK ... 30D ... SINCE BUY (SIMPLE)' Windows line never renders 30D -- `thirtyDayReturn` is computed and dead. New finding, not previously graded (prior ledger had this not_run)."
       }
     },
     {
@@ -931,12 +948,17 @@
         "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. After the one authorised SVG repair and texture regeneration, IBM fell below the unchanged 32px recognizability gate and this turn restored its last-known-green colour/silhouette maps without changing the repaired SVG source. The current direct verifier passes seven authored composites and records IBM as not matching the repaired mark mask, while the owner reports no visible logo on any world. He explicitly ended logo work for now. The assertion was not weakened and no visibility pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
-        "status": "fail",
+        "status": "carried_by_owner",
         "evidence": [
           "OWNER_FEEDBACK_LEDGER.md",
-          "docs/phase10-baseline/section-11/raw-review-browser-block.txt"
+          "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
+          "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-0.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-120.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-240.png",
+          "docs/phase10-baseline/section-11/scripts/measure-shipped-marks.mjs"
         ],
-        "notes": "Owner visual review after the §11 panel rebuild reports for the fourth time that no company logos are visible on any planet. The carved marks therefore do not read in the shipped view. Do not regenerate textures before direct mark measurement; the live verifier remains unperformed because Chromium was blocked before page launch. Reviewed by codex/gpt-5."
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): owner-carried after the one authorised mark-repair attempt (docs/phase10-workflow/... mark_repair). The owner retired logo work to colour+silhouette identity by his own fallback rule; VIS-02 is not closed by that retirement."
       }
     },
     {
@@ -973,9 +995,14 @@
         "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. The current direct byte verifier distinguishes normal from mirrored composites for seven worlds; IBM's last-known-green colour/silhouette maps intentionally do not match the repaired mark source after the attempted regeneration regressed the recognizability gate, so shipped-view chirality remains unproved. The owner explicitly ended logo work after the one authorised attempt. The chirality assertion remains unchanged and no pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "carried_by_owner",
+        "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md",
+          "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
+          "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
+          "docs/phase10-baseline/section-11/scripts/measure-shipped-marks.mjs"
+        ],
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): same owner retirement as VIS-02. The direct shipped-mark verifier records IBM as not matching the repaired mask; no chirality pass is claimed."
       }
     },
     {
@@ -1397,12 +1424,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "blocked",
+        "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-browser-block.txt",
-          "docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs"
+          "docs/phase10-baseline/section-11/raw-review-2-long-tasks.json"
         ],
-        "notes": "The exact verifier was attempted unchanged, but cached Chromium was terminated before page launch by the host Mach rendezvous permission denial. No timing is claimed; the unchanged <50ms gate remains unperformed. Reviewed by codex/gpt-5."
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): fresh 5-context 1440x900 CPU-2x live measurement, unmodified measure-long-tasks.mjs, waitUntil domcontentloaded per the pinned measurement contract. maximumMs 57-60 against the unchanged <50ms gate. Unmoved across six rounds since §10 carry. Not baseline-subtracted, gate not redefined. FAIL, not blocked -- the browser launches fine in this environment."
       }
     },
     {
@@ -1428,10 +1454,10 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-http.json",
-          "docs/phase10-baseline/section-11/raw-review-gates.txt"
+          "src/components/observatory/orrery/MissionControl.tsx:170-196",
+          "curl http://127.0.0.1:3000/share (no cookie) grep -io draft"
         ],
-        "notes": "Independent production HTTP/JSDOM scan found no DRAFT marker or rig controls in public /share, while a temporary localhost-authenticated owner response contains the DRAFT latch. Reviewed by codex/gpt-5."
+        "notes": "claude-code/sonnet-5 (Claude Lead, review turn 2, single_provider_mode): re-confirmed on the candidate. DraftRig and its DRAFT tab are both gated behind `mode === \"private\"` (and holdings.length===8); a public, cookie-less curl of /share shows zero rig markup and zero DRAFT tab text -- the only 'draft' substring is an unrelated `draftParam:null` prop echo, not rendered UI."
       }
     },
     {
