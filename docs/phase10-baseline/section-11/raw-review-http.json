@@ -1,0 +1,29 @@
+{
+  "public": {
+    "status": 200,
+    "bytes": 90624,
+    "visibleCurrency": [],
+    "visibleDraft": false,
+    "visibleValueHeading": false,
+    "visibleReset": false,
+    "rawOwnerFieldKeys": []
+  },
+  "private": {
+    "status": 200,
+    "bytes": 99657,
+    "visibleCurrency": [],
+    "visibleDraft": true,
+    "visibleValueHeading": false,
+    "visibleReset": false,
+    "rawOwnerFieldKeys": []
+  },
+  "compareStatus": 404,
+  "conclusions": {
+    "publicHasNoCurrency": true,
+    "publicHasNoDraftMarkup": true,
+    "publicHasNoOwnerFields": true,
+    "privateHasDraftLatch": true,
+    "privateHasValueHeading": false,
+    "compareRetired": true
+  }
+}

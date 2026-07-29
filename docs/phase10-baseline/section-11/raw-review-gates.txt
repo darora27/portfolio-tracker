@@ -1,0 +1,32 @@
+Phase 10 §11 independent review gates — 2026-07-29
+Reviewer: codex/gpt-5 acting under the Claude Lead standing prompt
+Candidate: a690a41f2f12ef335fd9f5288f90f6a4fa154ca4
+
+npm test
+  PASS
+  Test Files  104 passed (104)
+  Tests       538 passed (538)
+  Duration    8.03s
+
+npm run build
+  PASS
+  Next.js 16.2.11 production build compiled successfully.
+  TypeScript passed.
+  Static pages generated: 18/18.
+  /share smoke passed.
+  /compare is absent; the remaining route list is unchanged.
+
+npx vitest run docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx
+  PASS as an observation verifier.
+  The retained observation records BHV-15 result=fail because SINCE BUY and
+  MAX render byte-identical path signatures and the same +23.7% answer.
+
+PHASE10_REVIEW_PASSWORD=<temporary localhost-only override>
+node docs/phase10-baseline/section-11/scripts/review-http.mjs
+  PASS for the independently checked public privacy boundary:
+  /share 200, zero visible currency, no DRAFT marker, no VALUE heading,
+  no raw owner-field keys. Private / 200 with the DRAFT latch present.
+  /compare returns 404.
+
+No .env file was read, printed, edited, staged, or committed. The private
+check used a temporary localhost-only OWNER_PASSWORD process override.

@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "§11",
   "spec_doc": "docs/phase10-workflow/specs/section-11.md",
-  "candidate_sha": null,
+  "candidate_sha": "a690a41f2f12ef335fd9f5288f90f6a4fa154ca4",
   "criteria": [
     {
       "id": "BHV-10",
@@ -54,9 +54,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md"
+        ],
+        "notes": "Owner visual review of this candidate reports that the small text remains unreadable: \"the small fonts need to be a good bit larger so that you can even see what they have to say at all.\" That directly fails the no-squint ten-second requirement. Reviewed by codex/gpt-5 using the portfolio-ux repository fallback."
       }
     },
     {
@@ -162,9 +164,12 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-return-toggle.json",
+          "docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx"
+        ],
+        "notes": "Executable rendered-DOM observation shows SINCE BUY and MAX have byte-identical plotted path signatures and the same +23.7% answer. The control changes only the title word, not both the figure and shape as required. Reviewed by codex/gpt-5."
       }
     },
     {
@@ -566,9 +571,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md"
+        ],
+        "notes": "Owner visual review names ASML and reports the planet renders middle to middle-right with large unused space on the left, failing the specified x≈30% left-third anchor. Reviewed by codex/gpt-5 using the portfolio-ux repository fallback."
       }
     },
     {
@@ -909,9 +916,12 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md",
+          "docs/phase10-baseline/section-11/raw-review-browser-block.txt"
+        ],
+        "notes": "Owner visual review after the §11 panel rebuild reports for the fourth time that no company logos are visible on any planet. The carved marks therefore do not read in the shipped view. Do not regenerate textures before direct mark measurement; the live verifier remains unperformed because Chromium was blocked before page launch. Reviewed by codex/gpt-5."
       }
     },
     {
@@ -1206,9 +1216,11 @@
         "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-gates.txt"
+        ],
+        "notes": "Independent full suite passed: 104 files and 538 tests after the review evidence verifier was added; zero failures or skips. Reviewed by codex/gpt-5."
       }
     },
     {
@@ -1327,9 +1339,11 @@
         "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-gates.txt"
+        ],
+        "notes": "Independent production build passed with 18/18 static pages and the /share smoke check; /compare is absent. Reviewed by codex/gpt-5."
       }
     },
     {
@@ -1364,9 +1378,12 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "blocked",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-browser-block.txt",
+          "docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs"
+        ],
+        "notes": "The exact verifier was attempted unchanged, but cached Chromium was terminated before page launch by the host Mach rendezvous permission denial. No timing is claimed; the unchanged <50ms gate remains unperformed. Reviewed by codex/gpt-5."
       }
     },
     {
@@ -1390,9 +1407,12 @@
         "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-http.json",
+          "docs/phase10-baseline/section-11/raw-review-gates.txt"
+        ],
+        "notes": "Independent production HTTP/JSDOM scan found no DRAFT marker or rig controls in public /share, while a temporary localhost-authenticated owner response contains the DRAFT latch. Reviewed by codex/gpt-5."
       }
     },
     {
@@ -1469,9 +1489,12 @@
         "notes": "Accepted command verifier passed with retained evidence."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-http.json",
+          "docs/phase10-baseline/section-11/raw-review-gates.txt"
+        ],
+        "notes": "Independent public production response scan found zero visible currency, zero DRAFT marker, zero VALUE heading, and no raw owner-field keys; the unmodified full suite also passed. Reviewed by codex/gpt-5."
       }
     },
     {

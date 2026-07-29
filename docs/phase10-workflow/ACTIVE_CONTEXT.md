@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§11 — Universe legibility and the draft rig**
 - Managed range: §2–§18
-- Stage: `review`
-- Role: `claude_lead`
+- Stage: `remediate`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -40,7 +40,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-29-section-11-codex-implementation-to-claude-lead-review.md`
+- `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-to-codex-remediation.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -58,7 +58,10 @@ Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for
 
 Open bounded findings:
 
-None.
+- {"id":"F1","criterion":"BHV-11","risk":"critical","evidence":"OWNER_FEEDBACK_LEDGER.md §3.0","summary":"The owner's visual review says the small fonts must be substantially larger to be readable at all. That directly fails the ten-second requirement that every answer be findable without squinting.","required_change":"Raise the planet-panel small-text roles that carry the five required answers until the complete ten-second stack is readable without squinting. Keep the hierarchy and word budget, retain a fresh 1440x900 panel capture, and record the literal five-question result."}
+- {"id":"F2","criterion":"VIS-10","risk":"high","evidence":"OWNER_FEEDBACK_LEDGER.md §3.0","summary":"The owner names ASML and reports that the selected planet sits in the middle to middle-right while substantial space is unused on the left, missing the required x approximately 30% anchor.","required_change":"Correct the approach-camera framing so every selected planet, including ASML, lands at the left-third anchor beside a rail no wider than 380px. Retain live 1440x900 disc-centre and panel-width pixel measurements without faking orbital positions."}
+- {"id":"F3","criterion":"VIS-02","risk":"high","evidence":"OWNER_FEEDBACK_LEDGER.md §3.0; docs/phase10-baseline/section-11/raw-review-browser-block.txt","summary":"After the panel rebuild the owner reports for the fourth time that no company logo is visible on any planet, so the carved marks still do not read as required. DEF-02 chirality remains unperformed rather than passed.","required_change":"Measure the shipped mark directly for all eight worlds before changing textures, then correct camera, material, or mark visibility so one carved capital reads on every selected planet while terrain effects and brand-first phase remain. Once visible, run the direct all-eight chirality verifier."}
+- {"id":"F4","criterion":"BHV-15","risk":"high","evidence":"docs/phase10-baseline/section-11/raw-review-return-toggle.json; docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx","summary":"The rendered-DOM observation records SINCE BUY and MAX with the same +23.7% answer and byte-identical SVG path. Only the title changes, but the criterion requires every detent to change both figure and plotted shape.","required_change":"Give SINCE BUY its purchase-date window and MAX the full available series so fixtures with pre-purchase history produce distinct answers and paths. Add rendered interaction coverage asserting that all four detents change both."}
 
 Acceptance ledger:
 
@@ -103,7 +106,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `7f976eb27cb054e8b3db3bfbe1f15191cb3180bf19a21b5474381ff888746321`
-- `PHASE10_STATE.json`: `2f6732ea82e2a6870039e0a7a0ea4dd398eb003469b861bab0f7895416848481`
+- `PHASE10_STATE.json`: `dd0a4b7212e40f12664437e26b3bc112c1d4903ee2c84bd9be01cca90664cdfe`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

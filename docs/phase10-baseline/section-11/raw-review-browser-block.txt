@@ -1,0 +1,32 @@
+Phase 10 §11 live-browser block — 2026-07-29
+Reviewer: codex/gpt-5 acting under the Claude Lead standing prompt
+Candidate: a690a41f2f12ef335fd9f5288f90f6a4fa154ca4
+
+1. The Browser skill was loaded before browser work.
+2. In-app Browser setup completed, but getForUrl(http://localhost:3000/share)
+   returned: No browser is available.
+3. The required bootstrap troubleshooting document was read.
+4. agent.browsers.list() returned [].
+5. The repository's exact retained Playwright verifier was then attempted
+   because section-11.md explicitly requires cached Playwright when the
+   in-app backend is absent:
+
+   PHASE10_BASE_URL=http://127.0.0.1:3000/share
+   node docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs
+
+   Chromium launched and exited before any page opened. The host rejected its
+   Mach rendezvous registration:
+
+   FATAL: mach_port_rendezvous.cc(399)
+   bootstrap_check_in ... Permission denied (1100)
+
+6. The same cached executable was attempted from the session JavaScript
+   runtime and hit the identical host denial.
+
+Consequences:
+- No screenshot, pixel, geometry, accessibility-tree, pointer, keyboard,
+  reduced-motion, or five-context timing result is claimed.
+- BLD-04 is unperformed, not passed and not redefined.
+- TST-03, VIS-04, DEF-02, BHV-05, VIS-13 and the remaining live matrix are
+  unperformed unless the owner evidence cited by the review independently
+  establishes a failure.
