@@ -156,7 +156,24 @@
       "Is 26-46 degrees the right shortened trail arc? The owner rejected 36-64 degrees and asked for somewhere between that and round 2s 18-30, judged by eye. Set as a token pair, measured by the reviewer, and confirmed by owner visual review before acceptance."
     ],
     "scope_recommendation": "Advisory, not a blocker. §11 covers roughly twice §10s surface, and §10 took one implementation round, five reviews and four remediations and still carried six criteria. Recommendation to Devan: consider splitting §11 at the A-E / F seam - legibility plus the carried debt in one section, the DRAFT rig in the next. The seam is clean: no package A-E depends on F, and F closes no carried criterion. This spec covers all of §11 and implementation proceeds now; the risk-first sequence means nothing is lost by answering late.",
-    "owner_scope_note": "Scope fixed by owner direction, July 29 2026: F1 (as the five-token ramp), F2, F3 (camera/exposure only), F4. NOTHING ELSE. Defects found during the July 29 capture run — the SYSTEMS MANUAL button overlapping and truncating the panel header, and orphaned CBRS/COST labels with no attached body — are recorded as new ledger rows for §12a and are explicitly OUT of scope here. A contact sheet is required at review: docs/phase10-baseline/section-11/contact-sheet.md."
+    "owner_scope_note": "Scope: F2 and F3 with captures. F1 and F4 were remediated out-of-band by the owner-directed Fable drop a7f85ac; F1 is NOT closed because Devan re-reported small Mission Control fonts afterwards — root-cause which Mission Control text is off-ramp rather than nudging sizes. FB-17 joins F2: the panel must grow LEFT and wider (capture 460/520/580 and let him pick) while the planet moves left. Review must produce docs/phase10-baseline/section-11/contact-sheet.md with zero not_run visual criteria.",
+    "out_of_band_remediation": {
+      "commit": "a7f85ac",
+      "authorised_by": "Devan, July 29 2026",
+      "actor": "fable (cloud session)",
+      "handoff": "FABLE_IMPLEMENTATION_HANDOFF.md",
+      "covers": [
+        "F1 (FB-05, five-token ramp)",
+        "F4 (BHV-15, dead detents removed)",
+        "FB-03",
+        "FB-06",
+        "FB-14",
+        "FB-17"
+      ],
+      "verified_before_delivery": "425/425 tests across 84 files, tsc clean, eslint no new findings",
+      "not_covered": "F2 (ASML left-third anchor) and F3 (mark visibility at approach) — camera work that cannot be honestly verified without pixels; both remain in this routed remediation and must be done WITH captures.",
+      "note": "F1 is remediated in code but NOT closed: after this drop Devan reported Mission Control fonts still too small (FB-05, 4th report). Treat F1 as needing root-cause on Mission Control surfaces, not another size nudge."
+    }
   },
   "sections_history": [
     {

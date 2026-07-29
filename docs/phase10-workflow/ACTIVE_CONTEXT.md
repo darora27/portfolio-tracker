@@ -106,7 +106,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `25a94dda91fbe5d5ffa559e83686f890ef15b1266bd5cd33ccbdfceeb3122551`
-- `PHASE10_STATE.json`: `9f515ef2acf13ebd1ae45547f3b231c513f82f99d41b72a276effc4fb196546b`
+- `PHASE10_STATE.json`: `99c5fdc224f2f37dc59030c029446b4abefc39fde001e35786f40271c0a2e8e8`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
