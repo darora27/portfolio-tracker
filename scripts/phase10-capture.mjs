@@ -185,7 +185,11 @@ const SHOTS = {
     },
     {
       id: "correlation",
-      caption: "CORRELATION section — does the prose say what it means for HIS book? (FB-11)",
+      // CORRELATION lives in MissionControlRoomContent, not the public content
+      // component, so it does not exist on /share. Attempting it there is not a
+      // defect in either the app or the harness — the section is owner-only.
+      ownerRouteOnly: true,
+      caption: "CORRELATION section — does the prose say what it means for HIS book? (FB-11) · owner route only",
       url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
@@ -197,7 +201,13 @@ const SHOTS = {
   ],
 };
 
-const shots = (SHOTS[SECTION] ?? []).filter((s) => !ONLY || s.id === ONLY);
+const OWNER_ROUTE = ROUTE === "/" || ROUTE.startsWith("/?");
+const skipped = (SHOTS[SECTION] ?? []).filter(
+  (s) => s.ownerRouteOnly && !OWNER_ROUTE && (!ONLY || s.id === ONLY),
+);
+const shots = (SHOTS[SECTION] ?? [])
+  .filter((s) => !ONLY || s.id === ONLY)
+  .filter((s) => !s.ownerRouteOnly || OWNER_ROUTE);
 if (shots.length === 0) {
   console.error(
     `No shot list for section ${SECTION}${ONLY ? ` matching --only ${ONLY}` : ""}.` +
@@ -381,6 +391,15 @@ const sheet = [
   ),
   `---`,
   ``,
+  ...(skipped.length
+    ? [
+        `**Not attempted on this route (${ROUTE}):** ` +
+          skipped.map((s) => `\`${s.id}\``).join(", ") +
+          ` — owner-only surface. Re-run with \`--path /\` while signed in to`,
+        `capture these. They are not deferred; they are out of this route's scope.`,
+        ``,
+      ]
+    : []),
   `${results.filter((r) => r.ok).length}/${results.length} captured.`,
   failed.length
     ? `**${failed.length} failed — this sheet is incomplete and cannot support acceptance.**`
