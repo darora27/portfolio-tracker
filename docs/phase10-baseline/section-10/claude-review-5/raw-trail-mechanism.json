@@ -1,0 +1,387 @@
+{
+  "base": "http://127.0.0.1:3141/share",
+  "viewport": "1440x900",
+  "note": "Review-only diagnostic for TST-03's remaining NBIS failure. Measures whether the sampled colour is limited by partial pixel coverage (a thin ribbon) or by an overall darkening of the ribbon itself (peak colour never reaches the model anywhere nearby).",
+  "sceneFocusPx": [
+    692.7,
+    334.3
+  ],
+  "rows": [
+    {
+      "ticker": "ASML",
+      "weekly": -0.12132044784652873,
+      "expected": "#b3241d",
+      "expectedLuminance": 0.109342,
+      "atSamplePoint": {
+        "hex": "#729ae2",
+        "deltaE": 98.329,
+        "luminance": 0.321796
+      },
+      "bestWithin20px": {
+        "hex": "#b3241d",
+        "deltaE": 0,
+        "offset": [
+          -5,
+          2
+        ]
+      },
+      "brightestWithin20px": {
+        "hex": "#ffffff",
+        "deltaE": 91.697,
+        "luminance": 1,
+        "offset": [
+          -6,
+          -20
+        ]
+      },
+      "luminanceRatioToModel": 2.943,
+      "peakLuminanceRatioToModel": 9.1456,
+      "ribbonRunPx": {
+        "horizontal": 18,
+        "vertical": 3,
+        "thinnerAxis": 3
+      },
+      "screenGeometry": {
+        "samplePoint": [
+          800.4,
+          316.4
+        ],
+        "planetCentre": [
+          810.1,
+          288.4
+        ],
+        "planetRadiusPx": 32.3,
+        "distanceFromSceneFocusPx": 109.2
+      }
+    },
+    {
+      "ticker": "GOOG",
+      "weekly": -0.039255899939339645,
+      "expected": "#ff7a73",
+      "expectedLuminance": 0.364169,
+      "atSamplePoint": {
+        "hex": "#ff9087",
+        "deltaE": 11.355,
+        "luminance": 0.429558
+      },
+      "bestWithin20px": {
+        "hex": "#ff7a73",
+        "deltaE": 0,
+        "offset": [
+          18,
+          -4
+        ]
+      },
+      "brightestWithin20px": {
+        "hex": "#ffa89d",
+        "deltaE": 23.681,
+        "luminance": 0.516996,
+        "offset": [
+          -17,
+          1
+        ]
+      },
+      "luminanceRatioToModel": 1.1796,
+      "peakLuminanceRatioToModel": 1.4197,
+      "ribbonRunPx": {
+        "horizontal": 22,
+        "vertical": 4,
+        "thinnerAxis": 4
+      },
+      "screenGeometry": {
+        "samplePoint": [
+          653.3,
+          222.6
+        ],
+        "planetCentre": [
+          583.9,
+          243.6
+        ],
+        "planetRadiusPx": 26.8,
+        "distanceFromSceneFocusPx": 118.4
+      }
+    },
+    {
+      "ticker": "COST",
+      "weekly": null,
+      "expected": "#e3b65c",
+      "expectedLuminance": 0.505595,
+      "atSamplePoint": {
+        "hex": "#e3b65c",
+        "deltaE": 0,
+        "luminance": 0.505595
+      },
+      "bestWithin20px": {
+        "hex": "#e3b65c",
+        "deltaE": 0,
+        "offset": [
+          19,
+          -9
+        ]
+      },
+      "brightestWithin20px": {
+        "hex": "#eedf7f",
+        "deltaE": 18.295,
+        "luminance": 0.724848,
+        "offset": [
+          7,
+          -6
+        ]
+      },
+      "luminanceRatioToModel": 1,
+      "peakLuminanceRatioToModel": 1.4337,
+      "ribbonRunPx": {
+        "horizontal": 20,
+        "vertical": 7,
+        "thinnerAxis": 7
+      },
+      "screenGeometry": {
+        "samplePoint": [
+          870,
+          425.5
+        ],
+        "planetCentre": [
+          749.3,
+          445.8
+        ],
+        "planetRadiusPx": 27.2,
+        "distanceFromSceneFocusPx": 199.5
+      }
+    },
+    {
+      "ticker": "MSFT",
+      "weekly": -0.0110622250157133,
+      "expected": "#ff948e",
+      "expectedLuminance": 0.443928,
+      "atSamplePoint": {
+        "hex": "#ff948e",
+        "deltaE": 0,
+        "luminance": 0.443928
+      },
+      "bestWithin20px": {
+        "hex": "#ff948e",
+        "deltaE": 0,
+        "offset": [
+          -6,
+          -2
+        ]
+      },
+      "brightestWithin20px": {
+        "hex": "#ffd0c7",
+        "deltaE": 30.167,
+        "luminance": 0.704953,
+        "offset": [
+          -9,
+          -6
+        ]
+      },
+      "luminanceRatioToModel": 1,
+      "peakLuminanceRatioToModel": 1.588,
+      "ribbonRunPx": {
+        "horizontal": 9,
+        "vertical": 5,
+        "thinnerAxis": 5
+      },
+      "screenGeometry": {
+        "samplePoint": [
+          976.5,
+          223.3
+        ],
+        "planetCentre": [
+          882.9,
+          189.3
+        ],
+        "planetRadiusPx": 15.3,
+        "distanceFromSceneFocusPx": 304.8
+      }
+    },
+    {
+      "ticker": "IBM",
+      "weekly": 0.08099762470308791,
+      "expected": "#7af4aa",
+      "expectedLuminance": 0.717412,
+      "atSamplePoint": {
+        "hex": "#76eaa4",
+        "deltaE": 4.003,
+        "luminance": 0.653775
+      },
+      "bestWithin20px": {
+        "hex": "#7af4aa",
+        "deltaE": 0,
+        "offset": [
+          8,
+          7
+        ]
+      },
+      "brightestWithin20px": {
+        "hex": "#a7ffe7",
+        "deltaE": 29.901,
+        "luminance": 0.85505,
+        "offset": [
+          12,
+          9
+        ]
+      },
+      "luminanceRatioToModel": 0.9113,
+      "peakLuminanceRatioToModel": 1.1919,
+      "ribbonRunPx": {
+        "horizontal": 8,
+        "vertical": 8,
+        "thinnerAxis": 8
+      },
+      "screenGeometry": {
+        "samplePoint": [
+          348.8,
+          427.3
+        ],
+        "planetCentre": [
+          320.3,
+          308
+        ],
+        "planetRadiusPx": 18.8,
+        "distanceFromSceneFocusPx": 356.3
+      }
+    },
+    {
+      "ticker": "INTC",
+      "weekly": -0.1816026552868658,
+      "expected": "#b3241d",
+      "expectedLuminance": 0.109342,
+      "atSamplePoint": {
+        "hex": "#a8251e",
+        "deltaE": 5.33,
+        "luminance": 0.097417
+      },
+      "bestWithin20px": {
+        "hex": "#b3241d",
+        "deltaE": 0,
+        "offset": [
+          20,
+          -10
+        ]
+      },
+      "brightestWithin20px": {
+        "hex": "#d42f25",
+        "deltaE": 11.609,
+        "luminance": 0.161637,
+        "offset": [
+          -1,
+          -3
+        ]
+      },
+      "luminanceRatioToModel": 0.8909,
+      "peakLuminanceRatioToModel": 1.4783,
+      "ribbonRunPx": {
+        "horizontal": 25,
+        "vertical": 9,
+        "thinnerAxis": 9
+      },
+      "screenGeometry": {
+        "samplePoint": [
+          988.5,
+          551
+        ],
+        "planetCentre": [
+          1188.3,
+          393
+        ],
+        "planetRadiusPx": 21.5,
+        "distanceFromSceneFocusPx": 366.8
+      }
+    },
+    {
+      "ticker": "CBRS",
+      "weekly": -0.07599367118952871,
+      "expected": "#ea544d",
+      "expectedLuminance": 0.243689,
+      "atSamplePoint": {
+        "hex": "#f35b53",
+        "deltaE": 2.702,
+        "luminance": 0.271614
+      },
+      "bestWithin20px": {
+        "hex": "#eb5951",
+        "deltaE": 2.103,
+        "offset": [
+          -12,
+          -1
+        ]
+      },
+      "brightestWithin20px": {
+        "hex": "#f96d63",
+        "deltaE": 8.888,
+        "luminance": 0.319779,
+        "offset": [
+          0,
+          1
+        ]
+      },
+      "luminanceRatioToModel": 1.1146,
+      "peakLuminanceRatioToModel": 1.3122,
+      "ribbonRunPx": {
+        "horizontal": 49,
+        "vertical": 3,
+        "thinnerAxis": 3
+      },
+      "screenGeometry": {
+        "samplePoint": [
+          803,
+          127.3
+        ],
+        "planetCentre": [
+          588.4,
+          132.5
+        ],
+        "planetRadiusPx": 13.1,
+        "distanceFromSceneFocusPx": 234.5
+      }
+    },
+    {
+      "ticker": "NBIS",
+      "weekly": -0.21773003872395347,
+      "expected": "#b3241d",
+      "expectedLuminance": 0.109342,
+      "atSamplePoint": {
+        "hex": "#5d1511",
+        "deltaE": 35.916,
+        "luminance": 0.02904
+      },
+      "bestWithin20px": {
+        "hex": "#6e1c16",
+        "deltaE": 29.54,
+        "offset": [
+          -4,
+          -18
+        ]
+      },
+      "brightestWithin20px": {
+        "hex": "#6e1c16",
+        "deltaE": 29.54,
+        "luminance": 0.042034,
+        "offset": [
+          -4,
+          -18
+        ]
+      },
+      "luminanceRatioToModel": 0.2656,
+      "peakLuminanceRatioToModel": 0.3844,
+      "ribbonRunPx": {
+        "horizontal": 7,
+        "vertical": 25,
+        "thinnerAxis": 7
+      },
+      "screenGeometry": {
+        "samplePoint": [
+          118.5,
+          454.1
+        ],
+        "planetCentre": [
+          418.3,
+          673.3
+        ],
+        "planetRadiusPx": 28.3,
+        "distanceFromSceneFocusPx": 586.6
+      }
+    }
+  ]
+}

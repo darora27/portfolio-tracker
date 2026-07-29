@@ -1,0 +1,119 @@
+{
+  "base": "http://127.0.0.1:3141/share",
+  "equatorialLuminance": [
+    {
+      "ticker": "ASML",
+      "equatorialMean": 0.461892,
+      "inWindow": true
+    },
+    {
+      "ticker": "GOOG",
+      "equatorialMean": 0.356554,
+      "inWindow": true
+    },
+    {
+      "ticker": "COST",
+      "equatorialMean": 0.365678,
+      "inWindow": true
+    },
+    {
+      "ticker": "MSFT",
+      "equatorialMean": 0.441877,
+      "inWindow": true
+    },
+    {
+      "ticker": "IBM",
+      "equatorialMean": 0.401978,
+      "inWindow": true
+    },
+    {
+      "ticker": "INTC",
+      "equatorialMean": 0.216163,
+      "inWindow": true
+    },
+    {
+      "ticker": "CBRS",
+      "equatorialMean": 0.317196,
+      "inWindow": true
+    },
+    {
+      "ticker": "NBIS",
+      "equatorialMean": 0.377687,
+      "inWindow": true
+    }
+  ],
+  "chirality": [
+    {
+      "ticker": "ASML",
+      "normalScore": 0.108851,
+      "mirroredScore": -0.191331,
+      "margin": 0.300182,
+      "profileMean": 48.523,
+      "profileStdDev": 37.204,
+      "pass": true
+    },
+    {
+      "ticker": "GOOG",
+      "normalScore": 0.094334,
+      "mirroredScore": -0.240845,
+      "margin": 0.335179,
+      "profileMean": 45.342,
+      "profileStdDev": 31.337,
+      "pass": true
+    },
+    {
+      "ticker": "COST",
+      "normalScore": -0.445443,
+      "mirroredScore": -0.405094,
+      "margin": -0.040349,
+      "profileMean": 23.9,
+      "profileStdDev": 4.742,
+      "pass": false
+    },
+    {
+      "ticker": "MSFT",
+      "normalScore": -0.503424,
+      "mirroredScore": 0.304515,
+      "margin": -0.80794,
+      "profileMean": 24.411,
+      "profileStdDev": 3.184,
+      "pass": false
+    },
+    {
+      "ticker": "IBM",
+      "normalScore": 0.009961,
+      "mirroredScore": 0.012924,
+      "margin": -0.002962,
+      "profileMean": 27.083,
+      "profileStdDev": 21.79,
+      "pass": false
+    },
+    {
+      "ticker": "INTC",
+      "normalScore": 0.161438,
+      "mirroredScore": 0.165866,
+      "margin": -0.004428,
+      "profileMean": 23.94,
+      "profileStdDev": 2.06,
+      "pass": false
+    },
+    {
+      "ticker": "CBRS",
+      "normalScore": -0.160861,
+      "mirroredScore": -0.04921,
+      "margin": -0.111651,
+      "profileMean": 25.717,
+      "profileStdDev": 5.432,
+      "pass": false
+    },
+    {
+      "ticker": "NBIS",
+      "normalScore": 0.392719,
+      "mirroredScore": 0.394133,
+      "margin": -0.001414,
+      "profileMean": 26.58,
+      "profileStdDev": 3.634,
+      "pass": false
+    }
+  ]
+}

@@ -231,7 +231,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-29T02:34:42Z",
+  "updated_at": "2026-07-29T02:52:30Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
@@ -512,5 +512,28 @@
     "carried_defects": "Ten owner-reported defects are recorded in PHASE10.md §10 'Owner defects to close in this section' rather than being filed against §9."
   },
   "last_green_commit_note": "Moved from 6a68758 (§8) to §9’s accepted commit 589be88, the last commit at which npm test was green. Verified at acceptance rather than assumed: at 589be88 all three assertions in planet-textures.test.ts pass (directory total 11,727,680 == manifest.totalBytes, <= the 15,000,000 cap; minimum luminanceStdDev 0.101584 >= the 0.1 floor), and the other 93 test files depend on src/, which is byte-identical between 589be88 and HEAD. HEAD itself is RED by documented owner exception - see sections_history §9.",
-  "owner_feedback_ledger": "OWNER_FEEDBACK_LEDGER.md — the durable record of owner decisions, open items, and standing rules. Read alongside the section spec. Newer than any older document it contradicts."
+  "owner_feedback_ledger": "OWNER_FEEDBACK_LEDGER.md — the durable record of owner decisions, open items, and standing rules. Read alongside the section spec. Newer than any older document it contradicts.",
+  "single_provider_mode": {
+    "active": false,
+    "doc": "docs/phase10-workflow/SINGLE_PROVIDER_MODE.md",
+    "authorised_by": "Devan (owner)",
+    "authorised_at": "2026-07-29",
+    "reason": "OpenAI quota exhausted until approximately 2026-08-03. Claude subscription upgraded to Max; OpenAI will not be upgraded.",
+    "activate_when": "§10 is accepted. The remaining OpenAI credits are best spent finishing §10's two authorised bucket-A fixes under normal cross-model review; §11 onward runs Claude-only until quota returns.",
+    "suspended": "Cross-model independence. Claude performs both roles. Recorded as a genuine reduction in review quality on every section accepted under it.",
+    "not_suspended": "The relay invokes each turn as a separate process with no shared memory, so a Claude review still reads the spec, ledger, and artifacts cold. The loss is model diversity, not context isolation. Every other guarantee — acceptance ledger, live browser verification, privacy canaries, performance gates, state machine, lock — is unchanged.",
+    "compensating_controls": [
+      "Executable ledger verifiers are required, not supporting; raw output retained.",
+      "No criterion graded from source reading alone; rendered behaviour needs a pixel, scene-graph, or DOM measurement.",
+      "Owner visual review before any acceptance — Devan is the independent check while the second model is unavailable.",
+      "Sections accepted under this mode set single_provider_mode:true in sections_history.",
+      "Implementation handoffs state what was measured, not argument; a reviewer must grade from artifacts alone."
+    ],
+    "must_wait_for_codex": [
+      "Any change to the privacy boundary — /share rendering, the authenticated/public split, canary tests.",
+      "Any change to the financial math core — TWR, XIRR, drawdown, beta, Sharpe, volatility.",
+      "Weakening, redefining, or granting an exception to any gate."
+    ],
+    "operating": "Run implementation turns with ./scripts/phase10-claude-lead.sh while state says next_actor: codex. The turn opens by recording that it acts under single-provider mode and which role it performs. Do NOT edit the state machine's role values — the record should show Claude covered a Codex turn, not that the workflow was rewritten around an outage."
+  }
 }

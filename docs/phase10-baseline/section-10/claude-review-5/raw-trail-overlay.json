@@ -1,0 +1,96 @@
+{
+  "samplePoint": {
+    "x": 118.60692050330417,
+    "y": 454.43179054896854
+  },
+  "shippedPixel": "#5d1511",
+  "panelFreePixel": "#5d1511",
+  "rawCanvasPixel": {
+    "sx": 119,
+    "sy": 454,
+    "rgba": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "canvasW": 1440,
+    "rectW": 1440,
+    "dpr": 1
+  },
+  "overlaysHidden": 118,
+  "domStackAtSamplePoint": [
+    {
+      "tag": "CANVAS",
+      "cls": "",
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": "none",
+      "opacity": "1",
+      "mixBlend": "normal",
+      "filter": "none"
+    },
+    {
+      "tag": "DIV",
+      "cls": "orrery-module__nrz9QG__sceneMount",
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": "none",
+      "opacity": "1",
+      "mixBlend": "normal",
+      "filter": "none"
+    },
+    {
+      "tag": "DIV",
+      "cls": "orrery-module__nrz9QG__canvasLayer",
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": "none",
+      "opacity": "1",
+      "mixBlend": "normal",
+      "filter": "none"
+    },
+    {
+      "tag": "SECTION",
+      "cls": "orrery-module__nrz9QG__stage",
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": "none",
+      "opacity": "1",
+      "mixBlend": "normal",
+      "filter": "none"
+    },
+    {
+      "tag": "DIV",
+      "cls": "orrery-module__nrz9QG__starField",
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": "radial-gradient(circle, rgba(228, 248, 225, 0.9) 0px, rgba(228, 248, 225, 0.9) 1px, rgba(0",
+      "opacity": "1",
+      "mixBlend": "normal",
+      "filter": "none"
+    },
+    {
+      "tag": "MAIN",
+      "cls": "orrery-module__nrz9QG__world",
+      "bg": "rgb(1, 5, 4)",
+      "bgImage": "none",
+      "opacity": "1",
+      "mixBlend": "normal",
+      "filter": "none"
+    },
+    {
+      "tag": "BODY",
+      "cls": "min-h-full",
+      "bg": "rgb(10, 10, 15)",
+      "bgImage": "none",
+      "opacity": "1",
+      "mixBlend": "normal",
+      "filter": "none"
+    },
+    {
+      "tag": "HTML",
+      "cls": "inter_fe8b9d92-module__LINzvG__variable jetbrains_mono_7d65b77b-module",
+      "bg": "rgba(0, 0, 0, 0)",
+      "bgImage": "none",
+      "opacity": "1",
+      "mixBlend": "normal",
+      "filter": "none"
+    }
+  ]
+}
