@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "§11",
   "spec_doc": "docs/phase10-workflow/specs/section-11.md",
-  "candidate_sha": "a690a41f2f12ef335fd9f5288f90f6a4fa154ca4",
+  "candidate_sha": "d7589a812fb2512a7ca7ab0b80fe10adf2dd4ff6",
   "criteria": [
     {
       "id": "BHV-10",
@@ -50,9 +50,10 @@
         "evidence": [
           "OWNER_FEEDBACK_LEDGER.md",
           "docs/phase10-baseline/section-11/raw-mission-control-type-root-cause.md",
-          "docs/phase10-baseline/section-11/raw-remediation-focused-tests.txt"
+          "docs/phase10-baseline/section-11/captures/asml-panel-type.png",
+          "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
         ],
-        "notes": "Explicit non-pass in a state-level blocked handoff to Devan, not a reviewer route or pass. The owner re-reported Mission Control small text after the five-token ramp. §11.R root-caused the gap: the gate constrains legal values, but Mission Control still maps its reading surfaces to the smallest 11px role. No one-off size nudge was made; §12a owns the role remap. Recorded by codex/gpt-5."
+        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. The owner re-reported Mission Control small text after the five-token ramp and directed the semantic-role remap to §12a. §11.R root-caused the gap: the value gate constrains legal sizes, but Mission Control still maps reading surfaces to the smallest 11px role. No one-off size nudge was made. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -539,10 +540,14 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md",
           "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
-          "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png"
+          "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-0.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-120.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-240.png"
         ],
-        "notes": "Explicit non-pass in a state-level blocked handoff to Devan, not a reviewer route or pass. Direct decoded shipped-texture measurement reaches the owner-amended stop condition: IBM and NBIS supply opaque-rectangle alpha masks, so no distinguishable mark can face the camera. No texture was regenerated. Recorded by codex/gpt-5."
+        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. The owner spent the one authorised mark-repair attempt, then explicitly retired logo identity to colour and silhouette so the relay could continue. The regenerated IBM artifact regressed the unchanged 32px recognizability gate, so this turn restored its last-known-green colour/silhouette maps without changing the repaired SVG source; the current verifier therefore records IBM as intentionally not matching that repaired mark mask. The three ASML phase captures do not establish a visible mark. No visibility pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -566,11 +571,14 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-remediation-focused-tests.txt",
-          "docs/phase10-baseline/section-11/raw-remediation-browser-block.txt",
-          "scripts/phase10-capture.mjs"
+          "OWNER_FEEDBACK_LEDGER.md",
+          "docs/phase10-baseline/section-11/raw-panel-geometry.json",
+          "docs/phase10-baseline/section-11/captures/panel-width-460.png",
+          "docs/phase10-baseline/section-11/captures/panel-width-520.png",
+          "docs/phase10-baseline/section-11/captures/panel-width-580.png",
+          "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
         ],
-        "notes": "State-level needs-capture handoff to Devan, not a reviewer route or pass. The bounded camera model now projects the selected world at x≈30% from four orbital directions and the capture harness is prepared for the owner-requested 460/520/580px left-growing rail set. Chromium was denied before page launch, so no live geometry or visual pass is claimed. Recorded by codex/gpt-5."
+        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. Committed 1440x900 production captures measure ASML at x=31.4% with the 520px rail and x=31.3% with the 580px rail, both unoccluded; the owner then said the planet position is correct for the most part. The original <=380px rail clause is not relabelled as a pass: the owner's newer width request superseded that target and FB-17 remains scheduled for §12a. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -912,11 +920,15 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md",
           "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
           "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-0.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-120.png",
+          "docs/phase10-baseline/section-11/captures/asml-mark-phase-240.png",
           "docs/phase10-baseline/section-11/scripts/measure-shipped-marks.mjs"
         ],
-        "notes": "Explicit non-pass in a state-level blocked handoff to Devan, not a reviewer route or pass. The direct decoded shipped-pixel verifier proves six authored masks reach the texture exactly, but IBM and NBIS have 100% and 99.5% mask coverage: their opaque SVG alpha rectangles erase the mark shape. The all-eight strip contains no readable mark for those worlds. Per the owner's amendment, this is a texture-pipeline defect and texture regeneration is barred in this turn. Recorded by codex/gpt-5."
+        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. After the one authorised SVG repair and texture regeneration, IBM fell below the unchanged 32px recognizability gate and this turn restored its last-known-green colour/silhouette maps without changing the repaired SVG source. The current direct verifier passes seven authored composites and records IBM as not matching the repaired mark mask, while the owner reports no visible logo on any world. He explicitly ended logo work for now. The assertion was not weakened and no visibility pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -953,11 +965,12 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md",
           "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
           "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
           "docs/phase10-baseline/section-11/scripts/measure-shipped-marks.mjs"
         ],
-        "notes": "Explicit non-pass in a state-level blocked handoff to Devan, not a reviewer route or pass. The direct byte comparison matches the intended normal mask exactly for six worlds and distinguishes it from the mirrored alternative. IBM and NBIS cannot be graded for chirality because their supplied alpha is an opaque rectangle, making normal and mirrored composites byte-identical. This is an explicit failure in the retained evidence, not a weakened assertion. Recorded by codex/gpt-5."
+        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. The current direct byte verifier distinguishes normal from mirrored composites for seven worlds; IBM's last-known-green colour/silhouette maps intentionally do not match the repaired mark source after the attempted regeneration regressed the recognizability gate, so shipped-view chirality remains unproved. The owner explicitly ended logo work after the one authorised attempt. The chirality assertion remains unchanged and no pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -1215,9 +1228,10 @@
       "implementer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-npm-test.txt"
+          "docs/phase10-baseline/section-11/raw-npm-test.txt",
+          "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
         ],
-        "notes": "Accepted command verifier passed with retained evidence."
+        "notes": "Final remediation continuation run passed 106 files and 548 tests after restoring IBM's last-known-green recognizable texture artifacts. The earlier regenerated IBM result (0.095739 against the unchanged 0.1 floor) is retained in the continuation evidence rather than concealed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "pass",
@@ -1338,9 +1352,10 @@
       "implementer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-npm-build.txt"
+          "docs/phase10-baseline/section-11/raw-npm-build.txt",
+          "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
         ],
-        "notes": "Accepted command verifier passed with retained evidence."
+        "notes": "Final remediation continuation production build passed with TypeScript, 18/18 static pages, and the /share smoke check. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "pass",

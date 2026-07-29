@@ -69,18 +69,18 @@
       "height": 724,
       "markWidth": 348,
       "markHeight": 196,
-      "markMaskCoverage": 1,
+      "markMaskCoverage": 0.101366,
       "affectedPixels": 202018,
       "normalComparison": {
-        "mismatchedBytes": 0,
-        "meanAbsoluteError": 0
+        "mismatchedBytes": 601924,
+        "meanAbsoluteError": 8.15215714759928
       },
       "mirroredComparison": {
-        "mismatchedBytes": 0,
-        "meanAbsoluteError": 0
+        "mismatchedBytes": 601924,
+        "meanAbsoluteError": 8.15215714759928
       },
       "chirality": "source-forward",
-      "failureReason": "supplied SVG alpha is an opaque rectangle; no mark shape reaches the texture",
+      "failureReason": "shipped bytes do not match the authored normal mask",
       "pass": false
     },
     {
@@ -129,19 +129,19 @@
       "height": 724,
       "markWidth": 348,
       "markHeight": 96,
-      "markMaskCoverage": 0.995211,
-      "affectedPixels": 98637,
+      "markMaskCoverage": 0.343271,
+      "affectedPixels": 17577,
       "normalComparison": {
         "mismatchedBytes": 0,
         "meanAbsoluteError": 0
       },
       "mirroredComparison": {
-        "mismatchedBytes": 0,
-        "meanAbsoluteError": 0
+        "mismatchedBytes": 62675,
+        "meanAbsoluteError": 0.4109497573334147
       },
       "chirality": "source-forward",
-      "failureReason": "supplied SVG alpha is an opaque rectangle; no mark shape reaches the texture",
-      "pass": false
+      "failureReason": null,
+      "pass": true
     },
     {
       "ticker": "CBRS",
@@ -167,11 +167,7 @@
   "blocker": [
     {
       "ticker": "IBM",
-      "failureReason": "supplied SVG alpha is an opaque rectangle; no mark shape reaches the texture"
-    },
-    {
-      "ticker": "NBIS",
-      "failureReason": "supplied SVG alpha is an opaque rectangle; no mark shape reaches the texture"
+      "failureReason": "shipped bytes do not match the authored normal mask"
     }
   ],
   "pass": false
