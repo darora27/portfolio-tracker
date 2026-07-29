@@ -52,11 +52,41 @@ const SHEET = path.resolve(`docs/phase10-baseline/section-${SECTION}/contact-she
  * continuous animation loop. Wait on the signal the render loop emits.
  * ------------------------------------------------------------------ */
 const SCENE_READY = async (page) => {
-  await page.locator("canvas").waitFor({ state: "visible", timeout: 30_000 });
+  try {
+    await page.locator("canvas").waitFor({ state: "visible", timeout: 20_000 });
+  } catch (error) {
+    // Diagnose rather than time out anonymously. The most common cause is a
+    // headless browser with no WebGL, in which case the app correctly serves
+    // its no-3D fallback — which has no canvas at all. That is a harness
+    // problem, not an app defect, and the message must say so.
+    const diag = await page.evaluate(() => ({
+      webgl: (() => {
+        try {
+          const c = document.createElement("canvas");
+          return !!(c.getContext("webgl2") || c.getContext("webgl"));
+        } catch {
+          return false;
+        }
+      })(),
+      fallback: !!document.querySelector('nav[aria-label="Portfolio bodies"]'),
+      text: document.body.innerText.slice(0, 120).replace(/\s+/g, " "),
+    }));
+    if (!diag.webgl) {
+      throw new Error(
+        `no WebGL in this browser, so the app served its no-3D fallback — ` +
+          `re-run with a GPU-capable browser (the harness now passes SwiftShader flags; ` +
+          `if you still see this, try --headed)`,
+      );
+    }
+    throw new Error(
+      `WebGL is available but no canvas mounted within 20s` +
+        `${diag.fallback ? " (fallback nav present)" : ""} — page said: "${diag.text}"`,
+    );
+  }
   await page.waitForFunction(
     () => document.querySelectorAll("[data-scene-ticker]").length >= 8,
     null,
-    { timeout: 30_000 },
+    { timeout: 20_000 },
   );
   await page.waitForTimeout(1_500); // let the ramp/position values settle
 };
@@ -226,7 +256,19 @@ let browser;
 try {
   browser = await chromium.launch({
     headless: !flag("headed"),
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      // Headless Chromium has no GPU, so WebGL is unavailable and this app
+      // correctly falls back to its no-3D view — which has no canvas and
+      // nothing to photograph. SwiftShader gives headless a software GL
+      // implementation so the real scene renders.
+      "--use-gl=angle",
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--enable-webgl",
+      "--ignore-gpu-blocklist",
+    ],
   });
 } catch (error) {
   const message = error.message ?? String(error);
@@ -276,7 +318,17 @@ for (const shot of shots) {
     process.stdout.write("ok\n");
   } catch (error) {
     const message = error.message.split("\n")[0];
-    results.push({ ...shot, file: null, ok: false, error: message });
+    // A failed shot still photographs whatever IS on screen. A blank sheet
+    // tells you nothing; a picture of the wrong thing tells you what went
+    // wrong. Named -failed so it can never be mistaken for evidence.
+    let salvage = null;
+    try {
+      salvage = `${shot.id}-failed.png`;
+      await page.screenshot({ path: path.join(OUT_DIR, salvage) });
+    } catch {
+      salvage = null;
+    }
+    results.push({ ...shot, file: null, salvage, ok: false, error: message });
     process.stdout.write(`FAILED — ${message}\n`);
   } finally {
     await page.close();
@@ -301,7 +353,22 @@ const sheet = [
   ...results.flatMap((r) =>
     r.ok
       ? [`### ${r.id}`, ``, r.caption, ``, `![${r.id}](captures/${r.file})`, ``]
-      : [`### ${r.id} — NOT CAPTURED`, ``, r.caption, ``, `> Failed: ${r.error}`, ``],
+      : [
+          `### ${r.id} — NOT CAPTURED`,
+          ``,
+          r.caption,
+          ``,
+          `> Failed: ${r.error}`,
+          ``,
+          ...(r.salvage
+            ? [
+                `What was on screen instead (not evidence, diagnosis only):`,
+                ``,
+                `![${r.id} failed](captures/${r.salvage})`,
+                ``,
+              ]
+            : []),
+        ],
   ),
   `---`,
   ``,
