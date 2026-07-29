@@ -10,7 +10,7 @@ them.
 
 - Phase: 10
 - Current section: **§11 — Universe legibility and the draft rig**
-- Managed range: §2–§17
+- Managed range: §2–§18
 - Stage: `review`
 - Role: `claude_lead`
 - Status: `ready`
@@ -102,9 +102,9 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 
 These hashes make stale generated context mechanically detectable:
 
-- `docs/phase10-workflow/workflow.json`: `1309554aff11cf29f03fa96cbf554363349bcd64158821f102522cc088f56d70`
+- `docs/phase10-workflow/workflow.json`: `7f976eb27cb054e8b3db3bfbe1f15191cb3180bf19a21b5474381ff888746321`
 - `PHASE10_STATE.json`: `2f6732ea82e2a6870039e0a7a0ea4dd398eb003469b861bab0f7895416848481`
-- `PHASE10.md`: `c892047abfcaee0f146c1882b349b7cc1c267d354e22bae05712130a91e7d571`
+- `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
 - `docs/phase10-workflow/DESIGN_GATE.md`: `bf5a35b998fc240e58f083da48093444cffd8daabfad450caa09256b255be25c`

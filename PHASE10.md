@@ -992,7 +992,106 @@ His bar: **everything you need to know about a holding in ten seconds or less.**
 
 ---
 
-## §12. `/compare` guided simulation story
+## §12. The Chart Room, the sky, and flight
+
+Inserted July 29, 2026 by owner direction. Former §12–§17 renumbered to
+§13–§18; their scope and acceptance criteria are unchanged.
+
+Authoritative sources, in order: `UNIVERSE_IDEAS_6.md` (round 6, adopted in
+full) → `UNIVERSE_STOCK_LAB.html` (the working Chart Room mock, owner-reviewed)
+→ `OWNER_FEEDBACK_LEDGER.md` → this section.
+
+Owner verdict on round 6: *"Fable did an incredible job. We need to follow this
+in any way shape or form… what Fable did was truly everything I want out of
+this project."*
+
+### Purpose
+
+Add the deepest analytical surface in the product, give the sky matter, and
+make the cursor fly. §12 follows `UNIVERSE_IDEAS_6.md`'s own sequence.
+
+### Work
+
+1. **The type ramp first** (§5 of round 6). Five tokens — 56 / 24 / 15 / 13 /
+   11 — replacing 44 distinct sizes across 125 declarations, of which 64% sit
+   at or below 11.5px. Nothing below 11px anywhere on desktop. A build
+   assertion fails on any literal size outside the ramp, plus one *rendered*
+   check on computed sizes. First because every later surface inherits it, and
+   because element-by-element fixes have failed three reviews running.
+2. **The Chart Room** (§1). A full-viewport overlay at `?chart=<ticker>`, with
+   three doors: a HOLDINGS row, an ORBITS ring or blip, and `FULL ANALYSIS ▸`
+   on the planet panel. Pinned identity strip, a dominant full-scale graph with
+   `MODE / VOO / BOOK / DEPTH / TRADES / COST` toggles, then the four-instrument
+   bench — DISTRIBUTION, VS MARKET, DEPTH, MOVES WITH — then the contribution,
+   company, and news plates. **Lazy-mounted; it must add zero to route load.**
+3. **The cursor** (§3). Critically damped spring follower — `k = 1600`,
+   `c = 80` — so overshoot is impossible by construction. Hit-testing stays on
+   the true pointer, so precision never degrades. Heading from velocity, bank
+   from turn rate clamped at 28°, exhaust reading the ship's speed rather than
+   the pointer's. Attitude holds at rest; it never re-parks.
+4. **The sky** (§2). Delete the repeating CSS star tiles (the WebGL population
+   already owns stars, and a periodic tile is the "meh"); floor the aurora at
+   `0.14 + wildness × 0.26` so a calm year is still visible; give the nebula a
+   filament texture; add a black corner vignette and static warm grain for the
+   TVA frame; one faint ecliptic graticule, disposable.
+5. **The exit terminal** (§4.1). The green wall is the accessibility fallback
+   revealed by programmatic focus. Split the audiences: a four-line sign-off
+   receipt for the exit moment, and the full terminal — regrouped and re-set to
+   the new ramp — for keyboard users.
+6. **The tab strip** (§4.2). Build variants A (no tabs), B (black rail, no
+   border, unboxed labels), and C (right-edge index) as owner-judgeable
+   screens. **Do not pick one.**
+
+### Owner additions to round 6
+
+Recorded July 29 alongside the adoption:
+
+- **Reduce the glow on type.** Owner: *"Take out the heavy glowy AI looking
+  fonts throughout the application… don't make it too much duller, just a tad
+  less bright."* Text glow and bright text-shadow are a large part of what
+  reads as machine-generated. Reduce brightness and bloom on text specifically
+  — **not** on signal colours, which carry meaning. Contrast ratios must not
+  fall below their computed floors.
+- **Test the thin rectangular boxes.** Owner: *"Play around with the thin
+  rectangular boxes being there and not being there — that could have an
+  aesthetic benefit."* The 1px outline treatment around chips, tabs, and small
+  labels. Capture both, let the owner choose. This overlaps variant B's unboxed
+  labels; treat them as one experiment.
+
+### Acceptance
+
+- **Behavioral:** Every holding opens a Chart Room from all three doors;
+  `?chart=` is URL-restorable and back closes it; every instrument names its
+  question, carries its window word, and stamps its sample size; an instrument
+  below minimum history stands by rather than drawing a confident shape.
+- **Visual:** No text below 11px anywhere on desktop, verified by computed
+  style, and the hero at 56px. The aurora is visible at rest on a calm book.
+  Both box variants and all three strip variants are captured at 1440×900 for
+  owner judgement.
+- **Desktop-first:** unchanged. Below 1024px the existing fallback ships, with
+  values-only `ANALYSIS` rows added.
+- **Accessibility:** the regrouped terminal loses no encoding; the receipt is
+  additive; reduced motion keeps the system pointer and every room; contrast
+  verified by computed WCAG ratio from source tokens, including under the new
+  vignette and grain — the loss-ramp floor must stay above 3.0.
+- **Financial honesty:** every instrument plots a quantity the math core
+  already computes. **No indicator furniture** — no RSI, MACD, Bollinger, or
+  moving-average ribbons; they are untested math and read as trade signals.
+  `BOOK` and `VOO` overlays are same-period constructions.
+- **Tests:** rendered behaviour verified by scene-graph or pixel assertions,
+  never `expect(source).toContain(...)`. New assertions: aurora centre-band
+  alpha ≥ its floor; cursor settle ≤ 150 ms, rest offset ≤ 2 px, heading
+  unchanged across a stop; the type-ramp literal-size gate.
+- **Build:** the Chart Room adds **zero** to route-load hydration, by lazy
+  mount. The sky work should be a net refund. §11's carried long-task breach
+  must clear or be re-measured with a current figure.
+- **Privacy:** `/share` at `?chart=` carries zero dollar amounts. Owner-only:
+  the dollar tile row, the COST line, and dividend income. Canary tests extend
+  to the Chart Room.
+
+---
+
+## §13. `/compare` guided simulation story
 
 ### Purpose
 
@@ -1032,7 +1131,7 @@ Turn three correct simulations into an educational explanation of divergence.
 
 ---
 
-## §13. After-hours capability spike and conditional holdings slice
+## §14. After-hours capability spike and conditional holdings slice
 
 Consolidated July 25, 2026 by owner direction from the former §8
 (capability spike) and former §9 (conditional slice). The capability gate
@@ -1119,7 +1218,7 @@ fake data.
 
 ---
 
-## §14. `/research` prioritization and filing context
+## §15. `/research` prioritization and filing context
 
 ### Purpose
 
@@ -1156,7 +1255,7 @@ while preserving insider filings.
 
 ---
 
-## §15. `/history` event narrative
+## §16. `/history` event narrative
 
 ### Purpose
 
@@ -1193,7 +1292,7 @@ evolved.
 
 ---
 
-## §16. `/trades` decision review and focused entry
+## §17. `/trades` decision review and focused entry
 
 ### Purpose
 
@@ -1231,7 +1330,7 @@ trade-entry reliability.
 
 ---
 
-## §17. Integration, local fonts, resilience, and acceptance
+## §18. Integration, local fonts, resilience, and acceptance
 
 ### Purpose
 
@@ -1278,7 +1377,7 @@ Phase 10 experience.
 
 ## Required final report
 
-After §17 acceptance, report:
+After §18 acceptance, report:
 
 1. selected direction and any combined named parts;
 2. sections completed, builders/reviewers, and accepted commits;

@@ -231,3 +231,27 @@ hollow-core sun.
    this decision; it now has a reason to exist.
 
 Not scheduled into a section yet. Deliberately kept out of §11.
+
+---
+
+## 8. Round 6 adopted in full — July 29, 2026
+
+> *"Fable did an incredible job. We need to follow this in any way shape or
+> form… what Fable did was truly everything I want out of this project. Full
+> throttle ahead."*
+
+`UNIVERSE_IDEAS_6.md` is adopted whole and scheduled as **§12**: the Chart
+Room, the type ramp, the cursor flight model, the sky, the exit receipt, and
+the tab-strip variants. `UNIVERSE_STOCK_LAB.html` is the owner-reviewed mock.
+
+**Two owner additions, both §12:**
+
+- **Reduce the glow on type.** *"Take out the heavy glowy AI looking fonts
+  throughout the application… don't make it too much duller, just a tad less
+  bright."* Text glow and bright text-shadow are a large part of what reads as
+  machine-generated. Reduce on **text only** — never on signal colours, which
+  carry meaning — and hold every contrast floor.
+- **Test the thin rectangular boxes.** *"Play around with the thin rectangular
+  boxes being there and not being there — that could have an aesthetic
+  benefit."* The 1px outlines around chips, tabs, and small labels. Capture
+  both states; this overlaps round 6's variant B and should be one experiment.

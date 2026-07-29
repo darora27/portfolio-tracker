@@ -3,7 +3,7 @@
   "phase": 10,
   "managed_sections": {
     "first": 2,
-    "terminal": 17
+    "terminal": 18
   },
   "files": {
     "state": "PHASE10_STATE.json",
