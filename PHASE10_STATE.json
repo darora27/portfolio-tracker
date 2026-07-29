@@ -91,6 +91,19 @@
       "danger_full_access_declined": "Clearing it would require running Codex under danger-full-access, removing essentially all sandbox protection from an agent that runs unattended in a relay loop. Declined: the cost is one review round per section, the risk is unbounded.",
       "standing_division_of_labour": "Codex implements and verifies what is deterministic (tests, build, ledger, static analysis). Claude Lead performs all live browser verification. Neither actor accepts its own implementation. This is now explicit rather than incidental.",
       "f2_note": "The long-task gate has been breached at 56-62ms through three remediation attempts, where §9 measured zero on a byte-identical script. §11 is already specified to refund that budget by deleting the embedded legacy dashboard and its Recharts instances, pausing the off-screen radar, and lazy-mounting below-fold sections. If F2 is irreducible inside §10's scope, returning the measurement to Devan is legitimate; do not baseline-subtract or redefine the gate."
+    },
+    "triage_rule": {
+      "doc": "docs/phase10-workflow/SECTION_10_TRIAGE.md",
+      "recorded_at": "2026-07-29",
+      "recorded_by": "Devan (owner), via claude/fable-5 (cowork)",
+      "rule": "After the NEXT review turn, remediation on §10 stops. Every open finding is sorted into bucket A (achievable inside §10 — one further remediation authorised), bucket B (real cause is §11 work; carry with the measurement attached and add to §11 acceptance, do not fix twice), or bucket C (criterion is unsatisfiable as specified — documented non-generalising owner exception with full measurement retained, the §1 pattern). The triage turn sets status=blocked, next_actor=devan and hands the classification to the owner; it does not self-authorise an exception.",
+      "why": "Three of the last four sections (§1, §9, and §10 so far) closed by owner decision rather than a passing review. That indicates some criteria are calibrated above what is achievable, and the workflow has no way to discover it except by grinding until the owner intervenes. This converts an open-ended loop into one bounded decision.",
+      "current_candidates": {
+        "A": "F4/VIS-12 — two-thirds closed; SCOPE, HAZARD, SIGNALS need the active-panel rule already working for PLOT and MANIFEST. Known change, not an investigation.",
+        "B": "F2/BLD-04 — 55-61ms across four attempts; round-3 CPU profile attributes it to Three.js shader-program acquisition (34ms self time) and clears texture upload. §11 deletes the embedded legacy dashboard and its Recharts instances, pauses the off-screen radar, and lazy-mounts below-fold sections, which reduces exactly the material/program permutations the profile names.",
+        "C": "F1/TST-03 — the trail core is sub-pixel at the OVERVIEW camera on outer orbits (CBRS renders as roughly a one-pixel line blending with the void). A deltaE<=8 match cannot be satisfied by a pixel that is physically part trail and part background. Resolutions: qualify the criterion by camera distance or projected trail width, or record an exception. NOT loosening deltaE."
+      },
+      "forbidden": "No weakening, redefining, or baseline-subtracting any gate to force a pass. No bucket-B assignment without naming the §11 work that resolves it and adding it to §11's acceptance. No bucket-C assignment without evidence the criterion is unsatisfiable rather than merely unsatisfied. A regression (F3 went 4/8 to 6/8 failing) is evidence the mechanism is not understood — bucket A investigation or bucket C admission, never a silent carry."
     }
   },
   "sections_history": [
@@ -182,7 +195,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-29T01:34:43Z",
+  "updated_at": "2026-07-29T01:41:25Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
