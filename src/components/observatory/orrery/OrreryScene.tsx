@@ -187,7 +187,6 @@ type RocketFlight = {
   startY: number;
 };
 
-const ROCKET_FLIGHT_MS = 560;
 
 function tickerSeed(ticker: string): number {
   return [...ticker].reduce((sum, char) => sum * 31 + char.charCodeAt(0), 7);
@@ -1258,19 +1257,35 @@ export default function OrreryScene({
     let pointerY = 0;
     let pointerClientX = -1000;
     let pointerClientY = -1000;
-    let priorPointerX = -1000;
-    let priorPointerY = -1000;
-    let priorPointerAt = performance.now();
     let dragging = false;
     let dragStartX = 0;
     let dragStartTilt = 0;
     let rocketFlight: RocketFlight | null = null;
     const cometStartedAt = performance.now();
 
-    const positionRocket = (x: number, y: number) => {
-      rocket.style.left = `${x}px`;
-      rocket.style.top = `${y}px`;
-    };
+    /* FB-06, fourth request — the flight model (round 6 §3, mock-tuned by
+     * the owner). The rocket is a vehicle chasing the pointer through a
+     * critically damped spring: it trails at speed (lag = v/20), banks into
+     * turns, docks within ~145ms of a stop, and HOLDS its last heading at
+     * rest — it never re-parks between strokes (owner decision against the
+     * round-6 mock). Hit-testing stays on the true pointer below, so
+     * precision never depends on the costume. Critical damping (c = 2√k)
+     * makes overshoot impossible by construction. */
+    const ROCKET_STIFFNESS = 1600; // s^-2
+    const ROCKET_DAMPING = 2 * Math.sqrt(ROCKET_STIFFNESS); // critical, 80 s^-1
+    const ROCKET_AFTERBURNER = 3200; // click-to-fly stiffness
+    const ROCKET_HEADING_TAU = 0.08; // s
+    const ROCKET_BANK_GAIN = 0.12; // s
+    const ROCKET_BANK_CLAMP = (28 * Math.PI) / 180;
+    const ROCKET_PARK_RADIANS = (-35 * Math.PI) / 180; // pre-flight attitude only
+    const ROCKET_ARRIVE_PX = 12;
+    const ROCKET_FLIGHT_GUARANTEE_MS = 1400; // navigation never hangs on physics
+    let shipX = 0;
+    let shipY = 0;
+    let shipVx = 0;
+    let shipVy = 0;
+    let shipHeading = ROCKET_PARK_RADIANS;
+    let shipPlaced = false;
 
     launchRocket = (ticker: string) => {
       if (reducedMotion) {
@@ -1280,8 +1295,8 @@ export default function OrreryScene({
       rocketFlight = {
         ticker,
         startedAt: performance.now(),
-        startX: pointerClientX,
-        startY: pointerClientY,
+        startX: shipX,
+        startY: shipY,
       };
       rocket.dataset.flying = "true";
       rocket.dataset.visible = "true";
@@ -1295,21 +1310,13 @@ export default function OrreryScene({
       pointerY = pointer.y;
       pointerClientX = event.clientX - rect.left;
       pointerClientY = event.clientY - rect.top;
-      const now = performance.now();
-      const elapsed = Math.max(8, now - priorPointerAt);
-      const speed = Math.min(
-        1,
-        Math.hypot(pointerClientX - priorPointerX, pointerClientY - priorPointerY) /
-          elapsed /
-          1.6,
-      );
-      rocket.style.setProperty("--rocket-speed", speed.toFixed(3));
-      rocket.dataset.prismSpeed = speed.toFixed(3);
-      priorPointerX = pointerClientX;
-      priorPointerY = pointerClientY;
-      priorPointerAt = now;
+      if (!shipPlaced) {
+        // First contact: the ship materialises at the helm, parked.
+        shipX = pointerClientX;
+        shipY = pointerClientY;
+        shipPlaced = true;
+      }
       if (!rocketFlight && !reducedMotion) {
-        positionRocket(pointerClientX, pointerClientY);
         rocket.dataset.visible = "true";
       }
     };
@@ -1591,26 +1598,65 @@ export default function OrreryScene({
         runtime.label.style.opacity = String(resolved.opacity);
         runtime.label.dataset.yielded = resolved.yielded ? "true" : "false";
       }
-      if (rocketFlight) {
-        const destination = planetRuntimes.find(
-          ({ holding }) => holding.ticker === rocketFlight?.ticker,
-        );
-        if (destination) {
-          destination.mesh.getWorldPosition(projected);
-          projected.project(camera);
-          const rect = renderer.domElement.getBoundingClientRect();
-          const targetX = (projected.x * 0.5 + 0.5) * rect.width;
-          const targetY = (-projected.y * 0.5 + 0.5) * rect.height;
-          const progress = Math.min(
-            1,
-            (now - rocketFlight.startedAt) / ROCKET_FLIGHT_MS,
+      if (!reducedMotion && shipPlaced) {
+        // Resolve the helm: the live pointer, or the flight destination
+        // projected fresh each frame (planets keep orbiting mid-flight).
+        let targetX = pointerClientX;
+        let targetY = pointerClientY;
+        let stiffness = ROCKET_STIFFNESS;
+        if (rocketFlight) {
+          const destination = planetRuntimes.find(
+            ({ holding }) => holding.ticker === rocketFlight?.ticker,
           );
-          const eased = 1 - Math.pow(1 - progress, 3);
-          positionRocket(
-            rocketFlight.startX + (targetX - rocketFlight.startX) * eased,
-            rocketFlight.startY + (targetY - rocketFlight.startY) * eased,
+          if (destination) {
+            destination.mesh.getWorldPosition(projected);
+            projected.project(camera);
+            const rect = renderer.domElement.getBoundingClientRect();
+            targetX = (projected.x * 0.5 + 0.5) * rect.width;
+            targetY = (-projected.y * 0.5 + 0.5) * rect.height;
+            stiffness = ROCKET_AFTERBURNER;
+          }
+        }
+        const damping = 2 * Math.sqrt(stiffness);
+        shipVx += (stiffness * (targetX - shipX) - damping * shipVx) * delta;
+        shipVy += (stiffness * (targetY - shipY) - damping * shipVy) * delta;
+        shipX += shipVx * delta;
+        shipY += shipVy * delta;
+        const shipSpeed = Math.hypot(shipVx, shipVy);
+        // Heading follows velocity while flying and HOLDS at rest (no
+        // re-park between strokes — owner decision, round 6 mock).
+        if (shipSpeed > 24) {
+          const targetHeading = Math.atan2(shipVy, shipVx);
+          let turn = targetHeading - shipHeading;
+          while (turn > Math.PI) turn -= Math.PI * 2;
+          while (turn < -Math.PI) turn += Math.PI * 2;
+          const step = turn * Math.min(1, delta / ROCKET_HEADING_TAU);
+          const bank = Math.max(
+            -ROCKET_BANK_CLAMP,
+            Math.min(
+              ROCKET_BANK_CLAMP,
+              (step / Math.max(delta, 1e-4)) * ROCKET_BANK_GAIN,
+            ),
           );
-          if (progress >= 1) {
+          shipHeading += step;
+          rocket.style.transform = `translate(${(shipX - 8).toFixed(1)}px, ${(
+            shipY - 9
+          ).toFixed(1)}px) rotate(${(((shipHeading + bank) * 180) / Math.PI).toFixed(1)}deg)`;
+        } else {
+          rocket.style.transform = `translate(${(shipX - 8).toFixed(1)}px, ${(
+            shipY - 9
+          ).toFixed(1)}px) rotate(${((shipHeading * 180) / Math.PI).toFixed(1)}deg)`;
+        }
+        // Thrust is honest: exhaust reads the SHIP's speed, not the pointer's.
+        const thrust = Math.min(1, shipSpeed / 900);
+        rocket.style.setProperty("--rocket-speed", thrust.toFixed(3));
+        rocket.dataset.prismSpeed = thrust.toFixed(3);
+        if (rocketFlight) {
+          const arrived =
+            Math.hypot(targetX - shipX, targetY - shipY) <= ROCKET_ARRIVE_PX;
+          const overdue =
+            now - rocketFlight.startedAt >= ROCKET_FLIGHT_GUARANTEE_MS;
+          if (arrived || overdue) {
             const ticker = rocketFlight.ticker;
             rocketFlight = null;
             rocket.dataset.flying = "false";

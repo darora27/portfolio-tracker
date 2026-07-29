@@ -33,8 +33,12 @@ const OVERVIEW_LABEL_HEIGHT_PX = 44;
 const OVERVIEW_LABEL_OFFSET_PX = 4;
 const OVERVIEW_VIEWPORT_PADDING_PX = 8;
 const ORBIT_PROJECTION_SAMPLES = 180;
-export const MIN_TRAIL_DEGREES = 26;
-export const MAX_TRAIL_DEGREES = 46;
+/* FB-03, regressed twice: 36–64° read "too long and cheap"; §11's 26–46°
+ * was still too long on his screen. Back to the band he called better —
+ * the hue-lightness ramp now carries magnitude, so the arc no longer needs
+ * the extra length (round 3's own argument, honestly inverted). */
+export const MIN_TRAIL_DEGREES = 18;
+export const MAX_TRAIL_DEGREES = 30;
 const MIN_TRAIL_RETURN = 0.002;
 const MAX_TRAIL_RETURN = 0.12;
 const TRAIL_TAPER_FLOOR = 0.85;

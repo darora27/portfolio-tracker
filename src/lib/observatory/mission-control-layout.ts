@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 
 export const MISSION_CONTROL_LAYOUT = {
   plotFraction: 0.55,
-  dayNumberPx: 64,
+  dayNumberPx: 56,
   bodyTextPx: 15,
   bayLabelPx: 11,
   dominantGutterPx: 20,

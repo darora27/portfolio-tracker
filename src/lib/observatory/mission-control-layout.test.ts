@@ -5,10 +5,10 @@ import {
 } from "./mission-control-layout";
 
 describe("Mission Control geometry contract", () => {
-  it("keeps one dominant plot and the 64-to-15-to-11 type scale", () => {
+  it("keeps one dominant plot and the 56/24/15/13/11 ramp's display size", () => {
     expect(MISSION_CONTROL_LAYOUT).toMatchObject({
       plotFraction: 0.55,
-      dayNumberPx: 64,
+      dayNumberPx: 56,
       bodyTextPx: 15,
       bayLabelPx: 11,
       dominantGutterPx: 20,
@@ -21,7 +21,7 @@ describe("Mission Control geometry contract", () => {
     );
     expect(MISSION_CONTROL_CSS_PROPERTIES).toMatchObject({
       "--mission-plot-fraction": "55%",
-      "--mission-day-size": "64px",
+      "--mission-day-size": "56px",
       "--mission-body-size": "15px",
       "--mission-label-size": "11px",
       "--mission-detail-min": "560px",

@@ -566,12 +566,13 @@ describe("pure overview scene descriptor", () => {
       headRadians: 0,
       tailRadians: Math.PI / 3,
     });
+    // FB-03: the owner's band — "they were a lot better before" (18–30°).
     expect(trailArcLengthForWeeklyReturn(0.002) * 180 / Math.PI).toBeCloseTo(
-      26,
+      18,
       10,
     );
     expect(trailArcLengthForWeeklyReturn(0.12) * 180 / Math.PI).toBeCloseTo(
-      46,
+      30,
       10,
     );
     const model = buildOverviewSceneModel({

@@ -52,8 +52,11 @@ describe("PlanetDetail", () => {
     expect(instrument?.dataset.chartSignature).not.toBe(before);
     fireEvent.click(screen.getByRole("button", { name: "SINCE BUY" }));
     expect(screen.getByText(/^SINCE BUY ·/)).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "MAX" }));
-    expect(screen.getByText(/^MAX ·/)).toBeTruthy();
+    // §11 review F4: a holding's chart starts at purchase, so MAX could
+    // never differ from SINCE BUY — the consequence-free detent no longer
+    // renders (round 5's rule; distinct-window coverage lives in
+    // ReturnInstrument.test.tsx).
+    expect(screen.queryByRole("button", { name: "MAX" })).toBeNull();
     expect(screen.queryByRole("button", { name: /VOO/ })).toBeNull();
 
     const plot = container.querySelector("svg");

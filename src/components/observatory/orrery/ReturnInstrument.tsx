@@ -15,12 +15,16 @@ export type ReturnInstrumentPoint = {
 
 type ReturnRange = "7d" | "30d" | "since" | "max";
 
-const RANGES: ReadonlyArray<{ id: ReturnRange; label: string; title: string }> = [
-  { id: "7d", label: "7D", title: "7 DAYS" },
-  { id: "30d", label: "30D", title: "30 DAYS" },
-  { id: "since", label: "SINCE BUY", title: "SINCE BUY" },
-  { id: "max", label: "MAX", title: "MAX" },
-];
+function rangesFor(
+  sinceLabel: string,
+): ReadonlyArray<{ id: ReturnRange; label: string; title: string }> {
+  return [
+    { id: "7d", label: "7D", title: "7 DAYS" },
+    { id: "30d", label: "30D", title: "30 DAYS" },
+    { id: "since", label: sinceLabel, title: sinceLabel },
+    { id: "max", label: "MAX", title: "MAX" },
+  ];
+}
 
 function signedReturn(value: number | null): string {
   if (value === null || !Number.isFinite(value)) return "—";
@@ -31,10 +35,23 @@ function signedReturn(value: number | null): string {
 function windowed(
   points: readonly ReturnInstrumentPoint[],
   range: ReturnRange,
+  sinceIndex: number,
 ): readonly ReturnInstrumentPoint[] {
   if (range === "7d") return points.slice(-7);
   if (range === "30d") return points.slice(-30);
+  if (range === "since") return points.slice(sinceIndex);
   return points;
+}
+
+/* §11 review F4: SINCE BUY and MAX rendered the same figure and the same
+ * path — a toggle with no consequence. Two-part fix: `sinceIndex` gives
+ * SINCE BUY a real purchase-date window whenever the series carries
+ * pre-purchase history (the Chart Room's longer series will); and when two
+ * windows still produce an identical series, the later detent is not
+ * rendered at all — round 5's own rule: where the toggle has no
+ * consequence, the toggle simply isn't there. */
+function windowSignature(points: readonly ReturnInstrumentPoint[]): string {
+  return points.map((point) => `${point.date}:${point.index}`).join("|");
 }
 
 function returnFor(points: readonly ReturnInstrumentPoint[], key: "index" | "benchmarkIndex"): number | null {
@@ -79,16 +96,50 @@ export function ReturnInstrument({
   initialRange = "30d",
   roomScale = false,
   ariaLabel,
+  sinceLabel = "SINCE BUY",
+  sinceIndex = 0,
 }: {
   points: readonly ReturnInstrumentPoint[];
   initialRange?: ReturnRange;
   roomScale?: boolean;
   ariaLabel: string;
+  /** Window word for the "since" detent — SINCE BUY on a holding, SINCE START on the book. */
+  sinceLabel?: string;
+  /** First index inside the since-window; earlier points are pre-purchase history. */
+  sinceIndex?: number;
 }) {
+  const RANGES = useMemo(() => rangesFor(sinceLabel), [sinceLabel]);
+  const visibleRanges = useMemo(() => {
+    // A fixed-span detent is only honest when the series genuinely spans
+    // it — a 20-session series titled "30 DAYS" overstates its window.
+    const spanValid: Record<ReturnRange, boolean> = {
+      "7d": points.length > 7,
+      "30d": points.length > 30,
+      since: true,
+      max: true,
+    };
+    // Identical windows collapse to ONE detent; the window-word detent
+    // outranks generic spans, which outrank MAX.
+    const priority: ReturnRange[] = ["since", "30d", "7d", "max"];
+    const keptBySignature = new Map<string, ReturnRange>();
+    for (const id of priority) {
+      if (!spanValid[id]) continue;
+      const signature = windowSignature(windowed(points, id, sinceIndex));
+      if (!keptBySignature.has(signature)) keptBySignature.set(signature, id);
+    }
+    const kept = new Set(keptBySignature.values());
+    return RANGES.filter((item) => kept.has(item.id));
+  }, [RANGES, points, sinceIndex]);
   const [range, setRange] = useState<ReturnRange>(initialRange);
+  const activeRange = visibleRanges.some((item) => item.id === range)
+    ? range
+    : (visibleRanges.at(-1)?.id ?? "30d");
   const [benchmarkVisible, setBenchmarkVisible] = useState(true);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const series = useMemo(() => windowed(points, range), [points, range]);
+  const series = useMemo(
+    () => windowed(points, activeRange, sinceIndex),
+    [points, activeRange, sinceIndex],
+  );
   const hasBenchmark =
     series.length >= 2 &&
     series.every((point) => typeof point.benchmarkIndex === "number");
@@ -113,7 +164,8 @@ export function ReturnInstrument({
   const endY = endPoint
     ? 18 + ((max - endPoint.index) / (max - min || 1)) * 118
     : 77;
-  const selectedRange = RANGES.find((item) => item.id === range) ?? RANGES[1];
+  const selectedRange =
+    visibleRanges.find((item) => item.id === activeRange) ?? visibleRanges[0];
   const hoverPoint = hoverIndex === null ? null : series[hoverIndex] ?? null;
   const hoverX = hoverIndex === null
     ? 0
@@ -132,7 +184,7 @@ export function ReturnInstrument({
     <section
       className={styles.returnInstrument}
       data-room-scale={roomScale ? "true" : "false"}
-      data-range={range}
+      data-range={activeRange}
       data-chart-signature={portfolioPath}
     >
       <header>
@@ -150,11 +202,11 @@ export function ReturnInstrument({
         ) : null}
       </header>
       <div className={styles.rangeDetents} aria-label="Return window">
-        {RANGES.map((item) => (
+        {visibleRanges.map((item) => (
           <button
             key={item.id}
             type="button"
-            aria-pressed={range === item.id}
+            aria-pressed={activeRange === item.id}
             onClick={() => setRange(item.id)}
           >
             {item.label}

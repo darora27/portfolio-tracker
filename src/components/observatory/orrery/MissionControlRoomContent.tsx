@@ -80,6 +80,7 @@ export function MissionControlRoomContent({
           points={returns}
           initialRange="max"
           roomScale
+          sinceLabel="SINCE START"
           ariaLabel="Portfolio return compared with VOO over the same period"
         />
         {mode === "private" ? (
