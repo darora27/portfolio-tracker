@@ -631,6 +631,12 @@ edited per-turn — they are reused verbatim every time.
 
 ### 5.1 `docs/phase10-workflow/prompts/claude-lead.md`
 
+> **Superseded — the live file is the source of truth.** As of July 29, 2026
+> the shipped prompt is actor-neutral: it addresses the *lead role* rather than
+> a named vendor, so either CLI can perform the turn under
+> `PHASE10_SWAP_ROLES=1`. The block below is the original design draft, kept as
+> history. Do not copy it over the live prompt.
+
 ```markdown
 # Phase 10 — Claude Lead standing prompt
 
@@ -804,6 +810,12 @@ turn summary.
 ```
 
 ### 5.2 `docs/phase10-workflow/prompts/codex-implementation.md`
+
+> **Superseded — the live file is the source of truth.** As of July 29, 2026
+> the shipped prompt is actor-neutral: it addresses the *implementation role*
+> rather than a named vendor, so either CLI can perform the turn under
+> `PHASE10_SWAP_ROLES=1`. The block below is the original design draft, kept as
+> history. Do not copy it over the live prompt.
 
 ```markdown
 # Phase 10 — Codex Implementation standing prompt

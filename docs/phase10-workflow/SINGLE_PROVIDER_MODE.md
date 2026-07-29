@@ -111,29 +111,67 @@ record.
 
 ---
 
-## PHASE10_SWAP_ROLES — implemented, does not work, do not use
+## PHASE10_SWAP_ROLES — working as of July 29, 2026
 
-Added July 29, 2026 to put the sighted agent on implementation, since Claude can
-drive a browser on this host and Codex cannot. **It fails, twice over:**
+Puts the **sighted** agent on implementation. Claude can drive a browser on this
+host and Codex cannot, so the default arrangement implements blind and reviews
+sighted — which costs roughly one review round per visual defect. That is a
+large part of why §10 needed five rounds, and why "no logos are visible" was
+reported four times while each attempted fix was made by an agent that could not
+look at the result.
+
+### Two failures, both now fixed
 
 1. **Lock ownership** — fixed in `a690a41`. The lock recorded which CLI ran, not
    which role was performed, so a swapped turn refused its own lock. The
    `PHASE10_LOCK_OWNER` / `PHASE10_LOCK_TASK` overrides resolve this.
-2. **Prompt identity — unresolved.** The standing prompts declare their actor in
-   their first line (*"You are OpenAI Codex acting as the implementation
-   lead"*). A swapped agent reads that, correctly concludes it is the wrong
-   actor, and stops without doing work. No lock or environment change reaches
-   this; the prompt text itself is the blocker.
+2. **Prompt identity** — fixed by making both standing prompts actor-neutral.
+   They previously opened *"You are OpenAI Codex acting as the implementation
+   lead"*, so a swapped agent read that, correctly concluded it was the wrong
+   actor, and stopped. Each prompt now addresses a **role**, and carries a
+   "Who you are" section stating explicitly that `codex_implementation` and
+   `claude_lead` are **stage names, not claims about which model is running**,
+   and that a turn is graded on the lock and state values rather than on the
+   agent's own vendor identity.
 
-Making the swap work requires **actor-neutral prompt variants** — the same
-stage instructions with the identity assertion removed and the role named by
-stage rather than by vendor. That is a real piece of work and should be done
-deliberately, not improvised.
+**State machine role values were not touched.** `role=codex_implementation`
+still means the implementation stage regardless of who runs it, so the history
+continues to record which stage ran and who covered it.
 
-**Until then the flag is inert in practice.** Leave it off. The default
-arrangement — Codex implements, Claude reviews — is unaffected and remains the
-proven path.
+### Running it
 
-The underlying motivation stands and is worth revisiting: implementing blind and
-reviewing sighted costs roughly one review round per visual defect, which is a
-large part of why §10 needed five rounds and §11 is on its second.
+```bash
+PHASE10_SWAP_ROLES=1 PHASE10_CLAUDE_MODEL=opus ./scripts/phase10-relay.sh --max-turns 8
+```
+
+Verified routing for all four combinations:
+
+| `next_actor` | swap | CLI that runs | prompt used | lock owner |
+|---|---|---|---|---|
+| codex | 0 | codex-implementation.sh | codex-implementation.md | codex |
+| **codex** | **1** | **claude-lead.sh** | **codex-implementation.md** | **codex** |
+| claude | 0 | claude-lead.sh | claude-lead.md | claude |
+| **claude** | **1** | **codex-implementation.sh** | **claude-lead.md** | **claude** |
+
+### The tradeoff — read before choosing
+
+The swap does not make things strictly better. It moves a limitation:
+
+- **Gained:** the implementer can see what it built. Visual criteria get fixed
+  and confirmed inside one turn instead of bouncing through review.
+- **Lost:** the reviewer cannot launch a browser. It can run every executable
+  verifier in the ledger and grade from numeric output — that path is fully
+  intact — but it cannot make the *"the planet is sitting too far right"*
+  judgement that a person or a sighted agent makes by looking.
+
+The lead prompt handles this honestly: a blind reviewer marks judgement-only
+visual criteria `carried_by_owner` with a note naming what must be looked at,
+and never invents an observation it did not make. Devan reviews every section
+before acceptance and is the standing visual check, so this costs less than it
+appears — but it is a real reduction and should be a deliberate choice.
+
+**Use the swap when a section's findings are predominantly visual.** Use the
+default when they are predominantly logical, privacy-related, or mathematical.
+
+**Cross-model independence is preserved either way** — the two stages still run
+under different providers. This is not single-provider mode.
