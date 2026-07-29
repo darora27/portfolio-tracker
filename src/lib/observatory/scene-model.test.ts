@@ -592,7 +592,7 @@ describe("pure overview scene descriptor", () => {
     });
     expect(trailRibbonHalfWidths(2, 0.15)).toEqual({
       inner: 0,
-      outer: 0.0675,
+      outer: 0.1275,
     });
     const core = trailRibbonHalfWidths(
       TRAIL_SAMPLE_FRACTION,
@@ -603,7 +603,7 @@ describe("pure overview scene descriptor", () => {
       0.25,
       0.15,
     );
-    expect(core.outer).toBeGreaterThan(0.09);
+    expect(core.outer).toBeGreaterThan(0.135);
     expect(glow.inner).toBeCloseTo(core.outer, 12);
     expect(glow.outer).toBeGreaterThan(glow.inner);
   });

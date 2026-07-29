@@ -35,6 +35,7 @@ const MIN_TRAIL_DEGREES = 36;
 const MAX_TRAIL_DEGREES = 64;
 const MIN_TRAIL_RETURN = 0.002;
 const MAX_TRAIL_RETURN = 0.12;
+const TRAIL_TAPER_FLOOR = 0.85;
 const SATELLITE_RADIUS = 0.16;
 const MIN_SUN_RADIUS = 2.4;
 const SUN_TO_PLANET_RATIO = 1.25;
@@ -548,7 +549,13 @@ export function trailRibbonHalfWidths(
   minimumWidth = 0,
 ): { inner: number; outer: number } {
   const clampedFraction = Math.min(1, Math.max(0, fraction));
-  const taper = 0.45 + 0.55 * (1 - clampedFraction);
+  // Keep enough of the opaque core at the tail for the outermost orbit to
+  // cover whole pixels at the retained OVERVIEW sample point. The remaining
+  // 15% taper still carries direction without collapsing NBIS into glow-only
+  // partial coverage.
+  const taper =
+    TRAIL_TAPER_FLOOR +
+    (1 - TRAIL_TAPER_FLOOR) * (1 - clampedFraction);
   return {
     inner: Math.max(0, minimumWidth) * taper,
     outer: Math.max(0, maximumWidth) * taper,

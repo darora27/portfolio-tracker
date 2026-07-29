@@ -1,19 +1,20 @@
-Phase 10 §10 texture ladder — 2026-07-28 — codex/gpt-5
+Phase 10 §10 texture ladder — 2026-07-29 — codex/gpt-5
 
 basisu --version
 zsh:2: command not found: basisu
 exit_status=127
 
 2048x1024 base / 1024x512 derived:
-  mapBytes=44,461,239
+  mapBytes=44,022,056
   result=over 30,000,000-byte ceiling
 
 1448x724 base / 724x362 derived:
-  mapBytes=23,055,826
-  measured shipped directory total=23,075,805
+  mapBytes=22,782,956
+  measured shipped directory total=22,803,051
   result=selected; below 30,000,000-byte ceiling
 
 Ladder step 4 was not reached.
 Source: public/textures/planets/texture-manifest.json
-Round-2 regeneration includes the corrected, pre-flopped supplied-mark alpha
-masks in base, emissive, and normal maps. — verified by codex/gpt-5
+The bounded round-4 regeneration applies the reviewer-measured horizontal UV
+correction only to MSFT and CBRS. Their base, emissive, and normal maps changed;
+the other six worlds are byte-identical. — verified by codex/gpt-5

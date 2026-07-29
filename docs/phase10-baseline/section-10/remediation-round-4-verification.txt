@@ -1,0 +1,69 @@
+Phase 10 §10 remediation round 4 — 2026-07-29 — codex/gpt-5
+
+Bounded owner-authorized remediation
+  F1 / TST-03
+    - Raised trailRibbonHalfWidths' taper floor from 0.45 to 0.85.
+    - The retained sample fraction (0.62), sampler, sample points, ΔE threshold,
+      hue threshold, ordering assertion, ramp values, and arc geometry are
+      unchanged.
+    - The opaque-core half-width at the retained sample rises from 0.09885 to
+      0.13605 world units while preserving a 15% head-to-tail taper.
+    — done by codex/gpt-5
+
+  F3b / DEF-02
+    - Applied the reviewer-measured horizontal UV handedness correction only to
+      MSFT and CBRS; the other six supplied masks remain source-forward.
+    - Regenerated the texture ladder. Only the six MSFT/CBRS KTX2 maps, their
+      two thumbnails, and the manifest changed.
+    - Selected 1448x724 base / 724x362 derived at 22,803,051 shipped bytes.
+      All eight luminanceStdDev values remain above the unchanged 0.1 floor
+      (range 0.106628–0.185874).
+    — done by codex/gpt-5
+
+Affected deterministic verifiers
+  npm test -- --run src/lib/observatory/scene-model.test.ts
+    PASS — 1 file / 23 tests / 0 failures.
+    — done by codex/gpt-5
+
+  npm test -- --run src/lib/observatory/planet-textures.test.ts
+    src/lib/observatory/scene-model.test.ts
+    PASS — 2 files / 26 tests / 0 failures.
+    — done by codex/gpt-5
+
+  npx tsc --noEmit
+    PASS — exit 0.
+    — done by codex/gpt-5
+
+Live-browser boundary
+  The owner-approved handoff assigns live verification to Claude Lead because
+  Chromium cannot launch inside the Codex macOS sandbox (MachPort permission
+  error 1100). Codex did not rerun or alter the retained live scripts and does
+  not claim TST-03, VIS-04, DEF-02, VIS-02, or BHV-05 as live passes.
+  Claude Lead must run the unchanged trail sampler and sphere-strip verifier.
+    — recorded by codex/gpt-5
+
+Owner-approved bucket-B carry to §11
+  BLD-04
+    Retained review measurement: 59/59/56/60/59 ms against the unchanged
+    <50 ms ceiling. §11 owns deletion of the embedded legacy dashboard and its
+    Recharts instances, off-screen radar pause, and below-fold lazy mounting.
+  F3a / DEF-02, VIS-02, BHV-05
+    Retained crop geometry: the inspector panel covers 96.8–100% of the sampled
+    band for the six affected worlds. §11 owns the smaller fixed rail that keeps
+    the planet visible and the required shipped-view rerun.
+    — recorded by codex/gpt-5
+
+Binding candidate gates
+  npm run phase10:acceptance -- check
+    docs/phase10-workflow/acceptance/section-10.json --require implementer
+    PASS — implementer ledger is valid.
+    — done by codex/gpt-5
+
+  npm test
+    PASS — 99 test files / 527 tests / 0 failures.
+    — done by codex/gpt-5
+
+  npm run build
+    PASS — Next.js 16.2.11 production build; 18 static page tasks; route list
+    unchanged; /share 200 and Mission Control manifest 200 smoke.
+    — done by codex/gpt-5

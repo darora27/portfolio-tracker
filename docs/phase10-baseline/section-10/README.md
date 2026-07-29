@@ -127,11 +127,35 @@ before navigation, so live results remain deferred rather than self-passed.
 - `DEF-02` mirrored marks: round 2 fixed the dropped alpha mask, but round 3
   proved the pre-flopped silhouette itself remained mirrored for MSFT while
   several other worlds carried too little mark signal to grade. The final
-  generator keeps the supplied mask source-forward for DataTexture’s
-  `flipY=false` UV path, widens it to 24%, and strengthens its terrain-derived
-  contrast before emissive/normal derivation. The retained sphere-strip
-  verifier still compares normal and mirrored live profiles for all eight
-  worlds and remains required before this remediation can advance.
+  bounded remediation follows round 4's panel-free measurement: MSFT and CBRS
+  alone receive a horizontal UV handedness correction, while the other six
+  supplied masks remain source-forward for DataTexture’s `flipY=false` path.
+  The retained sphere-strip verifier still compares normal and mirrored live
+  profiles for all eight worlds and remains required before review can pass.
+
+## Owner-authorized remediation round 4
+
+Round 4 changes only the two approved bucket-A mechanisms:
+
+- `TST-03`: `trailRibbonHalfWidths` now keeps an 0.85 taper floor. At the
+  unchanged 0.62 sample fraction, the opaque-core half-width rises from
+  0.09885 to 0.13605 world units while retaining a 15% directional taper.
+  The live sampler, sample points, thresholds, ramp values, arc, and 12% head
+  are unchanged.
+- `DEF-02`: the texture generator applies a horizontal UV correction only to
+  MSFT and CBRS, the two marks that fail decisively in the reviewer’s
+  panel-free measurement. Only those six KTX2 maps and two thumbnails changed.
+
+The regenerated payload is 22,803,051 bytes at 1448×724 base / 724×362
+derived; every `luminanceStdDev` remains above 0.1 (0.106628–0.185874).
+Focused scene/texture tests and TypeScript pass. Full binding gates and the
+acceptance-ledger check are recorded in
+`remediation-round-4-verification.txt`.
+
+Live browser proof remains assigned to Claude Lead by the owner-approved
+handoff. No live pass is claimed by Codex. `BLD-04` and the panel-occluded half
+of `DEF-02` are owner-approved bucket-B carries to §11, with the round-4 review
+measurements retained unchanged. — recorded by codex/gpt-5
 
 ## Texture regeneration
 

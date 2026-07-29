@@ -61,6 +61,7 @@ const IDENTITIES = [
   {
     ticker: "MSFT",
     brandHex: "#5f7271",
+    markUvCorrection: "horizontal-flip",
     macroFeature: "four-quadrant continent",
     emissiveSignature: "azure ring roads",
   },
@@ -101,6 +102,7 @@ const IDENTITIES = [
     brandHex: "#655331",
     relightHex: "#9c7d3f",
     contrast: { alpha: 2.15, beta: -88 },
+    markUvCorrection: "horizontal-flip",
     macroFeature: "wafer-scale core",
     emissiveSignature: "cyan coolant rivers",
   },
@@ -220,11 +222,16 @@ async function authoredBase(identity, width, height) {
     path.join(MARKS, `${identity.ticker.toLowerCase()}.svg`),
   );
   const markWidth = Math.round(width * 0.24);
-  // DataTexture preserves authored row and column order (flipY=false). Keep the
-  // source-forward alpha mask here; pre-flopping it mirrored the mark that
-  // reached the rendered sphere. Seam repair does not change handedness.
-  const markAlpha = await sharp(markSvg)
-    .resize({ width: markWidth, withoutEnlargement: false })
+  // DataTexture preserves authored row and column order (flipY=false). Most
+  // supplied marks stay source-forward. Retained panel-free live evidence
+  // isolates MSFT and CBRS as the two assets whose on-sphere profile is
+  // mirrored, so only those masks receive the bounded UV correction.
+  let markPipeline = sharp(markSvg)
+    .resize({ width: markWidth, withoutEnlargement: false });
+  if (identity.markUvCorrection === "horizontal-flip") {
+    markPipeline = markPipeline.flop();
+  }
+  const markAlpha = await markPipeline
     .ensureAlpha()
     .extractChannel("alpha")
     .blur(Math.max(0.5, markWidth * 0.006))
@@ -530,7 +537,10 @@ async function generateTier(tier) {
         latitudeDegrees: 0,
         widthFraction: 0.24,
         edgeTreatment: "blur-threshold erosion",
-        chirality: "source-forward before seam repair for DataTexture UV",
+        chirality:
+          identity.markUvCorrection === "horizontal-flip"
+            ? "preflopped before seam repair for DataTexture UV"
+            : "source-forward before seam repair for DataTexture UV",
       },
       ...metrics,
     };

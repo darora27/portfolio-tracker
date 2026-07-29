@@ -105,13 +105,17 @@ describe("authored planet texture manifest", () => {
       );
       expect(entry.luminanceStdDev).toBeGreaterThanOrEqual(0.1);
       expect(entry.seamMaxDeltaE).toBeLessThanOrEqual(6);
+      const expectedChirality =
+        identity.ticker === "MSFT" || identity.ticker === "CBRS"
+          ? "preflopped before seam repair for DataTexture UV"
+          : "source-forward before seam repair for DataTexture UV";
       expect(entry.markCapitals).toMatchObject({
         count: 3,
         longitudeDegrees: [-120, 0, 120],
         latitudeDegrees: 0,
         widthFraction: 0.24,
         edgeTreatment: "blur-threshold erosion",
-        chirality: "source-forward before seam repair for DataTexture UV",
+        chirality: expectedChirality,
       });
 
       const thumbnail = sharp(

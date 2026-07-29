@@ -56,11 +56,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
-          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+          "public/textures/planets/texture-manifest.json"
         ],
-        "notes": "F3 round-3 remediation removes the incorrect pre-flop from DataTexture's flipY=false path, widens capitals to 24%, and strengthens terrain-derived mark contrast before emissive/normal derivation. All 24 maps changed; 22,804,307 shipped bytes and every luminanceStdDev >= 0.1 pass deterministically. The unchanged live chirality verifier was attempted but both permitted browser paths were unavailable before navigation (in-app discovery=[]; Chromium MachPort Permission denied 1100). This uses the ledger schema's only complete non-pass environment-gap value; PHASE10_STATE remains blocked and DEF-02 must not be routed to reviewer or treated as passed. — recorded by codex/gpt-5"
+        "notes": "F3b's owner-authorized remediation applies a horizontal UV handedness correction only to the reviewer-proven MSFT and CBRS marks. Regeneration changed exactly their six KTX2 maps and two thumbnails; the 22,803,051-byte payload and all eight luminanceStdDev values (0.106628-0.185874) pass deterministically. The owner-approved handoff assigns live verification to Claude Lead because Chromium cannot launch in the Codex macOS sandbox, so the unchanged sphere-strip verifier remains required and DEF-02 is not claimed as a live pass. The panel-occluded F3a half is an approved carry to §11. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -489,9 +489,10 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-evidence.mjs"
         ],
-        "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
+        "notes": "The deterministic brand-entry phase remains green in scene-model.test.ts. Its shipped-view half is blocked by the reviewer-measured inspector-panel occlusion and is an owner-approved bucket-B carry to §11's smaller fixed rail. The owner-approved handoff assigns the live rerun to Claude Lead; no BHV-05 live pass is claimed here. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "blocked",
@@ -898,11 +899,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
           "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs",
-          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
+          "public/textures/planets/texture-manifest.json"
         ],
-        "notes": "Round-3 F3 remediation keeps supplied marks source-forward, widens them to 24%, strengthens terrain-derived contrast, and derives emissive/normal maps from the composited base; all 24 maps changed and deterministic texture gates pass. The retained live carved-mark verifier could not navigate under either browser path, so VIS-02 remains ungraded and no rendered material claim is made. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
+        "notes": "The bounded texture correction changes only MSFT/CBRS handedness while preserving carved albedo, normal and emissive derivation; focused texture gates pass. The reviewer measured the current shipped-view crop as 96.8-100% inspector chrome for six worlds, so the rendered-material half remains an owner-approved carry to §11's smaller fixed rail. Claude Lead must run the unchanged live verifier after that rebuild; no VIS-02 live pass is claimed here. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "blocked",
@@ -965,11 +966,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "F1 round-3 remediation keeps the core opaque, adds a perspective-stable crossed ribbon with taper floor, and moves additive glow into a hollow annulus outside it; the sample sits beyond the 12% head. Scene-model arc/ramp/direction/head/width assertions pass. sample-live-rgb.mjs could not navigate under either browser path, so VIS-04 remains ungraded with TST-03 and no still-frame pass is claimed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
+        "notes": "F1's owner-authorized remediation raises the existing taper floor from 0.45 to 0.85, taking opaque-core half-width at the unchanged 0.62 sample fraction from 0.09885 to 0.13605 while preserving a 15% taper. Arc, ramp, direction, 12% head, live sampler, sample points and thresholds are unchanged; scene-model tests pass. Claude Lead owns the live rerun under the approved browser division of labour, so no still-frame VIS-04 pass is claimed. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "blocked",
@@ -1822,12 +1823,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
-          "docs/phase10-baseline/section-10/remediation-verification.txt",
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
           "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "F1 round-3 remediation corrects all three diagnosed mechanisms without changing the verifier: sample metadata targets the stable arc body, the opaque crossed core has a measurable taper floor, and additive glow occupies only the annulus outside it. Pure invariants and 527/527 tests pass. sample-live-rgb.mjs was attempted unchanged but neither browser path could navigate, so deltaE, hue lock and ordering remain ungraded and are not passed. This uses the ledger schema's environment-gap value while PHASE10_STATE remains blocked for Devan. — recorded by codex/gpt-5"
+        "notes": "F1's owner-authorized remediation changes only trailRibbonHalfWidths' taper floor (0.45 to 0.85); the retained sampler, sample points, deltaE<=8 threshold, hue lock, ordering assertion and payload-derived expectations are unchanged. Focused scene-model tests pass. The owner-approved handoff assigns the unchanged live sampler to Claude Lead because Chromium cannot launch in the Codex macOS sandbox, so TST-03 remains deferred_to_reviewer and is not claimed as a pass. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",
@@ -1949,10 +1949,10 @@
         "status": "pass",
         "evidence": [
           "npm test -- --run src/lib/observatory/planet-textures.test.ts",
-          "Round-2 remediation gate — PASS: npm test (99 files, 526 tests)",
-          "docs/phase10-baseline/section-10/README.md"
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
+          "public/textures/planets/texture-manifest.json"
         ],
-        "notes": "Regenerated after the mark-compositor correction: 23,075,805 shipped bytes, 30,000,000-byte ceiling unchanged, and all eight luminanceStdDev values pass at 0.103866-0.179004. — verified by codex/gpt-5"
+        "notes": "Re-run after the bounded MSFT/CBRS regeneration: 3/3 focused texture tests pass, the 30,000,000-byte ceiling is unchanged, the payload is 22,803,051 bytes, and all eight luminanceStdDev values pass at 0.106628-0.185874. — verified by codex/gpt-5"
       },
       "reviewer": {
         "status": "pass",
@@ -1977,10 +1977,9 @@
         "status": "pass",
         "evidence": [
           "npx tsc --noEmit",
-          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
-          "docs/phase10-baseline/section-10/README.md"
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt"
         ],
-        "notes": "Verified by codex/gpt-5."
+        "notes": "Re-run after the bounded remediation; exit 0. — verified by codex/gpt-5"
       },
       "reviewer": {
         "status": "pass",
@@ -2004,10 +2003,9 @@
         "status": "pass",
         "evidence": [
           "npm test",
-          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
-          "docs/phase10-baseline/section-10/README.md"
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt"
         ],
-        "notes": "Verified by codex/gpt-5."
+        "notes": "Binding remediation-candidate run: 99/99 files and 527/527 tests pass with zero failures. — verified by codex/gpt-5"
       },
       "reviewer": {
         "status": "pass",
@@ -2031,10 +2029,9 @@
         "status": "pass",
         "evidence": [
           "npm run build",
-          "Final implementation gate — PASS: npm test (99 files, 525 tests)",
-          "docs/phase10-baseline/section-10/README.md"
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt"
         ],
-        "notes": "Verified by codex/gpt-5."
+        "notes": "Binding remediation-candidate build passes on Next.js 16.2.11 with 18 static page tasks, unchanged routes, /share 200 and Mission Control manifest 200. — verified by codex/gpt-5"
       },
       "reviewer": {
         "status": "pass",
@@ -2063,7 +2060,7 @@
           "docs/phase10-baseline/section-10/texture-byte-count.txt",
           "public/textures/planets/texture-manifest.json"
         ],
-        "notes": "Both regeneration ladder measurements are retained: 44,461,239 map bytes at 2048x1024 (rejected) and 23,055,826 map bytes / 23,075,805 shipped bytes at 1448x724 (selected). Ladder step 4 was not reached. — verified by codex/gpt-5"
+        "notes": "Both bounded-regeneration ladder measurements are retained: 44,022,056 map bytes at 2048x1024 (rejected) and 22,782,956 map bytes / 22,803,051 shipped bytes at 1448x724 (selected). Ladder step 4 was not reached. — verified by codex/gpt-5"
       },
       "reviewer": {
         "status": "pass",
@@ -2092,12 +2089,12 @@
         "evidence": [
           "docs/phase10-baseline/section-10/browser-backend.txt",
           "docs/phase10-baseline/section-10/README.md",
-          "docs/phase10-baseline/section-10/remediation-round-3-verification.txt",
-          "docs/phase10-baseline/section-10/remediation-verification.txt",
+          "docs/phase10-baseline/section-10/remediation-round-4-verification.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-long-tasks-BLD-04.txt",
           "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs",
           "docs/phase10-baseline/section-10/raw-long-task-output.txt"
         ],
-        "notes": "F2 round-3 remediation follows the reviewer CPU profile: first-load program families reveal one per frame and compatible basic materials share fog/side parameters, reducing WebGLPrograms cache-key/compile work without threshold changes, baseline subtraction or a post-process. The unchanged five-context verifier was attempted against the final production server, but both browser paths failed before navigation; BLD-04 remains ungraded and no timing pass is claimed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
+        "notes": "Owner-approved bucket-B carry to §11, not closed: the retained unchanged verifier measured 59/59/56/60/59 ms against the unchanged <50 ms ceiling after four attempts. §11 owns deletion of the embedded legacy dashboard and Recharts instances, pausing the off-screen radar, and lazy-mounting below-fold sections. No threshold change, baseline subtraction, new timing claim, or §10 performance code change is made here. — recorded by codex/gpt-5"
       },
       "reviewer": {
         "status": "fail",

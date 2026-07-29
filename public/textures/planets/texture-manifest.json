@@ -1,6 +1,6 @@
 {
-  "totalBytes": 22804307,
-  "mapBytes": 22784196,
+  "totalBytes": 22803051,
+  "mapBytes": 22782956,
   "tier": {
     "base": "1448x724",
     "emissive": "724x362",
@@ -16,12 +16,12 @@
     {
       "base": "2048x1024",
       "derived": "1024x512",
-      "mapBytes": 44024873
+      "mapBytes": 44022056
     },
     {
       "base": "1448x724",
       "derived": "724x362",
-      "mapBytes": 22784196
+      "mapBytes": 22782956
     }
   ],
   "tickers": {
@@ -86,9 +86,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2718134,
-        "emissive": 230278,
-        "normal": 355018
+        "base": 2717938,
+        "emissive": 230304,
+        "normal": 355017
       },
       "markCapitals": {
         "count": 3,
@@ -100,10 +100,10 @@
         "latitudeDegrees": 0,
         "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "source-forward before seam repair for DataTexture UV"
+        "chirality": "preflopped before seam repair for DataTexture UV"
       },
       "dominantHex": "#5f7271",
-      "luminanceStdDev": 0.115122,
+      "luminanceStdDev": 0.114704,
       "seamMaxDeltaE": 0
     },
     "IBM": {
@@ -221,9 +221,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2207248,
-        "emissive": 141869,
-        "normal": 366848
+        "base": 2206402,
+        "emissive": 141649,
+        "normal": 366845
       },
       "markCapitals": {
         "count": 3,
@@ -235,10 +235,10 @@
         "latitudeDegrees": 0,
         "widthFraction": 0.24,
         "edgeTreatment": "blur-threshold erosion",
-        "chirality": "source-forward before seam repair for DataTexture UV"
+        "chirality": "preflopped before seam repair for DataTexture UV"
       },
       "dominantHex": "#74623a",
-      "luminanceStdDev": 0.106308,
+      "luminanceStdDev": 0.106628,
       "seamMaxDeltaE": 0
     }
   }
