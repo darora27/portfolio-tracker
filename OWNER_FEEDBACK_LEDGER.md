@@ -204,3 +204,30 @@ Working prototypes: `UNIVERSE_LEGIBILITY_MOCK.html`,
 - **Every visual channel encodes one real number.** Nothing decorative that
   means nothing.
 - **Market-relative figures derive from TWR**, never simple return.
+
+---
+
+## 7. Long-term goal — additional solar systems
+
+Recorded July 29, 2026.
+
+> *"Replicating this solar system pattern for the ETF XLK on your own. I am not
+> expecting you to be able to do this over the course of a day or even a week.
+> This is just a long term goal and I want to get the ball rolling sooner than
+> later."*
+
+**First step is done:** `systems/README.md` records the file shape, why a
+hand-maintained JSON beats the paid Finnhub ETF endpoint at this scale, and the
+rule that unowned systems cannot compute TWR and therefore render with a
+hollow-core sun.
+
+**Remaining, in order of what de-risks most:**
+
+1. `systems/xlk.json` — top holdings and weights, copied from the issuer.
+2. A multi-system data model; the app currently assumes one portfolio.
+3. Textures for unheld tickers — roughly four or five, since XLK overlaps the
+   owner's book heavily.
+4. Navigation between systems. The sector map was cut in §10 pending exactly
+   this decision; it now has a reason to exist.
+
+Not scheduled into a section yet. Deliberately kept out of §11.
