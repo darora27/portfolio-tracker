@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§11 — Universe legibility and the draft rig**
 - Managed range: §2–§17
-- Stage: `specify`
-- Role: `claude_lead`
+- Stage: `implement`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -34,12 +34,13 @@ Always read:
 
 Then read the current, specifically routed sources:
 
+- `docs/phase10-workflow/specs/section-11.md`
 - `UNIVERSE_IDEAS_5.md`
 - `UNIVERSE_IDEAS_4.md`
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-accept-to-claude-lead-specify.md`
+- `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-to-codex-implementation.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -61,7 +62,7 @@ None.
 
 Acceptance ledger:
 
-- Created by the lead with the section specification.
+- `docs/phase10-workflow/acceptance/section-11.json`
 
 ## Global gates
 
@@ -102,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `1309554aff11cf29f03fa96cbf554363349bcd64158821f102522cc088f56d70`
-- `PHASE10_STATE.json`: `952db3f40cfc13a64a3d5136b6fd8cc0c30b87997922c3394b6ebdc5e5836b41`
+- `PHASE10_STATE.json`: `49bfface188cf728164927f0720b03ec77d57d8f0892c1bfb21f0e97ae227175`
 - `PHASE10.md`: `c892047abfcaee0f146c1882b349b7cc1c267d354e22bae05712130a91e7d571`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

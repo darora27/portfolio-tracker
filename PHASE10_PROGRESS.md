@@ -1061,3 +1061,63 @@ latest handoff doc for current status instead.
 - Handoff to §11 `specify`:
   `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-accept-to-claude-lead-specify.md`
 - Machine state: `PHASE10_STATE.json` (`sections_history` §10, `section` §11)
+
+### §11 specified — legibility and the draft rig — July 29, 2026
+
+Claude Lead `specify` turn. First section running under `single_provider_mode`.
+
+- [x] Preflight in order: no `STOP`; `PHASE10_LOCK` present with `owner=claude`;
+  `git status --porcelain` empty; read `AGENTS.md`, `workflow.json`,
+  `PHASE10_STATE.json`, `ACTIVE_CONTEXT.md`; `npm run phase10:validate` green;
+  confirmed `role=claude_lead` / `stage=specify` / `next_actor=claude`; no
+  same-day same-section `-to-devan` handoff exists, so the one-manual-retry rule
+  is clear — done by claude-code/opus-5
+- [x] Invoked the project `portfolio-ux` skill before writing any user-facing
+  specification, as the standing prompt requires — done by claude-code/opus-5
+- [x] Satisfied `DESIGN_GATE.md` by the existing-owner-approved-package route,
+  mapping all eight required proof items explicitly rather than assuming the
+  files prove them: `docs/phase10-workflow/design-proofs/section-11.md` — done
+  by claude-code/opus-5
+- [x] Wrote `docs/phase10-workflow/specs/section-11.md`: risk-first sequence
+  A–G, the `must_wait_for_codex` boundary stated up front, and the six carried
+  §10 criteria given their own section — done by claude-code/opus-5
+- [x] Created `docs/phase10-workflow/acceptance/section-11.json` via
+  `phase10:acceptance -- new`, replaced the example with **54 criteria** across
+  all seven dimensions, and validated it — done by claude-code/opus-5
+- [x] All six carried §10 criteria (`TST-03`, `VIS-04`, `DEF-02`, `VIS-02`,
+  `BHV-05`, `BLD-04`) retain their original §10 IDs and carry
+  `measurement_at_carry`, `owner_observation`, `resolved_in_11_by`, and
+  `evidence_at_carry`. No gate weakened, redefined, or baseline-subtracted —
+  done by claude-code/opus-5
+- [x] Verified mechanically that every criterion ID referenced in the spec and
+  design proof exists in the ledger, and that no ledger criterion is
+  unreferenced — clean both directions — done by claude-code/opus-5
+- [x] Two owner decisions the approved package does not settle were resolved
+  under named rules and raised to Devan without blocking: the DRAFT rig ships
+  owner-gated under the `G-PUBLIC` default, and the shortened trail arc band is
+  set at 26–46° pending owner visual confirmation — done by claude-code/opus-5
+- [x] Recorded an advisory scope recommendation to split §11 at the A–E / F
+  seam. Not a blocker: the risk-first sequence puts all carried-debt work first,
+  so nothing is lost by answering late — done by claude-code/opus-5
+- [x] State routed to `§11` / `implement` / `codex_implementation` / `ready` /
+  `next_actor: codex`, `stop_reason: null`, verification reset to `not_run`.
+  Role values left untouched per the single-provider-mode operating note — done
+  by claude-code/opus-5
+- [x] Changed no application source, no test, and no texture. Context
+  regenerated; `phase10:validate` and `phase10:acceptance -- check` both exit 0
+  — done by claude-code/opus-5
+
+### §11 specification evidence
+
+- Design proof: `docs/phase10-workflow/design-proofs/section-11.md`
+- Specification: `docs/phase10-workflow/specs/section-11.md`
+- Acceptance ledger: `docs/phase10-workflow/acceptance/section-11.json`
+  (54 criteria, all `not_run`; behavioral 20, visual 14, privacy 5, tests 5,
+  build 4, accessibility 4, mobile 2)
+- Handoff: `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-to-codex-implementation.md`
+- Inherited handoff it answers:
+  `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-accept-to-claude-lead-specify.md`
+- `prev_actor_commit`: `3a8853b3c7a31ae135a9eb145da957fd360c984c`
+- Tests/build: not run — documentation-only specify turn, no application source
+  changed. `main` is green at section start (527/527, build exit 0) and no
+  inherited-red exception exists.
