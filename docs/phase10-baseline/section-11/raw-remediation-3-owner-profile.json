@@ -1,0 +1,87 @@
+{
+  "candidate": "current production candidate",
+  "measurement": {
+    "viewport": "1440x900",
+    "cpuThrottle": 2,
+    "waitUntil": "domcontentloaded",
+    "postReadinessWindowMs": 5000
+  },
+  "longTasks": [
+    {
+      "duration": 65,
+      "startTime": 995.9000000059605
+    }
+  ],
+  "longTaskAttribution": [
+    {
+      "window": {
+        "duration": 65,
+        "startTime": 995.9000000059605,
+        "from": 995.9000000059605,
+        "to": 1060.9000000059605
+      },
+      "topSelfTime": [
+        {
+          "frame": "(anonymous) @ 2d1fisfmiemar.js:93",
+          "selfMs": 4.5
+        },
+        {
+          "frame": "(anonymous) @ 3w3j9350cga3c.js:0",
+          "selfMs": 4
+        },
+        {
+          "frame": "Math.max.U.map.radius @ 3w3j9350cga3c.js:0",
+          "selfMs": 3.4
+        },
+        {
+          "frame": "(garbage collector) @ native:-1",
+          "selfMs": 3.4
+        },
+        {
+          "frame": "(program) @ native:-1",
+          "selfMs": 2.9
+        },
+        {
+          "frame": "ez @ 2tdjt19k1le0z.js:381",
+          "selfMs": 2.9
+        },
+        {
+          "frame": "i @ 2tdjt19k1le0z.js:289",
+          "selfMs": 2.6
+        },
+        {
+          "frame": "(idle) @ native:-1",
+          "selfMs": 1.9
+        },
+        {
+          "frame": "h @ 3w3j9350cga3c.js:0",
+          "selfMs": 1.9
+        },
+        {
+          "frame": "eV @ 2tdjt19k1le0z.js:381",
+          "selfMs": 1.9
+        },
+        {
+          "frame": "tP @ 2d1fisfmiemar.js:93",
+          "selfMs": 1.9
+        },
+        {
+          "frame": "iv @ 3hdj40qmts5sf.js:0",
+          "selfMs": 1.6
+        },
+        {
+          "frame": "f @ 3w3j9350cga3c.js:0",
+          "selfMs": 1.6
+        },
+        {
+          "frame": "aU @ 2tdjt19k1le0z.js:357",
+          "selfMs": 1.6
+        },
+        {
+          "frame": "(anonymous) @ 2d1fisfmiemar.js:93",
+          "selfMs": 1.6
+        }
+      ]
+    }
+  ]
+}

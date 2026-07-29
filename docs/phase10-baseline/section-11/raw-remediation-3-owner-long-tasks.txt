@@ -1,0 +1,6 @@
+{"run":1,"maximumMs":58,"entries":[{"duration":58,"startTime":826.4000000059605,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":2,"maximumMs":64,"entries":[{"duration":64,"startTime":572.9000000059605,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":3,"maximumMs":60,"entries":[{"duration":60,"startTime":604.2999999821186,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":4,"maximumMs":58,"entries":[{"duration":58,"startTime":664.8000000119209,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":5,"maximumMs":57,"entries":[{"duration":57,"startTime":670.4000000059605,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+machine-readable: {"criterion":"BLD-04","pass":false,"measured":{"viewport":"1440x900","cpuThrottle":2,"freshContexts":5,"maximumMs":64,"runs":[{"run":1,"maximumMs":58},{"run":2,"maximumMs":64},{"run":3,"maximumMs":60},{"run":4,"maximumMs":58},{"run":5,"maximumMs":57}]},"error":null}
