@@ -222,10 +222,33 @@ const clipFor = async (page, kind) => {
 await preflight();
 await mkdir(OUT_DIR, { recursive: true });
 
-const browser = await chromium.launch({
-  headless: !flag("headed"),
-  args: ["--no-sandbox", "--disable-setuid-sandbox"],
-});
+let browser;
+try {
+  browser = await chromium.launch({
+    headless: !flag("headed"),
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+} catch (error) {
+  const message = error.message ?? String(error);
+  const missingBinary =
+    /Executable doesn't exist|please run|npx playwright install/i.test(message);
+  console.error(`\nChromium could not start.\n`);
+  if (missingBinary) {
+    console.error(
+      `The playwright library is installed but its browser binary is not —\n` +
+        `they are separate downloads. Install it once:\n\n` +
+        `    npx playwright install chromium\n\n` +
+        `then re-run this command. Roughly 150MB, one time.\n`,
+    );
+  } else {
+    console.error(`  ${message.split("\n")[0]}\n`);
+    console.error(
+      `If that mentions a sandbox, you are running inside an agent sandbox —\n` +
+        `run this from a normal Terminal window instead.\n`,
+    );
+  }
+  process.exit(4);
+}
 const context = await browser.newContext({
   viewport: VIEWPORT,
   deviceScaleFactor: 2,
