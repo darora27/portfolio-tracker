@@ -17,7 +17,8 @@
  *
  * Options:
  *   --section <N>   which shot list to run            (required)
- *   --base <url>    dev server origin                 (default http://127.0.0.1:3000)
+ *   --base <url>    dev server origin                 (default http://localhost:3000)
+ *   --path <route>  route to capture                  (default /share, public)
  *   --only <id>     run a single shot by id
  *   --headed        watch it work
  */
@@ -34,7 +35,12 @@ const arg = (name, fallback = null) => {
 const flag = (name) => argv.includes(`--${name}`);
 
 const SECTION = String(arg("section", "")).replace(/^§/, "");
-const BASE = String(arg("base", "http://127.0.0.1:3000")).replace(/\/$/, "");
+const BASE = String(arg("base", "http://localhost:3000")).replace(/\/$/, "");
+// `/` is owner-gated; a fresh capture browser has no session and lands on the
+// sign-in page. `/share` is the same universe implementation, public, and
+// carries no dollar amounts — which also keeps captures secret-free, as the
+// visual-truth standard requires. Override with --path when authenticated.
+const ROUTE = String(arg("path", "/share"));
 const ONLY = arg("only", null);
 const VIEWPORT = { width: 1440, height: 900 };
 
@@ -113,20 +119,20 @@ const SHOTS = {
     {
       id: "overview",
       caption: "OVERVIEW at 1440×900 — trail arc length (FB-03), planet spacing (FB-01), overall composition",
-      url: "/",
+      url: ROUTE,
       ready: SCENE_READY,
     },
     {
       id: "asml-selected",
       caption: "ASML selected — planet anchor position, dead space on the left (F2 / FB-07)",
-      url: "/",
+      url: ROUTE,
       ready: SCENE_READY,
       act: (page) => clickTicker(page, "ASML"),
     },
     {
       id: "asml-panel-type",
       caption: "ASML panel, full height — five-token type ramp and small-font legibility (F1 / FB-05), panel width (FB-17)",
-      url: "/",
+      url: ROUTE,
       ready: SCENE_READY,
       act: (page) => clickTicker(page, "ASML"),
       clip: "panel",
@@ -134,7 +140,7 @@ const SHOTS = {
     {
       id: "asml-approach-mark",
       caption: "ASML at approach scale — is a brand mark legible on a selected planet? (F3 / FB-04, camera and exposure only, no texture regeneration)",
-      url: "/",
+      url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
         await clickTicker(page, "ASML");
@@ -145,7 +151,7 @@ const SHOTS = {
     {
       id: "range-since-buy",
       caption: "ReturnInstrument, SINCE BUY detent — compare against the next frame (F4 / BHV-15)",
-      url: "/",
+      url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
         await clickTicker(page, "ASML");
@@ -157,7 +163,7 @@ const SHOTS = {
     {
       id: "range-max",
       caption: "ReturnInstrument, MAX detent — the two paths must differ (F4 / BHV-15)",
-      url: "/",
+      url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
         await clickTicker(page, "ASML");
@@ -169,7 +175,7 @@ const SHOTS = {
     {
       id: "news-links",
       caption: "NEWS headlines — each must be a real anchor to the article (FB-10)",
-      url: "/",
+      url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
         await clickTicker(page, "ASML");
@@ -180,7 +186,7 @@ const SHOTS = {
     {
       id: "correlation",
       caption: "CORRELATION section — does the prose say what it means for HIS book? (FB-11)",
-      url: "/",
+      url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
         const el = page.getByText("CORRELATION", { exact: false }).first();
@@ -341,7 +347,10 @@ const stamp = new Date().toISOString().slice(0, 10);
 const sheet = [
   `# §${SECTION} contact sheet`,
   ``,
-  `Captured ${stamp} · ${VIEWPORT.width}×${VIEWPORT.height} @2x · \`${BASE}\``,
+  `Captured ${stamp} · ${VIEWPORT.width}×${VIEWPORT.height} @2x · \`${BASE}${ROUTE}\``,
+  ROUTE === "/share"
+    ? `Public route — owner-only fields (dollar amounts) are absent by design.`
+    : `Owner route — this sheet may contain private figures; check before sharing.`,
   `Harness: \`npm run phase10:capture -- --section ${SECTION}\``,
   ``,
   `Owner reviews this sheet and his responses are transcribed into`,
