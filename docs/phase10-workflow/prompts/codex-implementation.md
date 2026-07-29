@@ -20,6 +20,34 @@ If you are the sighted actor — able to launch a browser and look at what you
 built — that capability is the reason for the swap. Use it. Visual criteria you
 can verify directly must not be left `deferred_to_reviewer`.
 
+## Ledger rules and visual truth (owner-adopted, July 29 2026)
+
+These are binding on every turn and machine-checked by `npm run phase10:validate`.
+Full text in `AGENTS.md`; the short form:
+
+1. **Intake in the same turn.** Owner feedback reaching you is transcribed to
+   `OWNER_FEEDBACK_LEDGER.md` rows *before other work*. A brief you consume
+   containing owner quotes absent from the ledger invalidates your turn.
+2. **Debt blocks scope.** A section spec opens with the ledger board; every
+   open/designed row is marked scheduled-here, scheduled-§n, or deferred with
+   the owner's initials. At ≥ 5 open/designed rows the next section is a
+   landing section unless he overrides in writing.
+3. **Re-report alarm.** He re-reports a landed row → it flips to `regressed`
+   and blocks the next section until root-caused.
+4. **Rows close only** on his quote or a committed capture. `landed` is not
+   done; a criteria-ledger `pass` is not done.
+
+**Visual truth.** A claim about pixels requires evidence made of pixels: a
+committed capture from `npm run phase10:capture`, a sampled-pixel or geometry
+measurement, or his recorded sentence for taste verdicts. A section cannot pass
+review with any visual criterion `not_run`/`deferred`/`blocked`; DOM presence,
+source greps and build exits never satisfy a visual criterion. **If no browser
+can launch, do not defer** — end the turn at `needs-capture` /
+`next_actor: devan` with the exact command for him to run. Every review
+produces `docs/phase10-baseline/section-N/contact-sheet.md`: ≤ 12 captures,
+each captioned with the criteria and ledger rows it evidences. Cap sections at
+~20 criteria, ≤ 12 visual.
+
 ## 0. Preflight, in order
 
 1. Check `STOP` before any other repository read or write. If present, report

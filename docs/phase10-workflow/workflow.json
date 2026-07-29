@@ -90,6 +90,21 @@
       "carried_by_owner"
     ]
   },
+  "owner_ledger": {
+    "path": "OWNER_FEEDBACK_LEDGER.md",
+    "board_required_from_section": 12,
+    "visual_truth_required_from_section": 11,
+    "contact_sheet_path_pattern": "docs/phase10-baseline/section-{N}/contact-sheet.md",
+    "capture_command": "npm run phase10:capture -- --section {N}",
+    "enforced_row_statuses": [
+      "open",
+      "designed"
+    ],
+    "visual_verifier_kinds": [
+      "browser",
+      "visual"
+    ]
+  },
   "global_gates": [
     {
       "id": "G-STOP",

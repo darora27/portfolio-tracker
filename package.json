@@ -15,7 +15,8 @@
     "phase10:validate": "node scripts/phase10-validate-state.mjs",
     "phase10:acceptance": "node scripts/phase10-acceptance.mjs",
     "phase10:workflow:report": "node scripts/phase10-workflow-report.mjs",
-    "phase10:workflow:test": "node scripts/phase10-workflow-selftest.mjs && bash scripts/phase10-relay-selftest.sh"
+    "phase10:workflow:test": "node scripts/phase10-workflow-selftest.mjs && bash scripts/phase10-relay-selftest.sh",
+    "phase10:capture": "node scripts/phase10-capture.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.8",
@@ -40,6 +41,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
     "jsdom": "^29.1.1",
+    "playwright": "^1.49.1",
     "tailwindcss": "^4",
     "tsx": "^4.23.1",
     "typescript": "^5",

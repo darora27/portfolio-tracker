@@ -1,11 +1,17 @@
 # Owner feedback ledger — v2, the tracker
 
-Proposed replacement for `OWNER_FEEDBACK_LEDGER.md`, delivered with
-`UNIVERSE_AUDIT.md` (July 29, 2026). Same single durable record, one
-structural change: **every owner item is now a row with an ID, a status,
+**ADOPTED by Devan, July 29, 2026.** This is the live record; v1 is
+superseded. Delivered with `UNIVERSE_AUDIT.md`. Same single durable record,
+one structural change: **every owner item is now a row with an ID, a status,
 and a closes-when condition.** Nothing from v1 was dropped; three rows
 arrive pre-marked `landed` because the audit found their fixes already in
 the shipped code, unshown.
+
+The §0 rules and the appendix are binding and machine-checked: rule 2
+(debt blocks scope) and the visual-truth standard are enforced by
+`npm run phase10:validate`. The board check applies from §12 — §11's scope
+was fixed by owner direction to four findings and nothing else — and the
+visual-truth check applies from §11's review onward.
 
 ## 0. How this file works now
 

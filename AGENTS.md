@@ -23,6 +23,38 @@ This version has breaking changes — APIs, conventions, and file structure may 
   final machine-readable line. Never measure against `next dev` — HMR and
   on-demand compilation invalidate the sub-50ms route long-task rule.
 
+## Ledger rules (owner-adopted, July 29 2026)
+
+1. **Intake in the same turn.** Any turn receiving owner feedback transcribes
+   it to `OWNER_FEEDBACK_LEDGER.md` rows *before other work*. A consumed brief
+   containing owner quotes absent from the ledger invalidates the turn.
+2. **Debt blocks scope.** Every section spec opens with the ledger board: each
+   open/designed row marked scheduled-here, scheduled-§n, or deferred with
+   owner initials. While ≥ 5 rows are open/designed the next section is a
+   landing section unless the owner overrides in writing.
+3. **Re-report alarm.** An owner re-report of a landed/verified/CONFIRMED row
+   flips it to `regressed` and blocks the next section until root-caused.
+4. **Rows close only** on an owner quote or a committed capture. `landed` is
+   not done. A criteria-ledger `pass` is not done.
+
+## Visual truth (owner-adopted, July 29 2026)
+
+A visual claim requires pixel evidence: a committed capture from
+`npm run phase10:capture` (named viewport, named state, fixture data), a
+sampled-pixel or geometry measurement, or the owner's recorded sentence for
+taste verdicts.
+
+- **Sections cannot pass review with any visual criterion `not_run`,
+  `deferred`, or `blocked`.** DOM presence, source greps, and build exits never
+  satisfy a `VIS-*` criterion.
+- If no browser can launch, the turn ends at `needs-capture` /
+  `next_actor: devan` **with the exact command to run** — it does not defer.
+- Every review produces `docs/phase10-baseline/section-N/contact-sheet.md`:
+  ≤ 12 captures, each captioned with the criteria and ledger rows it evidences.
+- Cap sections at ~20 criteria, ≤ 12 visual.
+
+Both rules are machine-checked by `npm run phase10:validate`.
+
 # Multi-agent protocol (Phase 10)
 
 This repo is worked on by two different coding-agent CLIs (Claude Code and

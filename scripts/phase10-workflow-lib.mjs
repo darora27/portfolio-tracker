@@ -319,6 +319,54 @@ export function validateAcceptanceLedger(workflow, ledger, options = {}) {
         }
       }
     }
+    // Owner-adopted visual-truth rule (UNIVERSE_AUDIT.md §4, ledger appendix).
+    // A section cannot pass review while a visual criterion is unproven. DOM
+    // presence, source greps and build exits never satisfy one; the evidence
+    // must be a capture, a sampled measurement, or the owner's own sentence.
+    const ownerLedger = workflow.owner_ledger;
+    const visualKinds = ownerLedger?.visual_verifier_kinds ?? ["browser", "visual"];
+    const visualTruthApplies =
+      options.requireActor === "reviewer" &&
+      ownerLedger &&
+      Number.isInteger(sectionNumber) &&
+      sectionNumber >= (ownerLedger.visual_truth_required_from_section ?? Infinity);
+    if (
+      visualTruthApplies &&
+      (visualKinds.includes(criterion.verifier?.kind) ||
+        criterion.dimension === "visual")
+    ) {
+      const status = criterion.reviewer?.status;
+      add(
+        !["not_run", "blocked", "deferred_to_reviewer", "fail"].includes(status),
+        `${prefix} is visual and reviewer.status is "${status}" — a section cannot ` +
+          `pass review with an unproven visual criterion. Capture it with ` +
+          `${(ownerLedger.capture_command ?? "npm run phase10:capture").replace("{N}", String(sectionNumber))}, ` +
+          `or end the turn at needs-capture / next_actor: devan.`,
+      );
+      const reviewerEvidenceList = Array.isArray(criterion.reviewer?.evidence)
+        ? criterion.reviewer.evidence
+        : [];
+      const sheetPath = (ownerLedger.contact_sheet_path_pattern ?? "").replace(
+        "{N}",
+        String(sectionNumber),
+      );
+      const pointsAtPixels = reviewerEvidenceList.some(
+        (artifact) =>
+          artifact === sheetPath ||
+          artifact.includes("contact-sheet") ||
+          /\.(png|jpg|jpeg)$/i.test(artifact) ||
+          artifact.includes("/captures/") ||
+          artifact.includes("pixel-samples"),
+      );
+      add(
+        status === "not_applicable" ||
+          status === "carried_by_owner" ||
+          pointsAtPixels,
+        `${prefix} is visual and its reviewer evidence points at no pixels — ` +
+          `cite ${sheetPath || "the section contact sheet"}, a capture, or a ` +
+          `sampled-pixel measurement (carried_by_owner is the lane for taste verdicts).`,
+      );
+    }
     if (options.requireActor === "reviewer") {
       const implementerEvidence = Array.isArray(
         criterion.implementer?.evidence,
@@ -342,6 +390,29 @@ export function validateAcceptanceLedger(workflow, ledger, options = {}) {
   }
 
   return errors;
+}
+
+// Parses the owner ledger's board (§2) into rows. The board is the owner's
+// durable record; the parser stays deliberately tolerant so a formatting tweak
+// degrades to "no rows found" rather than a false accusation against a spec.
+export function parseOwnerLedgerBoard(root = DEFAULT_ROOT, ledgerPath) {
+  let text;
+  try {
+    text = readText(root, ledgerPath);
+  } catch {
+    return [];
+  }
+  const rows = [];
+  for (const line of text.split("\n")) {
+    if (!line.startsWith("|")) continue;
+    const cells = line.split("|").map((cell) => cell.trim());
+    // cells[0] is the empty string before the leading pipe.
+    const id = cells[1];
+    if (!/^(FB|LT|D)-?[0-9]{1,3}$/.test(id ?? "")) continue;
+    const status = (cells[4] ?? "").replace(/\*/g, "").toLowerCase();
+    rows.push({ id, status, item: cells[2] ?? "" });
+  }
+  return rows;
 }
 
 export function validateWorkflowRepository(root = DEFAULT_ROOT) {
@@ -562,6 +633,45 @@ export function validateWorkflowRepository(root = DEFAULT_ROOT) {
           `${record.id} accepted ledger candidate_sha must match accepted_commit`,
         );
       }
+    }
+  }
+
+  // Owner-adopted debt-blocks-scope rule (ledger §0 rule 2). Every open or
+  // designed row must be visible in the live section's spec — scheduled here,
+  // scheduled elsewhere, or explicitly deferred by the owner. Silence is what
+  // let "planets too close together" go unbuilt across three reports.
+  const ownerLedger = workflow.owner_ledger;
+  if (
+    ownerLedger &&
+    Number.isInteger(sectionNumber) &&
+    sectionNumber >= (ownerLedger.board_required_from_section ?? Infinity)
+  ) {
+    const ledgerPath = ownerLedger.path ?? "OWNER_FEEDBACK_LEDGER.md";
+    add(
+      existsSync(resolve(root, ledgerPath)),
+      `${ledgerPath} is missing; the owner board cannot be checked`,
+    );
+    const enforced = ownerLedger.enforced_row_statuses ?? ["open", "designed"];
+    const board = parseOwnerLedgerBoard(root, ledgerPath);
+    const owed = board.filter((row) =>
+      enforced.some((status) => row.status.includes(status)),
+    );
+    const specPath = workflow.acceptance_ledger.spec_path_pattern.replace(
+      "{N}",
+      String(sectionNumber),
+    );
+    if (owed.length > 0 && existsSync(resolve(root, specPath))) {
+      const spec = readText(root, specPath);
+      const missing = owed
+        .filter((row) => !spec.includes(row.id))
+        .map((row) => row.id);
+      add(
+        missing.length === 0,
+        `${specPath} does not account for open/designed owner rows ` +
+          `${missing.join(", ")}. Every one must appear as scheduled here, ` +
+          `scheduled §n, or deferred with the owner's initials — see ` +
+          `${ledgerPath} §0 rule 2.`,
+      );
     }
   }
 
