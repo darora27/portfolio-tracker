@@ -146,12 +146,33 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
       ;;
   esac
 
+  # PHASE10_SWAP_ROLES=1 puts the sighted agent on implementation. Claude can
+  # drive a browser on this host and Codex cannot, so implementing blind and
+  # reviewing sighted cost a full round per visual defect. Swapping runs the
+  # implementation prompt under Claude and the lead prompt under Codex; the
+  # state machine, roles and prompts are unchanged, only which CLI executes
+  # which prompt. Cross-model independence is preserved because the two stages
+  # still run under different providers.
+  SWAP="${PHASE10_SWAP_ROLES:-0}"
+  PROMPT_OVERRIDE=""
   case "$NEXT_ACTOR" in
     claude)
-      RUNNER="./scripts/phase10-claude-lead.sh"
+      if [ "$SWAP" = "1" ]; then
+        RUNNER="./scripts/phase10-codex-implementation.sh"
+        PROMPT_OVERRIDE="docs/phase10-workflow/prompts/claude-lead.md"
+        echo "Role swap: Codex CLI is running the Claude Lead prompt."
+      else
+        RUNNER="./scripts/phase10-claude-lead.sh"
+      fi
       ;;
     codex)
-      RUNNER="./scripts/phase10-codex-implementation.sh"
+      if [ "$SWAP" = "1" ]; then
+        RUNNER="./scripts/phase10-claude-lead.sh"
+        PROMPT_OVERRIDE="docs/phase10-workflow/prompts/codex-implementation.md"
+        echo "Role swap: Claude CLI is running the implementation prompt (sighted)."
+      else
+        RUNNER="./scripts/phase10-codex-implementation.sh"
+      fi
       ;;
     devan)
       echo "State requires Devan. Relay stopped."
@@ -171,7 +192,7 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
   echo "Relay turn $TURN/$MAX_TURNS:"
   echo "section=$CURRENT_SECTION stage=$STAGE actor=$NEXT_ACTOR"
 
-  if "$RUNNER"; then
+  if PHASE10_PROMPT_OVERRIDE="$PROMPT_OVERRIDE" "$RUNNER"; then
     RUNNER_STATUS=0
   else
     RUNNER_STATUS=$?

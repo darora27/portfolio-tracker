@@ -12,7 +12,7 @@ if [ -e STOP ]; then
 fi
 
 LOCK_FILE="PHASE10_LOCK"
-PROMPT_FILE="docs/phase10-workflow/prompts/codex-implementation.md"
+PROMPT_FILE="${PHASE10_PROMPT_OVERRIDE:-docs/phase10-workflow/prompts/codex-implementation.md}"
 CODEX_MODEL="${PHASE10_CODEX_MODEL:-}"
 CODEX_RESUME_SESSION="${PHASE10_CODEX_RESUME_SESSION:-}"
 GIT_DIR="$(pwd)/.git"

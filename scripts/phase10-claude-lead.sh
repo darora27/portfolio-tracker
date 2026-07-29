@@ -14,7 +14,7 @@ if [ -e STOP ]; then
 fi
 
 LOCK_FILE="PHASE10_LOCK"
-PROMPT_FILE="docs/phase10-workflow/prompts/claude-lead.md"
+PROMPT_FILE="${PHASE10_PROMPT_OVERRIDE:-docs/phase10-workflow/prompts/claude-lead.md}"
 CLAUDE_MODEL="${PHASE10_CLAUDE_MODEL:-sonnet}"
 LOG_DIR="$HOME/.phase10-workflow-logs"
 mkdir -p "$LOG_DIR"
