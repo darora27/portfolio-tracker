@@ -1,271 +1,138 @@
-# Owner feedback ledger
+# Owner feedback ledger — v2, the tracker
 
-The single durable record of what Devan has asked for, decided, and rejected.
-Maintained because feedback given in conversation is lost when the conversation
-ends — this file is where it survives.
+Proposed replacement for `OWNER_FEEDBACK_LEDGER.md`, delivered with
+`UNIVERSE_AUDIT.md` (July 29, 2026). Same single durable record, one
+structural change: **every owner item is now a row with an ID, a status,
+and a closes-when condition.** Nothing from v1 was dropped; three rows
+arrive pre-marked `landed` because the audit found their fixes already in
+the shipped code, unshown.
 
-**Every agent working a Phase 10 section should read this alongside the section
-spec.** If an item here contradicts an older document, this file is newer.
+## 0. How this file works now
 
-Last updated: July 29, 2026.
+**Statuses:** `open` → `designed (→doc)` → `scheduled (→§)` →
+`landed (→where)` → `verified (→capture)` → **`CONFIRMED`** (his words,
+quoted, dated). Side states: `regressed` · `needs-owner` · `retired`.
 
----
+**The four rules:**
 
-## 1. Product thesis — the sentence that governs everything
-
-> *"We started this project with simple plans for it just being an Excel
-> wrapper… Now we have created something else. We have created an actual
-> creative product that is much more than just financial data. Still the
-> foundation of this project is the financial data and the purpose of it is to
-> be able to see complex data in a simple and understandable way without having
-> to spend too much time analyzing all the numbers on the website."*
-
-Creative first, but legibility is the point. A beautiful surface that cannot be
-read has failed. His working bar for any detail view: **everything you need to
-know in ten seconds or less.**
-
----
-
-## 2. Settled owner decisions
-
-These are decided. Do not reopen without asking.
-
-| Decision | Date | Detail |
-|---|---|---|
-| **Desktop-first** | Jul 27 | Phones keep the existing tested 2D fallback; no mobile 3D is built. |
-| **Real brand logos allowed** | Jul 28 | Reversed the earlier no-logo rule — personal project, not commercial. |
-| **Rocket cursor replaces lock-on** | Jul 27 | One selection mechanism; planets keep orbiting, the rocket travels. |
-| **Axial spin de-encoded** | Jul 28 | Spin no longer means day return — unreadable. Decorative only; the freed channel stays banked. |
-| **Mission Control by viewer identity** | Jul 27 | Owner sees full content when authenticated; public sees percentages only. |
-| **`/` is the universe too** | Jul 27 | Root and `/share` share one implementation. |
-| **Trail magnitude in hue lightness** | Jul 28 | Dark red worst → neon green best, with dark ends floored at 3:1 so they never vanish. |
-| **Plain section names** | Jul 28 | ORBITS, HOLDINGS, RETURNS, RISK, CORRELATION, NEWS, TRADES — jargon rejected. |
-| **Sector map cut** | Jul 28 | Three failed attempts to make it comprehensible; deferred until the galaxy phase earns it. |
-| **Public trade log** | Jul 28 | Action, ticker, date, % impact only. Never shares, prices, or dollars. |
-| **Public news** | Jul 28 | Headlines for held tickers may appear publicly. |
-| **Remaining sections fold into Mission Control** | Jul 28 | See §4. |
-| **Universe matters most** | Jul 28 | Trim the deeper routes to whatever is simplest that works. |
+1. **Intake in the same turn.** Any turn receiving owner feedback
+   transcribes it to rows here before other work. A brief containing owner
+   quotes absent from this file invalidates the turn that consumed it.
+2. **Debt blocks scope.** Every section spec opens with this board: each
+   `open`/`designed` row marked `scheduled here`, `scheduled §n`, or
+   `deferred — owner initials`. While ≥ 5 rows sit open/designed, the next
+   section is a landing section unless the owner overrides in writing.
+3. **Re-report alarm.** Owner re-reports a `landed`+ row → it flips to
+   `regressed` and blocks the next section until root-caused (never landed /
+   broke later / design missed).
+4. **Only two things close a row:** a `CONFIRMED` owner quote, or a
+   committed capture for items he has delegated to measurement. `landed` is
+   not done. A criteria-ledger `pass` is not done.
 
 ---
 
-## 3. Open owner items — not yet built
+## 1. Product thesis — unchanged
 
-### 3.0 From the July 29 §11 review — newest
+> *"We have created an actual creative product that is much more than just
+> financial data. Still the foundation… is the financial data and the purpose
+> is to be able to see complex data in a simple and understandable way
+> without having to spend too much time analyzing all the numbers."*
 
-**A new surface, not a fix: the stock technical dashboard.**
-
-> *"When you click on a stock in the holdings section of mission control —
-> which should [also] be something you can do when you click on the orbit 2D
-> thing on the mission control holding orbital ellipse — it should pull up a
-> technical dashboard of the stock like the application used to do in previous
-> iterations. It should show you the full scale graph with information that you
-> may not even see in planetary holdings… a much greater detailed look at the
-> stock. Whether it is through graphs of certain unique kinds of mathematical
-> modeling, I am aspiring to pursue that vibe for that section."*
-
-This is the deep analytical layer the universe currently has nowhere to put.
-Reachable two ways: a row in HOLDINGS, and a ring or blip on the ORBITS radar.
-Distinct from the planet detail panel, which is the ten-second read — this is
-the opposite end, where depth is the point. The pre-Phase-10 `/stock/[ticker]`
-route is the reference for what existed before.
-
-**Layout and type:**
-
-- **The planet sits too far right.** For some holdings — ASML named — the
-  planet renders middle to middle-right with large unused space on the left.
-- **Large fonts slightly smaller; small fonts a good bit larger.** Owner:
-  *"the small fonts need to be a good bit larger so that you can even see what
-  they have to say at all."* Small text is currently unreadable, which is the
-  same complaint as §10's, unresolved.
-- **The top tab strip does not look right.** Owner is uncertain rather than
-  decided: *"I would rather there be nothing than that super small font that
-  you can hardly see that is just taking up space."* Ideas he wants tested —
-  removing the dividing line, or making the strip fully black so it recedes.
-
-**Carried, still unaddressed after multiple reports:**
-
-- **Rocket cursor physics.** Third request. There is still no sense of flight —
-  momentum, drift, or inertia — in the cursor.
-- **No company logos are visible on any planet.** Fourth report. **Do not
-  regenerate textures again before the marks are measurable.** §11's panel
-  rebuild was supposed to make that possible; establish first whether the marks
-  are present-but-unviewable or genuinely absent.
-
-**The background and the exit terminal:**
-
-- **The background is still "meh."** Owner wants a *"futuristic portrayal of
-  retro futurism"* — he names the Loki TVA / Miss Minutes register as the
-  target. Compare against `docs/reference/`, which already holds that deck.
-- **The green terminal shown when exiting Mission Control** is *"a cool feature
-  but it displays too much information, in a way that is too hard to read or
-  too big. There is no happy medium."*
-
-**Open, unfinished:** the owner began asking about building the other
-portfolios — the additional solar systems — and the note ends mid-sentence
-(*"By that what I mean is"*). Not yet specified. The sector map was cut in §10
-pending exactly this conversation.
-
-### 3.0.1 Recurring — raised many times, never entered here until now
-
-**Planets are too close together.** Owner, July 29: *"All the planets are still
-a little too close to each other."* He notes he has raised this *"so many times
-before"* — and he is right: it lived in `UNIVERSE_ROUND4_BRIEF.md` as a design
-note and was never recorded in this ledger, which is the file build turns read.
-So no turn was ever told to fix it. His original framing: *"Either make the sun
-bigger and everything more spaced out, or make the planets smaller."* Round 4
-also observed the composition clusters centre-left with a large empty region
-bottom-right — the frame is not used evenly.
-
-**This is a standing item until he says it is fixed.** Do not close it on a
-measurement; close it when he says the spacing looks right.
-
-### 3.1 From the July 29 §10 acceptance review
-
-- **The trails are too long.** Owner: *"Why are the trails so long? It seems
-  like they are too long and cheap looking now… the trails don't even seem like
-  they fit the vibe of the project anymore, they were a lot better before."*
-  Round 3 lengthened arcs from 18–30° to 36–64° to give the lightness ramp room.
-  Shorten them — by eye, somewhere between the two — and reconcile against the
-  ramp, which may no longer need the extra length now that hue carries
-  magnitude. §11.
-- **No logos are visible on any planet.** At OVERVIEW planets render at roughly
-  30–60 px, too small for a mark; up close the panel blocks the view. The carved
-  marks may be entirely correct and simply unviewable. **Do not regenerate
-  textures against this again before it is measurable** — four rounds already
-  did, and each moved the score by less than the measurement noise. §11's panel
-  rebuild is the first chance to find out.
-
-### 3.2 From the July 28 legibility review
-
-- **The planet panel is slightly too big.** Layout is right — planet on the
-  left, panel on the right — but the panel should shrink somewhat.
-- **News headlines must hyperlink to the actual article.** Owner: *"if you
-  cannot hyperlink to the actual article then it defeats the purpose, as a lot
-  of these news headlines have a lot of jargon and don't really provide much
-  information."* A headline that cannot be opened is not worth its space —
-  either link it or cut the section.
-- **The correlation view is not understood.** He likes how it looks but cannot
-  read what it means. Needs a plain-language explanation of what correlation
-  tells him about his own portfolio, not a better chart.
-
-### 3.3 Carried, unresolved
-
-- **D1 — the green-trail report.** Owner saw a green trail on a holding down
-  for the week. Never reproduced; source mapping is correct and every committed
-  screenshot matches. **Do not change colour logic until he names a
-  contradicting ticker.** If he names one, treat as severe.
-- **D2 — "the website is still relatively confusing."** Recorded verbatim, too
-  general to action alone. Round 4's legibility work is the response.
-- **Reddit for `/research`.** Owner: *"I was wondering if you could try to
-  learn how to use the reddit skill things that I installed the other day
-  because it does not look like I am getting approved for the reddit API thing
-  any time soon."* Note the `reddit-fetch` skill works through a browser
-  session, not the API — but it is a **local research tool**, not a server-side
-  data source. It cannot feed a deployed public page. Clarify which problem is
-  being solved before building.
+Ten seconds or less for any detail view. A beautiful surface that cannot be
+read has failed.
 
 ---
 
-## 4. Approved plan for the remaining sections
+## 2. The board
 
-Owner approved folding surfaces into Mission Control rather than keeping
-separate pages, July 28. Sections were originally specified when `/share` was a
-five-chapter Field Journal, which no longer exists.
+| ID | Item (his words, abbreviated) | Reports | Status | Design | Scheduled | Closes when |
+|---|---|---|---|---|---|---|
+| FB-01 | Planets too close; *"make the sun bigger and everything more spaced out, or make the planets smaller"*; frame unused | ≥3 (R4 brief, "so many times", Jul 29) | **designed** | `UNIVERSE_AUDIT.md` §5.1 — radii [0.62, 1.35], gap 1.75×(rᵢ+rᵢ₊₁)+0.55, sun rule unchanged | **§12a** | measured gap ≥ 1.0× larger disc **and he says it looks right** |
+| FB-02 | Background *"still so meh"* — *"futuristic portrayal of retro futurism"*, Loki TVA / Miss Minutes | ≥3 | **designed** | Round 6 §2 (five moves) | **§12b** | before/after pair on contact sheet **and his sentence** |
+| FB-03 | Trails *"too long and cheap looking… they were a lot better before"* | 2 | **landed** — 26–46° in `scene-model.ts` since §11 (was 36–64°) | §11 spec | — | he confirms from §11.R sheet; if still wrong → 18–30° (hue now carries magnitude) |
+| FB-04 | *"No company logos are visible on any planet"* | 5 | **needs-measurement** — do NOT regenerate textures again | Audit §5.3: scale-harness strip at 44/56/64px + approach; expected fix = approach camera/exposure (F2/F3), overview identity stays colour+silhouette | **§11.R (measure) + §12a (decide)** | one capital reads on every *selected* planet in capture; overview policy gets his sign-off |
+| FB-05 | *"Small fonts need to be a good bit larger so that you can even see what they have to say at all"*; large slightly smaller | ≥3 (§10, §11, R6) | **designed · critical** (§11 finding F1) | Round 6 §5 — five tokens 56/24/15/13/11, literal-size gate, rendered check | **§11.R** | computed-style assertions pass **and he reads the panel without squinting** |
+| FB-06 | Rocket cursor — *"the physics of flying should somewhat be incorporated"* | 4 | **designed** — and mock-tuned by him (holds heading between strokes) | Round 6 §3 (k 1600, c 80, bank 28°, no re-park) | **§12a** | he flies it in the build and says so |
+| FB-07 | *"The planet sits too far right"* — ASML; dead space left | 1 (§11 finding F2) | **designed** | Round 5 — left-third anchor x ≈ 30%, rail ≤ 380px | **§11.R** | measured disc centre ≈ 30% at 1440×900 + his confirm |
+| FB-08 | Top tab strip — *"rather there be nothing than that super small font"*; try no divider; try full black | 1 | **designed** | Round 6 §4.2 — variants A / B / C | **§12a (captures only)** | he picks a variant from the sheet; then build it |
+| FB-09 | Exit terminal — *"cool feature but… too much information… no happy medium"* | 1 | **designed** | Round 6 §4.1 — 20-word sign-off receipt + regrouped keyboard terminal | **§12a** | he sees receipt + terminal and confirms |
+| FB-10 | News must hyperlink to the actual article or be cut | 1 | **landed** — real `<a href>` in panel + NEWS since §11 | — | — | he clicks one from the §11.R sheet |
+| FB-11 | Correlation — *"cannot read what it means"* about HIS portfolio | 1 | **half-landed** — generic paragraph shipped §11; named-pair sentence not | Round 6 MOVES WITH template (≤ 14 words, his top pair) | **§12a** | he says back what it tells him about his book |
+| FB-12 | DRAFT rig — off-design, hard to find, planets too fast, unclear | 1 | **landed · 3 gaps** (tape/GHOST/pit-rail all present) | Audit §5.4 — MOTION default off, dish ×1.6 → ×1.0, latch in strip + visible coach line | **§12a** | he opens, understands, fiddles, confirms |
+| FB-13 | Stock technical dashboard — *"full scale graph… a much greater detailed look… unique kinds of mathematical modeling"* | 1 | **designed** | Round 6 §1 — the Chart Room + owner-reviewed mock | **§12b** | all three doors work; he uses it and says so |
+| FB-14 | *"Take out the heavy glowy AI looking fonts… just a tad less bright"* — text only, never signal colours | 1 | **scheduled** | §12 owner addition; contrast floors hold | **§12a** | before/after on sheet + his confirm |
+| FB-15 | *"Play around with the thin rectangular boxes being there and not being there"* | 1 | **scheduled** | one experiment with FB-08 variant B | **§12a (captures)** | he picks |
+| FB-16 | XLK — *"replicating this solar system pattern… get the ball rolling sooner than later"* | 1 | **scheduled** | ledger v1 §7 sequence; `systems/README.md` done | **§13′** | hollow-core XLK system visitable behind a labelled door |
+| FB-17 | Planet panel slightly too big | 1 | **landed** — 380px rail since §11 | Round 5 | — | he confirms from §11.R sheet |
+| FB-18 | Trade-entry form (the one unfold-ed piece) | — | **needs-owner** — plain vs retrofuturist; recommendation: plain | ledger v1 §4 | **§17′** | he answers, then it ships |
+| LT-01 | Long-task gate breached 55–65ms, five rounds; cause: three.js shader acquisition | — | **designed** | Audit §6 — `renderer.compileAsync` in staged warmup, re-measure | **§12a** | five-context run < 50ms, or the figure goes to him with data |
+| D1 | Green trail on a down week — unreproduced | 1 | **held** | do not change colour logic until a contradicting ticker is named; then severe | — | named ticker or retired |
+| D2 | *"The website is still relatively confusing"* | 1 | **open · general** | R5/R6 legibility work is the response | tracked via FB-05/-08/-09/-11 | subsumed rows close |
+| D3 | Reddit for `/research` | 1 | **needs-owner** | reddit-fetch is a local tool, not a server data source — which problem is it solving? | parked | he clarifies or retires |
 
-| Originally | Becomes |
-|---|---|
-| `/compare` | The **DRAFT rig** — a hypothetical-portfolio workbench inside Mission Control (`UNIVERSE_IDEAS_4.md`) |
-| after-hours spike | Unchanged, deprioritised |
-| `/research` | The **NEWS** section + per-planet news moons |
-| `/history` | The **aurora** (52 weekly stripes) + **RETURNS** — largely already built |
-| `/trades` | The **TRADES** section + a plain owner-only entry form |
-| integration | Unchanged, still terminal |
-
-Only two things genuinely do not exist yet: the DRAFT rig, and a form for
-entering a new trade. Everything else was absorbed by Mission Control.
-
-**Open question the owner has not answered:** should trade entry look
-retrofuturist, or is a plain form acceptable? Recommendation on file: plain,
-because it is used rarely and correctness matters more than atmosphere.
-
----
-
-## 5. Design documents, in authority order
-
-1. `UNIVERSE_IDEAS_5.md` — legibility: plain naming, rebuilt planet panel,
-   scrolling Mission Control, sector map cut. **Newest.**
-2. `UNIVERSE_IDEAS_4.md` — the DRAFT rig.
-3. `UNIVERSE_IDEAS_3.md` — colour and material: the Fraunhofer rule, relit
-   worlds, carved marks, trail ramps, sun scale, star population.
-4. `UNIVERSE_IDEAS_2.md` — round 2, superseded where 3 and 5 conflict.
-5. `UNIVERSE_IDEAS.md` — round 1, largely built.
-6. `UNIVERSE_DIRECTION.md` — the original owner brief.
-
-Working prototypes: `UNIVERSE_LEGIBILITY_MOCK.html`,
-`UNIVERSE_DRAFT_RIG.html`. Visual references: `docs/reference/`.
+**Board count at adoption: 15 open/designed/scheduled · 4 landed awaiting
+his eyes · 3 needs-owner/held.** Rule 2 therefore makes the next section a
+landing section (§11.R, then §12a) — which is exactly the audit's plan.
 
 ---
 
-## 6. Standing rules the owner has enforced
+## 3. Settled owner decisions — unchanged from v1
 
-- **Never show a zero as if it were real.** Unavailable is not zero.
-- **Every number carries its window.** `+5.2%` with no period is a defect.
-  Vocabulary: TODAY / WEEK / 30D / SINCE BUY / SINCE START.
-- **No dollar amounts on public surfaces**, ever.
-- **`expect(source).toContain(...)` is not coverage** for rendered behaviour.
-  §9 shipped five such guards; one passed while the trails it protected were
-  invisible.
-- **Every visual channel encodes one real number.** Nothing decorative that
-  means nothing.
-- **Market-relative figures derive from TWR**, never simple return.
+Desktop-first (phones keep the tested 2D fallback) · real brand logos
+allowed · rocket cursor replaces lock-on · axial spin decorative, channel
+banked · Mission Control by viewer identity · `/` and `/share` share one
+implementation · trail magnitude in hue lightness, dark ends floored 3:1 ·
+plain section names · sector map cut pending the multi-system decision ·
+public trade log: action/ticker/date/%-impact only · public news headlines
+allowed · remaining sections fold into Mission Control · **universe matters
+most; trim the deeper routes to whatever is simplest that works** · round 6
+adopted in full as §12 (*"full throttle ahead"*).
 
----
+Cut and not reopened: thesis/journal, multi-user, intraday, brokerage
+integration, the five-chapter `/share`, `/compare` and its canned scenarios
+(retired with the DRAFT rig, round 4 §8).
 
-## 7. Long-term goal — additional solar systems
+## 4. Standing rules the owner has enforced — unchanged
 
-Recorded July 29, 2026.
+Never show a zero as if it were real · every number carries its window
+(TODAY / WEEK / 30D / SINCE BUY / SINCE START) · no dollars on public
+surfaces, ever · `expect(source).toContain(...)` is not coverage for
+rendered behaviour · every visual channel encodes one real number ·
+market-relative figures derive from TWR · the Fraunhofer rule and both
+firewall tiers · route-owned long tasks under 50ms.
 
-> *"Replicating this solar system pattern for the ETF XLK on your own. I am not
-> expecting you to be able to do this over the course of a day or even a week.
-> This is just a long term goal and I want to get the ball rolling sooner than
-> later."*
+## 5. Design documents, authority order
 
-**First step is done:** `systems/README.md` records the file shape, why a
-hand-maintained JSON beats the paid Finnhub ETF endpoint at this scale, and the
-rule that unowned systems cannot compute TWR and therefore render with a
-hollow-core sun.
-
-**Remaining, in order of what de-risks most:**
-
-1. `systems/xlk.json` — top holdings and weights, copied from the issuer.
-2. A multi-system data model; the app currently assumes one portfolio.
-3. Textures for unheld tickers — roughly four or five, since XLK overlaps the
-   owner's book heavily.
-4. Navigation between systems. The sector map was cut in §10 pending exactly
-   this decision; it now has a reason to exist.
-
-Not scheduled into a section yet. Deliberately kept out of §11.
+`UNIVERSE_IDEAS_6.md` (newest, adopted whole) → `_5` → `_4` → `_3` → `_2` →
+`_1` → `UNIVERSE_DIRECTION.md`. This ledger outranks all of them where they
+conflict. `UNIVERSE_AUDIT.md` governs process; the mocks
+(`UNIVERSE_STOCK_LAB.html`, `UNIVERSE_DRAFT_RIG.html`,
+`UNIVERSE_LEGIBILITY_MOCK.html`) are owner-reviewed references.
 
 ---
 
-## 8. Round 6 adopted in full — July 29, 2026
+## Appendix — ready to paste into AGENTS.md and both standing prompts
 
-> *"Fable did an incredible job. We need to follow this in any way shape or
-> form… what Fable did was truly everything I want out of this project. Full
-> throttle ahead."*
-
-`UNIVERSE_IDEAS_6.md` is adopted whole and scheduled as **§12**: the Chart
-Room, the type ramp, the cursor flight model, the sky, the exit receipt, and
-the tab-strip variants. `UNIVERSE_STOCK_LAB.html` is the owner-reviewed mock.
-
-**Two owner additions, both §12:**
-
-- **Reduce the glow on type.** *"Take out the heavy glowy AI looking fonts
-  throughout the application… don't make it too much duller, just a tad less
-  bright."* Text glow and bright text-shadow are a large part of what reads as
-  machine-generated. Reduce on **text only** — never on signal colours, which
-  carry meaning — and hold every contrast floor.
-- **Test the thin rectangular boxes.** *"Play around with the thin rectangular
-  boxes being there and not being there — that could have an aesthetic
-  benefit."* The 1px outlines around chips, tabs, and small labels. Capture
-  both states; this overlaps round 6's variant B and should be one experiment.
+> **Ledger rules (owner-adopted).** (1) Any turn receiving owner feedback
+> transcribes it to `OWNER_FEEDBACK_LEDGER.md` rows before other work; a
+> consumed brief containing owner quotes absent from the ledger invalidates
+> the turn. (2) Every section spec opens with the ledger board: each
+> open/designed row marked scheduled-here, scheduled-§n, or deferred with
+> owner initials; while ≥ 5 rows are open/designed the next section is a
+> landing section unless the owner overrides in writing. (3) An owner
+> re-report of a landed/verified/CONFIRMED row flips it to `regressed` and
+> blocks the next section until root-caused. (4) Rows close only on an
+> owner quote or a committed capture; `landed` and criteria-`pass` are not
+> done.
+>
+> **Visual truth (owner-adopted).** A visual claim requires pixel evidence:
+> a committed capture from `npm run phase10:capture` (named viewport, named
+> state, fixture data), a sampled-pixel/geometry measurement, or the owner's
+> recorded sentence for taste verdicts. Sections cannot pass review with any
+> visual criterion `not_run`/`deferred`/`blocked`; DOM presence, source
+> greps, and build exits never satisfy a `VIS-*` criterion. If no browser
+> can launch, the turn ends at `needs-capture` / `next_actor: devan` with
+> the exact command to run. Every review produces
+> `docs/phase10-baseline/section-N/contact-sheet.md` — ≤ 12 captures, each
+> captioned with the criteria and FB-rows it evidences. Cap sections at
+> ~20 criteria, ≤ 12 visual.
