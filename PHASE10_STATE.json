@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§10",
-  "role": "codex_implementation",
-  "stage": "remediate",
-  "status": "blocked",
-  "next_actor": "devan",
+  "role": "claude_lead",
+  "stage": "review",
+  "status": "ready",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -79,9 +79,19 @@
       "UNIVERSE_PALETTE_3.html"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-28-section-10-codex-implementation-to-devan-blocked.md",
+    "handoff": "docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-resume.md",
     "note": "Inserted by owner direction on 2026-07-28 (see roadmap_amendment_3). Authority order for this section: UNIVERSE_IDEAS_3.md (round-3 design, revision 2) -> UNIVERSE_PALETTE_3.html (the computed palette board) -> docs/reference/ -> PHASE10.md §10. Round 3 supersedes UNIVERSE_IDEAS_2.md wherever the two conflict. INHERITED RED, NOT A §10 DEFECT: npm test is red at this section start with exactly two failures in src/lib/observatory/planet-textures.test.ts - manifest.totalBytes 22,450,706 against §9’s 15,000,000 cap, and INTC 0.098092 / CBRS 0.093008 luminanceStdDev against §9’s 0.1 floor. Both were introduced by owner texture commits after §9’s reviewed implementation and are §10 work item 5 (texture regeneration): §10 must raise the byte ceiling in planet-textures.test.ts to the 30 MB figure PHASE10.md §10’s Build dimension already states, and must VERIFY - not assume - that relighting INTC and CBRS lifts them into the required luminance window. Ten owner defects reported live against §9 are carried into PHASE10.md §10 “Owner defects to close in this section” rather than reopening §9. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (“website is still relatively confusing”). §9’s testing prohibition carries forward and is restated in §10’s Acceptance: expect(source).toContain(...) is not valid coverage for rendered behaviour.",
-    "remediation_commits_note": "61db1d6 is the round-2 remediation commit (the placeholder the previous turn could not fill). 3bdf468 is the HEAD reviewed as the round-3 candidate; git diff 61db1d6 3bdf468 -- src/ public/ scripts/ package.json package-lock.json is empty, so the reviewed application source is exactly the round-2 remediation. The six commits between them are owner design documents, the owner feedback ledger, the §11 roadmap insertion, and a launch-argument-only change to the retained Playwright verifiers."
+    "remediation_commits_note": "61db1d6 is the round-2 remediation commit (the placeholder the previous turn could not fill). 3bdf468 is the HEAD reviewed as the round-3 candidate; git diff 61db1d6 3bdf468 -- src/ public/ scripts/ package.json package-lock.json is empty, so the reviewed application source is exactly the round-2 remediation. The six commits between them are owner design documents, the owner feedback ledger, the §11 roadmap insertion, and a launch-argument-only change to the retained Playwright verifiers.",
+    "owner_decision_round_3": {
+      "decided_by": "Devan (owner)",
+      "recorded_by": "claude/fable-5 (cowork, owner-directed)",
+      "decided_at": "2026-07-29",
+      "decision": "Route Codex's round-3 remediation candidate 638812332b11b0f01d6d0e877ddcdd5660e66cd3 to Claude Lead review. Codex completed all four fixes and every deterministic gate (527/527 tests, green build, valid implementer ledger) and correctly refused to claim a live pass it could not perform.",
+      "environment_finding": "Chromium cannot launch under Codex on macOS. An earlier owner change added --no-sandbox/--disable-setuid-sandbox to all 46 browser scripts, which addressed Chromium's internal sandbox; the error moved to 'MachPort permission error 1100', which is macOS's own sandbox denying Chromium IPC and is not reachable by launch flags.",
+      "danger_full_access_declined": "Clearing it would require running Codex under danger-full-access, removing essentially all sandbox protection from an agent that runs unattended in a relay loop. Declined: the cost is one review round per section, the risk is unbounded.",
+      "standing_division_of_labour": "Codex implements and verifies what is deterministic (tests, build, ledger, static analysis). Claude Lead performs all live browser verification. Neither actor accepts its own implementation. This is now explicit rather than incidental.",
+      "f2_note": "The long-task gate has been breached at 56-62ms through three remediation attempts, where §9 measured zero on a byte-identical script. §11 is already specified to refund that budget by deleting the embedded legacy dashboard and its Recharts instances, pausing the off-screen radar, and lazy-mounting below-fold sections. If F2 is irreducible inside §10's scope, returning the measurement to Devan is legitimate; do not baseline-subtract or redefine the gate."
+    }
   },
   "sections_history": [
     {
@@ -171,8 +181,8 @@
       "finished_at": "2026-07-29T00:13:08Z"
     }
   },
-  "stop_reason": "Round-3 remediation code and deterministic gates are complete, but every required unchanged live verifier is blocked before navigation: the in-app browser has no available session (discovery returned an empty list), and Chromium is denied MachPort bootstrap access by the CLI host (Permission denied 1100). The lead handoff makes these live results non-deferrable, so Devan must rerun or authorize the required live matrix in a browser-capable host before §10 can return to review.",
-  "updated_at": "2026-07-29T00:13:08Z",
+  "stop_reason": null,
+  "updated_at": "2026-07-29T01:34:43Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
