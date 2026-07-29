@@ -53,8 +53,10 @@ is_rate_limited() {
   echo "$1" | grep -qiE "$RATE_LIMIT_PATTERNS"
 }
 
-# Runs one tool; returns 0 = ran (rate-limited or not, caller checks
-# $RAN_OK/$WAS_LIMITED), 1 = the command itself isn't installed.
+# Runs one tool; sets $RAN_OK (1 = exit 0, the only success gate) and
+# $WAS_LIMITED (a best-effort, informational-only classification of a
+# nonzero exit — never used to gate success). Returns 1 only when the
+# command itself isn't installed.
 run_tool() {
   local name="$1"
   shift
@@ -68,13 +70,17 @@ run_tool() {
   local exit_code=$?
   if [ $exit_code -eq 0 ]; then
     log "$name: finished (exit 0)"
+    RAN_OK=1
     WAS_LIMITED=0
-  elif is_rate_limited "$output"; then
-    log "$name: rate-limited (exit $exit_code)"
-    WAS_LIMITED=1
   else
-    log "$name: failed, not a rate limit (exit $exit_code) — see terminal output above"
-    WAS_LIMITED=0
+    RAN_OK=0
+    if is_rate_limited "$output"; then
+      log "$name: rate-limited (exit $exit_code)"
+      WAS_LIMITED=1
+    else
+      log "$name: failed, not a rate limit (exit $exit_code) — see terminal output above"
+      WAS_LIMITED=0
+    fi
   fi
   return 0
 }
@@ -84,16 +90,16 @@ trap 'log "stopped by Ctrl-C"; exit 130' INT
 log "agent-relay starting — manual alternation is the documented fallback if this misbehaves"
 
 while true; do
-  WAS_LIMITED=0
-  if run_tool "$TOOL_A_NAME" "${TOOL_A_CMD[@]}" && [ "$WAS_LIMITED" -eq 0 ]; then
+  RAN_OK=0
+  if run_tool "$TOOL_A_NAME" "${TOOL_A_CMD[@]}" && [ "$RAN_OK" -eq 1 ]; then
     continue
   fi
 
-  WAS_LIMITED=0
-  if run_tool "$TOOL_B_NAME" "${TOOL_B_CMD[@]}" && [ "$WAS_LIMITED" -eq 0 ]; then
+  RAN_OK=0
+  if run_tool "$TOOL_B_NAME" "${TOOL_B_CMD[@]}" && [ "$RAN_OK" -eq 1 ]; then
     continue
   fi
 
-  log "both tools rate-limited (or unavailable) — sleeping ${BOTH_LIMITED_SLEEP_SECONDS}s"
+  log "both tools rate-limited, failed, or unavailable — sleeping ${BOTH_LIMITED_SLEEP_SECONDS}s"
   sleep "$BOTH_LIMITED_SLEEP_SECONDS"
 done
