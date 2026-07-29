@@ -1,0 +1,69 @@
+{
+  "motionAllowed": {
+    "slow": [
+      {
+        "cls": "rocketCursor",
+        "width": 34.9,
+        "height": 31.95,
+        "transform": "matrix(0.819152, -0.573576, 0.573576, 0.819152, -8, -9)",
+        "opacity": "1"
+      },
+      {
+        "cls": "rocketBody",
+        "width": 22.45,
+        "height": 20.73,
+        "transform": "none",
+        "opacity": "1"
+      },
+      {
+        "cls": "rocketFlame",
+        "width": 9.63,
+        "height": 9.25,
+        "transform": "matrix(0.84, 0, 0, 1, 0, 0)",
+        "opacity": "1"
+      },
+      {
+        "cls": "rocketPrism",
+        "width": 12.81,
+        "height": 13.15,
+        "transform": "none",
+        "opacity": "1"
+      }
+    ],
+    "fast": [
+      {
+        "cls": "rocketCursor",
+        "width": 34.9,
+        "height": 31.95,
+        "transform": "matrix(0.819152, -0.573576, 0.573576, 0.819152, -8, -9)",
+        "opacity": "1"
+      },
+      {
+        "cls": "rocketBody",
+        "width": 22.45,
+        "height": 20.73,
+        "transform": "none",
+        "opacity": "1"
+      },
+      {
+        "cls": "rocketFlame",
+        "width": 9.63,
+        "height": 9.25,
+        "transform": "matrix(0.84, 0, 0, 1, 0, 0)",
+        "opacity": "1"
+      },
+      {
+        "cls": "rocketPrism",
+        "width": 33.59,
+        "height": 27.69,
+        "transform": "none",
+        "opacity": "1"
+      }
+    ]
+  },
+  "reducedMotion": {
+    "canvasCount": 0,
+    "exhaust": [],
+    "runningAnimations": 6
+  }
+}

@@ -1,0 +1,32 @@
+=== unauthenticated GET /share (no cookie jar) ===
+status=200 bytes=55254
+--- dollar-amount pattern $<digit> ---
+$0
+$1
+$7
+$9.8
+--- count ---
+      12
+--- owner-only field names ---
+totalValue=0
+totalCost=0
+costBasis=0
+shares=0
+realized_gain=0
+realizedGain=0
+invested=0
+marketValue=0
+bookCost=0
+=== / (root) unauthenticated ===
+status=200 bytes=12876
+--- dollar pattern on / ---
+$0
+$1
+$7
+--- count ---
+      10
+=== owner-session cookie presented to /share still yields public content (PRV-04) ===
+status=200 bytes=55254
+      12
+--- identical to no-cookie response? ---
+IDENTICAL

@@ -1,0 +1,198 @@
+{
+  "base": "http://127.0.0.1:3141/share",
+  "note": "Overlays hidden with a review-only visibility override applied in the page; no application source changed.",
+  "rows": [
+    {
+      "ticker": "ASML",
+      "overlaysHidden": 169,
+      "published": {
+        "x": 1003.3,
+        "y": 451.9,
+        "radiusPx": 366.5
+      },
+      "measuredFromPixels": {
+        "centreX": 759,
+        "centreY": 411,
+        "radiusX": 633,
+        "radiusY": 393,
+        "litSamples": 116803
+      },
+      "publishedCentreMatchesRender": false,
+      "chiralityOnPanelFreeFrame": {
+        "normalScore": 0.182556,
+        "mirroredScore": 0.025008,
+        "margin": 0.157548,
+        "profileStdDev": 23.239,
+        "pass": true
+      }
+    },
+    {
+      "ticker": "GOOG",
+      "overlaysHidden": 170,
+      "published": {
+        "x": 1002.8,
+        "y": 451.9,
+        "radiusPx": 322
+      },
+      "measuredFromPixels": {
+        "centreX": 682,
+        "centreY": 417,
+        "radiusX": 678,
+        "radiusY": 343,
+        "litSamples": 98857
+      },
+      "publishedCentreMatchesRender": false,
+      "chiralityOnPanelFreeFrame": {
+        "normalScore": 0.208223,
+        "mirroredScore": 0.187845,
+        "margin": 0.020378,
+        "profileStdDev": 13.179,
+        "pass": true
+      }
+    },
+    {
+      "ticker": "COST",
+      "overlaysHidden": 170,
+      "published": {
+        "x": 989.5,
+        "y": 451.8,
+        "radiusPx": 240.9
+      },
+      "measuredFromPixels": {
+        "centreX": 883,
+        "centreY": 417,
+        "radiusX": 551,
+        "radiusY": 315,
+        "litSamples": 57431
+      },
+      "publishedCentreMatchesRender": false,
+      "chiralityOnPanelFreeFrame": {
+        "normalScore": 0.427091,
+        "mirroredScore": 0.462529,
+        "margin": -0.035438,
+        "profileStdDev": 25.99,
+        "pass": false
+      }
+    },
+    {
+      "ticker": "MSFT",
+      "overlaysHidden": 172,
+      "published": {
+        "x": 1003.5,
+        "y": 451.9,
+        "radiusPx": 197.7
+      },
+      "measuredFromPixels": {
+        "centreX": 719,
+        "centreY": 378,
+        "radiusX": 715,
+        "radiusY": 262,
+        "litSamples": 58068
+      },
+      "publishedCentreMatchesRender": false,
+      "chiralityOnPanelFreeFrame": {
+        "normalScore": -0.518945,
+        "mirroredScore": 0.131508,
+        "margin": -0.650454,
+        "profileStdDev": 13.699,
+        "pass": false
+      }
+    },
+    {
+      "ticker": "IBM",
+      "overlaysHidden": 171,
+      "published": {
+        "x": 946.2,
+        "y": 451.5,
+        "radiusPx": 187.8
+      },
+      "measuredFromPixels": {
+        "centreX": 724,
+        "centreY": 378,
+        "radiusX": 710,
+        "radiusY": 254,
+        "litSamples": 41288
+      },
+      "publishedCentreMatchesRender": false,
+      "chiralityOnPanelFreeFrame": {
+        "normalScore": 0.125184,
+        "mirroredScore": 0.079842,
+        "margin": 0.045341,
+        "profileStdDev": 19.496,
+        "pass": true
+      }
+    },
+    {
+      "ticker": "INTC",
+      "overlaysHidden": 172,
+      "published": {
+        "x": 1056.5,
+        "y": 452.3,
+        "radiusPx": 190.9
+      },
+      "measuredFromPixels": {
+        "centreX": 742,
+        "centreY": 382,
+        "radiusX": 674,
+        "radiusY": 250,
+        "litSamples": 43631
+      },
+      "publishedCentreMatchesRender": false,
+      "chiralityOnPanelFreeFrame": {
+        "normalScore": 0.138789,
+        "mirroredScore": 0.069511,
+        "margin": 0.069278,
+        "profileStdDev": 17.968,
+        "pass": true
+      }
+    },
+    {
+      "ticker": "CBRS",
+      "overlaysHidden": 172,
+      "published": {
+        "x": 1042.9,
+        "y": 452.2,
+        "radiusPx": 190.3
+      },
+      "measuredFromPixels": {
+        "centreX": 719,
+        "centreY": 510,
+        "radiusX": 715,
+        "radiusY": 372,
+        "litSamples": 42217
+      },
+      "publishedCentreMatchesRender": false,
+      "chiralityOnPanelFreeFrame": {
+        "normalScore": -0.59465,
+        "mirroredScore": 0.379551,
+        "margin": -0.974201,
+        "profileStdDev": 24.636,
+        "pass": false
+      }
+    },
+    {
+      "ticker": "NBIS",
+      "overlaysHidden": 173,
+      "published": {
+        "x": 1073.1,
+        "y": 452.4,
+        "radiusPx": 191.7
+      },
+      "measuredFromPixels": {
+        "centreX": 719,
+        "centreY": 387,
+        "radiusX": 715,
+        "radiusY": 245,
+        "litSamples": 46281
+      },
+      "publishedCentreMatchesRender": false,
+      "chiralityOnPanelFreeFrame": {
+        "normalScore": 0.385341,
+        "mirroredScore": 0.388284,
+        "margin": -0.002943,
+        "profileStdDev": 21.434,
+        "pass": false
+      }
+    }
+  ]
+}

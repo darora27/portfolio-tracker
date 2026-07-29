@@ -1,0 +1,338 @@
+{
+  "DEF-04": {
+    "voidReference": 10,
+    "bodies": [
+      {
+        "ticker": "CRM",
+        "hidden": false,
+        "labelCentreX": 1285.09375,
+        "labelTopY": 283.5625,
+        "brightest": 83,
+        "litPixels": 45,
+        "brightestAt": {
+          "x": 1281,
+          "y": 280
+        },
+        "visibleBody": true
+      },
+      {
+        "ticker": "ORCL",
+        "hidden": false,
+        "labelCentreX": 854.828125,
+        "labelTopY": 735.328125,
+        "brightest": 145.9,
+        "litPixels": 142,
+        "brightestAt": {
+          "x": 873,
+          "y": 708
+        },
+        "visibleBody": true
+      },
+      {
+        "ticker": "SPCX",
+        "hidden": false,
+        "labelCentreX": 99.671875,
+        "labelTopY": 362.125,
+        "brightest": 73.8,
+        "litPixels": 52,
+        "brightestAt": {
+          "x": 102,
+          "y": 356
+        },
+        "visibleBody": true
+      },
+      {
+        "ticker": "KYMR",
+        "hidden": false,
+        "labelCentreX": 593.671875,
+        "labelTopY": 116.796875,
+        "brightest": 204.4,
+        "litPixels": 33,
+        "brightestAt": {
+          "x": 608,
+          "y": 88
+        },
+        "visibleBody": true
+      },
+      {
+        "ticker": "MEI",
+        "hidden": false,
+        "labelCentreX": 1182.828125,
+        "labelTopY": 210.671875,
+        "brightest": 103.6,
+        "litPixels": 28,
+        "brightestAt": {
+          "x": 1183,
+          "y": 208
+        },
+        "visibleBody": true
+      }
+    ]
+  },
+  "VIS-10": {
+    "rings": [
+      {
+        "ticker": "ASML",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "ASML",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(179, 36, 29)",
+        "width": 74,
+        "height": 54
+      },
+      {
+        "ticker": "ASML",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "ASML",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 244, 215)",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "ticker": "GOOG",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "GOOG",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 122, 115)",
+        "width": 148,
+        "height": 109
+      },
+      {
+        "ticker": "GOOG",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "GOOG",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 244, 215)",
+        "width": 19,
+        "height": 19
+      },
+      {
+        "ticker": "COST",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "COST",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(227, 182, 92)",
+        "width": 223,
+        "height": 163
+      },
+      {
+        "ticker": "COST",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "COST",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 244, 215)",
+        "width": 17,
+        "height": 17
+      },
+      {
+        "ticker": "MSFT",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "MSFT",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 148, 142)",
+        "width": 297,
+        "height": 218
+      },
+      {
+        "ticker": "MSFT",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "MSFT",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 244, 215)",
+        "width": 16,
+        "height": 16
+      },
+      {
+        "ticker": "IBM",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "IBM",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(122, 244, 170)",
+        "width": 371,
+        "height": 272
+      },
+      {
+        "ticker": "IBM",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "IBM",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 244, 215)",
+        "width": 16,
+        "height": 16
+      },
+      {
+        "ticker": "INTC",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "INTC",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(179, 36, 29)",
+        "width": 445,
+        "height": 327
+      },
+      {
+        "ticker": "INTC",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "INTC",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 244, 215)",
+        "width": 15,
+        "height": 15
+      },
+      {
+        "ticker": "CBRS",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "CBRS",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(234, 84, 77)",
+        "width": 519,
+        "height": 381
+      },
+      {
+        "ticker": "CBRS",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "CBRS",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 244, 215)",
+        "width": 14,
+        "height": 14
+      },
+      {
+        "ticker": "NBIS",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "NBIS",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(179, 36, 29)",
+        "width": 593,
+        "height": 435
+      },
+      {
+        "ticker": "NBIS",
+        "tag": "BUTTON",
+        "dataset": {
+          "radarTicker": "NBIS",
+          "active": "false"
+        },
+        "stroke": "none",
+        "borderColor": "rgb(255, 244, 215)",
+        "width": 14,
+        "height": 14
+      }
+    ],
+    "svgText": [],
+    "blips": []
+  },
+  "VIS-02": {
+    "marks": [
+      {
+        "ticker": "ASML",
+        "radiusPx": 366.5,
+        "bandMean": 46.41,
+        "bandStdDev": 58.77,
+        "bandMin": 3,
+        "bandMax": 255
+      },
+      {
+        "ticker": "GOOG",
+        "radiusPx": 322.1,
+        "bandMean": 38.03,
+        "bandStdDev": 46.19,
+        "bandMin": 1,
+        "bandMax": 236
+      },
+      {
+        "ticker": "MSFT",
+        "radiusPx": 197.8,
+        "bandMean": 25.08,
+        "bandStdDev": 26.59,
+        "bandMin": 0,
+        "bandMax": 215
+      },
+      {
+        "ticker": "IBM",
+        "radiusPx": 187.8,
+        "bandMean": 22.69,
+        "bandStdDev": 6.6,
+        "bandMin": 17,
+        "bandMax": 82
+      },
+      {
+        "ticker": "COST",
+        "radiusPx": 240.8,
+        "bandMean": 22.83,
+        "bandStdDev": 14.79,
+        "bandMin": 6,
+        "bandMax": 168
+      },
+      {
+        "ticker": "INTC",
+        "radiusPx": 190.9,
+        "bandMean": 24.62,
+        "bandStdDev": 24.32,
+        "bandMin": 4,
+        "bandMax": 203
+      },
+      {
+        "ticker": "CBRS",
+        "radiusPx": 190.4,
+        "bandMean": 26.75,
+        "bandStdDev": 31.3,
+        "bandMin": 0,
+        "bandMax": 203
+      },
+      {
+        "ticker": "NBIS",
+        "radiusPx": 191.7,
+        "bandMean": 27.08,
+        "bandStdDev": 30.01,
+        "bandMin": 3,
+        "bandMax": 210
+      }
+    ]
+  }
+}

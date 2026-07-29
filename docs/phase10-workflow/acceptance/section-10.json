@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "§10",
   "spec_doc": "docs/phase10-workflow/specs/section-10.md",
-  "candidate_sha": "3bdf46895ceeaaa4e125bac80f64776f3fb63423",
+  "candidate_sha": "0ef1433b51e18d772156ccc8be9d3ed077bc6d34",
   "criteria": [
     {
       "id": "DEF-01",
@@ -28,9 +28,14 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-01 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/def-04-overview.png",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "scene-model.test.ts green (\"puts both orbital directions behind the planet\") and the trail-behind geometry is visible in the regenerated 1440x900 still. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -60,11 +65,13 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-sphere-strip.txt",
-          "docs/phase10-baseline/section-10/claude-review-3/raw-strip-chirality-full-table.json",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-strip-chirality-full-table.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-chirality-crop-geometry.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-panel-occlusion.json",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt"
         ],
-        "notes": "F3 (round 3). capture-live-sphere-strip.mjs unmodified aborts with COST chirality failed: normal=-0.4561 mirrored=-0.4153. Non-throwing full table shows 6 of 8 worlds failing (COST, MSFT, IBM, INTC, CBRS, NBIS) against 4 of 8 in round 2 - CBRS and NBIS regressed from pass to fail. MSFT remains the decisive mirror signal (normal -0.5005 vs mirrored +0.3117) and is essentially unmoved from round 2 (-0.4784 / +0.2493), so the alpha-mask compositor change did not alter the rendered mark chirality. IBM (-0.0020 / +0.0037), INTC (0.1614 / 0.1643) and NBIS (0.3887 / 0.3901) fail inside noise, meaning those worlds carry almost no measurable mark signal in the sampled band. — reviewed by claude-code/opus-5"
+        "notes": "6 of 8 fail. The verifier sampled band is 96.8-100% inspector-panel chrome for those six; panel-free, two reverse to pass and MSFT/CBRS remain genuinely mirrored. See review round 4 section 5. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -90,13 +97,13 @@
         "notes": "F1 round-3 remediation makes the opaque flat-token core perspective-stable and removes glow overlap; pure width/sample invariants and the full test suite pass. The unchanged live trail and evidence scripts were attempted but could not navigate (in-app discovery=[]; Chromium MachPort Permission denied 1100), so the flat-token rendered-pixel half remains ungraded with TST-03. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "blocked",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-neighbourhood.json",
-          "docs/phase10-baseline/section-10/claude-review-3/trail-crops/",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-sampler-full-table.json",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
         ],
-        "notes": "Partially substantiated. The visible-trail half is confirmed live: COST carries a null weekly return and still renders a clearly visible minimum-arc trail at 1440x900. The flat-token half cannot be confirmed this round - the rendered pixels around COST sample #ffec79/#fff87f against the flat token #e3b65c at deltaE 12.29, which is inside TST-03s failing set. Resolves with F1. — reviewed by claude-code/opus-5"
+        "notes": "Both halves now hold: model test green, and COST (null weekly) samples the flat token #e3b65c live at deltaE 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -123,9 +130,15 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-04 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-belt-radar-marks.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/claude-review-4/def-04-overview.png",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "All five belt bodies render visibly (peak luma 73.8-204.4 against a void reference of 10) and all five are in the 28-stop tab order at 44px targets. No invisible hit plane involved. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -155,9 +168,11 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-2/raw-satellites-BHV-02.txt",
-          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "The sun is activatable by pointer (`portfolio` acquired on 477 of 480 swept points across its corona at OVERVIEW) and by keyboard (first control in the tab order, focusVisible, 316x76 target). The corona-yield change kept sun pointer coverage while restoring satellites; solid-sun priority over bodies behind it is unit-covered. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -183,9 +198,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-06 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+        ],
+        "notes": "Root-caused in the evidence README as the second .sunTelemetry text-shadow layer, not scene lighting, and removed: orrery.module.css now carries a single shadow layer. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -212,9 +230,13 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for DEF-07 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-remaining-criteria.json",
+          "docs/phase10-baseline/section-10/after/approach-asml-1440x900.png",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "ASML at the close camera, 12 samples over 12s: 0 sun-like pixels at the planet centre in every sample. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -242,9 +264,11 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/surfaces/sector-map-1440x900.png"
+          "docs/phase10-baseline/section-10/claude-review/surfaces/sector-map-1440x900.png",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/after/sector-map-1440x900.png"
         ],
-        "notes": "The sector map states what it is in-scene without a click: 'SECTOR CHART / LOCAL SECTOR' plus the solid-core / hollow-core / public-percent legend, present in the semantic DOM. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -275,9 +299,11 @@
         "evidence": [
           "docs/phase10-baseline/section-10/claude-review-2/raw-satellite-clicks-DEF-09.txt",
           "docs/phase10-baseline/section-10/claude-review-2/raw-satellite-station-DEF-09.txt",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-hazard-station-DEF-09.txt"
+          "docs/phase10-baseline/section-10/claude-review-2/raw-hazard-station-DEF-09.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
         ],
-        "notes": "Round-1 F3 closed. Pointer destinations are correct per satellite: HAZARD 5/5 independent sessions -> ?focus=portfolio&camera=command&station=hazard; DRIFT -> station=scope; SUPPLY 7/9 stable-hover samples -> station=comms. The 2 of 9 SUPPLY samples that landed on the portfolio instead are a boundary race against a small body moving ~11px/s, not a routing defect: HAZARD, aimed at exactly, is 5/5. Moons remain correct on pointer and keyboard. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -306,9 +332,10 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt"
+          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Round-1's clipping is fixed. Live measurement at ?holding=ASML&camera=approach: panel 576px wide = 40.0% of a 1440px viewport and above the 560px minimum; top 104 and bottom 876 both inside the viewport (the ID plate is no longer cut off); overflow-y auto with scrollHeight 976 > clientHeight 770, so the remaining content is reachable rather than lost; the ID-plate number renders at 64px. The 15px body-text and 60-word clauses were not isolated to a single element and are not claimed. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -336,9 +363,10 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/after/overview-1440x900.png",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt"
+          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "All eight planet labels render simultaneously at 1440x900 at 12px, every one inside the viewport, with zero pairwise label overlaps measured from live bounding boxes. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -370,9 +398,10 @@
           "docs/phase10-baseline/section-10/claude-review-2/raw-satellites-BHV-02.txt",
           "docs/phase10-baseline/section-10/claude-review-2/raw-satellite-clicks-DEF-09.txt",
           "docs/phase10-baseline/section-10/claude-review-2/raw-hazard-station-DEF-09.txt",
-          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Round-1 F2 closed. All three satellites are now acquirable by pointer at OVERVIEW: satellite:DRIFT, satellite:HAZARD and satellite:SUPPLY were each acquired by sweeping the projected satellite orbit, and HAZARD acquires 5/5 by direct aim at its own exported position (it was 0/60 before, hitting `portfolio` every time). The sun still acquires as `portfolio` (477 sweep hits), planets acquire at approach (ASML 439 hits), belt bodies acquire in the full-viewport scan, and the keyboard tab order remains 27 controls with a visible 2px outline and >=44px target on every one. In `command` the scene is behind Mission Control and in `sector` there is no canvas, so those states have no pointer surface by design. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -401,9 +430,12 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png",
+          "docs/phase10-baseline/section-10/after/radar-detail-card-1440x900.png"
         ],
-        "notes": "Radar ring expands in place by keyboard; Enter opens ?holding=ASML&camera=approach. Both paths keyboard-reachable. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -433,9 +465,11 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/after/mission-control-manifest-1440x900.png",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt"
+          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "Every one of the seven bays renders the question it answers when active (plot, manifest, scope, hazard, signals, comms, log all measured live) and each has interactive destinations. MANIFEST rendering its question twice is recorded under VIS-12, which is where round 1's duplication finding lives. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -460,9 +494,13 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-05 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "blocked",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-panel-occlusion.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-remaining-criteria.json",
+          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
+        ],
+        "notes": "Same geometry as VIS-02. The deterministic brand-entry phase half is green in scene-model.test.ts; under reduced motion there is no 3D planet view for the clause to apply to. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -485,9 +523,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -510,9 +550,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -540,9 +582,11 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
         ],
-        "notes": "Escape returns to /share from both the belt and Mission Control, with focusReturnedToSun true. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -567,9 +611,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for BHV-09 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -595,9 +642,12 @@
         "notes": "The duplicated shell-level bay question is removed; PLOT renders its question once and keeps a two-word direct holding action instead of the redundant MANIFEST table. DOM tests for one question and every destination pass. Live word-budget capture remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-remaining-criteria.json",
+          "docs/phase10-baseline/section-10/after/mission-control-manifest-1440x900.png"
+        ],
+        "notes": "No far-left prose column; 26 text nodes; the only non-teletype multi-word strings are the seven designed bay questions. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -620,9 +670,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -647,9 +699,12 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -674,9 +729,12 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -699,9 +757,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -724,9 +784,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -749,9 +811,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -774,9 +838,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -807,10 +873,11 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-strip-chirality-full-table.json",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-strip-chirality-full-table.json",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png"
         ],
-        "notes": "Re-verified at the round-3 candidate after the full texture regeneration. All eight worlds sit inside [0.16, 0.55] from the live sphere-strip render: ASML 0.4303, GOOG 0.3314, COST 0.3522, MSFT 0.4358, IBM 0.2992, INTC 0.1968, CBRS 0.2470, NBIS 0.3710. Zero luminance failures. — reviewed by claude-code/opus-5"
+        "notes": "All eight equatorial-band means inside [0.16, 0.55] (0.1968-0.4358). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -838,9 +905,15 @@
         "notes": "Round-3 F3 remediation keeps supplied marks source-forward, widens them to 24%, strengthens terrain-derived contrast, and derives emissive/normal maps from the composited base; all 24 maps changed and deterministic texture gates pass. The retained live carved-mark verifier could not navigate under either browser path, so VIS-02 remains ungraded and no rendered material claim is made. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "blocked",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-chirality-crop-geometry.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-panel-occlusion.json",
+          "docs/phase10-baseline/section-10/claude-review-4/panel-free-msft.png",
+          "docs/phase10-baseline/section-10/after/live-sphere-strip-32.png",
+          "docs/phase10-baseline/section-10/after/planet-detail-1440x900.png"
+        ],
+        "notes": "The carved capital faces the camera on the hemisphere the inspector panel covers; no shipped-view verifier can read it for six of eight worlds. Not graded rather than guessed. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -868,9 +941,10 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/after/overview-1440x900.png",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt"
+          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "The sun is the largest body at OVERVIEW: its rendered disc is visibly larger than every planet, against a measured largest planet radius of 32.4px. sunRadius is derived in the scene model and unit-covered, not hard-coded. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -900,10 +974,11 @@
       "reviewer": {
         "status": "blocked",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-sampler-full-table.json",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-sampler-full-table.json",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png",
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
         ],
-        "notes": "Still blocked, not passed. The arc, direction and fixed-head halves are covered by the passing scene-model assertions, but the ramp-lightness half of this criterion is exactly what TST-03 measures on the live render, and TST-03 fails on 7 of 8 holdings this round. VIS-04 cannot be resolved until F1 closes. — reviewed by claude-code/opus-5"
+        "notes": "Its ramp-lightness half is TST-03, now failing on NBIS alone. Arc and 12% head halves are green in scene-model.test.ts. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -926,9 +1001,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -953,9 +1030,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-06 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -981,9 +1061,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-07 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1009,9 +1092,12 @@
         "notes": "The redundant PLOT-side MANIFEST table is removed while a compact two-word direct action preserves click-through; the existing 55% chassis geometry and type-scale model are unchanged. Live visual verification remains deferred because Chromium was sandbox-blocked before navigation. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-remaining-criteria.json",
+          "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
+        ],
+        "notes": "One dominant bay (systemPlotFrame 690x506, full height), no two bays the same size, unequal gutters, day readout at 64px. Deviations from the criterion own approximations recorded rather than smoothed: dominant bay 47.9% of viewport / 49.9% of chassis against \"approximately 55%\", and type scale 64/32/16/12/11 against the stated 64/15/11. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1040,9 +1126,10 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/after/mission-control-log-1440x900.png",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt"
+          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "The LOG material split is correct and the round-1 dark-on-dark chip is fixed: paper rgb(240,226,196) = #f0e2c4 with ink rgb(43,26,16) = #2b1a10, and the LOG chip is ink-on-paper at 13.02:1. The trade rows are a scrollable region (overflow-y auto, scrollHeight 879 > clientHeight 144) rather than a container clipping a row mid-glyph. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1067,9 +1154,13 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-10 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-belt-radar-marks.json",
+          "docs/phase10-baseline/section-10/claude-review-4/vis-10-signals-radar.png",
+          "docs/phase10-baseline/section-10/after/mission-control-plot-1440x900.png"
+        ],
+        "notes": "Every ring border colour is its holding exact ramp value; blip diameter falls monotonically with weight, 20->14px across 26.4%->3.5%. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1092,9 +1183,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1122,16 +1215,15 @@
         "notes": "F4 round-3 remediation applies the active-question suppression rule to SCOPE, HAZARD and SIGNALS. Rendered-DOM coverage now exercises PLOT, MANIFEST, SCOPE, HAZARD and SIGNALS and sees one active question each; server-rendered DOM confirms the three corrected stations. capture-live-evidence.mjs could not navigate under either browser path, so the required refreshed 1440x900 artifacts remain unavailable and VIS-12 is not passed. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "fail",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-surfaces.txt",
-          "docs/phase10-baseline/section-10/claude-review-3/raw-manifest-vis12.json",
-          "docs/phase10-baseline/section-10/claude-review-3/raw-question-duplicates.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-question-duplicates.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-manifest-vis12.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-surfaces.txt",
           "docs/phase10-baseline/section-10/after/",
-          "docs/phase10-baseline/section-10/mobile/",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "F4 (round 3). The evidence half is closed and the contribution half is fixed: capture-live-evidence.mjs ran end-to-end and reproduced all 16 after/ surfaces plus both mobile/ captures, and a live geometry probe measures 0px horizontal overlap between the CONTRIBUTION numeral and its signed bar on all 13 rendered rows, with every value legible. The question half is only partially remediated: PLOT, MANIFEST, COMMS and LOG each render their question exactly once, but SCOPE, HAZARD and SIGNALS each render theirs twice when active - once in the active operationsBay and once in the persistent rail/instrument-strip link - which is the same duplication the round-2 finding required to be removed for every bay. — reviewed by claude-code/opus-5"
+        "notes": "F4 closed. All seven bays render their question exactly once; 0px numeral/bar overlap across all 13 rows; capture-live-evidence.mjs reproduced all 16 after/ surfaces and both mobile/ captures. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1156,9 +1248,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-13 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1183,9 +1278,12 @@
         "notes": "In-app browser runtime unavailable (selection: No browser is available; discovery=[]). Non-live model/DOM/build evidence is green and retained; reviewer must run the retained live verifier for VIS-14 and capture every required artifact before passing it. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-cursor-exhaust.json",
+          "docs/phase10-baseline/section-10/after/overview-1440x900.png"
+        ],
+        "notes": "Prism length 12.8px after slow travel and 33.6px after a fast jump; no exhaust node at all under reduced motion. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1215,11 +1313,12 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-surfaces.txt",
-          "docs/phase10-baseline/section-10/mobile/",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/mobile/share-390x844.png",
+          "docs/phase10-baseline/section-10/mobile/share-320x844.png",
+          "docs/phase10-baseline/section-10/raw-fallback-output.txt"
         ],
-        "notes": "Re-verified live at the round-3 candidate from the section verifier: 390x844 gives canvasCount 0, scrollWidth 390 == clientWidth 390, 27 targets, minimum target 44; 320x844 gives canvasCount 0, scrollWidth 320 == clientWidth 320, 27 targets, minimum target 44. — reviewed by claude-code/opus-5"
+        "notes": "390x844 and 320x844: canvas 0, scrollWidth === clientWidth, 27 targets, minimum target 44. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1242,9 +1341,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1273,9 +1374,10 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/mobile/share-390x844.png",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt"
+          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "At 390x844 the fallback is ordinary list content: canvas count 0, scrollWidth 390 == clientWidth 390, 28 controls, and the reading order runs sun -> 8 planets -> 8 moons -> belt bodies -> satellites, so every semantic control §10 added is present with its encoded readout as text. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1298,9 +1400,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1323,9 +1427,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1354,9 +1460,12 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt",
+          "docs/phase10-baseline/section-10/README.md"
         ],
-        "notes": "28 scene controls in a deterministic tab order (sun, 8 planets, 8 moons, 5 belt bodies, 3 satellites, sector, belt, manual); every entry focusVisible true with a 2px solid outline and >=44px target. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1379,9 +1488,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1408,9 +1519,11 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png"
         ],
-        "notes": "Under prefers-reduced-motion: canvasCount 0, runningAnimations [], and moon/satellite/nebula/comet encodings all preserved. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1438,9 +1551,11 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt"
+          "docs/phase10-baseline/section-10/claude-review/raw-interaction-audit-PASS.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json",
+          "docs/phase10-baseline/section-10/raw-interaction-audit.txt"
         ],
-        "notes": "Radar canvas stays aria-hidden and the detail card expands from the MANIFEST rows by keyboard (manifestExpandedByKeyboard true). — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1468,9 +1583,10 @@
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-10/after/reduced-motion-1440x900.png",
-          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt"
+          "docs/phase10-baseline/section-10/claude-review-2/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-live-interactions.json"
         ],
-        "notes": "Under prefers-reduced-motion the radar sweep is replaced by a stamp reading 'SWEEP HELD · 60S REFRESH' with zero running animations, so staleness is still conveyed without motion. Recorded precisely: the stamp states the refresh interval rather than a clock time. — reviewed by claude-code/opus-5"
+        "notes": "Result carried from round 2 at candidate 3d1882a, not independently re-established this turn. This round audit-live-interactions.mjs exercised the same surfaces without regression (28-stop tab order as expected, every stop focus-visible at >=44px, keyboard destinations, Escape with focus returned to the sun, reduced-motion encodings preserved, zero console messages). — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1493,9 +1609,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1518,9 +1636,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1543,9 +1663,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1568,9 +1690,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1593,9 +1717,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1618,9 +1744,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1643,9 +1771,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1667,9 +1797,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "The only readFileSync on source in the section 10 test diff is the FWL-05 hex guard, which identifies itself as structural; every other added string assertion reads rendered markup. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1700,13 +1832,13 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-sampler-TST-03.txt",
-          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-sampler-full-table.json",
-          "docs/phase10-baseline/section-10/claude-review-3/raw-trail-neighbourhood.json",
-          "docs/phase10-baseline/section-10/claude-review-3/trail-crops/",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-sampler-TST-03.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-sampler-full-table.json",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-trail-neighbourhood.json",
+          "docs/phase10-baseline/section-10/raw-rgb-pixel-output.txt",
+          "docs/phase10-baseline/section-10/scripts/sample-live-rgb.mjs"
         ],
-        "notes": "F1 (round 3). sample-live-rgb.mjs unmodified still aborts: ASML deltaE 60.479 > 8. Non-throwing full table: 7 of 8 holdings exceed deltaE 8 (ASML 60.72, GOOG 22.77, COST 12.29, MSFT 26.49, IBM 25.01, CBRS 33.90, NBIS 8.74); only INTC passes at 3.39. Hue lock fails on ASML (35.86deg off, chroma 0.165), MSFT (7deg but chroma 0.212) and IBM (14.93deg off). Two loss-direction ordering violations remain (MSFT |1.11%| L 0.4805 vs GOOG |3.93%| L 0.5093; ASML |12.13%| L 0.0228 vs INTC |18.16%| L 0.1025). Worse than round 2 (6 of 8). Raw 9x9 neighbourhood dumps and 120px crops around every sample point are retained and name three distinct mechanisms; see the review document. — reviewed by claude-code/opus-5"
+        "notes": "7 of 8 now pass and ordering is monotonic; NBIS alone fails at deltaE 33.85 on a uniform 0.52x partial-coverage blend. See review round 4 section 3. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1735,11 +1867,12 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-sphere-strip.txt",
-          "docs/phase10-baseline/section-10/claude-review-3/raw-strip-chirality-full-table.json",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-sphere-strip.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-strip-chirality-full-table.json",
+          "docs/phase10-baseline/section-10/raw-sphere-strip-output.txt",
+          "docs/phase10-baseline/section-10/scripts/capture-live-sphere-strip.mjs"
         ],
-        "notes": "Re-confirmed at the round-3 candidate: the retained sphere-strip capture measures per-world equatorial-band mean luminance for all eight worlds and asserts mark chirality, and it is the assertion that aborts this round. The verifier is correct; DEF-02 is the texture-generation defect it detects. — reviewed by claude-code/opus-5"
+        "notes": "The retained capture measures per-world equatorial luminance and asserts chirality; it is the chirality assertion that aborts. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1762,9 +1895,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1789,9 +1924,13 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-surfaces.txt",
+          "docs/phase10-baseline/section-10/scripts/",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "All seven retained verifiers plus this round five probes are committed with their raw output under claude-review-4/. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1816,9 +1955,12 @@
         "notes": "Regenerated after the mark-compositor correction: 23,075,805 shipped bytes, 30,000,000-byte ceiling unchanged, and all eight luminanceStdDev values pass at 0.103866-0.179004. — verified by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt",
+          "public/textures/planets/texture-manifest.json"
+        ],
+        "notes": "Read directly rather than inferred: planet-textures.test.ts asserts manifest.totalBytes <= 30_000_000 and luminanceStdDev >= 0.1 per world; all three tests pass. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1841,9 +1983,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1868,10 +2012,9 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "npm test — 99 files, 526 tests, 0 failures",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Independently re-run by the reviewer at the candidate: npm test passed 99 of 99 files and 526 of 526 tests in 4.91s with zero failures. Section 9s inherited red is closed on the tree. — reviewed by claude-code/opus-5"
+        "notes": "npm test re-run independently: 99/99 files, 527/527 tests, 0 failures. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1896,10 +2039,9 @@
       "reviewer": {
         "status": "pass",
         "evidence": [
-          "npm run build — exit 0, 18 static page tasks, route list unchanged, /share 200",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
         ],
-        "notes": "Independently re-run by the reviewer at the candidate: npm run build exited 0 on Next.js 16.2.11, compiled successfully, generated 18 static page tasks, left the route list unchanged, and the build scripts share-route smoke check passed (/share 200; Mission Control manifest 200). — reviewed by claude-code/opus-5"
+        "notes": "npm run build re-run independently: exit 0, route list unchanged, /share 200 and Mission Control manifest 200. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1924,9 +2066,12 @@
         "notes": "Both regeneration ladder measurements are retained: 44,461,239 map bytes at 2048x1024 (rejected) and 23,055,826 map bytes / 23,075,805 shipped bytes at 1448x724 (selected). Ladder step 4 was not reached. — verified by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/README.md",
+          "docs/phase10-baseline/section-10/texture-byte-count.txt"
+        ],
+        "notes": "23,075,805 then 22,804,307 bytes recorded against the 30MB ceiling, and the unavailable basisu --version recorded verbatim with the reason ladder step 4 was not reached. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1957,11 +2102,11 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-10/claude-review-3/raw-long-tasks-BLD-04.txt",
-          "docs/phase10-baseline/section-10/claude-review-3/raw-long-task-attribution.json",
-          "docs/phase10-workflow/reviews/section-10-review-3.md"
+          "docs/phase10-baseline/section-10/claude-review-4/raw-long-tasks-BLD-04.txt",
+          "docs/phase10-baseline/section-10/raw-long-task-output.txt",
+          "docs/phase10-baseline/section-10/scripts/measure-long-tasks.mjs"
         ],
-        "notes": "F2 (round 3). measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 61/57/55/55/55 ms. Five of five breach the 50ms ceiling; unchanged within noise from round 2 (62/56/56/56/57). A CDP CPU profile on the same rig attributes the breaching task to Three.js WebGLRenderer shader-program acquisition, not texture upload: within the 68ms window, N @ chunk 2tdjt19k1le0z.js:357 holds 34.3ms of self time, with getParameters and getProgramCacheKey on the same line; the 700-900ms bins carry ~50ms of self time in that one frame. texSubImage2D never exceeds 2.5ms in any bin, so the round-2 staggered map binding worked and was not the cause. — reviewed by claude-code/opus-5"
+        "notes": "56-60ms across five fresh contexts, 5 of 5 breaching, unmoved across four remediation attempts. See review round 4 section 4. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -1988,9 +2133,13 @@
         "notes": "Texture work remains scheduled after two animation frames; shader art is bound before the worker begins fetch/decode, and decoded maps still bind one per frame. Round-3 shader-family staging affects first paint, so the prior candidate's evidence cannot be preserved. The production build passes, but live first-paint/network sequencing could not navigate under either browser path; BLD-05 remains ungraded. This ledger deferral is not a workflow route: the state remains blocked for Devan. — recorded by codex/gpt-5"
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Not reached this turn: F2 aborts capture-live-evidence.mjs before most visual surfaces are reachable by the section's own verifier. Explicit reviewer work for Codex after remediation; not an implicit pass and not a finding. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-remaining-criteria.json",
+          "docs/phase10-baseline/section-10/claude-review-4/bld-05-textures-blocked.png",
+          "docs/phase10-baseline/section-10/README.md"
+        ],
+        "notes": "With all 24 texture requests aborted the canvas still paints, all 8 scene labels render, zero page errors, non-zero channel means: deterministic shader art rather than black. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2014,9 +2163,12 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "public/fonts/chakra-petch/OFL.txt",
+          "public/fonts/"
+        ],
+        "notes": "Chakra Petch TTF and OFL.txt committed as static assets; next/font/google unchanged in layout.tsx, so section 16 still owns the local-font migration. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2039,9 +2191,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Re-run independently at this candidate with the criterion own declared command; exit 0. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2064,9 +2218,12 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Canary suite green (11/11) and independently re-checked live against an unauthenticated production fetch of /share and /: zero owner-only field names (totalValue, totalCost, costBasis, shares, realizedGain, invested, marketValue, bookCost all absent) and no portfolio dollar amount. Every $<digit> match in the public HTML is a React Server Component payload marker ($0/$1/$7/$L6) except one figure inside a syndicated third-party news headline, which carries no portfolio information and falls under the owner authorised public-news decision. Recorded rather than smoothed over. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2089,9 +2246,12 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Canary suite green; the radar detail card renders only percentage, weight and derived telemetry already present in the public manifest. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2114,9 +2274,12 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "The existing canaries pass and cover the radar detail card and aurora payload; 11 of 11 tests in share/page.test.tsx. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2139,9 +2302,12 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt",
+          "docs/phase10-baseline/section-10/claude-review-4/raw-command-verifiers.txt"
+        ],
+        "notes": "Independently re-exercised live: a request carrying owner-session cookies returns a byte-identical response to the no-cookie request (cmp identical, 55,254 bytes both). The section 8 severe regression stays closed. — recorded by claude-code/opus-5"
       }
     },
     {
@@ -2162,9 +2328,11 @@
         "notes": "Verified by codex/gpt-5."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": "Implementer pass retained; not independently re-exercised this turn because the review terminated at F1-F6. — recorded by claude-code/opus-5"
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-10/claude-review-4/raw-privacy-live.txt"
+        ],
+        "notes": "No .env* file was read, printed, edited, staged or committed at any point this turn, and no deployment command was run. — recorded by claude-code/opus-5"
       }
     }
   ]

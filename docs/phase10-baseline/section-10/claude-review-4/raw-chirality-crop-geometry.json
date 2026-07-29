@@ -1,0 +1,214 @@
+{
+  "base": "http://127.0.0.1:3141/share",
+  "note": "crop geometry reproduced from capture-live-sphere-strip.mjs",
+  "rows": [
+    {
+      "ticker": "ASML",
+      "planet": {
+        "x": 1003.2,
+        "y": 451.8,
+        "radiusPx": 366.5
+      },
+      "cropWindow": {
+        "left": 637,
+        "top": 85,
+        "side": 733
+      },
+      "cropClampedX": false,
+      "cropClampedY": false,
+      "largestOpaquePanel": {
+        "cls": "inspector",
+        "x": 828,
+        "y": 104,
+        "width": 576,
+        "height": 772
+      },
+      "sampledBand": {
+        "fractionInsidePlanetDisc": 1,
+        "fractionUnderOpaquePanel": 0.857
+      }
+    },
+    {
+      "ticker": "GOOG",
+      "planet": {
+        "x": 1002.9,
+        "y": 451.9,
+        "radiusPx": 322.1
+      },
+      "cropWindow": {
+        "left": 680,
+        "top": 129,
+        "side": 645
+      },
+      "cropClampedX": false,
+      "cropClampedY": false,
+      "largestOpaquePanel": {
+        "cls": "inspector",
+        "x": 828,
+        "y": 104,
+        "width": 576,
+        "height": 772
+      },
+      "sampledBand": {
+        "fractionInsidePlanetDisc": 1,
+        "fractionUnderOpaquePanel": 0.902
+      }
+    },
+    {
+      "ticker": "COST",
+      "planet": {
+        "x": 989.4,
+        "y": 451.8,
+        "radiusPx": 240.8
+      },
+      "cropWindow": {
+        "left": 748,
+        "top": 211,
+        "side": 482
+      },
+      "cropClampedX": false,
+      "cropClampedY": false,
+      "largestOpaquePanel": {
+        "cls": "inspector",
+        "x": 828,
+        "y": 104,
+        "width": 576,
+        "height": 772
+      },
+      "sampledBand": {
+        "fractionInsidePlanetDisc": 1,
+        "fractionUnderOpaquePanel": 1
+      }
+    },
+    {
+      "ticker": "MSFT",
+      "planet": {
+        "x": 1003.6,
+        "y": 451.9,
+        "radiusPx": 197.8
+      },
+      "cropWindow": {
+        "left": 806,
+        "top": 254,
+        "side": 396
+      },
+      "cropClampedX": false,
+      "cropClampedY": false,
+      "largestOpaquePanel": {
+        "cls": "inspector",
+        "x": 828,
+        "y": 104,
+        "width": 576,
+        "height": 772
+      },
+      "sampledBand": {
+        "fractionInsidePlanetDisc": 1,
+        "fractionUnderOpaquePanel": 1
+      }
+    },
+    {
+      "ticker": "IBM",
+      "planet": {
+        "x": 946.2,
+        "y": 451.5,
+        "radiusPx": 187.8
+      },
+      "cropWindow": {
+        "left": 758,
+        "top": 264,
+        "side": 376
+      },
+      "cropClampedX": false,
+      "cropClampedY": false,
+      "largestOpaquePanel": {
+        "cls": "inspector",
+        "x": 828,
+        "y": 104,
+        "width": 576,
+        "height": 772
+      },
+      "sampledBand": {
+        "fractionInsidePlanetDisc": 1,
+        "fractionUnderOpaquePanel": 0.968
+      }
+    },
+    {
+      "ticker": "INTC",
+      "planet": {
+        "x": 1056.5,
+        "y": 452.2,
+        "radiusPx": 190.9
+      },
+      "cropWindow": {
+        "left": 865,
+        "top": 261,
+        "side": 382
+      },
+      "cropClampedX": false,
+      "cropClampedY": false,
+      "largestOpaquePanel": {
+        "cls": "inspector",
+        "x": 828,
+        "y": 104,
+        "width": 576,
+        "height": 772
+      },
+      "sampledBand": {
+        "fractionInsidePlanetDisc": 1,
+        "fractionUnderOpaquePanel": 1
+      }
+    },
+    {
+      "ticker": "CBRS",
+      "planet": {
+        "x": 1043.1,
+        "y": 452.2,
+        "radiusPx": 190.4
+      },
+      "cropWindow": {
+        "left": 853,
+        "top": 262,
+        "side": 381
+      },
+      "cropClampedX": false,
+      "cropClampedY": false,
+      "largestOpaquePanel": {
+        "cls": "inspector",
+        "x": 828,
+        "y": 104,
+        "width": 576,
+        "height": 772
+      },
+      "sampledBand": {
+        "fractionInsidePlanetDisc": 1,
+        "fractionUnderOpaquePanel": 1
+      }
+    },
+    {
+      "ticker": "NBIS",
+      "planet": {
+        "x": 1073,
+        "y": 452.4,
+        "radiusPx": 191.7
+      },
+      "cropWindow": {
+        "left": 881,
+        "top": 260,
+        "side": 384
+      },
+      "cropClampedX": false,
+      "cropClampedY": false,
+      "largestOpaquePanel": {
+        "cls": "inspector",
+        "x": 828,
+        "y": 104,
+        "width": 576,
+        "height": 772
+      },
+      "sampledBand": {
+        "fractionInsidePlanetDisc": 1,
+        "fractionUnderOpaquePanel": 1
+      }
+    }
+  ]
+}

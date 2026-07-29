@@ -1,0 +1,572 @@
+{
+  "BLD-05": {
+    "blockedTextureRequests": 24,
+    "canvasBecameVisible": true,
+    "sceneLabelsRendered": 8,
+    "pageErrors": [],
+    "channelMax": [
+      255,
+      255,
+      255
+    ],
+    "channelMean": [
+      10.79,
+      19.27,
+      14.64
+    ]
+  },
+  "DEF-04": {
+    "beltTargets": [
+      {
+        "ticker": "CRM",
+        "x": null,
+        "y": null,
+        "radius": null,
+        "rect": {
+          "x": 24,
+          "y": 1002.609375,
+          "width": 284.71875,
+          "height": 44
+        },
+        "datasetKeys": [
+          "beltHolding"
+        ],
+        "pixels": {
+          "brightest": 0,
+          "litPixels": 0
+        }
+      },
+      {
+        "ticker": "ORCL",
+        "x": null,
+        "y": null,
+        "radius": null,
+        "rect": {
+          "x": 24,
+          "y": 1046.609375,
+          "width": 284.71875,
+          "height": 44
+        },
+        "datasetKeys": [
+          "beltHolding"
+        ],
+        "pixels": {
+          "brightest": 0,
+          "litPixels": 0
+        }
+      },
+      {
+        "ticker": "SPCX",
+        "x": null,
+        "y": null,
+        "radius": null,
+        "rect": {
+          "x": 24,
+          "y": 1090.609375,
+          "width": 284.71875,
+          "height": 44
+        },
+        "datasetKeys": [
+          "beltHolding"
+        ],
+        "pixels": {
+          "brightest": 0,
+          "litPixels": 0
+        }
+      },
+      {
+        "ticker": "KYMR",
+        "x": null,
+        "y": null,
+        "radius": null,
+        "rect": {
+          "x": 24,
+          "y": 1134.609375,
+          "width": 284.71875,
+          "height": 44
+        },
+        "datasetKeys": [
+          "beltHolding"
+        ],
+        "pixels": {
+          "brightest": 0,
+          "litPixels": 0
+        }
+      },
+      {
+        "ticker": "MEI",
+        "x": null,
+        "y": null,
+        "radius": null,
+        "rect": {
+          "x": 24,
+          "y": 1178.609375,
+          "width": 284.71875,
+          "height": 44
+        },
+        "datasetKeys": [
+          "beltHolding"
+        ],
+        "pixels": {
+          "brightest": 0,
+          "litPixels": 0
+        }
+      }
+    ]
+  },
+  "VIS-14": {
+    "motionAllowed": {
+      "nodes": [
+        {
+          "cls": "orrery-module__nrz9QG__rocketPrism",
+          "rect": {
+            "width": 12,
+            "height": 13
+          }
+        }
+      ],
+      "lengthToken": ""
+    }
+  },
+  "DEF-07": {
+    "samples": [
+      {
+        "index": 0,
+        "centre": {
+          "x": 1003.2,
+          "y": 451.8
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 1,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 2,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 3,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 4,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 5,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 6,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 7,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 8,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 9,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 10,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      },
+      {
+        "index": 11,
+        "centre": {
+          "x": 1003.3,
+          "y": 451.9
+        },
+        "radiusPx": 366.5,
+        "sunLikeCentrePixels": 0,
+        "sampledPixels": 81
+      }
+    ]
+  },
+  "VIS-08": {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "largestBoxes": [
+      {
+        "cls": "missionMachine",
+        "x": 29,
+        "y": 276,
+        "width": 1382,
+        "height": 595,
+        "area": 822186
+      },
+      {
+        "cls": "systemPlotFrame",
+        "x": 65,
+        "y": 329,
+        "width": 690,
+        "height": 506,
+        "area": 349368
+      },
+      {
+        "cls": "radarTargets",
+        "x": 65,
+        "y": 329,
+        "width": 690,
+        "height": 506,
+        "area": 349368
+      },
+      {
+        "cls": "missionContent",
+        "x": 789,
+        "y": 425,
+        "width": 610,
+        "height": 302,
+        "area": 184343
+      },
+      {
+        "cls": "operationsBay",
+        "x": 804,
+        "y": 440,
+        "width": 580,
+        "height": 271,
+        "area": 157207
+      },
+      {
+        "cls": "manifestInstrument",
+        "x": 789,
+        "y": 288,
+        "width": 610,
+        "height": 126,
+        "area": 77182
+      }
+    ],
+    "typeScale": [
+      64,
+      32,
+      16,
+      12,
+      11.52,
+      11,
+      10.56,
+      10.4,
+      9.92,
+      9
+    ],
+    "largestTextSamples": [
+      {
+        "size": 64,
+        "text": "-0.7%",
+        "cls": "commandDay"
+      }
+    ]
+  },
+  "BHV-10": {
+    "totalTextNodes": 26,
+    "nonTeletypeSentences": [
+      {
+        "text": "am I beating the market",
+        "cls": "",
+        "teletype": false
+      },
+      {
+        "text": "what’s next on the calendar",
+        "cls": "",
+        "teletype": false
+      },
+      {
+        "text": "how much can this hurt",
+        "cls": "",
+        "teletype": false
+      }
+    ],
+    "nonTeletypeSentenceCount": 3,
+    "nameplates": [],
+    "nameplateMaxWords": 0
+  },
+  "VIS-10": {
+    "targets": [
+      {
+        "ticker": "ASML",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 74,
+        "height": 54,
+        "label": "ASML",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "ASML",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 20,
+        "height": 20,
+        "label": "",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "GOOG",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 148,
+        "height": 109,
+        "label": "GOOG",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "GOOG",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 19,
+        "height": 19,
+        "label": "",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "COST",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 223,
+        "height": 163,
+        "label": "COST",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "COST",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 17,
+        "height": 17,
+        "label": "",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "MSFT",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 297,
+        "height": 218,
+        "label": "MSFT",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "MSFT",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 16,
+        "height": 16,
+        "label": "",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "IBM",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 371,
+        "height": 272,
+        "label": "IBM",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "IBM",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 16,
+        "height": 16,
+        "label": "",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "INTC",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 445,
+        "height": 327,
+        "label": "INTC",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "INTC",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 15,
+        "height": 15,
+        "label": "",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "CBRS",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 519,
+        "height": 381,
+        "label": "CBRS",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "CBRS",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 14,
+        "height": 14,
+        "label": "",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "NBIS",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 593,
+        "height": 435,
+        "label": "NBIS",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      },
+      {
+        "ticker": "NBIS",
+        "ringColor": "none",
+        "blipDiameter": null,
+        "weight": null,
+        "width": 14,
+        "height": 14,
+        "label": "",
+        "datasetKeys": [
+          "radarTicker",
+          "active"
+        ]
+      }
+    ],
+    "svgTickerLabels": []
+  },
+  "BHV-05_VIS-14_reducedMotion": {
+    "canvasCount": 0,
+    "exhaustNodes": 0,
+    "runningAnimations": 0,
+    "holdingHeading": "ASML · ASML Holding"
+  }
+}

@@ -1,0 +1,6 @@
+{"run":1,"maximumMs":59,"entries":[{"duration":59,"startTime":563.0999999940395,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":2,"maximumMs":59,"entries":[{"duration":59,"startTime":670.6999999880791,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":3,"maximumMs":56,"entries":[{"duration":56,"startTime":751.1999999880791,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":4,"maximumMs":60,"entries":[{"duration":60,"startTime":787.0999999940395,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"run":5,"maximumMs":59,"entries":[{"duration":59,"startTime":795.5,"attribution":[{"name":"unknown","entryType":"taskattribution","containerType":"window","containerName":"","containerId":""}]}]}
+{"viewport":"1440x900","cpuThrottle":2,"freshContexts":5,"maximumMs":60}

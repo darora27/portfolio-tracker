@@ -1,0 +1,156 @@
+===== scene-model+orrery (DEF-01,BHV-06,BHV-11,VIS-06,VIS-07,VIS-13,ACC-02,TST-05,FIN-03) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/lib/observatory/scene-model.test.ts src/lib/observatory/orrery.test.ts
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  2 passed (2)
+      Tests  33 passed (33)
+   Start at  21:50:42
+   Duration  974ms (transform 76ms, setup 0ms, import 112ms, tests 831ms, environment 0ms)
+
+EXIT=0
+===== universe-palette (VIS-05,FIN-04,FWL-01..05,TST-01) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/lib/observatory/universe-palette.test.ts
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  21:50:44
+   Duration  102ms (transform 20ms, setup 0ms, import 27ms, tests 8ms, environment 0ms)
+
+EXIT=0
+===== SystemsManual (BHV-07,FIN-01) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/components/observatory/orrery/SystemsManual.test.tsx
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  21:50:44
+   Duration  690ms (transform 47ms, setup 0ms, import 118ms, tests 75ms, environment 430ms)
+
+EXIT=0
+===== MissionControlContent (BHV-09,FIN-02,FIN-05,VIS-11,ACC-01) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/components/observatory/orrery/MissionControlContent.test.tsx
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  21:50:45
+   Duration  384ms (transform 59ms, setup 0ms, import 296ms, tests 23ms, environment 0ms)
+
+EXIT=0
+===== public-news (BHV-12) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/lib/observatory/public-news.test.ts
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  21:50:46
+   Duration  85ms (transform 12ms, setup 0ms, import 17ms, tests 2ms, environment 0ms)
+
+EXIT=0
+===== observatory-fallback (MOB-02) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/components/observatory/observatory-fallback.test.ts
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  21:50:46
+   Duration  83ms (transform 11ms, setup 0ms, import 16ms, tests 2ms, environment 0ms)
+
+EXIT=0
+===== observatory-contrast (ACC-04) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/components/observatory/observatory-contrast.test.ts
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  21:50:46
+   Duration  91ms (transform 18ms, setup 0ms, import 24ms, tests 2ms, environment 0ms)
+
+EXIT=0
+===== MissionControl dialog (ACC-08) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/components/observatory/orrery/MissionControl.test.tsx
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  21:50:47
+   Duration  165ms (transform 63ms, setup 0ms, import 92ms, tests 8ms, environment 0ms)
+
+EXIT=0
+===== planet-textures (TST-07) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/lib/observatory/planet-textures.test.ts
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  21:50:47
+   Duration  138ms (transform 18ms, setup 0ms, import 60ms, tests 14ms, environment 0ms)
+
+EXIT=0
+===== share page canaries (PRV-01..04) =====
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/app/(depth-pull)/share/page.test.tsx
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  21:50:48
+   Duration  352ms (transform 114ms, setup 0ms, import 38ms, tests 247ms, environment 0ms)
+
+EXIT=0
+===== tsc (TST-08) =====
+EXIT=0
+===== deps (BLD-07) =====
+ package.json | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+EXIT=0
