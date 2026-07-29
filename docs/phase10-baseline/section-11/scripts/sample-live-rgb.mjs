@@ -2,10 +2,11 @@ import { chromium } from "playwright";
 import sharp from "sharp";
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
+import { emit } from "../../lib/emit.mjs";
 
+const CRITERION = "TST-03";
 const root = path.resolve("docs/phase10-baseline/section-10");
 const output = path.join(root, "pixel-samples");
-await mkdir(output, { recursive: true });
 const base = process.env.PHASE10_BASE_URL ?? "http://127.0.0.1:3000/share";
 
 const gainStops = ["#1f7a46", "#63ef98", "#a9ffcf"];
@@ -96,41 +97,23 @@ function deltaE(left, right) {
   return Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
 }
 
-const browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
-const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-await page.addInitScript(() => {
-  window.localStorage.setItem("stock-market-universe-orientation-seen", "true");
-});
-await page.goto(base, { waitUntil: "networkidle" });
-await page.locator("canvas").waitFor({ state: "visible" });
-await page.waitForFunction(
-  () =>
-    document.querySelectorAll(
-      "[data-scene-ticker][data-trail-sample-x][data-weekly-return]",
-    ).length === 8,
-);
-await page.waitForTimeout(1_200);
-
-const descriptors = await page
-  .locator("[data-scene-ticker]")
-  .evaluateAll((labels) =>
-    labels.map((label) => ({
-      ticker: label.dataset.sceneTicker,
-      weekly: label.dataset.weeklyReturn === "null"
-        ? null
-        : Number(label.dataset.weeklyReturn),
-      x: Number(label.dataset.trailSampleX),
-      y: Number(label.dataset.trailSampleY),
-    })),
+// Readiness contract (pinned in docs/phase10-workflow/specs/section-11.md
+// §11): ready once the canvas is visible and every holding has painted its
+// trail-sample coordinates and weekly-return payload — the exact data this
+// script samples against, so waiting for it is waiting for the thing being
+// measured to exist, not an arbitrary delay.
+async function waitForUniverseReady(page) {
+  await page.locator("canvas").waitFor({ state: "visible" });
+  await page.waitForFunction(
+    () =>
+      document.querySelectorAll(
+        "[data-scene-ticker][data-trail-sample-x][data-weekly-return]",
+      ).length === 8,
   );
-const screenshotPath = path.join(output, "overview-trail-samples.png");
-await page.screenshot({ path: screenshotPath });
-const { data, info } = await sharp(screenshotPath)
-  .removeAlpha()
-  .raw()
-  .toBuffer({ resolveWithObject: true });
+  await page.waitForTimeout(1_200);
+}
 
-function sampleAt(x, y, expected) {
+function sampleAt(x, y, expected, data, info) {
   const expectedRgb = rgb(expected);
   const candidates = [];
   for (let offsetY = -4; offsetY <= 4; offsetY += 1) {
@@ -145,61 +128,97 @@ function sampleAt(x, y, expected) {
   return candidates.sort((left, right) => left.deltaE - right.deltaE)[0];
 }
 
-const samples = descriptors.map((descriptor) => {
-  const expected = rampForWeeklyFromPayload(descriptor.weekly);
-  const sampled = sampleAt(descriptor.x, descriptor.y, expected);
-  const { hue, chroma } = hueChroma(sampled.channels);
-  const anchor =
-    descriptor.weekly === null || Math.abs(descriptor.weekly) <= 0.002
-      ? null
-      : descriptor.weekly > 0 ? 143 : 3;
-  const result = {
-    ...descriptor,
-    expected,
-    sampled: hex(sampled.channels),
-    deltaE: Number(sampled.deltaE.toFixed(3)),
-    hue: hue === null ? null : Number(hue.toFixed(3)),
-    chroma: Number(chroma.toFixed(3)),
-    luminance: Number(luminance(sampled.channels).toFixed(6)),
-    hueDistance: anchor === null || hue === null
-      ? null
-      : Number(hueDistance(hue, anchor).toFixed(3)),
-  };
-  if (result.deltaE > 8) throw new Error(`${descriptor.ticker} deltaE ${result.deltaE} > 8`);
-  if (anchor !== null && (result.chroma <= 0.3 || result.hueDistance > 10)) {
-    throw new Error(`${descriptor.ticker} hue lock failed: ${JSON.stringify(result)}`);
-  }
-  return result;
-});
+let browser;
+try {
+  await mkdir(output, { recursive: true });
+  browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.addInitScript(() => {
+    window.localStorage.setItem("stock-market-universe-orientation-seen", "true");
+  });
+  await page.goto(base, { waitUntil: "domcontentloaded" });
+  await waitForUniverseReady(page);
 
-for (const direction of [1, -1]) {
-  const sameDirection = samples
-    .filter(({ weekly }) => weekly !== null && Math.sign(weekly) === direction)
-    .sort((left, right) => Math.abs(left.weekly) - Math.abs(right.weekly));
-  for (let index = 1; index < sameDirection.length; index += 1) {
-    const prior = sameDirection[index - 1];
-    const current = sameDirection[index];
-    const ordered = direction > 0
-      ? current.luminance >= prior.luminance
-      : current.luminance <= prior.luminance;
-    if (!ordered) {
-      throw new Error(
-        `Magnitude ordering failed: ${JSON.stringify({ prior, current })}`,
-      );
+  const descriptors = await page
+    .locator("[data-scene-ticker]")
+    .evaluateAll((labels) =>
+      labels.map((label) => ({
+        ticker: label.dataset.sceneTicker,
+        weekly: label.dataset.weeklyReturn === "null"
+          ? null
+          : Number(label.dataset.weeklyReturn),
+        x: Number(label.dataset.trailSampleX),
+        y: Number(label.dataset.trailSampleY),
+      })),
+    );
+  const screenshotPath = path.join(output, "overview-trail-samples.png");
+  await page.screenshot({ path: screenshotPath });
+  const { data, info } = await sharp(screenshotPath)
+    .removeAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const samples = descriptors.map((descriptor) => {
+    const expected = rampForWeeklyFromPayload(descriptor.weekly);
+    const sampled = sampleAt(descriptor.x, descriptor.y, expected, data, info);
+    const { hue, chroma } = hueChroma(sampled.channels);
+    const anchor =
+      descriptor.weekly === null || Math.abs(descriptor.weekly) <= 0.002
+        ? null
+        : descriptor.weekly > 0 ? 143 : 3;
+    const result = {
+      ...descriptor,
+      expected,
+      sampled: hex(sampled.channels),
+      deltaE: Number(sampled.deltaE.toFixed(3)),
+      hue: hue === null ? null : Number(hue.toFixed(3)),
+      chroma: Number(chroma.toFixed(3)),
+      luminance: Number(luminance(sampled.channels).toFixed(6)),
+      hueDistance: anchor === null || hue === null
+        ? null
+        : Number(hueDistance(hue, anchor).toFixed(3)),
+    };
+    if (result.deltaE > 8) throw new Error(`${descriptor.ticker} deltaE ${result.deltaE} > 8`);
+    if (anchor !== null && (result.chroma <= 0.3 || result.hueDistance > 10)) {
+      throw new Error(`${descriptor.ticker} hue lock failed: ${JSON.stringify(result)}`);
+    }
+    return result;
+  });
+
+  for (const direction of [1, -1]) {
+    const sameDirection = samples
+      .filter(({ weekly }) => weekly !== null && Math.sign(weekly) === direction)
+      .sort((left, right) => Math.abs(left.weekly) - Math.abs(right.weekly));
+    for (let index = 1; index < sameDirection.length; index += 1) {
+      const prior = sameDirection[index - 1];
+      const current = sameDirection[index];
+      const ordered = direction > 0
+        ? current.luminance >= prior.luminance
+        : current.luminance <= prior.luminance;
+      if (!ordered) {
+        throw new Error(
+          `Magnitude ordering failed: ${JSON.stringify({ prior, current })}`,
+        );
+      }
     }
   }
-}
 
-console.log(JSON.stringify({
-  viewport: "1440x900",
-  fixtureCount: descriptors.length,
-  everyFixtureHoldingSampled: descriptors.length === samples.length,
-  samples,
-  literalReferences: {
-    flat: "#e3b65c",
-    comet: "#f4f0df",
-    sunUp: "#f5c45d",
-    sunDown: "#d65a24",
-  },
-}));
-await browser.close();
+  const measured = {
+    viewport: "1440x900",
+    fixtureCount: descriptors.length,
+    everyFixtureHoldingSampled: descriptors.length === samples.length,
+    samples,
+    literalReferences: {
+      flat: "#e3b65c",
+      comet: "#f4f0df",
+      sunUp: "#f5c45d",
+      sunDown: "#d65a24",
+    },
+  };
+  console.log(JSON.stringify(measured));
+  emit(CRITERION, true, measured);
+} catch (error) {
+  emit(CRITERION, false, null, error.message);
+} finally {
+  if (browser) await browser.close();
+}

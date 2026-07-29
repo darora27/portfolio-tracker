@@ -750,7 +750,10 @@ verification is unavailable.
   `measure-long-tasks.mjs`, `measure-overview-fit.mjs`,
   `audit-live-interactions.mjs`, `diagnose-live-scene.mjs` — copying them into
   `docs/phase10-baseline/section-11/scripts/` and recording any modification
-  explicitly. `measure-long-tasks.mjs` runs **unmodified** for `BLD-04`.
+  explicitly. `measure-long-tasks.mjs`'s **measurement logic and the 50ms
+  gate are unmodified** for `BLD-04`; its navigation-wait plumbing and
+  evidence emission follow the measurement contract below, which applies
+  repo-wide as of 2026-07-29 (see `AGENTS.md`'s Live Verification section).
 - Retain raw output for every measured criterion under
   `docs/phase10-baseline/section-11/`.
 - Capture 1440×900 for every surface and 390×844 for the fallback.
@@ -758,6 +761,69 @@ verification is unavailable.
   invalid.
 - **Owner visual review precedes acceptance.** Devan is the independent check
   while the second model is unavailable.
+
+### 11.1 Measurement contract — pinned so runs are comparable
+
+> **Owner-authorized amendment — Devan, July 29, 2026.** This section was added
+> to an already-accepted spec while §11 was in remediation, which normally
+> requires an owner decision, and got one. Origin: `claude-code/sonnet-5`, while
+> investigating whether this host can launch a browser at all, found that
+> `waitUntil: "networkidle"` never settles on these routes — they poll quotes
+> and run a continuous animation loop — so `measure-long-tasks.mjs` was timing
+> out at 30s against a page that had loaded correctly. That is a plausible
+> root cause for BLD-04's long history of being unmeasurable.
+>
+> **The 50ms long-task gate is unchanged**, and this amendment must never be
+> read as relaxing it: the assertion remains `maximumMs < 50`. What changed is
+> how a run reaches the measurement, not what the measurement has to beat.
+> Verified before authorization.
+
+Changing the wait strategy changes what is measured, so it is written down
+here rather than left to each script's discretion.
+
+- **No verifier uses `waitUntil: "networkidle"`.** These routes poll quotes
+  and run continuous animation loops, so `networkidle` never settles — it is
+  what caused `measure-long-tasks.mjs` to time out at 30s on a page that had
+  in fact loaded correctly. Every verifier navigates with
+  `waitUntil: "domcontentloaded"` instead.
+- **The readiness signal that starts collection** (i.e., that marks the view
+  as mounted with first data painted, and therefore safe to start measuring
+  or interacting): the canvas element is visible **and** all eight scene
+  labels carry `data-scene-ticker` (`document.querySelectorAll("[data-scene-ticker]").length === 8`).
+  This is an existing signal the render loop already writes on its first
+  frame — no new DOM attribute was added. For the no-WebGL fallback (reduced
+  motion, mobile, `no3d`), the equivalent signal is
+  `nav[aria-label="Portfolio bodies"]` becoming visible. Scripts that also
+  need Mission Control panel content ready additionally wait for
+  `[data-radar-ticker]` or `[data-manifest-ticker]` to be present, since the
+  canvas signal alone confirms the app shell has hydrated but not that a
+  specific panel's own data has rendered.
+- **The sampling window duration**, once the readiness signal fires:
+  - `measure-long-tasks.mjs` (`BLD-04`): a fixed **5000ms** post-readiness
+    window before reading the long-task buffer. Collection itself starts at
+    navigation, not at readiness — the `PerformanceObserver` is installed via
+    `addInitScript` before `goto` with `buffered: true`, so it captures tasks
+    from navigation start regardless of when the script starts observing.
+    The post-readiness window exists to let trailing work (shader
+    compilation, deferred hydration, below-fold lazy mounts) finish before
+    the buffer is read.
+  - `sample-live-rgb.mjs` (`TST-03`) and `capture-live-sphere-strip.mjs`
+    (`DEF-02`): readiness additionally requires the trail-sample or
+    planet-centre `data-*` attributes (not just the ticker), then a fixed
+    **1200–1500ms** settle window before the screenshot is taken, to let the
+    render loop's ramp/position values stabilize past their first frame.
+  - `measure-overview-fit.mjs`: readiness requires the planet-geometry
+    `data-*` attributes, then a **3000ms** settle window before the 24-sample
+    aggregation loop begins (each sample itself spaced 500ms apart).
+  - Interaction-only scripts (`audit-live-interactions.mjs`) do not hold a
+    fixed post-readiness window beyond the canvas-visible check plus 250ms,
+    because they drive the page via keyboard/pointer events rather than
+    sampling a settled frame.
+- **The sector map has no equivalent readiness signal** in the retained
+  capture scripts' scope (it renders no canvas and, per Package E, is being
+  cut from the reachable surface). Those captures use a fixed 1500ms settle
+  window instead of a hard gate and are not held to the same fidelity as the
+  gated surfaces.
 
 ---
 
