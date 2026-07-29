@@ -155,11 +155,15 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
   # still run under different providers.
   SWAP="${PHASE10_SWAP_ROLES:-0}"
   PROMPT_OVERRIDE=""
+  LOCK_OWNER=""
+  LOCK_TASK=""
   case "$NEXT_ACTOR" in
     claude)
       if [ "$SWAP" = "1" ]; then
         RUNNER="./scripts/phase10-codex-implementation.sh"
         PROMPT_OVERRIDE="docs/phase10-workflow/prompts/claude-lead.md"
+        LOCK_OWNER="claude"
+        LOCK_TASK="phase10-claude-lead-turn"
         echo "Role swap: Codex CLI is running the Claude Lead prompt."
       else
         RUNNER="./scripts/phase10-claude-lead.sh"
@@ -169,6 +173,8 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
       if [ "$SWAP" = "1" ]; then
         RUNNER="./scripts/phase10-claude-lead.sh"
         PROMPT_OVERRIDE="docs/phase10-workflow/prompts/codex-implementation.md"
+        LOCK_OWNER="codex"
+        LOCK_TASK="phase10-codex-implementation-turn"
         echo "Role swap: Claude CLI is running the implementation prompt (sighted)."
       else
         RUNNER="./scripts/phase10-codex-implementation.sh"
@@ -192,7 +198,7 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
   echo "Relay turn $TURN/$MAX_TURNS:"
   echo "section=$CURRENT_SECTION stage=$STAGE actor=$NEXT_ACTOR"
 
-  if PHASE10_PROMPT_OVERRIDE="$PROMPT_OVERRIDE" "$RUNNER"; then
+  if PHASE10_PROMPT_OVERRIDE="$PROMPT_OVERRIDE" PHASE10_LOCK_OWNER="$LOCK_OWNER" PHASE10_LOCK_TASK="$LOCK_TASK" "$RUNNER"; then
     RUNNER_STATUS=0
   else
     RUNNER_STATUS=$?

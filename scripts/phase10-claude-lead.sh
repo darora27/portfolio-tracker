@@ -40,9 +40,9 @@ fi
 trap release_lock EXIT INT TERM
 
 cat > "$LOCK_FILE" <<LOCKEOF
-owner=claude
+owner=${PHASE10_LOCK_OWNER:-claude}
 timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-task=phase10-claude-lead-turn
+task=${PHASE10_LOCK_TASK:-phase10-claude-lead-turn}
 LOCKEOF
 
 echo "Starting Claude Lead turn. Log: $LOG_FILE"
