@@ -25,6 +25,10 @@ export const OVERVIEW_BELT_SPAN_PCT = 0.88;
 export const TRAIL_SAMPLE_FRACTION = 0.62;
 
 const OVERVIEW_FOV_DEGREES = 42;
+export const APPROACH_CAMERA_DISTANCE = 6.2;
+export const APPROACH_CAMERA_TANGENT_OFFSET = 1.25;
+export const APPROACH_CAMERA_HEIGHT = 1.35;
+export const APPROACH_LOOK_AT_TANGENT_OFFSET = -1.7;
 const OVERVIEW_CAMERA_HEIGHT_RATIO = 0.82;
 const OVERVIEW_CAMERA_DEPTH_RATIO = 1.62;
 const OVERVIEW_CAMERA_NEAR = 0.1;
@@ -710,6 +714,16 @@ export function weatherWispsForHealth(
 
 export function brandEntryPhase(ticker: string): number {
   return (tickerHash(`CAPITAL-${ticker}`) % 3) * (Math.PI * 2 / 3);
+}
+
+/**
+ * Overview exposures compensate for tiny, dark worlds. At approach scale that
+ * same linear gain clips the authored terrain and erases the carved mark.
+ * Square-root compression keeps each world's relative correction while
+ * restoring headroom for the selected, close-up sphere.
+ */
+export function approachExposure(renderExposure: number): number {
+  return Math.sqrt(Math.max(0, renderExposure));
 }
 
 export function radarRingColor(weeklyReturn: number | null): string {

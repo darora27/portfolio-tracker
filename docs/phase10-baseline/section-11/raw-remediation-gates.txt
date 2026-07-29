@@ -1,0 +1,31 @@
+§11.R remediation gates — 2026-07-29
+Recorded by codex/gpt-5.
+
+$ node --check scripts/phase10-capture.mjs
+exit 0
+
+$ node --check docs/phase10-baseline/section-11/scripts/measure-shipped-marks.mjs
+exit 0
+
+$ npm run phase10:acceptance -- check docs/phase10-workflow/acceptance/section-11.json --require implementer
+exit 0
+docs/phase10-workflow/acceptance/section-11.json is valid for implementer.
+
+The ledger's schema-permitted incomplete implementer state is retained for five
+explicit non-passes in the blocked route: BHV-11 (F1), BHV-05 (F3 behavior),
+VIS-10 (F2 live pixels), VIS-02 (F3 visibility), and DEF-02 (F3 chirality).
+Their evidence and notes record the failures, the section remains blocked with
+next_actor=devan, and the reviewer failures/not-run fields are unchanged. The
+gate was not weakened and the turn is not routed to review.
+
+$ npm test
+exit 0
+Test Files 106 passed (106)
+Tests 548 passed (548)
+
+$ npm run build
+exit 0
+Next.js 16.2.11 production build compiled successfully.
+TypeScript passed.
+Static pages: 18/18.
+Share route smoke: PASS (/share 200; Mission Control manifest 200).

@@ -1,0 +1,34 @@
+Phase 10 §11 remediation live-capture attempt
+Actor: codex/gpt-5
+Date: 2026-07-29
+
+Production build:
+  npm run build
+  PASS — Next.js 16.2.11, TypeScript, 18/18 static pages, /share smoke.
+
+Production server:
+  npm run start
+  PASS — ready on http://localhost:3000.
+
+Capture:
+  npm run phase10:capture -- --section 11 --base http://127.0.0.1:3000
+  BLOCKED before page launch:
+    browserType.launch: Target page, context or browser has been closed
+
+Pinned Chromium retry:
+  /Users/devanarora/Library/Caches/ms-playwright/chromium_headless_shell-1148/chrome-mac/headless_shell
+  Chromium 131 / Playwright 1.49.1
+  BLOCKED before page launch:
+    FATAL:mach_port_rendezvous.cc(399)
+    bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer:
+    Permission denied (1100)
+
+No screenshot, live geometry, accessibility, interaction, or timing result is
+claimed. The exact owner-side command required to finish the prepared shot
+list is:
+
+  Terminal 1:
+    npm run build && npm run start
+
+  Terminal 2:
+    npm run phase10:capture -- --section 11 --base http://127.0.0.1:3000

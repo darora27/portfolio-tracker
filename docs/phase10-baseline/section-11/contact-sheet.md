@@ -10,6 +10,26 @@ his sentence or a committed capture — never on a criteria-ledger pass.
 
 ---
 
+### all-eight-texture-marks — §11.R current diagnostic
+
+Decoded pixels from the eight shipped KTX2 base maps, compared against the
+authored mark composites without rewriting any texture. Six marks are exact;
+IBM and NBIS are solid rectangles because their supplied SVG alpha masks cover
+100% and 99.5211% of the mark canvas. This is retained pixel evidence for
+F3 / FB-04 / BHV-05 / VIS-02 / DEF-02 and activates the owner's
+texture-pipeline stop/report guard.
+
+![all eight shipped texture marks](captures/all-eight-texture-marks.png)
+
+The current remediation's replacement live captures — 460/520/580px rail
+geometry and ASML at 0°/120°/240° — were not produced. Cached Chromium was
+denied by the host before page launch. Exact reproduction commands are in
+`raw-remediation-browser-block.txt`.
+
+---
+
+## Prior live sheet
+
 ### overview
 
 OVERVIEW at 1440×900 — trail arc length (FB-03), planet spacing (FB-01), overall composition
@@ -64,5 +84,6 @@ What was on screen instead (not evidence, diagnosis only):
 
 ---
 
-7/8 captured.
-**1 failed — this sheet is incomplete and cannot support acceptance.**
+Prior live run: 7/8 captured. Current remediation: one direct shipped-pixel
+diagnostic retained, zero replacement browser frames.
+**The sheet remains incomplete and cannot support acceptance.**

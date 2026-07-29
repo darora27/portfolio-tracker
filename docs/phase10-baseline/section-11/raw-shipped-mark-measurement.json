@@ -1,0 +1,178 @@
+{
+  "criterion": "VIS-02 / DEF-02 pre-render texture check",
+  "textureFilesChanged": false,
+  "outputImage": "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
+  "measurements": [
+    {
+      "ticker": "ASML",
+      "width": 1448,
+      "height": 724,
+      "markWidth": 348,
+      "markHeight": 98,
+      "markMaskCoverage": 0.695109,
+      "affectedPixels": 59714,
+      "normalComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "mirroredComparison": {
+        "mismatchedBytes": 201002,
+        "meanAbsoluteError": 1.7447076459051922
+      },
+      "chirality": "source-forward",
+      "failureReason": null,
+      "pass": true
+    },
+    {
+      "ticker": "GOOG",
+      "width": 1448,
+      "height": 724,
+      "markWidth": 348,
+      "markHeight": 105,
+      "markMaskCoverage": 0.48763,
+      "affectedPixels": 40437,
+      "normalComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "mirroredComparison": {
+        "mismatchedBytes": 165931,
+        "meanAbsoluteError": 1.4265945503037147
+      },
+      "chirality": "source-forward",
+      "failureReason": null,
+      "pass": true
+    },
+    {
+      "ticker": "MSFT",
+      "width": 1448,
+      "height": 724,
+      "markWidth": 348,
+      "markHeight": 74,
+      "markMaskCoverage": 0.581547,
+      "affectedPixels": 26918,
+      "normalComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "mirroredComparison": {
+        "mismatchedBytes": 136653,
+        "meanAbsoluteError": 1.897272814856079
+      },
+      "chirality": "preflopped",
+      "failureReason": null,
+      "pass": true
+    },
+    {
+      "ticker": "IBM",
+      "width": 1448,
+      "height": 724,
+      "markWidth": 348,
+      "markHeight": 196,
+      "markMaskCoverage": 1,
+      "affectedPixels": 202018,
+      "normalComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "mirroredComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "chirality": "source-forward",
+      "failureReason": "supplied SVG alpha is an opaque rectangle; no mark shape reaches the texture",
+      "pass": false
+    },
+    {
+      "ticker": "COST",
+      "width": 1448,
+      "height": 724,
+      "markWidth": 348,
+      "markHeight": 125,
+      "markMaskCoverage": 0.658575,
+      "affectedPixels": 54321,
+      "normalComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "mirroredComparison": {
+        "mismatchedBytes": 120329,
+        "meanAbsoluteError": 0.8910897770977687
+      },
+      "chirality": "source-forward",
+      "failureReason": null,
+      "pass": true
+    },
+    {
+      "ticker": "INTC",
+      "width": 1448,
+      "height": 724,
+      "markWidth": 348,
+      "markHeight": 135,
+      "markMaskCoverage": 0.558834,
+      "affectedPixels": 38820,
+      "normalComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "mirroredComparison": {
+        "mismatchedBytes": 205561,
+        "meanAbsoluteError": 2.5788735558285767
+      },
+      "chirality": "source-forward",
+      "failureReason": null,
+      "pass": true
+    },
+    {
+      "ticker": "NBIS",
+      "width": 1448,
+      "height": 724,
+      "markWidth": 348,
+      "markHeight": 96,
+      "markMaskCoverage": 0.995211,
+      "affectedPixels": 98637,
+      "normalComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "mirroredComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "chirality": "source-forward",
+      "failureReason": "supplied SVG alpha is an opaque rectangle; no mark shape reaches the texture",
+      "pass": false
+    },
+    {
+      "ticker": "CBRS",
+      "width": 1448,
+      "height": 724,
+      "markWidth": 348,
+      "markHeight": 153,
+      "markMaskCoverage": 0.40829,
+      "affectedPixels": 39599,
+      "normalComparison": {
+        "mismatchedBytes": 0,
+        "meanAbsoluteError": 0
+      },
+      "mirroredComparison": {
+        "mismatchedBytes": 231735,
+        "meanAbsoluteError": 2.563608883275846
+      },
+      "chirality": "preflopped",
+      "failureReason": null,
+      "pass": true
+    }
+  ],
+  "blocker": [
+    {
+      "ticker": "IBM",
+      "failureReason": "supplied SVG alpha is an opaque rectangle; no mark shape reaches the texture"
+    },
+    {
+      "ticker": "NBIS",
+      "failureReason": "supplied SVG alpha is an opaque rectangle; no mark shape reaches the texture"
+    }
+  ],
+  "pass": false
+}

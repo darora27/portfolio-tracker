@@ -2507,17 +2507,17 @@
   }
 }
 
-/* Holding rail width — FB-17. His readings: pre-§11 ~50% viewport "slightly
-   too big"; §11's 380px "too small". 460px splits the difference; the token
-   exists so the next answer is a one-number change (or a live devtools nudge:
-   try 420 / 500 on --panel-width). */
+/* Holding rail width — FB-17. The owner asked that the rail grow horizontally
+   to the left and choose from real 460 / 520 / 580px captures. It remains
+   right-anchored, so changing this one evidence token cannot push the planet
+   right or alter orbital positions. */
 @media (min-width: 1024px) {
   [data-camera="approach"] .inspector {
     --panel-width: 460px;
     top: 5.75rem;
     right: 1.25rem;
     bottom: 1.25rem;
-    width: min(var(--panel-width), 32vw);
+    width: min(var(--panel-width), calc(100vw - 3rem));
     max-width: var(--panel-width);
     padding: 0.85rem;
     overflow-y: auto;

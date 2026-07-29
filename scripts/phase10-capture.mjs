@@ -51,6 +51,9 @@ if (!SECTION) {
 
 const OUT_DIR = path.resolve(`docs/phase10-baseline/section-${SECTION}/captures`);
 const SHEET = path.resolve(`docs/phase10-baseline/section-${SECTION}/contact-sheet.md`);
+const RAW_GEOMETRY = path.resolve(
+  `docs/phase10-baseline/section-${SECTION}/raw-panel-geometry.json`,
+);
 
 /* ------------------------------------------------------------------ *
  * Readiness — the pinned measurement contract (spec §11.1).
@@ -108,6 +111,59 @@ const clickTicker = async (page, ticker) => {
   await page.waitForTimeout(2_500); // approach camera flight
 };
 
+const setPanelWidth = async (page, widthPx) => {
+  await page
+    .locator('aside[aria-live="polite"]')
+    .first()
+    .evaluate((element, width) => {
+      element.style.setProperty("--panel-width", `${width}px`);
+    }, widthPx);
+  await page.waitForTimeout(250);
+};
+
+const holdEvidenceRotation = async (page, degrees) => {
+  await page.locator('[class*="sceneMount"]').evaluate((element, value) => {
+    element.dataset.evidenceRotationDegrees = String(value);
+  }, degrees);
+  await page.waitForTimeout(600);
+};
+
+const measureApproachGeometry = async (page, ticker, panelWidthPx) =>
+  page.evaluate(
+    ({ ticker: selectedTicker, panelWidth }) => {
+      const planet = document.querySelector(
+        `[data-scene-ticker="${selectedTicker}"]`,
+      );
+      const panel = document.querySelector('aside[aria-live="polite"]');
+      if (!planet || !panel) return null;
+      const panelRect = panel.getBoundingClientRect();
+      const centerX = Number(planet.dataset.planetCenterX);
+      const centerY = Number(planet.dataset.planetCenterY);
+      const radius = Number(planet.dataset.planetRadiusPx);
+      return {
+        ticker: selectedTicker,
+        requestedPanelWidthPx: panelWidth,
+        viewport: { width: window.innerWidth, height: window.innerHeight },
+        disc: {
+          centerX,
+          centerY,
+          centerFractionX: centerX / window.innerWidth,
+          radius,
+          right: centerX + radius,
+        },
+        panel: {
+          left: panelRect.left,
+          right: panelRect.right,
+          width: panelRect.width,
+        },
+        gapPx: panelRect.left - (centerX + radius),
+        unoccluded: centerX + radius <= panelRect.left,
+        renderExposure: Number(planet.dataset.renderExposure),
+      };
+    },
+    { ticker, panelWidth: panelWidthPx },
+  );
+
 /* ------------------------------------------------------------------ *
  * Shot lists. At most twelve per section (UNIVERSE_AUDIT.md §4.3).
  * Every caption names the criteria and ledger rows the frame evidences,
@@ -123,51 +179,102 @@ const SHOTS = {
       ready: SCENE_READY,
     },
     {
-      id: "asml-selected",
-      caption: "ASML selected — planet anchor position, dead space on the left (F2 / FB-07)",
-      url: ROUTE,
-      ready: SCENE_READY,
-      act: (page) => clickTicker(page, "ASML"),
-    },
-    {
-      id: "asml-panel-type",
-      caption: "ASML panel, full height — five-token type ramp and small-font legibility (F1 / FB-05), panel width (FB-17)",
-      url: ROUTE,
-      ready: SCENE_READY,
-      act: (page) => clickTicker(page, "ASML"),
-      clip: "panel",
-    },
-    {
-      id: "asml-approach-mark",
-      caption: "ASML at approach scale — is a brand mark legible on a selected planet? (F3 / FB-04, camera and exposure only, no texture regeneration)",
+      id: "panel-width-460",
+      caption: "ASML selected with a 460px left-growing rail — measured left-third planet anchor and disc/panel gap (F2 / FB-07, FB-17)",
       url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
         await clickTicker(page, "ASML");
-        await page.waitForTimeout(1_500);
+        await setPanelWidth(page, 460);
+      },
+      measure: (page) => measureApproachGeometry(page, "ASML", 460),
+    },
+    {
+      id: "panel-width-520",
+      caption: "ASML selected with a 520px left-growing rail — owner width choice, same measured left-third planet anchor (F2 / FB-07, FB-17)",
+      url: ROUTE,
+      ready: SCENE_READY,
+      act: async (page) => {
+        await clickTicker(page, "ASML");
+        await setPanelWidth(page, 520);
+      },
+      measure: (page) => measureApproachGeometry(page, "ASML", 520),
+    },
+    {
+      id: "panel-width-580",
+      caption: "ASML selected with a 580px left-growing rail — owner width choice, same measured left-third planet anchor (F2 / FB-07, FB-17)",
+      url: ROUTE,
+      ready: SCENE_READY,
+      act: async (page) => {
+        await clickTicker(page, "ASML");
+        await setPanelWidth(page, 580);
+      },
+      measure: (page) => measureApproachGeometry(page, "ASML", 580),
+    },
+    {
+      id: "asml-panel-type",
+      caption: "ASML panel, full height at the default 460px — five-token type ramp legibility (F1 / FB-05) and simple information density (FB-17)",
+      url: ROUTE,
+      ready: SCENE_READY,
+      act: async (page) => {
+        await clickTicker(page, "ASML");
+        await setPanelWidth(page, 460);
+      },
+      clip: "panel",
+    },
+    {
+      id: "asml-mark-phase-0",
+      caption: "ASML approach at authored mark phase 0° — camera/exposure-only visibility check (F3 / FB-04, VIS-02, DEF-02)",
+      url: ROUTE,
+      ready: SCENE_READY,
+      act: async (page) => {
+        await clickTicker(page, "ASML");
+        await holdEvidenceRotation(page, 0);
       },
       clip: "planet",
     },
     {
-      id: "range-since-buy",
-      caption: "ReturnInstrument, SINCE BUY detent — compare against the next frame (F4 / BHV-15)",
+      id: "asml-mark-phase-120",
+      caption: "ASML approach at authored mark phase 120° — second of the three authored longitudes (F3 / FB-04, VIS-02, DEF-02)",
       url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
         await clickTicker(page, "ASML");
-        await page.getByText("SINCE BUY", { exact: false }).first().click({ timeout: 5_000 });
+        await holdEvidenceRotation(page, 120);
+      },
+      clip: "planet",
+    },
+    {
+      id: "asml-mark-phase-240",
+      caption: "ASML approach at authored mark phase 240° — third authored longitude, no texture regeneration (F3 / FB-04, VIS-02, DEF-02)",
+      url: ROUTE,
+      ready: SCENE_READY,
+      act: async (page) => {
+        await clickTicker(page, "ASML");
+        await holdEvidenceRotation(page, 240);
+      },
+      clip: "planet",
+    },
+    {
+      id: "range-30d",
+      caption: "ReturnInstrument, 30D detent — compare its figure and path with SINCE BUY (F4 / BHV-15)",
+      url: ROUTE,
+      ready: SCENE_READY,
+      act: async (page) => {
+        await clickTicker(page, "ASML");
+        await page.getByText("30D", { exact: true }).first().click({ timeout: 5_000 });
         await page.waitForTimeout(900);
       },
       clip: "panel",
     },
     {
-      id: "range-max",
-      caption: "ReturnInstrument, MAX detent — the two paths must differ (F4 / BHV-15)",
+      id: "range-since-buy",
+      caption: "ReturnInstrument, SINCE BUY detent — distinct window and shape; dead MAX is absent when no older history exists (F4 / BHV-15)",
       url: ROUTE,
       ready: SCENE_READY,
       act: async (page) => {
         await clickTicker(page, "ASML");
-        await page.getByText("MAX", { exact: true }).first().click({ timeout: 5_000 });
+        await page.getByText("SINCE BUY", { exact: false }).first().click({ timeout: 5_000 });
         await page.waitForTimeout(900);
       },
       clip: "panel",
@@ -182,21 +289,6 @@ const SHOTS = {
         await page.waitForTimeout(600);
       },
       clip: "panel",
-    },
-    {
-      id: "correlation",
-      // CORRELATION lives in MissionControlRoomContent, not the public content
-      // component, so it does not exist on /share. Attempting it there is not a
-      // defect in either the app or the harness — the section is owner-only.
-      ownerRouteOnly: true,
-      caption: "CORRELATION section — does the prose say what it means for HIS book? (FB-11) · owner route only",
-      url: ROUTE,
-      ready: SCENE_READY,
-      act: async (page) => {
-        const el = page.getByText("CORRELATION", { exact: false }).first();
-        await el.scrollIntoViewIfNeeded({ timeout: 5_000 });
-        await page.waitForTimeout(600);
-      },
     },
   ],
 };
@@ -244,20 +336,29 @@ const clipFor = async (page, kind) => {
   }
   if (kind === "planet") {
     const box = await page.evaluate(() => {
-      const el = [...document.querySelectorAll("[data-scene-ticker]")]
-        .map((e) => ({
-          x: +e.dataset.planetCenterX,
-          y: +e.dataset.planetCenterY,
-          r: +e.dataset.planetRadiusPx,
-        }))
-        .sort((a, b) => b.r - a.r)[0];
+      const selected = document.querySelector("[data-selected-holding]")
+        ?.dataset.selectedHolding;
+      const target = selected
+        ? document.querySelector(`[data-scene-ticker="${selected}"]`)
+        : null;
+      const el = target
+        ? {
+            x: +target.dataset.planetCenterX,
+            y: +target.dataset.planetCenterY,
+            r: +target.dataset.planetRadiusPx,
+          }
+        : null;
       if (!el || !isFinite(el.r)) return null;
-      const pad = Math.max(el.r * 2.2, 160);
+      const pad = Math.max(el.r * 1.15, 160);
+      const left = Math.max(0, el.x - pad);
+      const top = Math.max(0, el.y - pad);
+      const right = Math.min(window.innerWidth, el.x + pad);
+      const bottom = Math.min(window.innerHeight, el.y + pad);
       return {
-        x: Math.max(0, el.x - pad),
-        y: Math.max(0, el.y - pad),
-        width: pad * 2,
-        height: pad * 2,
+        x: left,
+        y: top,
+        width: right - left,
+        height: bottom - top,
       };
     });
     return box ?? undefined;
@@ -328,9 +429,10 @@ for (const shot of shots) {
     await page.goto(`${BASE}${shot.url}`, { waitUntil: "domcontentloaded", timeout: 30_000 });
     if (shot.ready) await shot.ready(page);
     if (shot.act) await shot.act(page);
+    const measurement = shot.measure ? await shot.measure(page) : null;
     const clip = await clipFor(page, shot.clip);
     await page.screenshot({ path: path.join(OUT_DIR, file), clip });
-    results.push({ ...shot, file, ok: true });
+    results.push({ ...shot, file, ok: true, measurement });
     process.stdout.write("ok\n");
   } catch (error) {
     const message = error.message.split("\n")[0];
@@ -351,6 +453,27 @@ for (const shot of shots) {
   }
 }
 await browser.close();
+
+const geometryMeasurements = results
+  .filter((result) => result.ok && result.measurement)
+  .map((result) => ({
+    shot: result.id,
+    ...result.measurement,
+  }));
+if (geometryMeasurements.length > 0) {
+  await writeFile(
+    RAW_GEOMETRY,
+    `${JSON.stringify(
+      {
+        capturedAt: new Date().toISOString(),
+        route: `${BASE}${ROUTE}`,
+        measurements: geometryMeasurements,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+}
 
 const failed = results.filter((r) => !r.ok);
 const stamp = new Date().toISOString().slice(0, 10);
@@ -411,6 +534,9 @@ await writeFile(SHEET, sheet);
 
 console.log(`\n  sheet   ${path.relative(process.cwd(), SHEET)}`);
 console.log(`  frames  ${path.relative(process.cwd(), OUT_DIR)}`);
+if (geometryMeasurements.length > 0) {
+  console.log(`  geometry ${path.relative(process.cwd(), RAW_GEOMETRY)}`);
+}
 console.log(
   `\nmachine-readable: ${JSON.stringify({
     section: SECTION,

@@ -40,7 +40,12 @@ import {
 } from "@/lib/observatory/orrery";
 import {
   ACTIVE_RING_OPACITY,
+  APPROACH_CAMERA_DISTANCE,
+  APPROACH_CAMERA_HEIGHT,
+  APPROACH_CAMERA_TANGENT_OFFSET,
+  APPROACH_LOOK_AT_TANGENT_OFFSET,
   OVERVIEW_RING_OPACITY,
+  approachExposure,
   brandEntryPhase,
   buildOverviewSceneModel,
   layoutOverviewLabels,
@@ -1487,8 +1492,21 @@ export default function OrreryScene({
             delta;
         }
         const progradeSign = planet.direction === "clockwise" ? -1 : 1;
-        planet.mesh.rotation.y +=
-          progradeSign * planet.spinRadiansPerSecond * delta;
+        const evidenceRotationDegrees = Number(
+          mount.dataset.evidenceRotationDegrees,
+        );
+        const evidenceRotationHeld =
+          state === "approach" &&
+          planet.holding.ticker === selected &&
+          Number.isFinite(evidenceRotationDegrees);
+        if (evidenceRotationHeld) {
+          planet.mesh.rotation.y =
+            brandEntryPhase(planet.holding.ticker) +
+            (evidenceRotationDegrees * Math.PI) / 180;
+        } else {
+          planet.mesh.rotation.y +=
+            progradeSign * planet.spinRadiansPerSecond * delta;
+        }
         const targetScale =
           planet.descriptor.radius * (targeted ? 1.08 : 1);
         const nextScale =
@@ -1502,6 +1520,14 @@ export default function OrreryScene({
         planet.mesh.material.uniforms.uDim.value +=
           (dimTarget - planet.mesh.material.uniforms.uDim.value) *
           (1 - Math.exp(-delta * 5));
+        const exposureTarget =
+          state === "approach" && planet.holding.ticker === selected
+            ? approachExposure(planet.descriptor.renderExposure)
+            : planet.descriptor.renderExposure;
+        planet.mesh.material.uniforms.uExposure.value +=
+          (exposureTarget -
+            planet.mesh.material.uniforms.uExposure.value) *
+          (1 - Math.exp(-delta * 6));
         planet.path.material.uniforms.uOpacity.value = targeted
           ? ACTIVE_RING_OPACITY
           : OVERVIEW_RING_OPACITY;
@@ -1563,6 +1589,9 @@ export default function OrreryScene({
         );
         planet.label.dataset.planetRadiusPx = String(
           liveProjection.bounds.width / 2,
+        );
+        planet.label.dataset.renderExposure = String(
+          planet.mesh.material.uniforms.uExposure.value,
         );
         planet.orbit.updateWorldMatrix(true, false);
         const trailSampleAngle =
@@ -1744,12 +1773,18 @@ export default function OrreryScene({
         tangentVector.set(-outwardVector.z, 0, outwardVector.x);
         cameraTarget
           .copy(worldPosition)
-          .addScaledVector(outwardVector, 6.2)
-          .addScaledVector(tangentVector, 1.25);
-        cameraTarget.y += 1.35;
+          .addScaledVector(outwardVector, APPROACH_CAMERA_DISTANCE)
+          .addScaledVector(
+            tangentVector,
+            APPROACH_CAMERA_TANGENT_OFFSET,
+          );
+        cameraTarget.y += APPROACH_CAMERA_HEIGHT;
         lookAtTarget
           .copy(worldPosition)
-          .addScaledVector(tangentVector, 1.45);
+          .addScaledVector(
+            tangentVector,
+            APPROACH_LOOK_AT_TANGENT_OFFSET,
+          );
       } else if (state === "command") {
         brandEntryTicker = null;
         cameraTarget.set(0, 3.8, 7.4);

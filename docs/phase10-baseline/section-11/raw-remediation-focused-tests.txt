@@ -1,0 +1,13 @@
+Command:
+  npx vitest run src/lib/observatory/scene-model.test.ts src/components/observatory/orrery/type-ramp.test.ts src/components/observatory/orrery/ReturnInstrument.test.tsx
+
+Result:
+  PASS
+  Test Files  3 passed (3)
+  Tests       31 passed (31)
+
+Covered:
+  - approach camera projects the selected body to x ~= 30% from four orbital directions;
+  - approach exposure preserves relative per-world correction without close-up linear clipping;
+  - the five-token type ramp and Mission Control layout contract remain enforced;
+  - BHV-15 omits dead MAX and proves distinct SINCE BUY/MAX paths and figures when pre-purchase history exists.

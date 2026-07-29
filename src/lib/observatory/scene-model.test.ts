@@ -7,9 +7,14 @@ import {
 } from "./orrery";
 import {
   ACTIVE_RING_OPACITY,
+  APPROACH_CAMERA_DISTANCE,
+  APPROACH_CAMERA_HEIGHT,
+  APPROACH_CAMERA_TANGENT_OFFSET,
+  APPROACH_LOOK_AT_TANGENT_OFFSET,
   OVERVIEW_RING_OPACITY,
   beltBodyRadiusForWeight,
   auroraDescriptor,
+  approachExposure,
   brandEntryPhase,
   buildOverviewSceneModel,
   cometColor,
@@ -702,6 +707,32 @@ describe("pure overview scene descriptor", () => {
       Math.round(phase / (Math.PI * 2 / 3)),
       12,
     );
+  });
+
+  it("anchors every approach camera at the left third and compresses close-up exposure", () => {
+    for (const angle of [0, Math.PI / 2, Math.PI, Math.PI * 1.5]) {
+      const world = new Vector3(Math.cos(angle) * 10, 0, Math.sin(angle) * 10);
+      const outward = world.clone().setY(0).normalize();
+      const tangent = new Vector3(-outward.z, 0, outward.x);
+      const camera = new PerspectiveCamera(42, 1440 / 900, 0.1, 100);
+      camera.position
+        .copy(world)
+        .addScaledVector(outward, APPROACH_CAMERA_DISTANCE)
+        .addScaledVector(tangent, APPROACH_CAMERA_TANGENT_OFFSET);
+      camera.position.y += APPROACH_CAMERA_HEIGHT;
+      camera.lookAt(
+        world
+          .clone()
+          .addScaledVector(tangent, APPROACH_LOOK_AT_TANGENT_OFFSET),
+      );
+      camera.updateMatrixWorld(true);
+      const screenX = world.clone().project(camera).x * 0.5 + 0.5;
+      expect(screenX).toBeCloseTo(0.3, 2);
+    }
+
+    expect(approachExposure(1)).toBe(1);
+    expect(approachExposure(2.8)).toBeCloseTo(Math.sqrt(2.8), 12);
+    expect(approachExposure(12)).toBeCloseTo(Math.sqrt(12), 12);
   });
 
   it("keeps empty holdings, an empty belt, and absent moons/comets valid", () => {

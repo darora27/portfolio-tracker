@@ -48,10 +48,11 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "OWNER_FEEDBACK_LEDGER.md",
+          "docs/phase10-baseline/section-11/raw-mission-control-type-root-cause.md",
+          "docs/phase10-baseline/section-11/raw-remediation-focused-tests.txt"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "Explicit non-pass in a state-level blocked handoff to Devan, not a reviewer route or pass. The owner re-reported Mission Control small text after the five-token ramp. §11.R root-caused the gap: the gate constrains legal values, but Mission Control still maps its reading surfaces to the smallest 11px role. No one-off size nudge was made; §12a owns the role remap. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -156,12 +157,12 @@
         "docs/phase10-baseline/section-11/after/panel-chart-detents.png"
       ],
       "implementer": {
-        "status": "deferred_to_reviewer",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx",
+          "docs/phase10-baseline/section-11/raw-remediation-focused-tests.txt"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "Owner-directed Fable remediation removes MAX when it would duplicate SINCE BUY and renders both only with pre-purchase history. The retained rendered-DOM contract proves different figures and SVG paths in that second case; the focused run passed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -538,10 +539,10 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
+          "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "Explicit non-pass in a state-level blocked handoff to Devan, not a reviewer route or pass. Direct decoded shipped-texture measurement reaches the owner-amended stop condition: IBM and NBIS supply opaque-rectangle alpha masks, so no distinguishable mark can face the camera. No texture was regenerated. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
@@ -565,10 +566,11 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "docs/phase10-baseline/section-11/raw-remediation-focused-tests.txt",
+          "docs/phase10-baseline/section-11/raw-remediation-browser-block.txt",
+          "scripts/phase10-capture.mjs"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "State-level needs-capture handoff to Devan, not a reviewer route or pass. The bounded camera model now projects the selected world at x≈30% from four orbital directions and the capture harness is prepared for the owner-requested 460/520/580px left-growing rail set. Chromium was denied before page launch, so no live geometry or visual pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -910,10 +912,11 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
+          "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
+          "docs/phase10-baseline/section-11/scripts/measure-shipped-marks.mjs"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "Explicit non-pass in a state-level blocked handoff to Devan, not a reviewer route or pass. The direct decoded shipped-pixel verifier proves six authored masks reach the texture exactly, but IBM and NBIS have 100% and 99.5% mask coverage: their opaque SVG alpha rectangles erase the mark shape. The all-eight strip contains no readable mark for those worlds. Per the owner's amendment, this is a texture-pipeline defect and texture regeneration is barred in this turn. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -950,10 +953,11 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "docs/phase10-baseline/section-11/raw-shipped-mark-measurement.json",
+          "docs/phase10-baseline/section-11/captures/all-eight-texture-marks.png",
+          "docs/phase10-baseline/section-11/scripts/measure-shipped-marks.mjs"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "Explicit non-pass in a state-level blocked handoff to Devan, not a reviewer route or pass. The direct byte comparison matches the intended normal mask exactly for six worlds and distinguishes it from the mirrored alternative. IBM and NBIS cannot be graded for chirality because their supplied alpha is an opaque rectangle, making normal and mirrored composites byte-identical. This is an explicit failure in the retained evidence, not a weakened assertion. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "not_run",
