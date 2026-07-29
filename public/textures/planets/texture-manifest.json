@@ -1,6 +1,6 @@
 {
-  "totalBytes": 22803051,
-  "mapBytes": 22782956,
+  "totalBytes": 23201386,
+  "mapBytes": 23181360,
   "tier": {
     "base": "1448x724",
     "emissive": "724x362",
@@ -16,12 +16,12 @@
     {
       "base": "2048x1024",
       "derived": "1024x512",
-      "mapBytes": 44022056
+      "mapBytes": 44817874
     },
     {
       "base": "1448x724",
       "derived": "724x362",
-      "mapBytes": 22782956
+      "mapBytes": 23181360
     }
   ],
   "tickers": {
@@ -113,9 +113,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 1607784,
-        "emissive": 93168,
-        "normal": 290972
+        "base": 1875104,
+        "emissive": 74663,
+        "normal": 287218
       },
       "markCapitals": {
         "count": 3,
@@ -129,8 +129,8 @@
         "edgeTreatment": "blur-threshold erosion",
         "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#2b437c",
-      "luminanceStdDev": 0.15623,
+      "dominantHex": "#1e3972",
+      "luminanceStdDev": 0.095739,
       "seamMaxDeltaE": 0
     },
     "COST": {
@@ -194,9 +194,9 @@
       "derivedWidth": 724,
       "derivedHeight": 362,
       "bytes": {
-        "base": 2563374,
-        "emissive": 174633,
-        "normal": 327650
+        "base": 2714769,
+        "emissive": 176014,
+        "normal": 328217
       },
       "markCapitals": {
         "count": 3,
@@ -210,8 +210,8 @@
         "edgeTreatment": "blur-threshold erosion",
         "chirality": "source-forward before seam repair for DataTexture UV"
       },
-      "dominantHex": "#8e5294",
-      "luminanceStdDev": 0.165306,
+      "dominantHex": "#8e4c8b",
+      "luminanceStdDev": 0.134645,
       "seamMaxDeltaE": 0
     },
     "CBRS": {
