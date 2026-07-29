@@ -50,7 +50,62 @@ These are decided. Do not reopen without asking.
 
 ## 3. Open owner items — not yet built
 
-### 3.1 From the July 29 §10 acceptance review (newest)
+### 3.0 From the July 29 §11 review — newest
+
+**A new surface, not a fix: the stock technical dashboard.**
+
+> *"When you click on a stock in the holdings section of mission control —
+> which should [also] be something you can do when you click on the orbit 2D
+> thing on the mission control holding orbital ellipse — it should pull up a
+> technical dashboard of the stock like the application used to do in previous
+> iterations. It should show you the full scale graph with information that you
+> may not even see in planetary holdings… a much greater detailed look at the
+> stock. Whether it is through graphs of certain unique kinds of mathematical
+> modeling, I am aspiring to pursue that vibe for that section."*
+
+This is the deep analytical layer the universe currently has nowhere to put.
+Reachable two ways: a row in HOLDINGS, and a ring or blip on the ORBITS radar.
+Distinct from the planet detail panel, which is the ten-second read — this is
+the opposite end, where depth is the point. The pre-Phase-10 `/stock/[ticker]`
+route is the reference for what existed before.
+
+**Layout and type:**
+
+- **The planet sits too far right.** For some holdings — ASML named — the
+  planet renders middle to middle-right with large unused space on the left.
+- **Large fonts slightly smaller; small fonts a good bit larger.** Owner:
+  *"the small fonts need to be a good bit larger so that you can even see what
+  they have to say at all."* Small text is currently unreadable, which is the
+  same complaint as §10's, unresolved.
+- **The top tab strip does not look right.** Owner is uncertain rather than
+  decided: *"I would rather there be nothing than that super small font that
+  you can hardly see that is just taking up space."* Ideas he wants tested —
+  removing the dividing line, or making the strip fully black so it recedes.
+
+**Carried, still unaddressed after multiple reports:**
+
+- **Rocket cursor physics.** Third request. There is still no sense of flight —
+  momentum, drift, or inertia — in the cursor.
+- **No company logos are visible on any planet.** Fourth report. **Do not
+  regenerate textures again before the marks are measurable.** §11's panel
+  rebuild was supposed to make that possible; establish first whether the marks
+  are present-but-unviewable or genuinely absent.
+
+**The background and the exit terminal:**
+
+- **The background is still "meh."** Owner wants a *"futuristic portrayal of
+  retro futurism"* — he names the Loki TVA / Miss Minutes register as the
+  target. Compare against `docs/reference/`, which already holds that deck.
+- **The green terminal shown when exiting Mission Control** is *"a cool feature
+  but it displays too much information, in a way that is too hard to read or
+  too big. There is no happy medium."*
+
+**Open, unfinished:** the owner began asking about building the other
+portfolios — the additional solar systems — and the note ends mid-sentence
+(*"By that what I mean is"*). Not yet specified. The sector map was cut in §10
+pending exactly this conversation.
+
+### 3.1 From the July 29 §10 acceptance review
 
 - **The trails are too long.** Owner: *"Why are the trails so long? It seems
   like they are too long and cheap looking now… the trails don't even seem like
