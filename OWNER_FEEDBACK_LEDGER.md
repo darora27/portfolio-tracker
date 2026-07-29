@@ -105,6 +105,20 @@ portfolios — the additional solar systems — and the note ends mid-sentence
 (*"By that what I mean is"*). Not yet specified. The sector map was cut in §10
 pending exactly this conversation.
 
+### 3.0.1 Recurring — raised many times, never entered here until now
+
+**Planets are too close together.** Owner, July 29: *"All the planets are still
+a little too close to each other."* He notes he has raised this *"so many times
+before"* — and he is right: it lived in `UNIVERSE_ROUND4_BRIEF.md` as a design
+note and was never recorded in this ledger, which is the file build turns read.
+So no turn was ever told to fix it. His original framing: *"Either make the sun
+bigger and everything more spaced out, or make the planets smaller."* Round 4
+also observed the composition clusters centre-left with a large empty region
+bottom-right — the frame is not used evenly.
+
+**This is a standing item until he says it is fixed.** Do not close it on a
+measurement; close it when he says the spacing looks right.
+
 ### 3.1 From the July 29 §10 acceptance review
 
 - **The trails are too long.** Owner: *"Why are the trails so long? It seems
