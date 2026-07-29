@@ -39,31 +39,43 @@
         "risk": "critical",
         "evidence": "OWNER_FEEDBACK_LEDGER.md §3.0",
         "summary": "The owner's visual review says the small fonts must be substantially larger to be readable at all. That directly fails the ten-second requirement that every answer be findable without squinting.",
-        "required_change": "Raise the planet-panel small-text roles that carry the five required answers until the complete ten-second stack is readable without squinting. Keep the hierarchy and word budget, retain a fresh 1440x900 panel capture, and record the literal five-question result."
+        "required_change": "Raise the planet-panel small-text roles that carry the five required answers until the complete ten-second stack is readable without squinting. Keep the hierarchy and word budget, retain a fresh 1440x900 panel capture, and record the literal five-question result.",
+        "owner_amendment": "Devan, July 29 2026: implement as round 6's five-token type ramp (56/24/15/13/11) tied to ledger row FB-05, NOT a one-off font nudge. This is the item's fourth appearance; a local size bump would be redone within weeks.",
+        "ledger_rows": [
+          "FB-05"
+        ]
       },
       {
         "id": "F2",
         "criterion": "VIS-10",
         "risk": "high",
-        "evidence": "OWNER_FEEDBACK_LEDGER.md §3.0",
+        "evidence": "OWNER_FEEDBACK_LEDGER.md §3.0; docs/phase10-baseline/section-11/captures/asml-selected.png",
         "summary": "The owner names ASML and reports that the selected planet sits in the middle to middle-right while substantial space is unused on the left, missing the required x approximately 30% anchor.",
-        "required_change": "Correct the approach-camera framing so every selected planet, including ASML, lands at the left-third anchor beside a rail no wider than 380px. Retain live 1440x900 disc-centre and panel-width pixel measurements without faking orbital positions."
+        "required_change": "Correct the approach-camera framing so every selected planet, including ASML, lands at the left-third anchor beside a rail no wider than 380px. Retain live 1440x900 disc-centre and panel-width pixel measurements without faking orbital positions.",
+        "ledger_rows": [
+          "FB-07"
+        ]
       },
       {
         "id": "F3",
         "criterion": "VIS-02",
         "risk": "high",
-        "evidence": "OWNER_FEEDBACK_LEDGER.md §3.0; docs/phase10-baseline/section-11/raw-review-browser-block.txt",
+        "evidence": "OWNER_FEEDBACK_LEDGER.md §3.0; docs/phase10-baseline/section-11/raw-review-browser-block.txt; docs/phase10-baseline/section-11/captures/asml-approach-mark.png",
         "summary": "After the panel rebuild the owner reports for the fourth time that no company logo is visible on any planet, so the carved marks still do not read as required. DEF-02 chirality remains unperformed rather than passed.",
-        "required_change": "Measure the shipped mark directly for all eight worlds before changing textures, then correct camera, material, or mark visibility so one carved capital reads on every selected planet while terrain effects and brand-first phase remain. Once visible, run the direct all-eight chirality verifier."
+        "required_change": "Measure the shipped mark directly for all eight worlds before changing textures, then correct camera, material, or mark visibility so one carved capital reads on every selected planet while terrain effects and brand-first phase remain. Once visible, run the direct all-eight chirality verifier.",
+        "owner_amendment": "Devan, July 29 2026: approach-camera and exposure work ONLY. Do not regenerate planet textures — four rounds already did, each moving the score by less than measurement noise. Evidence now exists: docs/phase10-baseline/section-11/captures/asml-approach-mark.png shows ASML filling half the frame at approach scale with no visible mark. Because marks sit at three longitudes on a rotating sphere, that frame may have caught the far side. Capture the same shot at three rotation phases before concluding anything. If no phase shows a mark, the marks are absent from the textures and this becomes a texture-pipeline defect, not a camera one — stop and report rather than regenerating.",
+        "ledger_rows": [
+          "FB-04"
+        ]
       },
       {
         "id": "F4",
         "criterion": "BHV-15",
         "risk": "high",
-        "evidence": "docs/phase10-baseline/section-11/raw-review-return-toggle.json; docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx",
+        "evidence": "docs/phase10-baseline/section-11/raw-review-return-toggle.json; docs/phase10-baseline/section-11/scripts/review-return-toggle.test.tsx; docs/phase10-baseline/section-11/captures/range-since-buy.png; docs/phase10-baseline/section-11/captures/range-max.png",
         "summary": "The rendered-DOM observation records SINCE BUY and MAX with the same +23.7% answer and byte-identical SVG path. Only the title changes, but the criterion requires every detent to change both figure and plotted shape.",
-        "required_change": "Give SINCE BUY its purchase-date window and MAX the full available series so fixtures with pre-purchase history produce distinct answers and paths. Add rendered interaction coverage asserting that all four detents change both."
+        "required_change": "Give SINCE BUY its purchase-date window and MAX the full available series so fixtures with pre-purchase history produce distinct answers and paths. Add rendered interaction coverage asserting that all four detents change both.",
+        "ledger_rows": []
       }
     ],
     "remediation_commits": [],
@@ -143,7 +155,8 @@
       "Is the DRAFT rig public on /share? UNIVERSE_IDEAS_4.md §8 offers it as a recommendation the owner can veto, so it is not decided. §11 ships it owner-gated under the G-PUBLIC default (PRV-10); opening it is a one-gate change and also a privacy-boundary change under single_provider_mode.",
       "Is 26-46 degrees the right shortened trail arc? The owner rejected 36-64 degrees and asked for somewhere between that and round 2s 18-30, judged by eye. Set as a token pair, measured by the reviewer, and confirmed by owner visual review before acceptance."
     ],
-    "scope_recommendation": "Advisory, not a blocker. §11 covers roughly twice §10s surface, and §10 took one implementation round, five reviews and four remediations and still carried six criteria. Recommendation to Devan: consider splitting §11 at the A-E / F seam - legibility plus the carried debt in one section, the DRAFT rig in the next. The seam is clean: no package A-E depends on F, and F closes no carried criterion. This spec covers all of §11 and implementation proceeds now; the risk-first sequence means nothing is lost by answering late."
+    "scope_recommendation": "Advisory, not a blocker. §11 covers roughly twice §10s surface, and §10 took one implementation round, five reviews and four remediations and still carried six criteria. Recommendation to Devan: consider splitting §11 at the A-E / F seam - legibility plus the carried debt in one section, the DRAFT rig in the next. The seam is clean: no package A-E depends on F, and F closes no carried criterion. This spec covers all of §11 and implementation proceeds now; the risk-first sequence means nothing is lost by answering late.",
+    "owner_scope_note": "Scope fixed by owner direction, July 29 2026: F1 (as the five-token ramp), F2, F3 (camera/exposure only), F4. NOTHING ELSE. Defects found during the July 29 capture run — the SYSTEMS MANUAL button overlapping and truncating the panel header, and orphaned CBRS/COST labels with no attached body — are recorded as new ledger rows for §12a and are explicitly OUT of scope here. A contact sheet is required at review: docs/phase10-baseline/section-11/contact-sheet.md."
   },
   "sections_history": [
     {

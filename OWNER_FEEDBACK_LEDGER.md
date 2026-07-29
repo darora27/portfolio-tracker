@@ -75,6 +75,8 @@ read has failed.
 | D1 | Green trail on a down week — unreproduced | 1 | **held** | do not change colour logic until a contradicting ticker is named; then severe | — | named ticker or retired |
 | D2 | *"The website is still relatively confusing"* | 1 | **open · general** | R5/R6 legibility work is the response | tracked via FB-05/-08/-09/-11 | subsumed rows close |
 | D3 | Reddit for `/research` | 1 | **needs-owner** | reddit-fetch is a local tool, not a server data source — which problem is it solving? | parked | he clarifies or retires |
+| FB-19 | `? SYSTEMS MANUAL` button overlaps the planet panel and truncates its header line (`SPIN = SCENERY · ORBIT = WEE…`) | 0 — found by capture, not by him | **open** | none needed; z-order/layout collision | **§12a** | the header line reads whole on a capture |
+| FB-20 | Orphaned labels — `CBRS` and `COST` render at the frame edge with no attached body at approach scale | 0 — found by capture | **open** | none needed; label culling on approach | **§12a** | no label without its body on a capture |
 
 **Board count at adoption: 15 open/designed/scheduled · 4 landed awaiting
 his eyes · 3 needs-owner/held.** Rule 2 therefore makes the next section a
