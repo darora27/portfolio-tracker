@@ -5,7 +5,7 @@
   "temporalSampling": {
     "authorisedBy": "Devan, July 29 2026",
     "method": "Each holding is sampled at its own naturally unoccluded orbital phase.",
-    "elapsedMs": 32595,
+    "elapsedMs": 31190,
     "inspectedFrameCount": 33,
     "capturedFrameCount": 5,
     "sampleIntervalMs": 350,
@@ -42,8 +42,8 @@
           -0.1850764937938999
         ],
         "luminance": [
-          0.127608,
-          0.096753
+          0.109342,
+          0.097806
         ]
       },
       {
@@ -57,8 +57,8 @@
           -0.2089653173606416
         ],
         "luminance": [
-          0.096753,
-          0.108154
+          0.097806,
+          0.10516
         ]
       }
     ]
@@ -69,22 +69,22 @@
       "weekly": -0.1427157736449879,
       "expected": "#b3241d",
       "publishedSample": {
-        "x": 790.937,
-        "y": 263.194
+        "x": 793.04,
+        "y": 264.102
       },
       "sampledAt": {
-        "x": 795,
-        "y": 264
+        "x": 796,
+        "y": 265
       },
-      "sampled": "#bc2e22",
-      "deltaE": 3.04,
-      "hue": 4.675,
-      "chroma": 0.604,
-      "luminance": 0.127608,
-      "hueDistance": 1.675,
-      "minimumPlanetClearancePx": 2.538,
-      "elapsedMs": 23046,
-      "frameIndex": 23,
+      "sampled": "#b3241d",
+      "deltaE": 0,
+      "hue": 2.8,
+      "chroma": 0.588,
+      "luminance": 0.109342,
+      "hueDistance": 0.2,
+      "minimumPlanetClearancePx": 1.122,
+      "elapsedMs": 21178,
+      "frameIndex": 22,
       "frameArtifact": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/asml-trail-phase.png"
     },
     {
@@ -92,12 +92,12 @@
       "weekly": -0.02364128064206572,
       "expected": "#ff8882",
       "publishedSample": {
-        "x": 613.777,
-        "y": 229.395
+        "x": 613.415,
+        "y": 229.499
       },
       "sampledAt": {
-        "x": 618,
-        "y": 227
+        "x": 610,
+        "y": 229
       },
       "sampled": "#ff8882",
       "deltaE": 0,
@@ -105,8 +105,8 @@
       "chroma": 0.49,
       "luminance": 0.4048,
       "hueDistance": 0.12,
-      "minimumPlanetClearancePx": 12.223,
-      "elapsedMs": 1556,
+      "minimumPlanetClearancePx": 4.403,
+      "elapsedMs": 1473,
       "frameIndex": 1,
       "frameArtifact": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/goog-trail-phase.png"
     },
@@ -115,8 +115,8 @@
       "weekly": 0.05151623106735337,
       "expected": "#57db8a",
       "publishedSample": {
-        "x": 820.329,
-        "y": 443.523
+        "x": 819.174,
+        "y": 443.725
       },
       "sampledAt": {
         "x": 822,
@@ -128,8 +128,8 @@
       "chroma": 0.518,
       "luminance": 0.545243,
       "hueDistance": 0.182,
-      "minimumPlanetClearancePx": 59.44,
-      "elapsedMs": 1556,
+      "minimumPlanetClearancePx": 60.677,
+      "elapsedMs": 1473,
       "frameIndex": 1,
       "frameArtifact": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/cost-trail-phase.png"
     },
@@ -138,22 +138,22 @@
       "weekly": 0.0020783619428834665,
       "expected": "#1f7a46",
       "publishedSample": {
-        "x": 850.728,
-        "y": 181.923
+        "x": 848.442,
+        "y": 181.496
       },
       "sampledAt": {
-        "x": 848,
-        "y": 183
+        "x": 847,
+        "y": 181
       },
-      "sampled": "#297b4a",
-      "deltaE": 2.729,
-      "hue": 144.146,
-      "chroma": 0.322,
-      "luminance": 0.151317,
-      "hueDistance": 1.146,
-      "minimumPlanetClearancePx": 38.318,
-      "elapsedMs": 2869,
-      "frameIndex": 2,
+      "sampled": "#1f7a46",
+      "deltaE": 0,
+      "hue": 145.714,
+      "chroma": 0.357,
+      "luminance": 0.146526,
+      "hueDistance": 2.714,
+      "minimumPlanetClearancePx": 37.514,
+      "elapsedMs": 1473,
+      "frameIndex": 1,
       "frameArtifact": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/msft-trail-phase.png"
     },
     {
@@ -161,21 +161,21 @@
       "weekly": 0.1008264462809918,
       "expected": "#93fabe",
       "publishedSample": {
-        "x": 323.322,
-        "y": 298.289
+        "x": 324.607,
+        "y": 296.083
       },
       "sampledAt": {
-        "x": 324,
-        "y": 294
+        "x": 327,
+        "y": 293
       },
-      "sampled": "#87e5ae",
-      "deltaE": 7.571,
-      "hue": 144.894,
-      "chroma": 0.369,
-      "luminance": 0.642455,
-      "hueDistance": 1.894,
-      "minimumPlanetClearancePx": 47.425,
-      "elapsedMs": 11771,
+      "sampled": "#88e8b1",
+      "deltaE": 6.555,
+      "hue": 145.625,
+      "chroma": 0.376,
+      "luminance": 0.661218,
+      "hueDistance": 2.625,
+      "minimumPlanetClearancePx": 47.594,
+      "elapsedMs": 11181,
       "frameIndex": 11,
       "frameArtifact": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/ibm-trail-phase.png"
     },
@@ -184,21 +184,21 @@
       "weekly": -0.2089653173606416,
       "expected": "#b3241d",
       "publishedSample": {
-        "x": 1131.915,
-        "y": 477.924
+        "x": 1133.769,
+        "y": 476.331
       },
       "sampledAt": {
-        "x": 1128,
-        "y": 478
+        "x": 1131,
+        "y": 474
       },
-      "sampled": "#b2241d",
-      "deltaE": 0.445,
-      "hue": 2.819,
-      "chroma": 0.584,
-      "luminance": 0.108154,
-      "hueDistance": 0.181,
-      "minimumPlanetClearancePx": 79.07,
-      "elapsedMs": 2869,
+      "sampled": "#b0231c",
+      "deltaE": 1.022,
+      "hue": 2.838,
+      "chroma": 0.58,
+      "luminance": 0.10516,
+      "hueDistance": 0.162,
+      "minimumPlanetClearancePx": 75.695,
+      "elapsedMs": 2957,
       "frameIndex": 2,
       "frameArtifact": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/intc-trail-phase.png"
     },
@@ -207,21 +207,21 @@
       "weekly": 0.15499693439607598,
       "expected": "#a9ffcf",
       "publishedSample": {
-        "x": 1057.554,
-        "y": 183.893
+        "x": 1062.95,
+        "y": 186.041
       },
       "sampledAt": {
-        "x": 1057,
-        "y": 183
+        "x": 1059,
+        "y": 184
       },
-      "sampled": "#9aebbe",
-      "deltaE": 6.885,
-      "hue": 146.667,
-      "chroma": 0.318,
-      "luminance": 0.700044,
-      "hueDistance": 3.667,
-      "minimumPlanetClearancePx": 78.055,
-      "elapsedMs": 31427,
+      "sampled": "#9be9be",
+      "deltaE": 7.842,
+      "hue": 146.923,
+      "chroma": 0.306,
+      "luminance": 0.689641,
+      "hueDistance": 3.923,
+      "minimumPlanetClearancePx": 78.933,
+      "elapsedMs": 30180,
       "frameIndex": 32,
       "frameArtifact": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/crm-trail-phase.png"
     },
@@ -230,21 +230,21 @@
       "weekly": -0.1850764937938999,
       "expected": "#b3241d",
       "publishedSample": {
-        "x": 213.949,
-        "y": 576.282
+        "x": 216.867,
+        "y": 578.464
       },
       "sampledAt": {
-        "x": 217,
-        "y": 575
+        "x": 221,
+        "y": 578
       },
-      "sampled": "#a8241d",
-      "deltaE": 4.931,
-      "hue": 3.022,
-      "chroma": 0.545,
-      "luminance": 0.096753,
-      "hueDistance": 0.022,
-      "minimumPlanetClearancePx": 186.934,
-      "elapsedMs": 2869,
+      "sampled": "#a9241c",
+      "deltaE": 4.218,
+      "hue": 3.404,
+      "chroma": 0.553,
+      "luminance": 0.097806,
+      "hueDistance": 0.404,
+      "minimumPlanetClearancePx": 187.153,
+      "elapsedMs": 2957,
       "frameIndex": 2,
       "frameArtifact": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/cbrs-trail-phase.png"
     }
