@@ -24,6 +24,18 @@ const DraftRig = dynamic(
   { ssr: false },
 );
 
+// FB-08 + FB-15 (§12a) variant A/C: destinations not already reachable via
+// a readout chip, folded into the strip as compact links. ORBITS is
+// deliberately last since PLOT already scrolls into view by default.
+const FOLDED_CHIP_DESTINATIONS = [
+  { anchor: "holdings", label: "HOLDINGS" },
+  { anchor: "correlation", label: "CORRELATION" },
+  { anchor: "news", label: "NEWS" },
+  { anchor: "trades", label: "TRADES" },
+  { anchor: "orbits", label: "ORBITS" },
+  { anchor: "earnings", label: "EARNINGS" },
+] as const;
+
 export function MissionControl({
   activePanel,
   mode,
@@ -40,6 +52,7 @@ export function MissionControl({
   signalPair = null,
   footerEquipment = null,
   draftParam = null,
+  stripVariant = null,
 }: {
   activePanel: MissionControlPanelId;
   mode: "public" | "private";
@@ -59,6 +72,8 @@ export function MissionControl({
   footerEquipment?: ReactNode;
   draftParam?: string | null;
   newsByHolding?: unknown;
+  /** FB-08 + FB-15 (§12a): capture-only, never set in production. */
+  stripVariant?: "a" | "b" | "c" | null;
 }) {
   const [activeTicker, setActiveTicker] = useState<string | null>(null);
   const [briefingOpen, setBriefingOpen] = useState(false);
@@ -101,18 +116,69 @@ export function MissionControl({
         if (!event.currentTarget.contains(event.relatedTarget)) setActiveTicker(null);
       }}
     >
-      <header className={styles.missionStrip}>
+      <header className={styles.missionStrip} data-strip-variant={stripVariant ?? undefined}>
         <div className={styles.missionHero}>
           <span>TODAY</span>
           <strong>{dayReadout}</strong>
         </div>
         <div className={styles.missionReadoutChips}>
-          <span>WEEK <b>{weekReadout}</b></span>
-          <span>SINCE START TWR <b>{twrReadout}</b></span>
-          <span>VS VOO · SAME PERIOD <b>{marketReadout}</b></span>
-          <span>OFF HIGH <b>{offHighReadout}</b></span>
+          {stripVariant === "a" || stripVariant === "c" ? (
+            <>
+              <a href="#returns">WEEK <b>{weekReadout}</b></a>
+              <a href="#returns">SINCE START TWR <b>{twrReadout}</b></a>
+              <a href="#returns">VS VOO · SAME PERIOD <b>{marketReadout}</b></a>
+              <a href="#risk">OFF HIGH <b>{offHighReadout}</b></a>
+              {FOLDED_CHIP_DESTINATIONS.map((destination) => (
+                <a key={destination.anchor} href={`#${destination.anchor}`} className={styles.missionFoldedChip}>
+                  {destination.label}
+                </a>
+              ))}
+            </>
+          ) : (
+            <>
+              <span>WEEK <b>{weekReadout}</b></span>
+              <span>SINCE START TWR <b>{twrReadout}</b></span>
+              <span>VS VOO · SAME PERIOD <b>{marketReadout}</b></span>
+              <span>OFF HIGH <b>{offHighReadout}</b></span>
+            </>
+          )}
         </div>
-        <nav aria-label="Mission Control sections">
+        {stripVariant === "a" || stripVariant === "c" ? null : (
+          <nav aria-label="Mission Control sections">
+            {MISSION_CONTROL_PANELS.map((panel) => (
+              <a
+                key={panel.id}
+                href={`#${panel.anchor}`}
+                aria-current={panel.id === activePanel ? "page" : undefined}
+              >
+                {panel.label}
+              </a>
+            ))}
+            <a href="#earnings">EARNINGS</a>
+          </nav>
+        )}
+        {mode === "private" && holdings.length === 8 ? (
+          <button
+            type="button"
+            className={styles.draftLatch}
+            aria-expanded={draftOpen}
+            onClick={() => setDraftOpen(true)}
+          >
+            DRAFT · 🚀
+          </button>
+        ) : null}
+        <Link
+          href={closeHref}
+          prefetch={false}
+          scroll={false}
+          className={styles.missionExit}
+        >
+          ◂ UNIVERSE
+        </Link>
+      </header>
+
+      {stripVariant === "c" ? (
+        <nav aria-label="Mission Control sections" className={styles.missionIndexEdge}>
           {MISSION_CONTROL_PANELS.map((panel) => (
             <a
               key={panel.id}
@@ -124,15 +190,7 @@ export function MissionControl({
           ))}
           <a href="#earnings">EARNINGS</a>
         </nav>
-        <Link
-          href={closeHref}
-          prefetch={false}
-          scroll={false}
-          className={styles.missionExit}
-        >
-          ◂ UNIVERSE
-        </Link>
-      </header>
+      ) : null}
 
       <div className={styles.missionDescent}>
         <h2 id="mission-control-title" tabIndex={-1}>Mission Control</h2>

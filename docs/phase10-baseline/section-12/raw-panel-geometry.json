@@ -1,0 +1,26 @@
+{
+  "capturedAt": "2026-07-30T15:05:41.318Z",
+  "measurements": [
+    {
+      "requestedWidth": 600,
+      "planetRightEdge": 696.9882753213005,
+      "panelLeftEdge": 820,
+      "panelWidth": 600,
+      "unoccluded": true
+    },
+    {
+      "requestedWidth": 660,
+      "planetRightEdge": 697.0829262045306,
+      "panelLeftEdge": 760,
+      "panelWidth": 660,
+      "unoccluded": true
+    },
+    {
+      "requestedWidth": 720,
+      "planetRightEdge": 697.2847207413687,
+      "panelLeftEdge": 700,
+      "panelWidth": 720,
+      "unoccluded": true
+    }
+  ]
+}

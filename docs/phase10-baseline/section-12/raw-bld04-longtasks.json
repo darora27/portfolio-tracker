@@ -1,0 +1,37 @@
+{
+  "criterion": "BLD-04",
+  "section": "12",
+  "carried_from_section_11": "9f561b52179023f70c89fabfab62ea880df0a146",
+  "method": "unmodified docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs, one invocation (its own built-in 5 fresh 1440x900 CPU-2x contexts), against this section's candidate production build/server -- exactly the 5-context/CPU-2x/1440x900//share protocol the §12a carry note requires. No structural SSR/hydration remediation was authorized or attempted this window; this is re-measurement only.",
+  "per_context_ms": [0, 0, 0, 0, 0],
+  "maximumMs": 0,
+  "boundaryMs": 50,
+  "result": "PASS",
+  "raw_script_stdout": [
+    { "run": 1, "maximumMs": 0, "entries": [] },
+    { "run": 2, "maximumMs": 0, "entries": [] },
+    { "run": 3, "maximumMs": 0, "entries": [] },
+    { "run": 4, "maximumMs": 0, "entries": [] },
+    { "run": 5, "maximumMs": 0, "entries": [] }
+  ],
+  "script_machine_readable_line": {
+    "criterion": "BLD-04",
+    "pass": true,
+    "measured": {
+      "viewport": "1440x900",
+      "cpuThrottle": 2,
+      "freshContexts": 5,
+      "maximumMs": 0,
+      "runs": [
+        { "run": 1, "maximumMs": 0 },
+        { "run": 2, "maximumMs": 0 },
+        { "run": 3, "maximumMs": 0 },
+        { "run": 4, "maximumMs": 0 },
+        { "run": 5, "maximumMs": 0 }
+      ]
+    },
+    "error": null
+  },
+  "summary": "All 5 fresh 1440x900 CPU-2x contexts measured 0ms max long task against §12a's candidate build, well under the unchanged 50ms boundary -- a clean pass, not carried again. §11's carry record anticipated this: the root cause (Next.js pre-mount RSC/hydration bootstrap, upstream of OrreryScene) was never targeted by any §12a change, and the design proof's state matrix predicted §12a's layout/type/perf edits (FB-19/20 CSS, FB-05 type-ramp remap, FB-01 spacing constants, FB-11/12/17/21 additions) would be perf-neutral or net-positive, not worsen hydration cost. One caveat carried forward honestly: §11's own history recorded intermittent single-batch breaches (57-64ms) across 77+ prior 0ms runs, so a single clean batch here is consistent with, but does not by itself prove permanent elimination of, that occasional upstream cost -- recorded as a clean pass per the unmodified verifier's own pass/fail predicate, with the intermittency noted for the reviewer.",
+  "single_invocation_caveat": "This turn ran one invocation (one server process, one batch of 5 contexts), not the multiple independent batches some §11 review turns used for extra rigor against an intermittent signal. The section-12a spec calls for '5 contexts, CPU 2x, 1440x900' without mandating multiple batches; the reviewer may choose to re-run for additional confidence given BLD-04's history of intermittent breaches."
+}

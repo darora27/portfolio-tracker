@@ -1,0 +1,18 @@
+{
+  "button": {
+    "top": 104,
+    "bottom": 148,
+    "left": 1255.40625,
+    "right": 1404
+  },
+  "panel": {
+    "top": 160,
+    "bottom": 880,
+    "left": 960,
+    "right": 1420
+  },
+  "intersects": false,
+  "microHintPresent": true,
+  "microHintText": "SPIN = SCENERY · ORBIT = WEEK",
+  "microHintWidth": 216.921875
+}

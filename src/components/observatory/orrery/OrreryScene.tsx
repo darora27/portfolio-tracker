@@ -1843,6 +1843,20 @@ export default function OrreryScene({
           .copy(worldPosition)
           .addScaledVector(camera.up, -planet.mesh.scale.x * 1.45)
           .project(camera);
+        // FB-20: a label's own offset position can still read as "on
+        // screen" (see layoutOverviewLabels' edge clamp) even after its
+        // body has left the depth-tested range or drifted fully outside the
+        // canvas -- the raw depth test alone (projected.z > 1) missed both.
+        // bodyVisible is derived from the body's OWN projected bounds
+        // (liveProjection), not the label's offset position, so a culled or
+        // off-frame body is never rescued by the label clamp below.
+        const bodyVisible =
+          projected.z <= 1 &&
+          projected.z >= -1 &&
+          liveProjection.bounds.right >= 0 &&
+          liveProjection.bounds.left <= labelRect.width &&
+          liveProjection.bounds.bottom >= 0 &&
+          liveProjection.bounds.top <= labelRect.height;
         labelCandidates.push({
           ...planet.labelDescriptor,
           screen: {
@@ -1852,6 +1866,7 @@ export default function OrreryScene({
           },
           opacity: 1,
           yielded: false,
+          bodyVisible,
         });
         planet.label.textContent = targeted
           ? `${planet.holding.ticker} ${planet.labelDescriptor.dayChip}`
@@ -1923,7 +1938,6 @@ export default function OrreryScene({
           ]);
         }
         planet.label.dataset.ringFarArc = JSON.stringify(farArc);
-        planet.label.hidden = projected.z > 1;
       }
       const resolvedLabels = layoutOverviewLabels(labelCandidates, {
         width: labelRect.width,
@@ -1934,10 +1948,16 @@ export default function OrreryScene({
           ({ holding }) => holding.ticker === resolved.ticker,
         );
         if (!runtime) continue;
-        runtime.label.style.left = `${resolved.screen.x}px`;
-        runtime.label.style.top = `${resolved.screen.y}px`;
-        runtime.label.style.opacity = String(resolved.opacity);
-        runtime.label.dataset.yielded = resolved.yielded ? "true" : "false";
+        // FB-20: hidden is the authoritative cull -- a body that failed the
+        // depth/frame test never gets a position write, so it cannot be
+        // left visible at a stale (or edge-clamped) screen position.
+        runtime.label.hidden = !resolved.bodyVisible;
+        if (resolved.bodyVisible) {
+          runtime.label.style.left = `${resolved.screen.x}px`;
+          runtime.label.style.top = `${resolved.screen.y}px`;
+          runtime.label.style.opacity = String(resolved.opacity);
+          runtime.label.dataset.yielded = resolved.yielded ? "true" : "false";
+        }
       }
       if (!reducedMotion && shipPlaced) {
         // Resolve the helm: the live pointer, or the flight destination

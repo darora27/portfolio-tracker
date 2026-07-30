@@ -23,3 +23,54 @@ export const MISSION_CONTROL_CSS_PROPERTIES = {
   "--mission-detail-min": `${MISSION_CONTROL_LAYOUT.detailMinWidthPx}px`,
   "--mission-detail-fraction": `${MISSION_CONTROL_LAYOUT.detailViewportFraction * 100}vw`,
 } as CSSProperties;
+
+/**
+ * FB-05 (root-caused in §11, closed in §12a): the universe type ramp
+ * (`--type-hero/readout/title/body/label`, `type-ramp.test.ts`) only ever
+ * constrained font sizes to the five legal VALUES, never which token a given
+ * semantic ROLE must resolve to -- so Mission Control reading surfaces could
+ * sit on a legal value (11px) that was still the wrong role. This map is the
+ * explicit role -> token contract; `mission-control-text-roles.test.tsx`
+ * renders the real component tree and asserts each selector below actually
+ * resolves to its role's token, not just some ramp value.
+ */
+export const MISSION_CONTROL_TEXT_ROLES = {
+  sectionHeader: {
+    token: "--type-title",
+    description: "Section and instrument headers.",
+    selectors: [
+      ".plotChassis > header",
+      ".manifestInstrument > header",
+      ".manifestHeader",
+    ],
+  },
+  questionCopy: {
+    token: "--type-body",
+    description: "Question copy and briefing prose.",
+    selectors: [".bayQuestion", ".briefingPaper"],
+  },
+  holdingsText: {
+    token: "--type-body",
+    description: "Holdings headers, radar detail card and manifest text.",
+    selectors: [
+      ".radarDetailCard",
+      ".radarManifest > li > button",
+      ".holdingsTable thead th",
+    ],
+  },
+  genuineLabel: {
+    token: "--type-label",
+    description:
+      "Genuine labels, stamps and window words -- legitimately unchanged.",
+    selectors: [
+      ".radarRingTarget > span",
+      ".radarTimestamp",
+      ".radarPairLine",
+      ".railStations a",
+      ".instrumentStrip a",
+      ".plotReadouts span",
+    ],
+  },
+} as const;
+
+export type MissionControlTextRole = keyof typeof MISSION_CONTROL_TEXT_ROLES;

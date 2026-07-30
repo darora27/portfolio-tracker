@@ -1,0 +1,13 @@
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/lib/observatory/public-payload.test.ts
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  11:08:51
+   Duration  418ms (transform 52ms, setup 0ms, import 86ms, tests 12ms, environment 251ms)
+

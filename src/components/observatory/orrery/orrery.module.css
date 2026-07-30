@@ -24,6 +24,12 @@
   --line: rgba(137, 213, 158, 0.28);
   --orrery-pointer-x: 0;
   --orrery-pointer-y: 0;
+  /* FB-17 (§12a): default production value. Overridable per-instance (via
+     inline style on this same element) for the three build-capture-park
+     evidence variants -- 600/660/720px -- without a shipped default
+     change; the .inspector rule below inherits this rather than
+     redeclaring it, so the override actually reaches it. */
+  --panel-width: 460px;
   position: relative;
   min-height: 100svh;
   overflow: hidden;
@@ -498,6 +504,70 @@
   font-size: var(--type-label);
 }
 
+/* FB-09 (§12a): the four-line exit receipt, phosphor #e8f1df on void
+   (17.46:1, computed in UNIVERSE_IDEAS_6.md §4.1). */
+.exitReceipt {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0 0 0.55rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(232, 241, 223, 0.3);
+  background: rgba(2, 10, 8, 0.6);
+}
+
+.exitReceipt p {
+  margin: 0;
+  color: #e8f1df;
+  font-size: var(--type-label);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.semanticMapGroups {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.semanticGroup,
+.semanticSubgroup {
+  margin: 0;
+  padding: 0;
+}
+
+.semanticGroup > summary,
+.semanticSubgroup > summary {
+  cursor: pointer;
+  color: var(--phosphor-dim);
+  font-size: var(--type-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.semanticSubgroup {
+  margin: 0.3rem 0 0 0.6rem;
+}
+
+@media (max-width: 1023px) {
+  /* MOB-01: the sub-1024px fallback is this same nav's ALWAYS-visible
+     layout (see the max-width:1023px .semanticMap rules further down), not
+     the desktop :focus-within reveal FB-09 targets -- it never had the
+     springs-open bug and must render byte-identical content/order to
+     before. Hide the group chrome and force every group open regardless of
+     its `open` attribute so the collapse this section adds has zero visual
+     effect here. */
+  .semanticGroup summary,
+  .semanticSubgroup summary {
+    display: none;
+  }
+  .semanticGroup:not([open]) > *:not(summary),
+  .semanticSubgroup:not([open]) > *:not(summary) {
+    display: revert !important;
+  }
+  .exitReceipt {
+    display: none;
+  }
+}
+
 .legend,
 .inspector {
   position: absolute;
@@ -849,6 +919,7 @@
   letter-spacing: 0.08em;
 }
 
+/* FB-05: briefing copy is prose, role -> --type-body, not a label size. */
 .briefingPaper {
   position: absolute;
   z-index: 4;
@@ -863,7 +934,7 @@
   color: var(--universe-paper-ink);
   background: var(--universe-paper-sheet);
   box-shadow: 6px 7px 0 rgba(43, 26, 16, 0.38);
-  font-size: var(--type-label);
+  font-size: var(--type-body);
 }
 
 .missionMachine {
@@ -921,19 +992,21 @@
   box-shadow: inset 0 0 50px rgba(5, 22, 17, 0.8);
 }
 
+/* FB-05: section/instrument header role -> --type-title, not a label size. */
 .plotChassis > header,
 .manifestInstrument > header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
-  font-size: var(--mission-label-size, 11px);
+  font-size: var(--type-title);
   letter-spacing: 0.12em;
 }
 
+/* FB-05: question copy/prose role -> --type-body, not a label size. */
 .bayQuestion {
   color: var(--universe-cabinet-question);
-  font-size: var(--mission-label-size, 11px);
+  font-size: var(--type-body);
   font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: lowercase;
@@ -1055,6 +1128,7 @@
   position: relative;
 }
 
+/* FB-05: holdings/manifest text role -> --type-body, not a label size. */
 .radarManifest > li > button {
   display: flex;
   width: 100%;
@@ -1066,13 +1140,16 @@
   border: 1px solid rgba(235, 210, 165, 0.25);
   color: #f1dfbd;
   background: #08110f;
-  font: 600 var(--type-label)/1 var(--font-mono, monospace);
+  font: 600 var(--type-body)/1 var(--font-mono, monospace);
 }
 
 .radarManifest > li[data-expanded="true"] {
   grid-column: 1 / -1;
 }
 
+/* FB-05: holdings/manifest text role -> --type-body, not a label size. The
+   dt term rule below stays --type-label -- those are genuine short labels
+   (e.g. "WEIGHT"), not the reading content this role covers. */
 .radarDetailCard {
   display: grid;
   grid-template-columns: minmax(6rem, 0.8fr) minmax(11rem, 1.2fr);
@@ -1080,7 +1157,7 @@
   padding: 0.5rem;
   border: 1px solid var(--universe-cabinet-amber-chrome);
   background: #050d0b;
-  font-size: var(--mission-label-size, 11px);
+  font-size: var(--type-body);
 }
 
 .radarDetailCard svg {
@@ -1257,10 +1334,11 @@
   gap: 0.55rem;
 }
 
+/* FB-05: section/instrument header role -> --type-title, not a label size. */
 .manifestHeader {
   padding: 0 0.55rem;
   color: #ad936a;
-  font-size: var(--type-label);
+  font-size: var(--type-title);
 }
 
 .manifestHeader span:nth-child(3) {
@@ -2180,6 +2258,13 @@
     white-space: normal;
     pointer-events: auto;
   }
+
+  /* FB-09 (§12a): a programmatic exit shows the short receipt, not the full
+     terminal -- leaving Mission Control was springing all ~20 rows open for
+     every keyboard/AT visitor with no warning. */
+  .semanticMap[data-exit-receipt="true"]:focus-within .semanticMapGroups {
+    display: none;
+  }
 }
 
 .inspector h2 {
@@ -2508,13 +2593,18 @@
 }
 
 /* Holding rail width — FB-17. The owner asked that the rail grow horizontally
-   to the left and choose from real 460 / 520 / 580px captures. It remains
+   to the left and choose from real 600 / 660 / 720px captures. It remains
    right-anchored, so changing this one evidence token cannot push the planet
-   right or alter orbital positions. */
+   right or alter orbital positions. --panel-width itself is NOT redeclared
+   here -- it inherits from .world (default 460px), so a capture-time inline
+   override on .world actually reaches this rule instead of being shadowed. */
 @media (min-width: 1024px) {
   [data-camera="approach"] .inspector {
-    --panel-width: 460px;
-    top: 5.75rem;
+    /* FB-19: 10rem clears .manualButton's bounding box (top 6.5rem, 44px
+       border-box height ⇒ bottom edge at 9.25rem) with a 0.75rem margin, at
+       every --panel-width value — the collision was vertical, not width
+       dependent. */
+    top: 10rem;
     right: 1.25rem;
     bottom: 1.25rem;
     width: min(var(--panel-width), calc(100vw - 3rem));
@@ -2859,6 +2949,77 @@
   font-size: var(--type-label);
 }
 
+/* FB-08 + FB-15 (§12a) variant B — the black rail. Solid bay-glass
+   background, no border-line, tabs lose their boxes. This same boxed-vs-
+   boxless contrast IS the FB-15 comparison; no separate build. */
+.missionControl > .missionStrip[data-strip-variant="b"] {
+  border-bottom: none;
+  background: var(--universe-cabinet-bay-glass);
+}
+
+.missionControl .missionStrip[data-strip-variant="b"] nav a {
+  padding: 0.35rem 0.5rem;
+  border: none;
+  color: var(--universe-cabinet-window-word);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.missionControl .missionStrip[data-strip-variant="b"] nav a[aria-current="page"] {
+  color: var(--universe-cabinet-cream);
+  background: none;
+  border-bottom: 2px solid var(--universe-cabinet-cream);
+}
+
+/* FB-08 + FB-15 (§12a) variants A/C — destinations folded into the chip
+   row when there is no boxed tab strip to carry them. */
+.missionFoldedChip {
+  min-height: 28px;
+  padding: 0.15rem 0.35rem;
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label)/1.2 var(--font-mono, monospace);
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+/* FB-08 + FB-15 (§12a) variant C — the index edge. A vertical scroll-spy
+   index down the right edge of the descent; the strip itself keeps only
+   hero + chips. Below 1280px this hides and the folded chips (shared with
+   variant A, rendered unconditionally above) take over instead. */
+.missionIndexEdge {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .missionIndexEdge {
+    position: fixed;
+    z-index: 40;
+    top: 8rem;
+    right: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .missionIndexEdge a {
+    padding: 0.3rem 0.5rem;
+    color: var(--universe-cabinet-window-word);
+    font-size: var(--type-label);
+    letter-spacing: 0.08em;
+    text-align: right;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .missionIndexEdge a[aria-current="page"] {
+    color: var(--universe-cabinet-cream);
+  }
+
+  .missionStrip[data-strip-variant="c"] .missionFoldedChip {
+    display: none;
+  }
+}
+
 .missionExit {
   display: flex;
   min-height: 44px;
@@ -2869,8 +3030,12 @@
   white-space: nowrap;
 }
 
+/* FB-21 (§12a): owner-fixed width, min(1120px, calc(100% - 2rem)) ->
+   min(1400px, 96vw) -- the wider column needs more breathing room than the
+   old fixed 1rem section padding gave it, so .missionDescentSection's
+   padding below grows to match. */
 .missionDescent {
-  width: min(1120px, calc(100% - 2rem));
+  width: min(1400px, 96vw);
   margin: 0 auto;
   padding: 1.4rem 0 3rem;
 }
@@ -2887,7 +3052,10 @@
   align-content: start;
   gap: 0.9rem;
   margin-bottom: 1rem;
-  padding: 1rem;
+  /* FB-21 (§12a): scales past the old fixed 1rem now that .missionDescent
+     can reach 1400px -- otherwise the wider column reads cramped at its
+     edges instead of filled. */
+  padding: clamp(1rem, 1.3vw, 1.6rem);
   font-size: var(--type-body);
   border: 1px solid rgba(213, 186, 140, 0.32);
   background:
@@ -2955,9 +3123,10 @@
   text-align: left;
 }
 
+/* FB-05: holdings header text role -> --type-body, not a label size. */
 .holdingsTable thead th {
   color: var(--universe-cabinet-window-word);
-  font: 600 var(--type-label) var(--font-mono, monospace);
+  font: 600 var(--type-body) var(--font-mono, monospace);
 }
 
 .holdingsTable a {
@@ -3013,6 +3182,17 @@
   color: #d7dfd3;
   font-size: var(--type-title);
   line-height: 1.45;
+}
+
+/* FB-11 (§12a): the named-pair sentence, beneath the generic paragraph
+   above -- additive, never a replacement for it. */
+.correlationPairLine {
+  max-width: 48ch;
+  margin: 0.55rem 0 0;
+  color: var(--universe-cabinet-amber-chrome);
+  font-size: var(--type-body);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
 .roomCorrelation {
@@ -3375,7 +3555,8 @@
 }
 
 .siphonReadout,
-.draftTruth {
+.draftTruth,
+.draftCoach {
   position: absolute;
   left: 50%;
   margin: 0;
@@ -3388,6 +3569,14 @@
   top: 14%;
   border: 1px dashed var(--universe-glass-scope-hero);
   color: var(--universe-glass-scope-hero);
+}
+
+/* FB-12 (§12a): first-open coach line, visible text (not aria-live only). */
+.draftCoach {
+  top: 5%;
+  width: 74%;
+  color: var(--universe-cabinet-amber-chrome);
+  text-align: center;
 }
 
 .draftTruth {

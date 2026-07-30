@@ -1,8 +1,9 @@
 import { trailingReturn } from "@/lib/portfolio/trailing-return";
 
 export const ORRERY_FLAT_EPSILON = 0.0005;
-export const ORRERY_MIN_RADIUS = 0.8;
-export const ORRERY_MAX_RADIUS = 1.7;
+// FB-01 (§12a): owner-fixed pull-back numbers, UNIVERSE_AUDIT.md §5.1.
+export const ORRERY_MIN_RADIUS = 0.62;
+export const ORRERY_MAX_RADIUS = 1.35;
 export const ORRERY_MIN_ANGULAR_SPEED = 0.012;
 export const ORRERY_MAX_ANGULAR_SPEED = 0.055;
 export const ORRERY_SUN_CLEARANCE = 3.4;
@@ -103,12 +104,15 @@ export function orbitRadiiForPlanetRadii(
       orbitRadii.push(Math.max(ORRERY_SUN_CLEARANCE, firstOrbitRadius));
       continue;
     }
-    // The 1.6 multiplier is the complete adjacent-ring clearance contract.
-    // Keeping no additive surplus lets the fitted 88% belt spend that space
-    // on the planets while their surfaces remain safely separated.
+    // FB-01 (§12a): owner-fixed gap formula, UNIVERSE_AUDIT.md §5.1 --
+    // 1.6x(ri+ri+1) -> 1.75x(ri+ri+1)+0.55. The added flat 0.55 term is what
+    // widens the minimum edge-to-edge clearance at closest approach; the
+    // multiplier alone (as before) scales with disc size but never
+    // guarantees an absolute floor between two small adjacent planets.
     orbitRadii.push(
       orbitRadii[index - 1] +
-        1.6 * (planetRadii[index - 1] + radius),
+        1.75 * (planetRadii[index - 1] + radius) +
+        0.55,
     );
   }
   return orbitRadii;

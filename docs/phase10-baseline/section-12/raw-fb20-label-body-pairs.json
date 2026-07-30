@@ -1,0 +1,212 @@
+{
+  "transitions": [
+    {
+      "approached": "ASML",
+      "labels": [
+        {
+          "ticker": "ASML",
+          "hidden": false,
+          "x": 448.6966142097191,
+          "y": 474.75430033530046,
+          "radius": 248.7216112944526,
+          "withinFrame": true
+        },
+        {
+          "ticker": "GOOG",
+          "hidden": false,
+          "x": 712.900538911274,
+          "y": 303.5474067859907,
+          "radius": 64.49066841511592,
+          "withinFrame": true
+        },
+        {
+          "ticker": "COST",
+          "hidden": true,
+          "x": -1953.399062458208,
+          "y": 451.38091564412457,
+          "radius": 329.7318082136785,
+          "withinFrame": false
+        },
+        {
+          "ticker": "MSFT",
+          "hidden": true,
+          "x": 3742.7578233587524,
+          "y": 597.5489146926687,
+          "radius": 530.6706507013043,
+          "withinFrame": false
+        },
+        {
+          "ticker": "INTC",
+          "hidden": false,
+          "x": 32.1461415681855,
+          "y": 280.89349414845253,
+          "radius": 33.884108429681135,
+          "withinFrame": true
+        },
+        {
+          "ticker": "IBM",
+          "hidden": true,
+          "x": -14684683.895200683,
+          "y": 3672319.2366155344,
+          "radius": 9093792.2077526,
+          "withinFrame": false
+        },
+        {
+          "ticker": "CBRS",
+          "hidden": false,
+          "x": 1369.0490294983988,
+          "y": 278.27728738199517,
+          "radius": 31.76578950141527,
+          "withinFrame": true
+        },
+        {
+          "ticker": "CRM",
+          "hidden": true,
+          "x": -971.9048260953139,
+          "y": 298.14758454089997,
+          "radius": 64.34537007438587,
+          "withinFrame": false
+        }
+      ]
+    },
+    {
+      "approached": "GOOG",
+      "labels": [
+        {
+          "ticker": "ASML",
+          "hidden": false,
+          "x": -28.777601342610637,
+          "y": 319.07878627363726,
+          "radius": 106.46373388637056,
+          "withinFrame": true
+        },
+        {
+          "ticker": "GOOG",
+          "hidden": false,
+          "x": 442.0869231363827,
+          "y": 475.08886455697,
+          "radius": 216.16171221467692,
+          "withinFrame": true
+        },
+        {
+          "ticker": "COST",
+          "hidden": false,
+          "x": 728.2268447369361,
+          "y": 277.5189174326821,
+          "radius": 35.58885373384203,
+          "withinFrame": true
+        },
+        {
+          "ticker": "MSFT",
+          "hidden": true,
+          "x": -2278.219269594133,
+          "y": 424.96544584233595,
+          "radius": 286.4059746991602,
+          "withinFrame": false
+        },
+        {
+          "ticker": "INTC",
+          "hidden": true,
+          "x": 1956.440906668066,
+          "y": 344.1100426797658,
+          "radius": 85.22837367140005,
+          "withinFrame": false
+        },
+        {
+          "ticker": "IBM",
+          "hidden": false,
+          "x": 235.13751957037022,
+          "y": 262.1252374127198,
+          "radius": 23.425163651008603,
+          "withinFrame": true
+        },
+        {
+          "ticker": "CBRS",
+          "hidden": true,
+          "x": -6558997.878719491,
+          "y": 3865831.8562780884,
+          "radius": 4041983.1392733967,
+          "withinFrame": false
+        },
+        {
+          "ticker": "CRM",
+          "hidden": true,
+          "x": 1547.3757269939706,
+          "y": 275.73561168622,
+          "radius": 33.887932520997765,
+          "withinFrame": false
+        }
+      ]
+    },
+    {
+      "approached": "COST",
+      "labels": [
+        {
+          "ticker": "ASML",
+          "hidden": false,
+          "x": 536.3778763359483,
+          "y": 296.489825441513,
+          "radius": 69.26807226096594,
+          "withinFrame": true
+        },
+        {
+          "ticker": "GOOG",
+          "hidden": true,
+          "x": -218.51588677718098,
+          "y": 298.7415289621963,
+          "radius": 78.0161798303713,
+          "withinFrame": false
+        },
+        {
+          "ticker": "COST",
+          "hidden": false,
+          "x": 414.64282263972075,
+          "y": 477.3817741960726,
+          "radius": 163.18604044336846,
+          "withinFrame": true
+        },
+        {
+          "ticker": "MSFT",
+          "hidden": false,
+          "x": 611.5691845580898,
+          "y": 265.7236039435304,
+          "radius": 24.6273463162222,
+          "withinFrame": true
+        },
+        {
+          "ticker": "INTC",
+          "hidden": true,
+          "x": -4424.113886334472,
+          "y": 573.3932824059631,
+          "radius": 732.8079515524523,
+          "withinFrame": false
+        },
+        {
+          "ticker": "IBM",
+          "hidden": true,
+          "x": 2069.2036923116902,
+          "y": 354.17602935937305,
+          "radius": 93.77101654193098,
+          "withinFrame": false
+        },
+        {
+          "ticker": "CBRS",
+          "hidden": true,
+          "x": -195.6381233297136,
+          "y": 265.6508517504416,
+          "radius": 28.16124878251543,
+          "withinFrame": false
+        },
+        {
+          "ticker": "CRM",
+          "hidden": true,
+          "x": -14876919.802493483,
+          "y": 3546503.0178957027,
+          "radius": 9213122.8204001,
+          "withinFrame": false
+        }
+      ]
+    }
+  ],
+  "orphaned": []
+}

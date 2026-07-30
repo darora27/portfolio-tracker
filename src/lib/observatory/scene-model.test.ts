@@ -20,6 +20,7 @@ import {
   cometColor,
   decorativeSpinPeriodSeconds,
   decorativeSpinRadiansPerSecond,
+  layoutOverviewLabels,
   moonRadiusForStoryCount,
   moonBucketForStoryCount,
   moonOrbitPeriodSeconds,
@@ -172,13 +173,17 @@ describe("pure overview scene descriptor", () => {
     expect(model.planets[0].projectedDiameterPx).toBe(
       model.planets[0].bounds.width,
     );
-    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(58);
-    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(64);
+    // FB-01 (§12a): the pull-back (smaller radii, wider gap, tighter belt
+    // span) shrinks every projected diameter and the belt's own viewport
+    // share -- these floors/ceilings are recalibrated to the new geometry,
+    // not the pre-§12a scale.
+    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(43);
+    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(47);
     expect(
       Math.min(...model.planets.map(({ projectedDiameterPx }) => projectedDiameterPx)),
-    ).toBeGreaterThanOrEqual(22);
-    expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.85);
-    expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.92);
+    ).toBeGreaterThanOrEqual(17);
+    expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.79);
+    expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.81);
   });
 
   it("keeps the production-weight composition in spec across a full 1440x900 orbital phase sweep", () => {
@@ -199,8 +204,9 @@ describe("pure overview scene descriptor", () => {
         orbitalPhaseRadians: (phaseIndex / 360) * Math.PI * 2,
       });
 
-      expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.85);
-      expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.92);
+      // FB-01 (§12a): OVERVIEW_BELT_SPAN_PCT 0.88 -> 0.80.
+      expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.79);
+      expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.81);
       expect(model.belt.viewportSpanPct).toBeCloseTo(
         model.belt.bounds.width / viewport.width,
         12,
@@ -233,10 +239,11 @@ describe("pure overview scene descriptor", () => {
           planet.projectedDiameterPx,
           `${planet.ticker} projected diameter`,
         ).toBe(planet.bounds.width);
+        // FB-01 (§12a): recalibrated floor for the pull-back's smaller radii.
         expect(
           planet.projectedDiameterPx,
           `${planet.ticker} projected diameter floor`,
-        ).toBeGreaterThanOrEqual(22);
+        ).toBeGreaterThanOrEqual(16);
         expect(planet.bounds.left, `${planet.ticker} planet left`).toBeGreaterThanOrEqual(0);
         expect(planet.bounds.top, `${planet.ticker} planet top`).toBeGreaterThanOrEqual(0);
         expect(planet.bounds.right, `${planet.ticker} planet right`).toBeLessThanOrEqual(
@@ -260,10 +267,16 @@ describe("pure overview scene descriptor", () => {
       }
     }
 
-    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(58);
-    expect(heaviestDiameterMax).toBeLessThanOrEqual(68);
-    expect(smallestDiameter).toBeGreaterThanOrEqual(22);
-    expect(minimumSpacingRatio).toBeCloseTo(1.6, 12);
+    // FB-01 (§12a): recalibrated for the pull-back's smaller radii and wider
+    // gap. The gap formula's additive +0.55 term also means the
+    // gap/(r_i+r_i+1) ratio is no longer a single constant across every
+    // adjacent pair (unlike the old pure 1.6x multiplier) -- it is always
+    // strictly greater than the 1.75 multiplier alone, by 0.55/(r_i+r_i+1).
+    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(41);
+    expect(heaviestDiameterMax).toBeLessThanOrEqual(49);
+    expect(smallestDiameter).toBeGreaterThanOrEqual(16);
+    expect(minimumSpacingRatio).toBeGreaterThan(1.75);
+    expect(minimumSpacingRatio).toBeLessThan(2.5);
     expect([...seenPlanets]).toEqual(
       productionOverviewHoldings.map(({ ticker }) => ticker),
     );
@@ -316,7 +329,7 @@ describe("pure overview scene descriptor", () => {
     }
   });
 
-  it("keeps adjacent rings at least 1.6 times the sum of planet radii apart", () => {
+  it("keeps adjacent rings apart per the FB-01 (§12a) gap formula", () => {
     const model = buildOverviewSceneModel({
       holdings,
       healthScalar: 0,
@@ -326,12 +339,13 @@ describe("pure overview scene descriptor", () => {
       const current = model.planets[index];
       const next = model.planets[index + 1];
       const spacing = next.orbitRadius - current.orbitRadius;
+      // FB-01 (§12a): 1.6x(ri+ri+1) -> 1.75x(ri+ri+1)+0.55.
       expect(spacing).toBeCloseTo(
-        1.6 * (current.radius + next.radius),
+        1.75 * (current.radius + next.radius) + 0.55,
         12,
       );
       expect(spacing + Number.EPSILON * 4).toBeGreaterThanOrEqual(
-        1.6 * (current.radius + next.radius),
+        1.75 * (current.radius + next.radius) + 0.55,
       );
     }
   });
@@ -453,6 +467,46 @@ describe("pure overview scene descriptor", () => {
     expect(far.yielded).toBe(true);
     expect(far.opacity).toBe(0.5);
     expect(far.screen).not.toEqual({ x: 22, y: 22, depth: 0.8 });
+  });
+
+  it("FB-20: culls a label whose body is not itself visible instead of clamping it into frame", () => {
+    const viewport = { width: 1440, height: 900 };
+    const [visible, offFrame, behindCamera] = layoutOverviewLabels(
+      [
+        {
+          ticker: "VISIBLE",
+          screen: { x: 700, y: 450, depth: 0.1 },
+          opacity: 1,
+          yielded: false,
+          bodyVisible: true,
+        },
+        {
+          // A body whose OWN projection has drifted fully off the canvas --
+          // the pre-fix edge clamp would have dragged this back into frame.
+          ticker: "OFFFRAME",
+          screen: { x: 4000, y: 450, depth: 0.1 },
+          opacity: 1,
+          yielded: false,
+          bodyVisible: false,
+        },
+        {
+          // A body behind the camera / past the far clip -- the raw
+          // projected.z > 1 test alone caught this case already, and must
+          // keep catching it.
+          ticker: "BEHINDCAMERA",
+          screen: { x: 700, y: 450, depth: 1.4 },
+          opacity: 1,
+          yielded: false,
+          bodyVisible: false,
+        },
+      ],
+      viewport,
+    );
+    expect(visible.bodyVisible).toBe(true);
+    expect(visible.screen.x).toBeGreaterThan(0);
+    expect(visible.screen.x).toBeLessThan(viewport.width);
+    expect(offFrame.bodyVisible).toBe(false);
+    expect(behindCamera.bodyVisible).toBe(false);
   });
 
   it("derives observed system health without inventing TWR", () => {

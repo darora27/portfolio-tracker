@@ -2,6 +2,10 @@ import Link from "next/link";
 import type { DashboardData } from "@/lib/dashboard-data";
 import { daysBetween, todayInTimeZone } from "@/lib/date";
 import { formatCurrency } from "@/lib/format";
+import {
+  correlationPairSentence,
+  mostCorrelatedPair,
+} from "@/lib/observatory/structure-copy";
 import { LazyMissionSection } from "./LazyMissionSection";
 import { ReturnInstrument } from "./ReturnInstrument";
 import styles from "./orrery.module.css";
@@ -34,6 +38,9 @@ export function MissionControlRoomContent({
     .slice(0, 5);
   const today = todayInTimeZone("America/New_York");
   const correlationCount = Math.max(1, data.correlationTickers.length);
+  const correlationSentence = correlationPairSentence(
+    mostCorrelatedPair(data.correlationTickers, data.correlationCells),
+  );
   const returns = data.chartData.map((point) => ({
     date: point.date,
     index: point.portfolioIndex,
@@ -119,6 +126,9 @@ export function MissionControlRoomContent({
             paths through a market move. Correlation describes co-movement, not
             cause, certainty, or what happens next.
           </p>
+          {correlationSentence ? (
+            <p className={styles.correlationPairLine}>{correlationSentence}</p>
+          ) : null}
           <div
             className={styles.roomCorrelation}
             style={{ gridTemplateColumns: `repeat(${correlationCount}, 1fr)` }}

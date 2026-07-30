@@ -35,6 +35,7 @@ beforeEach(() => {
     configurable: true,
     value: { writeText: vi.fn().mockResolvedValue(undefined) },
   });
+  window.sessionStorage.clear();
 });
 
 afterEach(() => {
@@ -129,5 +130,66 @@ describe("DraftRig", () => {
     );
     expect(screen.getByText(SIMULATIONS_BANNER).textContent).toBe(SIMULATIONS_BANNER);
     expect(container.textContent).not.toMatch(/(?:[$€£¥]\s*\d|\bUSD\s+\d)/);
+  });
+
+  it("FB-12 / BHV-02: motion defaults OFF for a visitor with no reduced-motion OS preference", async () => {
+    // beforeEach already stubs matchMedia matches:false (no OS preference).
+    render(<DraftRig holdings={holdings} encodedDraft={null} onClose={vi.fn()} />);
+    await waitFor(() => expect(
+      screen.getByRole("switch", { name: "MOTION OFF" }),
+    ).toBeTruthy());
+  });
+
+  it("FB-12 / BHV-02: reduced motion still locks the switch off and blocks manual re-enable", async () => {
+    vi.mocked(window.matchMedia).mockReturnValue({
+      matches: true,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    } as unknown as MediaQueryList);
+    render(<DraftRig holdings={holdings} encodedDraft={null} onClose={vi.fn()} />);
+    const motionSwitch = await screen.findByRole("switch", { name: "MOTION OFF" });
+    expect((motionSwitch as HTMLButtonElement).disabled).toBe(true);
+    fireEvent.click(motionSwitch);
+    expect(screen.getByRole("switch", { name: "MOTION OFF" })).toBeTruthy();
+  });
+
+  it("FB-12 / BHV-02: dish-lap speed stays within [30, 90]s and preserves inverse-magnitude ordering", () => {
+    const { container } = render(
+      <DraftRig holdings={holdings} encodedDraft={null} onClose={vi.fn()} />,
+    );
+    const runners = Array.from(
+      container.querySelectorAll<HTMLButtonElement>("[data-draft-index]"),
+    ).map((button) => {
+      const runner = button.parentElement as HTMLElement;
+      const raw = runner.style.getPropertyValue("--draft-speed");
+      return Number(raw.replace("s", ""));
+    });
+    expect(runners).toHaveLength(holdings.length);
+    for (const speed of runners) {
+      expect(speed).toBeGreaterThanOrEqual(30);
+      expect(speed).toBeLessThanOrEqual(90);
+    }
+    // Bigger |weeklyReturn| must still lap proportionally faster (shorter).
+    const byMagnitude = holdings
+      .map((holding, index) => ({
+        magnitude: Math.abs(holding.weeklyReturn),
+        speed: runners[index],
+      }))
+      .sort((a, b) => a.magnitude - b.magnitude);
+    for (let i = 0; i < byMagnitude.length - 1; i += 1) {
+      expect(byMagnitude[i].speed).toBeGreaterThanOrEqual(byMagnitude[i + 1].speed);
+    }
+  });
+
+  it("FB-12: the DRAFT latch appears in the strip nav is out of DraftRig's own scope, but the first-open coach line is", async () => {
+    render(<DraftRig holdings={holdings} encodedDraft={null} onClose={vi.fn()} />);
+    expect(
+      screen.getByText(/PULL A CIRCLE.*THE OTHERS BREATHE.*DRAG INTO ANOTHER TO SIPHON/),
+    ).toBeTruthy();
+    cleanup();
+    render(<DraftRig holdings={holdings} encodedDraft={null} onClose={vi.fn()} />);
+    expect(
+      screen.queryByText(/PULL A CIRCLE/),
+    ).toBeNull();
   });
 });

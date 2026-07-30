@@ -1,0 +1,13 @@
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/components/observatory/orrery/mission-control-text-roles.test.tsx
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  11:08:48
+   Duration  567ms (transform 94ms, setup 0ms, import 169ms, tests 84ms, environment 250ms)
+

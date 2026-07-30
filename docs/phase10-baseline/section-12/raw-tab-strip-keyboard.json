@@ -1,0 +1,104 @@
+[
+  {
+    "variant": "a",
+    "consoleErrors": [],
+    "reachable": [
+      {
+        "anchor": "orbits",
+        "reachable": true
+      },
+      {
+        "anchor": "holdings",
+        "reachable": true
+      },
+      {
+        "anchor": "returns",
+        "reachable": true
+      },
+      {
+        "anchor": "risk",
+        "reachable": true
+      },
+      {
+        "anchor": "correlation",
+        "reachable": true
+      },
+      {
+        "anchor": "news",
+        "reachable": true
+      },
+      {
+        "anchor": "trades",
+        "reachable": true
+      }
+    ]
+  },
+  {
+    "variant": "b",
+    "consoleErrors": [],
+    "reachable": [
+      {
+        "anchor": "orbits",
+        "reachable": true
+      },
+      {
+        "anchor": "holdings",
+        "reachable": true
+      },
+      {
+        "anchor": "returns",
+        "reachable": true
+      },
+      {
+        "anchor": "risk",
+        "reachable": true
+      },
+      {
+        "anchor": "correlation",
+        "reachable": true
+      },
+      {
+        "anchor": "news",
+        "reachable": true
+      },
+      {
+        "anchor": "trades",
+        "reachable": true
+      }
+    ]
+  },
+  {
+    "variant": "c",
+    "consoleErrors": [],
+    "reachable": [
+      {
+        "anchor": "orbits",
+        "reachable": true
+      },
+      {
+        "anchor": "holdings",
+        "reachable": true
+      },
+      {
+        "anchor": "returns",
+        "reachable": true
+      },
+      {
+        "anchor": "risk",
+        "reachable": true
+      },
+      {
+        "anchor": "correlation",
+        "reachable": true
+      },
+      {
+        "anchor": "news",
+        "reachable": true
+      },
+      {
+        "anchor": "trades",
+        "reachable": true
+      }
+    ]
+  }
+]

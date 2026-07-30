@@ -1,0 +1,186 @@
+{
+  "VIS-04": {
+    "ok": true,
+    "minEdgeToEdgeRatio": 2.085148605535538
+  },
+  "VIS-01": {
+    "ok": true,
+    "button": {
+      "top": 104,
+      "bottom": 148,
+      "left": 1255.40625,
+      "right": 1404
+    },
+    "panel": {
+      "top": 160,
+      "bottom": 880,
+      "left": 960,
+      "right": 1420
+    },
+    "intersects": false,
+    "microHintPresent": true,
+    "microHintText": "SPIN = SCENERY · ORBIT = WEEK",
+    "microHintWidth": 216.921875
+  },
+  "VIS-02": {
+    "ok": true,
+    "orphanedCount": 0
+  },
+  "VIS-05": {
+    "ok": true,
+    "panelMeasurements": [
+      {
+        "requestedWidth": 600,
+        "planetRightEdge": 696.9882753213005,
+        "panelLeftEdge": 820,
+        "panelWidth": 600,
+        "unoccluded": true
+      },
+      {
+        "requestedWidth": 660,
+        "planetRightEdge": 697.0829262045306,
+        "panelLeftEdge": 760,
+        "panelWidth": 660,
+        "unoccluded": true
+      },
+      {
+        "requestedWidth": 720,
+        "planetRightEdge": 697.2847207413687,
+        "panelLeftEdge": 700,
+        "panelWidth": 720,
+        "unoccluded": true
+      }
+    ]
+  },
+  "VIS-06": {
+    "ok": true,
+    "keyboardResults": [
+      {
+        "variant": "a",
+        "consoleErrors": [],
+        "reachable": [
+          {
+            "anchor": "orbits",
+            "reachable": true
+          },
+          {
+            "anchor": "holdings",
+            "reachable": true
+          },
+          {
+            "anchor": "returns",
+            "reachable": true
+          },
+          {
+            "anchor": "risk",
+            "reachable": true
+          },
+          {
+            "anchor": "correlation",
+            "reachable": true
+          },
+          {
+            "anchor": "news",
+            "reachable": true
+          },
+          {
+            "anchor": "trades",
+            "reachable": true
+          }
+        ]
+      },
+      {
+        "variant": "b",
+        "consoleErrors": [],
+        "reachable": [
+          {
+            "anchor": "orbits",
+            "reachable": true
+          },
+          {
+            "anchor": "holdings",
+            "reachable": true
+          },
+          {
+            "anchor": "returns",
+            "reachable": true
+          },
+          {
+            "anchor": "risk",
+            "reachable": true
+          },
+          {
+            "anchor": "correlation",
+            "reachable": true
+          },
+          {
+            "anchor": "news",
+            "reachable": true
+          },
+          {
+            "anchor": "trades",
+            "reachable": true
+          }
+        ]
+      },
+      {
+        "variant": "c",
+        "consoleErrors": [],
+        "reachable": [
+          {
+            "anchor": "orbits",
+            "reachable": true
+          },
+          {
+            "anchor": "holdings",
+            "reachable": true
+          },
+          {
+            "anchor": "returns",
+            "reachable": true
+          },
+          {
+            "anchor": "risk",
+            "reachable": true
+          },
+          {
+            "anchor": "correlation",
+            "reachable": true
+          },
+          {
+            "anchor": "news",
+            "reachable": true
+          },
+          {
+            "anchor": "trades",
+            "reachable": true
+          }
+        ]
+      }
+    ]
+  },
+  "VIS-03": {
+    "ok": true
+  },
+  "VIS-10": {
+    "ok": true,
+    "descentWidthAtCapture": 1382.390625
+  },
+  "VIS-09": {
+    "ok": true
+  },
+  "VIS-07-receipt": {
+    "ok": true
+  },
+  "VIS-07-terminal": {
+    "ok": true,
+    "groupCount": 4,
+    "openCount": 1,
+    "receiptShowing": false
+  },
+  "MOB-01": {
+    "ok": true,
+    "scrollWidth": 390,
+    "clientWidth": 390
+  }
+}

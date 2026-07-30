@@ -29,6 +29,7 @@ import {
   UNIVERSE_CSS_PROPERTIES,
   rampForWeekly,
 } from "@/lib/observatory/universe-palette";
+import { usePrefersReducedMotion } from "@/components/ui/usePrefersReducedMotion";
 import { FirstVisitOrientation } from "./FirstVisitOrientation";
 import { Legend } from "./Legend";
 import {
@@ -156,6 +157,33 @@ export function OrreryWorld({
   const [sunFocused, setSunFocused] = useState(false);
   const [beltOpen, setBeltOpen] = useState(false);
   const [showHint, setShowHint] = useState(false);
+  // FB-17 (§12a): capture-only evidence override, e.g. ?panelWidth=660 --
+  // never read by production navigation, only by the build-capture-park
+  // variant captures. Absent entirely, the CSS default (460px) applies.
+  // Read post-mount (not a lazy useState initializer) so server and
+  // client's first render match -- SSR always has no `window` to read.
+  const [panelWidthOverride, setPanelWidthOverride] = useState<number | null>(null);
+  useEffect(() => {
+    const requested = Number(new URLSearchParams(window.location.search).get("panelWidth"));
+    setPanelWidthOverride(Number.isFinite(requested) && requested > 0 ? requested : null);
+  }, []);
+  // FB-08 + FB-15 (§12a): capture-only evidence override, e.g.
+  // ?stripVariant=b -- never read by production navigation. Absent
+  // entirely, today's 8-boxed-tabs strip is unchanged.
+  const [stripVariant, setStripVariant] = useState<"a" | "b" | "c" | null>(null);
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("stripVariant");
+    setStripVariant(requested === "a" || requested === "b" || requested === "c" ? requested : null);
+  }, []);
+  // FB-09 (§12a): programmatic focus-restoration (leaving Mission Control)
+  // must show the short exit receipt, not spring the full semantic terminal
+  // open -- see the JSX below and orrery.module.css's
+  // `[data-exit-receipt="true"] .semanticMap:focus-within` rule.
+  const [exitReceiptVisible, setExitReceiptVisible] = useState(false);
+  const [openTerminalGroup, setOpenTerminalGroup] = useState<
+    "bodies" | "instruments" | "belt" | "encoding" | null
+  >("bodies");
+  const reducedMotion = usePrefersReducedMotion();
   const selected = holdings.find(({ ticker }) => ticker === selectedTicker) ?? null;
   const planetTickers = orreryBelt?.planetTickers ?? holdings.slice(0, 8).map(({ ticker }) => ticker);
   const beltTickers = orreryBelt?.beltTickers ?? holdings.slice(8).map(({ ticker }) => ticker);
@@ -226,10 +254,18 @@ export function OrreryWorld({
       document.querySelector<HTMLElement>(
         `[data-holding="${CSS.escape(previousTickerRef.current)}"]`,
       )?.focus({ preventScroll: true });
+      // FB-09 (§12a): this restoration is programmatic (leaving Mission
+      // Control / an approached planet), not a real Tab -- show the short
+      // receipt instead of springing the full terminal open. Both
+      // restoration targets live in the BODIES group.
+      setOpenTerminalGroup("bodies");
+      setExitReceiptVisible(true);
     } else if (previousPortfolioRef.current) {
       document.querySelector<HTMLElement>("[data-portfolio-sun]")?.focus({
         preventScroll: true,
       });
+      setOpenTerminalGroup("bodies");
+      setExitReceiptVisible(true);
     }
     previousTickerRef.current = selectedTicker;
     previousPortfolioRef.current = portfolioSelected;
@@ -237,6 +273,28 @@ export function OrreryWorld({
       if (hintFrame) window.cancelAnimationFrame(hintFrame);
     };
   }, [portfolioSelected, selectedTicker]);
+
+  useEffect(() => {
+    if (!exitReceiptVisible) return;
+    const clear = () => setExitReceiptVisible(false);
+    // The first real keydown always ends the receipt -- a keyboard user who
+    // starts navigating for real should get normal terminal behavior back
+    // immediately, not wait out a fade meant for someone doing nothing.
+    window.addEventListener("keydown", clear, { once: true });
+    let timer: number | null = null;
+    if (reducedMotion) {
+      // Reduced motion: this is a state, not an animation -- it persists
+      // until any interaction rather than fading on a timer.
+      window.addEventListener("pointerdown", clear, { once: true });
+    } else {
+      timer = window.setTimeout(clear, 4000);
+    }
+    return () => {
+      window.removeEventListener("keydown", clear);
+      window.removeEventListener("pointerdown", clear);
+      if (timer !== null) window.clearTimeout(timer);
+    };
+  }, [exitReceiptVisible, reducedMotion]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -271,6 +329,7 @@ export function OrreryWorld({
       style={{
         ...UNIVERSE_CSS_PROPERTIES,
         ...MISSION_CONTROL_CSS_PROPERTIES,
+        ...(panelWidthOverride ? { "--panel-width": `${panelWidthOverride}px` } : {}),
       } as CSSProperties}
       data-force-no-3d={forceNo3d ? "true" : "false"}
       data-camera={cameraState}
@@ -344,117 +403,204 @@ export function OrreryWorld({
           </strong>
         </div>
 
-        <nav className={styles.semanticMap} aria-label="Portfolio bodies">
-          <Link
-            href={`${basePath}?focus=portfolio&camera=command${forceNo3d ? "&no3d=1" : ""}`}
-            prefetch={false}
-            data-portfolio-sun
-            className={styles.sunControl}
-            aria-current={portfolioSelected ? "page" : undefined}
-            onFocus={() => setSunFocused(true)}
-            onBlur={() => setSunFocused(false)}
-            scroll={false}
-          >
-            <span>SUN / PORTFOLIO</span>
-            TODAY {formatPercent(portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct)} · SUNSPOT INTENSITY {(health.sunspotIntensity * 100).toFixed(0)}%
-          </Link>
-          <ol className={styles.holdingList}>
-            {planets.map((holding) => {
-              return (
-                <li key={holding.ticker}>
-                  <Link
-                    href={orreryHoldingHref(holding.ticker, forceNo3d, basePath)}
-                    prefetch={false}
-                    data-holding={holding.ticker}
-                    data-selected={holding.ticker === selectedTicker ? "true" : undefined}
-                    data-hovered={holding.ticker === hoveredTicker ? "true" : undefined}
-                    className={styles.holdingControl}
-                    aria-current={holding.ticker === selectedTicker ? "page" : undefined}
-                    onMouseEnter={() => setHoveredTicker(holding.ticker)}
-                    onMouseLeave={() => setHoveredTicker(null)}
-                    onFocus={() => setHoveredTicker(holding.ticker)}
-                    onBlur={() => setHoveredTicker(null)}
-                    scroll={false}
-                  >
-                    <span className={styles.ticker}>HOLDINGS / {holding.ticker} · {holding.companyName}</span>
-                    <span className={styles.orbitFacts}>
-                      WEIGHT {formatWeightPercent(holding.weight)} · WEEK {formatPercent(holding.weeklyReturn)} · {directionForWeeklyReturn(holding.weeklyReturn)}
-                    </span>
-                    <span className={styles.orbitFacts}>
-                      TODAY {formatPercent(holding.dayReturn)} · TRAIL {rampForWeekly(holding.weeklyReturn)} · {(trailArcLengthForWeeklyReturn(holding.weeklyReturn) * 180 / Math.PI).toFixed(0)}° ARC
-                    </span>
+        <nav
+          className={styles.semanticMap}
+          aria-label="Portfolio bodies"
+          data-exit-receipt={exitReceiptVisible ? "true" : "false"}
+        >
+          {exitReceiptVisible ? (
+            <div className={styles.exitReceipt} role="status">
+              <p>LEFT MISSION CONTROL.</p>
+              <p>BACK AT THE SUN.</p>
+              <p>TAB FOR THE FULL MAP.</p>
+              <p>ESC RETURNS HERE ANY TIME.</p>
+            </div>
+          ) : null}
+          <div className={styles.semanticMapGroups}>
+            <details
+              className={styles.semanticGroup}
+              open={openTerminalGroup === "bodies"}
+              onToggle={(event) =>
+                setOpenTerminalGroup(
+                  (event.currentTarget as HTMLDetailsElement).open ? "bodies" : null,
+                )
+              }
+            >
+              <summary>BODIES</summary>
+              <Link
+                href={`${basePath}?focus=portfolio&camera=command${forceNo3d ? "&no3d=1" : ""}`}
+                prefetch={false}
+                data-portfolio-sun
+                className={styles.sunControl}
+                aria-current={portfolioSelected ? "page" : undefined}
+                onFocus={() => {
+                  setSunFocused(true);
+                  setOpenTerminalGroup("bodies");
+                }}
+                onBlur={() => setSunFocused(false)}
+                scroll={false}
+              >
+                <span>SUN / PORTFOLIO</span>
+                TODAY {formatPercent(portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct)} · SUNSPOT INTENSITY {(health.sunspotIntensity * 100).toFixed(0)}%
+              </Link>
+              <ol className={styles.holdingList}>
+                {planets.map((holding) => {
+                  return (
+                    <li key={holding.ticker}>
+                      <Link
+                        href={orreryHoldingHref(holding.ticker, forceNo3d, basePath)}
+                        prefetch={false}
+                        data-holding={holding.ticker}
+                        data-selected={holding.ticker === selectedTicker ? "true" : undefined}
+                        data-hovered={holding.ticker === hoveredTicker ? "true" : undefined}
+                        className={styles.holdingControl}
+                        aria-current={holding.ticker === selectedTicker ? "page" : undefined}
+                        onMouseEnter={() => setHoveredTicker(holding.ticker)}
+                        onMouseLeave={() => setHoveredTicker(null)}
+                        onFocus={() => {
+                          setHoveredTicker(holding.ticker);
+                          setOpenTerminalGroup("bodies");
+                        }}
+                        onBlur={() => setHoveredTicker(null)}
+                        scroll={false}
+                      >
+                        <span className={styles.ticker}>HOLDINGS / {holding.ticker} · {holding.companyName}</span>
+                        <span className={styles.orbitFacts}>
+                          WEIGHT {formatWeightPercent(holding.weight)} · WEEK {formatPercent(holding.weeklyReturn)} · {directionForWeeklyReturn(holding.weeklyReturn)}
+                        </span>
+                        <span className={styles.orbitFacts}>
+                          TODAY {formatPercent(holding.dayReturn)} · TRAIL {rampForWeekly(holding.weeklyReturn)} · {(trailArcLengthForWeeklyReturn(holding.weeklyReturn) * 180 / Math.PI).toFixed(0)}° ARC
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ol>
+            </details>
+
+            <details
+              className={styles.semanticGroup}
+              open={openTerminalGroup === "instruments"}
+              onToggle={(event) =>
+                setOpenTerminalGroup(
+                  (event.currentTarget as HTMLDetailsElement).open ? "instruments" : null,
+                )
+              }
+            >
+              <summary>INSTRUMENTS</summary>
+              <details className={styles.semanticSubgroup}>
+                <summary>
+                  NEWS ·{" "}
+                  {planets.filter(
+                    (holding) =>
+                      (holding.newsCount ?? newsByHolding[holding.ticker]?.length ?? 0) > 0,
+                  ).length}
+                </summary>
+                <ol className={styles.instrumentList}>
+                  {planets
+                    .filter(
+                      (holding) =>
+                        (holding.newsCount ??
+                          newsByHolding[holding.ticker]?.length ??
+                          0) > 0,
+                    )
+                    .map((holding) => (
+                      <li key={`moon-${holding.ticker}`}>
+                        <Link
+                          className={styles.bodyControl}
+                          href={`${orreryHoldingHref(holding.ticker, forceNo3d, basePath)}&detail=transmissions`}
+                          prefetch={false}
+                          scroll={false}
+                          data-moon={holding.ticker}
+                          onFocus={() => setOpenTerminalGroup("instruments")}
+                        >
+                          NEWS / {holding.ticker} · {(holding.newsCount ?? newsByHolding[holding.ticker]?.length)} HEADLINES · {(moonBucketForStoryCount(holding.newsCount ?? newsByHolding[holding.ticker]?.length ?? 0) ?? "none").toUpperCase()} SIZE
+                          {holding.nextEarningsDays !== null && holding.nextEarningsDays !== undefined ? ` · T−${holding.nextEarningsDays}D` : ""}
+                        </Link>
+                      </li>
+                    ))}
+                </ol>
+              </details>
+              <ol className={styles.instrumentList}>
+                <li>
+                  <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=scope${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false} onFocus={() => setOpenTerminalGroup("instruments")}>
+                    RETURNS / VS VOO · SAME PERIOD {formatPercent(portfolioSummary.marketRelativePct)}
                   </Link>
                 </li>
-              );
-            })}
-          </ol>
-          <ol className={styles.instrumentList}>
-            {planets
-              .filter(
-                (holding) =>
-                  (holding.newsCount ??
-                    newsByHolding[holding.ticker]?.length ??
-                    0) > 0,
-              )
-              .map((holding) => (
-                <li key={`moon-${holding.ticker}`}>
-                  <Link
-                    className={styles.bodyControl}
-                    href={`${orreryHoldingHref(holding.ticker, forceNo3d, basePath)}&detail=transmissions`}
-                    prefetch={false}
-                    scroll={false}
-                    data-moon={holding.ticker}
-                  >
-                    NEWS / {holding.ticker} · {(holding.newsCount ?? newsByHolding[holding.ticker]?.length)} HEADLINES · {(moonBucketForStoryCount(holding.newsCount ?? newsByHolding[holding.ticker]?.length ?? 0) ?? "none").toUpperCase()} SIZE
-                    {holding.nextEarningsDays !== null && holding.nextEarningsDays !== undefined ? ` · T−${holding.nextEarningsDays}D` : ""}
+                <li>
+                  <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=hazard${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false} onFocus={() => setOpenTerminalGroup("instruments")}>
+                    RISK / VOL · SINCE START {formatPercent(portfolioVolatility)} · BETA · SAME PERIOD VOO {portfolioBeta?.toFixed(2) ?? "Unavailable"}
+                    {satelliteBlinkSeconds(portfolioVolatility) === null ? " · NAV STATIC" : ` · NAV ${satelliteBlinkSeconds(portfolioVolatility)}S`}
                   </Link>
                 </li>
-              ))}
-          </ol>
-          <ol className={styles.instrumentList}>
-            {beltHoldings.map((holding) => (
-              <li key={`belt-${holding.ticker}`}>
-                <Link
-                  className={styles.bodyControl}
-                  href={orreryHoldingHref(
-                    holding.ticker,
-                    forceNo3d,
-                    basePath,
-                  )}
-                  prefetch={false}
-                  scroll={false}
-                  data-belt-holding={holding.ticker}
-                >
-                  BELT BODY / {holding.ticker} · WEIGHT {formatWeightPercent(holding.weight)} · WEEK {formatPercent(holding.weeklyReturn)}
-                </Link>
-              </li>
-            ))}
-          </ol>
-          <ol className={styles.instrumentList}>
-            <li>
-              <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=scope${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false}>
-                RETURNS / VS VOO · SAME PERIOD {formatPercent(portfolioSummary.marketRelativePct)}
-              </Link>
-            </li>
-            <li>
-              <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=hazard${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false}>
-                RISK / VOL · SINCE START {formatPercent(portfolioVolatility)} · BETA · SAME PERIOD VOO {portfolioBeta?.toFixed(2) ?? "Unavailable"}
-                {satelliteBlinkSeconds(portfolioVolatility) === null ? " · NAV STATIC" : ` · NAV ${satelliteBlinkSeconds(portfolioVolatility)}S`}
-              </Link>
-            </li>
-            <li>
-              <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=comms${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false}>
-                EARNINGS / {nextEarningsHolding ? `T−${nextEarningsHolding.nextEarningsDays}D · ${nextEarningsHolding.ticker}` : "NO UPCOMING EARNINGS"}
-              </Link>
-            </li>
-          </ol>
-          <button type="button" className={styles.bodyControl} onClick={() => setBeltOpen(true)}>
-            ASTEROID BELT · {beltHoldings.length} OBJECTS
-          </button>
-          <span className={styles.visualEncoding}>
-            NEBULA {health.h < 0 ? "EMBER" : "GOLD"} · HEALTH SCALAR {health.h >= 0 ? "+" : ""}{health.h.toFixed(2)}
-            {tradeComet ? ` · COMET ${tradeComet.action.toUpperCase()} ${tradeComet.realizedSign > 0 ? "+" : tradeComet.realizedSign < 0 ? "−" : "0"} SIGN` : " · NO TRADE COMET TODAY"}
-          </span>
+                <li>
+                  <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=comms${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false} onFocus={() => setOpenTerminalGroup("instruments")}>
+                    EARNINGS / {nextEarningsHolding ? `T−${nextEarningsHolding.nextEarningsDays}D · ${nextEarningsHolding.ticker}` : "NO UPCOMING EARNINGS"}
+                  </Link>
+                </li>
+              </ol>
+              <button
+                type="button"
+                className={styles.bodyControl}
+                onClick={() => setBeltOpen(true)}
+                onFocus={() => setOpenTerminalGroup("instruments")}
+              >
+                ASTEROID BELT · {beltHoldings.length} OBJECTS
+              </button>
+            </details>
+
+            <details
+              className={styles.semanticGroup}
+              open={openTerminalGroup === "belt"}
+              onToggle={(event) =>
+                setOpenTerminalGroup(
+                  (event.currentTarget as HTMLDetailsElement).open ? "belt" : null,
+                )
+              }
+            >
+              <summary>BELT</summary>
+              <ol className={styles.instrumentList}>
+                {beltHoldings.map((holding) => (
+                  <li key={`belt-${holding.ticker}`}>
+                    <Link
+                      className={styles.bodyControl}
+                      href={orreryHoldingHref(
+                        holding.ticker,
+                        forceNo3d,
+                        basePath,
+                      )}
+                      prefetch={false}
+                      scroll={false}
+                      data-belt-holding={holding.ticker}
+                      onFocus={() => setOpenTerminalGroup("belt")}
+                    >
+                      BELT BODY / {holding.ticker} · WEIGHT {formatWeightPercent(holding.weight)} · WEEK {formatPercent(holding.weeklyReturn)}
+                    </Link>
+                  </li>
+                ))}
+              </ol>
+            </details>
+
+            <details
+              className={styles.semanticGroup}
+              open={openTerminalGroup === "encoding"}
+              onToggle={(event) =>
+                setOpenTerminalGroup(
+                  (event.currentTarget as HTMLDetailsElement).open ? "encoding" : null,
+                )
+              }
+            >
+              <summary>ENCODING</summary>
+              <span
+                className={styles.visualEncoding}
+                tabIndex={-1}
+                onFocus={() => setOpenTerminalGroup("encoding")}
+              >
+                NEBULA {health.h < 0 ? "EMBER" : "GOLD"} · HEALTH SCALAR {health.h >= 0 ? "+" : ""}{health.h.toFixed(2)}
+                {tradeComet ? ` · COMET ${tradeComet.action.toUpperCase()} ${tradeComet.realizedSign > 0 ? "+" : tradeComet.realizedSign < 0 ? "−" : "0"} SIGN` : " · NO TRADE COMET TODAY"}
+              </span>
+            </details>
+          </div>
         </nav>
 
         <SystemsManual
@@ -515,6 +661,7 @@ export function OrreryWorld({
           newsByHolding={newsByHolding}
           signalPair={missionSignalPair}
           draftParam={draftParam}
+          stripVariant={stripVariant}
         />
       ) : null}
       <FirstVisitOrientation disabled={forceNo3d} />

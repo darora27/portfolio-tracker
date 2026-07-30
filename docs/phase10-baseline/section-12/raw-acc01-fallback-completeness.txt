@@ -1,0 +1,13 @@
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/components/observatory/orrery/observatory-fallback.test.ts
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  11:08:49
+   Duration  589ms (transform 101ms, setup 0ms, import 161ms, tests 107ms, environment 254ms)
+

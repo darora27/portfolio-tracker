@@ -26,7 +26,11 @@ export function mostCorrelatedPair(
       if (
         correlation !== null &&
         correlation !== undefined &&
-        (result === null || correlation > result.correlation)
+        // Top |r|, not top r -- a strong negative correlation (a natural
+        // hedge) is just as much "the most correlated pair" as a strong
+        // positive one, and is a more decision-relevant relationship than a
+        // weak positive one.
+        (result === null || Math.abs(correlation) > Math.abs(result.correlation))
       ) {
         result = { a: tickers[i], b: tickers[j], correlation };
       }
@@ -34,4 +38,31 @@ export function mostCorrelatedPair(
   }
 
   return result;
+}
+
+const CORRELATION_SENTENCE_STRONG = 0.6;
+const CORRELATION_SENTENCE_MODERATE = 0.3;
+
+/**
+ * FB-11 (§12a): the CORRELATION section's templated named-pair sentence.
+ * Renders beneath (never replacing) the existing generic paragraph, using
+ * the top |r| pair from `mostCorrelatedPair`. Returns null when there is no
+ * pair with sufficient shared history (correlationMatrix's own MIN_OVERLAP
+ * gate already encodes that as every off-diagonal cell being null, which
+ * `mostCorrelatedPair` already turns into an overall null) -- the caller
+ * must never fabricate a pair, so a null return means "render nothing."
+ */
+export function correlationPairSentence(pair: CorrelatedPair | null): string | null {
+  if (pair === null) return null;
+  const { a, b, correlation } = pair;
+  if (correlation >= CORRELATION_SENTENCE_STRONG) {
+    return `${a} AND ${b} MOVED TOGETHER ON MOST SHARED DAYS — ONE BET, TWICE.`;
+  }
+  if (correlation <= -CORRELATION_SENTENCE_STRONG) {
+    return `${a} AND ${b} MOVED OPPOSITE ON MOST SHARED DAYS — A NATURAL HEDGE.`;
+  }
+  if (Math.abs(correlation) >= CORRELATION_SENTENCE_MODERATE) {
+    return `${a} AND ${b} SHARE SOME MOVEMENT, NOT MUCH ELSE IS THIS CLOSE.`;
+  }
+  return `${a} AND ${b} ARE THE CLOSEST PAIR HERE, BUT BARELY RELATED.`;
 }

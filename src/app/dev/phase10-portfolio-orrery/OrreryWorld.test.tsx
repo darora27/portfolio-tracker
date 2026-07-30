@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -221,6 +221,20 @@ describe("Portfolio Orrery remediation route", () => {
     expect(screen.getAllByRole("link")).toHaveLength(holdings.length + 4);
     expect(screen.getByRole("button", { name: "Open systems manual" })).toBeTruthy();
     expect(screen.getByRole("button", { name: /ASTEROID BELT/ })).toBeTruthy();
+  });
+
+  it("FB-17 (§12a): applies a capture-only ?panelWidth override to --panel-width, defaulting to none", async () => {
+    const { container, rerender } = render(<OrreryWorld {...baseProps} />);
+    await Promise.resolve();
+    expect(container.querySelector("main")?.style.getPropertyValue("--panel-width")).toBe("");
+
+    window.history.pushState({}, "", "/?panelWidth=660");
+    rerender(<OrreryWorld {...baseProps} key="with-override" />);
+    await waitFor(() =>
+      expect(
+        container.querySelector("main")?.style.getPropertyValue("--panel-width"),
+      ).toBe("660px"),
+    );
   });
 
   it("anchors the manual above the bottom-right inspector controls", () => {

@@ -1,0 +1,13 @@
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  11:08:51
+   Duration  172ms (transform 56ms, setup 0ms, import 95ms, tests 13ms, environment 0ms)
+

@@ -71,8 +71,9 @@ describe("Portfolio Orrery encodings", () => {
     expect(orbitRadii[0]).toBe(ORRERY_SUN_CLEARANCE);
     expect(orbitRadii).toEqual([...orbitRadii].sort((a, b) => a - b));
     for (let index = 0; index < orbitRadii.length - 1; index += 1) {
+      // FB-01 (§12a): gap formula 1.6x(ri+ri+1) -> 1.75x(ri+ri+1)+0.55.
       expect(orbitRadii[index + 1] - orbitRadii[index]).toBeCloseTo(
-        1.6 * (planetRadii[index] + planetRadii[index + 1]),
+        1.75 * (planetRadii[index] + planetRadii[index + 1]) + 0.55,
         12,
       );
     }

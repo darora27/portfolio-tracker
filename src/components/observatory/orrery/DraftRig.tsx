@@ -82,6 +82,7 @@ export function DraftRig({
   const [ghost, setGhost] = useState(true);
   const [motion, setMotion] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [showCoach, setShowCoach] = useState(false);
   const [counterparty, setCounterparty] = useState<number | null>(null);
   const [resetArmed, setResetArmed] = useState(false);
   const [announcement, setAnnouncement] = useState("Draft opened as your book.");
@@ -121,14 +122,24 @@ export function DraftRig({
   }, [announce]);
 
   useEffect(() => {
+    // FB-12 (§12a): motion defaults OFF for everyone -- the media query may
+    // only ever force (and lock) it off when it matches; it must never be
+    // the thing that turns motion ON for a visitor with no OS preference.
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () => {
       setReducedMotion(media.matches);
-      setMotion(!media.matches);
+      if (media.matches) setMotion(false);
     };
     sync();
     media.addEventListener?.("change", sync);
     return () => media.removeEventListener?.("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.sessionStorage.getItem("draft-coach-seen")) return;
+    setShowCoach(true);
+    window.sessionStorage.setItem("draft-coach-seen", "1");
   }, []);
 
   useEffect(() => {
@@ -288,7 +299,16 @@ export function DraftRig({
               <button type="button" role="switch" aria-checked={ghost} onClick={() => setGhost((current) => !current)}>
                 GHOST {ghost ? "ON" : "OFF"}
               </button>
-              <button type="button" role="switch" aria-checked={motion} onClick={() => setMotion((current) => !current)}>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={motion}
+                disabled={reducedMotion}
+                onClick={() => {
+                  if (reducedMotion) return;
+                  setMotion((current) => !current);
+                }}
+              >
                 MOTION {motion ? "ON" : "OFF"}
               </button>
             </div>
@@ -300,7 +320,14 @@ export function DraftRig({
                 const diameter = 14 + 110 * Math.sqrt(units[index] / 200);
                 const realDiameter = 14 + 110 * Math.sqrt(realUnits[index] / 200);
                 const angle = (index / roster.length) * 360;
-                const speed = Math.max(9, 28 - Math.min(18, Math.abs(holding.weeklyReturn ?? 0) * 180));
+                // FB-12 (§12a): 9-28s -> 30-90s, matching scene orbits
+                // measured in minutes rather than seconds. Same formula
+                // family, constants rescaled by the same factor (60/18):
+                // the floor/ceiling/range triple (9/28/18 -> 30/90/60) and
+                // the |weeklyReturn| saturation point (still 10%, since
+                // 180 * (60/18) = 600) are both preserved, so bigger weekly
+                // moves still lap proportionally faster.
+                const speed = Math.max(30, 90 - Math.min(60, Math.abs(holding.weeklyReturn ?? 0) * 600));
                 const zero = units[index] === 0;
                 return (
                   <div
@@ -364,6 +391,11 @@ export function DraftRig({
                     units[dragRef.current.index] -
                     dragRef.current.startUnits[dragRef.current.index],
                   ) / 2}
+                </p>
+              ) : null}
+              {showCoach ? (
+                <p className={styles.draftCoach}>
+                  PULL A CIRCLE — THE OTHERS BREATHE. DRAG INTO ANOTHER TO SIPHON.
                 </p>
               ) : null}
               <p className={styles.draftTruth}>THE COMPANIES STAY REAL; ONLY YOUR OWNERSHIP IS MAKE-BELIEVE.</p>

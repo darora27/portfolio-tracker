@@ -21,7 +21,8 @@ export const OVERVIEW_RING_ALPHA = { peak: 0.85, floor: 0.7 } as const;
 export const OVERVIEW_RING_OPACITY = 1;
 export const ACTIVE_RING_OPACITY =
   0.7 / OVERVIEW_RING_ALPHA.peak;
-export const OVERVIEW_BELT_SPAN_PCT = 0.88;
+// FB-01 (§12a): owner-fixed pull-back number, UNIVERSE_AUDIT.md §5.1.
+export const OVERVIEW_BELT_SPAN_PCT = 0.8;
 export const TRAIL_SAMPLE_FRACTION = 0.62;
 
 const OVERVIEW_FOV_DEGREES = 42;
@@ -153,6 +154,7 @@ export type SceneModel = {
     opacity: number;
     yielded: boolean;
     clamped: boolean;
+    bodyVisible: boolean;
   }>;
   moons: Array<{
     ticker: string;
@@ -893,12 +895,28 @@ export function layoutOverviewLabels<
     screen: { x: number; y: number; depth: number };
     opacity: number;
     yielded: boolean;
+    bodyVisible: boolean;
   },
 >(
   labels: readonly T[],
   viewport: { width: number; height: number },
 ): Array<T & { bounds: ScreenBounds; clamped: boolean }> {
   return resolveLabelCollisions(labels).map((label) => {
+    // FB-20: a label whose own body has failed the depth test or fallen
+    // fully outside the viewport must not be dragged back on-screen by the
+    // edge clamp below -- that clamp is only valid for a body that is
+    // genuinely visible but whose *offset* label position drifts past the
+    // padding. The caller is expected to leave the label hidden when
+    // bodyVisible is false; screen/bounds are still computed here (cheap,
+    // and needed for type consistency) but must not be trusted for display.
+    if (!label.bodyVisible) {
+      const bounds = labelBounds(label.screen);
+      return {
+        ...label,
+        bounds,
+        clamped: false,
+      };
+    }
     const minimumX =
       OVERVIEW_VIEWPORT_PADDING_PX + OVERVIEW_LABEL_WIDTH_PX / 2;
     const maximumX =
@@ -1099,6 +1117,11 @@ export function buildOverviewSceneModel({
         screen,
         opacity: 1,
         yielded: false,
+        // This static overview projection is fit so every planet is on
+        // screen by construction (see cameraForOverview/OVERVIEW_BELT_SPAN_PCT)
+        // -- it never runs the live approach-camera transitions FB-20's
+        // culling fix targets, so every body here is genuinely visible.
+        bodyVisible: true,
       };
     }),
     viewport,

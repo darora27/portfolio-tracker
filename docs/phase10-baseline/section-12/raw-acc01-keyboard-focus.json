@@ -1,0 +1,10 @@
+{
+  "receipt_shown_on_programmatic_exit": true,
+  "terminal_on_real_focus": {
+    "ok": true,
+    "groupCount": 4,
+    "openCount": 1,
+    "receiptShowing": false
+  },
+  "note": "Extracted from raw-capture-results.json (capture-section-12.mjs). The receipt div has no tabindex and no focusable descendants (asserted directly in src/components/observatory/orrery/observatory-fallback.test.ts, the exit receipt never traps or steals focus test), and focus lands on the SUN/PORTFOLIO link exactly as before this section -- confirmed by both the browser capture and the unit test."
+}
