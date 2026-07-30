@@ -88,7 +88,7 @@ HOLDINGS row, and the full picture per-stock in the Chart Room strip. He loses
 nothing except a section he called unnecessary, and the original requirement is
 better honoured.
 
-**He can veto this with one sentence.**
+**CONFIRMED by Devan, July 30 2026** — asked whether to delete the section but keep the information as tags, he answered yes. The EARNINGS section leaves Mission Control; the chips ship.
 
 ## 7. The Chart Room is the other half, not an appendix
 
@@ -103,12 +103,13 @@ two** — so it cannot slip again behind "content" work.
 No conflict. This architecture already leads with TODAY everywhere; a
 daily-return universe and a TODAY-first room agree.
 
-## 9. Owner sentences still outstanding
+## 9. Owner decisions
 
-1. **"Earnings as chips instead of a section: yes"** — or no, which reverses
-   §6 with no argument.
-2. **After seeing the renamed ACTIVITY section once: "keep it" or "cut it to
-   the `/trades` page."** Plain rename first, verdict on sight.
+1. **EARNINGS as chips instead of a section — CONFIRMED, July 30 2026.** §6
+   ships as written.
+2. **ACTIVITY, keep or cut to `/trades`** — not due yet. The section renames
+   first; he gives the verdict when he sees it on a contact sheet. Do not ask
+   before then.
 
 ## 10. Acceptance test for the spec written from this
 
