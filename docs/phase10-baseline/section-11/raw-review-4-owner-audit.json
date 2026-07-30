@@ -1,0 +1,127 @@
+{
+  "loginOk": true,
+  "BHV-30.sumBefore": 100,
+  "BHV-33.midDragReadouts": {
+    "weekText": "DRAFT MIX ▼ 4.7%",
+    "driftText": "MOVED 0.0 OF 100",
+    "concText": "TOP-2 52.5 · HHI 1,835"
+  },
+  "BHV-30.sumAfter": 100,
+  "BHV-33.settledReadouts": "DRAFT MIX ▼ 4.7%",
+  "BHV-31.grownWeightChanged": {
+    "before": 29,
+    "after": 29
+  },
+  "BHV-31.proRataRatios": {
+    "before": [
+      {
+        "index": 1,
+        "ratio": 0.33098591549295775
+      },
+      {
+        "index": 2,
+        "ratio": 0.19718309859154928
+      },
+      {
+        "index": 3,
+        "ratio": 0.1267605633802817
+      },
+      {
+        "index": 4,
+        "ratio": 0.11971830985915492
+      },
+      {
+        "index": 5,
+        "ratio": 0.1056338028169014
+      },
+      {
+        "index": 6,
+        "ratio": 0.06338028169014084
+      },
+      {
+        "index": 7,
+        "ratio": 0.056338028169014086
+      }
+    ],
+    "after": [
+      {
+        "index": 1,
+        "ratio": 0.33098591549295775
+      },
+      {
+        "index": 2,
+        "ratio": 0.19718309859154928
+      },
+      {
+        "index": 3,
+        "ratio": 0.1267605633802817
+      },
+      {
+        "index": 4,
+        "ratio": 0.11971830985915492
+      },
+      {
+        "index": 5,
+        "ratio": 0.1056338028169014
+      },
+      {
+        "index": 6,
+        "ratio": 0.06338028169014084
+      },
+      {
+        "index": 7,
+        "ratio": 0.056338028169014086
+      }
+    ],
+    "maxRatioDrift": 0
+  },
+  "BHV-31.siphonLatch": {
+    "latchedFound": false,
+    "latchedIndex": null
+  },
+  "BHV-31.pitRail": {
+    "pitRailFound": true,
+    "zeroedCircleFound": true,
+    "zeroedStillLabelled": true
+  },
+  "VIS-20.ghostOn": 8,
+  "VIS-20.ghostOff": 0,
+  "VIS-20.rackNotches": 8,
+  "BHV-34.urlHasDraftParam": true,
+  "BHV-34.backChangedUrl": false,
+  "BHV-34.weightsAfterBack": [
+    30,
+    24.5,
+    14.5,
+    9.5,
+    9,
+    8,
+    4.5,
+    0
+  ],
+  "BHV-34.urlAfterForward": "http://127.0.0.1:3000/?focus=portfolio&camera=command&draft=60.49.29.19.18.16.9.0",
+  "BHV-34.copyButtonVisible": true,
+  "BHV-35": {
+    "armedTextAfterFirstClick": "SURE? FLIP AGAIN",
+    "weightsUnchangedAfterFirstClick": true,
+    "weightsChangedAfterSecondClick": true
+  },
+  "BHV-35.backUndoesReset": true,
+  "BHV-32": {
+    "reducedMotionFlag": "true",
+    "dishMotionAttr": "false",
+    "chevronCount": 8,
+    "ghostCount": 8,
+    "circleCount": 8
+  },
+  "ACC-13": {
+    "stripStickyBefore": 0,
+    "stripStickyAfterScroll": 0,
+    "stripStaysNearTop": true,
+    "allSectionsPresent": true,
+    "escBehaviour": {
+      "stillInRoom": false
+    },
+    "bodyTextSnippet": "PRIVATE UNIVERSE / OWNER ACCESS\n\nSTOCK MARKET UNIVERSE\n\nOVERVIEW · 8 PLANETS · 5 BELT\n\nPORTFOLIO · TODAY ▼ 1.7%\nSUN / PORTFOLIO\nTODAY -1.7% · SUNSPOT INTENSITY 82%\nASML · ASML Holding\nWEIGHT 26.3% · W"
+  }
+}

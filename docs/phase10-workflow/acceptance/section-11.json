@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "\u00a711",
   "spec_doc": "docs/phase10-workflow/specs/section-11.md",
-  "candidate_sha": "e16e9c78e7f50d8ce4d7442caf4ed61b3e668a6a",
+  "candidate_sha": "f38b5e233114247f578256f6753fef9c22b2f900",
   "criteria": [
     {
       "id": "BHV-10",
@@ -321,9 +321,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "fail",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-audit.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): F9. A fresh unseeded context found no legend text (SUN = WHOLE PORTFOLIO pattern) on first visit, after interaction, after reload, or after opening the Systems Manual. Source confirms this is not a timing gap: no .tsx under src/components/observatory/orrery/ references styles.legend (orphaned CSS only), and SystemsManual.tsx carries no legend copy to summon. See docs/phase10-workflow/reviews/section-11-review-4.md F9."
       }
     },
     {
@@ -433,8 +435,10 @@
       },
       "reviewer": {
         "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): PARTIAL, left not_run rather than asserted. Pro-rata breathing confirmed (untouched-holding weight ratios identical before/after a grab-and-pull, maxRatioDrift 0.0) and pit-rail confirmed (a keyboard-zeroed circle docked on the pit rail, still labelled). The siphon latch was not observed in this turn's synthetic drag-into-B sequence ([data-counterparty=\"true\"] never appeared) -- inconclusive between a harness coordinate/timing miss and a real gap, not asserted as a failure. See section-11-review-4.md."
       }
     },
     {
@@ -459,9 +463,12 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json",
+          "docs/phase10-baseline/section-11/raw-review-4-draft-reduced-motion.png"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, reducedMotion: 'reduce' context. 8 direction chevrons ([data-draft-direction=\"true\"]), 8 ghost rings, 8 circles all present; dish motion attribute reads 'false' (MOTION defaults off under reduced motion per spec 7.1)."
       }
     },
     {
@@ -485,9 +492,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, mid-drag readout sample: 'DRAFT MIX ▼ 4.7%', 'MOVED 0.0 OF 100', 'TOP-2 52.5 · HHI 1,835' -- real computed values, not placeholders, confirming the readouts are wired to the drag rather than static. Caveat: this turn's two sample points (mid-drag, settled) happened to read the same value, so it does not independently distinguish continuous live update from update-on-pointermove landing on the same rounded figure; noted in section-11-review-4.md as a weaker positive than ideal but not a failure."
       }
     },
     {
@@ -512,8 +521,10 @@
       },
       "reviewer": {
         "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): PARTIAL, left not_run rather than asserted. URL draft-param encoding confirmed (draft= query param present after edits) and COPY TEST LINK button confirmed visible. page.url() read identically before and after goBack() while rendered weights changed -- contradictory in this turn's data, most likely an async URL-read timing gap in the harness rather than a confirmed history defect. Needs a cleaner re-test (explicit waitForURL/poll) before grading. See section-11-review-4.md."
       }
     },
     {
@@ -537,9 +548,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live: first click armed the button to 'SURE? FLIP AGAIN' with weights unchanged; second click within the window committed a weight change. goBack() after commit restored a different weight set than the post-reset state, confirming reset is itself a history entry."
       }
     },
     {
@@ -739,9 +752,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-audit.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live geometry, both scales. Panel chart: 170px tall, 3 axis hairlines, solid baseline found, 2 dots (start/end), endpoint chip text '▼ 12.0%'. Room chart (RETURNS section, scrolled into view): 320px tall, 3 hairlines, 2 dots. Matches spec 3.4 at both scales."
       }
     },
     {
@@ -798,8 +813,10 @@
       },
       "reviewer": {
         "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-ring-alpha.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): PARTIAL, left not_run. Source confirms the required token pair (OVERVIEW_RING_ALPHA = { peak: 0.55, floor: 0.22 }, scene-model.ts:20) rather than a single constant. Pixel far-side sampling (no DOM ring-geometry signal exists, so this locates the sun by warm-pixel scan and samples each planet's own orbit radius on the opposite bearing): ASML's ring confirmed visible above background (+10.9 luminance). The second sampled ring (MSFT, larger orbit) read identical to its background reference -- most likely a targeting miss from compounding sun-center estimation error at larger radius, not asserted as an absent ring. Needs a corrected second measurement before grading pass or fail. See section-11-review-4.md."
       }
     },
     {
@@ -882,9 +899,12 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-followup.json",
+          "docs/phase10-baseline/section-11/raw-review-4-vis19.png"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live. The PORTFOLIO readout is compound text (PORTFOLIO · TODAY ▼ 1.7%), not an exact-match leaf node -- a first pass with a too-strict selector produced a false negative, corrected in this follow-up. Located, bounding rect checked against all eight [data-scene-ticker] label rects: zero overlaps."
       }
     },
     {
@@ -909,9 +929,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, owner-authenticated. GHOST on: 8 [data-draft-ghost=\"true\"] elements (one per circle). Toggled off via the GHOST switch: 0. Tank rack: 8 [data-real-notch=\"true\"] rows, one per holding."
       }
     },
     {
@@ -962,14 +984,14 @@
         "notes": "PASS on the unattended production camera run at 2026-07-29 23:21 America/New_York. The captioned temporal plate and eight retained 1440x900 source frames show each fixture holding at its own naturally unoccluded phase. All eight satisfy the unchanged gates: deltaE <= 8, hue distance <= 10 degrees, chroma > 0.3, at least 1px planet clearance, and ordering wherever expected ramp colours differ. ASML sampled exact #b3241d at deltaE 0 with 2.157px clearance; the largest deltaE was IBM 7.571 and the lowest passing chroma was CRM 0.318. The owner-confirmed 18-30 degree arc, fixture and thresholds are unchanged. The generated plate was inspected directly and contains all eight captioned crosshair samples. Recorded by codex/gpt-5."
       },
       "reviewer": {
-        "status": "fail",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-rgb-pixel-output.txt",
-          "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
-          "docs/phase10-baseline/section-11/scripts/sample-live-rgb-diagnostic.mjs",
-          "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png"
+          "docs/phase10-baseline/section-11/raw-owner-rgb-20260729-233143.txt",
+          "docs/phase10-baseline/section-11/raw-temporal-trail-samples.json",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 3, single_provider_mode): Follows TST-03 per this criterion's own dependency (spec section 9 table: 'Follows TST-03's remaining NBIS sample'). TST-03 fails this turn on ASML (not NBIS), so VIS-04 cannot be graded pass. The arc-band change to 26-46deg is implemented (not separately disputed), but the trail-colour/magnitude encoding it depends on is unverifiable while the sampler cannot locate ASML's ribbon."
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): F8 CLOSED. Independently requested a fresh unattended evidence run through the camera daemon (request s11rvw1, ok:true, exitCode:0) -- its own production build, its own server, an unmodified sample-live-rgb.mjs, not a re-read of the implementer's committed JSON. All eight fixture holdings sampled at their own naturally unoccluded phase; the captioned temporal plate and eight retained frames were regenerated by this run and directly inspected: all eight crosshair samples with expected/sampled/deltaE captions, at the confirmed 18-30deg band, ramp lightness carrying magnitude, fixed 12% white-hot calibration head present. See section-11-review-4.md F8."
       }
     },
     {
@@ -1088,9 +1110,11 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-audit.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, 390px and 320px, unauthenticated /share. Zero horizontal overflow (scrollWidth === clientWidth) at both widths, zero WebGL canvas present (correctly serving the fallback), fallback nav[aria-label=\"Portfolio bodies\"] present, zero interactive targets under 44x44 CSS pixels at either width."
       }
     },
     {
@@ -1116,8 +1140,11 @@
       },
       "reviewer": {
         "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-audit.json",
+          "docs/phase10-baseline/section-11/raw-review-4-followup.json"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): PARTIAL, left not_run rather than asserted. No banned jargon nouns found at either width, even after scrolling fully through the fallback to trigger any lazy mounts. RETURNS/RISK/NEWS/EARNINGS and 3 of 5 window words (TODAY/WEEK/SINCE START) present; HOLDINGS/CORRELATION/TRADES and 30D/SINCE BUY absent. This may be a scope mismatch rather than a defect: the below-1024px fallback (nav[aria-label=\"Portfolio bodies\"], OrreryWorld.tsx) is a holdings list, not the Mission Control descent room, and may never be expected to carry room-only section headers. Needs scope confirmation against the spec before grading pass or fail. See section-11-review-4.md."
       }
     },
     {
@@ -1225,9 +1252,12 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json",
+          "docs/phase10-baseline/section-11/raw-review-4-reduced-motion-mc.png"
+        ],
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, owner-authenticated, reducedMotion: 'reduce'. Sticky strip stayed within 100px of top before and after a 1400px scroll; all seven descent sections present; Escape exits the room (#holdings no longer present after the key press, confirming ESC still works under reduced motion)."
       }
     },
     {
@@ -1388,14 +1418,12 @@
         "notes": "PASS on the unattended production camera run at 2026-07-29 23:21 America/New_York. The owner-authorised temporal verifier sampled all eight fixture holdings, retained their full 1440x900 frames and emitted the captioned plate. Every unchanged threshold passed: deltaE maximum 8, hue-distance maximum 10 degrees, chroma strictly above 0.3, minimum planet clearance 1px, all-holdings fixture and magnitude ordering between different expected ramp stops. ASML, the prior blocker, sampled exact #b3241d at deltaE 0 and 2.157px clearance. IBM passed at deltaE 7.571; CRM passed at deltaE 5.9 and chroma 0.318. Same-stop comparisons are emitted rather than silently ignored, and ordering remains enforced between different stops. Recorded by codex/gpt-5."
       },
       "reviewer": {
-        "status": "fail",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-rgb-pixel-output.txt",
-          "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
-          "docs/phase10-baseline/section-11/scripts/sample-live-rgb-diagnostic.mjs",
-          "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png"
+          "docs/phase10-baseline/section-11/raw-owner-rgb-20260729-233143.txt",
+          "docs/phase10-baseline/section-11/raw-temporal-trail-samples.json"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 3, single_provider_mode): Re-derived and re-run per the carry rule (self-deriving script: reads live data-trail-sample-x/y and data-weekly-return from the DOM each run, no hardcoded coordinates). Reproduced identically on two independent server starts: ASML deltaE 79.7-81.6 (>>8), sampled colour a dark blue-violet (#3a255c / #504b83) with hue ~245-263 degrees, nowhere near the expected loss-red #b3241d (hue ~3). IBM also marginally fails (deltaE 8.14, just over the gate) and CRM marginally fails hue-lock (chroma 0.294, just under the 0.3 floor). ASML's failure also breaks the cross-holding magnitude-ordering check for INTC and CBRS (both same-direction as ASML). GOOG/COST/MSFT pass cleanly (deltaE 0-2.7). This is a NEW/reconfirmed FAIL, not a close: the ASML sample point is landing on something other than its trail ribbon. Not root-caused by this reviewer turn (that is implementer work) but the coordinate is reproducibly wrong, most plausibly because the VIS-04 arc-shortening change (36-64deg -> 26-46deg) moved where the trail actually ends without a matching update to the trailSampleAngle projection in OrreryScene.tsx, landing the sample past the now-shorter ribbon."
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): F7 CLOSED. Independently requested a fresh unattended evidence run through the camera daemon (request s11rvw1, ok:true, exitCode:0), which ran its own production build, its own server, and an unmodified sample-live-rgb.mjs -- not a re-read of the implementer's committed JSON. All eight holdings sampled at their own naturally unoccluded phase, per the owner-authorised temporal method: ASML deltaE 0 (1.642px clearance), GOOG/COST/MSFT deltaE 0, INTC deltaE 1.336, CBRS deltaE 3.645, CRM deltaE 6.226, IBM deltaE 7.571 (largest, inside the unchanged <=8 gate). Every threshold (deltaE, hue-distance, chroma, clearance, ordering-between-different-stops) and the 18-30deg arc band are unchanged. This reproduces the implementer's turn-7 result on an independently triggered server/build. See section-11-review-4.md F7."
       }
     },
     {

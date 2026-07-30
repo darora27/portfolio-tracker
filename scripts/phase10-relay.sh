@@ -153,13 +153,46 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
   # state machine, roles and prompts are unchanged, only which CLI executes
   # which prompt. Cross-model independence is preserved because the two stages
   # still run under different providers.
+  # ── Provider routing ────────────────────────────────────────────────────
+  #
+  # PHASE10_SINGLE_PROVIDER=1 (THE DEFAULT since July 30 2026) runs BOTH seats
+  # under the Claude CLI. OpenAI quota reached zero mid-window, so there is no
+  # second provider to route to; this is not a preference, it is the only
+  # arrangement that runs at all.
+  #
+  # It is deliberately the default rather than an env var the owner must
+  # remember at launch: an unattended run that silently tried to invoke a
+  # dead CLI would burn its turns discovering that. Set
+  # PHASE10_SINGLE_PROVIDER=0 to restore two-provider routing when Codex
+  # quota returns.
+  #
+  # WHAT THIS COSTS, stated where it is being spent: cross-model independence.
+  # A Claude review of a Claude implementation cannot catch what a differently
+  # trained model catches, and that difference is what caught /share leaking
+  # owner dollar amounts, trails fogged to black under a passing test, and a
+  # gate pinned where it could not fail. The compensating controls in
+  # docs/phase10-workflow/SINGLE_PROVIDER_MODE.md are binding for the whole
+  # window, including its reserved list: the privacy boundary, the financial
+  # math core, and any gate change all WAIT for Codex.
+  #
+  # PHASE10_SWAP_ROLES is a different thing — a swap between two live
+  # providers. It is meaningless with one and is therefore ignored here.
+  SINGLE_PROVIDER="${PHASE10_SINGLE_PROVIDER:-1}"
   SWAP="${PHASE10_SWAP_ROLES:-0}"
   PROMPT_OVERRIDE=""
   LOCK_OWNER=""
   LOCK_TASK=""
+  if [ "$SINGLE_PROVIDER" = "1" ] && [ "$SWAP" = "1" ]; then
+    echo "NOTE: PHASE10_SWAP_ROLES ignored — single-provider mode is active," \
+         "so there is no second provider to swap with."
+    SWAP=0
+  fi
   case "$NEXT_ACTOR" in
     claude)
-      if [ "$SWAP" = "1" ]; then
+      if [ "$SINGLE_PROVIDER" = "1" ]; then
+        RUNNER="./scripts/phase10-claude-lead.sh"
+        echo "Single-provider: Claude CLI is running the Lead prompt."
+      elif [ "$SWAP" = "1" ]; then
         RUNNER="./scripts/phase10-codex-implementation.sh"
         PROMPT_OVERRIDE="docs/phase10-workflow/prompts/claude-lead.md"
         LOCK_OWNER="claude"
@@ -170,7 +203,17 @@ while [ "$TURN" -le "$MAX_TURNS" ]; do
       fi
       ;;
     codex)
-      if [ "$SWAP" = "1" ]; then
+      if [ "$SINGLE_PROVIDER" = "1" ]; then
+        # The Claude CLI runs the implementation prompt. State role values are
+        # deliberately NOT rewritten, so the history keeps showing which stage
+        # ran and which actor covered it.
+        RUNNER="./scripts/phase10-claude-lead.sh"
+        PROMPT_OVERRIDE="docs/phase10-workflow/prompts/codex-implementation.md"
+        LOCK_OWNER="codex"
+        LOCK_TASK="phase10-codex-implementation-turn"
+        echo "Single-provider: Claude CLI is covering the implementation seat." \
+             "Cross-model independence is SUSPENDED for this turn."
+      elif [ "$SWAP" = "1" ]; then
         RUNNER="./scripts/phase10-claude-lead.sh"
         PROMPT_OVERRIDE="docs/phase10-workflow/prompts/codex-implementation.md"
         LOCK_OWNER="codex"

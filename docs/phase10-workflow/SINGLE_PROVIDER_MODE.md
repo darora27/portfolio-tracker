@@ -78,25 +78,43 @@ than proceeding alone.
 
 ---
 
-## Operating it
+## Operating it — WIRED AND DEFAULT since July 30 2026
 
-The relay's routing is unchanged; only the runner for the implementation role
-changes. Run implementation turns with the Claude runner while state says
-`next_actor: codex`:
+OpenAI quota reached exactly zero mid-window (turn 1 of the unattended run
+consumed the remainder). This mode is no longer a manual procedure: the relay
+routes both seats to the Claude CLI **by default**, with no environment
+variable required at launch.
 
 ```bash
-PHASE10_CLAUDE_MODEL=opus ./scripts/phase10-claude-lead.sh
+./scripts/phase10-relay.sh --max-turns 12      # single-provider, automatically
+./scripts/phase10-unattended.sh --max-turns 12 # inherits it
 ```
 
-The turn must open by recording that it is acting under single-provider mode and
-which role it is performing, then follow that role's normal prompt and
-transitions.
+`PHASE10_SINGLE_PROVIDER` defaults to `1`. Routing:
 
-**Do not edit the state machine's role values.** The record should show that
-Claude covered a Codex turn, not that the workflow was rewritten around an
-outage.
+| `next_actor` | CLI invoked | prompt | lock owner |
+|---|---|---|---|
+| `claude` | `phase10-claude-lead.sh` | `claude-lead.md` | claude |
+| `codex` | **`phase10-claude-lead.sh`** | `codex-implementation.md` | codex |
 
----
+It is the default rather than a flag the owner must remember, because an
+unattended run that silently invoked a dead CLI would spend its turns
+discovering that.
+
+**Set `PHASE10_SINGLE_PROVIDER=0` to restore two-provider routing** when Codex
+quota returns. `PHASE10_SWAP_ROLES` is ignored while this is active and says so
+in the log — a swap needs two live providers.
+
+**Do not edit the state machine's role values.** `role=codex_implementation`
+still names the stage; the record should show that Claude covered a Codex
+turn, not that the workflow was rewritten around an outage. Each turn prints
+that independence is suspended, so it appears in the run log rather than only
+in this file.
+
+**Every section accepted in this window records `single_provider_mode: true`
+in `sections_history`.** The reserved list above still applies in full: the
+privacy boundary, the financial math core, and any gate change all wait for
+Codex, regardless of how convenient it would be to proceed.
 
 ## Ending it
 

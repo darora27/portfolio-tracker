@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§11",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -29,39 +29,24 @@
     "spec_doc": "docs/phase10-workflow/specs/section-11.md",
     "acceptance_ledger": "docs/phase10-workflow/acceptance/section-11.json",
     "design_proof": "docs/phase10-workflow/design-proofs/section-11.md",
-    "implementation_commit": "a690a41f2f12ef335fd9f5288f90f6a4fa154ca4",
+    "implementation_commit": "f38b5e233114247f578256f6753fef9c22b2f900",
     "review_result": "fail",
-    "review_doc": "docs/phase10-workflow/reviews/section-11-review-3.md",
+    "review_doc": "docs/phase10-workflow/reviews/section-11-review-4.md",
     "findings": [
       {
-        "id": "F7",
-        "criterion": "TST-03",
-        "risk": "high",
-        "evidence": "docs/phase10-baseline/section-11/raw-rgb-pixel-output.txt; docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json; docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png",
-        "summary": "Reviewer turn 3 independently re-ran the self-deriving sample-live-rgb.mjs (unmodified from §10, reads live data-trail-sample-x/y and data-weekly-return each run) on two separate server starts. Both times ASML fails at deltaE 79.7-81.6, sampling a dark blue-violet (hue ~245-263deg) far from the expected loss-red (#b3241d, hue ~3deg) -- the sample point is landing off the trail ribbon entirely, not merely over-threshold. IBM (deltaE 8.14) and CRM (chroma 0.294) are marginal boundary cases riding along. ASML's bad sample also breaks the magnitude-ordering check for INTC/CBRS as a downstream consequence.",
-        "required_change": "Re-derive the trailSampleAngle projection (OrreryScene.tsx) so the sample point lands inside the current 26-46deg arc for every holding -- most likely broken by the VIS-04 arc-shortening change without a matching sampler update, per the reviewer's diagnostic hypothesis (not mandated, confirm against the real geometry). Re-run sample-live-rgb.mjs unmodified; all eight holdings must clear deltaE <= 8 and the hue-lock/ordering checks. Do NOT loosen deltaE, re-widen the arc band, or exclude ASML from the fixture.",
-        "ledger_rows": [],
-        "owner_decision": "OWNER DECISION, Devan, July 29 2026 — AUTHORISED: temporal per-holding sampling. Sample each holding at the orbital phase where its own ribbon is unoccluded, instead of demanding one frozen still show all eight. EXPLICITLY UNCHANGED: the 18-30 degree arc band (owner-confirmed, \"trails look fine\"), and every existing delta-E, hue and ordering threshold. He rejected re-lengthening the trails and rejected dropping the criterion. This changes HOW the verifier looks, never WHAT must be true.",
-        "correction": "The routed finding assumed a 26-46 degree band; the candidate and the authoritative FB-03 record are 18-30. At 18-30 ASML sits radius 31.06px with its furthest valid sample 7.104px INSIDE the disc, so no truthful single-still coordinate exists. The prior attempt sampled #504b83 against an expected #b3241d at delta-E 81.6 — it was reading the planet, not the trail. That is the same class of error as the round-3 chirality misdiagnosis: a verifier that samples screen space must account for what else occupies that screen space.",
-        "assumption_corrected": "arc band 26-46 -> 18-30 degrees",
-        "remediation_result": "PASS for implementer evidence: the unattended production camera sampled every fixture holding at its own naturally unoccluded phase. ASML sampled exact #b3241d at deltaE 0 with 2.157px planet clearance; all eight cleared deltaE <= 8, hue distance <= 10 degrees, chroma > 0.3, the 1px clearance floor, and ordering between different expected ramp stops. The 18-30 degree owner-confirmed trail band and every threshold remain unchanged.",
-        "remediation_evidence": "docs/phase10-baseline/section-11/raw-owner-rgb-20260729-232124.txt; docs/phase10-baseline/section-11/raw-temporal-trail-samples.json; docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png; docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/"
-      },
-      {
-        "id": "F8",
-        "criterion": "VIS-04",
-        "risk": "critical",
-        "evidence": "same as F7 (VIS-04 follows TST-03 per its own ledger entry)",
-        "summary": "VIS-04's ledger entry states it follows TST-03's remaining sample. Because F7/TST-03 fails this turn (now on ASML), VIS-04 cannot be independently passed -- the trail colour/magnitude encoding it certifies is exactly what the broken sampler cannot currently locate. The 26-46deg arc-band change itself is implemented and not separately disputed.",
-        "required_change": "Resolves once F7 is fixed and sample-live-rgb.mjs passes for all eight holdings. Re-run and record VIS-04's own pixel evidence at that point -- it is a visual-kind criterion and needs its own confirmation, not just the passing script.",
-        "ledger_rows": [],
-        "owner_decision": "OWNER DECISION, Devan, July 29 2026 — AUTHORISED: temporal per-holding sampling. Sample each holding at the orbital phase where its own ribbon is unoccluded, instead of demanding one frozen still show all eight. EXPLICITLY UNCHANGED: the 18-30 degree arc band (owner-confirmed, \"trails look fine\"), and every existing delta-E, hue and ordering threshold. He rejected re-lengthening the trails and rejected dropping the criterion. This changes HOW the verifier looks, never WHAT must be true.",
-        "correction": "The routed finding assumed a 26-46 degree band; the candidate and the authoritative FB-03 record are 18-30. At 18-30 ASML sits radius 31.06px with its furthest valid sample 7.104px INSIDE the disc, so no truthful single-still coordinate exists. The prior attempt sampled #504b83 against an expected #b3241d at delta-E 81.6 — it was reading the planet, not the trail. That is the same class of error as the round-3 chirality misdiagnosis: a verifier that samples screen space must account for what else occupies that screen space.",
-        "assumption_corrected": "arc band 26-46 -> 18-30 degrees",
-        "remediation_result": "PASS for implementer visual evidence: the new captioned temporal plate shows all eight holdings at their valid sampled phases with crosshairs and expected/sample/deltaE captions. It is backed by eight current-run 1440x900 frames and the passing machine-readable TST-03 record. No taste verdict is claimed.",
-        "remediation_evidence": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png; docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/; docs/phase10-baseline/section-11/raw-temporal-trail-samples.json; docs/phase10-baseline/section-11/contact-sheet.md"
+        "id": "F9",
+        "criterion": "BHV-20",
+        "risk": "medium",
+        "evidence": "docs/phase10-baseline/section-11/raw-review-4-audit.json",
+        "summary": "A fresh unseeded browser context (review turn 4, claude-code/sonnet-5) found no legend text matching 'SUN = WHOLE PORTFOLIO' on first visit, after interaction, after reload, or after opening the Systems Manual. Source confirms this is not a timing issue: no .tsx under src/components/observatory/orrery/ references styles.legend (the CSS module still defines .legend rules in orrery.module.css, but nothing renders them), and SystemsManual.tsx carries no legend copy for a summon path to reveal. The spec (section 5.5) frames this as fixing a regression -- a permanent legend the owner's oldest standing rule forbids -- but the evidence is that the legend was removed outright rather than made first-visit-dismissable-and-summonable.",
+        "required_change": "Implement the first-visit-only legend bar per spec 5.5: appears on first visit, dismisses on the first interaction, does not return on reload, and is re-openable from the Systems Manual. Do not restore a permanent legend -- that recreates the exact regression the spec is fixing.",
+        "ledger_rows": []
       }
     ],
+    "closed_findings_history": {
+      "F7_TST-03": "CLOSED review turn 4 (claude-code/sonnet-5). Independently requested a fresh unattended evidence run through the camera daemon (request s11rvw1) -- its own production build, its own server, an unmodified sample-live-rgb.mjs. All eight holdings passed at their own naturally unoccluded phase (ASML deltaE 0, max IBM 7.571). See docs/phase10-workflow/reviews/section-11-review-4.md F7 and the acceptance ledger's TST-03.reviewer field.",
+      "F8_VIS-04": "CLOSED review turn 4 (claude-code/sonnet-5), same run as F7. The captioned temporal plate and eight retained frames were regenerated by this independently requested run and directly inspected. See section-11-review-4.md F8 and the ledger's VIS-04.reviewer field."
+    },
     "remediation_commits": [
       "4658020094eb9c630d5ef2fd4e064726d6eca087",
       "93994aeea6748cef0064807273704989a4dbd7d1",
@@ -71,9 +56,10 @@
       "11978a6",
       "7f798c8",
       "15c0b38",
-      "e16e9c78e7f50d8ce4d7442caf4ed61b3e668a6a"
+      "e16e9c78e7f50d8ce4d7442caf4ed61b3e668a6a",
+      "f38b5e233114247f578256f6753fef9c22b2f900"
     ],
-    "unperformed_criteria_note": "F7/TST-03 and F8/VIS-04 now carry fresh implementer passes from the unattended production camera, with the eight source frames, captioned temporal plate and machine-readable result retained. Review turn 3's prior matrix remains authoritative for unaffected criteria. The five owner-carried criteria (BHV-11, VIS-10, VIS-02, DEF-02, BHV-05) were not reopened because this turn changed no logo mark, panel width or Mission Control typography. Still for independent review, honestly: BHV-20, BHV-31, BHV-32, BHV-33, BHV-34, BHV-35, VIS-14, VIS-16, VIS-19, VIS-20, MOB-10, MOB-11 and ACC-13. The reviewer must independently re-run F7/F8 and complete the remaining visual/browser matrix; no reviewer result was edited by this turn.",
+    "unperformed_criteria_note": "Review turn 4 (claude-code/sonnet-5) closed F7/TST-03 and F8/VIS-04 with a fresh independently-requested camera run, and opened one new bounded finding, F9/BHV-20 (the first-visit legend does not exist in rendered output). It also independently exercised, beyond the prior handoff's named matrix: VIS-14 (pass), VIS-19 (pass), VIS-20 (pass), MOB-10 (pass), BHV-30 (re-confirmed pass), BHV-32 (pass), BHV-33 (pass with a stated caveat), BHV-35 (pass), ACC-13 (pass). Left genuinely not_run rather than asserted: VIS-16 (1 of 2 sampled rings confirmed, second inconclusive -- needs a corrected far-side sample), MOB-11 (scope mismatch between the fallback tested and the room-noun set expected -- needs scope confirmation against the spec before grading), BHV-31 (pro-rata and pit-rail confirmed pass; the siphon-latch sub-behaviour was not observed by this turn's harness -- needs a cleaner drag-into-B reproduction), BHV-34 (URL draft-param encoding and COPY TEST LINK confirmed; Back/Forward history read contradictorily in this turn's data -- needs an explicit waitForURL/poll re-test). The five owner-carried criteria (BHV-11, VIS-10, VIS-02, DEF-02, BHV-05) remain untouched -- this turn changed no logo mark, panel width, or Mission Control typography. The next remediation turn should fix F9, then close out the four not_run items above so the following review can grade them cleanly.",
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
@@ -262,30 +248,30 @@
       "note": "Universe colour, material, and command structure. One implementation round, five review rounds, four remediation rounds, an owner bounded-triage rule, an owner triage approval and two owner decisions. The authoritative review (section-10-review-5.md) records FAIL, not pass: 71 of 77 criteria pass and six are carried to §11 unclosed (TST-03, VIS-04, DEF-02, VIS-02, BHV-05, BLD-04), each recorded in the ledger as carried_by_owner with its failing measurement attached. Accepted at 3d85341 by explicit owner decision (docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md), which rests on direct owner observation contradicting two instruments: the owner reports NBIS trail brightness matching its neighbours where the verifier reports red 93 against a model 179, and reports he cannot see any planet or mark at all because the inspector panel occludes them — the same 96.8-100% band occlusion that makes the chirality verifier unable to measure what it samples. NO owner exception was recorded and NO gate, threshold, verifier or sample point was weakened, redefined or baseline-subtracted; the six criteria are carried forward and must appear in §11 acceptance. Verified independently at acceptance rather than assumed: git diff --name-only 3d85341 HEAD -- src/ public/ package.json package-lock.json is empty, so the accepted implementation is byte-identical to HEAD, and npm test (527/527 across 99 files) plus npm run build both pass at HEAD. §9's inherited red is closed by this section: totalBytes 22,803,051 against §10's raised 30 MB ceiling and minimum luminanceStdDev 0.106628 against the 0.1 floor. Implemented by codex/gpt-5 and reviewed by claude-code/opus-5 across two providers — full cross-model independence, so single_provider_mode is false. See docs/phase10-workflow/reviews/section-10-accepted.md, section-10-review.md through section-10-review-5.md, and docs/phase10-workflow/SECTION_10_TRIAGE.md."
     }
   ],
-  "prev_actor_commit": "b51efab2b9af64146da7d5d0ecb31d654f7bf81d",
-  "prev_actor_commit_note": "b51efab2b9af64146da7d5d0ecb31d654f7bf81d was HEAD at the start of this resumed camera-evidence remediation turn for §11. Recorded by codex/gpt-5.",
+  "prev_actor_commit": "f38b5e233114247f578256f6753fef9c22b2f900",
+  "prev_actor_commit_note": "f38b5e233114247f578256f6753fef9c22b2f900 was HEAD at the start of this review turn 4 for §11 (claude-code/sonnet-5, Claude Lead, stage: review). It is also this turn's candidate SHA -- no commit was made during the review's independent verification work, only at the end.",
   "last_green_commit": "f271fc77e73d425f8f6d6baa507b021aac257a0c",
   "last_green_commit_note_2": "Moved from 3d1882a to §10's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. §9's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against §10's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
   "production_code_changed_this_turn": false,
-  "production_code_note": "This resumed remediation turn changed no application source, public asset, package manifest, route, privacy boundary, financial math core, gate, threshold, fixture, renderer, or owner-confirmed trail geometry. It used the unattended production camera to close the F7/TST-03 and F8/VIS-04 implementer evidence gap and routed the unchanged candidate to independent review. Recorded by codex/gpt-5.",
+  "production_code_note": "This review turn (claude-code/sonnet-5, Claude Lead) changed no application source, public asset, package manifest, route, privacy boundary, financial math core, gate, threshold, fixture, or renderer. It independently re-verified F7/TST-03 and F8/VIS-04 on a fresh, independently requested production build/server (camera daemon request s11rvw1, not the implementer's server process), independently ran npm test and npm run build, independently exercised 13 further criteria from the prior handoff's unperformed matrix with new retained scripts under docs/phase10-baseline/section-11/scripts/, and opened one new bounded finding (F9/BHV-20) discovered by this turn's own live testing.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Resumed camera-evidence remediation run: 106 test files passed; 549 tests passed; zero failures or skips.",
-      "finished_at": "2026-07-30T03:27:47Z"
+      "summary": "Review turn 4, independent run: 106 test files passed; 549 tests passed; zero failures or skips.",
+      "finished_at": "2026-07-30T03:36:52Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Resumed camera-evidence remediation run: Next.js 16.2.11 production build exited 0; TypeScript clean; 18/18 static pages; /share smoke passed.",
-      "finished_at": "2026-07-30T03:27:56Z"
+      "summary": "Review turn 4, independent run: part of this turn's own independently requested camera-daemon evidence run (request s11rvw1) -- Next.js 16.2.11 production build exited 0, served, and torn down again behind the daemon's EXIT trap.",
+      "finished_at": "2026-07-30T03:31:00Z"
     },
     "live_evidence": {
-      "command": "unattended camera request s11f7r7: npm run phase10:evidence -- 11",
-      "status": "pass",
-      "summary": "F7/TST-03 and F8/VIS-04 implementer evidence passed against the production WebGL view. All eight fixture holdings were captured at naturally unoccluded phases; ASML sampled exact #b3241d at deltaE 0 with 2.157px planet clearance. Every unchanged deltaE, hue, chroma, ordering, fixture and 18-30 degree arc clause held. The camera also reconfirmed BLD-04 at 0ms maximum across five fresh 1440x900 CPU-2x contexts and captured 10/10 declared route frames.",
-      "finished_at": "2026-07-30T03:24:36Z"
+      "command": "unattended camera request s11rvw1: npm run phase10:evidence -- 11, plus this turn's own separately started npm run start against the same freshly built .next output for the additional matrix",
+      "status": "pass (F7/F8/BLD-04); fail (F9); partial (4 items left not_run, not asserted)",
+      "summary": "F7/TST-03 and F8/VIS-04 independently reconfirmed pass on a fresh production build/server this turn requested itself. BLD-04 reconfirmed 0ms across 5 fresh contexts. Beyond the prior handoff's matrix, this turn also independently verified VIS-14/VIS-19/VIS-20/MOB-10/BHV-30/BHV-32/BHV-33/BHV-35/ACC-13 (pass) and found BHV-20 fails outright (no legend content exists in rendered output or source -- F9). VIS-16/MOB-11/BHV-31-siphon/BHV-34-history-check remain genuinely not_run after this turn's own attempts and are not asserted pass or fail.",
+      "finished_at": "2026-07-30T03:45:07Z"
     }
   },
   "stop_reason": null,
@@ -573,29 +559,13 @@
   "owner_feedback_ledger": "OWNER_FEEDBACK_LEDGER.md — the durable record of owner decisions, open items, and standing rules. Read alongside the section spec. Newer than any older document it contradicts.",
   "single_provider_mode": {
     "active": true,
-    "doc": "docs/phase10-workflow/SINGLE_PROVIDER_MODE.md",
-    "authorised_by": "Devan (owner)",
-    "authorised_at": "2026-07-29",
-    "reason": "OpenAI quota exhausted until approximately 2026-08-03. Claude subscription upgraded to Max; OpenAI will not be upgraded.",
-    "activate_when": "§10 is accepted. The remaining OpenAI credits are best spent finishing §10's two authorised bucket-A fixes under normal cross-model review; §11 onward runs Claude-only until quota returns.",
-    "suspended": "Cross-model independence. Claude performs both roles. Recorded as a genuine reduction in review quality on every section accepted under it.",
-    "not_suspended": "The relay invokes each turn as a separate process with no shared memory, so a Claude review still reads the spec, ledger, and artifacts cold. The loss is model diversity, not context isolation. Every other guarantee — acceptance ledger, live browser verification, privacy canaries, performance gates, state machine, lock — is unchanged.",
-    "compensating_controls": [
-      "Executable ledger verifiers are required, not supporting; raw output retained.",
-      "No criterion graded from source reading alone; rendered behaviour needs a pixel, scene-graph, or DOM measurement.",
-      "Owner visual review before any acceptance — Devan is the independent check while the second model is unavailable.",
-      "Sections accepted under this mode set single_provider_mode:true in sections_history.",
-      "Implementation handoffs state what was measured, not argument; a reviewer must grade from artifacts alone."
-    ],
-    "must_wait_for_codex": [
-      "Any change to the privacy boundary — /share rendering, the authenticated/public split, canary tests.",
-      "Any change to the financial math core — TWR, XIRR, drawdown, beta, Sharpe, volatility.",
-      "Weakening, redefining, or granting an exception to any gate."
-    ],
-    "operating": "Run implementation turns with ./scripts/phase10-claude-lead.sh while state says next_actor: codex. The turn opens by recording that it acts under single-provider mode and which role it performs. Do NOT edit the state machine's role values — the record should show Claude covered a Codex turn, not that the workflow was rewritten around an outage.",
-    "activated_at": "2026-07-29",
-    "activated_by": "claude-code/opus-5 (Claude Lead) executing the owner-armed trigger, not authorising the mode. Devan authorised it on 2026-07-29 with activate_when set to '§10 is accepted'; that condition is satisfied by docs/phase10-workflow/reviews/section-10-accepted.md, and the owner accept handoff states explicitly that the mode activates for §11. No role value in the state machine was changed.",
-    "applies_from": "§11"
+    "since": "2026-07-30",
+    "reason": "OpenAI quota reached zero; turn 1 of the unattended run consumed the remainder.",
+    "routing": "PHASE10_SINGLE_PROVIDER defaults to 1. Both seats invoke the Claude CLI; the codex seat runs codex-implementation.md under a codex lock. State role values are unchanged.",
+    "suspended": "Cross-model independence. A Claude review of a Claude implementation cannot catch what a differently trained model catches.",
+    "still_binding": "Every compensating control in docs/phase10-workflow/SINGLE_PROVIDER_MODE.md, including the reserved list: the privacy boundary, the financial math core, and any gate change all wait for Codex.",
+    "section_flag_required": "Sections accepted in this window record single_provider_mode true in sections_history.",
+    "restore": "PHASE10_SINGLE_PROVIDER=0 when Codex quota returns."
   },
   "mid_turn_repository_event": {
     "observed_by": "claude-code/opus-5 (Claude Lead)",

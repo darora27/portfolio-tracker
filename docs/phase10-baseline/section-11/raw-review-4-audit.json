@@ -1,0 +1,101 @@
+{
+  "BHV-20": {
+    "legendPresentFirstVisit": false,
+    "legendPresentAfterInteraction": false,
+    "legendPresentAfterReload": false,
+    "manualButtonVisible": true,
+    "legendSummonedFromManual": false,
+    "dismissedOnInteraction": false,
+    "doesNotReturnAfterReload": true
+  },
+  "VIS-14.panelChart": {
+    "found": true,
+    "heightPx": 170,
+    "hairlineCount": 3,
+    "baselineFound": true,
+    "dotCount": 2,
+    "endpointChipFound": true,
+    "endpointChipText": "▼ 12.0%"
+  },
+  "VIS-14.roomChart": {
+    "found": true,
+    "heightPx": 320,
+    "hairlineCount": 3,
+    "dotCount": 2
+  },
+  "VIS-19.portfolioLabelCollision": {
+    "portfolioLabelFound": false
+  },
+  "VIS-16.ringTokenSignal": {
+    "ringElementCount": 0,
+    "sample": []
+  },
+  "MOB-10.390": {
+    "overflow": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflow": false
+    },
+    "canvasPresent": false,
+    "fallbackNavPresent": true,
+    "smallTargetCount": 0,
+    "smallTargets": []
+  },
+  "MOB-11.390": {
+    "bannedFound": [],
+    "requiredNounsPresent": [
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredNounsMissing": [
+      "HOLDINGS",
+      "CORRELATION",
+      "TRADES"
+    ],
+    "windowWordsPresent": [
+      "TODAY",
+      "WEEK",
+      "SINCE START"
+    ],
+    "windowWordsMissing": [
+      "30D",
+      "SINCE BUY"
+    ]
+  },
+  "MOB-10.320": {
+    "overflow": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "overflow": false
+    },
+    "canvasPresent": false,
+    "fallbackNavPresent": true,
+    "smallTargetCount": 0,
+    "smallTargets": []
+  },
+  "MOB-11.320": {
+    "bannedFound": [],
+    "requiredNounsPresent": [
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredNounsMissing": [
+      "HOLDINGS",
+      "CORRELATION",
+      "TRADES"
+    ],
+    "windowWordsPresent": [
+      "TODAY",
+      "WEEK",
+      "SINCE START"
+    ],
+    "windowWordsMissing": [
+      "30D",
+      "SINCE BUY"
+    ]
+  }
+}

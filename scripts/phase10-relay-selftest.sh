@@ -74,6 +74,11 @@ git -C "$RELAY_REPO" commit -q -m "fixture: initialize"
 
 (
   cd "$RELAY_REPO"
+  # Two-provider routing. Single-provider became the default on July 30 2026,
+  # so this block pins it off explicitly — the two-provider path must keep
+  # working for when Codex quota returns, and a default must never silently
+  # delete the coverage of the thing it replaced.
+  export PHASE10_SINGLE_PROVIDER=0
   ./scripts/phase10-relay.sh --check | grep -q \
     "section=§test stage=review status=ready next_actor=claude"
 
@@ -97,6 +102,77 @@ git -C "$RELAY_REPO" commit -q -m "fixture: initialize"
     echo "FAIL: expected initial + two serial agent commits."
     exit 1
   fi
+)
+
+# ── Single-provider routing (the default since July 30 2026) ───────────────
+# Both seats must invoke the Claude runner with NO environment variable set,
+# because that is how the unattended run launches. The fixtures log which
+# runner actually executed, so this asserts observed behaviour rather than
+# inspecting the relay's source.
+SINGLE_REPO="$TEST_ROOT/single-provider-repo"
+mkdir -p "$SINGLE_REPO/scripts"
+cp scripts/phase10-relay.sh "$SINGLE_REPO/scripts/phase10-relay.sh"
+printf '/STOP\n/PHASE10_LOCK\n/runner.log\n' > "$SINGLE_REPO/.gitignore"
+cp "$RELAY_REPO/scripts/phase10-validate-state.mjs" "$SINGLE_REPO/scripts/"
+cat > "$SINGLE_REPO/PHASE10_STATE.json" <<'EOF'
+{
+  "status": "ready",
+  "next_actor": "codex",
+  "stage": "remediate",
+  "current_section": "§test"
+}
+EOF
+for runner in claude-lead codex-implementation; do
+  cat > "$SINGLE_REPO/scripts/phase10-$runner.sh" <<EOF
+#!/usr/bin/env bash
+set -euo pipefail
+echo "$runner \${PHASE10_PROMPT_OVERRIDE:-<default>} \${PHASE10_LOCK_OWNER:-<default>}" >> runner.log
+node -e '
+  const fs = require("fs");
+  const state = JSON.parse(fs.readFileSync("PHASE10_STATE.json", "utf8"));
+  state.status = "complete";
+  state.stage = "accept";
+  state.next_actor = "devan";
+  fs.writeFileSync("PHASE10_STATE.json", JSON.stringify(state, null, 2) + "\n");
+'
+git add PHASE10_STATE.json
+git commit -q -m "fixture: $runner ran"
+EOF
+  chmod +x "$SINGLE_REPO/scripts/phase10-$runner.sh"
+done
+chmod +x "$SINGLE_REPO/scripts/phase10-relay.sh"
+git -C "$SINGLE_REPO" init -q
+git -C "$SINGLE_REPO" config user.name "Phase 10 Relay Self-Test"
+git -C "$SINGLE_REPO" config user.email "relay-selftest@example.invalid"
+git -C "$SINGLE_REPO" add .
+git -C "$SINGLE_REPO" commit -q -m "fixture: initialize"
+
+(
+  cd "$SINGLE_REPO"
+  # Deliberately no PHASE10_SINGLE_PROVIDER — the default must carry it.
+  unset PHASE10_SINGLE_PROVIDER PHASE10_SWAP_ROLES
+  ./scripts/phase10-relay.sh --max-turns 1 >/dev/null
+  RAN="$(cat runner.log)"
+  case "$RAN" in
+    codex-implementation*)
+      echo "FAIL: single-provider must not invoke the Codex CLI; got: $RAN"
+      exit 1
+      ;;
+  esac
+  case "$RAN" in
+    *"prompts/codex-implementation.md"*) ;;
+    *)
+      echo "FAIL: the codex seat must run the implementation prompt; got: $RAN"
+      exit 1
+      ;;
+  esac
+  case "$RAN" in
+    *codex) ;;
+    *)
+      echo "FAIL: the codex seat must hold a codex lock; got: $RAN"
+      exit 1
+      ;;
+  esac
 )
 
 RUNNER_REPO="$TEST_ROOT/runner-repo"

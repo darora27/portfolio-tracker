@@ -1,0 +1,64 @@
+{
+  "VIS-19": {
+    "portfolioLabelFound": true,
+    "portfolioLabelText": "PORTFOLIO · TODAY ▼ 1.7%",
+    "portfolioLabelRect": {
+      "x": 621.640625,
+      "y": 440.25,
+      "width": 196.71875,
+      "height": 19.5,
+      "top": 440.25,
+      "right": 818.359375,
+      "bottom": 459.75,
+      "left": 621.640625
+    },
+    "overlappingTickers": [],
+    "noOverlap": true
+  },
+  "MOB-11.390": {
+    "bannedFound": [],
+    "requiredNounsPresent": [
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredNounsMissing": [
+      "HOLDINGS",
+      "CORRELATION",
+      "TRADES"
+    ],
+    "windowWordsPresent": [
+      "TODAY",
+      "WEEK",
+      "SINCE START"
+    ],
+    "windowWordsMissing": [
+      "30D",
+      "SINCE BUY"
+    ]
+  },
+  "MOB-11.320": {
+    "bannedFound": [],
+    "requiredNounsPresent": [
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredNounsMissing": [
+      "HOLDINGS",
+      "CORRELATION",
+      "TRADES"
+    ],
+    "windowWordsPresent": [
+      "TODAY",
+      "WEEK",
+      "SINCE START"
+    ],
+    "windowWordsMissing": [
+      "30D",
+      "SINCE BUY"
+    ]
+  }
+}
