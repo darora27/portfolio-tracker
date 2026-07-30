@@ -1,0 +1,70 @@
+{
+  "MOB-10.390": {
+    "overflow": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflow": false
+    },
+    "canvasPresent": false,
+    "fallbackNavPresent": true,
+    "smallTargetCount": 0,
+    "smallTargets": []
+  },
+  "MOB-11.390": {
+    "bannedFound": [],
+    "requiredNounsPresent": [
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredNounsMissing": [
+      "HOLDINGS",
+      "CORRELATION",
+      "TRADES"
+    ],
+    "windowWordsPresent": [
+      "TODAY",
+      "WEEK",
+      "SINCE START"
+    ],
+    "windowWordsMissing": [
+      "30D",
+      "SINCE BUY"
+    ]
+  },
+  "MOB-10.320": {
+    "overflow": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "overflow": false
+    },
+    "canvasPresent": false,
+    "fallbackNavPresent": true,
+    "smallTargetCount": 0,
+    "smallTargets": []
+  },
+  "MOB-11.320": {
+    "bannedFound": [],
+    "requiredNounsPresent": [
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredNounsMissing": [
+      "HOLDINGS",
+      "CORRELATION",
+      "TRADES"
+    ],
+    "windowWordsPresent": [
+      "TODAY",
+      "WEEK",
+      "SINCE START"
+    ],
+    "windowWordsMissing": [
+      "30D",
+      "SINCE BUY"
+    ]
+  }
+}
