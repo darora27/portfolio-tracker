@@ -65,6 +65,13 @@ import type {
 } from "./OrreryWorld";
 import styles from "./orrery.module.css";
 
+// F10 (VIS-16) evidence instrumentation: an odd-count arc of far-side
+// screen points, +/-14deg in 7deg steps (5 points), an exact camera
+// projection rather than an assumed circle. See the render loop's
+// ringFarArc dataset assignment below.
+const RING_FAR_ARC_HALF_COUNT = 2;
+const RING_FAR_ARC_STEP_RADIANS = (7 * Math.PI) / 180;
+
 const PLANET_VERTEX_SHADER = `
   varying vec2 vUv;
   varying vec3 vNormal;
@@ -935,7 +942,47 @@ export default function OrreryScene({
       const orbitRadius = descriptor.orbitRadius;
       const initialAngle = descriptor.initialAngle;
       const plane = new Group();
-      const pathGeometry = new RingGeometry(orbitRadius - 0.012, orbitRadius + 0.012, 160);
+      // F10 (VIS-16): the ring's 3D band was a FIXED half-width (0.012)
+      // regardless of orbitRadius. ringDescriptor.widthPx (the intended
+      // on-screen width) was computed but never consumed -- under this
+      // perspective camera, a fixed 3D width projects to fewer and fewer
+      // screen pixels as orbitRadius (and so distance from camera) grows,
+      // to the point of sub-pixel/anti-aliased dropout for the outer rings
+      // regardless of alpha (confirmed: the outermost ring stayed
+      // undetectable above background even forced to full opacity, while
+      // width alone explained it -- a near-invisible full circle, not a
+      // hemisphere). The camera is oblique (elevated, forward-offset), so
+      // distance from camera varies noticeably around a single ring -- the
+      // far side (exactly where VIS-16 grades) is meaningfully farther than
+      // the near side for the outer rings, so a single near-side sample
+      // under-widens the far side. Solve the 3D half-width against the
+      // FARTHEST point sampled around the ring, so every point (worst case
+      // included) renders at least ringDescriptor.widthPx screen pixels,
+      // same pinhole relationship the rest of this file already uses for
+      // planet/label projection.
+      const ringSamplePoint = new Vector3();
+      let ringMaxDistanceFromCamera = 0;
+      for (let sampleIndex = 0; sampleIndex < 32; sampleIndex += 1) {
+        const sampleAngle = (sampleIndex / 32) * Math.PI * 2;
+        ringSamplePoint.set(
+          Math.cos(sampleAngle) * orbitRadius,
+          0,
+          Math.sin(sampleAngle) * orbitRadius,
+        );
+        ringMaxDistanceFromCamera = Math.max(
+          ringMaxDistanceFromCamera,
+          camera.position.distanceTo(ringSamplePoint),
+        );
+      }
+      const ringVerticalFovRadians = (camera.fov * Math.PI) / 180;
+      const ringWorldUnitsPerPixel =
+        (2 * ringMaxDistanceFromCamera * Math.tan(ringVerticalFovRadians / 2)) /
+        sceneModel.viewport.height;
+      const ringHalfWidth3D = Math.max(
+        0.012,
+        (ringDescriptor.widthPx / 2) * ringWorldUnitsPerPixel,
+      );
+      const pathGeometry = new RingGeometry(orbitRadius - ringHalfWidth3D, orbitRadius + ringHalfWidth3D, 160);
       pathGeometry.rotateX(-Math.PI / 2);
       const pathPositions = pathGeometry.getAttribute("position");
       const pathAlphas = new Float32Array(pathPositions.count);
@@ -1359,6 +1406,7 @@ export default function OrreryScene({
     const projected = new Vector3();
     const labelPosition = new Vector3();
     const trailSamplePosition = new Vector3();
+    const ringFarSidePosition = new Vector3();
     const outwardVector = new Vector3();
     const tangentVector = new Vector3();
     const pickTargets: Mesh[] = [
@@ -1826,6 +1874,42 @@ export default function OrreryScene({
         planet.label.dataset.trailSampleY = String(
           (-trailSamplePosition.y * 0.5 + 0.5) * labelRect.height,
         );
+        // A short arc of points diametrically opposite the planet on its
+        // own ring, projected through the real camera. The overview camera
+        // is oblique (see cameraForOverview: an elevated, forward-offset
+        // position, not top-down orthographic), so a ring lying flat in the
+        // XZ plane projects onto the screen as an ELLIPSE, not a circle
+        // centered on the sun -- a naive sunCenter + orbitRadiusPx *
+        // (cos, sin) far-side estimate drifts off the true ring band as it
+        // can miss badly (confirmed: CBRS's naive far point landed 192px
+        // off-canvas from its true camera-projected position). Each point
+        // here is an exact 3D point on the ring, run through the same
+        // camera projection as the planet/trail samples above -- no circle
+        // assumed. The arc (not one exact point) is robust to a single
+        // ticker label overlapping one sample, same rationale as the
+        // existing near-side trail sampling. The off-ring reference point
+        // is derived from this arc in screen space by the evidence script
+        // (a small fixed-pixel radial offset), not re-projected at a larger
+        // 3D radius -- a larger 3D radius drifts across the background's
+        // own radial vignette for outer rings, which reads as signal that
+        // has nothing to do with the ring.
+        const farArc: Array<[number, number]> = [];
+        for (let arcStep = -RING_FAR_ARC_HALF_COUNT; arcStep <= RING_FAR_ARC_HALF_COUNT; arcStep += 1) {
+          const arcAngle = Math.PI + (arcStep * RING_FAR_ARC_STEP_RADIANS);
+          ringFarSidePosition
+            .set(
+              Math.cos(arcAngle) * planet.descriptor.orbitRadius,
+              0,
+              Math.sin(arcAngle) * planet.descriptor.orbitRadius,
+            )
+            .applyMatrix4(planet.orbit.matrixWorld)
+            .project(camera);
+          farArc.push([
+            (ringFarSidePosition.x * 0.5 + 0.5) * labelRect.width,
+            (-ringFarSidePosition.y * 0.5 + 0.5) * labelRect.height,
+          ]);
+        }
+        planet.label.dataset.ringFarArc = JSON.stringify(farArc);
         planet.label.hidden = projected.z > 1;
       }
       const resolvedLabels = layoutOverviewLabels(labelCandidates, {

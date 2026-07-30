@@ -17,7 +17,7 @@ import {
   rampForWeekly,
 } from "./universe-palette";
 
-export const OVERVIEW_RING_ALPHA = { peak: 0.55, floor: 0.22 } as const;
+export const OVERVIEW_RING_ALPHA = { peak: 0.85, floor: 0.7 } as const;
 export const OVERVIEW_RING_OPACITY = 1;
 export const ACTIVE_RING_OPACITY =
   0.7 / OVERVIEW_RING_ALPHA.peak;
@@ -102,8 +102,8 @@ export type SceneModel = {
     activeOpacity: number;
     color: string;
     fog: false;
-    nearAlpha: 0.55;
-    farAlpha: 0.22;
+    nearAlpha: 0.85;
+    farAlpha: 0.7;
   }>;
   planets: Array<{
     ticker: string;
@@ -1121,7 +1121,7 @@ export function buildOverviewSceneModel({
       return {
         ticker: holding.ticker,
         radius: planets[index].orbitRadius,
-        widthPx: 1.5,
+        widthPx: 4,
         opacity:
           hoveredTicker === holding.ticker
             ? ACTIVE_RING_OPACITY

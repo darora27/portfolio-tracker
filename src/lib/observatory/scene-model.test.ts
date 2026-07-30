@@ -125,8 +125,9 @@ describe("pure overview scene descriptor", () => {
       opacity: ACTIVE_RING_OPACITY,
       color: UNIVERSE_PALETTE.cabinet.ringSlate,
       fog: false,
-      nearAlpha: 0.55,
-      farAlpha: 0.22,
+      widthPx: 4,
+      nearAlpha: 0.85,
+      farAlpha: 0.7,
     });
     expect(model.trails[0].passes).toEqual([
       { id: "glow", widthPx: 9, opacity: 0.36, additive: true },
@@ -661,8 +662,8 @@ describe("pure overview scene descriptor", () => {
     expect(population.auroraDensityMultiplier).toBe(1.8);
     expect(starMagnitudeBucket(0)).toBe("diffraction");
     expect(starMagnitudeBucket(12)).toBe("bright");
-    expect(ringVertexAlpha(0)).toBe(0.55);
-    expect(ringVertexAlpha(Math.PI)).toBe(0.22);
+    expect(ringVertexAlpha(0)).toBe(0.85);
+    expect(ringVertexAlpha(Math.PI)).toBe(0.7);
   });
 
   it("prebakes only public percent magnitudes into an upper-sky aurora", () => {

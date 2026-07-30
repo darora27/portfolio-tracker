@@ -1,0 +1,151 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sunCenterSource": "mount.dataset.evidenceSunX/evidenceSunY (existing render-loop DOM signal)",
+  "sunCenter": {
+    "x": 720,
+    "y": 295.3235253174633
+  },
+  "method": "far-side arc sourced from the render loop's own camera projection (planet.label.dataset.ringFarArc, OrreryScene.tsx) -- 5 exact 3D points at +/-14deg (7deg steps) around each ring's true far side, run through the real (oblique) overview camera; no circle assumed. Reference is each far point offset 40px radially outward from the sun in screen space (fixed pixel offset, not a larger 3D radius, to avoid the background's own radial vignette). Median across the arc, same robustness rationale as review-5-ring-alpha-v2.mjs.",
+  "tokenPair": {
+    "note": "OVERVIEW_RING_ALPHA — src/lib/observatory/scene-model.ts:20 (see value at measurement time in the accompanying handoff/review note)"
+  },
+  "measurements": [
+    {
+      "ticker": "ASML",
+      "orbitRadiusPx": 103.8106465607537,
+      "ringFarArcScreen": [
+        [
+          618.1459861237582,
+          309.934712653497
+        ],
+        [
+          615.9234097254802,
+          304.09325515512654
+        ],
+        [
+          615.2986772712123,
+          298.22388456448124
+        ],
+        [
+          616.2389112047267,
+          292.4159994286193
+        ],
+        [
+          618.6888951491968,
+          286.7534045354316
+        ]
+      ],
+      "ringRefArcScreen": [
+        [
+          578.5513119337725,
+          315.61465770506896
+        ],
+        [
+          576.0646605999804,
+          307.4518438692248
+        ],
+        [
+          575.3140156475803,
+          299.33151033325385
+        ],
+        [
+          576.2546058850124,
+          291.2955851749303
+        ],
+        [
+          578.8312481366347,
+          283.3817618168148
+        ]
+      ],
+      "farSideArcSamples": [
+        34.0878,
+        37.803,
+        34.0878,
+        37.803,
+        34.300399999999996
+      ],
+      "farSideMedianLuminance": 34.300399999999996,
+      "referenceArcSamples": [
+        17.087799999999998,
+        8.0826,
+        59.2992,
+        232.3072,
+        12.4448
+      ],
+      "referenceMedianLuminance": 17.087799999999998,
+      "ringVisibleAboveBackground": true,
+      "luminanceDelta": 17.2126
+    },
+    {
+      "ticker": "CBRS",
+      "orbitRadiusPx": 504.1932193520514,
+      "ringFarArcScreen": [
+        [
+          789.4880614925726,
+          115.17727021624653
+        ],
+        [
+          838.1148652271814,
+          118.95993432128759
+        ],
+        [
+          886.443013150212,
+          124.75618674025472
+        ],
+        [
+          934.3172894386695,
+          132.62401344571202
+        ],
+        [
+          981.548048323511,
+          142.6402518724622
+        ]
+      ],
+      "ringRefArcScreen": [
+        [
+          803.8834991790737,
+          77.8574179414309
+        ],
+        [
+          860.3731609352902,
+          85.72488847852722
+        ],
+        [
+          914.3790502097322,
+          96.1279169111311
+        ],
+        [
+          966.176779730998,
+          108.43780087918924
+        ],
+        [
+          1016.0926735348215,
+          122.47421931744317
+        ]
+      ],
+      "farSideArcSamples": [
+        29.440799999999996,
+        29.653399999999998,
+        24.866,
+        25.866,
+        29.865999999999996
+      ],
+      "farSideMedianLuminance": 29.440799999999996,
+      "referenceArcSamples": [
+        12.150799999999998,
+        13.3634,
+        18.7938,
+        18.2912,
+        16.1468
+      ],
+      "referenceMedianLuminance": 16.1468,
+      "ringVisibleAboveBackground": true,
+      "luminanceDelta": 13.293999999999997
+    }
+  ],
+  "excludedOffCanvas": [],
+  "allSampledRingsVisibleAboveBackground": true
+}
