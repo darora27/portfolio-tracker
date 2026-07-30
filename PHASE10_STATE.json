@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "\u00a712",
-  "role": "claude_lead",
-  "stage": "specify",
+  "role": "codex_implementation",
+  "stage": "implement",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -26,9 +26,9 @@
   "section": {
     "id": "\u00a712",
     "title": "The Chart Room, the sky, and flight",
-    "spec_doc": null,
-    "acceptance_ledger": null,
-    "design_proof": null,
+    "spec_doc": "docs/phase10-workflow/specs/section-12.md",
+    "acceptance_ledger": "docs/phase10-workflow/acceptance/section-12.json",
+    "design_proof": "docs/phase10-workflow/design-proofs/section-12.md",
     "implementation_commit": null,
     "review_result": null,
     "review_doc": null,
@@ -42,7 +42,7 @@
       "OWNER_FEEDBACK_LEDGER.md"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-claude-lead-accept-to-claude-lead-specify.md",
+    "handoff": "docs/phase10-handoffs/2026-07-30-section-12-claude-lead-specify-to-codex-implementation.md",
     "note": "Inserted by owner direction on 2026-07-29 (PHASE10.md \u00a712, 'full throttle ahead' on UNIVERSE_IDEAS_6.md round 6). Authority order for this section: UNIVERSE_IDEAS_6.md (round 6, adopted in full) -> UNIVERSE_STOCK_LAB.html (the working Chart Room mock, owner-reviewed) -> OWNER_FEEDBACK_LEDGER.md -> PHASE10.md \u00a712. main is GREEN at this section start: npm test 107/107 files, 553/553 tests, and npm run build exit 0, both re-run by the accept turn at HEAD 9f561b5. \u00a711's carried criterion is BLD-04 (see carried_from_section_11 below) -- must appear in this section's acceptance ledger with its measurement attached and the unmodified verifier re-run; may not be closed by assertion. IMPORTANT SCOPING NOTE FOR THE NEXT SPECIFY TURN: the Claude Lead standing prompt (docs/phase10-workflow/prompts/claude-lead.md) carries an owner-adopted '\u00a712a unattended ordering' section (\u00a78.5, July 29 2026) that pre-scopes the immediate work to four ordered phases (A: FB-19/FB-20 machine-checkable; B: FB-05 role-token mapping + FB-01 spacing/pull-back; C: the FB-17/FB-08+FB-15/FB-09/FB-12/FB-11/FB-21 variant experiments on a build-capture-park cadence; D: assemble REVIEW_SITTING.md and stop at owner-sitting) rather than the full original PHASE10.md \u00a712 Chart Room/sky/cursor/type-ramp scope. OWNER_FEEDBACK_LEDGER.md \u00a72's board already routes its rows to \u00a712a/\u00a712b accordingly and must be read, and its board-open rule (board_required_from_section: 12) binds starting with this section's spec. Read both before writing anything; do not default to specifying the full PHASE10.md \u00a712 scope without reconciling it against that pre-scoping first.",
     "carried_from_section_11": {
       "rule": "One \u00a711 criterion was carried by owner decision on 2026-07-30, not closed. Must appear in \u00a712 acceptance with the measurement below attached, and \u00a712 must re-run the named verifier and record the result. May not be closed by assertion. No gate was weakened.",
@@ -140,8 +140,8 @@
       "note": "Universe legibility and the draft rig. One implementation round, ten review turns, nine remediation rounds, one out-of-band owner-directed Fable drop (a7f85ac, covering F1/F4/FB-03/FB-06/FB-14/FB-17), and one one-attempt-authorized mark repair. The authoritative review (section-11-review-10.md) records PASS: 53 of 54 criteria pass or are not applicable; one (BLD-04, carried from \u00a710) is carried again to \u00a712, recorded in the ledger as carried_by_owner with its failing measurement attached, by Devan's explicit non-generalizing ruling (commit 9f561b52179023f70c89fabfab62ea880df0a146): CARRY, not except -- the <50ms boundary is unweakened, unredefined, and un-baseline-subtracted; the criterion still fails and is not being pretended otherwise. Root cause: Next.js pre-mount RSC/hydration bootstrap upstream of OrreryScene, which six rounds of scene-construction chunking measurably improved (a consistent 55-65ms breach down to an intermittent single-batch 51-59ms breach) but could not reach structurally. Accepted at 5d91b6e (implementation-bearing HEAD); the owner's carry-ruling commit 9f561b5 sits one commit on top and changes no application source (git diff --name-only 5d91b6e 9f561b5 -- src/ public/ package.json package-lock.json scripts/ is empty), re-verified independently at acceptance: npm test 107/107 files, 553/553 tests, zero failures; npm run build exit 0, 18/18 pages, /share smoke pass. All five \u00a710-carried criteria other than BLD-04 (TST-03, VIS-04, DEF-02, VIS-02, BHV-05) closed in-section across review turns 4-8. single_provider_mode is true for the entire section, including this acceptance; the first Codex turn after it lifts should re-review the BLD-04 carry decision. See docs/phase10-workflow/reviews/section-11-accepted.md, section-11-review.md through section-11-review-10.md, and docs/phase10-workflow/SINGLE_PROVIDER_MODE.md."
     }
   ],
-  "prev_actor_commit": "9f561b52179023f70c89fabfab62ea880df0a146",
-  "prev_actor_commit_note": "9f561b52179023f70c89fabfab62ea880df0a146 (owner(\u00a711): carry BLD-04 to \u00a712 -- no exception, no gate weakened) was HEAD at the start of this Claude Lead review turn (review turn 10). It changed no application source -- it routed state from blocked/devan back to ready/review/claude and recorded the owner's carry ruling. This turn grades against that ruling, accepts \u00a711 at the earlier candidate 5d91b6e (the last commit carrying \u00a711 application source), and initializes \u00a712.",
+  "prev_actor_commit": "6afbe579ef7e46a72bac4a01c8e4fb5eb22795b7",
+  "prev_actor_commit_note": "6afbe579ef7e46a72bac4a01c8e4fb5eb22795b7 (phase10(review \u00a711): accept and initialize \u00a712) was HEAD at the start of this Claude Lead specify turn. It changed no application source -- it accepted \u00a711 at 5d91b6e and reset section to a fresh \u00a712 record at stage:specify. This turn wrote the \u00a712a design proof, specification, and acceptance ledger (scoped to the owner-adopted \u00a712a unattended ordering, not the full PHASE10.md \u00a712 text), then routed to stage:implement, role:codex_implementation, next_actor:codex. No application source changed this turn either.",
   "last_green_commit": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
   "last_green_commit_note_2": "Moved from 3d1882a to \u00a710's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. \u00a79's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against \u00a710's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
   "last_green_commit_note_4": "Moved from f271fc7 to e8faf0d (\u00a711 review turn 6). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD e8faf0d, confirming it green. The eventual blocked-handoff commit changes no executable source.",
@@ -150,6 +150,7 @@
   "last_green_commit_note_7": "Moved from 0c3a812 to 5d91b6e (\u00a711 review turn 9). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD 5d91b6e, confirming it green. As with note_6, this is orthogonal to BLD-04's live-browser long-task gate -- green here does not contradict the BLD-04-1 finding, which remains open and is why this turn's status is blocked rather than accept.",
   "production_code_changed_this_turn": false,
   "production_code_note": "This review-turn-10/accept turn (claude_lead, claude-code/sonnet-5) changed no application source. It updated docs/phase10-workflow/acceptance/section-11.json (BLD-04 reviewer.status fail -> carried_by_owner, evidence citation fixed to include the already-retained raw-review-8-bld04-longtasks.json), wrote docs/phase10-workflow/reviews/section-11-review-10.md and section-11-accepted.md, moved \u00a711 into sections_history, reset section to a fresh \u00a712 record, reset verification, and regenerated context/handoff/progress.",
+  "production_code_note_2": "This \u00a712 specify turn (claude_lead, claude-code/sonnet-5) changed no application source either. It wrote docs/phase10-workflow/design-proofs/section-12.md, docs/phase10-workflow/specs/section-12.md (\u00a712a scope only -- FB-19, FB-20, FB-05, FB-01, FB-17, FB-08+FB-15, FB-09, FB-12, FB-11, FB-21, and BLD-04's carried re-measurement; explicitly not \u00a712b's Chart Room/sky/cursor), and docs/phase10-workflow/acceptance/section-12.json (19 criteria, 10 visual, validated by phase10:acceptance check). Routed stage:specify -> stage:implement, role:claude_lead -> codex_implementation, next_actor:claude -> codex.",
   "verification": {
     "tests": {
       "command": "npm test",
@@ -171,7 +172,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-30T13:45:00Z",
+  "updated_at": "2026-07-30T14:30:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

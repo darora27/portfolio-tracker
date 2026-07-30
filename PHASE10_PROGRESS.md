@@ -1192,3 +1192,56 @@ Devan's owner ruling on the section's sole remaining finding.
 - Handoff to §12 `specify`:
   `docs/phase10-handoffs/2026-07-30-section-11-claude-lead-accept-to-claude-lead-specify.md`
 - Machine state: `PHASE10_STATE.json` (`sections_history` §11, `section` §12)
+
+### §12 specified (§12a scope) — July 30, 2026
+
+- [x] Reconciled the standing prompt's owner-adopted "§12a unattended
+  ordering" (§8.5) against `OWNER_FEEDBACK_LEDGER.md` §2's board before
+  writing anything, per the fresh §12 record's explicit instruction — this
+  spec covers **§12a only** (four ordered phases, eleven ledger rows, plus
+  the carried `BLD-04`), not the full `PHASE10.md` §12 Chart Room/sky/cursor
+  scope, which is §12b — done by claude-code/sonnet-5
+- [x] Dispatched a read-only Explore agent to locate exact current file/line
+  for every §12a-relevant source location, then independently re-verified
+  two ambiguous findings directly against source: the DRAFT rig's motion
+  default (genuinely defaults **on** at runtime, `setMotion(!media.matches)`
+  overriding a misleading `useState(false)` initializer) and the absence of
+  any `1.6` scale constant in `DraftRig.tsx` (resolving the ledger's "dish
+  ×1.6 → ×1.0" phrase against `UNIVERSE_AUDIT.md`'s fully-traceable
+  "9–28s → 30–90s" number instead, with reasoning recorded rather than
+  silently picked) — done by claude-code/sonnet-5
+- [x] Wrote `docs/phase10-workflow/design-proofs/section-12.md`
+  (`existing-package-equivalent`, citing the §12a ordering itself as the
+  owner-approved scope decision) — done by claude-code/sonnet-5
+- [x] Wrote `docs/phase10-workflow/specs/section-12.md`: Phase A (`FB-19`
+  panel/manual overlap, `FB-20` orphaned labels — both machine-checkable);
+  Phase B (`FB-05` role→token mapping with rendered, not source-parsed-only,
+  assertions; `FB-01` spacing/pull-back with owner-fixed numbers); Phase C
+  (`FB-17` panel-width strip, `FB-08`+`FB-15` tab-strip variants, `FB-09`
+  exit receipt + regrouped terminal, `FB-12` DRAFT rig's three lines,
+  `FB-11` correlation named-pair sentence, `FB-21` Mission Control width —
+  each build→capture→park, no variant "picked" by this spec); `BLD-04`
+  carried re-measurement (unmodified verifier, no structural fix authorized
+  this window). Opens with the required ledger board (rule 2, binding from
+  §12 for the first time) — done by claude-code/sonnet-5
+- [x] Created and filled `docs/phase10-workflow/acceptance/section-12.json`:
+  19 criteria (10 visual, under the ~20/≤12 caps), validated clean via
+  `npm run phase10:acceptance -- check` — done by claude-code/sonnet-5
+- [x] Hit and resolved one validator finding: a substring false-positive on
+  `FB-10` (already `CONFIRMED`/closed, but its quoted text *"news articles
+  open"* contains the literal word the board-completeness check matches on)
+  — documented rather than routed around the validator — done by
+  claude-code/sonnet-5
+- [x] Routed state: `stage` `specify` → `implement`, `role` `claude_lead` →
+  `codex_implementation`, `next_actor` `claude` → `codex`, `status` stays
+  `ready`. Changed no application source — done by claude-code/sonnet-5
+
+#### §12 specification evidence
+
+- Spec: `docs/phase10-workflow/specs/section-12.md`
+- Design proof: `docs/phase10-workflow/design-proofs/section-12.md`
+- Acceptance ledger: `docs/phase10-workflow/acceptance/section-12.json`
+  (19 criteria, all `not_run` — fresh)
+- Handoff to `implement`/`codex`:
+  `docs/phase10-handoffs/2026-07-30-section-12-claude-lead-specify-to-codex-implementation.md`
+- Machine state: `PHASE10_STATE.json` (`section` §12, `stage: implement`)

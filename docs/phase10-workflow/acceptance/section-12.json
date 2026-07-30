@@ -1,0 +1,470 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "section": "§12",
+  "spec_doc": "docs/phase10-workflow/specs/section-12.md",
+  "candidate_sha": null,
+  "criteria": [
+    {
+      "id": "VIS-01",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-19: at 1440x900 with the approach camera and the inspector panel open, the `? SYSTEMS MANUAL` button's bounding box does not intersect the inspector panel's bounding box, and the panel's `.microHint` header line (`SPIN = SCENERY · ORBIT = WEEK...`) renders in full, untruncated, at all three FB-17 candidate panel widths (600/660/720px).",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/systems-manual-1440x900.png",
+        "docs/phase10-baseline/section-12/raw-fb19-geometry.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-02",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-20: no scene label (including CBRS and COST) renders at approach scale without its associated planet/belt body simultaneously visible in the same frame, sampled across at least three approach-camera transitions.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/label-culling-1440x900.png",
+        "docs/phase10-baseline/section-12/raw-fb20-label-body-pairs.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-01",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "FB-05: a rendered (not source-parsed-only) test asserts that each Mission Control text role in the section spec's role table resolves to its assigned ramp token via the actual rendered component tree - headers/questions/holdings-headers/manifest text on --type-title or --type-body, genuine labels/stamps/window-words on --type-label. The test fails if a role is mapped to the wrong token even when that token is itself a legal ramp value.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/mission-control-text-roles.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/raw-mission-control-text-roles.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-03",
+      "dimension": "visual",
+      "risk": "critical",
+      "description": "FB-05: at 1440x900 with Mission Control open, every reading surface named in the section spec's role table (headers, question copy, holdings/manifest text) is visibly larger than the label-tier microcopy around it, captured for owner review.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/mission-control-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-04",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "FB-01: with ORRERY_MIN_RADIUS=0.62, ORRERY_MAX_RADIUS=1.35, the orbit gap formula 1.75x(r_i+r_i+1)+0.55, and OVERVIEW_BELT_SPAN_PCT=0.80, the minimum edge-to-edge distance between any two adjacent planet discs at closest approach is >= 1.0x the larger disc's diameter (computed from the existing projection helpers), and the full system fits within the 1440x900 overview frame with margin on all sides.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/overview-1440x900.png",
+        "docs/phase10-baseline/section-12/raw-fb01-spacing-measurement.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-05",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "FB-17: at each of three panel widths (600px, 660px, 720px), the panel-visibility invariant holds - the planet disc's right edge stays <= the panel's left edge (unoccluded: true, matching the raw-panel-geometry.json pattern from section 11) - and the panel grows left from its right anchor without moving the planet or altering orbital positions.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/panel-width-600.png",
+        "docs/phase10-baseline/section-12/panel-width-660.png",
+        "docs/phase10-baseline/section-12/panel-width-720.png",
+        "docs/phase10-baseline/section-12/raw-panel-geometry.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-06",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-08 + FB-15: all three tab-strip variants (A - no tabs, B - black rail boxless, C - index edge) render at 1440x900 with zero console errors, every one of the seven section destinations remains reachable by some control in each variant, and each variant is keyboard-operable (tab order reaches every control, Enter/Space activates it).",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/tab-strip-a.png",
+        "docs/phase10-baseline/section-12/tab-strip-b.png",
+        "docs/phase10-baseline/section-12/tab-strip-c.png",
+        "docs/phase10-baseline/section-12/raw-tab-strip-keyboard.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-07",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "FB-09: leaving Mission Control programmatically (e.g. ESC from a descended section) shows the four-line, <=20-word sign-off receipt (not the raw semantic terminal) at 1440x900, phosphor #e8f1df on void; the receipt fades after 4s under normal motion and persists until interaction under reduced motion. Focusing into the semantic terminal via keyboard (Tab) shows the regrouped terminal (BODIES / INSTRUMENTS / BELT / ENCODING, focused group open) with <=9 visible rows at any moment.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/exit-receipt-1440x900.png",
+        "docs/phase10-baseline/section-12/exit-terminal-grouped-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-01",
+      "dimension": "accessibility",
+      "risk": "high",
+      "description": "FB-09: the regrouped semantic terminal preserves every encoding present before regrouping (the existing fallback-completeness test content is unchanged, only its visible-row-count behavior differs), and the sign-off receipt never steals focus from or traps keyboard navigation - a keyboard user can Tab past or through it exactly as before the receipt existed.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/observatory-fallback.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/raw-acc01-fallback-completeness.txt",
+        "docs/phase10-baseline/section-12/raw-acc01-keyboard-focus.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-08",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-12: the DRAFT rig at 1440x900 shows MOTION defaulting to OFF for a visitor with no reduced-motion OS preference, the DRAFT latch present in both the strip nav and the footer (owner view), and one visible (non-aria-live-only) coach line on first open reading 'PULL A CIRCLE — THE OTHERS BREATHE. DRAG INTO ANOTHER TO SIPHON.'",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/draft-rig-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-02",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "FB-12: (1) the DRAFT rig's motion state defaults to false regardless of prefers-reduced-motion match/no-match, and the reduced-motion query, when it matches, still forces and locks motion off; (2) the dish-lap --draft-speed formula's output stays within the closed interval [30, 90] seconds across the full weeklyReturn input domain, preserving the existing inverse-magnitude ordering (larger |weeklyReturn| still produces a shorter lap time than smaller |weeklyReturn|).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/DraftRig.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/raw-bhv02-draft-rig-speed.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-01",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "FB-11: the correlation section's templated named-pair sentence (<=14 words) names the actual top |r| pair from data.correlationTickers/data.correlationCells via the existing mostCorrelatedPair function, appears beneath (not replacing) the existing generic paragraph, and does not render when shared history is below the existing MIN_OVERLAP threshold (the generic paragraph alone stands in that case).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/raw-bhv01-correlation-sentence.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-09",
+      "dimension": "visual",
+      "risk": "low",
+      "description": "FB-11: the CORRELATION section at 1440x900 shows the named-pair sentence beneath the existing generic paragraph for a portfolio with sufficient shared history.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/correlation-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-10",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-21: Mission Control's .missionDescent content column resolves to min(1400px, 96vw) (up from min(1120px, calc(100% - 2rem))) at 1440x900, with adjusted padding/margin so the wider column reads filled rather than cramped, captured before and after.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/mission-control-1440x900.png",
+        "docs/phase10-baseline/section-12/mission-control-before-1120-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "MOB-01",
+      "dimension": "mobile",
+      "risk": "low",
+      "description": "Regression: the sub-1024px semantic fallback is unaffected by this section's changes to orrery.module.css - a 390x844 capture and the existing fallback test suite show no change in fallback layout, text content, or horizontal overflow (document.documentElement.scrollWidth === clientWidth).",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/fallback-390x844.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "PRV-01",
+      "dimension": "privacy",
+      "risk": "critical",
+      "description": "Regression: none of this section's eleven ledger rows add a new route, new public field, or dollar figure to /share. The existing /share privacy canary test suite passes unchanged, and a diff review of the candidate confirms no new public data path was introduced incidentally by any of the shared-file edits (orrery.module.css, mission-control-layout.ts, MissionControlRoomContent.tsx).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/public-payload.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/raw-prv01-share-canary.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-02",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "Full test suite passes with zero failures against the candidate commit, independently re-run.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/raw-npm-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-01",
+      "dimension": "build",
+      "risk": "critical",
+      "description": "Production build succeeds with exit 0 against the candidate commit, independently re-run, with the same route count as main at section start (18 routes) unless a route is deliberately added/removed and named in the candidate's notes.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm run build"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/raw-npm-build.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-04",
+      "dimension": "build",
+      "risk": "high",
+      "description": "Carried from section 11 (owner ruling 9f561b52179023f70c89fabfab62ea880df0a146, 'no exception, no gate weakened'). The route-owned long task on /share is re-measured with the unmodified docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs script (5 fresh 1440x900 CPU-2x contexts) against this section's candidate, and the raw result recorded verbatim - pass, fail, or partial. No structural SSR/hydration remediation is authorized this window; a continued fail is carried forward again with the fresh measurement attached, not closed by assertion.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-12/raw-bld04-longtasks.json",
+        "docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "carried_from_section_11": {
+        "original_id": "BLD-04",
+        "owner_decision": "docs/phase10-handoffs/2026-07-30-section-11-claude-lead-accept-to-claude-lead-specify.md",
+        "owner_decision_commit": "9f561b52179023f70c89fabfab62ea880df0a146",
+        "measurement_at_carry": "measure-long-tasks.mjs unmodified, 3 batches across 2 fresh production server processes, 15 fresh 1440x900 CPU-2x contexts: 1 of 3 batches breached the unchanged <50ms boundary (a single 59ms task); 2 of 3 clean at 0ms. 77 prior runs at 0ms; eleven breaches spanning 57-64ms across the section's full history.",
+        "root_cause": "Next.js pre-mount RSC/hydration bootstrap script, upstream of OrreryScene. Six rounds of scene-construction chunking measurably improved but could not reach it.",
+        "resolved_in_12_by": "An architecture-level SSR/loading-behaviour change (next/dynamic({ssr:false}) code-splitting the 3D world, or a smaller initial RSC payload), or an owner-approved scoped exception. NOT authorized in the §12a window - re-measurement only.",
+        "evidence_at_carry": "docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json",
+        "verifier_note": "measure-long-tasks.mjs runs unmodified.",
+        "rule": "Must be re-run and recorded in §12. May not be closed by assertion."
+      }
+    }
+  ]
+}
