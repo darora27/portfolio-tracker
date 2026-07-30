@@ -487,6 +487,31 @@ try {
 
   const samples = fixtureOrder.map((ticker) => accepted.get(ticker));
 
+  /* SPEC CORRECTION — owner decision, Devan, July 29 2026.
+   *
+   * The ordering assertion below compares only holdings whose EXPECTED
+   * colours differ. Two holdings pinned at the same end of the ramp are
+   * painted identically by design, so ranking their rendered brightness
+   * measures antialiasing and trail overlap, not encoding.
+   *
+   * The bug this fixes, and where it came from: the assertion was written
+   * against round 3 §3.3, which lengthened arcs to 36-64 degrees to give the
+   * lightness ramp room and described magnitude as a continuous channel. The
+   * shipped ramp is not continuous — it has discrete stops, and both extremes
+   * clamp. So the check demanded a strict rank between values the design
+   * deliberately makes equal.
+   *
+   * It failed on exactly that: CBRS at -18.51% and INTC at -20.90% both map
+   * to #b3241d, both passed the deltaE colour check independently (4.218 and
+   * 1.022 against a threshold of 8), and differed by 0.0074 luminance in the
+   * direction the ordering rule disliked. Devan's ruling: "Two losses pinned
+   * at the dark end of the ramp are painted identical by design, so ranking
+   * their brightness is measuring noise."
+   *
+   * NOTHING ELSE IS RELAXED. Every deltaE, hue-distance and clearance
+   * threshold is untouched, and ordering is still enforced wherever the
+   * design actually asserts a difference.
+   */
   for (const direction of [1, -1]) {
     const sameDirection = samples
       .filter(({ weekly }) => weekly !== null && Math.sign(weekly) === direction)
@@ -494,13 +519,41 @@ try {
     for (let index = 1; index < sameDirection.length; index += 1) {
       const prior = sameDirection[index - 1];
       const current = sameDirection[index];
+      if (prior.expected === current.expected) {
+        // Same ramp stop: the design paints these identically. Ranking them
+        // is measuring render noise, not the encoding. Skipped by owner
+        // decision, and recorded in the emitted evidence below.
+        continue;
+      }
       const ordered = direction > 0
         ? current.luminance >= prior.luminance
         : current.luminance <= prior.luminance;
       if (!ordered) {
         throw new Error(
-          `Magnitude ordering failed: ${JSON.stringify({ prior, current })}`,
+          `Magnitude ordering failed between DIFFERENT ramp stops: ${JSON.stringify({ prior, current })}`,
         );
+      }
+    }
+  }
+
+  // Record which comparisons the correction skipped, so a reader can see the
+  // narrowing was applied and how often it bites rather than taking it on
+  // trust. A silent exemption is how a gate quietly stops being a gate.
+  const skippedSameStop = [];
+  for (const direction of [1, -1]) {
+    const sameDirection = samples
+      .filter(({ weekly }) => weekly !== null && Math.sign(weekly) === direction)
+      .sort((left, right) => Math.abs(left.weekly) - Math.abs(right.weekly));
+    for (let index = 1; index < sameDirection.length; index += 1) {
+      const prior = sameDirection[index - 1];
+      const current = sameDirection[index];
+      if (prior.expected === current.expected) {
+        skippedSameStop.push({
+          pair: [prior.ticker, current.ticker],
+          sharedExpected: prior.expected,
+          weekly: [prior.weekly, current.weekly],
+          luminance: [prior.luminance, current.luminance],
+        });
       }
     }
   }
@@ -529,6 +582,14 @@ try {
       magnitudeOrdering: true,
       fixtureSubsetAllowed: false,
       trailArcDegrees: [18, 30],
+    },
+    magnitudeOrderingScope: {
+      correction: "Owner decision, Devan, July 29 2026 — ordering is asserted only between holdings whose EXPECTED colours differ.",
+      reason: "Holdings pinned at the same end of the ramp are painted identically by design; ranking their rendered brightness measures antialiasing and trail overlap, not encoding.",
+      sourceOfBug: "Round 3 §3.3 described magnitude as a continuous channel and lengthened arcs to 36-64 degrees to give it room. The shipped ramp has discrete stops and both extremes clamp, so a strict rank was demanded between values the design makes equal.",
+      failingObservation: "CBRS -18.51% and INTC -20.90% both map to #b3241d, both passed deltaE independently (4.218 and 1.022 against 8), and differed by 0.0074 luminance.",
+      stillEnforcedBetweenDifferentStops: true,
+      skippedSameStopPairs: skippedSameStop,
     },
     samples: samples.map(({ framePath: _framePath, ...sample }) => sample),
     visualEvidence: {

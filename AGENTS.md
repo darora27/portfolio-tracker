@@ -53,6 +53,23 @@ taste verdicts.
   ≤ 12 captures, each captioned with the criteria and ledger rows it evidences.
 - Cap sections at ~20 criteria, ≤ 12 visual.
 
+### Attended camera — owner-adopted July 29 2026
+
+Terminal agents on this Mac cannot launch Chromium (macOS sandbox, Mach-port
+denial, confirmed four times). **Opus in Cowork mode can** — it drives the
+owner's real Chrome through the extension and has already used it to measure
+the sun-to-ASML gap at ~5px and to confirm ASML carries no brand mark.
+
+- Screenshots Opus takes in Chrome, **saved under
+  `docs/phase10-baseline/<section>/attended/` and committed**, are valid
+  capture evidence, equal in standing to harness output.
+- **Opus measures; Opus never judges taste.** A number, a pixel, a geometry
+  reading — those it may report. Whether something *looks right* is Devan's
+  sentence and only ever his.
+- **`parked_owner` is for when Devan is away.** While he is present the loop is
+  look → tell him → he answers. Parking a row he could simply be shown is a
+  misuse of the state.
+
 Both rules are machine-checked by `npm run phase10:validate`.
 
 # Multi-agent protocol (Phase 10)

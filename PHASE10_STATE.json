@@ -4,8 +4,8 @@
   "current_section": "§11",
   "role": "codex_implementation",
   "stage": "remediate",
-  "status": "blocked",
-  "next_actor": "devan",
+  "status": "ready",
+  "next_actor": "codex",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -177,7 +177,8 @@
       "F3 / FB-04 — RESOLVED by owner fallback: identity rests on colour + silhouette. No further logo work in §11.",
       "IBM/NBIS alpha repair — AUTHORISED and completed in one attempt, measured 100%->4.88% and 98.62%->20.98%.",
       "Live capture of the 460/520/580 panel geometry and the three ASML phases — DECLINED for now; he had to leave. F2 stays landed-in-source and its visual criterion remains owner-carried until he looks.",
-      "F7/TST-03 + F8/VIS-04 — temporal per-holding sampling AUTHORISED. Trails stay 18-30. All thresholds stay. Re-lengthening and criterion removal both refused."
+      "F7/TST-03 + F8/VIS-04 — temporal per-holding sampling AUTHORISED. Trails stay 18-30. All thresholds stay. Re-lengthening and criterion removal both refused.",
+      "TST-03 magnitude ordering — SPEC CORRECTION accepted, Devan July 29 2026: ordering is asserted only between holdings whose EXPECTED colours differ. Source of the bug: round 3 §3.3 treated magnitude as a continuous channel and lengthened arcs to 36-64 degrees to give it room; the shipped ramp has discrete stops and both extremes clamp, so a strict rank was demanded between values the design makes equal. Failing observation: CBRS -18.51% and INTC -20.90% both map to #b3241d, both passed deltaE independently (4.218 and 1.022 against 8), differing by 0.0074 luminance. Every deltaE, hue-distance, chroma and clearance threshold is untouched, ordering is still enforced between different stops, and skipped pairs are emitted in the evidence so the narrowing is visible rather than silent."
     ],
     "owner_capture_run": {
       "ran_by": "Devan, July 29 2026, via npm run phase10:evidence -- 11 against the production build",
@@ -283,7 +284,7 @@
       "finished_at": "2026-07-30T02:24:26Z"
     }
   },
-  "stop_reason": "needs-capture: F7/TST-03 and F8/VIS-04 require the owner-authorised temporal pixel verifier against the production WebGL view. This managed CLI can launch only the semantic no-WebGL fallback. Devan: run `npm run build && npm run start`, then in another normal Terminal run `PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs` and read the final machine-readable line. No criterion pass is claimed.",
+  "stop_reason": null,
   "updated_at": "2026-07-30T02:26:40Z",
   "legacy": {
     "schema_version": 1,

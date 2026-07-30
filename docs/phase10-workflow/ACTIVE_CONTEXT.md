@@ -13,10 +13,10 @@ them.
 - Managed range: §2–§18
 - Stage: `remediate`
 - Role: `codex_implementation`
-- Status: `blocked`
-- Next actor: `devan`
+- Status: `ready`
+- Next actor: `codex`
 - Expected actor for this stage: `codex`
-- Stop reason: needs-capture: F7/TST-03 and F8/VIS-04 require the owner-authorised temporal pixel verifier against the production WebGL view. This managed CLI can launch only the semantic no-WebGL fallback. Devan: run `npm run build && npm run start`, then in another normal Terminal run `PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs` and read the final machine-readable line. No criterion pass is claimed.
+- Stop reason: none
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -103,15 +103,15 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 
 These hashes make stale generated context mechanically detectable:
 
-- `docs/phase10-workflow/workflow.json`: `25a94dda91fbe5d5ffa559e83686f890ef15b1266bd5cd33ccbdfceeb3122551`
-- `PHASE10_STATE.json`: `f4279260635fff891cd36e9304bff9ae169d032c8e075fa520274ffa24beae8c`
+- `docs/phase10-workflow/workflow.json`: `5b6fa43f4a1b9be684e032f5996d81d1ba698ccc321ef72d7f67a78dd3908e86`
+- `PHASE10_STATE.json`: `a264c41bf50a1dd6f580b4eb87e25871107ff50f6997c75f148f9dd81a0f402f`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
 - `docs/phase10-workflow/DESIGN_GATE.md`: `bf5a35b998fc240e58f083da48093444cffd8daabfad450caa09256b255be25c`
 - `docs/phase10-workflow/design-proofs/TEMPLATE.md`: `c50b4b9b94047b9686931b65f4d98133f8cb3a13ccead24fa8d3b9ec536f62f0`
 - `docs/phase10-workflow/PROVIDER_OUTAGE.md`: `8488ee51a7e81dc24c4d17a1dc552a509bec40e0d1ebc9e241a9eb0ff6fdb5af`
-- `docs/phase10-workflow/prompts/claude-lead.md`: `b84b657150aee39bee92a3931b541591f5b72e83e8885f39ad866d9c6ab68937`
-- `docs/phase10-workflow/prompts/codex-implementation.md`: `24bf4b0b44280cc68cffa2eedaf2840bd9898e1988b99e0ed2f7e090680d00fe`
+- `docs/phase10-workflow/prompts/claude-lead.md`: `9259c6cae90774637f9d59793e9fdca8898ccbb3e785ed3f05bfe322e61935dd`
+- `docs/phase10-workflow/prompts/codex-implementation.md`: `9c2a383b60737847f744eff8cad336b11bde769f4c951f0c71d77d709c170abe`
 - `docs/phase10-handoffs/TEMPLATE.md`: `c4fec8f8169d5b3e18564c28823002c18dcc119cb0c1271ed1958e94fad705cf`
 - `docs/phase10-workflow/acceptance/README.md`: `3bad4f6fb4e608fc9ba5f996bd3475dab2ee6a2d250c2a57b6f3c8c570e2ce2f`

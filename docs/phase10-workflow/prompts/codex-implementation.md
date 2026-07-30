@@ -48,6 +48,20 @@ produces `docs/phase10-baseline/section-N/contact-sheet.md`: ≤ 12 captures,
 each captioned with the criteria and ledger rows it evidences. Cap sections at
 ~20 criteria, ≤ 12 visual.
 
+## Attended camera — owner-adopted July 29 2026
+
+Terminal agents on this Mac cannot launch Chromium (macOS sandbox, Mach-port
+denial, confirmed four times). **Opus in Cowork mode can**, via the Chrome
+extension against the owner's real browser.
+
+- Opus screenshots committed under `docs/phase10-baseline/<section>/attended/`
+  are valid capture evidence, equal in standing to harness output.
+- **Opus measures; Opus never judges taste.** Numbers, pixels and geometry are
+  reportable. Whether something *looks right* is Devan's sentence, only ever his.
+- **`parked_owner` is for when Devan is away.** While he is present the loop is
+  look → tell him → he answers. Parking a row he could simply be shown is a
+  misuse of the state.
+
 ## 0. Preflight, in order
 
 1. Check `STOP` before any other repository read or write. If present, report

@@ -103,7 +103,9 @@
     "visual_verifier_kinds": [
       "browser",
       "visual"
-    ]
+    ],
+    "attended_capture_dir_pattern": "docs/phase10-baseline/section-{N}/attended",
+    "attended_capture_note": "Opus-in-Cowork Chrome screenshots committed here are valid capture evidence. Opus measures, never judges taste. parked_owner is for absence only."
   },
   "global_gates": [
     {
