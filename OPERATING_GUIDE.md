@@ -57,6 +57,11 @@ whether something is a Fable problem, it isn't yet: run the loop once more.
    days, so cap relay bursts at `--max-turns 4`, keep Opus sessions short and
    batched (one sitting, not always-on), and let Codex carry implementation.
 
+**Unattended window (owner away).** The per-day cadence cap is replaced by a
+TOTAL cap: one run, `--max-turns 12`, launched via `phase10-unattended.sh`
+with the camera daemon. It ends at `owner-sitting` or earlier. **§12b never
+starts in the window.** Attended weeks keep the existing cadence.
+
 ## The order of work (already decided — do not re-plan)
 
 1. **Now:** commit the Fable drop (`FABLE_IMPLEMENTATION_HANDOFF.md`),

@@ -75,6 +75,70 @@ extension against the owner's real browser.
   look → tell him → he answers. Parking a row he could simply be shown is a
   misuse of the state.
 
+## Camera protocol — owner-adopted §8.4, July 29 2026
+
+You cannot launch Chromium yourself. A daemon in a plain Terminal can, and it
+is the only camera you have.
+
+**To get pixels:**
+
+1. Write `.phase10-camera/request.json`:
+   `{"id":"<alphanumeric>","command":"capture"|"evidence","section":"<n>"}`
+2. Poll `.phase10-camera/done-<id>.json` for up to **6 minutes**, inside this
+   same turn.
+
+**CAMERA DOWN** — a heartbeat file older than 60s, or a poll timeout. When it
+happens: leave the item `open`, log `CAMERA DOWN`, and **move to the next
+camera-independent item.** After **two consecutive** CAMERA DOWN blocks with
+nothing else workable, stop at `needs-capture`.
+
+**Two rules that make this safe rather than a licence to guess:**
+
+- **Visual claims may cite ONLY files created under
+  `docs/phase10-baseline/section-<current>/` during this run** — the
+  `attended/` subfolder included. Never memory. Never reasoning about pixels
+  you have not seen. A path that existed before this run is not this run's
+  evidence.
+- **One visual item in flight at a time.** Do not start a second visual item
+  while the first still has no pixels. Two half-verified items is how a
+  backlog of unverified work forms, and that backlog is what cost this
+  project eleven sections.
+
+Pixels attached but judgement pending is `parked_owner`, which requires at
+least one evidence path under this section's baseline directory and never
+counts toward a pass. Pixels absent is not parked — it is `open`.
+
+## §12a unattended ordering — owner-adopted §8.5, July 29 2026
+
+Work the phases in order. Accepting §12a is **owner-only** regardless of who
+reviewed it. **No §12b work in this window.**
+
+**Phase A — machine-checkable, close on evidence.** FB-19, FB-20.
+
+**Phase B — the two root-caused items.**
+- **FB-05** as a role→token mapping with **computed-style assertions per text
+  role**. This is the §11 root cause: the ramp gate constrains *values*, not
+  *roles*, so Mission Control satisfies it while staying unreadable. Assert
+  the mapping, not that sizes are on-ramp. Then a Mission Control capture.
+- **FB-01** as the committed spec now stands — audit §5.1 radii and gap plus
+  `OVERVIEW_BELT_SPAN_PCT` 0.88 → 0.80 — with the projected min-gap assertion
+  and an overview capture.
+
+**Phase C — the variant fabrications**, per the FB amendments committed in
+`be39047`. Each on a strict **build → capture → park** cadence.
+- FB-17: strip at 600 / 660 / 720px, planet-visibility invariant asserted at
+  every width (`unoccluded: true` in `raw-panel-geometry.json`).
+- FB-08 + FB-15 as **one** experiment.
+- FB-09, FB-12, FB-11.
+- FB-21 at `min(1400px, 96vw)`, before/after.
+
+**Phase D — assemble the sitting.** Write `REVIEW_SITTING.md` and one contact
+sheet (≤ 12 frames, each captioned with its row **and its question**), route
+`stage: owner-sitting / next_actor: devan / status: ready`, and stop.
+
+Every question in the sitting is phrased **for looking, not measuring**:
+"Which of these three looks right?" — never "is the panel width correct?"
+
 ## 0. Preflight, in order
 
 1. Check `STOP` before any other repository read or write. If present, report

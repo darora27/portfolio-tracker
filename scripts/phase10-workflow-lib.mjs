@@ -319,6 +319,46 @@ export function validateAcceptanceLedger(workflow, ledger, options = {}) {
         }
       }
     }
+    /* parked_owner — owner-adopted §8.2, July 29 2026.
+     *
+     * Parked means: pixels are attached, judgement is pending. It exists so an
+     * unattended run can keep working past a question only Devan can answer,
+     * WITHOUT reintroducing the deferral that let 41 criteria be waved through
+     * in one section.
+     *
+     * Two rules make that distinction real rather than nominal:
+     *   1. A parked entry MUST carry at least one evidence path under this
+     *      section's own docs/phase10-baseline/section-N/ directory. No
+     *      capture attached, no park — that is just a deferral wearing a new
+     *      name.
+     *   2. Parked NEVER counts toward a pass. Any parked_owner blocks section
+     *      pass and accept exactly the way not_run does.
+     */
+    for (const actor of ["implementer", "reviewer"]) {
+      const result = criterion[actor];
+      if (result?.status !== "parked_owner") continue;
+      const evidence = Array.isArray(result.evidence) ? result.evidence : [];
+      const sectionDir = `docs/phase10-baseline/section-${sectionNumber}/`;
+      add(
+        evidence.some((artifact) => String(artifact).startsWith(sectionDir)),
+        `${prefix} ${actor}.status is parked_owner but no evidence path lies under ` +
+          `${sectionDir} — parked means pixels attached, judgement pending. ` +
+          `Without a capture this is a deferral with a new name.`,
+      );
+      add(
+        typeof result.notes === "string" && result.notes.length > 0,
+        `${prefix} ${actor} parked_owner requires notes naming the question for Devan`,
+      );
+      if (options.requireActor === actor) {
+        add(
+          false,
+          `${prefix} ${actor}.status is parked_owner, which blocks section pass ` +
+            `and accept exactly as not_run does. Parked is never countable. ` +
+            `Route the section to owner-sitting and let Devan answer it.`,
+        );
+      }
+    }
+
     // Owner-adopted visual-truth rule (UNIVERSE_AUDIT.md §4, ledger appendix).
     // A section cannot pass review while a visual criterion is unproven. DOM
     // presence, source greps and build exits never satisfy one; the evidence
@@ -474,6 +514,44 @@ export function validateWorkflowRepository(root = DEFAULT_ROOT) {
       typeof state.stop_reason === "string" && state.stop_reason.length > 0,
       "blocked state requires a non-empty stop_reason",
     );
+  }
+
+  /* owner-sitting — owner-adopted §8.3, July 29 2026.
+   *
+   * The clean stop for an unattended run. The relay already halts on
+   * next_actor: devan, so this is not a new lane — it is a named, checkable
+   * end state that says "the machine did everything it could; what remains
+   * needs your eyes."
+   *
+   * Two preconditions, both enforced here rather than trusted:
+   *   1. Every criterion is pass or parked_owner. Anything still not_run,
+   *      fail or blocked means the machine had work left and stopped early.
+   *   2. REVIEW_SITTING.md exists, so Devan returns to a batched sitting
+   *      rather than a state file.
+   */
+  if (state.stage === "owner-sitting") {
+    const sittingPath = workflow.owner_ledger?.review_sitting_path ?? "REVIEW_SITTING.md";
+    add(
+      existsSync(resolve(root, sittingPath)),
+      `stage owner-sitting requires ${sittingPath} at the repo root — every parked ` +
+        `row, its capture paths, and ONE question per row phrased for looking`,
+    );
+    const ledgerPath = state.section?.acceptance_ledger;
+    if (typeof ledgerPath === "string" && existsSync(resolve(root, ledgerPath))) {
+      const ledger = readJson(root, ledgerPath);
+      const unresolved = (Array.isArray(ledger.criteria) ? ledger.criteria : [])
+        .filter((criterion) => {
+          const status = criterion?.reviewer?.status;
+          return !["pass", "not_applicable", "carried_by_owner", "parked_owner"].includes(status);
+        })
+        .map((criterion) => `${criterion.id}=${criterion?.reviewer?.status ?? "missing"}`);
+      add(
+        unresolved.length === 0,
+        `stage owner-sitting requires every criterion to be pass or parked_owner; ` +
+          `still unresolved: ${unresolved.join(", ")}. Stopping here with work ` +
+          `left is not a sitting, it is an early exit.`,
+      );
+    }
   }
   if (state.status === "complete") {
     add(sectionNumber === terminal, `complete state requires §${terminal}`);

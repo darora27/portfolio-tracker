@@ -38,6 +38,12 @@
       "role": "claude_lead",
       "next_actor": "claude",
       "legacy_or_exception_only": true
+    },
+    "owner-sitting": {
+      "role": "claude_lead",
+      "next_actor": "devan",
+      "owner_sitting_only": true,
+      "note": "Clean stop for an unattended run. Legal only when every criterion is pass or parked_owner. The routing turn writes REVIEW_SITTING.md at the repo root."
     }
   },
   "transitions": {
@@ -87,7 +93,8 @@
       "blocked",
       "deferred_to_reviewer",
       "not_applicable",
-      "carried_by_owner"
+      "carried_by_owner",
+      "parked_owner"
     ]
   },
   "owner_ledger": {
@@ -105,7 +112,9 @@
       "visual"
     ],
     "attended_capture_dir_pattern": "docs/phase10-baseline/section-{N}/attended",
-    "attended_capture_note": "Opus-in-Cowork Chrome screenshots committed here are valid capture evidence. Opus measures, never judges taste. parked_owner is for absence only."
+    "attended_capture_note": "Opus-in-Cowork Chrome screenshots committed here are valid capture evidence. Opus measures, never judges taste. parked_owner is for absence only.",
+    "parked_owner_rule": "parked_owner is valid ONLY with at least one evidence path under docs/phase10-baseline/section-<current>/. No capture attached means the status is rejected. Any parked_owner blocks section pass and accept exactly the way not_run does. Parked is pixels-attached-judgment-pending; it is never countable.",
+    "review_sitting_path": "REVIEW_SITTING.md"
   },
   "global_gates": [
     {

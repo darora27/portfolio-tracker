@@ -49,3 +49,4 @@ next-env.d.ts
 # machine-local agent settings (permission allowlist, not project state)
 /.claude/settings.local.json
 .phase10-holding/
+.phase10-camera/
