@@ -69,7 +69,7 @@
       "UNIVERSE_DRAFT_RIG.html"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-codex-remediation-7-to-claude-review.md",
+    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-claude-review-4-to-codex-remediation.md",
     "note": "Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for this section: UNIVERSE_IDEAS_5.md (legibility) -> UNIVERSE_IDEAS_4.md (the draft rig) -> OWNER_FEEDBACK_LEDGER.md -> the two owner-reviewed prototypes UNIVERSE_LEGIBILITY_MOCK.html and UNIVERSE_DRAFT_RIG.html -> PHASE10.md §11. main is GREEN at this section start: npm test 527/527 across 99 files and npm run build exit 0, both re-run by the accept turn at dbdeb39. §9's inherited red is closed and no exception is inherited. §9's testing prohibition carries forward: expect(source).toContain(...) is not valid coverage for rendered behaviour. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (the website is still relatively confusing). §11 runs under single_provider_mode: its compensating controls are mandatory, and its must_wait_for_codex list binds - the privacy boundary, the financial math core, and any gate weakening or exception.",
     "carried_from_section_10": {
       "rule": "Six §10 criteria were carried by owner decision on 2026-07-29, not closed. Every one MUST appear in §11 acceptance with the measurement below attached, and §11 must re-run the named verifier and record the result. None may be closed by assertion.",
@@ -275,7 +275,7 @@
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-30T03:28:12Z",
+  "updated_at": "2026-07-30T03:45:07Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
