@@ -65,6 +65,18 @@ PHASE10_BASE_URL="${BASE}/share" \
 TIMING_LINE="$(grep -o 'machine-readable: .*' "${OUT}/raw-owner-long-tasks-${STAMP}.txt" | tail -1)"
 
 echo ""
+echo "=== 3b/4  trail-colour sampler (TST-03) ============================="
+SAMPLER="${OUT}/scripts/sample-live-rgb.mjs"
+SAMPLER_LINE=""
+if [ -f "$SAMPLER" ]; then
+  PHASE10_BASE_URL="${BASE}/share" node "$SAMPLER" \
+    | tee "${OUT}/raw-owner-rgb-${STAMP}.txt"
+  SAMPLER_LINE="$(grep -o 'machine-readable: .*' "${OUT}/raw-owner-rgb-${STAMP}.txt" | tail -1)"
+else
+  echo "→ no sampler at $SAMPLER, skipping"
+fi
+
+echo ""
 echo "=== 4/4  captures ==================================================="
 npm run phase10:capture -- --section "$SECTION" --base "$BASE"
 CAPTURE_STATUS=$?
@@ -81,6 +93,14 @@ else
 fi
 [ "$CAPTURE_STATUS" -eq 0 ] && echo "  CAPTURES:   all shots landed" \
                             || echo "  CAPTURES:   at least one shot failed — see the sheet"
+if [ -n "$SAMPLER_LINE" ]; then
+  if printf '%s' "$SAMPLER_LINE" | grep -q '"pass":true'; then
+    echo "  TRAIL HUE:  PASS"
+  else
+    SERR="$(printf '%s' "$SAMPLER_LINE" | sed -n 's/.*"error":"\([^"]*\)".*/\1/p' | head -1)"
+    echo "  TRAIL HUE:  FAIL${SERR:+  ($SERR)}"
+  fi
+fi
 echo ""
 echo "  sheet   ${OUT}/contact-sheet.md"
 echo "====================================================================="
