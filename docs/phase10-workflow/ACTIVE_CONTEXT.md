@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§13 — Universe fixes from the July 30 owner sitting**
 - Managed range: §2–§18
-- Stage: `specify`
-- Role: `claude_lead`
+- Stage: `implement`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -34,7 +34,7 @@ Always read:
 
 Then read the current, specifically routed sources:
 
-None recorded.
+- `docs/phase10-workflow/specs/section-13.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -48,7 +48,7 @@ payload:
 
 ## Current section conditions
 
-Universe fixes from the July 30 sitting. Carries FB-01 (one nudge; proportions blessed, do NOT re-derive), FB-05 (6th report), FB-17 (live-vs-capture gap), FB-02 background, plus the new defect rows FB-22 yellow haze above the sun, FB-23 floating PORTFOLIO chip, FB-24 dead moons, FB-25 thin planet panel, FB-31 orange tabs, FB-32 top-right block. FB-26 - trails and orbital direction move from WEEKLY to DAILY return - is the largest item and drags TST-03 and VIS-04 with it, since both verifiers sample the same field. §12c follows with the Mission Control content rework per MISSION_CONTROL_ARCHITECTURE.md.
+Universe fixes from the July 30 sitting. Carries FB-01 (one nudge; proportions blessed, do NOT re-derive), FB-05 (6th report), FB-17 (live-vs-capture gap), FB-02 background, plus the new defect rows FB-22 yellow haze above the sun, FB-23 floating PORTFOLIO chip, FB-24 dead moons, FB-25 thin planet panel, FB-31 orange tabs. FB-32 top-right block is named on the board but scheduled §14 (PHASE10.md §13: "dies into the strip in §14"), not actioned here. FB-26 - trails and orbital direction move from WEEKLY to DAILY return - is the largest item and moves first, since TST-03 and VIS-04 both sample that field. §14 follows with the Mission Control content rework per MISSION_CONTROL_ARCHITECTURE.md.
 
 Open bounded findings:
 
@@ -56,7 +56,7 @@ None.
 
 Acceptance ledger:
 
-- Created by the lead with the section specification.
+- `docs/phase10-workflow/acceptance/section-13.json`
 
 ## Global gates
 
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `675ad1402d6dce5243c6a2f5d6774054d6ab6cd108d50992f1afe1287e672f2f`
+- `PHASE10_STATE.json`: `d59aa82a8be38604d3b002a6829a1fb22706a7a36e0edbe6518d562c3a772cec`
 - `PHASE10.md`: `a74fc05623bb8cb4335ab29c55b529150a39528d8ece45c6db8c2f1b415f55ee`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

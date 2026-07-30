@@ -1,0 +1,408 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "section": "§13",
+  "spec_doc": "docs/phase10-workflow/specs/section-13.md",
+  "candidate_sha": null,
+  "criteria": [
+    {
+      "id": "TST-03",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "FB-26: the trail sampler asserts hue lock within 10 degrees, deltaE*ab no greater than 8 against the payload-derived expectation from rampForReturn(holding.dayReturn) (not rampForWeekly / weeklyReturn), and ordering across same-direction holdings - for every holding in the fixture, sampled at each holding's own naturally unoccluded orbital phase. Literal-hex baselines survive only for flat, comet and sun tokens.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-04",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "FB-26: trails carry direction and magnitude in a captioned 1440x900 temporal per-holding pixel plate - each holding sampled at its own naturally unoccluded orbital phase, arc remains 18 to 30 degrees (unchanged band, only the input field moved to dayReturn), ramp lightness carries the daily magnitude, fixed 12% white-hot head remains the calibration reference. Every threshold and non-method clause from section 11 is unchanged.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/trail-daily-1440x900.png",
+        "docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-01",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "FB-01: with the gap formula coefficient raised 1.75 to 1.82 (additive term +0.55 unchanged) and OVERVIEW_BELT_SPAN_PCT lowered 0.80 to 0.75, the minimum edge-to-edge distance between any two adjacent planet discs at closest approach remains >= 1.0x the larger disc's diameter (re-measured against the new constants), and the full system fits within the 1440x900 overview frame with visibly more margin than the section 12 capture. ORRERY_MIN_RADIUS/ORRERY_MAX_RADIUS are unchanged.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/overview-1440x900.png",
+        "docs/phase10-baseline/section-13/raw-fb01-spacing-measurement.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-01",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "FB-05: a rendered/computed-style test (extending the section 12a mission-control-text-roles.test.tsx pattern) asserts every element carrying the genuineLabel role resolves to exactly 12px (--type-label raised from 11px), not merely a legal ramp value. --type-body, --type-title, --type-readout, --type-hero are unchanged.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/mission-control-text-roles.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/raw-mission-control-text-roles.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-02",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-05: at 1440x900 with Mission Control open, window-word / label-tier text is visibly larger than the section 12 capture at the same crop, captured for owner review.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/mission-control-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-03",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "FB-17: --panel-width default changes from 460px to 600px. A capture of the live production default (no query params, real npm run build && npm run start) at 1440x900 shows the panel at 600px, plus a written, measured explanation of the live/capture size disagreement the owner reported, covering panel width measured across a realistic range of viewport widths (1280/1366/1440/1536/1920) and browser zoom as a candidate cause.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/panel-width-live-default.png",
+        "docs/phase10-baseline/section-13/raw-fb17-live-vs-capture.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-05",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-02: before/after captures at 1440x900 showing the sky's five moves from UNIVERSE_IDEAS_6.md section 2.2 - the CSS starfield tile (two repeating dot-grid layers, two ellipse washes) removed; the aurora visible at rest with its opacity floor raised from 0.02+wildness*0.38 to 0.14+wildness*0.26 (cap unchanged at 0.40); the nebula textured (offline-generated KTX2 filament, gold/ember hue anchors, alpha cap 0.18 unchanged) rather than a flat ring color; a static black corner vignette (<=0.35 at corners) plus static warm grain (<=0.05 umber); one faint ecliptic graticule (ring slate #66756f, alpha <=0.10) or its documented absence if cut for reading as clutter.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/sky-before-1440x900.png",
+        "docs/phase10-baseline/section-13/sky-after-1440x900.png",
+        "docs/phase10-baseline/section-13/raw-fb02-aurora-floor.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-06",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-22: a 1440x900 overview capture shows no unexplained yellow/gold haze or glow above the sun, with the implementer's notes naming the actual identified cause among the aurora mesh, the glow shells, or the docking ring.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/sun-region-1440x900.png",
+        "docs/phase10-baseline/section-13/raw-fb22-fb23-sun-region.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-07",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-23: the PORTFOLIO TODAY chip tracks the sun's actual per-frame projected screen position (the same technique planet labels already use) rather than a static frame-center CSS position. Captures at two different camera states (e.g. overview and approach, or overview before/after a drag-tilt) show the chip visibly attached to / directly above the sun in both, not drifted to frame-center.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/sun-region-1440x900.png",
+        "docs/phase10-baseline/section-13/raw-fb22-fb23-sun-region.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-01",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "FB-24: moon existence/sizing keys off the same linkable (http/https URL) news-item count PlanetDetail.tsx's click destination already uses, not the raw public-news-count. A unit/integration test asserts a holding with newsCount > 0 but zero linkable items produces no moon (or a zero-radius moon, matching the existing moonRadiusForStoryCount absent-convention), and a holding with at least one linkable item produces a moon whose click destination shows at least one real headline.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/scene-model.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/raw-bhv01-moon-linkable-news.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-08",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-24: a 1440x900 capture of a moon click transitioning into the holding's panel with a real, visible, working news headline.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/moon-click-1440x900.png",
+        "docs/phase10-baseline/section-13/raw-fb24-moon-news.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-09",
+      "dimension": "visual",
+      "risk": "low",
+      "description": "FB-25: the planet inspector panel's stats section gains CONTRIB (holding.contributionPct) and VS VOO (holding.portfolioRelativeReturn) alongside the existing WEIGHT/VOL/BETA, both already-computed already-public fields, omitted (not zero/dash) when null. A 1440x900 capture for a holding with both fields populated shows all five stats present.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/planet-panel-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-10",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "FB-31: at Mission Control's production default tab strip (no query params), neither the active nor inactive tabs render with an orange background (#3b1f12 / #7d3d1d) - the base .missionControl nav a rules now match the already-owner-confirmed variant B boxless / cream-underline treatment. The .missionStrip hero/chips row above the tabs (FB-32, out of scope) is unaffected.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/tab-strip-default-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "MOB-01",
+      "dimension": "mobile",
+      "risk": "low",
+      "description": "Regression: the sub-1024px semantic fallback is unaffected by this section's changes to orrery.module.css, scene-model.ts, orrery.ts, universe-palette.ts, OrreryWorld.tsx, OrreryScene.tsx, PlanetDetail.tsx and MissionControl-adjacent files. A 390x844 capture and the existing fallback test suite show no change in fallback layout, text content, or horizontal overflow.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/fallback-390x844.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "PRV-01",
+      "dimension": "privacy",
+      "risk": "critical",
+      "description": "Regression: none of this section's ten ledger rows add a new route or a new dollar figure to /share. FB-25's two new panel fields (CONTRIB, VS VOO) are already-public percentages. The existing /share privacy canary test suite passes unchanged, and a diff review of the candidate confirms no new public data path was introduced incidentally.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/observatory/public-payload.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/raw-prv01-share-canary.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-02",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "Full test suite passes with zero failures against the candidate commit, independently re-run.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/raw-npm-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-01",
+      "dimension": "build",
+      "risk": "critical",
+      "description": "Production build succeeds with exit 0 against the candidate commit, independently re-run, with the same route count as main at section start (18 routes) unless a route is deliberately added/removed and named in the candidate's notes.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm run build"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-13/raw-npm-build.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    }
+  ]
+}
