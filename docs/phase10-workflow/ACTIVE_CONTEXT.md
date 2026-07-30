@@ -11,12 +11,12 @@ them.
 - Phase: 10
 - Current section: **§13 — Universe fixes from the July 30 owner sitting**
 - Managed range: §2–§18
-- Stage: `review`
-- Role: `claude_lead`
-- Status: `blocked`
-- Next actor: `devan`
-- Expected actor for this stage: `claude`
-- Stop reason: TST-03/VIS-04 (FB-26's trail-sampler gate) still fail the unweakened deltaE<=8 tolerance for 5/8 tickers after a genuine, independently-verified per-ticker re-investigation. Closing this requires an owner scope decision (verification-methodology change vs. geometry change vs. carry-forward) that is outside implementer or reviewer authority per the §10/§11 BLD-04/DEF-02 precedent -- see section.findings and docs/phase10-workflow/reviews/section-13-review-2.md's 'Decision needed' framing.
+- Stage: `remediate`
+- Role: `codex_implementation`
+- Status: `ready`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
+- Stop reason: none
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `84092957e175d6fab6b114c9b9fe7b10dd91ac5658777b47240c005d99607b08`
+- `PHASE10_STATE.json`: `6e64fe139de96a9d9dfc6671e426e34ab4168aed048bc886f345c49cc746bd59`
 - `PHASE10.md`: `a74fc05623bb8cb4335ab29c55b529150a39528d8ece45c6db8c2f1b415f55ee`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
