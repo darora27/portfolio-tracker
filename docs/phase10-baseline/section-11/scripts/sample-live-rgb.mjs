@@ -1,16 +1,68 @@
 import { chromium } from "playwright";
 import sharp from "sharp";
-import { mkdir } from "node:fs/promises";
+import { access, mkdir, readdir, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
 import path from "node:path";
-import { emit } from "../../lib/emit.mjs";
 
 const CRITERION = "TST-03";
-const root = path.resolve("docs/phase10-baseline/section-10");
+const runtimeProcess = globalThis.process;
+const runtimeCwd = runtimeProcess?.cwd() ?? globalThis.nodeRepl?.cwd;
+if (!runtimeCwd) throw new Error("Unable to resolve the repository working directory.");
+const runtimeEnv = runtimeProcess?.env ?? {};
+const root = path.join(runtimeCwd, "docs/phase10-baseline/section-11");
 const output = path.join(root, "pixel-samples");
-const base = process.env.PHASE10_BASE_URL ?? "http://127.0.0.1:3000/share";
+const temporalFrames = path.join(output, "temporal-trail-frames");
+const base = runtimeEnv.PHASE10_BASE_URL ?? "http://127.0.0.1:3000/share";
+const MAX_WAIT_MS = 150_000;
+const SAMPLE_INTERVAL_MS = 350;
+const SAMPLE_RADIUS_PX = 4;
+const MIN_PLANET_CLEARANCE_PX = 1;
 
 const gainStops = ["#1f7a46", "#63ef98", "#a9ffcf"];
 const lossStops = ["#ff9d97", "#ff665f", "#b3241d"];
+
+function emitResult(criterion, pass, measured, error = null) {
+  console.log(
+    `machine-readable: ${JSON.stringify({ criterion, pass, measured, error })}`,
+  );
+  if (runtimeProcess) runtimeProcess.exitCode = pass ? 0 : 1;
+}
+
+async function chromiumExecutablePath() {
+  const explicit = runtimeEnv.PHASE10_CHROMIUM_EXECUTABLE;
+  if (explicit) {
+    try {
+      await access(explicit);
+      return explicit;
+    } catch {
+      // Continue to the retained Playwright cache used by this repository.
+    }
+  }
+
+  const cacheRoot = path.join(homedir(), "Library/Caches/ms-playwright");
+  const revisions = (await readdir(cacheRoot, { withFileTypes: true }))
+    .filter((entry) => entry.isDirectory() && entry.name.startsWith("chromium_headless_shell-"))
+    .map((entry) => entry.name)
+    .sort()
+    .reverse();
+  for (const revision of revisions) {
+    for (const relative of [
+      "chrome-mac/headless_shell",
+      "chrome-headless-shell-mac-arm64/chrome-headless-shell",
+    ]) {
+      const candidate = path.join(cacheRoot, revision, relative);
+      try {
+        await access(candidate);
+        return candidate;
+      } catch {
+        // Try the next retained revision/layout.
+      }
+    }
+  }
+  const playwrightExecutable = chromium.executablePath();
+  await access(playwrightExecutable);
+  return playwrightExecutable;
+}
 
 function rgb(hex) {
   const value = Number.parseInt(hex.slice(1), 16);
@@ -116,30 +168,25 @@ async function waitForUniverseReady(page) {
 function sampleAt(x, y, expected, data, info) {
   const expectedRgb = rgb(expected);
   const candidates = [];
-  for (let offsetY = -4; offsetY <= 4; offsetY += 1) {
-    for (let offsetX = -4; offsetX <= 4; offsetX += 1) {
+  for (let offsetY = -SAMPLE_RADIUS_PX; offsetY <= SAMPLE_RADIUS_PX; offsetY += 1) {
+    for (let offsetX = -SAMPLE_RADIUS_PX; offsetX <= SAMPLE_RADIUS_PX; offsetX += 1) {
       const sampleX = Math.max(0, Math.min(info.width - 1, Math.round(x + offsetX)));
       const sampleY = Math.max(0, Math.min(info.height - 1, Math.round(y + offsetY)));
       const offset = (sampleY * info.width + sampleX) * 3;
       const channels = [data[offset], data[offset + 1], data[offset + 2]];
-      candidates.push({ channels, deltaE: deltaE(channels, expectedRgb) });
+      candidates.push({
+        x: sampleX,
+        y: sampleY,
+        channels,
+        deltaE: deltaE(channels, expectedRgb),
+      });
     }
   }
   return candidates.sort((left, right) => left.deltaE - right.deltaE)[0];
 }
 
-let browser;
-try {
-  await mkdir(output, { recursive: true });
-  browser = await chromium.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
-  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  await page.addInitScript(() => {
-    window.localStorage.setItem("stock-market-universe-orientation-seen", "true");
-  });
-  await page.goto(base, { waitUntil: "domcontentloaded" });
-  await waitForUniverseReady(page);
-
-  const descriptors = await page
+async function readDescriptors(page) {
+  return page
     .locator("[data-scene-ticker]")
     .evaluateAll((labels) =>
       labels.map((label) => ({
@@ -149,41 +196,237 @@ try {
           : Number(label.dataset.weeklyReturn),
         x: Number(label.dataset.trailSampleX),
         y: Number(label.dataset.trailSampleY),
+        planetCenterX: Number(label.dataset.planetCenterX),
+        planetCenterY: Number(label.dataset.planetCenterY),
+        planetRadiusPx: Number(label.dataset.planetRadiusPx),
       })),
     );
-  const screenshotPath = path.join(output, "overview-trail-samples.png");
-  await page.screenshot({ path: screenshotPath });
-  const { data, info } = await sharp(screenshotPath)
-    .removeAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
+}
 
-  const samples = descriptors.map((descriptor) => {
-    const expected = rampForWeeklyFromPayload(descriptor.weekly);
-    const sampled = sampleAt(descriptor.x, descriptor.y, expected, data, info);
-    const { hue, chroma } = hueChroma(sampled.channels);
-    const anchor =
-      descriptor.weekly === null || Math.abs(descriptor.weekly) <= 0.002
-        ? null
-        : descriptor.weekly > 0 ? 143 : 3;
-    const result = {
-      ...descriptor,
-      expected,
-      sampled: hex(sampled.channels),
-      deltaE: Number(sampled.deltaE.toFixed(3)),
-      hue: hue === null ? null : Number(hue.toFixed(3)),
-      chroma: Number(chroma.toFixed(3)),
-      luminance: Number(luminance(sampled.channels).toFixed(6)),
-      hueDistance: anchor === null || hue === null
-        ? null
-        : Number(hueDistance(hue, anchor).toFixed(3)),
-    };
-    if (result.deltaE > 8) throw new Error(`${descriptor.ticker} deltaE ${result.deltaE} > 8`);
-    if (anchor !== null && (result.chroma <= 0.3 || result.hueDistance > 10)) {
-      throw new Error(`${descriptor.ticker} hue lock failed: ${JSON.stringify(result)}`);
-    }
-    return result;
+function evaluateSample(descriptor, descriptors, sampled, elapsedMs, frameIndex) {
+  const { hue, chroma } = hueChroma(sampled.channels);
+  const anchor =
+    descriptor.weekly === null || Math.abs(descriptor.weekly) <= 0.002
+      ? null
+      : descriptor.weekly > 0 ? 143 : 3;
+  const minimumPlanetClearancePx = Math.min(
+    ...descriptors.map((planet) =>
+      Math.hypot(
+        sampled.x - planet.planetCenterX,
+        sampled.y - planet.planetCenterY,
+      ) - planet.planetRadiusPx
+    ),
+  );
+  const result = {
+    ticker: descriptor.ticker,
+    weekly: descriptor.weekly,
+    expected: rampForWeeklyFromPayload(descriptor.weekly),
+    publishedSample: {
+      x: Number(descriptor.x.toFixed(3)),
+      y: Number(descriptor.y.toFixed(3)),
+    },
+    sampledAt: {
+      x: sampled.x,
+      y: sampled.y,
+    },
+    sampled: hex(sampled.channels),
+    deltaE: Number(sampled.deltaE.toFixed(3)),
+    hue: hue === null ? null : Number(hue.toFixed(3)),
+    chroma: Number(chroma.toFixed(3)),
+    luminance: Number(luminance(sampled.channels).toFixed(6)),
+    hueDistance: anchor === null || hue === null
+      ? null
+      : Number(hueDistance(hue, anchor).toFixed(3)),
+    minimumPlanetClearancePx: Number(minimumPlanetClearancePx.toFixed(3)),
+    elapsedMs,
+    frameIndex,
+  };
+  return {
+    result,
+    pass:
+      result.deltaE <= 8 &&
+      (anchor === null ||
+        (result.chroma > 0.3 && result.hueDistance <= 10)) &&
+      result.minimumPlanetClearancePx >= MIN_PLANET_CLEARANCE_PX,
+  };
+}
+
+function escapeXml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+async function buildTemporalPlate(samples, destination) {
+  const columns = 4;
+  const cropWidth = 300;
+  const cropHeight = 160;
+  const captionHeight = 42;
+  const tileHeight = cropHeight + captionHeight;
+  const titleHeight = 42;
+  const plateWidth = columns * cropWidth;
+  const plateHeight =
+    titleHeight + Math.ceil(samples.length / columns) * tileHeight;
+  const composites = [];
+
+  for (const [index, sample] of samples.entries()) {
+    const left = Math.max(
+      0,
+      Math.min(1440 - cropWidth, Math.round(sample.sampledAt.x - cropWidth / 2)),
+    );
+    const top = Math.max(
+      0,
+      Math.min(900 - cropHeight, Math.round(sample.sampledAt.y - cropHeight / 2)),
+    );
+    const markerX = sample.sampledAt.x - left;
+    const markerY = sample.sampledAt.y - top;
+    const crop = await sharp(sample.framePath)
+      .extract({ left, top, width: cropWidth, height: cropHeight })
+      .png()
+      .toBuffer();
+    const overlay = Buffer.from(
+      `<svg width="${cropWidth}" height="${tileHeight}" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="${markerX}" cy="${markerY}" r="8" fill="none" stroke="#fff0cf" stroke-width="1.5"/>
+        <path d="M ${markerX - 13} ${markerY} H ${markerX + 13} M ${markerX} ${markerY - 13} V ${markerY + 13}" stroke="#fff0cf" stroke-width="1"/>
+        <rect x="0" y="${cropHeight}" width="${cropWidth}" height="${captionHeight}" fill="#0a0c10"/>
+        <text x="10" y="${cropHeight + 16}" fill="#fff0cf" font-family="monospace" font-size="12" font-weight="700">${escapeXml(sample.ticker)}</text>
+        <text x="10" y="${cropHeight + 33}" fill="#d5ba8c" font-family="monospace" font-size="10">expected ${escapeXml(sample.expected)} · sampled ${escapeXml(sample.sampled)} · ΔE ${sample.deltaE} · ${(sample.elapsedMs / 1000).toFixed(1)}s</text>
+      </svg>`,
+    );
+    const tile = await sharp({
+      create: {
+        width: cropWidth,
+        height: tileHeight,
+        channels: 3,
+        background: "#0a0c10",
+      },
+    })
+      .composite([
+        { input: crop, left: 0, top: 0 },
+        { input: overlay, left: 0, top: 0 },
+      ])
+      .png()
+      .toBuffer();
+    composites.push({
+      input: tile,
+      left: (index % columns) * cropWidth,
+      top: titleHeight + Math.floor(index / columns) * tileHeight,
+    });
+  }
+
+  const title = Buffer.from(
+    `<svg width="${plateWidth}" height="${titleHeight}" xmlns="http://www.w3.org/2000/svg">
+      <rect width="${plateWidth}" height="${titleHeight}" fill="#020706"/>
+      <text x="14" y="26" fill="#fff0cf" font-family="monospace" font-size="15" font-weight="700">VIS-04 / TST-03 · TEMPORAL PER-HOLDING TRAIL SAMPLES · 1440×900 · OWNER-CONFIRMED ARC 18–30°</text>
+    </svg>`,
+  );
+  composites.unshift({ input: title, left: 0, top: 0 });
+
+  await sharp({
+    create: {
+      width: plateWidth,
+      height: plateHeight,
+      channels: 3,
+      background: "#020706",
+    },
+  })
+    .composite(composites)
+    .png()
+    .toFile(destination);
+}
+
+let browser;
+try {
+  await mkdir(temporalFrames, { recursive: true });
+  browser = await chromium.launch({
+    headless: true,
+    executablePath: await chromiumExecutablePath(),
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--single-process",
+      "--no-zygote",
+    ],
   });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.addInitScript(() => {
+    window.localStorage.setItem("stock-market-universe-orientation-seen", "true");
+  });
+  await page.goto(base, { waitUntil: "domcontentloaded" });
+  await waitForUniverseReady(page);
+
+  const initialDescriptors = await readDescriptors(page);
+  const fixtureOrder = initialDescriptors.map(({ ticker }) => ticker);
+  const accepted = new Map();
+  const bestAttempts = new Map();
+  const startedAt = Date.now();
+  let frameIndex = 0;
+
+  while (accepted.size < fixtureOrder.length) {
+    const descriptors = await readDescriptors(page);
+    const screenshot = await page.screenshot();
+    const { data, info } = await sharp(screenshot)
+      .removeAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    const elapsedMs = Date.now() - startedAt;
+
+    for (const descriptor of descriptors) {
+      if (accepted.has(descriptor.ticker)) continue;
+      const expected = rampForWeeklyFromPayload(descriptor.weekly);
+      const sampled = sampleAt(descriptor.x, descriptor.y, expected, data, info);
+      const attempt = evaluateSample(
+        descriptor,
+        descriptors,
+        sampled,
+        elapsedMs,
+        frameIndex,
+      );
+      const priorBest = bestAttempts.get(descriptor.ticker);
+      if (
+        !priorBest ||
+        attempt.result.deltaE < priorBest.deltaE ||
+        (
+          attempt.result.deltaE === priorBest.deltaE &&
+          attempt.result.minimumPlanetClearancePx >
+            priorBest.minimumPlanetClearancePx
+        )
+      ) {
+        bestAttempts.set(descriptor.ticker, attempt.result);
+      }
+      if (!attempt.pass) continue;
+      const framePath = path.join(
+        temporalFrames,
+        `${descriptor.ticker.toLowerCase()}-trail-phase.png`,
+      );
+      await writeFile(framePath, screenshot);
+      accepted.set(descriptor.ticker, {
+        ...attempt.result,
+        framePath,
+        frameArtifact: path.relative(runtimeCwd, framePath),
+      });
+      console.error(
+        `captured ${descriptor.ticker} at ${(elapsedMs / 1000).toFixed(1)}s ` +
+        `(ΔE ${attempt.result.deltaE}, clearance ${attempt.result.minimumPlanetClearancePx}px)`,
+      );
+    }
+
+    if (accepted.size === fixtureOrder.length) break;
+    if (elapsedMs >= MAX_WAIT_MS) {
+      const unresolved = fixtureOrder
+        .filter((ticker) => !accepted.has(ticker))
+        .map((ticker) => ({ ticker, best: bestAttempts.get(ticker) }));
+      throw new Error(
+        `Temporal sampling timed out after ${MAX_WAIT_MS}ms: ${JSON.stringify(unresolved)}`,
+      );
+    }
+    frameIndex += 1;
+    await page.waitForTimeout(SAMPLE_INTERVAL_MS);
+  }
+
+  const samples = fixtureOrder.map((ticker) => accepted.get(ticker));
 
   for (const direction of [1, -1]) {
     const sameDirection = samples
@@ -203,11 +446,36 @@ try {
     }
   }
 
+  const platePath = path.join(output, "temporal-trail-samples.png");
+  await buildTemporalPlate(samples, platePath);
   const measured = {
     viewport: "1440x900",
-    fixtureCount: descriptors.length,
-    everyFixtureHoldingSampled: descriptors.length === samples.length,
-    samples,
+    fixtureCount: fixtureOrder.length,
+    everyFixtureHoldingSampled: fixtureOrder.length === samples.length,
+    temporalSampling: {
+      authorisedBy: "Devan, July 29 2026",
+      method: "Each holding is sampled at its own naturally unoccluded orbital phase.",
+      elapsedMs: Date.now() - startedAt,
+      inspectedFrameCount: frameIndex + 1,
+      capturedFrameCount: new Set(samples.map(({ frameIndex: value }) => value)).size,
+      sampleIntervalMs: SAMPLE_INTERVAL_MS,
+      maximumWaitMs: MAX_WAIT_MS,
+      minimumPlanetClearancePx: MIN_PLANET_CLEARANCE_PX,
+      sampleRadiusPx: SAMPLE_RADIUS_PX,
+    },
+    unchangedGates: {
+      deltaEMaximum: 8,
+      hueDistanceMaximumDegrees: 10,
+      chromaMinimumExclusive: 0.3,
+      magnitudeOrdering: true,
+      fixtureSubsetAllowed: false,
+      trailArcDegrees: [18, 30],
+    },
+    samples: samples.map(({ framePath: _framePath, ...sample }) => sample),
+    visualEvidence: {
+      plate: path.relative(runtimeCwd, platePath),
+      frames: samples.map(({ frameArtifact }) => frameArtifact),
+    },
     literalReferences: {
       flat: "#e3b65c",
       comet: "#f4f0df",
@@ -215,10 +483,14 @@ try {
       sunDown: "#d65a24",
     },
   };
+  await writeFile(
+    path.join(root, "raw-temporal-trail-samples.json"),
+    `${JSON.stringify(measured, null, 2)}\n`,
+  );
   console.log(JSON.stringify(measured));
-  emit(CRITERION, true, measured);
+  emitResult(CRITERION, true, measured);
 } catch (error) {
-  emit(CRITERION, false, null, error.message);
+  emitResult(CRITERION, false, null, error.message);
 } finally {
   if (browser) await browser.close();
 }
