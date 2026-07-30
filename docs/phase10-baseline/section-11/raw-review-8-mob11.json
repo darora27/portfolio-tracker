@@ -1,0 +1,40 @@
+{
+  "MOB-11.390": {
+    "overflow": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflow": false
+    },
+    "bannedFound": [],
+    "requiredNounsPresent": [
+      "HOLDINGS",
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredNounsMissing": [
+      "CORRELATION",
+      "TRADES"
+    ]
+  },
+  "MOB-11.320": {
+    "overflow": {
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "overflow": false
+    },
+    "bannedFound": [],
+    "requiredNounsPresent": [
+      "HOLDINGS",
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredNounsMissing": [
+      "CORRELATION",
+      "TRADES"
+    ]
+  }
+}

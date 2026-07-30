@@ -1,0 +1,30 @@
+{
+  "criterion": "BLD-04",
+  "gate": "maximumMs < 50, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted, unmodified measure-long-tasks.mjs",
+  "note": "Three independent invocations this review turn (review turn 8). Runs A and B were against the same server process (port 3600, started fresh this turn); run C was against a completely separate fresh server process (port 3700, started fresh this turn after A/B completed) to rule out same-process warm-state artifacts, matching the project's established 'reproduced on two independent server starts' convention.",
+  "runs": [
+    {
+      "label": "A",
+      "server": "port 3600, first invocation",
+      "pass": false,
+      "maximumMs": 52,
+      "perRun": [0, 52, 0, 0, 0]
+    },
+    {
+      "label": "B",
+      "server": "port 3600, second invocation (same process as A)",
+      "pass": false,
+      "maximumMs": 50,
+      "perRun": [0, 0, 0, 50, 0]
+    },
+    {
+      "label": "C",
+      "server": "port 3700, fresh process",
+      "pass": true,
+      "maximumMs": 0,
+      "perRun": [0, 0, 0, 0, 0]
+    }
+  ],
+  "otherProcessCheck": "ps aux at time of measurement showed no other node/npm/next process running against this repository beyond this turn's own server (unrelated low-CPU background apps only: Adobe Creative Cloud helper, Claude desktop helper) -- the marginal breaches are not attributable to CPU contention from a competing process on this machine.",
+  "interpretation": "2 of 3 independent measurement batches (15 total fresh browser contexts) show a marginal breach right at the 50ms boundary (52ms once, exactly 50ms once, out of 15 total contexts); 1 of 3 batches is a clean 0ms pass across all 5 contexts. This is not a confident, reproducible pass -- per the carried-criteria rule ('None may be closed by assertion'), the passing run cannot be cherry-picked over the two failing ones. Not asserted as a regression from the owner's clean 0ms capture run on his own machine (2026-07-29 20:09) -- that run remains valid evidence of a passing state on his hardware. This turn's finding is that the gate is marginal/flaky on this review environment, consistent with the acceptance ledger's own bld_04_caveat: 'The metric is now binary rather than continuous: it distinguishes over-50 from under-50 but not 49 from 5' -- a fix that converts one clearly-over-50ms task into many sub-threshold chunks does not by itself guarantee headroom against ordinary scheduling jitter when the remaining chunks sit close to the boundary."
+}

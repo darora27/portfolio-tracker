@@ -1,42 +1,49 @@
-BLD-12 final production-build evidence — PASS
 
-Command:
-  npm run build
+> portfolio-tracker@0.1.0 build
+> node scripts/build.mjs
 
-Result:
-  Next.js 16.2.11
-  Compiled successfully
-  TypeScript finished
-  Static pages generated: 18/18
-  Exit code: 0
+▲ Next.js 16.2.11 (Turbopack)
+- Environments: .env.local
 
-Route manifest:
-  /
-  /_not-found
-  /api/auth/login
-  /api/auth/logout
-  /api/cron/snapshot
-  /api/export/history.csv
-  /api/export/trades.csv
-  /api/quotes
-  /api/settings
-  /api/trades
-  /dashboard
-  /dev/observatory-shell
-  /dev/phase10-portfolio-orrery
-  /dev/phase10-spike-css
-  /dev/phase10-spike-css-world
-  /dev/phase10-spike-r3f-world
-  /dev/surface-scratch
-  /history
-  /research
-  /share
-  /share/full
-  /stock/[ticker]
-  /trades
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.4s
+  Running TypeScript ...
+  Finished TypeScript in 3.3s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/18) ...
+  Generating static pages using 7 workers (4/18) 
+  Generating static pages using 7 workers (8/18) 
+  Generating static pages using 7 workers (13/18) 
+✓ Generating static pages using 7 workers (18/18) in 761ms
+  Finalizing page optimization ...
 
-Expected §11 delta:
-  /compare is absent (retired).
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/cron/snapshot
+├ ƒ /api/export/history.csv
+├ ƒ /api/export/trades.csv
+├ ƒ /api/quotes
+├ ƒ /api/settings
+├ ƒ /api/trades
+├ ƒ /dashboard
+├ ƒ /dev/observatory-shell
+├ ƒ /dev/phase10-portfolio-orrery
+├ ƒ /dev/phase10-spike-css
+├ ƒ /dev/phase10-spike-css-world
+├ ƒ /dev/phase10-spike-r3f-world
+├ ƒ /dev/surface-scratch
+├ ƒ /history
+├ ƒ /research
+├ ƒ /share
+├ ƒ /share/full
+├ ƒ /stock/[ticker]
+└ ƒ /trades
 
-Smoke:
-  Share route smoke: PASS (/share 200; Mission Control manifest 200)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Share route smoke: PASS (/share 200; Mission Control manifest 200)

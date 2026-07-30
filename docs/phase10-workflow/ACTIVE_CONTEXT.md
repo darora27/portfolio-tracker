@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§11 — Universe legibility and the draft rig**
 - Managed range: §2–§18
-- Stage: `review`
-- Role: `claude_lead`
+- Stage: `remediate`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -40,7 +40,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-30-section-11-claude-review-7-to-codex-remediation.md`
+- `docs/phase10-handoffs/2026-07-30-section-11-claude-review-8-to-codex-remediation.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -58,7 +58,7 @@ Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for
 
 Open bounded findings:
 
-- {"id":"MOB-11-1","criterion":"MOB-11","opened":"review turn 7 (claude-code/sonnet-5)","summary":"The fallback's existing per-ticker holdings list (<ol className={styles.holdingList}> in OrreryWorld.tsx) carries no 'HOLDINGS' label, unlike its sibling sections (RETURNS/RISK/EARNINGS/NEWS), which all carry an explicit 'X / ...' prefix. Not a re-opening of the CORRELATION/TRADES/ORBITS question the owner just closed -- HOLDINGS is an already-existing, fully-rendered section, not new mobile surface.","required_change":"Add a 'HOLDINGS / ...'-style label to the existing holdings list in OrreryWorld.tsx, matching the label convention of its siblings. No new CORRELATION/TRADES/ORBITS content.","evidence":["docs/phase10-baseline/section-11/raw-review-7-mob11.json","docs/phase10-baseline/section-11/raw-review-7-fallback-390.png","docs/phase10-baseline/section-11/raw-review-7-fallback-320.png"]}
+- {"id":"BLD-04-1","criterion":"BLD-04","opened":"review turn 8 (claude-code/sonnet-5)","summary":"Carried, high-risk long-task gate re-verified this turn (three independent measure-long-tasks.mjs invocations, two separate fresh server processes): 2 of 3 batches (15 total fresh 1440x900 CPU-2x contexts) breach the unchanged <50ms boundary marginally (52ms once, exactly 50ms once); 1 of 3 is a clean 0ms pass. Not asserted as a regression from the owner's own clean capture on his machine, which remains valid there -- this is a reproduced marginal/flaky result on this review environment. Per the carried-criteria rule, the passing run cannot be cherry-picked over the two failing ones.","required_change":"Establish real headroom below 50ms (profile which chunk(s) land close to the boundary and reduce further), or investigate and name the specific cause of this environment's marginal breaches. Do NOT baseline-subtract or redefine the gate -- must_wait_for_codex.","evidence":["docs/phase10-baseline/section-11/raw-review-8-bld04-longtasks.json","docs/phase10-baseline/section-11/raw-review-3-overview-postzoom.png"]}
 
 Acceptance ledger:
 
@@ -103,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `9e46e89d85b8cb66a420346d1e7e2b8b9cbaca4eddde177c4ae0c116380a4839`
+- `PHASE10_STATE.json`: `19c912550680200cc3a146a3e8f8bf0fb1e020554a6f75fb33f04f78cbf74de4`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
