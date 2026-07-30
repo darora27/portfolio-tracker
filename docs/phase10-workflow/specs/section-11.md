@@ -787,6 +787,39 @@ reimplementation of Mission Control. Adding CORRELATION, TRADES and ORBITS to
 the phone view would be new mobile surface during a landing window, which the
 owner did not ask for.
 
+### 11.0.1 BLD-04 carried to §12 — owner decision, 2026-07-30
+
+Review turn 9 measured `BLD-04` FAILING in 1 of 3 batches: a single 59ms task
+against the unchanged `<50ms` boundary. It root-caused the residual breach to
+Next.js's **pre-mount RSC/hydration bootstrap script, upstream of
+`OrreryScene` entirely** — no further scene chunking can reach it. It then
+refused to authorize either remaining path itself, correctly, because both sit
+on `single_provider_mode`'s reserved list.
+
+**Devan's ruling: carry it. Do not except it, do not weaken it.**
+
+`BLD-04` is recorded `carried_by_owner` into §12 with its failing measurement
+attached, exactly as §10 carried six criteria into §11. The distinction is
+load-bearing and must not be blurred in any later record:
+
+- **An exception** would say the 50ms gate does not apply to this cost. **No
+  exception is granted.**
+- **Carrying** says the criterion still fails, nobody is pretending otherwise,
+  and it moves forward with its number attached and must be closed there.
+
+**NO gate, threshold, verifier, sample point or baseline is weakened,
+redefined or subtracted.** The boundary remains `<50ms`. The measurement of
+record is the failing one: one 59ms task, 1 of 3 batches, against candidate
+`5d91b6e`, with 77 prior runs at 0ms and eleven breaches spanning 57–64ms.
+
+**Required in §12:** `BLD-04` appears in its acceptance ledger, the unmodified
+script is re-run, and the result is recorded. It may not be closed by
+assertion. The two live paths remain the architecture fix (code-splitting the
+3D world behind `next/dynamic({ ssr: false })`, or shrinking the initial RSC
+payload) and a scoped exception — and **the first Codex turn after
+`single_provider_mode` lifts should re-review this decision**, since it was
+taken while cross-model independence was suspended.
+
 ### 11.1 Measurement contract — pinned so runs are comparable
 
 > **Owner-authorized amendment — Devan, July 29, 2026.** This section was added

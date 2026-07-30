@@ -4,8 +4,8 @@
   "current_section": "§11",
   "role": "claude_lead",
   "stage": "review",
-  "status": "blocked",
-  "next_actor": "devan",
+  "status": "ready",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -192,7 +192,8 @@
       "F7/TST-03 + F8/VIS-04 — temporal per-holding sampling AUTHORISED. Trails stay 18-30. All thresholds stay. Re-lengthening and criterion removal both refused.",
       "TST-03 magnitude ordering — SPEC CORRECTION accepted, Devan July 29 2026: ordering is asserted only between holdings whose EXPECTED colours differ. Source of the bug: round 3 §3.3 treated magnitude as a continuous channel and lengthened arcs to 36-64 degrees to give it room; the shipped ramp has discrete stops and both extremes clamp, so a strict rank was demanded between values the design makes equal. Failing observation: CBRS -18.51% and INTC -20.90% both map to #b3241d, both passed deltaE independently (4.218 and 1.022 against 8), differing by 0.0074 luminance. Every deltaE, hue-distance, chroma and clearance threshold is untouched, ordering is still enforced between different stops, and skipped pairs are emitted in the evidence so the narrowing is visible rather than silent.",
       "BHV-31 — owner ruling, Devan 2026-07-30: maximum acceptable ratio drift is 0.02 (2.0 percentage points). The measured 0.0184 is the half-unit rounding the spec already mandates and is invisible on screen. Grade BHV-31 against this bound.",
-      "MOB-11 — owner ruling, Devan 2026-07-30: the below-1024px fallback does NOT grow CORRELATION/TRADES/ORBITS. It uses correct current names for the sections it already has. Follows the settled 2026-07-27 desktop-first decision; MOB-10 governs over a broad reading of BHV-10. Grade MOB-11 against the renaming-only reading."
+      "MOB-11 — owner ruling, Devan 2026-07-30: the below-1024px fallback does NOT grow CORRELATION/TRADES/ORBITS. It uses correct current names for the sections it already has. Follows the settled 2026-07-27 desktop-first decision; MOB-10 governs over a broad reading of BHV-10. Grade MOB-11 against the renaming-only reading.",
+      "BLD-04 — owner ruling, Devan 2026-07-30: CARRY, do not except. Record carried_by_owner into §12 with the failing measurement attached (one 59ms task, 1 of 3 batches, candidate 5d91b6e), exactly as §10 carried six criteria into §11. NO exception is granted and NO gate, threshold, verifier, sample point or baseline is weakened — the boundary remains <50ms. Root cause is Next.js pre-mount RSC/hydration bootstrap, upstream of OrreryScene; further scene chunking cannot reach it. §12 must carry BLD-04 in its acceptance ledger, re-run the unmodified script, and record the result; it may not be closed by assertion. The first Codex turn after single_provider_mode lifts should re-review this decision."
     ],
     "owner_capture_run": {
       "ran_by": "Devan, July 29 2026, via npm run phase10:evidence -- 11 against the production build",
@@ -201,6 +202,19 @@
       "bld_04_caveat": "The metric is now binary rather than continuous: it distinguishes over-50 from under-50 but not 49 from 5. It still functions as a gate — a regression to 51ms would surface as an entry — but a companion total-blocking-time figure would give headroom visibility. Recorded as an observation for the reviewer, not a proposed criterion change.",
       "captures": "10 of 10 shots landed at 20:10-20:12. The nine -failed frames in the directory are stale, dated 13:10, 13:14 and 19:44; the harness now clears them at the start of a run so they cannot be mistaken for this run output.",
       "gate_unchanged": "The 50ms gate was never weakened, reinterpreted, or excepted at any point across six rounds."
+    },
+    "carried_to_section_12": {
+      "rule": "Carried by owner decision 2026-07-30, not closed. Must appear in §12 acceptance with the measurement below attached, and §12 must re-run the named verifier and record the result. May not be closed by assertion. No gate was weakened.",
+      "criteria": {
+        "BLD-04": {
+          "measurement_at_carry": "1 of 3 batches breached: a single 59ms task against the unchanged <50ms boundary. 77 prior runs at 0ms; eleven breaches spanning 57-64ms.",
+          "candidate": "5d91b6e",
+          "verifier": "docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs (unmodified)",
+          "root_cause": "Next.js pre-mount RSC/hydration bootstrap script, upstream of OrreryScene. Further scene-construction chunking cannot reach it.",
+          "live_paths": "architecture fix (next/dynamic ssr:false for the 3D world, or a smaller initial RSC payload), or a scoped exception. Neither authorized.",
+          "reserved_note": "Decided under single_provider_mode. The first Codex turn after it lifts should re-review."
+        }
+      }
     }
   },
   "sections_history": [
@@ -302,7 +316,7 @@
       "finished_at": "2026-07-30T11:55:00Z"
     }
   },
-  "stop_reason": "BLD-04 independently re-measured this turn (1 of 3 fresh-context batches still breaches the unchanged <50ms gate) and its root cause is now well-diagnosed as a pre-mount Next.js RSC/hydration bootstrap cost upstream of OrreryScene, not scene-construction code. No further chunking remediation is expected to help. Closing it requires Devan to choose between an architecture-level SSR/loading-behaviour change or a scoped gate exception -- both fall under single_provider_mode's reserved must_wait_for_codex list ('any gate change'), so neither should be decided or implemented by this turn. See docs/phase10-workflow/reviews/section-11-review-9.md and the routing handoff.",
+  "stop_reason": null,
   "updated_at": "2026-07-30T12:05:00Z",
   "legacy": {
     "schema_version": 1,

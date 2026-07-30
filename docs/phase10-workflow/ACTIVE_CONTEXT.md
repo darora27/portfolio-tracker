@@ -13,10 +13,10 @@ them.
 - Managed range: §2–§18
 - Stage: `review`
 - Role: `claude_lead`
-- Status: `blocked`
-- Next actor: `devan`
+- Status: `ready`
+- Next actor: `claude`
 - Expected actor for this stage: `claude`
-- Stop reason: BLD-04 independently re-measured this turn (1 of 3 fresh-context batches still breaches the unchanged <50ms gate) and its root cause is now well-diagnosed as a pre-mount Next.js RSC/hydration bootstrap cost upstream of OrreryScene, not scene-construction code. No further chunking remediation is expected to help. Closing it requires Devan to choose between an architecture-level SSR/loading-behaviour change or a scoped gate exception -- both fall under single_provider_mode's reserved must_wait_for_codex list ('any gate change'), so neither should be decided or implemented by this turn. See docs/phase10-workflow/reviews/section-11-review-9.md and the routing handoff.
+- Stop reason: none
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -103,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `ba730451337b2ecf250d0a877f2787a1e9682d3ad0a789ba2705cbce6b599325`
+- `PHASE10_STATE.json`: `aa8228214aa47b5e2c8b59efda1432a583756335aea81806fbf3dab25e31e25b`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
