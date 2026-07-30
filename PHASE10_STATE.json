@@ -3,9 +3,9 @@
   "phase": 10,
   "current_section": "\u00a712",
   "role": "claude_lead",
-  "stage": "review",
+  "stage": "owner-sitting",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "devan",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -29,9 +29,9 @@
     "spec_doc": "docs/phase10-workflow/specs/section-12.md",
     "acceptance_ledger": "docs/phase10-workflow/acceptance/section-12.json",
     "design_proof": "docs/phase10-workflow/design-proofs/section-12.md",
-    "implementation_commit": null,
-    "review_result": null,
-    "review_doc": null,
+    "implementation_commit": "2390059473ad2a0da2b64ee7a9ecce35d5e532b1",
+    "review_result": "pass",
+    "review_doc": "docs/phase10-workflow/reviews/section-12-review.md",
     "findings": [],
     "remediation_commits": [],
     "accepted_commit": null,
@@ -61,6 +61,16 @@
           "evidence": "docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json"
         }
       ]
+    },
+    "carried_from_section_11_resolution": {
+      "criterion": "BLD-04",
+      "result": "closed clean, not carried to §12b",
+      "measurement": "Unmodified measure-long-tasks.mjs re-run against this section's candidate: implementer's own batch (5 fresh 1440x900 CPU-2x contexts, 0ms max) plus reviewer's two independent additional batches (10 more fresh contexts, 0ms max both). 15 fresh contexts total this round, all 0ms.",
+      "evidence": [
+        "docs/phase10-baseline/section-12/raw-bld04-longtasks.json",
+        "docs/phase10-baseline/section-12/reviewer/raw-bld04-longtasks-reviewer-rerun.json"
+      ],
+      "note": "Consistent with the design proof's prediction that none of §12a's changes touch hydration cost. No structural SSR/hydration fix was made or needed; the constant/CSS/component changes in this section are layout/type/perf-neutral or net-positive, and the re-measurement bears that out."
     }
   },
   "sections_history": [
@@ -140,8 +150,9 @@
       "note": "Universe legibility and the draft rig. One implementation round, ten review turns, nine remediation rounds, one out-of-band owner-directed Fable drop (a7f85ac, covering F1/F4/FB-03/FB-06/FB-14/FB-17), and one one-attempt-authorized mark repair. The authoritative review (section-11-review-10.md) records PASS: 53 of 54 criteria pass or are not applicable; one (BLD-04, carried from \u00a710) is carried again to \u00a712, recorded in the ledger as carried_by_owner with its failing measurement attached, by Devan's explicit non-generalizing ruling (commit 9f561b52179023f70c89fabfab62ea880df0a146): CARRY, not except -- the <50ms boundary is unweakened, unredefined, and un-baseline-subtracted; the criterion still fails and is not being pretended otherwise. Root cause: Next.js pre-mount RSC/hydration bootstrap upstream of OrreryScene, which six rounds of scene-construction chunking measurably improved (a consistent 55-65ms breach down to an intermittent single-batch 51-59ms breach) but could not reach structurally. Accepted at 5d91b6e (implementation-bearing HEAD); the owner's carry-ruling commit 9f561b5 sits one commit on top and changes no application source (git diff --name-only 5d91b6e 9f561b5 -- src/ public/ package.json package-lock.json scripts/ is empty), re-verified independently at acceptance: npm test 107/107 files, 553/553 tests, zero failures; npm run build exit 0, 18/18 pages, /share smoke pass. All five \u00a710-carried criteria other than BLD-04 (TST-03, VIS-04, DEF-02, VIS-02, BHV-05) closed in-section across review turns 4-8. single_provider_mode is true for the entire section, including this acceptance; the first Codex turn after it lifts should re-review the BLD-04 carry decision. See docs/phase10-workflow/reviews/section-11-accepted.md, section-11-review.md through section-11-review-10.md, and docs/phase10-workflow/SINGLE_PROVIDER_MODE.md."
     }
   ],
-  "prev_actor_commit": "6afbe579ef7e46a72bac4a01c8e4fb5eb22795b7",
-  "prev_actor_commit_note": "6afbe579ef7e46a72bac4a01c8e4fb5eb22795b7 (phase10(review \u00a711): accept and initialize \u00a712) was HEAD at the start of this Claude Lead specify turn. It changed no application source -- it accepted \u00a711 at 5d91b6e and reset section to a fresh \u00a712 record at stage:specify. This turn wrote the \u00a712a design proof, specification, and acceptance ledger (scoped to the owner-adopted \u00a712a unattended ordering, not the full PHASE10.md \u00a712 text), then routed to stage:implement, role:codex_implementation, next_actor:codex. No application source changed this turn either.",
+  "prev_actor_commit": "2390059473ad2a0da2b64ee7a9ecce35d5e532b1",
+  "prev_actor_commit_note": "2390059473ad2a0da2b64ee7a9ecce35d5e532b1 (phase10(\u00a712): implement \u00a712a -- close the ledger board, BLD-04 clears) was HEAD at the start of this Claude Lead review turn -- also this turn's candidate. This turn is the review: independently re-verified every criterion (see verification.reviewer_verification and section.review_doc), closed the implementer's one gap (VIS-08), and routed to stage:owner-sitting per this section's own Phase D. No application source changed this turn either.",
+  "prev_actor_commit_note_specify": "6afbe579ef7e46a72bac4a01c8e4fb5eb22795b7 (phase10(review \u00a711): accept and initialize \u00a712) was HEAD at the start of the earlier Claude Lead specify turn. It changed no application source -- it accepted \u00a711 at 5d91b6e and reset section to a fresh \u00a712 record at stage:specify. That turn wrote the \u00a712a design proof, specification, and acceptance ledger, then routed to stage:implement, role:codex_implementation, next_actor:codex.",
   "last_green_commit": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
   "last_green_commit_note_2": "Moved from 3d1882a to \u00a710's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. \u00a79's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against \u00a710's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
   "last_green_commit_note_4": "Moved from f271fc7 to e8faf0d (\u00a711 review turn 6). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD e8faf0d, confirming it green. The eventual blocked-handoff commit changes no executable source.",
@@ -152,6 +163,7 @@
   "production_code_note": "This review-turn-10/accept turn (claude_lead, claude-code/sonnet-5) changed no application source. It updated docs/phase10-workflow/acceptance/section-11.json (BLD-04 reviewer.status fail -> carried_by_owner, evidence citation fixed to include the already-retained raw-review-8-bld04-longtasks.json), wrote docs/phase10-workflow/reviews/section-11-review-10.md and section-11-accepted.md, moved \u00a711 into sections_history, reset section to a fresh \u00a712 record, reset verification, and regenerated context/handoff/progress.",
   "production_code_note_2": "This \u00a712 specify turn (claude_lead, claude-code/sonnet-5) changed no application source either. It wrote docs/phase10-workflow/design-proofs/section-12.md, docs/phase10-workflow/specs/section-12.md (\u00a712a scope only -- FB-19, FB-20, FB-05, FB-01, FB-17, FB-08+FB-15, FB-09, FB-12, FB-11, FB-21, and BLD-04's carried re-measurement; explicitly not \u00a712b's Chart Room/sky/cursor), and docs/phase10-workflow/acceptance/section-12.json (19 criteria, 10 visual, validated by phase10:acceptance check). Routed stage:specify -> stage:implement, role:claude_lead -> codex_implementation, next_actor:claude -> codex.",
   "production_code_note_3": "This \u00a712a implement turn (codex_implementation role, running as claude-code/sonnet-5 per single_provider_mode) implemented all eleven ledger rows plus the BLD-04 re-measurement, in spec order (Phase A -> B -> C -> BLD-04). Every criterion's implementer result and evidence path is in docs/phase10-workflow/acceptance/section-12.json. Key outcomes: FB-19/FB-20 fixed and geometry-verified; FB-05 role->token map added (src/lib/observatory/mission-control-layout.ts MISSION_CONTROL_TEXT_ROLES) with a rendered test, not a source-parse-only one; FB-01 constants updated (orrery.ts, scene-model.ts) with test debt in orrery.test.ts and scene-model.test.ts corrected to the new geometry, not left asserting stale values; FB-17/FB-08+FB-15 variants built behind capture-only query params (?panelWidth=, ?stripVariant=) that default to today's production behavior when absent -- verified byte-for-byte unchanged at the default; FB-09 exit receipt + regrouped BODIES/INSTRUMENTS/BELT/ENCODING terminal, with a mobile-preserving CSS override so the sub-1024px fallback (MOB-01) is provably unaffected; FB-12 three DraftRig fixes; FB-11 correlation sentence (also changed mostCorrelatedPair to compare by |r| rather than raw r, per the spec's 'top |r| pair' requirement -- verified this doesn't change the existing all-positive-correlation test fixture's expected output); FB-21 width/padding. BLD-04 re-measured with the unmodified section-11 script against a fresh production build: 0ms max across all 5 contexts, PASS, not carried again. Direct Playwright/Chromium capture (this sandbox launches it directly, confirmed per AGENTS.md) produced real evidence for every visual/mobile criterion except VIS-08 (DraftRig capture): that route is owner-gated and requires an authenticated session this agent has no credential for and must not read from .env -- recorded deferred_to_reviewer with exact reproduction steps, not silently skipped. npm test: 112 files, 582 passed, 1 skipped (intentional). npm run build: exit 0, 18 routes, unchanged. tsc --noEmit clean throughout. New/changed files: src/components/observatory/orrery/{DraftRig,MissionControl,MissionControlRoomContent,OrreryScene,OrreryWorld}.tsx, orrery.module.css, DraftRig.test.tsx, MissionControl.stripVariant.test.tsx (new), MissionControlRoomContent.test.tsx (new), mission-control-text-roles.test.tsx (new), observatory-fallback.test.ts (new); src/lib/observatory/{mission-control-layout,orrery,scene-model,structure-copy}.ts + their .test.ts files, public-payload.test.ts (new); src/app/dev/phase10-portfolio-orrery/OrreryWorld.test.tsx. Evidence under docs/phase10-baseline/section-12/. Leaving implementation_commit null and candidate_sha null in the acceptance ledger for the reviewer to fill from git log -- this turn's own commit cannot contain its own hash.",
+  "production_code_note_4": "This §12 review turn (claude_lead, claude-code/sonnet-5) changed no application source. It independently re-ran npm test/build against candidate 2390059 (matching the implementer exactly), read the complete src/ diff against the spec, independently recomputed VIS-02/VIS-07's evidence from the raw JSON/screenshots rather than trusting notes, re-ran BLD-04's measurement twice more (10 more fresh contexts, all clean), and closed the implementer's one gap (VIS-08) by authenticating to the owner-gated / route with a self-chosen temporary OWNER_PASSWORD process-env override (no .env* read) and capturing the DraftRig evidence itself. Filled all 19 reviewer ledger entries as pass, wrote docs/phase10-workflow/reviews/section-12-review.md, updated OWNER_FEEDBACK_LEDGER.md to close FB-19/FB-20 (capture-only closes-when, independently verified), wrote docs/phase10-baseline/section-12/contact-sheet.md (12 frames) and REVIEW_SITTING.md, and routed stage:review -> stage:owner-sitting, next_actor:claude -> devan per this section's own Phase D instruction (a passing review here does not accept-and-advance -- nine ledger rows still require Devan's own sentence to close per OWNER_FEEDBACK_LEDGER.md rule 4).",
   "verification": {
     "tests": {
       "command": "npm test",
@@ -170,10 +182,22 @@
       "status": "pass",
       "summary": "All visual/mobile/build criteria captured and passing against a real production server on the public /share route: VIS-01, VIS-02, VIS-03, VIS-04, VIS-05, VIS-06, VIS-07, VIS-09, VIS-10, ACC-01, MOB-01, BLD-04 all pass with retained screenshots and raw geometry/measurement JSON under docs/phase10-baseline/section-12/. One exception: VIS-08 (DraftRig) is owner-gated (mode=private) and this agent has no owner credential and must not read .env for one -- recorded deferred_to_reviewer with exact reproduction steps, not captured.",
       "finished_at": "2026-07-30T11:10:00Z"
+    },
+    "reviewer_verification": {
+      "performed_by": "claude-code/sonnet-5 (Claude Lead, review turn)",
+      "tests": "Independently re-ran npm test against candidate 2390059: 112 files, 582 passed, 1 skipped, zero failures -- matches implementer exactly.",
+      "build": "Independently re-ran npm run build against candidate 2390059: exit 0, 18 routes, byte-identical route list to raw-npm-build.txt, /share smoke PASS.",
+      "diff_review": "Read the complete src/ diff (6a9eeb6..2390059) line by line against the spec's named constants/selectors/formulas -- all match exactly (FB-01 radii/gap/belt-span, FB-05 role->token table, FB-12 30-90s band, FB-21 min(1400px,96vw)).",
+      "bld04": "Independently re-ran the unmodified measure-long-tasks.mjs two more times against a fresh production build of this candidate (10 more fresh contexts) -- both batches 0ms max. Combined with the implementer's batch: 15/15 fresh contexts clean this round. See section.carried_from_section_11_resolution.",
+      "vis08_closed": "The implementer's one gap. Reviewer authenticated to the owner-gated / route using a self-chosen temporary OWNER_PASSWORD process-env override on a freshly built production server (no .env* contents read, same non-secret-reading pattern as section 1's acceptance remediation 3), confirmed 8 real holdings, opened DRAFT, and captured docs/phase10-baseline/section-12/reviewer/draft-rig-1440x900.png. MOTION OFF by default, latch in strip nav, coach line visible, zero console errors. VIS-08 now reviewer.status=pass, not deferred_to_reviewer.",
+      "other_independent_checks": "Recomputed orphaned:[] from raw-fb20-label-body-pairs.json directly (VIS-02); counted 9 visible rows (1 sun + 8 holdings) in exit-terminal-grouped-1440x900.png directly (VIS-07); viewed every other required screenshot directly rather than trusting implementer notes alone.",
+      "result": "All 19/19 acceptance-ledger criteria: reviewer.status=pass. Zero bounded findings. node scripts/phase10-acceptance.mjs check docs/phase10-workflow/acceptance/section-12.json --require reviewer -> valid.",
+      "review_doc": "docs/phase10-workflow/reviews/section-12-review.md"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-30T11:15:00Z",
+  "owner_sitting_note": "Routed to stage:owner-sitting per this section's own spec (§7 Phase D) and the standing prompt's owner-adopted §12a unattended ordering (§8.5): a passing review here does not accept-and-advance, because OWNER_FEEDBACK_LEDGER.md rule 4 requires an owner sentence (not a criteria-ledger pass) to close FB-01, FB-05, FB-08, FB-09, FB-11, FB-12, FB-15, FB-17, and FB-21. FB-19 and FB-20 close outright this turn (their own closes-when conditions are capture-only). See REVIEW_SITTING.md and docs/phase10-baseline/section-12/contact-sheet.md. Nothing further runs until Devan's answers come back.",
+  "updated_at": "2026-07-30T11:35:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

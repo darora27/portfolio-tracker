@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§12 — The Chart Room, the sky, and flight**
 - Managed range: §2–§18
-- Stage: `review`
+- Stage: `owner-sitting`
 - Role: `claude_lead`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `devan`
+- Expected actor for this stage: `devan`
 - Stop reason: none
 
 The current state is before the
@@ -102,7 +102,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `21424d3eb04af42aca6d6bf4d710ca07cb62c0e57b72c1f49a1fed6341d08650`
+- `PHASE10_STATE.json`: `951a8dde001c1a8c2a24700688cb2b80457b9162ff7f25c4015cdd13e0ea8d6a`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

@@ -1,0 +1,5 @@
+{
+  "note": "Independent reviewer re-run (Claude Lead), two additional batches of 5 fresh 1440x900 CPU-2x contexts each, against a freshly built production server (this candidate, HEAD 2390059) on port 3100, using the unmodified docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs script pointed at /share via PHASE10_BASE_URL. Both batches clean at 0ms across all 5 contexts, matching the implementer's own batch. Total this round: 15 fresh contexts, 0ms max in all of them.",
+  "batch_1": {"criterion":"BLD-04","pass":true,"measured":{"viewport":"1440x900","cpuThrottle":2,"freshContexts":5,"maximumMs":0,"runs":[{"run":1,"maximumMs":0},{"run":2,"maximumMs":0},{"run":3,"maximumMs":0},{"run":4,"maximumMs":0},{"run":5,"maximumMs":0}]},"error":null},
+  "batch_2": {"criterion":"BLD-04","pass":true,"measured":{"viewport":"1440x900","cpuThrottle":2,"freshContexts":5,"maximumMs":0,"runs":[{"run":1,"maximumMs":0},{"run":2,"maximumMs":0},{"run":3,"maximumMs":0},{"run":4,"maximumMs":0},{"run":5,"maximumMs":0}]},"error":null}
+}
