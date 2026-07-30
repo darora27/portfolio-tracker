@@ -1,0 +1,48 @@
+Phase 10 §11 remediation — temporal sampler deterministic gates
+Run by codex/gpt-5 on 2026-07-30 UTC.
+
+COMMAND
+npm run phase10:acceptance -- check docs/phase10-workflow/acceptance/section-11.json --require implementer
+
+RESULT
+PASS
+docs/phase10-workflow/acceptance/section-11.json is valid for implementer.
+
+COMMAND
+node --check docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs
+
+RESULT
+PASS
+Exit 0; no syntax errors.
+
+COMMAND
+npm test
+
+RESULT
+PASS
+Test Files  106 passed (106)
+Tests       549 passed (549)
+Skipped     0
+Duration    6.68s
+
+COMMAND
+npm run build
+
+RESULT
+PASS
+Next.js 16.2.11 production build compiled successfully.
+TypeScript passed.
+Static generation completed 18/18.
+Share route smoke passed: /share 200; Mission Control manifest 200.
+
+LIVE TST-03 / VIS-04 RESULT
+NEEDS-CAPTURE — no criterion pass claimed.
+Normal multi-process Chromium was denied before navigation by the managed CLI
+at MachPortRendezvous. The launch mode permitted by this CLI rendered the
+tested semantic no-WebGL fallback with canvasCount=0 and sceneTickerCount=0.
+That environment evidence is retained in:
+  docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.json
+  docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.png
+
+Exact normal-Terminal command after starting the production server:
+PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs

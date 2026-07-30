@@ -340,22 +340,81 @@ async function buildTemporalPlate(samples, destination) {
 let browser;
 try {
   await mkdir(temporalFrames, { recursive: true });
+  const chromiumArgs = [
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    ...(runtimeEnv.PHASE10_CHROMIUM_SINGLE_PROCESS === "1"
+      ? ["--single-process", "--no-zygote"]
+      : [
+          "--use-gl=angle",
+          "--use-angle=swiftshader",
+          "--enable-unsafe-swiftshader",
+          "--enable-webgl",
+          "--ignore-gpu-blocklist",
+        ]),
+  ];
   browser = await chromium.launch({
     headless: true,
     executablePath: await chromiumExecutablePath(),
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--single-process",
-      "--no-zygote",
-    ],
+    args: chromiumArgs,
   });
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const browserLog = [];
+  page.on("console", (message) => {
+    browserLog.push({
+      type: message.type(),
+      text: message.text(),
+    });
+  });
+  page.on("pageerror", (error) => {
+    browserLog.push({
+      type: "pageerror",
+      text: error.message,
+    });
+  });
   await page.addInitScript(() => {
     window.localStorage.setItem("stock-market-universe-orientation-seen", "true");
   });
   await page.goto(base, { waitUntil: "domcontentloaded" });
-  await waitForUniverseReady(page);
+  try {
+    await waitForUniverseReady(page);
+  } catch (error) {
+    const safePageRead = async (read) => {
+      try {
+        return await read();
+      } catch (readError) {
+        return { error: readError.message };
+      }
+    };
+    const readinessFailure = {
+      url: await safePageRead(() => page.url()),
+      title: await safePageRead(() => page.title()),
+      bodyText: await safePageRead(async () =>
+        (await page.locator("body").innerText()).slice(0, 4_000)
+      ),
+      canvasCount: await safePageRead(() => page.locator("canvas").count()),
+      sceneTickerCount: await safePageRead(() =>
+        page.locator("[data-scene-ticker]").count()
+      ),
+      browserLog,
+      error: error.message,
+    };
+    readinessFailure.screenshot = await safePageRead(async () => {
+      const destination = path.join(
+        root,
+        "raw-temporal-sampler-readiness-failure.png",
+      );
+      await page.screenshot({ path: destination, fullPage: true });
+      return path.relative(runtimeCwd, destination);
+    });
+    await writeFile(
+      path.join(root, "raw-temporal-sampler-readiness-failure.json"),
+      `${JSON.stringify(readinessFailure, null, 2)}\n`,
+    );
+    throw new Error(
+      `Temporal sampler readiness failed: ${JSON.stringify(readinessFailure)}`,
+    );
+  }
 
   const initialDescriptors = await readDescriptors(page);
   const fixtureOrder = initialDescriptors.map(({ ticker }) => ticker);

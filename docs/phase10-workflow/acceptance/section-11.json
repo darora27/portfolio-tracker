@@ -918,36 +918,42 @@
       "id": "VIS-04",
       "dimension": "visual",
       "risk": "critical",
-      "description": "Trails carry direction and magnitude in a single 1440x900 still frame: arc between 26 and 46 degrees (owner-directed shortening, spec section 5.4), ramp lightness for magnitude, and a fixed 12% white-hot head acting as a calibration reference. Every clause other than the arc band is unchanged from \u00a710.",
+      "description": "Trails carry direction and magnitude in a captioned 1440x900 temporal per-holding pixel plate: each holding is sampled at its own naturally unoccluded orbital phase, the owner-confirmed arc remains 18 to 30 degrees, ramp lightness carries magnitude, and the fixed 12% white-hot head remains the calibration reference. Every threshold and non-method clause from \u00a710 is unchanged.",
       "verifier": {
         "kind": "visual",
         "command": null
       },
       "required_artifacts": [
-        "docs/phase10-baseline/section-11/after/overview-1440x900.png",
-        "docs/phase10-baseline/section-11/raw-rgb-pixel-output.txt"
+        "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png",
+        "docs/phase10-baseline/section-11/raw-temporal-trail-samples.json",
+        "docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs"
       ],
       "carried_from_section_10": {
         "original_id": "VIS-04",
         "owner_decision": "docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md",
         "measurement_at_carry": "Blocked on TST-03's remaining NBIS sample, which the owner reports renders correctly. sample-live-rgb.mjs aborts on NBIS at deltaE 33.123 against a <=8 gate.",
         "owner_observation": "NBIS trail is the same brightness as the other red planets.",
-        "resolved_in_11_by": "Follows TST-03's sampler re-derivation, plus the new owner-directed 26-46 degree arc band. Do NOT loosen deltaE.",
+        "resolved_in_11_by": "Follows TST-03's owner-authorised temporal per-holding sampler while retaining the owner-confirmed 18-30 degree arc band. Do NOT loosen deltaE.",
         "evidence_at_carry": "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json",
-        "arc_band_change": "36-64 degrees becomes 26-46 degrees. This is an owner-directed design-target change ('Why are the trails so long... shorten them, somewhere between the two'), not a gate weakening. The deltaE gate, the ramp-lightness clause and the 12% white-hot head are unchanged.",
+        "arc_band_change": "36-64 degrees became 18-30 degrees and Devan closed that visual choice with \"trails look fine.\" On July 29 2026 he explicitly refused to re-lengthen the trails for the verifier and authorised temporal per-holding sampling instead. The deltaE gate, hue lock, ordering, ramp-lightness clause and 12% white-hot head are unchanged.",
         "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
           "OWNER_FEEDBACK_LEDGER.md",
+          "PHASE10_STATE.json",
+          "docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-11/raw-remediation-f7-geometry.json",
           "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
           "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png",
           "docs/phase10-baseline/section-11/raw-trail-sampler-derivation.md",
-          "docs/phase10-baseline/section-11/raw-remediation-f7-browser-gap.txt"
+          "docs/phase10-baseline/section-11/raw-remediation-f7-browser-gap.txt",
+          "docs/phase10-baseline/section-11/raw-remediation-f7-temporal-gates.txt",
+          "docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.json",
+          "docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.png"
         ],
-        "notes": "Explicit schema non-pass routed to Devan for an accepted-direction decision; a reviewer cannot resolve it without that decision. F7/F8 and this criterion still describe 26-46 degree arcs, but the candidate and newer authoritative FB-03 owner record use 18-30 degrees and close that visual choice on Devan's sentence \"trails look fine.\" Reconstructing the committed ASML frame shows even a 96%-of-ribbon coordinate remains 7.104px inside the planet disc, and the ASML image region contains no pixel near expected #b3241d. A sampler-only fix cannot sample an occluded ribbon; re-lengthening, drawing over the planet, sampling another holding, or changing the mandated unmodified temporal method each requires owner authority. No visual pass is claimed and no gate changed. Recorded by codex/gpt-5."
+        "notes": "The owner-authorised temporal per-holding verifier is implemented and emits a captioned pixel plate only after all eight fixture holdings satisfy the unchanged deltaE, hue, chroma, ordering and planet-clearance gates. No application source, trail geometry, fixture or threshold changed. Live grading is blocked at needs-capture: the managed CLI denies normal multi-process Chromium at MachPortRendezvous, while its permitted single-process mode renders the retained semantic no-WebGL fallback with zero canvas/scene nodes; the committed readiness-failure PNG and JSON prove that environment boundary and are not criterion evidence. Exact normal-Terminal command: `npm run build && npm run start`, then `PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs`. No visual pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -1332,14 +1338,15 @@
       "id": "TST-03",
       "dimension": "tests",
       "risk": "high",
-      "description": "The trail sampler asserts hue lock within 10 degrees, deltaE*ab no greater than 8 against the payload-derived expectation from rampForWeekly, and ordering across same-direction holdings - for every holding in the fixture, not a sampled subset. Literal-hex baselines survive only for flat, comet and sun tokens. The sample point and expected value are re-derived against the rebuilt view.",
+      "description": "The owner-authorised temporal trail sampler captures each holding at its own naturally unoccluded orbital phase and asserts hue lock within 10 degrees, deltaE*ab no greater than 8 against the payload-derived expectation from rampForWeekly, and ordering across same-direction holdings - for every holding in the fixture, not a sampled subset. Literal-hex baselines survive only for flat, comet and sun tokens.",
       "verifier": {
         "kind": "browser",
         "command": null
       },
       "required_artifacts": [
-        "docs/phase10-baseline/section-11/raw-rgb-pixel-output.txt",
         "docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs",
+        "docs/phase10-baseline/section-11/raw-temporal-trail-samples.json",
+        "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png",
         "docs/phase10-baseline/section-11/raw-trail-sampler-derivation.md"
       ],
       "carried_from_section_10": {
@@ -1347,21 +1354,26 @@
         "owner_decision": "docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md",
         "measurement_at_carry": "sample-live-rgb.mjs aborts on NBIS at deltaE 33.123 against a <=8 gate. The authorised taper-floor fix (0.45 -> 0.85) widened every ribbon 1.89x and took IBM from deltaE 3.522 to 0.396, so the fix landed and worked; NBIS moved only 33.846 -> 30.522, so width was never the cause. The 49px cross-section through the published sample point is a ~12px band peaking at red 93 against the model's 179, with zero pixels within 2; the same NBIS arc reaches deltaE 3.44 some 165px away.",
         "owner_observation": "NBIS trail is the same brightness as the other red planets.",
-        "resolved_in_11_by": "Re-derive the sampler - the published data-trail-sample-x/y projection or the ribbon's angular sweep - against the rebuilt view, and reconcile it with what a viewer actually sees. Do NOT loosen deltaE.",
+        "resolved_in_11_by": "Use Devan's July 29 2026 authorisation to sample each holding at its own naturally unoccluded orbital phase. Retain every deltaE, hue, chroma, ordering and all-holdings threshold and keep the confirmed 18-30 degree geometry unchanged.",
         "evidence_at_carry": "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json",
         "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
+          "OWNER_FEEDBACK_LEDGER.md",
+          "PHASE10_STATE.json",
           "docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-11/raw-trail-sampler-derivation.md",
           "docs/phase10-baseline/section-11/raw-remediation-f7-geometry.json",
           "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
           "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png",
-          "docs/phase10-baseline/section-11/raw-remediation-f7-browser-gap.txt"
+          "docs/phase10-baseline/section-11/raw-remediation-f7-browser-gap.txt",
+          "docs/phase10-baseline/section-11/raw-remediation-f7-temporal-gates.txt",
+          "docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.json",
+          "docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.png"
         ],
-        "notes": "Explicit schema non-pass routed to Devan for an accepted-direction decision; a reviewer cannot resolve it without that decision. The routed finding assumes a 26-46 degree arc, while the candidate and newer authoritative FB-03 owner record use the owner-confirmed 18-30 degree band. The retained renderer reconstruction reproduces the old ASML coordinate within 0.226px and shows the furthest in-ribbon candidate still 7.104px inside the projected planet disc. The committed ASML region contains no pixel within RGB distance 12 of expected #b3241d; the only exact expected pixels belong to INTC/CBRS and cannot truthfully be republished as ASML. The unchanged verifier was attempted again, but this sandbox denied Chromium before navigation; that launch failure is retained separately and is not a pixel result. Devan must authorize either temporal per-holding sampling or a new visual geometry target. DeltaE, hue-lock, ordering, fixture, and arc gates are unchanged. Recorded by codex/gpt-5."
+        "notes": "Devan supplied the previously missing decision: temporal per-holding sampling is authorised, the confirmed 18-30 degree trails stay fixed, and every deltaE, hue, chroma, magnitude-ordering and fixture threshold stays unchanged. The verifier now waits for each holding's own published sample coordinate to become colour-valid and at least 1px clear of every projected planet disc, retains the full 1440x900 frame for that phase, checks all eight holdings plus same-direction ordering, and builds a captioned pixel plate. Live grading is blocked at needs-capture because normal Chromium is denied by this managed CLI and single-process Chromium produces the tested no-WebGL fallback with zero canvas/scene nodes; the retained readiness-failure artifacts prove that environment condition only. Exact normal-Terminal command: `npm run build && npm run start`, then `PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs`. No TST-03 pass is claimed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",

@@ -386,19 +386,21 @@ cheap looking now… they were a lot better before."* Round 3 lengthened arcs
 from 18–30° to 36–64° to give the lightness ramp room. He asks for shorter,
 **by eye, somewhere between the two**.
 
-- `MIN_TRAIL_DEGREES` / `MAX_TRAIL_DEGREES` move from `36 / 64` to
-  **`26 / 46`** — literally between the two bands.
-- Reconcile against the lightness ramp, which **may no longer need the extra
-  length now that hue carries magnitude**. If the ramp cannot resolve at 26°,
-  say so with the measurement; do not silently re-lengthen.
-- The chosen values are recorded by the implementer, measured by the reviewer,
-  and **confirmed by owner visual review before acceptance**. The eye is the
-  authority; the band exists so the result cannot drift silently.
+> **Owner-authorized amendment — Devan, July 29, 2026.** The intermediate
+> 26–46° band was superseded by the shipped 18–30° band and closed on his
+> sentence *"trails look fine."* When the single-still verifier could not
+> truthfully sample ASML because its short ribbon was behind the planet, he
+> refused to re-lengthen the trails and authorized **temporal per-holding
+> sampling**: capture each holding at the orbital phase where its own ribbon is
+> naturally unoccluded. The geometry, ΔE ≤ 8, 10° hue lock, chroma floor,
+> same-direction magnitude ordering, all-holdings fixture, ramp-lightness
+> clause, and fixed 12% white-hot calibration head are unchanged.
 
-**This changes `VIS-04`'s arc band and nothing else about it.** The ΔE gate,
-the ramp-lightness clause, and the fixed 12% white-hot calibration head are
-**unchanged**. This is an owner-directed design-target change, not a gate
-weakening — and it is named in the handoff so the owner can correct it.
+- `MIN_TRAIL_DEGREES` / `MAX_TRAIL_DEGREES` remain **`18 / 30`**.
+- `TST-03` waits for and captures each fixture holding at its own naturally
+  unoccluded phase; no other holding's pixels may substitute for it.
+- `VIS-04` uses the captioned temporal pixel plate produced by that verifier,
+  not an impossible all-holdings still.
 
 ### 5.5 Two label defects
 
@@ -624,8 +626,8 @@ be closed by assertion.**
 
 | ID | Measurement at carry | How §11 resolves it |
 |---|---|---|
-| `TST-03` | Sampler aborts on NBIS at ΔE 33.123 against a ≤8 gate. The taper fix (0.45→0.85) widened every ribbon 1.89× and took IBM to ΔE 0.396 — so the fix landed and **width was never the cause**. The 49px cross-section at the published sample point is a ~12px band peaking at red 93 against the model's 179, zero pixels within 2; the same NBIS arc reaches ΔE 3.44 some 165px away. | **Re-derive the sampler** — the published `data-trail-sample-x/y` projection or the ribbon's angular sweep — against the rebuilt view, and reconcile it with what a viewer actually sees. **Do NOT loosen ΔE.** |
-| `VIS-04` | Blocked on `TST-03`'s remaining NBIS sample, which the owner reports renders correctly. | Follows `TST-03`, plus the new 26–46° arc band (§5.4). Every other clause unchanged. |
+| `TST-03` | Sampler aborts on NBIS at ΔE 33.123 against a ≤8 gate. The taper fix (0.45→0.85) widened every ribbon 1.89× and took IBM to ΔE 0.396 — so the fix landed and **width was never the cause**. The 49px cross-section at the published sample point is a ~12px band peaking at red 93 against the model's 179, zero pixels within 2; the same NBIS arc reaches ΔE 3.44 some 165px away. | Use the owner-authorized temporal method: sample each holding only at its own naturally unoccluded phase, retain every threshold and all eight fixture holdings, and keep the confirmed 18–30° geometry unchanged. |
+| `VIS-04` | Blocked on `TST-03`'s remaining NBIS sample, which the owner reports renders correctly. | Follows temporal `TST-03` and its captioned per-holding pixel plate at the confirmed 18–30° band (§5.4). Every threshold and non-method clause is unchanged. |
 | `DEF-02` | Shipped-view chirality verifier aborts on COST; 6 of 8 worlds fail. The panel covers **96.8–100%** of the sampled band, so the verifier cannot see what it measures. Two authorised texture regenerations moved the margin by 0.018 and 0.021 — inside the 0.002–0.011 round-to-round drift of five untouched worlds — and did not invert sign. Mirroring a mark **must** invert a correlation that reads it, so the column-mean greyscale profile **cannot discriminate handedness** and substantiates neither pass nor fail. | The panel rebuild (§3) keeps the planet visible and shrinks the panel; then **re-run the shipped-view verifier and record the result.** A verifier that samples the mark **directly** rather than a terrain-dominated equatorial column profile is legitimate §11 work. **Do NOT weaken the assertion.** |
 | `VIS-02` | Same panel occlusion. | Same. |
 | `BHV-05` | Same panel occlusion. | Same. |
@@ -685,7 +687,7 @@ accessibility verifier.
 | `VIS-18` | The sun's disc diameter is **≥ 1.5×** the largest planet's disc **measured in pixels** in the live capture. |
 | `VIS-19` | The `PORTFOLIO` readout participates in label collision avoidance as an obstacle; no label overlaps it in the capture. |
 | `VIS-20` | Ghost rings render dashed cream at each circle's real-weight diameter and toggle off with the `GHOST` switch; the rack notch marks the real weight per row. |
-| `VIS-04` | **(carried)** Trails carry direction and magnitude in a single 1440×900 still: arc between **26 and 46 degrees** (owner-directed change, §5.4), ramp lightness for magnitude, and a fixed 12% white-hot head as a calibration reference. Every non-arc clause unchanged. |
+| `VIS-04` | **(carried)** Trails carry direction and magnitude in a captioned temporal per-holding 1440×900 pixel plate: owner-confirmed arc between **18 and 30 degrees**, ramp lightness for magnitude, and a fixed 12% white-hot head as a calibration reference. Every threshold and non-method clause is unchanged. |
 | `VIS-02` | **(carried)** Marks read as carved into the terrain — sharing its lighting and grain, embossed into the normal map, edge-eroded — at three capitals 120° apart within ±18° latitude, with at least one instance facing the camera within 60° at all times. |
 | `DEF-02` | **(carried)** Brand marks render with correct chirality on the rendered sphere for all eight worlds, proven by a chirality assertion on the shipped view, not by eye. |
 
@@ -713,7 +715,7 @@ accessibility verifier.
 | `TST-11` | The rig's mix-held return matches `simulateRebalanced` (one rebalance at window start) **to 1e-9**, using the existing `steadyMarket` fixture pattern. |
 | `TST-12` | Rendered behaviour is verified by scene-graph, DOM, pixel, or geometry assertions. **No new `expect(source).toContain(...)` guard is introduced for rendered behaviour**, and none of §11's criteria is graded from source reading alone. |
 | `TST-13` | `npm test` passes with zero failures. No test is skipped, weakened, or deleted to achieve it. |
-| `TST-03` | **(carried)** The trail sampler asserts hue lock within 10°, **ΔE\*ab ≤ 8** against the payload-derived expectation from `rampForWeekly`, and ordering across same-direction holdings — for **every** holding in the fixture, not a sampled subset. Literal-hex baselines survive only for flat, comet, and sun tokens. The sample point/expected value is re-derived against the rebuilt view; **ΔE is not loosened**. |
+| `TST-03` | **(carried)** The temporal trail sampler captures each holding at its own naturally unoccluded orbital phase and asserts hue lock within 10°, **ΔE\*ab ≤ 8** against the payload-derived expectation from `rampForWeekly`, and ordering across same-direction holdings — for **every** holding in the fixture, not a sampled subset. Literal-hex baselines survive only for flat, comet, and sun tokens. **ΔE and every other threshold are not loosened.** |
 
 ### Build
 
@@ -807,11 +809,13 @@ here rather than left to each script's discretion.
     The post-readiness window exists to let trailing work (shader
     compilation, deferred hydration, below-fold lazy mounts) finish before
     the buffer is read.
-  - `sample-live-rgb.mjs` (`TST-03`) and `capture-live-sphere-strip.mjs`
-    (`DEF-02`): readiness additionally requires the trail-sample or
-    planet-centre `data-*` attributes (not just the ticker), then a fixed
-    **1200–1500ms** settle window before the screenshot is taken, to let the
-    render loop's ramp/position values stabilize past their first frame.
+  - `sample-live-rgb.mjs` (`TST-03`): readiness additionally requires the
+    trail-sample and planet-geometry `data-*` attributes, then a fixed 1200ms
+    initial settle before a 350ms temporal sampling loop (maximum 150s) waits
+    for each holding's own naturally unoccluded phase. Each accepted phase
+    retains its full 1440×900 frame and contributes to the captioned pixel
+    plate. `capture-live-sphere-strip.mjs` (`DEF-02`) keeps its fixed
+    **1200–1500ms** settle window.
   - `measure-overview-fit.mjs`: readiness requires the planet-geometry
     `data-*` attributes, then a **3000ms** settle window before the 24-sample
     aggregation loop begins (each sample itself spaced 500ms apart).
