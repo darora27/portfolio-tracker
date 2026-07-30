@@ -13,10 +13,10 @@ them.
 - Managed range: §2–§18
 - Stage: `remediate`
 - Role: `codex_implementation`
-- Status: `ready`
-- Next actor: `codex`
+- Status: `blocked`
+- Next actor: `devan`
 - Expected actor for this stage: `codex`
-- Stop reason: none
+- Stop reason: needs-capture: F5/BLD-04's scene-construction yielding and allocation reduction are implemented and deterministic gates are green, but the agent sandbox denied cached Chromium before navigation. Devan must run the retained five-context production verifier and capture command from the handoff; the unchanged <50ms result determines review versus one further bounded F5 remediation.
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -40,7 +40,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-29-section-11-codex-remediation-3-to-devan-needs-capture.md`
+- `docs/phase10-handoffs/2026-07-29-section-11-codex-remediation-4-to-devan-needs-capture.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -104,7 +104,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `25a94dda91fbe5d5ffa559e83686f890ef15b1266bd5cd33ccbdfceeb3122551`
-- `PHASE10_STATE.json`: `e05f4df7c1f965079b755ba54ad359d957a2ffa8dcfbf3cd3aaea4ac24256425`
+- `PHASE10_STATE.json`: `cf70eb67012c8f5f3657c53b50f64402c411f034dbd6b2db0ce2f7bb2b4e1ed2`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

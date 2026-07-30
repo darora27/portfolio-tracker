@@ -1,0 +1,12 @@
+
+> portfolio-tracker@0.1.0 test
+> vitest run --run src/lib/observatory/scene-model.test.ts src/components/observatory/orrery/PlanetDetail.test.tsx src/components/observatory/orrery/ReturnInstrument.test.tsx
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  3 passed (3)
+      Tests  31 passed (31)
+   Start at  20:01:35
+   Duration  1.35s (transform 206ms, setup 0ms, import 485ms, tests 1.48s, environment 1.45s)

@@ -218,24 +218,37 @@ function gaussian(index: number, salt: number): number {
 function createStarPopulation(
   descriptor: SceneModel["starPopulation"],
 ): StarPopulationRuntime {
+  type StarBucket = keyof typeof descriptor.buckets;
   const positions = {
-    faint: [] as number[],
-    medium: [] as number[],
-    bright: [] as number[],
-    diffraction: [] as number[],
+    faint: new Float32Array(descriptor.buckets.faint * 3),
+    medium: new Float32Array(descriptor.buckets.medium * 3),
+    bright: new Float32Array(descriptor.buckets.bright * 3),
+    diffraction: new Float32Array(descriptor.buckets.diffraction * 3),
   };
   const colors = {
-    faint: [] as number[],
-    medium: [] as number[],
-    bright: [] as number[],
-    diffraction: [] as number[],
+    faint: new Float32Array(descriptor.buckets.faint * 3),
+    medium: new Float32Array(descriptor.buckets.medium * 3),
+    bright: new Float32Array(descriptor.buckets.bright * 3),
+    diffraction: new Float32Array(descriptor.buckets.diffraction * 3),
   };
-  const spikePositions: number[] = [];
+  const positionOffsets: Record<StarBucket, number> = {
+    faint: 0,
+    medium: 0,
+    bright: 0,
+    diffraction: 0,
+  };
+  const spikePositions = new Float32Array(
+    descriptor.buckets.diffraction * 4 * 3,
+  );
+  let spikeOffset = 0;
   const cyan = new Color(UNIVERSE_PALETTE.glass.cyan);
   const violet = new Color(UNIVERSE_PALETTE.glass.violet);
   const cream = new Color(UNIVERSE_PALETTE.cabinet.cream);
   for (let index = 0; index < descriptor.count; index += 1) {
-    const bucket = starMagnitudeBucket(index, descriptor.count);
+    const bucket = starMagnitudeBucket(
+      index,
+      descriptor.count,
+    ) as StarBucket;
     const clustered = seededUnit(index, 20) > 0.36;
     const cluster =
       descriptor.clusterSeeds[index % descriptor.clusterSeeds.length];
@@ -253,7 +266,10 @@ function createStarPopulation(
       y = 6.5 + seededUnit(index, 31) * 5.5;
       x += (seededUnit(index, 32) - 0.5) * 6;
     }
-    positions[bucket].push(x, y, z);
+    let offset = positionOffsets[bucket];
+    positions[bucket][offset] = x;
+    positions[bucket][offset + 1] = y;
+    positions[bucket][offset + 2] = z;
     const tint = index % 23 === 0 ? cyan : index % 41 === 0 ? violet : cream;
     const intensity =
       bucket === "faint"
@@ -263,17 +279,24 @@ function createStarPopulation(
           : bucket === "bright"
             ? 0.82
             : 1;
-    colors[bucket].push(
-      tint.r * intensity,
-      tint.g * intensity,
-      tint.b * intensity,
-    );
+    colors[bucket][offset] = tint.r * intensity;
+    colors[bucket][offset + 1] = tint.g * intensity;
+    colors[bucket][offset + 2] = tint.b * intensity;
+    positionOffsets[bucket] = offset + 3;
     if (bucket === "diffraction") {
       const span = 0.24;
-      spikePositions.push(
-        x - span, y, z, x + span, y, z,
-        x, y - span, z, x, y + span, z,
-      );
+      spikePositions[spikeOffset++] = x - span;
+      spikePositions[spikeOffset++] = y;
+      spikePositions[spikeOffset++] = z;
+      spikePositions[spikeOffset++] = x + span;
+      spikePositions[spikeOffset++] = y;
+      spikePositions[spikeOffset++] = z;
+      spikePositions[spikeOffset++] = x;
+      spikePositions[spikeOffset++] = y - span;
+      spikePositions[spikeOffset++] = z;
+      spikePositions[spikeOffset++] = x;
+      spikePositions[spikeOffset++] = y + span;
+      spikePositions[spikeOffset++] = z;
     }
   }
   const group = new Group();
@@ -333,23 +356,46 @@ function createTrailGeometry(
   maximumWidth: number,
   minimumWidth = 0,
 ): BufferGeometry {
-  const positions: number[] = [];
   const segments = 28;
+  const ribbonsPerSegment = 4;
+  const valuesPerQuad = 6 * 3;
+  const positions = new Float32Array(
+    segments * ribbonsPerSegment * valuesPerQuad,
+  );
+  let positionOffset = 0;
   const sign = direction === "counterclockwise" ? 1 : -1;
   const quad = (
-    outer0: readonly number[],
-    inner0: readonly number[],
-    outer1: readonly number[],
-    inner1: readonly number[],
+    outer0X: number,
+    outer0Y: number,
+    outer0Z: number,
+    inner0X: number,
+    inner0Y: number,
+    inner0Z: number,
+    outer1X: number,
+    outer1Y: number,
+    outer1Z: number,
+    inner1X: number,
+    inner1Y: number,
+    inner1Z: number,
   ) => {
-    positions.push(
-      ...outer0,
-      ...inner0,
-      ...outer1,
-      ...inner0,
-      ...inner1,
-      ...outer1,
-    );
+    positions[positionOffset++] = outer0X;
+    positions[positionOffset++] = outer0Y;
+    positions[positionOffset++] = outer0Z;
+    positions[positionOffset++] = inner0X;
+    positions[positionOffset++] = inner0Y;
+    positions[positionOffset++] = inner0Z;
+    positions[positionOffset++] = outer1X;
+    positions[positionOffset++] = outer1Y;
+    positions[positionOffset++] = outer1Z;
+    positions[positionOffset++] = inner0X;
+    positions[positionOffset++] = inner0Y;
+    positions[positionOffset++] = inner0Z;
+    positions[positionOffset++] = inner1X;
+    positions[positionOffset++] = inner1Y;
+    positions[positionOffset++] = inner1Z;
+    positions[positionOffset++] = outer1X;
+    positions[positionOffset++] = outer1Y;
+    positions[positionOffset++] = outer1Z;
   };
   for (let index = 0; index < segments; index += 1) {
     const t0 = index / segments;
@@ -372,45 +418,77 @@ function createTrailGeometry(
     const outer1 = widths1.outer;
     const inner0 = widths0.inner;
     const inner1 = widths1.inner;
-    const radial = (angle: number, offset: number) =>
-      [
-        Math.cos(angle) * (radius + offset),
-        0.025,
-        Math.sin(angle) * (radius + offset),
-      ] as const;
-    const vertical = (angle: number, offset: number) =>
-      [
-        Math.cos(angle) * radius,
-        0.025 + offset,
-        Math.sin(angle) * radius,
-      ] as const;
+    const cos0 = Math.cos(a0);
+    const sin0 = Math.sin(a0);
+    const cos1 = Math.cos(a1);
+    const sin1 = Math.sin(a1);
+    const radiusOuter0 = radius + outer0;
+    const radiusInner0 = radius + inner0;
+    const radiusOuter1 = radius + outer1;
+    const radiusInner1 = radius + inner1;
+    const radiusNegativeOuter0 = radius - outer0;
+    const radiusNegativeInner0 = radius - inner0;
+    const radiusNegativeOuter1 = radius - outer1;
+    const radiusNegativeInner1 = radius - inner1;
 
     // Pair the orbital-plane ribbon with a vertical ribbon so its core remains
     // measurable where perspective foreshortens the plane. The glow uses
     // minimumWidth to occupy only the annulus outside the opaque core.
     quad(
-      radial(a0, outer0),
-      radial(a0, inner0),
-      radial(a1, outer1),
-      radial(a1, inner1),
+      cos0 * radiusOuter0,
+      0.025,
+      sin0 * radiusOuter0,
+      cos0 * radiusInner0,
+      0.025,
+      sin0 * radiusInner0,
+      cos1 * radiusOuter1,
+      0.025,
+      sin1 * radiusOuter1,
+      cos1 * radiusInner1,
+      0.025,
+      sin1 * radiusInner1,
     );
     quad(
-      radial(a0, -outer0),
-      radial(a0, -inner0),
-      radial(a1, -outer1),
-      radial(a1, -inner1),
+      cos0 * radiusNegativeOuter0,
+      0.025,
+      sin0 * radiusNegativeOuter0,
+      cos0 * radiusNegativeInner0,
+      0.025,
+      sin0 * radiusNegativeInner0,
+      cos1 * radiusNegativeOuter1,
+      0.025,
+      sin1 * radiusNegativeOuter1,
+      cos1 * radiusNegativeInner1,
+      0.025,
+      sin1 * radiusNegativeInner1,
     );
     quad(
-      vertical(a0, outer0),
-      vertical(a0, inner0),
-      vertical(a1, outer1),
-      vertical(a1, inner1),
+      cos0 * radius,
+      0.025 + outer0,
+      sin0 * radius,
+      cos0 * radius,
+      0.025 + inner0,
+      sin0 * radius,
+      cos1 * radius,
+      0.025 + outer1,
+      sin1 * radius,
+      cos1 * radius,
+      0.025 + inner1,
+      sin1 * radius,
     );
     quad(
-      vertical(a0, -outer0),
-      vertical(a0, -inner0),
-      vertical(a1, -outer1),
-      vertical(a1, -inner1),
+      cos0 * radius,
+      0.025 - outer0,
+      sin0 * radius,
+      cos0 * radius,
+      0.025 - inner0,
+      sin0 * radius,
+      cos1 * radius,
+      0.025 - outer1,
+      sin1 * radius,
+      cos1 * radius,
+      0.025 - inner1,
+      sin1 * radius,
     );
   }
   const geometry = new BufferGeometry();
@@ -562,27 +640,40 @@ export default function OrreryScene({
   ]);
 
   useEffect(() => {
-    const mount = mountRef.current;
-    if (!mount) return;
-    const sceneHoldings = holdingsRef.current;
-    const sceneBelt = beltRef.current;
-    const instruments = instrumentRef.current;
-    const sceneModel = buildOverviewSceneModel({
-      holdings: sceneHoldings,
-      beltHoldings: sceneBelt,
-      healthScalar: healthRef.current.h,
-      sunspotIntensity: healthRef.current.sunspotIntensity,
-      hoveredTicker: hoveredTickerRef.current,
-      portfolioFocused: portfolioFocusedRef.current,
-      viewport: {
-        width: Math.max(1, mount.clientWidth),
-        height: Math.max(1, mount.clientHeight),
-      },
-      ...instruments,
-    });
+    let initializationCancelled = false;
+    let initializedCleanup: (() => void) | null = null;
+    // F5 / BLD-04: the retained owner profile attributes the breached task
+    // to diffuse scene construction plus GC, not one shader compile. Yield
+    // each construction family to its own frame; typed geometry buffers below
+    // also avoid the short-lived arrays that fed the measured GC slice.
+    const nextConstructionFrame = () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => resolve());
+      });
+    const initialize = async () => {
+      const mount = mountRef.current;
+      if (!mount) return;
+      const sceneHoldings = holdingsRef.current;
+      const sceneBelt = beltRef.current;
+      const instruments = instrumentRef.current;
+      const sceneModel = buildOverviewSceneModel({
+        holdings: sceneHoldings,
+        beltHoldings: sceneBelt,
+        healthScalar: healthRef.current.h,
+        sunspotIntensity: healthRef.current.sunspotIntensity,
+        hoveredTicker: hoveredTickerRef.current,
+        portfolioFocused: portfolioFocusedRef.current,
+        viewport: {
+          width: Math.max(1, mount.clientWidth),
+          height: Math.max(1, mount.clientHeight),
+        },
+        ...instruments,
+      });
+      mount.dataset.sceneConstructionStage = "model";
+      await nextConstructionFrame();
 
-    const scene = new Scene();
-    scene.fog = new Fog(UNIVERSE_PALETTE.cabinet.void, 15, 34);
+      const scene = new Scene();
+      scene.fog = new Fog(UNIVERSE_PALETTE.cabinet.void, 15, 34);
 
     const outerRadius =
       sceneModel.planets.at(-1)?.orbitRadius ?? ORRERY_SUN_CLEARANCE;
@@ -664,6 +755,8 @@ export default function OrreryScene({
     }
     rocket.append(rocketBody, rocketFlame, rocketPrism);
     if (!reducedMotion) labelLayer.appendChild(rocket);
+    mount.dataset.sceneConstructionStage = "renderer-dom";
+    await nextConstructionFrame();
 
     const starPopulation = createStarPopulation(sceneModel.starPopulation);
     scene.add(starPopulation.group);
@@ -754,6 +847,9 @@ export default function OrreryScene({
     scene.add(weatherWisps);
     mount.dataset.weatherWispSign = sceneModel.weatherWisps.sign;
     mount.dataset.weatherWispAlpha = String(sceneModel.weatherWisps.alpha);
+    mount.dataset.sceneConstructionStage = "environment";
+    await nextConstructionFrame();
+
     const planetGeometry = new SphereGeometry(1, 32, 24);
     const sunGeometry = new SphereGeometry(sceneModel.sun.radius, 48, 32);
     const fallbackTexture = createFallbackTexture();
@@ -816,6 +912,8 @@ export default function OrreryScene({
     }
     dockingRing.visible = false;
     scene.add(dockingRing);
+    mount.dataset.sceneConstructionStage = "sun";
+    await nextConstructionFrame();
 
     const orbitGeometries: RingGeometry[] = [];
     const orbitMaterials: ShaderMaterial[] = [];
@@ -826,7 +924,8 @@ export default function OrreryScene({
     let launchRocket = (ticker: string) => {
       callbacksRef.current.onSelect(ticker);
     };
-    const planetRuntimes: PlanetRuntime[] = sceneHoldings.map((holding, index) => {
+    const planetRuntimes: PlanetRuntime[] = [];
+    for (const [index, holding] of sceneHoldings.entries()) {
       const descriptor = sceneModel.planets[index];
       const ringDescriptor = sceneModel.rings[index];
       const trailDescriptor = sceneModel.trails[index];
@@ -839,16 +938,19 @@ export default function OrreryScene({
       const pathGeometry = new RingGeometry(orbitRadius - 0.012, orbitRadius + 0.012, 160);
       pathGeometry.rotateX(-Math.PI / 2);
       const pathPositions = pathGeometry.getAttribute("position");
+      const pathAlphas = new Float32Array(pathPositions.count);
+      for (
+        let positionIndex = 0;
+        positionIndex < pathPositions.count;
+        positionIndex += 1
+      ) {
+        const x = pathPositions.getX(positionIndex);
+        const z = pathPositions.getZ(positionIndex);
+        pathAlphas[positionIndex] = ringVertexAlpha(Math.atan2(z, x));
+      }
       pathGeometry.setAttribute(
         "aAlpha",
-        new Float32BufferAttribute(
-          Array.from({ length: pathPositions.count }, (_, positionIndex) => {
-            const x = pathPositions.getX(positionIndex);
-            const z = pathPositions.getZ(positionIndex);
-            return ringVertexAlpha(Math.atan2(z, x));
-          }),
-          1,
-        ),
+        new Float32BufferAttribute(pathAlphas, 1),
       );
       orbitGeometries.push(pathGeometry);
       const path = new Mesh(
@@ -959,7 +1061,7 @@ export default function OrreryScene({
       );
       label.addEventListener("click", () => launchRocket(holding.ticker));
       labelLayer.appendChild(label);
-      return {
+      planetRuntimes.push({
         holding,
         orbit,
         mesh: planet,
@@ -973,8 +1075,14 @@ export default function OrreryScene({
         direction: descriptor.direction,
         angularSpeed: descriptor.angularSpeed,
         spinRadiansPerSecond: descriptor.spinRadiansPerSecond,
-      };
-    });
+      });
+      if ((index + 1) % 2 === 0 && index + 1 < sceneHoldings.length) {
+        mount.dataset.sceneConstructionStage = `planets-${index + 1}`;
+        await nextConstructionFrame();
+      }
+    }
+    mount.dataset.sceneConstructionStage = "planets-complete";
+    await nextConstructionFrame();
 
     const moonGeometry = new IcosahedronGeometry(1, 2);
     const moonMaterial = new MeshBasicMaterial({
@@ -1117,6 +1225,8 @@ export default function OrreryScene({
       cometGroup.position.set(-outerRadius * 1.2, 2.4, -outerRadius * 0.34);
       scene.add(cometGroup);
     }
+    mount.dataset.sceneConstructionStage = "secondary-objects";
+    await nextConstructionFrame();
 
     let textureCancelled = false;
     const textureWorker = new Worker(
@@ -1240,6 +1350,8 @@ export default function OrreryScene({
       }
     };
     let textureFrame = 0;
+    mount.dataset.sceneConstructionStage = "texture-worker";
+    await nextConstructionFrame();
 
     const raycaster = new Raycaster();
     const pointer = new Vector2(2, 2);
@@ -1938,16 +2050,17 @@ export default function OrreryScene({
       nebula.rotation.z += delta * sceneModel.nebula.driftRadiansPerSecond;
       aurora.position.x = reducedMotion ? 0 : Math.sin(time * 0.025) * outerRadius * 0.04;
       renderer.render(scene, camera);
-      // F5 / BLD-04: compile one material-bearing object at a time through
-      // Three's KHR_parallel_shader_compile path. The old reveal-by-family
-      // path still acquired every instance's WebGLProgram in one render task;
-      // this queue warms each material separately, then reveals it.
+      // Retain the already-landed one-material warmup so program work stays
+      // incremental. The current F5 fix is the construction staging above;
+      // the owner profile disproved shader acquisition as the breached task's
+      // dominant cause.
       advanceShaderWarmup();
       animationFrame = requestAnimationFrame(render);
     };
     animationFrame = requestAnimationFrame(render);
 
-    return () => {
+      mount.dataset.sceneConstructionStage = "complete";
+      return () => {
       cancelAnimationFrame(animationFrame);
       textureCancelled = true;
       cancelAnimationFrame(textureFrame);
@@ -2012,6 +2125,20 @@ export default function OrreryScene({
       renderer.dispose();
       labelLayer.remove();
       renderer.domElement.remove();
+      };
+    };
+    void initialize().then((cleanup) => {
+      if (!cleanup) return;
+      if (initializationCancelled) {
+        cleanup();
+        return;
+      }
+      initializedCleanup = cleanup;
+    });
+    return () => {
+      initializationCancelled = true;
+      initializedCleanup?.();
+      initializedCleanup = null;
     };
   }, [sceneKey]);
 

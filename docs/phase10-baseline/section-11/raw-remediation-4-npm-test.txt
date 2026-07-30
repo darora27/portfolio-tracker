@@ -1,0 +1,12 @@
+
+> portfolio-tracker@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  106 passed (106)
+      Tests  549 passed (549)
+   Start at  20:01:40
+   Duration  7.12s (transform 3.74s, setup 0ms, import 9.42s, tests 11.06s, environment 16.54s)
