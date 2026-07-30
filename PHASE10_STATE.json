@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§11",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -69,6 +69,7 @@
     "unperformed_criteria_note": "Superseded by review turn 6/7's decisions -- retained for history. Review turn 5's remediation (e8faf0d) fixed the sole bounded finding, F10/VIS-16, per G-SCOPE, and made no other application-source change.",
     "review_6_decision": "claude-code/sonnet-5, review turn 6: independently re-verified F10/VIS-16 (CLOSED, see closed_findings_history). Per the prior turn's explicit instruction to decide whether BHV-31 pro-rata and MOB-11 are new findings or spec questions -- both are spec questions, not code-fixable findings: BHV-31 needs Devan to set a numeric tolerance for 'preserves the relative mix' (measured drift 0.0184, no spec-defined bound to grade against), and MOB-11 needs Devan to resolve a genuine two-reading spec ambiguity (does the mobile fallback need new sections, or only correct names for its existing ones). Neither is something remediation can fix without that input, so this turn routed both to Devan as a blocked handoff rather than to codex_implementation. See docs/phase10-workflow/reviews/section-11-review-6.md and docs/phase10-handoffs/2026-07-30-section-11-claude-review-6-to-devan-blocked.md.",
     "review_7_decision": "claude-code/sonnet-5, review turn 7: graded both criteria the owner ruled on 2026-07-30 (commit 8ce63e2, spec section-11.md §11.0). BHV-31 CLOSED as pass (0.0184 measured drift < 0.02 owner-set tolerance, no new measurement needed). MOB-11 opens a new bounded finding, MOB-11-1: a fresh live re-check (this turn's own server, current HEAD) confirms the fallback's existing holdings list still carries no 'HOLDINGS' label while its siblings (RETURNS/RISK/EARNINGS/NEWS) all do -- a real gap under the owner's own corrected reading (existing sections need correct current names), not a re-opening of the CORRELATION/TRADES/ORBITS question he just closed. Routed to codex_implementation for remediation rather than accepted. See docs/phase10-workflow/reviews/section-11-review-7.md and docs/phase10-handoffs/2026-07-30-section-11-claude-review-7-to-codex-remediation.md.",
+    "remediation_8_decision": "codex_implementation remediation turn (claude-code/sonnet-5 covering the role under PHASE10_LOCK owner=codex, single_provider_mode): fixed the sole bounded finding MOB-11-1 exactly as scoped, no other change. src/components/observatory/orrery/OrreryWorld.tsx:379 -- the fallback's per-ticker holding list item text now reads 'HOLDINGS / {ticker} · {companyName}', matching the existing 'X / ...' label convention its siblings (NEWS, BELT BODY, RETURNS, RISK, EARNINGS) already use. Did not add CORRELATION/TRADES/ORBITS, per the owner's 2026-07-30 ruling. Verified live against this turn's own rebuilt production server (port 3400): at both 390x844 and 320x844, HOLDINGS now appears in document.body.innerText alongside RETURNS/RISK/NEWS/EARNINGS; CORRELATION/TRADES remain correctly absent; zero banned nouns; zero horizontal overflow. Screenshot directly inspected. npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) both this turn's own independent runs. Ledger implementer.MOB-11 updated to pass with new evidence; reviewer.MOB-11 left untouched (still fail from review turn 7) for the next review turn to re-grade. See docs/phase10-handoffs/2026-07-30-section-11-codex-remediation-8-to-claude-review.md.",
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
@@ -263,36 +264,36 @@
       "note": "Universe colour, material, and command structure. One implementation round, five review rounds, four remediation rounds, an owner bounded-triage rule, an owner triage approval and two owner decisions. The authoritative review (section-10-review-5.md) records FAIL, not pass: 71 of 77 criteria pass and six are carried to §11 unclosed (TST-03, VIS-04, DEF-02, VIS-02, BHV-05, BLD-04), each recorded in the ledger as carried_by_owner with its failing measurement attached. Accepted at 3d85341 by explicit owner decision (docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md), which rests on direct owner observation contradicting two instruments: the owner reports NBIS trail brightness matching its neighbours where the verifier reports red 93 against a model 179, and reports he cannot see any planet or mark at all because the inspector panel occludes them — the same 96.8-100% band occlusion that makes the chirality verifier unable to measure what it samples. NO owner exception was recorded and NO gate, threshold, verifier or sample point was weakened, redefined or baseline-subtracted; the six criteria are carried forward and must appear in §11 acceptance. Verified independently at acceptance rather than assumed: git diff --name-only 3d85341 HEAD -- src/ public/ package.json package-lock.json is empty, so the accepted implementation is byte-identical to HEAD, and npm test (527/527 across 99 files) plus npm run build both pass at HEAD. §9's inherited red is closed by this section: totalBytes 22,803,051 against §10's raised 30 MB ceiling and minimum luminanceStdDev 0.106628 against the 0.1 floor. Implemented by codex/gpt-5 and reviewed by claude-code/opus-5 across two providers — full cross-model independence, so single_provider_mode is false. See docs/phase10-workflow/reviews/section-10-accepted.md, section-10-review.md through section-10-review-5.md, and docs/phase10-workflow/SECTION_10_TRIAGE.md."
     }
   ],
-  "prev_actor_commit": "8ce63e27d9b638e9466ecd90611f5d0ead8f8785",
-  "prev_actor_commit_note": "8ce63e2 was HEAD at the start of this review turn (review turn 7, claude-code/sonnet-5) -- the owner's ruling commit on BHV-31/MOB-11. The candidate under review is unchanged: e8faf0d3ae6ce7f14f9a9f0b44205f51f0b4ae77. This turn's own commit (ledger/review/handoff/state bookkeeping only, no application source) sits on top of 8ce63e2.",
+  "prev_actor_commit": "c62d44e5ed8dd019942d253140339ff6921e68c6",
+  "prev_actor_commit_note": "c62d44e was HEAD at the start of this remediation turn (codex_implementation, claude-code/sonnet-5 covering the role) -- review turn 7's own commit (BHV-31 closes pass, MOB-11 fails with finding MOB-11-1). This turn's commit adds the HOLDINGS label fix in OrreryWorld.tsx plus ledger/handoff/state bookkeeping and sits on top of c62d44e. Its own hash is not self-referenceable in this file; the next (review) turn records it via git log.",
   "last_green_commit": "e8faf0d3ae6ce7f14f9a9f0b44205f51f0b4ae77",
   "last_green_commit_note_2": "Moved from 3d1882a to §10's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. §9's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against §10's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
   "last_green_commit_note_4": "Moved from f271fc7 to e8faf0d (§11 review turn 6). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD e8faf0d, confirming it green. The eventual blocked-handoff commit changes no executable source.",
   "last_green_commit_note_5": "Reconfirmed green at e8faf0d by review turn 7 (claude-code/sonnet-5): npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass), both this turn's own independent runs.",
-  "production_code_changed_this_turn": false,
-  "production_code_note": "This review turn (claude-code/sonnet-5, stage: review, turn 7) changed no application source. It graded BHV-31 (pass) and MOB-11 (fail, 1 bounded finding) against the owner's 2026-07-30 ruling, re-ran the MOB-11 naming sweep fresh against this turn's own production server at current HEAD, and updated only the acceptance ledger, review doc, handoff, and state. Verified via this sandbox's direct Chromium launch (AGENTS.md Live Verification): npm run build && npm run start -- -p 3300, then node docs/phase10-baseline/section-11/scripts/review-7-mob11.mjs.",
+  "production_code_changed_this_turn": true,
+  "production_code_note": "This remediation turn (codex_implementation, claude-code/sonnet-5 covering the role under PHASE10_LOCK owner=codex) changed exactly one line of application source: src/components/observatory/orrery/OrreryWorld.tsx:379, prefixing the fallback holding-list item text with 'HOLDINGS / ' to match the label convention of its siblings (NEWS/BELT BODY/RETURNS/RISK/EARNINGS), closing bounded finding MOB-11-1. No other source touched. Verified via this sandbox's direct Chromium launch (AGENTS.md Live Verification): npm run build && npm run start -- -p 3400, then node docs/phase10-baseline/section-11/scripts/remediation-mob11-verify.mjs against http://127.0.0.1:3400.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Review turn 7, independent run: 107 test files passed; 553 tests passed; zero failures or skips.",
-      "finished_at": "2026-07-30T09:05:00Z"
+      "summary": "Remediation turn 8, independent run: 107 test files passed; 553 tests passed; zero failures or skips.",
+      "finished_at": "2026-07-30T09:16:51Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Review turn 7, independent run: Next.js 16.2.11 production build exited 0, 18/18 static pages generated, /share smoke check pass.",
-      "finished_at": "2026-07-30T09:07:00Z"
+      "summary": "Remediation turn 8, independent run: Next.js 16.2.11 production build exited 0, 18/18 static pages generated, /share smoke check pass.",
+      "finished_at": "2026-07-30T09:17:00Z"
     },
     "live_evidence": {
-      "command": "npm run start -- -p 3300, then node docs/phase10-baseline/section-11/scripts/review-7-mob11.mjs against http://127.0.0.1:3300",
-      "status": "mixed (BHV-31 pass, MOB-11 fail)",
-      "summary": "BHV-31 graded pass from the already-retained review-turn-5 measurement (maxRatioDrift 0.0184 < owner's 0.02 tolerance), no new run needed. MOB-11 re-measured fresh at 390x844 and 320x844 against this turn's own server: RETURNS/RISK/NEWS/EARNINGS present, CORRELATION/TRADES correctly absent per the owner's ruling, but HOLDINGS is also absent -- confirmed as a genuine gap by direct source read of OrreryWorld.tsx (the holdings list carries no label, unlike its siblings). Opens finding MOB-11-1.",
-      "finished_at": "2026-07-30T09:15:00Z"
+      "command": "npm run build && npm run start -- -p 3400, then node docs/phase10-baseline/section-11/scripts/remediation-mob11-verify.mjs against http://127.0.0.1:3400",
+      "status": "pass (MOB-11-1 fix confirmed)",
+      "summary": "Re-ran the review-turn-7 naming sweep (unchanged method) against this turn's own rebuilt production server at 390x844 and 320x844: requiredNounsPresent now includes HOLDINGS alongside RETURNS/RISK/NEWS/EARNINGS at both widths; requiredNounsMissing is only [CORRELATION, TRADES] (correctly still absent per the owner's ruling); bannedFound empty; zero horizontal overflow at either width. Screenshot (raw-remediation-fallback-390.png) directly inspected: every holding item now reads 'HOLDINGS / <TICKER> · <Company>', matching the 'NEWS / ...' and 'BELT BODY / ...' convention of its siblings. Server stopped after capture (verified via lsof).",
+      "finished_at": "2026-07-30T09:18:00Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-30T09:15:00Z",
+  "updated_at": "2026-07-30T09:18:38Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

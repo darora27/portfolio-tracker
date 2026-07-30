@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§11 — Universe legibility and the draft rig**
 - Managed range: §2–§18
-- Stage: `remediate`
-- Role: `codex_implementation`
+- Stage: `review`
+- Role: `claude_lead`
 - Status: `ready`
-- Next actor: `codex`
-- Expected actor for this stage: `codex`
+- Next actor: `claude`
+- Expected actor for this stage: `claude`
 - Stop reason: none
 
 The current state is before the
@@ -103,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `91d04dc3d0cbd27875bd36473ebb9ba7529ae16f3ee8e95e839a740d2fc90931`
+- `PHASE10_STATE.json`: `9e46e89d85b8cb66a420346d1e7e2b8b9cbaca4eddde177c4ae0c116380a4839`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

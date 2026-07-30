@@ -1142,12 +1142,14 @@
         "docs/phase10-baseline/section-11/after/fallback-390x844.png"
       ],
       "implementer": {
-        "status": "deferred_to_reviewer",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "docs/phase10-baseline/section-11/scripts/remediation-mob11-verify.mjs",
+          "docs/phase10-baseline/section-11/raw-remediation-mob11.json",
+          "docs/phase10-baseline/section-11/raw-remediation-fallback-390.png",
+          "docs/phase10-baseline/section-11/raw-remediation-fallback-320.png"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "codex_implementation remediation turn (claude-code/sonnet-5 covering the role, PHASE10_LOCK owner=codex): fixed bounded finding MOB-11-1 exactly as scoped. src/components/observatory/orrery/OrreryWorld.tsx:379 -- the per-ticker holding list's visible text now reads 'HOLDINGS / {ticker} · {companyName}' for every item, matching the existing 'X / ...' label convention already used by its siblings (NEWS, BELT BODY, RETURNS, RISK, EARNINGS). No CORRELATION/TRADES/ORBITS content added, per the owner's 2026-07-30 ruling. Verified live against this turn's own rebuilt production server (port 3400, `npm run build && npm run start -- -p 3400`), reusing review-7-mob11.mjs's method unchanged except for the output path: at both 390x844 and 320x844, requiredNounsPresent now includes HOLDINGS alongside RETURNS/RISK/NEWS/EARNINGS, requiredNounsMissing is only [CORRELATION, TRADES] (correctly still absent), bannedFound is empty, and there is zero horizontal overflow. Screenshot directly inspected (raw-remediation-fallback-390.png): every holding item begins 'HOLDINGS / <TICKER> · <Company>', visually identical in convention to 'NEWS / <TICKER> ...' and 'BELT BODY / <TICKER> ...' below it. Server torn down after capture (confirmed via lsof)."
       },
       "reviewer": {
         "status": "fail",

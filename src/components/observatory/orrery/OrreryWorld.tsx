@@ -376,7 +376,7 @@ export function OrreryWorld({
                     onBlur={() => setHoveredTicker(null)}
                     scroll={false}
                   >
-                    <span className={styles.ticker}>{holding.ticker} · {holding.companyName}</span>
+                    <span className={styles.ticker}>HOLDINGS / {holding.ticker} · {holding.companyName}</span>
                     <span className={styles.orbitFacts}>
                       WEIGHT {formatWeightPercent(holding.weight)} · WEEK {formatPercent(holding.weeklyReturn)} · {directionForWeeklyReturn(holding.weeklyReturn)}
                     </span>
