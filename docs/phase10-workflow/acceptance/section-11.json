@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "phase": 10,
-  "section": "§11",
+  "section": "\u00a711",
   "spec_doc": "docs/phase10-workflow/specs/section-11.md",
-  "candidate_sha": "0c3a812f5d755bf3f981741ecff6a9f5f2b2f20c",
+  "candidate_sha": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
   "criteria": [
     {
       "id": "BHV-10",
@@ -58,7 +58,7 @@
           "docs/phase10-baseline/section-11/captures/asml-panel-type.png",
           "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
         ],
-        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. The owner re-reported Mission Control small text after the five-token ramp and directed the semantic-role remap to §12a. §11.R root-caused the gap: the value gate constrains legal sizes, but Mission Control still maps reading surfaces to the smallest 11px role. No one-off size nudge was made. Recorded by codex/gpt-5."
+        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. The owner re-reported Mission Control small text after the five-token ramp and directed the semantic-role remap to \u00a712a. \u00a711.R root-caused the gap: the value gate constrains legal sizes, but Mission Control still maps reading surfaces to the smallest 11px role. No one-off size nudge was made. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "carried_by_owner",
@@ -459,7 +459,7 @@
           "docs/phase10-baseline/section-11/raw-review-5-draft-followup.json",
           "docs/phase10-baseline/section-11/raw-review-4-draft-rig.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 7): Graded against the owner's 2026-07-30 ruling (docs/phase10-workflow/specs/section-11.md §11.0, PHASE10_STATE.json owner_decisions_resolving_block): maximum acceptable ratio drift is 0.02 (2.0 percentage points). Review turn 5's real keyboard-driven edit (raw-review-5-bhv30-31-keyboard.json) measured maxRatioDrift 0.01835385316917465, which is below the 0.02 bound -- PASS. No new measurement was taken; the owner's ruling was made citing this exact figure, and he did not request a fresh run. The siphon latch and pit-rail zeroing were already independently confirmed by review turns 4-5 (raw-review-5-bhv31-keyboard-siphon.json, pass:true) and are unaffected by this grading."
+        "notes": "claude-code/sonnet-5 (review turn 7): Graded against the owner's 2026-07-30 ruling (docs/phase10-workflow/specs/section-11.md \u00a711.0, PHASE10_STATE.json owner_decisions_resolving_block): maximum acceptable ratio drift is 0.02 (2.0 percentage points). Review turn 5's real keyboard-driven edit (raw-review-5-bhv30-31-keyboard.json) measured maxRatioDrift 0.01835385316917465, which is below the 0.02 bound -- PASS. No new measurement was taken; the owner's ruling was made citing this exact figure, and he did not request a fresh run. The siphon latch and pit-rail zeroing were already independently confirmed by review turns 4-5 (raw-review-5-bhv31-keyboard-siphon.json, pass:true) and are unaffected by this grading."
       }
     },
     {
@@ -519,7 +519,7 @@
           "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json",
           "docs/phase10-baseline/section-11/raw-review-4-draft-rig.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, mid-drag readout sample: 'DRAFT MIX ▼ 4.7%', 'MOVED 0.0 OF 100', 'TOP-2 52.5 · HHI 1,835' -- real computed values, not placeholders, confirming the readouts are wired to the drag rather than static. Caveat: this turn's two sample points (mid-drag, settled) happened to read the same value, so it does not independently distinguish continuous live update from update-on-pointermove landing on the same rounded figure; noted in section-11-review-4.md as a weaker positive than ideal but not a failure."
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, mid-drag readout sample: 'DRAFT MIX \u25bc 4.7%', 'MOVED 0.0 OF 100', 'TOP-2 52.5 \u00b7 HHI 1,835' -- real computed values, not placeholders, confirming the readouts are wired to the drag rather than static. Caveat: this turn's two sample points (mid-drag, settled) happened to read the same value, so it does not independently distinguish continuous live update from update-on-pointermove landing on the same rounded figure; noted in section-11-review-4.md as a weaker positive than ideal but not a failure."
       }
     },
     {
@@ -600,11 +600,11 @@
       "carried_from_section_10": {
         "original_id": "BHV-05",
         "owner_decision": "docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md",
-        "measurement_at_carry": "Unjudgeable in §10: blocked by the same inspector-panel occlusion as DEF-02 - the panel covers 96.8-100% of the sampled band, so the verifier cannot see what it measures. The owner independently reports he cannot see the planet at all.",
+        "measurement_at_carry": "Unjudgeable in \u00a710: blocked by the same inspector-panel occlusion as DEF-02 - the panel covers 96.8-100% of the sampled band, so the verifier cannot see what it measures. The owner independently reports he cannot see the planet at all.",
         "owner_observation": "I honestly cannot see the planet at all because of the bug where the terminal covers up the screen.",
-        "resolved_in_11_by": "The §3 planet-panel rebuild keeps the planet visible and shrinks the panel; then re-run the shipped-view verifier and record the result. Do NOT weaken the assertion.",
+        "resolved_in_11_by": "The \u00a73 planet-panel rebuild keeps the planet visible and shrinks the panel; then re-run the shipped-view verifier and record the result. Do NOT weaken the assertion.",
         "evidence_at_carry": "docs/phase10-baseline/section-10/claude-review-5/raw-panel-occlusion.json",
-        "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
+        "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
         "status": "deferred_to_reviewer",
@@ -654,7 +654,7 @@
           "docs/phase10-baseline/section-11/captures/panel-width-580.png",
           "docs/phase10-baseline/section-11/raw-remediation-continuation.txt"
         ],
-        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. Committed 1440x900 production captures measure ASML at x=31.4% with the 520px rail and x=31.3% with the 580px rail, both unoccluded; the owner then said the planet position is correct for the most part. The original <=380px rail clause is not relabelled as a pass: the owner's newer width request superseded that target and FB-17 remains scheduled for §12a. Recorded by codex/gpt-5."
+        "notes": "Explicit non-pass routed for the reviewer to record the owner's carry decision. Committed 1440x900 production captures measure ASML at x=31.4% with the 520px rail and x=31.3% with the 580px rail, both unoccluded; the owner then said the planet position is correct for the most part. The original <=380px rail clause is not relabelled as a pass: the owner's newer width request superseded that target and FB-17 remains scheduled for \u00a712a. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "carried_by_owner",
@@ -696,7 +696,7 @@
         "evidence": [
           "docs/phase10-baseline/section-11/captures/asml-panel-type.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 3, single_provider_mode): Fresh capture (this turn's own regenerated contact sheet) shows the Windows line reading 'WEEK ▼ 14.3% · 30D ▼ 12.0% · SINCE BUY ▼ 12.0% (SIMPLE)' on ASML -- 30D renders. F6 CLOSED."
+        "notes": "claude-code/sonnet-5 (review turn 3, single_provider_mode): Fresh capture (this turn's own regenerated contact sheet) shows the Windows line reading 'WEEK \u25bc 14.3% \u00b7 30D \u25bc 12.0% \u00b7 SINCE BUY \u25bc 12.0% (SIMPLE)' on ASML -- 30D renders. F6 CLOSED."
       }
     },
     {
@@ -728,7 +728,7 @@
           "docs/phase10-baseline/section-11/raw-review-3-owner-audit.json",
           "docs/phase10-baseline/section-11/captures/asml-panel-type.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 3, single_provider_mode): Live: WEIGHT renders '26.3%' with no arrow, no sign (confirmed both DOM text and asml-panel-type.png). Owner-mode live check: XIRR renders '— (needs 90d)' verbatim, never an annualized figure, never a zero (history is ~34 days, under the 90-day floor)."
+        "notes": "claude-code/sonnet-5 (review turn 3, single_provider_mode): Live: WEIGHT renders '26.3%' with no arrow, no sign (confirmed both DOM text and asml-panel-type.png). Owner-mode live check: XIRR renders '\u2014 (needs 90d)' verbatim, never an annualized figure, never a zero (history is ~34 days, under the 90-day floor)."
       }
     },
     {
@@ -789,7 +789,7 @@
           "docs/phase10-baseline/section-11/captures/asml-panel-type.png",
           "docs/phase10-baseline/section-11/raw-review-4-room.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live geometry, both scales. Panel chart: 170px tall, 3 axis hairlines, solid baseline found, 2 dots (start/end), endpoint chip text '▼ 12.0%'. Room chart (RETURNS section, scrolled into view): 320px tall, 3 hairlines, 2 dots. Matches spec 3.4 at both scales."
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live geometry, both scales. Panel chart: 170px tall, 3 axis hairlines, solid baseline found, 2 dots (start/end), endpoint chip text '\u25bc 12.0%'. Room chart (RETURNS section, scrolled into view): 320px tall, 3 hairlines, 2 dots. Matches spec 3.4 at both scales."
       }
     },
     {
@@ -943,7 +943,7 @@
           "docs/phase10-baseline/section-11/raw-review-4-followup.json",
           "docs/phase10-baseline/section-11/raw-review-4-vis19.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live. The PORTFOLIO readout is compound text (PORTFOLIO · TODAY ▼ 1.7%), not an exact-match leaf node -- a first pass with a too-strict selector produced a false negative, corrected in this follow-up. Located, bounding rect checked against all eight [data-scene-ticker] label rects: zero overlaps."
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live. The PORTFOLIO readout is compound text (PORTFOLIO \u00b7 TODAY \u25bc 1.7%), not an exact-match leaf node -- a first pass with a too-strict selector produced a false negative, corrected in this follow-up. Located, bounding rect checked against all eight [data-scene-ticker] label rects: zero overlaps."
       }
     },
     {
@@ -980,7 +980,7 @@
       "id": "VIS-04",
       "dimension": "visual",
       "risk": "critical",
-      "description": "Trails carry direction and magnitude in a captioned 1440x900 temporal per-holding pixel plate: each holding is sampled at its own naturally unoccluded orbital phase, the owner-confirmed arc remains 18 to 30 degrees, ramp lightness carries magnitude, and the fixed 12% white-hot head remains the calibration reference. Every threshold and non-method clause from §10 is unchanged.",
+      "description": "Trails carry direction and magnitude in a captioned 1440x900 temporal per-holding pixel plate: each holding is sampled at its own naturally unoccluded orbital phase, the owner-confirmed arc remains 18 to 30 degrees, ramp lightness carries magnitude, and the fixed 12% white-hot head remains the calibration reference. Every threshold and non-method clause from \u00a710 is unchanged.",
       "verifier": {
         "kind": "visual",
         "command": null
@@ -998,7 +998,7 @@
         "resolved_in_11_by": "Follows TST-03's owner-authorised temporal per-holding sampler while retaining the owner-confirmed 18-30 degree arc band. Do NOT loosen deltaE.",
         "evidence_at_carry": "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json",
         "arc_band_change": "36-64 degrees became 18-30 degrees and Devan closed that visual choice with \"trails look fine.\" On July 29 2026 he explicitly refused to re-lengthen the trails for the verifier and authorised temporal per-holding sampling instead. The deltaE gate, hue lock, ordering, ramp-lightness clause and 12% white-hot head are unchanged.",
-        "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
+        "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
         "status": "pass",
@@ -1050,11 +1050,11 @@
       "carried_from_section_10": {
         "original_id": "VIS-02",
         "owner_decision": "docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md",
-        "measurement_at_carry": "Unjudgeable in §10: blocked by the same inspector-panel occlusion as DEF-02, which covers 96.8-100% of the sampled band.",
+        "measurement_at_carry": "Unjudgeable in \u00a710: blocked by the same inspector-panel occlusion as DEF-02, which covers 96.8-100% of the sampled band.",
         "owner_observation": "I do not see any logos on any of the planets.",
         "resolved_in_11_by": "The panel rebuild makes the sphere measurable; then re-run the shipped-view verifier and record the result. Do NOT regenerate textures against the no-visible-logo theory before it is measurable.",
         "evidence_at_carry": "docs/phase10-baseline/section-10/claude-review-5/raw-panel-occlusion.json",
-        "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
+        "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
         "status": "deferred_to_reviewer",
@@ -1087,7 +1087,7 @@
       "id": "DEF-02",
       "dimension": "visual",
       "risk": "high",
-      "description": "Brand marks render with correct chirality on the rendered sphere for all eight worlds, proven by a chirality assertion against the shipped view, not by eye. A verifier that samples the mark directly, rather than a terrain-dominated equatorial column-mean profile, is legitimate §11 work.",
+      "description": "Brand marks render with correct chirality on the rendered sphere for all eight worlds, proven by a chirality assertion against the shipped view, not by eye. A verifier that samples the mark directly, rather than a terrain-dominated equatorial column-mean profile, is legitimate \u00a711 work.",
       "verifier": {
         "kind": "browser",
         "command": null
@@ -1102,9 +1102,9 @@
         "owner_decision": "docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md",
         "measurement_at_carry": "The shipped-view chirality verifier aborts on COST and fails 6 of 8 worlds. The inspector panel covers 96.8-100% of the sampled band, so the verifier cannot see what it measures. Two authorised texture regenerations moved the panel-free correlation margin by 0.018 and 0.021, inside the 0.002-0.011 round-to-round drift of five untouched worlds, and did not invert sign - mirroring a mark must invert a correlation that reads that mark, so the column-mean greyscale profile cannot discriminate handedness and substantiates neither pass nor fail.",
         "owner_observation": "I do not see any logos on any of the planets.",
-        "resolved_in_11_by": "The planet-panel rebuild keeps the planet visible and shrinks the panel; then re-run the shipped-view verifier and record the result. A verifier that samples the mark directly is legitimate §11 work. Do NOT weaken the assertion.",
+        "resolved_in_11_by": "The planet-panel rebuild keeps the planet visible and shrinks the panel; then re-run the shipped-view verifier and record the result. A verifier that samples the mark directly is legitimate \u00a711 work. Do NOT weaken the assertion.",
         "evidence_at_carry": "docs/phase10-baseline/section-10/claude-review-5/raw-strip-chirality-full-table.json",
-        "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
+        "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
         "status": "deferred_to_reviewer",
@@ -1178,7 +1178,7 @@
           "docs/phase10-baseline/section-11/raw-remediation-fallback-390.png",
           "docs/phase10-baseline/section-11/raw-remediation-fallback-320.png"
         ],
-        "notes": "codex_implementation remediation turn (claude-code/sonnet-5 covering the role, PHASE10_LOCK owner=codex): fixed bounded finding MOB-11-1 exactly as scoped. src/components/observatory/orrery/OrreryWorld.tsx:379 -- the per-ticker holding list's visible text now reads 'HOLDINGS / {ticker} · {companyName}' for every item, matching the existing 'X / ...' label convention already used by its siblings (NEWS, BELT BODY, RETURNS, RISK, EARNINGS). No CORRELATION/TRADES/ORBITS content added, per the owner's 2026-07-30 ruling. Verified live against this turn's own rebuilt production server (port 3400, `npm run build && npm run start -- -p 3400`), reusing review-7-mob11.mjs's method unchanged except for the output path: at both 390x844 and 320x844, requiredNounsPresent now includes HOLDINGS alongside RETURNS/RISK/NEWS/EARNINGS, requiredNounsMissing is only [CORRELATION, TRADES] (correctly still absent), bannedFound is empty, and there is zero horizontal overflow. Screenshot directly inspected (raw-remediation-fallback-390.png): every holding item begins 'HOLDINGS / <TICKER> · <Company>', visually identical in convention to 'NEWS / <TICKER> ...' and 'BELT BODY / <TICKER> ...' below it. Server torn down after capture (confirmed via lsof)."
+        "notes": "codex_implementation remediation turn (claude-code/sonnet-5 covering the role, PHASE10_LOCK owner=codex): fixed bounded finding MOB-11-1 exactly as scoped. src/components/observatory/orrery/OrreryWorld.tsx:379 -- the per-ticker holding list's visible text now reads 'HOLDINGS / {ticker} \u00b7 {companyName}' for every item, matching the existing 'X / ...' label convention already used by its siblings (NEWS, BELT BODY, RETURNS, RISK, EARNINGS). No CORRELATION/TRADES/ORBITS content added, per the owner's 2026-07-30 ruling. Verified live against this turn's own rebuilt production server (port 3400, `npm run build && npm run start -- -p 3400`), reusing review-7-mob11.mjs's method unchanged except for the output path: at both 390x844 and 320x844, requiredNounsPresent now includes HOLDINGS alongside RETURNS/RISK/NEWS/EARNINGS, requiredNounsMissing is only [CORRELATION, TRADES] (correctly still absent), bannedFound is empty, and there is zero horizontal overflow. Screenshot directly inspected (raw-remediation-fallback-390.png): every holding item begins 'HOLDINGS / <TICKER> \u00b7 <Company>', visually identical in convention to 'NEWS / <TICKER> ...' and 'BELT BODY / <TICKER> ...' below it. Server torn down after capture (confirmed via lsof)."
       },
       "reviewer": {
         "status": "pass",
@@ -1188,7 +1188,7 @@
           "docs/phase10-baseline/section-11/raw-review-8-fallback-390.png",
           "docs/phase10-baseline/section-11/raw-review-8-fallback-320.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 8, re-review of remediation turn 8): independently rebuilt and started a fresh production server (port 3500, not the implementer's process/port) and re-ran the naming sweep against candidate 0c3a812f5d755bf3f981741ecff6a9f5f2b2f20c using this turn's own copy of the verifier script (review-8-mob11-verify.mjs, distinct output paths from the implementer's evidence). At both 390x844 and 320x844: requiredNounsPresent now includes HOLDINGS alongside RETURNS/RISK/NEWS/EARNINGS; requiredNounsMissing is only [CORRELATION, TRADES] (correctly absent per the owner's 2026-07-30 ruling, spec section-11.md section-11.0); bannedFound empty; zero horizontal overflow at either width. Directly inspected raw-review-8-fallback-390.png: every holding item now reads 'HOLDINGS / <TICKER> · <Company>', matching the 'NEWS / ...', 'BELT BODY / ...', 'RETURNS / ...', 'RISK / ...', 'EARNINGS / ...' convention of its siblings. Server torn down after capture (confirmed via lsof port 3500 clear). MOB-11-1 CLOSED -- see review-8.md and closed_findings_history in PHASE10_STATE.json."
+        "notes": "claude-code/sonnet-5 (review turn 8, re-review of remediation turn 8): independently rebuilt and started a fresh production server (port 3500, not the implementer's process/port) and re-ran the naming sweep against candidate 0c3a812f5d755bf3f981741ecff6a9f5f2b2f20c using this turn's own copy of the verifier script (review-8-mob11-verify.mjs, distinct output paths from the implementer's evidence). At both 390x844 and 320x844: requiredNounsPresent now includes HOLDINGS alongside RETURNS/RISK/NEWS/EARNINGS; requiredNounsMissing is only [CORRELATION, TRADES] (correctly absent per the owner's 2026-07-30 ruling, spec section-11.md section-11.0); bannedFound empty; zero horizontal overflow at either width. Directly inspected raw-review-8-fallback-390.png: every holding item now reads 'HOLDINGS / <TICKER> \u00b7 <Company>', matching the 'NEWS / ...', 'BELT BODY / ...', 'RETURNS / ...', 'RISK / ...', 'EARNINGS / ...' convention of its siblings. Server torn down after capture (confirmed via lsof port 3500 clear). MOB-11-1 CLOSED -- see review-8.md and closed_findings_history in PHASE10_STATE.json."
       }
     },
     {
@@ -1366,7 +1366,7 @@
       "id": "TST-12",
       "dimension": "tests",
       "risk": "high",
-      "description": "Rendered behaviour is verified by scene-graph, DOM, pixel or geometry assertions. No new expect(source).toContain(...) guard is introduced as coverage for rendered behaviour, and no §11 criterion is graded from source reading alone.",
+      "description": "Rendered behaviour is verified by scene-graph, DOM, pixel or geometry assertions. No new expect(source).toContain(...) guard is introduced as coverage for rendered behaviour, and no \u00a711 criterion is graded from source reading alone.",
       "verifier": {
         "kind": "command",
         "command": "npm test"
@@ -1441,7 +1441,7 @@
         "owner_observation": "NBIS trail is the same brightness as the other red planets.",
         "resolved_in_11_by": "Use Devan's July 29 2026 authorisation to sample each holding at its own naturally unoccluded orbital phase. Retain every deltaE, hue, chroma, ordering and all-holdings threshold and keep the confirmed 18-30 degree geometry unchanged.",
         "evidence_at_carry": "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json",
-        "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
+        "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
         "status": "pass",
@@ -1587,10 +1587,10 @@
         "original_id": "BLD-04",
         "owner_decision": "docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md",
         "measurement_at_carry": "measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 65/57/58/58/57 ms against an unchanged 50 ms ceiling. Unmoved across five rounds (57-61, 56-62, 55-61, 56-60, 57-65). The round-3 CDP profile attributes 34.3 ms self time to Three.js shader-program acquisition (getParameters/getProgramCacheKey) and clears texture upload.",
-        "resolved_in_11_by": "Delete the embedded legacy dashboard and its Recharts instances, pause the off-screen radar, lazy-mount below-fold sections. PHASE10.md §11 already states this section should be a net refund against the long-task budget. Do NOT baseline-subtract or redefine the gate.",
+        "resolved_in_11_by": "Delete the embedded legacy dashboard and its Recharts instances, pause the off-screen radar, lazy-mount below-fold sections. PHASE10.md \u00a711 already states this section should be a net refund against the long-task budget. Do NOT baseline-subtract or redefine the gate.",
         "evidence_at_carry": "docs/phase10-baseline/section-10/claude-review-5/raw-long-tasks-BLD-04.txt",
         "verifier_note": "measure-long-tasks.mjs runs unmodified.",
-        "rule": "Must be re-run and recorded in §11. May not be closed by assertion."
+        "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
         "status": "deferred_to_reviewer",
@@ -1607,22 +1607,24 @@
           "docs/phase10-baseline/section-11/scripts/control-long-task-diag.mjs",
           "docs/phase10-baseline/section-11/raw-remediation-9-control-trivial-page.txt"
         ],
-        "notes": "Two real results this turn, neither a pass on the strict binary gate. (1) Measured headroom improvement: OrreryScene.tsx construction was split into six additional animation-frame chunks not previously isolated (WebGL context creation/DOM setup; star population; nebula+aurora+wisps; moons; satellites; belt), following the same nextConstructionFrame pattern remediation-4 introduced. Re-running the unmodified measure-long-tasks.mjs against the final code, two independent fresh production server processes (ports 4100 and 4200), 9 total batches / 45 fresh 1440x900 CPU-2x contexts: 8 of 9 batches clean (0ms), 1 batch had a single 51ms context. This is a real, measured drop from review turn 8's documented 2-of-3-batches-breach rate to 1-of-9 -- but it is not full elimination, so this criterion is not claimed as a pass -- `deferred_to_reviewer` is the schema's non-pass implementer value (allowedCompleteStatuses does not include `fail`), and the reviewer must independently re-measure per the carried-criteria no-assertion rule rather than accept this turn's numbers. (2) Root-cause correction (the required_change's other permitted path -- investigate and name the cause): built a stage-correlation diagnostic (stage-correlate-diag.mjs) that timestamps every sceneConstructionStage transition and cross-references it against each captured long task. Across every single breach observed with this instrumentation (11 breaches, both on a plain run and under added MutationObserver overhead), the long task's startTime falls 400-650ms BEFORE the scene's own 'model' construction stage even begins -- i.e. before OrreryScene's effect has run at all. A CDP Tracing-based attribution script (trace-long-task-diag.mjs; overhead makes it diagnostic-only, not graded) corroborates this repeatedly: the dominant event inside every captured breach window is HTMLDocumentParser::RunScriptsForPausedTreeBuilder -> EvaluateScript -> V8.CompileScript/V8.ParseProgram on an inline script (notStreamedReason: 'inline script') at the /share route URL -- i.e. Next.js's inline RSC/flight-payload bootstrap script being parsed and compiled by the HTML parser, not any Three.js/OrreryScene code. A control page (static HTML, zero app JS, identical CPU-2x throttle, 5 fresh contexts) recorded zero long tasks, ruling out generic environment noise as a sufficient explanation by itself -- real work is happening, it is just upstream of scene construction. CONCLUSION: five prior remediation rounds' working hypothesis (LT-01, remediation-3, remediation-4, and this turn) that the marginal breach lives inside diffuse scene-construction GC was only ever partially right -- construction chunking measurably helped (headroom is real) but the remaining marginal breach originates in the route's own React/Next.js hydration bootstrap, before the scene component mounts. Fixing that fully (e.g. code-splitting the 3D world behind next/dynamic with ssr:false, or shrinking the initial RSC payload) is an architecture-level, SSR/loading-behaviour change outside 'fix this finding, no unrelated scope' for a bounded remediation turn, and is exactly the kind of gate-interpretation question the section's must_wait_for_codex list reserves for Devan (compare the non-precedential §1 owner exception for an analogous shared-bootstrap long task -- not invoked or assumed here, only structurally similar). No baseline-subtraction, gate redefinition, or exception was applied; the unmodified <50ms gate is graded as measured. Recorded by claude-code/sonnet-5 covering codex_implementation under PHASE10_LOCK owner=codex, single_provider_mode."
+        "notes": "Two real results this turn, neither a pass on the strict binary gate. (1) Measured headroom improvement: OrreryScene.tsx construction was split into six additional animation-frame chunks not previously isolated (WebGL context creation/DOM setup; star population; nebula+aurora+wisps; moons; satellites; belt), following the same nextConstructionFrame pattern remediation-4 introduced. Re-running the unmodified measure-long-tasks.mjs against the final code, two independent fresh production server processes (ports 4100 and 4200), 9 total batches / 45 fresh 1440x900 CPU-2x contexts: 8 of 9 batches clean (0ms), 1 batch had a single 51ms context. This is a real, measured drop from review turn 8's documented 2-of-3-batches-breach rate to 1-of-9 -- but it is not full elimination, so this criterion is not claimed as a pass -- `deferred_to_reviewer` is the schema's non-pass implementer value (allowedCompleteStatuses does not include `fail`), and the reviewer must independently re-measure per the carried-criteria no-assertion rule rather than accept this turn's numbers. (2) Root-cause correction (the required_change's other permitted path -- investigate and name the cause): built a stage-correlation diagnostic (stage-correlate-diag.mjs) that timestamps every sceneConstructionStage transition and cross-references it against each captured long task. Across every single breach observed with this instrumentation (11 breaches, both on a plain run and under added MutationObserver overhead), the long task's startTime falls 400-650ms BEFORE the scene's own 'model' construction stage even begins -- i.e. before OrreryScene's effect has run at all. A CDP Tracing-based attribution script (trace-long-task-diag.mjs; overhead makes it diagnostic-only, not graded) corroborates this repeatedly: the dominant event inside every captured breach window is HTMLDocumentParser::RunScriptsForPausedTreeBuilder -> EvaluateScript -> V8.CompileScript/V8.ParseProgram on an inline script (notStreamedReason: 'inline script') at the /share route URL -- i.e. Next.js's inline RSC/flight-payload bootstrap script being parsed and compiled by the HTML parser, not any Three.js/OrreryScene code. A control page (static HTML, zero app JS, identical CPU-2x throttle, 5 fresh contexts) recorded zero long tasks, ruling out generic environment noise as a sufficient explanation by itself -- real work is happening, it is just upstream of scene construction. CONCLUSION: five prior remediation rounds' working hypothesis (LT-01, remediation-3, remediation-4, and this turn) that the marginal breach lives inside diffuse scene-construction GC was only ever partially right -- construction chunking measurably helped (headroom is real) but the remaining marginal breach originates in the route's own React/Next.js hydration bootstrap, before the scene component mounts. Fixing that fully (e.g. code-splitting the 3D world behind next/dynamic with ssr:false, or shrinking the initial RSC payload) is an architecture-level, SSR/loading-behaviour change outside 'fix this finding, no unrelated scope' for a bounded remediation turn, and is exactly the kind of gate-interpretation question the section's must_wait_for_codex list reserves for Devan (compare the non-precedential \u00a71 owner exception for an analogous shared-bootstrap long task -- not invoked or assumed here, only structurally similar). No baseline-subtraction, gate redefinition, or exception was applied; the unmodified <50ms gate is graded as measured. Recorded by claude-code/sonnet-5 covering codex_implementation under PHASE10_LOCK owner=codex, single_provider_mode."
       },
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-8-bld04-longtasks.json",
-          "docs/phase10-baseline/section-11/raw-review-3-overview-postzoom.png"
+          "docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json",
+          "docs/phase10-baseline/section-11/scripts/stage-correlate-diag.mjs",
+          "docs/phase10-baseline/section-11/scripts/trace-long-task-diag.mjs",
+          "docs/phase10-baseline/section-11/scripts/control-long-task-diag.mjs"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 8, single_provider_mode): re-opened this turn. Three independent invocations of the unmodified measure-long-tasks.mjs (unchanged <50ms gate, five fresh 1440x900 CPU-2x contexts each, not baseline-subtracted): run A (fresh server, port 3600) maximumMs 52; run B (same process as A, second invocation) maximumMs 50; run C (a second, completely separate fresh server process, port 3700) maximumMs 0. Confirmed via `ps aux` that no competing node/npm/next process was contending for CPU during measurement. 2 of 3 independent batches (15 total fresh contexts) breach the boundary marginally; 1 of 3 is a clean pass. Per the carried-criteria rule ('None may be closed by assertion'), the passing run cannot be cherry-picked over the two failing ones, so this is graded FAIL this turn — not a regression from the owner's own clean 2026-07-29 20:09 capture on his machine (that remains valid evidence of a passing state there), but a genuine, reproduced marginal/flaky result on this review environment that the ledger's own bld_04_caveat already anticipated ('the metric is now binary... but not 49 from 5'). See raw-review-8-bld04-longtasks.json and docs/phase10-workflow/reviews/section-11-review-8.md. FAIL — required change: either establish real headroom below 50ms (the fix converts one large task into several sub-threshold chunks but was never shown to have margin against ordinary scheduling jitter) or investigate why this specific environment reproduces marginal breaches that a second fresh process does not. Do NOT baseline-subtract or redefine the gate (must_wait_for_codex)."
+        "notes": "claude-code/sonnet-5 (review turn 9): independently re-measured against candidate 5d91b6e with the unmodified measure-long-tasks.mjs, 3 batches across 2 fresh production server processes (matching review turn 8 method): batch A (port 4400, first invocation) 59/0/0/0/0ms FAIL; batch B (same process, second invocation) 0/0/0/0/0ms PASS; batch C (second separate fresh process, port 4500) 0/0/0/0/0ms PASS. 1 of 3 batches (15 fresh contexts) breaches the unchanged <50ms gate. Per the no-cherry-picking carried-criteria rule, graded FAIL -- corroborates the implementers real, measured improvement (review turn 8: 2 of 3 batches breaching; this turn and the implementers own remediation-9 re-measurement: roughly 1 of 3 to 1 of 9) without full elimination. Independently read (not re-run) the implementers three diagnostic scripts (stage-correlate-diag.mjs, trace-long-task-diag.mjs, control-long-task-diag.mjs) and their raw output: the instrumentation and control page are sound, and the diagnosis that the residual breach originates in a pre-mount Next.js RSC/hydration bootstrap script upstream of OrreryScene is well-supported and independently plausible given this turns own single, higher (59ms), environment-sensitive spike. Not routed to codex_implementation for a seventh remediation attempt: the diagnosed cause is outside the component remediation is scoped to touch, and both remaining paths (an architecture-level SSR/loading-behaviour change, or an owner-approved scoped gate exception) are gate/scope decisions that single_provider_modes reserved must_wait_for_codex list explicitly covers (any gate change). Routed to Devan as a blocked handoff rather than to remediation, the same class of decision review turn 6 made for BHV-31/MOB-11. See docs/phase10-workflow/reviews/section-11-review-9.md."
       }
     },
     {
       "id": "PRV-10",
       "dimension": "privacy",
       "risk": "critical",
-      "description": "The DRAFT rig is owner-gated in §11: the public /share view emits no DRAFT tab and no rig markup - not hidden by CSS, not rendered at all - verified against unauthenticated rendered HTML and covered by a canary-style regression test.",
+      "description": "The DRAFT rig is owner-gated in \u00a711: the public /share view emits no DRAFT tab and no rig markup - not hidden by CSS, not rendered at all - verified against unauthenticated rendered HTML and covered by a canary-style regression test.",
       "verifier": {
         "kind": "command",
         "command": "npm test -- --run src/components/observatory/orrery/MissionControl.test.tsx"
@@ -1779,7 +1781,7 @@
       "BHV-05",
       "BLD-04"
     ],
-    "carried_rule": "These six §10 criteria were carried by owner decision on 2026-07-29, not closed. Each retains its §10 ID and its measurement_at_carry. §11 must re-run the named verifier and record the result. None may be closed by assertion, and no gate may be weakened, redefined, or baseline-subtracted.",
+    "carried_rule": "These six \u00a710 criteria were carried by owner decision on 2026-07-29, not closed. Each retains its \u00a710 ID and its measurement_at_carry. \u00a711 must re-run the named verifier and record the result. None may be closed by assertion, and no gate may be weakened, redefined, or baseline-subtracted.",
     "evidence_rule": "Under single_provider_mode, executable verifiers are required rather than supporting, raw output is retained, no criterion is graded from source reading alone, and owner visual review precedes acceptance."
   }
 }

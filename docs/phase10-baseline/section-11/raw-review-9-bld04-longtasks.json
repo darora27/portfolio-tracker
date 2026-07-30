@@ -1,0 +1,30 @@
+{
+  "criterion": "BLD-04",
+  "reviewed_commit": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
+  "method": "unmodified docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs, three independent invocations across two fresh production server processes, matching the review-turn-8 methodology (this is a carried, high-risk criterion re-verified independently rather than accepted from the implementer's own numbers)",
+  "batches": [
+    {
+      "batch": "A",
+      "server": "fresh process, port 4400, first invocation",
+      "per_context_ms": [59, 0, 0, 0, 0],
+      "maximumMs": 59,
+      "result": "FAIL"
+    },
+    {
+      "batch": "B",
+      "server": "same process as A, second invocation",
+      "per_context_ms": [0, 0, 0, 0, 0],
+      "maximumMs": 0,
+      "result": "PASS"
+    },
+    {
+      "batch": "C",
+      "server": "second, completely separate fresh process, port 4500",
+      "per_context_ms": [0, 0, 0, 0, 0],
+      "maximumMs": 0,
+      "result": "PASS"
+    }
+  ],
+  "summary": "1 of 3 independent batches (15 total fresh 1440x900 CPU-2x contexts) breaches the unchanged <50ms boundary (a single 59ms task in batch A); 2 of 3 are clean 0ms passes. Per the carried-criteria no-cherry-picking rule (same rule review turn 8 applied), the two passing batches cannot be cherry-picked over the one failing batch -- graded FAIL. This corroborates the implementer's own remediation-9 finding of a real, measured improvement (review turn 8 documented 2-of-3 batches breaching; this turn and the implementer's own re-measurement both find roughly 1-of-9 to 1-of-3 batches breaching) without full elimination. The single breach observed this turn (59ms) is higher than the marginal 50-52ms breaches review turn 8 recorded, consistent with the implementer's stage-correlation/CDP-trace diagnosis that the remaining long task originates in a pre-mount Next.js RSC/hydration bootstrap script rather than in OrreryScene construction -- an occasional, environment-sensitive parse/compile cost upstream of the component remediation is scoped to.",
+  "servers_stopped": "Confirmed via lsof after batch C -- ports 4400 and 4500 both released before this turn's commit."
+}

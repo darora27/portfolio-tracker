@@ -13,10 +13,10 @@ them.
 - Managed range: §2–§18
 - Stage: `review`
 - Role: `claude_lead`
-- Status: `ready`
-- Next actor: `claude`
+- Status: `blocked`
+- Next actor: `devan`
 - Expected actor for this stage: `claude`
-- Stop reason: none
+- Stop reason: BLD-04 independently re-measured this turn (1 of 3 fresh-context batches still breaches the unchanged <50ms gate) and its root cause is now well-diagnosed as a pre-mount Next.js RSC/hydration bootstrap cost upstream of OrreryScene, not scene-construction code. No further chunking remediation is expected to help. Closing it requires Devan to choose between an architecture-level SSR/loading-behaviour change or a scoped gate exception -- both fall under single_provider_mode's reserved must_wait_for_codex list ('any gate change'), so neither should be decided or implemented by this turn. See docs/phase10-workflow/reviews/section-11-review-9.md and the routing handoff.
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -40,7 +40,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-30-section-11-codex-remediation-bld04-r2-to-claude-review.md`
+- `docs/phase10-handoffs/2026-07-30-section-11-claude-review-9-to-devan-blocked.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -58,7 +58,7 @@ Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for
 
 Open bounded findings:
 
-- {"id":"BLD-04-1","criterion":"BLD-04","opened":"review turn 8 (claude-code/sonnet-5)","summary":"Carried, high-risk long-task gate re-verified this turn (three independent measure-long-tasks.mjs invocations, two separate fresh server processes): 2 of 3 batches (15 total fresh 1440x900 CPU-2x contexts) breach the unchanged <50ms boundary marginally (52ms once, exactly 50ms once); 1 of 3 is a clean 0ms pass. Not asserted as a regression from the owner's own clean capture on his machine, which remains valid there -- this is a reproduced marginal/flaky result on this review environment. Per the carried-criteria rule, the passing run cannot be cherry-picked over the two failing ones.","required_change":"Establish real headroom below 50ms (profile which chunk(s) land close to the boundary and reduce further), or investigate and name the specific cause of this environment's marginal breaches. Do NOT baseline-subtract or redefine the gate -- must_wait_for_codex.","evidence":["docs/phase10-baseline/section-11/raw-review-8-bld04-longtasks.json","docs/phase10-baseline/section-11/raw-review-3-overview-postzoom.png"]}
+- {"id":"BLD-04-1","criterion":"BLD-04","opened":"review turn 8 (claude-code/sonnet-5)","summary":"Carried, high-risk long-task gate re-verified again in review turn 9 (claude-code/sonnet-5) against candidate 5d91b6e (remediation turn 9's further OrreryScene.tsx chunking): three independent measure-long-tasks.mjs invocations, two separate fresh server processes: 1 of 3 batches (15 fresh 1440x900 CPU-2x contexts) breaches the unchanged <50ms boundary (a single 59ms task); 2 of 3 are clean 0ms passes. Per the no-cherry-picking carried-criteria rule, graded FAIL -- corroborates real, measured improvement over review turn 8's 2-of-3-breaching rate, but not full elimination. Review turn 9 also independently read (not re-ran) the implementer's three diagnostic scripts (stage-correlate-diag.mjs, trace-long-task-diag.mjs, control-long-task-diag.mjs) and judged the instrumentation sound and the root-cause diagnosis -- a pre-mount Next.js RSC/hydration bootstrap script upstream of OrreryScene, not scene-construction code -- well-supported and independently plausible given this turn's own single, higher (59ms), environment-sensitive breach.","required_change":"No further OrreryScene.tsx chunking is expected to help -- the diagnosed cause starts 400-650ms before the scene's own construction stage begins. Resolution requires an owner decision between (1) an architecture-level SSR/loading-behaviour change (e.g. next/dynamic ssr:false code-splitting the 3D world, or shrinking the initial RSC payload) or (2) an owner-approved, scoped, non-generalizing gate exception. Both are gate/scope decisions single_provider_mode's reserved must_wait_for_codex list covers (\"any gate change\") -- do NOT authorize or implement either while single_provider_mode remains active without Devan's explicit direction on how to proceed given that constraint.","evidence":["docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json","docs/phase10-baseline/section-11/raw-review-8-bld04-longtasks.json","docs/phase10-baseline/section-11/scripts/stage-correlate-diag.mjs","docs/phase10-baseline/section-11/scripts/trace-long-task-diag.mjs","docs/phase10-baseline/section-11/scripts/control-long-task-diag.mjs"]}
 
 Acceptance ledger:
 
@@ -103,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `067fc9147a5e8d5300a794482614be635f93e1bf3b4d34f7c53a811da478ebfe`
+- `PHASE10_STATE.json`: `ba730451337b2ecf250d0a877f2787a1e9682d3ad0a789ba2705cbce6b599325`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
