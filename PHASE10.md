@@ -1091,6 +1091,39 @@ Recorded July 29 alongside the adoption:
 
 ---
 
+## §12c. Mission Control content rework + the Chart Room
+
+Adopted July 30, 2026 from the owner-requested Fable consult (FB-34). The
+authority is **`MISSION_CONTROL_ARCHITECTURE.md`**; this section is assembled
+*from* it and re-derives nothing.
+
+**The premise.** Mission Control was built beside a working dashboard and never
+inherited its organs — 26 components in `src/components/dashboard/` and 3 in
+`src/components/history/` are present, routed and tested, and Mission Control
+imports exactly one *type* from them. **This is a re-wiring job. No new parts.**
+The only new build is the Chart Room, stage two, which has its own adopted
+design.
+
+**Stage one — the descent.** STRIP / ORBITS / HOLDINGS / RETURNS / MIX / RISK /
+ACTIVITY / footer, with contents, sources and window words exactly per the
+architecture's §4 table. Closes FB-27, FB-28, FB-29, FB-30, FB-31, FB-32,
+FB-33, FB-35, and retires FB-11.
+
+**Stage two — the Chart Room.** Bound into this section deliberately so it
+cannot slip behind content work a fourth time. Both doors wired: a HOLDINGS row
+click, and an ORBITS ring or blip click, plus `FULL ANALYSIS ▸`. Closes FB-13.
+
+**Two owner sentences are outstanding** and are recorded in the architecture
+§9: the EARNINGS chips ruling, and a keep-or-cut verdict on ACTIVITY once he
+has seen it renamed.
+
+**Acceptance test for the spec.** Its parts list must contain only component
+names from the inventory, plus the Chart Room. A spec that invents a component
+goes back with *"no new parts."*
+
+**`/share` projection is unchanged in kind** — percentages only, VALUE and
+realized/unrealized owner-only, privacy canaries extended to every new surface.
+
 ## §13. `/compare` guided simulation story
 
 ### Purpose

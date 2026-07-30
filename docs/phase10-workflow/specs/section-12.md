@@ -33,14 +33,14 @@ Devan's sitting feedback are **all scheduled §12b**, none deferred.
 | FB-25 planet panel needs more content | scheduled §12b |
 | **FB-26 trails/direction must encode DAILY, not weekly** | **scheduled §12b, early** — core encoding change; TST-03 and VIS-04 key off the same field and move with it |
 | FB-27 HOLDINGS shows only the 8 planet tickers | scheduled §12b |
-| **FB-28 Mission Control content rework** | **scheduled §12b — BLOCKED ON FB-34** |
+| **FB-28 Mission Control content rework** | **scheduled §12c** — unblocked; re-wiring per the adopted architecture |
 | FB-29 NEWS demoted from a main component | scheduled §12b, folded into FB-28 |
 | FB-30 TRADES / "BOOK impact" unexplained | scheduled §12b |
 | FB-31 orange tabs removed | scheduled §12b |
 | FB-32 top-right information too small or unnecessary | scheduled §12b |
 | FB-33 CORRELATION and EARNINGS do not earn their place | scheduled §12b, folded into FB-28 |
 | FB-35 pie chart + History tab content in Mission Control | scheduled §12b, with FB-28 — `CompositionDonut`, `CompositionOverTimeChart`, `DailyReturnsChart`, `DrawdownChart` all already exist |
-| **FB-34 Fable content audit** | **scheduled §12b, FIRST — blocks FB-28** |
+| **FB-34 Fable content audit** | ✅ **RESOLVED Jul 30** — adopted as `MISSION_CONTROL_ARCHITECTURE.md`; FB-28 unblocked and moved to §12c |
 
 Carried open from before the sitting and also §12b: FB-01 (one more nudge,
 proportions confirmed), FB-02 background, FB-05 fonts (6th), FB-13 Chart Room
