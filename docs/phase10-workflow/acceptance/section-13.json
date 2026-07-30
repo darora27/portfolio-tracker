@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "\u00a713",
   "spec_doc": "docs/phase10-workflow/specs/section-13.md",
-  "candidate_sha": null,
+  "candidate_sha": "33789eebeb170c1c60a833b5d963bbadbb64f2f7",
   "criteria": [
     {
       "id": "TST-03",
@@ -34,13 +34,12 @@
         "status": "blocked",
         "evidence": [
           "docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json",
-          "docs/phase10-baseline/section-13/f2-investigation/raw-f2-investigation.json",
-          "docs/phase10-baseline/section-13/f2-investigation/asml-cost-clearance-frame-log.json",
-          "docs/phase10-baseline/section-13/f2-investigation/asml-sampled-pixel-marked.png",
-          "docs/phase10-baseline/section-13/f2-investigation/cost-sampled-pixel-marked.png",
-          "docs/phase10-baseline/section-13/f2-investigation/ibm-sampled-pixel-marked.png"
+          "docs/phase10-baseline/section-13/review-scripts-3/out/review3-tst03-vis04.json",
+          "docs/phase10-baseline/section-13/raw-npm-test-review3.txt",
+          "docs/phase10-baseline/section-13/raw-npm-build-review3.txt",
+          "docs/phase10-workflow/reviews/section-13-review-3.md"
         ],
-        "notes": "Round 2: independently re-read the remediation's per-ticker re-investigation rather than trusting the summary. MSFT/INTC/CBRS's clamp-collision cause is unchanged and re-confirmed. ASML and COST are now genuinely differentiated, not restated: the per-frame clearance log shows ASML's sample point sits INSIDE its own planet disc in all 16 sampled frames (-10.75 to -5.38px clearance; best of a fresh 150s full run is +3.78px) -- a structural clearance issue from ASML's tight-orbit/large-disc geometry (independently confirmed in the marked crop, which shows no visible sample marker because it sits behind/inside the overlapping sun+planet silhouette). COST's marked crop independently confirmed landing on the trail ribbon's antialiased edge rather than its solid core, unlike IBM's marker, which sits centered in a wide evenly-lit ribbon -- consistent with COST's measured near-correct hue (0.636 degrees) but low luminance/chroma. Both trace to the shared TRAIL_SAMPLE_FRACTION=0.62 verification constant not guaranteeing a clear sample point for every holding's orbit-radius/disc-size combination. This is now a genuine design-vs-verification-methodology tension, not an unfixed defect: closing it would mean changing a cross-ticker verification constant (risking the 3 currently-passing tickers) or changing ORRERY radii/orbit-gap geometry that section-13's own FB-01 froze this same turn -- both outside remediation's unilateral authority per the FB-03/BLD-04 precedent. Routed to Devan as a blocked handoff rather than a third remediation round or a self-authorized pass; see docs/phase10-workflow/reviews/section-13-review-2.md."
+        "notes": "Round 3: independently re-verified the owner-ruling implementation against candidate 33789ee. Diff read line-by-line: scoped exactly to the ruling's authorization (TRAIL_SAMPLE_FRACTION retained as base, ordered +/-0.08 walk to [0.2, 0.92], all four gates byte-for-byte unchanged, no geometry constant touched). GOOG/IBM/CRM still pass, confirmed. Wrote and ran an independently-authored reviewer script (not reused from round 2 or the implementer) against a freshly built production server, twice: ASML's best ΔE reproduced at exactly 9.436 across all three independent runs (implementer's + both of mine) -- strong confirmation of a stable, geometry-determined ceiling, not sampling noise, matching round 2's structural root cause (own-disc/sun-corona contamination on ASML's tight-orbit/large-disc geometry, unresolved by the positional search exactly as the ruling anticipated: 'if none exists for a ticker, that is a reportable failure, not a silent skip'). New finding this round: reproducibility varies for one other ticker -- INTC passed easily in the implementer's run (1.398) and my second run (3.492) but missed narrowly in my first run (8.81, over the gate after the full 1,529-candidate/150s search), a real timing-dependent difference in which live orbital frame the search lands on, not a script bug (cross-checked the Lab/hue math independently). Practical read: ASML is a dependable, structurally-explained failure; the other seven pass reliably but not with 100% certainty on every run. The owner's ruling settled the METHOD question (implemented correctly, independently confirmed) but explicitly refused the one mechanism (carried_by_owner) this project has previously used to accept a section with a residual failing critical criterion ('REFUSED: carrying the criteria forward'). Whether a confirmed, reproducible, structurally-explained single-ticker residual failure now counts as an acceptable, documented owner exception (distinct from carrying it forward unresolved) is a new, narrower question the ruling's text does not settle, and -- given TST-03 is critical risk gating financial/visual encoding correctness, and every prior acceptance-with-residual-failure in this project's history required Devan's own explicit sign-off -- is not a reviewer's unilateral call. Routed to Devan; see docs/phase10-workflow/reviews/section-13-review-3.md. Also noted (not scored, not blocking): raw-trail-sampler-TST-03.json's rootCauseFinding field is stale hardcoded prose from the sampler script describing the round-1 MSFT/INTC/CBRS theory even though the same file's own samples array shows those three now passing and ASML as the sole failure -- the underlying pass/fail numbers are correct and independently reproduced; only that one prose field needs a one-line fix whenever this row is next touched."
       }
     },
     {
@@ -71,10 +70,10 @@
         "evidence": [
           "docs/phase10-baseline/section-13/trail-daily-1440x900.png",
           "docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json",
-          "docs/phase10-baseline/section-13/f2-investigation/asml-sampled-pixel-marked.png",
-          "docs/phase10-baseline/section-13/f2-investigation/cost-sampled-pixel-marked.png"
+          "docs/phase10-baseline/section-13/review-scripts-3/out/review3-tst03-vis04.json",
+          "docs/phase10-workflow/reviews/section-13-review-3.md"
         ],
-        "notes": "Shared root cause and evidence with TST-03 (same shared sampler run, same round-2 investigation). The arc/12%-white-hot-head/direction clauses remain visually present and correct; the numeric deltaE<=8 tolerance still fails for 5/8 holdings, but ASML and COST now have genuinely distinct, measured per-ticker causes rather than the round-1 restated clamp theory. Same design-vs-verification-methodology tension as TST-03, same blocked routing to Devan. See docs/phase10-workflow/reviews/section-13-review-2.md."
+        "notes": "Shared root cause and evidence with TST-03 (same shared sampler run, same round-3 independent re-verification). The arc/12%-white-hot-head/direction clauses remain visually present and correct. Round 3: the owner-ruling implementation is confirmed correct and ASML's residual failure is confirmed structural and reproducible (ΔE 9.436 across three independent runs); the open question is now only whether Devan accepts this as a documented owner exception, since he explicitly refused the carried_by_owner path for this row. Same blocked routing to Devan as TST-03. See docs/phase10-workflow/reviews/section-13-review-3.md."
       }
     },
     {
