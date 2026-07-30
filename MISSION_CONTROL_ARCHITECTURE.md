@@ -1,7 +1,7 @@
 # Mission Control content architecture — FB-34, adopted
 
 **Owner-requested Fable consult, delivered and adopted July 30, 2026.**
-This document is the authority for the Mission Control content rework. This is **§14**. A
+This document is the authority for the Mission Control content rework. This is **§15**. The Chart Room was promoted out of it into **§14**, ahead of this rework. A
 section spec is assembled *from* it; nothing here is re-derived.
 
 Devan's request, in his words:
@@ -95,8 +95,11 @@ better honoured.
 Mission Control is the **portfolio-manager page**; the Chart Room is the
 **stock page**. Rows, rings and `FULL ANALYSIS ▸` are the doors between them.
 
-Third report means **it ships in the same section as this rewiring, as stage
-two** — so it cannot slip again behind "content" work.
+**Superseded, 2026-07-30: the Chart Room is now §14, its own section, AHEAD of
+this rework.** Making it stage two of a content section was still a way for it
+to be deprioritised — it had slipped four times. It is the only genuinely
+missing thing in the queue while everything here is wiring up parts that
+already work, so it goes first.
 
 ## 8. FB-26 compatibility
 

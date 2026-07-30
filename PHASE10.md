@@ -1091,7 +1091,37 @@ Recorded July 29 alongside the adoption:
 
 ---
 
-## §14. Mission Control content rework + the Chart Room
+## §14. The Chart Room — individual stock analytics
+
+**Its own section, ahead of the Mission Control rework.** Raised four times.
+The reason it moves first: everything in §15 is wiring up components that
+already exist and work. **The Chart Room is the only genuinely missing thing
+left in the queue**, and putting the missing thing behind the misplaced things
+is how it slipped four times.
+
+**Authority: `UNIVERSE_STOCK_LAB.html`**, in the repo root, tracked, and fully
+specified. An earlier ledger note claiming a copy of it was missing was false —
+all three copies are byte-identical.
+
+**Stage one, the page:** header stat line · the full-scale graph with
+`7D/30D/SINCE BUY/MAX` detents, `RETURN/PRICE` modes, and the
+`VOO · SAME PERIOD` / `BOOK · SAME PERIOD` / `DEPTH` / `TRADES` / `COST`
+overlays · the six benches, each keeping its plain-English question.
+
+**Stage two, the doors:** a HOLDINGS row click and an ORBITS ring or blip
+click, plus `FULL ANALYSIS ▸`.
+
+**Two things the mock says about itself and the build must honour.** It is
+marked `DEMO DATA · ROUND 6 MOCK · NOT LIVE`, so every figure comes from real
+data or is absent — never a fabricated number, never a zero standing in for
+one. And `§3 FLIGHT MODEL LIVE` is the cursor physics Devan already confirmed,
+not new work.
+
+**Not a rebuild either.** Five of the six benches map onto existing components
+— `CorrelationHeatmap`, `ContributionChart`, `BetaTable`, `HoldingRiskTable`.
+The layout is new; most of the maths is not.
+
+## §15. Mission Control content rework
 
 Adopted July 30, 2026 from the owner-requested Fable consult (FB-34). The
 authority is **`MISSION_CONTROL_ARCHITECTURE.md`**; this section is assembled

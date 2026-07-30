@@ -13,10 +13,10 @@ them.
 - Managed range: §2–§18
 - Stage: `review`
 - Role: `claude_lead`
-- Status: `blocked`
-- Next actor: `devan`
+- Status: `ready`
+- Next actor: `claude`
 - Expected actor for this stage: `claude`
-- Stop reason: TST-03/VIS-04 (FB-26): the owner's sample-point-search ruling (ee7f12b) is implemented correctly and independently re-verified, but ASML remains a confirmed, reproducible, structural residual failure (deltaE 9.436 across three independent runs) that the owner explicitly refused to resolve by carrying forward. Only Devan can decide whether this residual counts as an acceptable documented owner exception. See docs/phase10-workflow/reviews/section-13-review-3.md.
+- Stop reason: none
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -97,8 +97,8 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `469af8a6d703e727b04c10d5722f64cf8c41635262ea0a75a2a7788c0ee4c151`
-- `PHASE10.md`: `a74fc05623bb8cb4335ab29c55b529150a39528d8ece45c6db8c2f1b415f55ee`
+- `PHASE10_STATE.json`: `93ca12681fe4f6690969fe2d4b520418c3055c426be912474504286ac2c5597c`
+- `PHASE10.md`: `1d6a648ab1528ca8e7a7214268431dcb7563697834282f668f2d82f3f394db3d`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
 - `docs/phase10-workflow/DESIGN_GATE.md`: `bf5a35b998fc240e58f083da48093444cffd8daabfad450caa09256b255be25c`
