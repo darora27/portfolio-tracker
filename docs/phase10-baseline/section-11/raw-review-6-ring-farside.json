@@ -1,0 +1,89 @@
+{
+  "purpose": "Review turn 6 independent re-verification of F10/VIS-16 (ring far-side alpha/width remediation). Not a re-read of the implementer or review-5 committed JSON: this turn built its own production bundle, started its own server (port 3200, independent of the implementer/prior review processes, which were already stopped), and ran the implementer-authored remediation-f10-ring-farside.mjs script fresh, 5 times.",
+  "server": "own independent build+start on port 3200, this turn",
+  "threshold": "luminanceDelta (far-side median minus reference median) > 6, unchanged across every review/remediation turn",
+  "runs": [
+    {
+      "run": 1,
+      "allSampledRingsVisibleAboveBackground": true,
+      "measurements": [
+        {
+          "ticker": "ASML",
+          "luminanceDelta": 17.000000000000004,
+          "ringVisibleAboveBackground": true
+        },
+        {
+          "ticker": "CBRS",
+          "luminanceDelta": 18.149599999999992,
+          "ringVisibleAboveBackground": true
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "allSampledRingsVisibleAboveBackground": true,
+      "measurements": [
+        {
+          "ticker": "ASML",
+          "luminanceDelta": 17.000000000000004,
+          "ringVisibleAboveBackground": true
+        },
+        {
+          "ticker": "CBRS",
+          "luminanceDelta": 18.221799999999995,
+          "ringVisibleAboveBackground": true
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "allSampledRingsVisibleAboveBackground": true,
+      "measurements": [
+        {
+          "ticker": "ASML",
+          "luminanceDelta": 17.000000000000004,
+          "ringVisibleAboveBackground": true
+        },
+        {
+          "ticker": "CBRS",
+          "luminanceDelta": 18.221799999999995,
+          "ringVisibleAboveBackground": true
+        }
+      ]
+    },
+    {
+      "run": 4,
+      "allSampledRingsVisibleAboveBackground": true,
+      "measurements": [
+        {
+          "ticker": "ASML",
+          "luminanceDelta": 20.855599999999995,
+          "ringVisibleAboveBackground": true
+        },
+        {
+          "ticker": "CBRS",
+          "luminanceDelta": 13.787399999999998,
+          "ringVisibleAboveBackground": true
+        }
+      ]
+    },
+    {
+      "run": 5,
+      "allSampledRingsVisibleAboveBackground": true,
+      "measurements": [
+        {
+          "ticker": "ASML",
+          "luminanceDelta": 17.000000000000004,
+          "ringVisibleAboveBackground": true
+        },
+        {
+          "ticker": "CBRS",
+          "luminanceDelta": 13.221799999999995,
+          "ringVisibleAboveBackground": true
+        }
+      ]
+    }
+  ],
+  "result": "PASS — all 5 runs clear the unweakened >6 threshold on both sampled rings (smallest on-canvas orbit ASML, largest on-canvas orbit CBRS)",
+  "visual_corroboration": "docs/phase10-baseline/section-11/raw-review-6-overview-ring-check.png — full 1440x900 overview capture, this turn, same server: every orbital ring reads as a complete, faint, continuous circle around the sun (not confined to the near-planet arc), and does not read as uniform graph paper (still subtle/atmospheric, consistent with the implementer's own characterisation)."
+}

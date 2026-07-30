@@ -13,10 +13,10 @@ them.
 - Managed range: §2–§18
 - Stage: `review`
 - Role: `claude_lead`
-- Status: `ready`
-- Next actor: `claude`
+- Status: `blocked`
+- Next actor: `devan`
 - Expected actor for this stage: `claude`
-- Stop reason: none
+- Stop reason: F10/VIS-16 independently re-verified and CLOSED with zero new bounded findings against application code. Section §11 cannot accept: BHV-31 (pro-rata drift tolerance) and MOB-11 (mobile-fallback scope) remain not_run and need Devan's decision, not more measurement or remediation. See docs/phase10-workflow/reviews/section-11-review-6.md and the two new entries in section.owner_decisions_pending.
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -40,7 +40,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-30-section-11-claude-remediation-f10-to-claude-review.md`
+- `docs/phase10-handoffs/2026-07-30-section-11-claude-review-6-to-devan-blocked.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -58,7 +58,7 @@ Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for
 
 Open bounded findings:
 
-- {"id":"F10","criterion":"VIS-16","risk":"high","evidence":"docs/phase10-baseline/section-11/raw-review-5-ring-alpha-v2.json","summary":"Review turn 5 corrected review-4's VIS-16 sun-center estimation error (its ASML far-side reference point had landed directly on the GOOG ticker label overlay, producing a false +10.9 luminance reading) by sourcing sun position from the render loop's own existing DOM signal (mount.dataset.evidenceSunX/Y) instead of a pixel-scan estimate, and by sampling a 15-point median luminance arc instead of one exact point (robust to a single label collision). Both re-sampled rings (ASML, smallest orbit; INTC, second-largest on-canvas orbit) read at background level at the far side: delta -0.7 against a >6 pass threshold, confirmed by direct RGB inspection showing uniform dark starfield with no ring signature. A targeted near-planet check (+/-15deg from the planet's own angle) does show a distinct blue-tinted ring above background, confirming the ring renders near its peak-alpha zone but does not sustain to the far side / floor alpha as VIS-16 requires ('full circle always present', far-side alpha >= 0.22).","required_change":"Investigate why the rendered far-side alpha does not read above background at the 0.22 floor token (src/lib/observatory/scene-model.ts:20) -- check per-fragment alpha application across the full ring geometry, and consider whether 0.22 is simply imperceptible at this background/exposure combination (a product decision if so, not only a code fix). Do not weaken the >6 luminance-delta threshold or the two-ring sampling requirement.","ledger_rows":[],"remediation_result":"PASS for implementer evidence, via two independent root-caused fixes (not one). First, the far-side SAMPLE POINT itself was wrong: review-5-ring-alpha-v2.mjs assumed the ring's overview projection is a circle centred on the sun, but the overview camera is oblique (elevated, forward-offset -- cameraForOverview), so a flat ring projects onto the screen as an ELLIPSE; the assumed-circle far point can miss the true ring band (confirmed: CBRS's assumed far point fell 192px off-canvas from its true camera-projected position). Fixed with a new render-loop DOM signal, planet.label.dataset.ringFarArc (OrreryScene.tsx) -- a 5-point arc of exact 3D far-side points run through the real per-frame camera projection, no circle assumed. With ONLY that fix, the far side still read at background level (delta ~2) -- ruling out 'measurement bug alone' and confirming F10's original finding was substantively correct. Second, isolated with a direct stress test (forced aAlpha=1, uColor=magenta -- full ellipse rendered correctly, proving the shader/mesh pipeline itself was sound), two real defects: (a) OVERVIEW_RING_ALPHA.floor (0.22) is genuinely below the perceptibility threshold at this ring color/background -- even the PEAK value (0.55) applied uniformly still failed (ASML delta 1.72, CBRS delta 2.79); (b) ringDescriptor.widthPx (1.5, the intended on-screen ring width) was computed in scene-model.ts but never consumed by the renderer, which used a FIXED 3D half-width (0.012) regardless of orbitRadius -- under this perspective camera a fixed 3D width projects to progressively fewer screen pixels as orbitRadius grows, causing sub-pixel dropout for outer rings independent of alpha (CBRS stayed undetectable even at alpha 1.0 with the old fixed width). Fixed by computing the 3D half-width from widthPx and the ring's own farthest camera distance (32-point sample around the full circle). Both levers re-tuned together empirically against 5 repeated live measurements: peak/floor raised 0.55/0.22 -> 0.85/0.7 (still a genuine token pair, real falloff, not a single constant), widthPx raised 1.5 -> 4. Result, 5 runs: ASML delta 17.0-18.0, CBRS delta 10.7-19.5, allSampledRingsVisibleAboveBackground true every run, unweakened >6 threshold and two-ring sampling requirement both untouched. See docs/phase10-workflow/acceptance/section-11.json VIS-16.implementer for full detail. Flagged for reviewer: the specific token values this criterion's description cites (0.22/0.55) changed to 0.7/0.85 -- offered for owner visual confirmation if that reads as a product change beyond what this finding's required_change anticipated.","remediation_evidence":"src/components/observatory/orrery/OrreryScene.tsx; src/lib/observatory/scene-model.ts; src/lib/observatory/scene-model.test.ts; docs/phase10-baseline/section-11/scripts/remediation-f10-ring-farside.mjs; docs/phase10-baseline/section-11/raw-remediation-f10-ring-farside.json; docs/phase10-baseline/section-11/raw-remediation-f10-ring-farside.png"}
+None.
 
 Acceptance ledger:
 
@@ -103,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `7513364cb584f506340b286e95108b3191a932b2bc5c7f82cd1e609475e72fa4`
+- `PHASE10_STATE.json`: `da9245780930a3652e545a801c2868bf77e7ad6069a1a7fa0b2d2bcc807a004b`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

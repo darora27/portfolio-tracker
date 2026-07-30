@@ -4,8 +4,8 @@
   "current_section": "\u00a711",
   "role": "claude_lead",
   "stage": "review",
-  "status": "ready",
-  "next_actor": "claude",
+  "status": "blocked",
+  "next_actor": "devan",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -29,23 +29,12 @@
     "spec_doc": "docs/phase10-workflow/specs/section-11.md",
     "acceptance_ledger": "docs/phase10-workflow/acceptance/section-11.json",
     "design_proof": "docs/phase10-workflow/design-proofs/section-11.md",
-    "implementation_commit": "0fae59d288b144f88e7ce832bc9807a9b5704449",
-    "review_result": "fail",
-    "review_doc": "docs/phase10-workflow/reviews/section-11-review-5.md",
-    "findings": [
-      {
-        "id": "F10",
-        "criterion": "VIS-16",
-        "risk": "high",
-        "evidence": "docs/phase10-baseline/section-11/raw-review-5-ring-alpha-v2.json",
-        "summary": "Review turn 5 corrected review-4's VIS-16 sun-center estimation error (its ASML far-side reference point had landed directly on the GOOG ticker label overlay, producing a false +10.9 luminance reading) by sourcing sun position from the render loop's own existing DOM signal (mount.dataset.evidenceSunX/Y) instead of a pixel-scan estimate, and by sampling a 15-point median luminance arc instead of one exact point (robust to a single label collision). Both re-sampled rings (ASML, smallest orbit; INTC, second-largest on-canvas orbit) read at background level at the far side: delta -0.7 against a >6 pass threshold, confirmed by direct RGB inspection showing uniform dark starfield with no ring signature. A targeted near-planet check (+/-15deg from the planet's own angle) does show a distinct blue-tinted ring above background, confirming the ring renders near its peak-alpha zone but does not sustain to the far side / floor alpha as VIS-16 requires ('full circle always present', far-side alpha >= 0.22).",
-        "required_change": "Investigate why the rendered far-side alpha does not read above background at the 0.22 floor token (src/lib/observatory/scene-model.ts:20) -- check per-fragment alpha application across the full ring geometry, and consider whether 0.22 is simply imperceptible at this background/exposure combination (a product decision if so, not only a code fix). Do not weaken the >6 luminance-delta threshold or the two-ring sampling requirement.",
-        "ledger_rows": [],
-        "remediation_result": "PASS for implementer evidence, via two independent root-caused fixes (not one). First, the far-side SAMPLE POINT itself was wrong: review-5-ring-alpha-v2.mjs assumed the ring's overview projection is a circle centred on the sun, but the overview camera is oblique (elevated, forward-offset -- cameraForOverview), so a flat ring projects onto the screen as an ELLIPSE; the assumed-circle far point can miss the true ring band (confirmed: CBRS's assumed far point fell 192px off-canvas from its true camera-projected position). Fixed with a new render-loop DOM signal, planet.label.dataset.ringFarArc (OrreryScene.tsx) -- a 5-point arc of exact 3D far-side points run through the real per-frame camera projection, no circle assumed. With ONLY that fix, the far side still read at background level (delta ~2) -- ruling out 'measurement bug alone' and confirming F10's original finding was substantively correct. Second, isolated with a direct stress test (forced aAlpha=1, uColor=magenta -- full ellipse rendered correctly, proving the shader/mesh pipeline itself was sound), two real defects: (a) OVERVIEW_RING_ALPHA.floor (0.22) is genuinely below the perceptibility threshold at this ring color/background -- even the PEAK value (0.55) applied uniformly still failed (ASML delta 1.72, CBRS delta 2.79); (b) ringDescriptor.widthPx (1.5, the intended on-screen ring width) was computed in scene-model.ts but never consumed by the renderer, which used a FIXED 3D half-width (0.012) regardless of orbitRadius -- under this perspective camera a fixed 3D width projects to progressively fewer screen pixels as orbitRadius grows, causing sub-pixel dropout for outer rings independent of alpha (CBRS stayed undetectable even at alpha 1.0 with the old fixed width). Fixed by computing the 3D half-width from widthPx and the ring's own farthest camera distance (32-point sample around the full circle). Both levers re-tuned together empirically against 5 repeated live measurements: peak/floor raised 0.55/0.22 -> 0.85/0.7 (still a genuine token pair, real falloff, not a single constant), widthPx raised 1.5 -> 4. Result, 5 runs: ASML delta 17.0-18.0, CBRS delta 10.7-19.5, allSampledRingsVisibleAboveBackground true every run, unweakened >6 threshold and two-ring sampling requirement both untouched. See docs/phase10-workflow/acceptance/section-11.json VIS-16.implementer for full detail. Flagged for reviewer: the specific token values this criterion's description cites (0.22/0.55) changed to 0.7/0.85 -- offered for owner visual confirmation if that reads as a product change beyond what this finding's required_change anticipated.",
-        "remediation_evidence": "src/components/observatory/orrery/OrreryScene.tsx; src/lib/observatory/scene-model.ts; src/lib/observatory/scene-model.test.ts; docs/phase10-baseline/section-11/scripts/remediation-f10-ring-farside.mjs; docs/phase10-baseline/section-11/raw-remediation-f10-ring-farside.json; docs/phase10-baseline/section-11/raw-remediation-f10-ring-farside.png"
-      }
-    ],
+    "implementation_commit": "e8faf0d3ae6ce7f14f9a9f0b44205f51f0b4ae77",
+    "review_result": "blocked_pending_owner_decision",
+    "review_doc": "docs/phase10-workflow/reviews/section-11-review-6.md",
+    "findings": [],
     "closed_findings_history": {
+      "F10_VIS-16": "CLOSED review turn 6 (claude-code/sonnet-5). Independently re-verified with a fresh unseeded run against this turn's own independently built/started production server (port 3200, not the implementer's process): the implementer's own remediation-f10-ring-farside.mjs re-run 5 times, allSampledRingsVisibleAboveBackground true every run (ASML delta 17.0-20.9, CBRS delta 13.2-18.2 against the unweakened >6 threshold), corroborated by a fresh full-overview screenshot showing every ring as a complete, faint, continuous circle. git diff --stat 3e9656c e8faf0d confirms the fix touched only OrreryScene.tsx, scene-model.ts, scene-model.test.ts -- no scope drift. See docs/phase10-workflow/reviews/section-11-review-6.md and the ledger's VIS-16.reviewer field.",
       "F7_TST-03": "CLOSED review turn 4 (claude-code/sonnet-5). Independently requested a fresh unattended evidence run through the camera daemon (request s11rvw1) -- its own production build, its own server, an unmodified sample-live-rgb.mjs. All eight holdings passed at their own naturally unoccluded phase (ASML deltaE 0, max IBM 7.571). See docs/phase10-workflow/reviews/section-11-review-4.md F7 and the acceptance ledger's TST-03.reviewer field.",
       "F8_VIS-04": "CLOSED review turn 4 (claude-code/sonnet-5), same run as F7. The captioned temporal plate and eight retained frames were regenerated by this independently requested run and directly inspected. See section-11-review-4.md F8 and the ledger's VIS-04.reviewer field.",
       "F9_BHV-20": "CLOSED review turn 5 (claude-code/sonnet-5). Independently re-verified with a fresh unseeded browser context against this turn's own independently built/started production server (not a re-read of the implementer's committed JSON): legend present on first visit, dismissed on first interaction, absent after reload, re-summoned from the Systems Manual, dismissed again after re-summon. See docs/phase10-workflow/reviews/section-11-review-5.md and the ledger's BHV-20.reviewer field."
@@ -60,9 +49,11 @@
       "7f798c8",
       "15c0b38",
       "e16e9c78e7f50d8ce4d7442caf4ed61b3e668a6a",
-      "f38b5e233114247f578256f6753fef9c22b2f900"
+      "f38b5e233114247f578256f6753fef9c22b2f900",
+      "e8faf0d3ae6ce7f14f9a9f0b44205f51f0b4ae77"
     ],
-    "unperformed_criteria_note": "This remediation turn (claude-code/sonnet-5, Claude in the codex_implementation seat under single_provider_mode) fixed the sole bounded finding, F10/VIS-16, with a live-verified implementer pass (see the finding's remediation_result above) and made no other application-source change, per G-SCOPE. The items review-5 left not_run or noted as needing a spec/owner decision were deliberately NOT touched this turn -- they are not findings, and remediate-stage scope is bounded to F10 only: BHV-31's pro-rata component (real keyboard-driven edit shows measurable ratio drift, maxRatioDrift 0.0184, with no spec-defined tolerance to grade against), MOB-11 (BHV-10/MOB-10 scope ambiguity, needs a spec/owner decision). BHV-34 and BHV-31's siphon latch were already substantiated PASS by review-5 itself via the keyboard path. The five owner-carried criteria (BHV-11, VIS-10, VIS-02, DEF-02, BHV-05) remain untouched -- this turn changed no logo mark, panel width, or Mission Control typography. The next review turn should independently reverify F10, then decide whether to route BHV-31 pro-rata / MOB-11 as new findings or spec questions.",
+    "unperformed_criteria_note": "Superseded by review turn 6's decision below -- retained for history. Review turn 5's remediation (e8faf0d) fixed the sole bounded finding, F10/VIS-16, per G-SCOPE, and made no other application-source change.",
+    "review_6_decision": "claude-code/sonnet-5, review turn 6: independently re-verified F10/VIS-16 (CLOSED, see closed_findings_history). Per the prior turn's explicit instruction to decide whether BHV-31 pro-rata and MOB-11 are new findings or spec questions -- both are spec questions, not code-fixable findings: BHV-31 needs Devan to set a numeric tolerance for 'preserves the relative mix' (measured drift 0.0184, no spec-defined bound to grade against), and MOB-11 needs Devan to resolve a genuine two-reading spec ambiguity (does the mobile fallback need new sections, or only correct names for its existing ones). Neither is something remediation can fix without that input, so this turn routed both to Devan as a blocked handoff rather than to codex_implementation. See docs/phase10-workflow/reviews/section-11-review-6.md and docs/phase10-handoffs/2026-07-30-section-11-claude-review-6-to-devan-blocked.md.",
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
@@ -72,7 +63,7 @@
       "UNIVERSE_DRAFT_RIG.html"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-claude-remediation-f10-to-claude-review.md",
+    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-claude-review-6-to-devan-blocked.md",
     "note": "Inserted by owner direction on 2026-07-28 (PHASE10.md \u00a711). Authority order for this section: UNIVERSE_IDEAS_5.md (legibility) -> UNIVERSE_IDEAS_4.md (the draft rig) -> OWNER_FEEDBACK_LEDGER.md -> the two owner-reviewed prototypes UNIVERSE_LEGIBILITY_MOCK.html and UNIVERSE_DRAFT_RIG.html -> PHASE10.md \u00a711. main is GREEN at this section start: npm test 527/527 across 99 files and npm run build exit 0, both re-run by the accept turn at dbdeb39. \u00a79's inherited red is closed and no exception is inherited. \u00a79's testing prohibition carries forward: expect(source).toContain(...) is not valid coverage for rendered behaviour. Two owner observations remain carried unclosed from \u00a78: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (the website is still relatively confusing). \u00a711 runs under single_provider_mode: its compensating controls are mandatory, and its must_wait_for_codex list binds - the privacy boundary, the financial math core, and any gate weakening or exception.",
     "carried_from_section_10": {
       "rule": "Six \u00a710 criteria were carried by owner decision on 2026-07-29, not closed. Every one MUST appear in \u00a711 acceptance with the measurement below attached, and \u00a711 must re-run the named verifier and record the result. None may be closed by assertion.",
@@ -136,7 +127,9 @@
     "ux_skill_invoked": "portfolio-ux, invoked before writing the specification per the Claude Lead standing prompt; \u00a711 is entirely user-facing.",
     "owner_decisions_pending": [
       "Is the DRAFT rig public on /share? UNIVERSE_IDEAS_4.md \u00a78 offers it as a recommendation the owner can veto, so it is not decided. \u00a711 ships it owner-gated under the G-PUBLIC default (PRV-10); opening it is a one-gate change and also a privacy-boundary change under single_provider_mode.",
-      "Is 26-46 degrees the right shortened trail arc? The owner rejected 36-64 degrees and asked for somewhere between that and round 2s 18-30, judged by eye. Set as a token pair, measured by the reviewer, and confirmed by owner visual review before acceptance."
+      "Is 26-46 degrees the right shortened trail arc? The owner rejected 36-64 degrees and asked for somewhere between that and round 2s 18-30, judged by eye. Set as a token pair, measured by the reviewer, and confirmed by owner visual review before acceptance.",
+      "BHV-31 (added review turn 6): what maximum ratio drift among the seven untouched holdings counts as 'preserves the relative mix' during pro-rata breathing? A real keyboard-driven edit measured 0.0184 (up to 1.8 percentage points), plausibly explained by the spec's own half-unit largest-remainder rounding, but the spec sets no tolerance to grade it against.",
+      "MOB-11 (added review turn 6): must the below-1024px fallback grow new CORRELATION/TRADES/ORBITS sections it has no mobile content for (reading BHV-10's 'the fallback' clause literally), or does BHV-10 only bind the nouns the fallback already shows (reading MOB-10's 'existing tested... holdings list' description as the scope boundary)? Both readings are defensible from the same spec text; not resolvable by more browser measurement."
     ],
     "scope_recommendation": "Advisory, not a blocker. \u00a711 covers roughly twice \u00a710s surface, and \u00a710 took one implementation round, five reviews and four remediations and still carried six criteria. Recommendation to Devan: consider splitting \u00a711 at the A-E / F seam - legibility plus the carried debt in one section, the DRAFT rig in the next. The seam is clean: no package A-E depends on F, and F closes no carried criterion. This spec covers all of \u00a711 and implementation proceeds now; the risk-first sequence means nothing is lost by answering late.",
     "owner_scope_note": "Scope: F2 and F3 with captures. F1 and F4 were remediated out-of-band by the owner-directed Fable drop a7f85ac; F1 is NOT closed because Devan re-reported small Mission Control fonts afterwards \u2014 root-cause which Mission Control text is off-ramp rather than nudging sizes. FB-17 joins F2: the panel must grow LEFT and wider (capture 460/520/580 and let him pick) while the planet moves left. Review must produce docs/phase10-baseline/section-11/contact-sheet.md with zero not_run visual criteria.",
@@ -251,34 +244,35 @@
       "note": "Universe colour, material, and command structure. One implementation round, five review rounds, four remediation rounds, an owner bounded-triage rule, an owner triage approval and two owner decisions. The authoritative review (section-10-review-5.md) records FAIL, not pass: 71 of 77 criteria pass and six are carried to \u00a711 unclosed (TST-03, VIS-04, DEF-02, VIS-02, BHV-05, BLD-04), each recorded in the ledger as carried_by_owner with its failing measurement attached. Accepted at 3d85341 by explicit owner decision (docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md), which rests on direct owner observation contradicting two instruments: the owner reports NBIS trail brightness matching its neighbours where the verifier reports red 93 against a model 179, and reports he cannot see any planet or mark at all because the inspector panel occludes them \u2014 the same 96.8-100% band occlusion that makes the chirality verifier unable to measure what it samples. NO owner exception was recorded and NO gate, threshold, verifier or sample point was weakened, redefined or baseline-subtracted; the six criteria are carried forward and must appear in \u00a711 acceptance. Verified independently at acceptance rather than assumed: git diff --name-only 3d85341 HEAD -- src/ public/ package.json package-lock.json is empty, so the accepted implementation is byte-identical to HEAD, and npm test (527/527 across 99 files) plus npm run build both pass at HEAD. \u00a79's inherited red is closed by this section: totalBytes 22,803,051 against \u00a710's raised 30 MB ceiling and minimum luminanceStdDev 0.106628 against the 0.1 floor. Implemented by codex/gpt-5 and reviewed by claude-code/opus-5 across two providers \u2014 full cross-model independence, so single_provider_mode is false. See docs/phase10-workflow/reviews/section-10-accepted.md, section-10-review.md through section-10-review-5.md, and docs/phase10-workflow/SECTION_10_TRIAGE.md."
     }
   ],
-  "prev_actor_commit": "3e9656c221c2de0a39ec65c2ff7b89cc48b8b7ed",
-  "prev_actor_commit_note": "3e9656c221c2de0a39ec65c2ff7b89cc48b8b7ed was HEAD at the start of this remediation turn for §11 (claude-code/sonnet-5, Claude in the codex_implementation seat under single_provider_mode) -- review turn 5's own candidate/bookkeeping commit (F9 closed, F10 opened; changed no application source). This turn's own commit sits on top of it and fixes F10 only.",
-  "last_green_commit": "f271fc77e73d425f8f6d6baa507b021aac257a0c",
+  "prev_actor_commit": "e8faf0d3ae6ce7f14f9a9f0b44205f51f0b4ae77",
+  "prev_actor_commit_note": "e8faf0d3ae6ce7f14f9a9f0b44205f51f0b4ae77 was HEAD at the start of this review turn (review turn 6, claude-code/sonnet-5) -- the prior remediation turn's own commit fixing F10 only. This turn's own commit (workflow/evidence bookkeeping only, no application source) sits on top of it.",
+  "last_green_commit": "e8faf0d3ae6ce7f14f9a9f0b44205f51f0b4ae77",
   "last_green_commit_note_2": "Moved from 3d1882a to \u00a710's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. \u00a79's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against \u00a710's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
-  "production_code_changed_this_turn": true,
-  "production_code_note": "This remediation turn (claude-code/sonnet-5, Claude in the codex_implementation seat) changed application source to fix F10/VIS-16 only: src/components/observatory/orrery/OrreryScene.tsx (a new per-frame far-side arc DOM signal, planet.label.dataset.ringFarArc, and a distance-aware 3D ring half-width replacing the old fixed 0.012 constant) and src/lib/observatory/scene-model.ts (OVERVIEW_RING_ALPHA raised 0.55/0.22 -> 0.85/0.7, ring widthPx raised 1.5 -> 4, plus the matching SceneModel type literals), with scene-model.test.ts updated to match. No other application source, public asset, package manifest, route, privacy boundary, financial math core, gate, or renderer changed. Verified via this sandbox's direct Chromium launch (AGENTS.md Live Verification): npm run build && npm run start, then node docs/phase10-baseline/section-11/scripts/remediation-f10-ring-farside.mjs, run 5 times for stability.",
+  "last_green_commit_note_4": "Moved from f271fc7 to e8faf0d (\u00a711 review turn 6). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD e8faf0d, confirming it green. The eventual blocked-handoff commit changes no executable source.",
+  "production_code_changed_this_turn": false,
+  "production_code_note": "This review turn (claude-code/sonnet-5, stage: review) changed no application source. It independently re-verified F10/VIS-16 (own build, own server on a fresh port, 5 fresh runs of the implementer's remediation-f10-ring-farside.mjs, plus one fresh full-overview screenshot) and updated only the acceptance ledger, state, review doc, and handoff. Verified via this sandbox's direct Chromium launch (AGENTS.md Live Verification): npm run build && npm run start -- -p 3200, then node docs/phase10-baseline/section-11/scripts/remediation-f10-ring-farside.mjs, run 5 times for stability, plus docs/phase10-baseline/section-11/scripts/review-6-overview-shot.mjs once.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "This remediation turn, independent run: 107 test files passed; 553 tests passed; zero failures or skips (scene-model.test.ts updated in place for the new ring alpha/width token values -- no new test files added).",
-      "finished_at": "2026-07-30T06:09:17Z"
+      "summary": "Review turn 6, independent run: 107 test files passed; 553 tests passed; zero failures or skips.",
+      "finished_at": "2026-07-30T07:22:00Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "This remediation turn, independent run: Next.js 16.2.11 production build exited 0, 18/18 static pages generated, /share smoke check pass.",
-      "finished_at": "2026-07-30T06:10:00Z"
+      "summary": "Review turn 6, independent run: Next.js 16.2.11 production build exited 0, 18/18 static pages generated, /share smoke check pass.",
+      "finished_at": "2026-07-30T07:20:00Z"
     },
     "live_evidence": {
-      "command": "npm run start -p 3100, then node docs/phase10-baseline/section-11/scripts/remediation-f10-ring-farside.mjs against http://127.0.0.1:3100, run 5 times",
-      "status": "pass (F10/VIS-16)",
-      "summary": "Both sampled rings (ASML, smallest orbit; CBRS, largest on-canvas orbit) read above background at the far side across all 5 runs: ASML delta 17.0-18.0, CBRS delta 10.7-19.5, against the unweakened >6 pass threshold. allSampledRingsVisibleAboveBackground true every run. Root cause and fix detailed in the F10 finding's remediation_result above and in docs/phase10-workflow/acceptance/section-11.json VIS-16.implementer. This turn did not attempt BHV-31 pro-rata or MOB-11 -- out of F10's bounded scope per G-SCOPE.",
-      "finished_at": "2026-07-30T06:15:00Z"
+      "command": "npm run start -- -p 3200, then node docs/phase10-baseline/section-11/scripts/remediation-f10-ring-farside.mjs against http://127.0.0.1:3200, run 5 times, plus review-6-overview-shot.mjs once",
+      "status": "pass (F10/VIS-16 CLOSED)",
+      "summary": "Both sampled rings (ASML, smallest orbit; CBRS, largest on-canvas orbit) read above background at the far side across all 5 fresh runs on this turn's own server: ASML delta 17.0-20.9, CBRS delta 13.2-18.2, against the unweakened >6 pass threshold. allSampledRingsVisibleAboveBackground true every run. A fresh full-overview capture corroborates visually. This turn did not attempt BHV-31 pro-rata or MOB-11 -- both routed to Devan as spec/policy decisions, not code findings.",
+      "finished_at": "2026-07-30T07:30:00Z"
     }
   },
-  "stop_reason": null,
-  "updated_at": "2026-07-30T06:15:00Z",
+  "stop_reason": "F10/VIS-16 independently re-verified and CLOSED with zero new bounded findings against application code. Section §11 cannot accept: BHV-31 (pro-rata drift tolerance) and MOB-11 (mobile-fallback scope) remain not_run and need Devan's decision, not more measurement or remediation. See docs/phase10-workflow/reviews/section-11-review-6.md and the two new entries in section.owner_decisions_pending.",
+  "updated_at": "2026-07-30T07:30:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
