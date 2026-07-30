@@ -1,0 +1,6 @@
+{"run":1,"maximumMs":0,"entries":[]}
+{"run":2,"maximumMs":0,"entries":[]}
+{"run":3,"maximumMs":0,"entries":[]}
+{"run":4,"maximumMs":0,"entries":[]}
+{"run":5,"maximumMs":0,"entries":[]}
+control maximumMs: 0

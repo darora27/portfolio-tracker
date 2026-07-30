@@ -1,0 +1,54 @@
+run 1: BREACH maximumMs=53
+longTasks [{"duration":53,"startTime":595}]
+stageLog [{"stage":"model","t":1084},{"stage":"renderer-gl-context","t":1097.300000011921},{"stage":"renderer-dom","t":1098.199999988079},{"stage":"environment-stars","t":1115.300000011921},{"stage":"environment-aurora","t":1131.1000000238419},{"stage":"environment","t":1146},{"stage":"sun","t":1165.4000000357628},{"stage":"planets-2","t":1180.9000000357628},{"stage":"planets-4","t":1196.800000011921},{"stage":"planets-6","t":1213.9000000357628},{"stage":"planets-complete","t":1228.699999988079},{"stage":"secondary-moons","t":1248.1000000238419},{"stage":"secondary-satellites","t":1264.800000011921},{"stage":"secondary-belt","t":1278.4000000357628},{"stage":"secondary-objects","t":1295.9000000357628},{"stage":"texture-worker","t":1312},{"stage":"complete","t":1330.9000000357628}]
+  task 53ms@595: active stage at start = undefined (set at undefined); next transition = model at 1084
+run 2: clean, maximumMs=0
+run 3: clean, maximumMs=0
+run 4: BREACH maximumMs=54
+longTasks [{"duration":54,"startTime":144.80000001192093}]
+stageLog [{"stage":"model","t":641.6000000238419},{"stage":"renderer-gl-context","t":654.9000000357628},{"stage":"renderer-dom","t":656.5},{"stage":"environment-stars","t":670.7000000476837},{"stage":"environment-aurora","t":686.2000000476837},{"stage":"environment","t":700.7000000476837},{"stage":"sun","t":720.2000000476837},{"stage":"planets-2","t":736.8000000119209},{"stage":"planets-4","t":753.9000000357628},{"stage":"planets-6","t":770.5},{"stage":"planets-complete","t":786},{"stage":"secondary-moons","t":804.6000000238419},{"stage":"secondary-satellites","t":818.9000000357628},{"stage":"secondary-belt","t":835},{"stage":"secondary-objects","t":850.2000000476837},{"stage":"texture-worker","t":867.4000000357628},{"stage":"complete","t":886.7000000476837}]
+  task 54ms@144.80000001192093: active stage at start = undefined (set at undefined); next transition = model at 641.6000000238419
+run 5: BREACH maximumMs=53
+longTasks [{"duration":53,"startTime":149.5999999642372}]
+stageLog [{"stage":"model","t":636.0999999642372},{"stage":"renderer-gl-context","t":649.8000000119209},{"stage":"renderer-dom","t":651.5},{"stage":"environment-stars","t":666.6999999880791},{"stage":"environment-aurora","t":682},{"stage":"environment","t":696.3999999761581},{"stage":"sun","t":715.8999999761581},{"stage":"planets-2","t":733.6999999880791},{"stage":"planets-4","t":748.3000000119209},{"stage":"planets-6","t":765.6999999880791},{"stage":"planets-complete","t":781.5999999642372},{"stage":"secondary-moons","t":798.3999999761581},{"stage":"secondary-satellites","t":814.6999999880791},{"stage":"secondary-belt","t":829.8000000119209},{"stage":"secondary-objects","t":846.5},{"stage":"texture-worker","t":863.1999999880791},{"stage":"complete","t":881.8000000119209}]
+  task 53ms@149.5999999642372: active stage at start = undefined (set at undefined); next transition = model at 636.0999999642372
+run 6: BREACH maximumMs=54
+longTasks [{"duration":54,"startTime":148.89999997615814}]
+stageLog [{"stage":"model","t":634.8999999761581},{"stage":"renderer-gl-context","t":649.1999999880791},{"stage":"renderer-dom","t":650.5},{"stage":"environment-stars","t":664.3000000119209},{"stage":"environment-aurora","t":680.5},{"stage":"environment","t":695.3999999761581},{"stage":"sun","t":714.6000000238419},{"stage":"planets-2","t":731.6000000238419},{"stage":"planets-4","t":746.3999999761581},{"stage":"planets-6","t":763.1000000238419},{"stage":"planets-complete","t":779.3000000119209},{"stage":"secondary-moons","t":797.1999999880791},{"stage":"secondary-satellites","t":813.6000000238419},{"stage":"secondary-belt","t":828.8000000119209},{"stage":"secondary-objects","t":844.8000000119209},{"stage":"texture-worker","t":863.8000000119209},{"stage":"complete","t":881.3999999761581}]
+  task 54ms@148.89999997615814: active stage at start = undefined (set at undefined); next transition = model at 634.8999999761581
+run 1: BREACH maximumMs=54
+longTasks [{"duration":54,"startTime":164.60000002384186}]
+stageLog [{"stage":"model","t":647.3000000119209},{"stage":"renderer-gl-context","t":660.8000000119209},{"stage":"renderer-dom","t":662.3000000119209},{"stage":"environment-stars","t":677.6000000238419},{"stage":"environment-aurora","t":693.8000000119209},{"stage":"environment","t":709.8999999761581},{"stage":"sun","t":729.8000000119209},{"stage":"planets-2","t":744.5},{"stage":"planets-4","t":759.5},{"stage":"planets-6","t":776.1000000238419},{"stage":"planets-complete","t":792},{"stage":"secondary-moons","t":810.6000000238419},{"stage":"secondary-satellites","t":826.3000000119209},{"stage":"secondary-belt","t":842.3999999761581},{"stage":"secondary-objects","t":858.6999999880791},{"stage":"texture-worker","t":875},{"stage":"complete","t":895.1000000238419}]
+  task 54ms@164.60000002384186: active stage at start = undefined (set at undefined); next transition = model at 647.3000000119209
+run 2: BREACH maximumMs=52
+longTasks [{"duration":52,"startTime":153.60000002384186}]
+stageLog [{"stage":"model","t":640.5},{"stage":"renderer-gl-context","t":653.6000000238419},{"stage":"renderer-dom","t":654.8000000119209},{"stage":"environment-stars","t":671.5},{"stage":"environment-aurora","t":687.5},{"stage":"environment","t":702.9000000357628},{"stage":"sun","t":720.4000000357628},{"stage":"planets-2","t":738.4000000357628},{"stage":"planets-4","t":752.1000000238419},{"stage":"planets-6","t":769.4000000357628},{"stage":"planets-complete","t":784.6000000238419},{"stage":"secondary-moons","t":803.1000000238419},{"stage":"secondary-satellites","t":818.4000000357628},{"stage":"secondary-belt","t":836.3000000119209},{"stage":"secondary-objects","t":850.6000000238419},{"stage":"texture-worker","t":869.3000000119209},{"stage":"complete","t":886.3000000119209}]
+  task 52ms@153.60000002384186: active stage at start = undefined (set at undefined); next transition = model at 640.5
+run 3: BREACH maximumMs=54
+longTasks [{"duration":54,"startTime":147.60000002384186}]
+stageLog [{"stage":"model","t":636.6999999880791},{"stage":"renderer-gl-context","t":651},{"stage":"renderer-dom","t":652.1999999880791},{"stage":"environment-stars","t":663.3000000119209},{"stage":"environment-aurora","t":678.8000000119209},{"stage":"environment","t":695.9000000357628},{"stage":"sun","t":715},{"stage":"planets-2","t":730.1000000238419},{"stage":"planets-4","t":745.1000000238419},{"stage":"planets-6","t":761.6999999880791},{"stage":"planets-complete","t":778.1999999880791},{"stage":"secondary-moons","t":795.6999999880791},{"stage":"secondary-satellites","t":812.8000000119209},{"stage":"secondary-belt","t":827.3000000119209},{"stage":"secondary-objects","t":843.8000000119209},{"stage":"texture-worker","t":860.6000000238419},{"stage":"complete","t":879.6999999880791}]
+  task 54ms@147.60000002384186: active stage at start = undefined (set at undefined); next transition = model at 636.6999999880791
+run 4: BREACH maximumMs=56
+longTasks [{"duration":56,"startTime":142.80000001192093}]
+stageLog [{"stage":"model","t":629.1999999880791},{"stage":"renderer-gl-context","t":643.5},{"stage":"renderer-dom","t":645.6999999880791},{"stage":"environment-stars","t":657.0999999642372},{"stage":"environment-aurora","t":673.5},{"stage":"environment","t":687.8000000119209},{"stage":"sun","t":708.1999999880791},{"stage":"planets-2","t":724.3000000119209},{"stage":"planets-4","t":739.0999999642372},{"stage":"planets-6","t":755.6999999880791},{"stage":"planets-complete","t":772.3000000119209},{"stage":"secondary-moons","t":789.5},{"stage":"secondary-satellites","t":806.3000000119209},{"stage":"secondary-belt","t":821.5999999642372},{"stage":"secondary-objects","t":837.5},{"stage":"texture-worker","t":854.5},{"stage":"complete","t":873.8000000119209}]
+  task 56ms@142.80000001192093: active stage at start = undefined (set at undefined); next transition = model at 629.1999999880791
+run 5: BREACH maximumMs=50
+longTasks [{"duration":50,"startTime":301.89999997615814}]
+stageLog [{"stage":"model","t":784.5999999642372},{"stage":"renderer-gl-context","t":797.3999999761581},{"stage":"renderer-dom","t":798.5999999642372},{"stage":"environment-stars","t":814.5999999642372},{"stage":"environment-aurora","t":830.5999999642372},{"stage":"environment","t":845.3999999761581},{"stage":"sun","t":863.1999999880791},{"stage":"planets-2","t":879.6999999880791},{"stage":"planets-4","t":894.8999999761581},{"stage":"planets-6","t":912.5999999642372},{"stage":"planets-complete","t":927.5},{"stage":"secondary-moons","t":945.8999999761581},{"stage":"secondary-satellites","t":962},{"stage":"secondary-belt","t":979.0999999642372},{"stage":"secondary-objects","t":995.2999999523163},{"stage":"texture-worker","t":1012.3999999761581},{"stage":"complete","t":1029.8999999761581}]
+  task 50ms@301.89999997615814: active stage at start = undefined (set at undefined); next transition = model at 784.5999999642372
+run 6: clean, maximumMs=0
+run 1: clean, maximumMs=0
+run 2: clean, maximumMs=0
+run 3: clean, maximumMs=0
+run 4: clean, maximumMs=0
+run 5: clean, maximumMs=0
+run 6: clean, maximumMs=0
+run 1: clean, maximumMs=0
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.waitForTimeout: Target page, context or browser has been closed
+    at /Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-11/scripts/stage-correlate-diag.mjs:39:14
+
+Node.js v24.18.0

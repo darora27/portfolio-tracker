@@ -719,6 +719,8 @@ export default function OrreryScene({
     renderer.domElement.setAttribute("aria-hidden", "true");
     renderer.domElement.style.cssText = "width:100%;height:100%;display:block";
     mount.appendChild(renderer.domElement);
+    mount.dataset.sceneConstructionStage = "renderer-gl-context";
+    await nextConstructionFrame();
 
     const labelLayer = document.createElement("div");
     labelLayer.className = styles.sceneLabels;
@@ -767,6 +769,9 @@ export default function OrreryScene({
 
     const starPopulation = createStarPopulation(sceneModel.starPopulation);
     scene.add(starPopulation.group);
+    mount.dataset.sceneConstructionStage = "environment-stars";
+    await nextConstructionFrame();
+
     const nebulaGeometry = new RingGeometry(
       outerRadius * 0.25,
       outerRadius * 0.95,
@@ -833,6 +838,8 @@ export default function OrreryScene({
       sceneModel.aurora.chord.screenClearanceSunRadii,
     );
     mount.dataset.auroraAlpha = String(sceneModel.aurora.opacity);
+    mount.dataset.sceneConstructionStage = "environment-aurora";
+    await nextConstructionFrame();
 
     const wispGeometry = new SphereGeometry(0.18, 12, 8);
     const wispMaterial = new MeshBasicMaterial({
@@ -1170,6 +1177,8 @@ export default function OrreryScene({
       planet.orbit.add(group);
       return [{ descriptor: moon, group, mesh, earningsRing }];
     });
+    mount.dataset.sceneConstructionStage = "secondary-moons";
+    await nextConstructionFrame();
 
     const satelliteGeometry = new IcosahedronGeometry(0.16, 0);
     const satelliteMaterial = new MeshBasicMaterial({
@@ -1201,6 +1210,8 @@ export default function OrreryScene({
       scene.add(group);
       return { descriptor: satellite, group, craft, light };
     });
+    mount.dataset.sceneConstructionStage = "secondary-satellites";
+    await nextConstructionFrame();
 
     const beltRadius = sceneModel.belt.radius;
     const beltGroup = new Group();
@@ -1239,6 +1250,8 @@ export default function OrreryScene({
       beltLabels.push(label);
     });
     scene.add(beltGroup);
+    mount.dataset.sceneConstructionStage = "secondary-belt";
+    await nextConstructionFrame();
 
     const cometGroup = new Group();
     cometGroup.visible = false;

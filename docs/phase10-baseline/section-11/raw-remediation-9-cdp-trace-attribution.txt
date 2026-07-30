@@ -1,0 +1,2330 @@
+run 1: BREACH [{"duration":57,"startTime":373.5},{"duration":273,"startTime":530.5}]
+--- task 57ms@373.5 (1655 non-RunTask events) ---
+[
+ {
+  "name": "Document::BeginLifecycleUpdatesIfRenderingReady",
+  "ph": "X",
+  "dur": 1,
+  "cat": "blink",
+  "args": {
+   "have_render_blocking_resources_loaded": false,
+   "is_active": true
+  }
+ },
+ {
+  "name": "ResourceFinish",
+  "ph": "I",
+  "cat": "devtools.timeline",
+  "args": {
+   "data": {
+    "decodedBodyLength": 40240,
+    "didFail": false,
+    "encodedDataLength": 8766,
+    "finishTime": 293107.620642,
+    "requestId": "8664.6"
+   }
+  }
+ },
+ {
+  "name": "BlinkScheduler_PerformMicrotaskCheckpoint",
+  "ph": "X",
+  "dur": 1,
+  "cat": "toplevel",
+  "args": {}
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 4,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "ipc/ipc_mojo_bootstrap.cc",
+   "src_func": "SendMessage"
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "ipc/ipc_mojo_bootstrap.cc",
+   "src_func": "SendMessage"
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 1,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "ipc/ipc_mojo_bootstrap.cc",
+   "src_func": "SendMessage"
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 23,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 23,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "third_party/blink/renderer/platform/loader/fetch/data_pipe_bytes_consumer.cc"
+   }
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 3,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 3,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "IPC Channel"
+   }
+  }
+ },
+ {
+  "name": "ResponseBodyLoader::OnStateChange",
+  "ph": "X",
+  "dur": 22,
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "ResponseBodyLoader::OnStateChange",
+  "ph": "X",
+  "dur": 18,
+  "cat": "blink",
+  "args": {
+   "available": 72242
+  }
+ },
+ {
+  "name": "ResourceReceivedData",
+  "ph": "I",
+  "cat": "devtools.timeline",
+  "args": {
+   "data": {
+    "encodedDataLength": 72242,
+    "frame": "C39F7B3086BCDD043473B1BB92F6B260",
+    "requestId": "8664.7"
+   }
+  }
+ },
+ {
+  "name": "Resource::appendData",
+  "ph": "X",
+  "dur": 15,
+  "cat": "blink",
+  "args": {
+   "length": 72242
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 3,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "ipc/ipc_mojo_bootstrap.cc",
+   "src_func": "Accept"
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 1,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 1,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "IPC Channel"
+   }
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 40,
+    "ipc_hash": 3716466459,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45592724
+     }
+    },
+    "mojo_interface_tag": "blink.mojom.LocalFrameHost",
+    "payload_size": 16
+   }
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 3,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "ipc/ipc_mojo_bootstrap.cc",
+   "src_func": "Accept"
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 320,
+    "ipc_hash": 2788778580,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45603440
+     }
+    },
+    "mojo_interface_tag": "blink.mojom.DevToolsSessionHost",
+    "payload_size": 296
+   }
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "content/browser/devtools/devtools_pipe_handler.cc",
+   "src_func": "Write"
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 1,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "ipc/ipc_mojo_bootstrap.cc",
+   "src_func": "Accept"
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 1,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 304,
+    "ipc_hash": 2788778580,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45603440
+     }
+    },
+    "mojo_interface_tag": "blink.mojom.DevToolsSessionHost",
+    "payload_size": 280
+   }
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "content/browser/devtools/devtools_pipe_handler.cc",
+   "src_func": "Write"
+  }
+ },
+ {
+  "name": "BlinkScheduler_PerformMicrotaskCheckpoint",
+  "ph": "I",
+  "cat": "toplevel",
+  "args": {}
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 1151,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "third_party/blink/renderer/platform/loader/fetch/url_loader/background_url_loader.cc",
+   "src_func": "PostTaskToMainThread"
+  }
+ },
+ {
+  "name": "ResponseBodyLoader::OnStateChange",
+  "ph": "X",
+  "dur": 1150,
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "ResponseBodyLoader::DidFinishLoadingBody",
+  "ph": "X",
+  "dur": 1150,
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "ipc/ipc_mojo_bootstrap.cc",
+   "src_func": "SendMessage"
+  }
+ },
+ {
+  "name": "ThreadPool_RunTask",
+  "ph": "X",
+  "dur": 5,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "third_party/b
+--- task 273ms@530.5 (2196 non-RunTask events) ---
+[
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.FinalizeBaselineConcurrentCompilation",
+  "ph": "X",
+  "dur": 18,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 82,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 49,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.PreParse",
+  "ph": "X",
+  "dur": 6,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.PreParse",
+  "ph": "X",
+  "dur": 20,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 23,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 8,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 186,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 6,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 5,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 173,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 24,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 11,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 8,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 11,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 10,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "ThreadPool_RunTask",
+  "ph": "X",
+  "dur": 42,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "v8/src/baseline/baseline-batch-compiler.cc",
+   "src_func": "ConcurrentBaselineCompiler"
+  }
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "FlushInstructionCache",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {
+   "size": 96,
+   "start": "0x14006bb60"
+  }
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "FlushInstructionCache",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {
+   "size": 152,
+   "start": "0x14006bbe0"
+  }
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 11,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 5,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "FlushInstructionCache",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {
+   "size": 520,
+   "start": "0x14006bca0"
+  }
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 5,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 13,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 6,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "FlushInstructionCache",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {
+   "size": 4528,
+   "start": "0x14006bec0"
+  }
+ },
+ {
+  "name": "V8.FinalizeBaselineConcurrentCompilation",
+  "ph": "X",
+  "dur": 9,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "ThreadPool_RunTask",
+  "ph": "X",
+  "dur": 33,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "v8/src/baseline/baseline-batch-compiler.cc",
+   "src_func": "ConcurrentBas
+run 2: BREACH [{"duration":56,"startTime":311.7000000476837}]
+--- task 56ms@311.7000000476837 (1404 non-RunTask events) ---
+[
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 25,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "v8.produceCache",
+  "ph": "X",
+  "dur": 1,
+  "cat": "v8",
+  "args": {}
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 24,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "network.mojom.DevToolsObserver"
+   }
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 22,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 1352,
+    "ipc_hash": 976381151,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45362236
+     }
+    },
+    "mojo_interface_tag": "network.mojom.DevToolsObserver",
+    "payload_size": 1328
+   }
+  }
+ },
+ {
+  "name": "HTMLDocumentParser::RunScriptsForPausedTreeBuilder",
+  "ph": "X",
+  "dur": 33,
+  "cat": "blink",
+  "args": {
+   "parser": "0x1040022d1c8"
+  }
+ },
+ {
+  "name": "HTMLParserScriptRunner::execute",
+  "ph": "X",
+  "dur": 32,
+  "cat": "blink",
+  "args": {
+   "data": {
+    "columnNumber": 13039,
+    "frame": "0x1040014db40",
+    "lineNumber": 1
+   }
+  }
+ },
+ {
+  "name": "PendingScript::ExecuteScriptBlock",
+  "ph": "X",
+  "dur": 29,
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "ClassicPendingScript::GetSource",
+  "ph": "I",
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "EvaluateScript",
+  "ph": "X",
+  "dur": 28,
+  "cat": "devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 13039,
+    "frame": "39469F8CB01943CFDA104BC02207948C",
+    "lineNumber": 1,
+    "url": "http://127.0.0.1:4200/share"
+   }
+  }
+ },
+ {
+  "name": "v8.compile",
+  "ph": "X",
+  "dur": 23,
+  "cat": "v8,devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 13039,
+    "lineNumber": 1,
+    "notStreamedReason": "inline script",
+    "streamed": false,
+    "url": "http://127.0.0.1:4200/share"
+   },
+   "fileName": "http://127.0.0.1:4200/share"
+  }
+ },
+ {
+  "name": "V8.CompileScript",
+  "ph": "X",
+  "dur": 21,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 15,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseProgram",
+  "ph": "X",
+  "dur": 10,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 5,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "content/browser/devtools/devtools_pipe_handler.cc",
+   "src_func": "Write"
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/bindings/lib/connector.cc",
+   "src_func": "PostDispatchNextMessageFromPipe"
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 40,
+    "ipc_hash": 3093371228,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45362340
+     }
+    },
+    "mojo_interface_tag": "network.mojom.DevToolsObserver",
+    "payload_size": 16
+   }
+  }
+ },
+ {
+  "name": "V8.Compile",
+  "ph": "X",
+  "dur": 5,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "v8.run",
+  "ph": "X",
+  "dur": 2,
+  "cat": "v8",
+  "args": {
+   "fileName": "http://127.0.0.1:4200/share"
+  }
+ },
+ {
+  "name": "v8.produceCache",
+  "ph": "X",
+  "dur": 1,
+  "cat": "v8",
+  "args": {}
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 3,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "network.mojom.ProxyConfigPollerClient"
+   }
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "I",
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 32,
+    "ipc_hash": 2347231843,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 60592424
+     }
+    },
+    "mojo_interface_tag": "network.mojom.ProxyConfigPollerClient",
+    "payload_size": 8
+   }
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 4,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 3,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "network.mojom.DevToolsObserver"
+   }
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 2,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 40,
+    "ipc_hash": 3093371228,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45362340
+     }
+    },
+    "mojo_interface_tag": "network.mojom.DevToolsObserver",
+    "payload_size": 16
+   }
+  }
+ },
+ {
+  "name": "HTMLDocumentParser::RunScriptsForPausedTreeBuilder",
+  "ph": "X",
+  "dur": 274,
+  "cat": "blink",
+  "args": {
+   "parser": "0x1040022d1c8"
+  }
+ },
+ {
+  "name": "HTMLParserScriptRunner::execute",
+  "ph": "X",
+  "dur": 273,
+  "cat": "blink",
+  "args": {
+   "data": {
+    "columnNumber": 14717,
+    "frame": "0x1040014db40",
+    "lineNumber": 1
+   }
+  }
+ },
+ {
+  "name": "PendingScript::ExecuteScriptBlock",
+  "ph": "X",
+  "dur": 270,
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "ClassicPendingScript::GetSource",
+  "ph": "I",
+  "cat": "blink",
+  "args": {}
+ },
+
+run 3: BREACH [{"duration":59,"startTime":277.5}]
+--- task 59ms@277.5 (1364 non-RunTask events) ---
+[
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 26,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 25,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "network.mojom.DevToolsObserver"
+   }
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 23,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 1560,
+    "ipc_hash": 4102824253,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45362288
+     }
+    },
+    "mojo_interface_tag": "network.mojom.DevToolsObserver",
+    "payload_size": 1536
+   }
+  }
+ },
+ {
+  "name": "ThreadPool_RunTask",
+  "ph": "X",
+  "dur": 25,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 24,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "network.mojom.URLLoaderClient"
+   }
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 20,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 1888,
+    "ipc_hash": 374770486,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45363636
+     }
+    },
+    "mojo_interface_tag": "network.mojom.URLLoaderClient",
+    "payload_size": 1864
+   }
+  }
+ },
+ {
+  "name": "ThrottlingURLLoader::OnReceiveResponse",
+  "ph": "X",
+  "dur": 14,
+  "cat": "loading",
+  "args": {
+   "url": "http://127.0.0.1:4200/_next/static/chunks/05-c3ty_6dwfk.js"
+  }
+ },
+ {
+  "name": "MojoURLLoaderClient::OnReceiveResponse",
+  "ph": "X",
+  "dur": 9,
+  "cat": "loading",
+  "args": {
+   "url": "http://127.0.0.1:4200/_next/static/chunks/05-c3ty_6dwfk.js"
+  }
+ },
+ {
+  "name": "ResourceRequestSender::OnReceivedResponse",
+  "ph": "X",
+  "dur": 8,
+  "cat": "loading",
+  "args": {}
+ },
+ {
+  "name": "BackgroundProcessor::MaybeStartProcessingResponse",
+  "ph": "X",
+  "dur": 3,
+  "cat": "v8,devtools.timeline,disabled-by-default-v8.compile",
+  "args": {
+   "url": "http://127.0.0.1:4200/_next/static/chunks/05-c3ty_6dwfk.js"
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 10,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "content/browser/devtools/devtools_pipe_handler.cc",
+   "src_func": "Write"
+  }
+ },
+ {
+  "name": "EvaluateScript",
+  "ph": "X",
+  "dur": 110,
+  "cat": "devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 21679,
+    "frame": "2B2C4B9831A456798EF6E008F2969045",
+    "lineNumber": 1,
+    "url": "http://127.0.0.1:4200/share"
+   }
+  }
+ },
+ {
+  "name": "v8.compile",
+  "ph": "X",
+  "dur": 107,
+  "cat": "v8,devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 21679,
+    "lineNumber": 1,
+    "notStreamedReason": "inline script",
+    "streamed": false,
+    "url": "http://127.0.0.1:4200/share"
+   },
+   "fileName": "http://127.0.0.1:4200/share"
+  }
+ },
+ {
+  "name": "V8.CompileScript",
+  "ph": "X",
+  "dur": 105,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 90,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseProgram",
+  "ph": "X",
+  "dur": 85,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 24,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 23,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "network.mojom.DevToolsObserver"
+   }
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 21,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 1560,
+    "ipc_hash": 4102824253,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45362288
+     }
+    },
+    "mojo_interface_tag": "network.mojom.DevToolsObserver",
+    "payload_size": 1536
+   }
+  }
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 5,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "content/browser/devtools/devtools_pipe_handler.cc",
+   "src_func": "Write"
+  }
+ },
+ {
+  "name": "V8.Compile",
+  "ph": "X",
+  "dur": 5,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "v8.run",
+  "ph": "X",
+  "dur": 1,
+  "cat": "v8",
+  "args": {
+   "fileName": "http://127.0.0.1:4200/share"
+  }
+ },
+ {
+  "name": "v8.produceCache",
+  "ph": "X",
+  "dur": 1,
+  "cat": "v8",
+  "args": {}
+ },
+ {
+  "name": "HTMLDocumentParser::RunScriptsForPausedTreeBuilder",
+  "ph": "X",
+  "dur": 19,
+  "cat": "blink",
+  "args": {
+   "parser": "0x1140022d1c8"
+  }
+ },
+ {
+  "name": "HTMLParserScriptRunner::execute",
+  "ph": "X",
+  "dur": 18,
+  "cat": "blink",
+  "args": {
+   "data": {
+    "columnNumber": 54634,
+    "frame": "0x1140014db40",
+    "lineNumber": 1
+   }
+  }
+ },
+ {
+  "name": "PendingScript::ExecuteScriptBlock",
+  "ph": "X",
+  "dur": 16,
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "ClassicPendingScript::GetSource",
+  "ph": "I",
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "EvaluateScript",
+  "ph": "X",
+  "dur": 15,
+  "cat": "devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 54634,
+    "frame": "2B2C4B9831A456798EF6E008F2969045",
+    "lineNumber": 1,
+    "url": "http://127.0.0.1:4200/share"
+   }
+  }
+ },
+ {
+  "name": "v8.compile",
+  "ph": "X",
+  "dur": 12,
+  "cat": "v8,devtool
+run 4: BREACH [{"duration":52,"startTime":164.69999998807907}]
+--- task 52ms@164.69999998807907 (556 non-RunTask events) ---
+[
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 86,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 12,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 10,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 5,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 389,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 321,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 52,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "v8.newInstance",
+  "ph": "X",
+  "dur": 2,
+  "cat": "v8",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 52,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 21,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 21,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 10,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 16,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 8,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 19,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 13,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 11,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 7,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 6,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 8,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 5,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args
+run 5: BREACH [{"duration":57,"startTime":147.5}]
+--- task 57ms@147.5 (1358 non-RunTask events) ---
+[
+ {
+  "name": "EvaluateScript",
+  "ph": "X",
+  "dur": 111,
+  "cat": "devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 21679,
+    "frame": "A224C3CF9D7A70E3C334B694D72D9E73",
+    "lineNumber": 1,
+    "url": "http://127.0.0.1:4200/share"
+   }
+  }
+ },
+ {
+  "name": "v8.compile",
+  "ph": "X",
+  "dur": 109,
+  "cat": "v8,devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 21679,
+    "lineNumber": 1,
+    "notStreamedReason": "inline script",
+    "streamed": false,
+    "url": "http://127.0.0.1:4200/share"
+   },
+   "fileName": "http://127.0.0.1:4200/share"
+  }
+ },
+ {
+  "name": "V8.CompileScript",
+  "ph": "X",
+  "dur": 106,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 92,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseProgram",
+  "ph": "X",
+  "dur": 86,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 24,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 24,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "network.mojom.DevToolsObserver"
+   }
+  }
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 21,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 1560,
+    "ipc_hash": 4102824253,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45362288
+     }
+    },
+    "mojo_interface_tag": "network.mojom.DevToolsObserver",
+    "payload_size": 1536
+   }
+  }
+ },
+ {
+  "name": "V8.Compile",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "ThreadControllerImpl::RunTask",
+  "ph": "X",
+  "dur": 5,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "content/browser/devtools/devtools_pipe_handler.cc",
+   "src_func": "Write"
+  }
+ },
+ {
+  "name": "ThreadPool_RunTask",
+  "ph": "X",
+  "dur": 22,
+  "cat": "toplevel",
+  "args": {
+   "src_file": "mojo/public/cpp/system/simple_watcher.cc",
+   "src_func": "Notify"
+  }
+ },
+ {
+  "name": "v8.run",
+  "ph": "X",
+  "dur": 1,
+  "cat": "v8",
+  "args": {
+   "fileName": "http://127.0.0.1:4200/share"
+  }
+ },
+ {
+  "name": "SimpleWatcher::OnHandleReady",
+  "ph": "X",
+  "dur": 21,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "watcher_notify_interface_tag": "network.mojom.URLLoaderClient"
+   }
+  }
+ },
+ {
+  "name": "v8.produceCache",
+  "ph": "I",
+  "cat": "v8",
+  "args": {}
+ },
+ {
+  "name": "Receive mojo message",
+  "ph": "X",
+  "dur": 18,
+  "cat": "toplevel",
+  "args": {
+   "chrome_mojo_event_info": {
+    "data_num_bytes": 1888,
+    "ipc_hash": 374770486,
+    "mojo_interface_method": {
+     "native_symbol": {
+      "mapping_id": 2,
+      "rel_pc": 45363636
+     }
+    },
+    "mojo_interface_tag": "network.mojom.URLLoaderClient",
+    "payload_size": 1864
+   }
+  }
+ },
+ {
+  "name": "HTMLDocumentParser::RunScriptsForPausedTreeBuilder",
+  "ph": "X",
+  "dur": 20,
+  "cat": "blink",
+  "args": {
+   "parser": "0x10c0022d1c8"
+  }
+ },
+ {
+  "name": "HTMLParserScriptRunner::execute",
+  "ph": "X",
+  "dur": 19,
+  "cat": "blink",
+  "args": {
+   "data": {
+    "columnNumber": 54634,
+    "frame": "0x10c0014db40",
+    "lineNumber": 1
+   }
+  }
+ },
+ {
+  "name": "ThrottlingURLLoader::OnReceiveResponse",
+  "ph": "X",
+  "dur": 13,
+  "cat": "loading",
+  "args": {
+   "url": "http://127.0.0.1:4200/_next/static/chunks/turbopack-33ry_dtasvqr6.js"
+  }
+ },
+ {
+  "name": "PendingScript::ExecuteScriptBlock",
+  "ph": "X",
+  "dur": 17,
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "ClassicPendingScript::GetSource",
+  "ph": "I",
+  "cat": "blink",
+  "args": {}
+ },
+ {
+  "name": "EvaluateScript",
+  "ph": "X",
+  "dur": 15,
+  "cat": "devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 54634,
+    "frame": "A224C3CF9D7A70E3C334B694D72D9E73",
+    "lineNumber": 1,
+    "url": "http://127.0.0.1:4200/share"
+   }
+  }
+ },
+ {
+  "name": "v8.compile",
+  "ph": "X",
+  "dur": 13,
+  "cat": "v8,devtools.timeline",
+  "args": {
+   "data": {
+    "columnNumber": 54634,
+    "lineNumber": 1,
+    "notStreamedReason": "inline script",
+    "streamed": false,
+    "url": "http://127.0.0.1:4200/share"
+   },
+   "fileName": "http://127.0.0.1:4200/share"
+  }
+ },
+ {
+  "name": "V8.CompileScript",
+  "ph": "X",
+  "dur": 12,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "MojoURLLoaderClient::OnReceiveResponse",
+  "ph": "X",
+  "dur": 8,
+  "cat": "loading",
+  "args": {
+   "url": "http://127.0.0.1:4200/_next/static/chunks/turbopack-33ry_dtasvqr6.js"
+  }
+ },
+ {
+  "name": "ResourceRequestSender::OnReceivedResponse",
+  "ph": "X",
+  "dur": 8,
+  "cat": "loading",
+  "args": {}
+ },
+ {
+  "name": "BackgroundProcessor::MaybeStartProcessingResponse",
+  "ph": "X",
+  "dur": 2,
+  "cat": "v8,devtools.timeline,disabled-by-default-v8.compile",
+  "args": {
+   "url": "http://127.0.0.1:4200/_next/static/chunks/turbopack-33ry_dtasvqr6.js"
+  }
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 8,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseProgram",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.Compile",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "v8.run",
+  "ph": "I",
+  "cat
+run 6: BREACH [{"duration":54,"startTime":168.4000000357628}]
+--- task 54ms@168.4000000357628 (490 non-RunTask events) ---
+[
+ {
+  "name": "V8.Compile",
+  "ph": "X",
+  "dur": 535,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 286,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 82,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 20,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 6,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 7,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 8,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 9,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 234,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 187,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 30,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "v8.newInstance",
+  "ph": "X",
+  "dur": 4,
+  "cat": "v8",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 242,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 209,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 21,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 11,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 4,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 2,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 19,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 12,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 156,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 150,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 12,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 7,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 6,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 3,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "I",
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileCode",
+  "ph": "X",
+  "dur": 11,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.ParseFunction",
+  "ph": "X",
+  "dur": 7,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnition",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
+ },
+ {
+  "name": "V8.CompileIgnitionFinalization",
+  "ph": "X",
+  "dur": 1,
+  "cat": "disabled-by-default-v8.compile",
+  "args": {}
