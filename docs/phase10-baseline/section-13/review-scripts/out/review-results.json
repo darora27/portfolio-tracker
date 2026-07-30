@@ -1,0 +1,50 @@
+{
+  "vis01": {
+    "minEdge": 89.96587702491736,
+    "minPair": [
+      "ASML",
+      "MSFT"
+    ],
+    "minRatio": 2.159406674231661,
+    "planetCount": 8
+  },
+  "vis03": [
+    {
+      "width": 1280,
+      "panelWidth": 600
+    },
+    {
+      "width": 1366,
+      "panelWidth": 600
+    },
+    {
+      "width": 1440,
+      "panelWidth": 600
+    },
+    {
+      "width": 1536,
+      "panelWidth": 600
+    },
+    {
+      "width": 1920,
+      "panelWidth": 600
+    }
+  ],
+  "vis07": {
+    "chipPos1": {
+      "left": "720px",
+      "top": "329.932px",
+      "rectX": 720,
+      "rectY": 320.171875
+    },
+    "chipPos2": {
+      "left": "321.487px",
+      "top": "374.308px",
+      "rectX": 321.484375,
+      "rectY": 364.546875
+    }
+  },
+  "vis08_moonFound": null,
+  "vis09_panelText": "SPIN = SCENERY · ORBIT = WEEK\nASML · ASML Holding\nTODAY\n▲ 6.7%\n\nWEEK ▼ 14.3%\n30D ▼ 12.0%\nSINCE BUY ▼ 12.0% (SIMPLE)\n\nSINCE BUY · ▼ 12.0%\n7D\nSINCE BUY\n86\n100\n115\n▼ 12.0%\nWEIGHT 26.7%\nVOL 56.7%\nBETA 2.77\nCONTRIB ▼ 2.0%\nVS VOO ▼ 7.2%\nNEWS\n07-30\nAMD Fell 8% as China Unveils New Technology — the Real Risk Is the Multiple, Not the Lithography\n07-30\nASML vs. TSM: Which AI Chip Stock Is the Better Buy Now?\n07-30\nASML's EUV Machines Are Becoming More Valuable Than Ever. Here's Why.\nFULL ANALYSIS ▸\n◂ BACK TO SYSTEM",
+  "mob01_noOverflow": true
+}

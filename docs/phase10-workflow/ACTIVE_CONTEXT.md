@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§13 — Universe fixes from the July 30 owner sitting**
 - Managed range: §2–§18
-- Stage: `review`
-- Role: `claude_lead`
+- Stage: `remediate`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -52,7 +52,8 @@ Universe fixes from the July 30 sitting. Carries FB-01 (one nudge; proportions b
 
 Open bounded findings:
 
-None.
+- {"id":"F1","criterion":"VIS-10","risk":"medium","evidence":"docs/phase10-baseline/section-13/review-scripts/out/review-tab-strip.png; docs/phase10-baseline/section-13/review-scripts/review-tabs.mjs","summary":"The orange background is genuinely gone (independently confirmed live: backgroundColor rgba(0,0,0,0) on every tab), but the active tab's intended 2px solid cream border-bottom never renders. A pre-existing unconditional rule (.missionControl .missionStrip nav a, orrery.module.css ~line 2976, border: 1px solid rgba(213,186,140,0.28)) ties in CSS specificity (0,2,2) with the new .missionControl nav a[aria-current=\"page\"] rule and, being declared later in the file, wins the cascade for border-bottom-*. Live computed style on all 8 tabs: borderBottomWidth 1px, borderBottomColor rgba(213,186,140,0.28) regardless of aria-current -- active and inactive tabs are visually identical, so the 'which tab is open' affordance FB-08's confirmed variant B was supposed to deliver is missing from the shipped default.","required_change":"Give the active-tab cream-underline rule higher specificity than .missionControl .missionStrip nav a -- e.g. scope it as .missionControl .missionStrip nav a[aria-current=\"page\"] -- or reorder it after that rule. Verify with live computed style (border-bottom-width/border-bottom-color on the actual rendered aria-current=\"page\" anchor), not source reading alone, that the active tab now differs from the inactive tabs."}
+- {"id":"F2","criterion":"TST-03, VIS-04","risk":"critical","evidence":"docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json; docs/phase10-baseline/section-13/trail-daily-1440x900.png","summary":"5/8 tickers fail the unweakened deltaE<=8 gate. The implementer's recorded root cause (three holdings -- MSFT, INTC, CBRS -- simultaneously clamped to the identical brightest ramp stop, additive-glow bleed pushing deltaE 1-2.5 units over) correctly explains those three (deltaE 8.28/9.695/8.25) but does not explain the other two failures: ASML (dayReturn +6.5%, nowhere near the 12% clamp, deltaE 8.993) and COST (dayReturn -2.1%, deltaE 10.156, the worst of all 8 samples) -- especially since IBM, at an almost identical -2.0% magnitude, passes cleanly at deltaE 6.674, a 3.5 deltaE gap between two holdings whose input differs by 0.1 percentage points. This divergence is not predicted by a uniform glow-bleed theory and was not investigated per-ticker. ASML's trail sample point sits close to the sun in the capture plate (its orbit is innermost in this fixture), suggesting sun-glow/bloom proximity as an uninvestigated alternate contributor distinct from the clamp-collision mechanism.","required_change":"Re-investigate ASML's and COST's failures specifically rather than treating them as more instances of the already-understood clamp collision: check whether ASML's near-sun orbital position causes contamination from the sun's own additive glow shells/docking ring at the sampled pixel, and check why COST diverges so sharply from IBM at nearly identical magnitude (candidates: a nearby moon marker/label chip, or this section's new FB-02 ecliptic graticule ring if COST's orbit radius sits near its 1.6-1.66x outerRadius band). Do not touch MIN_RETURN_MAGNITUDE/MAX_RETURN_MAGNITUDE, the ramp functions, or arc-length formulas -- that boundary is unchanged. If a genuine per-ticker rendering fix is found, re-run the full 8-ticker sampler and report the new pass count. If, after real investigation, all 5 failures trace to the same inherent glow/clamp characteristic after all, report that explicitly with the additional evidence rather than resubmitting the original three-ticker explanation -- at that point this becomes a legitimate carry-forward/design-tension call for Devan (matching the section-10/11 BLD-04 precedent) and should say so rather than being marked pass."}
 
 Acceptance ledger:
 
@@ -97,7 +98,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `0de2ccf317a9cedb5ff12692cccb09fe2e50bf178161deb3f081eec7f4eaf2e0`
+- `PHASE10_STATE.json`: `f02a7839cfcbd95187e5d22dc31f1c3edb4840a2ce9957fd0c76e1ff814106d4`
 - `PHASE10.md`: `a74fc05623bb8cb4335ab29c55b529150a39528d8ece45c6db8c2f1b415f55ee`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

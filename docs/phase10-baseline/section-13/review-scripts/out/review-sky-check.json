@@ -1,0 +1,7 @@
+{
+  "vignettePresent": true,
+  "starFieldBgHasGradientOnly": 1,
+  "starFieldBg": "linear-gradient(150deg, rgb(1, 5, 4), rgb(4, 17, 13) 55%, rgb(2, 7, 6))",
+  "nebulaTextureStatus": 200,
+  "nebulaTextureSizeBytes": 29016
+}
