@@ -13,10 +13,10 @@ them.
 - Managed range: §2–§18
 - Stage: `review`
 - Role: `claude_lead`
-- Status: `blocked`
-- Next actor: `devan`
+- Status: `ready`
+- Next actor: `claude`
 - Expected actor for this stage: `claude`
-- Stop reason: F10/VIS-16 independently re-verified and CLOSED with zero new bounded findings against application code. Section §11 cannot accept: BHV-31 (pro-rata drift tolerance) and MOB-11 (mobile-fallback scope) remain not_run and need Devan's decision, not more measurement or remediation. See docs/phase10-workflow/reviews/section-11-review-6.md and the two new entries in section.owner_decisions_pending.
+- Stop reason: none
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -103,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `da9245780930a3652e545a801c2868bf77e7ad6069a1a7fa0b2d2bcc807a004b`
+- `PHASE10_STATE.json`: `4b8f949a90230cf47f927b04dc71a09fdeea72acd9d2bb5afc14364ff63d78a2`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

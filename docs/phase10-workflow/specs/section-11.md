@@ -665,7 +665,7 @@ accessibility verifier.
 | `BHV-21` | Zooming out rubber-bands at the overview framing. There is no reachable sector-map state and no path to `OBSERVATORY-GROWTH` from the shipped UI. |
 | `BHV-22` | The authored-system machinery remains in the codebase behind a flag and is provably unreachable from the UI, not deleted. |
 | `BHV-30` | Draft weights always total exactly 100.0% across a randomised sequence of grow, shrink, siphon, type, key, and zero operations — by construction, with no validation message reachable. |
-| `BHV-31` | Pro-rata breathing preserves the relative mix of the untouched seven; the siphon latch moves weight between exactly two circles; a zeroed circle docks on the pit rail, still labelled, and can be dragged back. |
+| `BHV-31` | Pro-rata breathing preserves the relative mix of the untouched seven **within a maximum ratio drift of 0.02 (2.0 percentage points)** — owner decision, Devan, 2026-07-30; the siphon latch moves weight between exactly two circles; a zeroed circle docks on the pit rail, still labelled, and can be dragged back. |
 | `BHV-32` | Under reduced motion the rig holds seeded stations with direction chevrons and static trails, and **every encoding survives the freeze**. |
 | `BHV-33` | All three readouts update live during the drag and settle on release. |
 | `BHV-34` | The draft is encoded in the URL; browser Back undoes an edit and Forward replays it; `COPY TEST LINK` yields a URL that restores the same draft. |
@@ -763,6 +763,29 @@ verification is unavailable.
   invalid.
 - **Owner visual review precedes acceptance.** Devan is the independent check
   while the second model is unavailable.
+
+### 11.0 Owner rulings closing the two spec ambiguities — 2026-07-30
+
+Review turn 6 correctly refused to grade two criteria the spec never settled,
+and routed them here rather than manufacturing a pass. Both are now decided.
+
+**`BHV-31` — pro-rata rounding tolerance: 0.02 (2.0 percentage points).**
+The measured drift on a real keyboard-driven edit was `maxRatioDrift`
+**0.0184**, which is the half-unit rounding the spec already mandates. The
+bound is set just above it deliberately: it is noise no one can see on
+screen, and inventing a tighter number would buy a remediation round that
+changes nothing visible. If a future edit drifts past 2.0 points that is a
+genuine defect, not rounding.
+
+**`MOB-11` — the below-1024px fallback does NOT grow new sections.** It must
+use the correct current names for the sections it already has, and nothing
+more. This follows the owner's settled decision of 2026-07-27: desktop-first,
+phones keep the existing tested 2D fallback. `BHV-10`'s "appears in the
+fallback" is therefore scoped to nouns the fallback already renders; `MOB-10`
+governs — it describes the existing tested holdings list, not a mobile
+reimplementation of Mission Control. Adding CORRELATION, TRADES and ORBITS to
+the phone view would be new mobile surface during a landing window, which the
+owner did not ask for.
 
 ### 11.1 Measurement contract — pinned so runs are comparable
 
