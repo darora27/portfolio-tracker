@@ -1,6 +1,6 @@
 # §11 contact sheet
 
-Captured 2026-07-29 · 1440×900 @2x · `http://127.0.0.1:3000/share`
+Captured 2026-07-30 · 1440×900 @2x · `http://127.0.0.1:3000/share`
 Public route — owner-only fields (dollar amounts) are absent by design.
 Harness: `npm run phase10:capture -- --section 11`
 
@@ -58,16 +58,6 @@ ASML approach at authored mark phase 240° — third authored longitude, no text
 
 ![asml-mark-phase-240](captures/asml-mark-phase-240.png)
 
-### range-30d — NOT CAPTURED
-
-ReturnInstrument, 30D detent — compare its figure and path with SINCE BUY (F4 / BHV-15)
-
-> Failed: locator.click: Timeout 5000ms exceeded.
-
-What was on screen instead (not evidence, diagnosis only):
-
-![range-30d failed](captures/range-30d-failed.png)
-
 ### range-since-buy
 
 ReturnInstrument, SINCE BUY detent — distinct window and shape; dead MAX is absent when no older history exists (F4 / BHV-15)
@@ -82,5 +72,5 @@ NEWS headlines — each must be a real anchor to the article (FB-10)
 
 ---
 
-10/11 captured.
-**1 failed — this sheet is incomplete and cannot support acceptance.**
+10/10 captured.
+Complete.

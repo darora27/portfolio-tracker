@@ -357,6 +357,18 @@ const clipFor = async (page, kind) => {
 await preflight();
 await mkdir(OUT_DIR, { recursive: true });
 
+// Clear stale <id>-failed.png from earlier runs. They are diagnosis, not
+// evidence, and a leftover one from three hours ago sitting beside a clean
+// frame is exactly the kind of thing a later reviewer mistakes for a result.
+try {
+  const { readdir, unlink } = await import("node:fs/promises");
+  for (const name of await readdir(OUT_DIR)) {
+    if (name.endsWith("-failed.png")) {
+      await unlink(path.join(OUT_DIR, name)).catch(() => {});
+    }
+  }
+} catch {}
+
 let browser;
 try {
   browser = await chromium.launch({

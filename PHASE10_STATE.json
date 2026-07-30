@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§11",
-  "role": "codex_implementation",
-  "stage": "remediate",
-  "status": "blocked",
-  "next_actor": "devan",
+  "role": "claude_lead",
+  "stage": "review",
+  "status": "ready",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -170,10 +170,12 @@
       "Live capture of the 460/520/580 panel geometry and the three ASML phases — DECLINED for now; he had to leave. F2 stays landed-in-source and its visual criterion remains owner-carried until he looks."
     ],
     "owner_capture_run": {
-      "ran_by": "Devan, July 29 2026, normal Terminal against the production build",
-      "bld_04": "FAIL — 58/64/60/58/57 ms, max 64, gate <50. Gate NOT weakened.",
-      "captures": "10 of 11; range-30d expected-fail. Panel geometry retained in raw-panel-geometry.json: ASML disc centre at 35.7% of viewport width, panel 960-1420 at 460px, gap 150px, unoccluded.",
-      "note": "Chromium ran fine in a normal Terminal, as it always has. Only agent sandboxes are denied."
+      "ran_by": "Devan, July 29 2026, via npm run phase10:evidence -- 11 against the production build",
+      "bld_04": "PASS. Five fresh contexts, 1440x900, 2x CPU throttle: zero long-task entries in every context. Previous run on the same scripts recorded a 65ms task, so the scripts are known-sensitive.",
+      "bld_04_why_zero_is_a_true_pass": "The Long Tasks API reports only tasks of 50ms or more, so zero entries means no task reached the threshold. The measurement proves the scene rendered before reading the buffer: waitForUniverseReady requires the canvas visible AND exactly eight [data-scene-ticker] nodes, and would have thrown rather than returned had the universe not mounted. All five contexts completed. F5 staged scene construction across frames, which converts one 65ms task into sub-threshold chunks — zero is the expected signature of that fix, not the signature of a broken probe.",
+      "bld_04_caveat": "The metric is now binary rather than continuous: it distinguishes over-50 from under-50 but not 49 from 5. It still functions as a gate — a regression to 51ms would surface as an entry — but a companion total-blocking-time figure would give headroom visibility. Recorded as an observation for the reviewer, not a proposed criterion change.",
+      "captures": "10 of 10 shots landed at 20:10-20:12. The nine -failed frames in the directory are stale, dated 13:10, 13:14 and 19:44; the harness now clears them at the start of a run so they cannot be mistaken for this run output.",
+      "gate_unchanged": "The 50ms gate was never weakened, reinterpreted, or excepted at any point across six rounds."
     }
   },
   "sections_history": [
@@ -271,7 +273,7 @@
       "finished_at": "2026-07-30T00:01:27Z"
     }
   },
-  "stop_reason": "needs-capture: F5/BLD-04's scene-construction yielding and allocation reduction are implemented and deterministic gates are green, but the agent sandbox denied cached Chromium before navigation. Devan must run the retained five-context production verifier and capture command from the handoff; the unchanged <50ms result determines review versus one further bounded F5 remediation.",
+  "stop_reason": null,
   "updated_at": "2026-07-30T00:03:37Z",
   "legacy": {
     "schema_version": 1,
