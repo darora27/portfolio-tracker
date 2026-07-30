@@ -30,6 +30,7 @@ import {
   rampForWeekly,
 } from "@/lib/observatory/universe-palette";
 import { FirstVisitOrientation } from "./FirstVisitOrientation";
+import { Legend } from "./Legend";
 import {
   MissionControl,
 } from "./MissionControl";
@@ -290,6 +291,7 @@ export function OrreryWorld({
         </div>
         <p className={styles.status}>OVERVIEW · {planets.length} PLANETS · {beltHoldings.length} BELT</p>
       </header>
+      <Legend />
       <section className={styles.stage} aria-label="Portfolio solar system">
         <div className={styles.canvasLayer} aria-hidden="true" onDoubleClick={returnToOverview}>
           {cameraState !== "sector" ? <OrrerySceneLoader

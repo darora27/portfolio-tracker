@@ -1,0 +1,15 @@
+{
+  "criterion": "BHV-20",
+  "base": "http://127.0.0.1:3100",
+  "legendPresentFirstVisit": true,
+  "legendPresentAfterInteraction": false,
+  "legendStorageAfterInteraction": "true",
+  "legendPresentAfterReload": false,
+  "manualButtonVisible": true,
+  "legendSummonedFromManual": true,
+  "manualClosedAfterSummon": true,
+  "legendDismissedAgainAfterSummon": true,
+  "dismissedOnFirstInteraction": true,
+  "doesNotReturnAfterReload": true,
+  "pass": true
+}

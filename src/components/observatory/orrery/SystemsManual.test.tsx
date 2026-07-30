@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { UNIVERSE_LEGEND_EVENT } from "./Legend";
 import { SystemsManual } from "./SystemsManual";
 
 afterEach(cleanup);
@@ -21,6 +22,7 @@ describe("SystemsManual", () => {
     expect(screen.getByText("Trail lightness")).toBeTruthy();
     expect(screen.getAllByText(/Trailing-week magnitude within gain/)).toHaveLength(1);
     expect(screen.getByRole("button", { name: "SHOW ORIENTATION" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "SHOW LEGEND" })).toBeTruthy();
     expect(screen.getByText("Weather wisps")).toBeTruthy();
     expect(screen.getByText(/magenta means positive health/)).toBeTruthy();
     expect(screen.getByText("Radar sweep")).toBeTruthy();
@@ -29,6 +31,18 @@ describe("SystemsManual", () => {
     expect(screen.getByText(/percent only/)).toBeTruthy();
     fireEvent.keyDown(window, { key: "Escape" });
     expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it("summons the legend and closes the manual when SHOW LEGEND is clicked", () => {
+    const onOpen = vi.fn();
+    const onClose = vi.fn();
+    const onLegendEvent = vi.fn();
+    window.addEventListener(UNIVERSE_LEGEND_EVENT, onLegendEvent);
+    render(<SystemsManual open onOpen={onOpen} onClose={onClose} />);
+    fireEvent.click(screen.getByRole("button", { name: "SHOW LEGEND" }));
+    expect(onClose).toHaveBeenCalledOnce();
+    expect(onLegendEvent).toHaveBeenCalledOnce();
+    window.removeEventListener(UNIVERSE_LEGEND_EVENT, onLegendEvent);
   });
 
   it("does not steal question-mark input from a text field", () => {

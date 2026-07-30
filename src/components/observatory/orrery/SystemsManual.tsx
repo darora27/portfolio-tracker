@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { PLANET_IDENTITIES } from "@/lib/observatory/planet-identity";
 import { UNIVERSE_ORIENTATION_EVENT } from "./FirstVisitOrientation";
+import { UNIVERSE_LEGEND_EVENT } from "./Legend";
 import styles from "./orrery.module.css";
 
 const ENCODINGS = [
@@ -127,6 +128,16 @@ export function SystemsManual({
               }}
             >
               SHOW ORIENTATION
+            </button>
+            <button
+              type="button"
+              className={styles.hudButton}
+              onClick={() => {
+                onClose();
+                window.dispatchEvent(new Event(UNIVERSE_LEGEND_EVENT));
+              }}
+            >
+              SHOW LEGEND
             </button>
             <button type="button" onClick={onClose} className={styles.hudButton}>
               Close manual

@@ -313,12 +313,16 @@
         "docs/phase10-baseline/section-11/raw-legend-first-visit.json"
       ],
       "implementer": {
-        "status": "deferred_to_reviewer",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "src/components/observatory/orrery/Legend.tsx",
+          "src/components/observatory/orrery/Legend.test.tsx",
+          "src/components/observatory/orrery/SystemsManual.tsx",
+          "src/components/observatory/orrery/SystemsManual.test.tsx",
+          "docs/phase10-baseline/section-11/scripts/legend-first-visit.mjs",
+          "docs/phase10-baseline/section-11/raw-legend-first-visit.json"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "F9 fixed: added a Legend component (src/components/observatory/orrery/Legend.tsx) rendering the existing .orientationLine CSS bar with the required copy, gated by a localStorage dismiss key (stock-market-universe-legend-seen) exactly mirroring FirstVisitOrientation's pattern, and wired a 'SHOW LEGEND' button into SystemsManual.tsx that dispatches a summon event. This sandbox launches Chromium directly (per AGENTS.md Live Verification): ran npm run build && npm run start, then node docs/phase10-baseline/section-11/scripts/legend-first-visit.mjs against a fresh unseeded context on the real production /share route. Result (raw-legend-first-visit.json): legendPresentFirstVisit true, dismissed on first interaction (localStorage key set to true), absent after reload, re-summoned via the Systems Manual's SHOW LEGEND button, and dismissed again on the next interaction. pass: true."
       },
       "reviewer": {
         "status": "fail",
