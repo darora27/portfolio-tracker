@@ -1121,3 +1121,74 @@ Claude Lead `specify` turn. First section running under `single_provider_mode`.
 - Tests/build: not run — documentation-only specify turn, no application source
   changed. `main` is green at section start (527/527, build exit 0) and no
   inherited-red exception exists.
+
+### §11 accepted at `5d91b6e`, §12 initialized — July 30, 2026
+
+Claude Lead `review`-stage direct accept turn (review turn 10), executing
+Devan's owner ruling on the section's sole remaining finding.
+
+- [x] Preflight in order: no `STOP`; `PHASE10_LOCK` present with `owner=claude`;
+  clean tree; `phase10:validate` clean; confirmed `role=claude_lead`,
+  `status=ready`, `next_actor=claude`, `stage=review` — done by claude-code/sonnet-5
+- [x] Read the owner's ruling commit `9f561b52179023f70c89fabfab62ea880df0a146`
+  (`phase10(owner §11): carry BLD-04 to §12 — no exception, no gate weakened`):
+  **CARRY, not except.** Routed state back to `ready`/`review`/`claude` with
+  the explicit instruction to grade against the carry and attempt the
+  accept — done by claude-code/sonnet-5
+- [x] Confirmed `git diff --name-only 5d91b6e HEAD -- src/ public/
+  package.json package-lock.json scripts/` is **empty** — the owner's ruling
+  commit changed no application source; the graded candidate remains
+  `5d91b6e` — done by claude-code/sonnet-5
+- [x] Independently re-ran both gates at HEAD: `npm test` **PASS — 107/107
+  files, 553/553 tests, zero failures**; `npm run build` **PASS** (exit 0,
+  18/18 pages, `/share` smoke pass) — done by claude-code/sonnet-5
+- [x] Updated `docs/phase10-workflow/acceptance/section-11.json` criterion
+  `BLD-04`: `reviewer.status` `fail` → `carried_by_owner` (the status the
+  owner added in `dbdeb39` specifically for this), evidence corrected to
+  include the already-retained `raw-review-8-bld04-longtasks.json`. **No
+  gate, threshold, verifier, or sample point weakened, redefined, or
+  baseline-subtracted** — done by claude-code/sonnet-5
+- [x] `npm run phase10:acceptance -- check <ledger> --require reviewer`:
+  **valid** — 53 criteria `pass`/`not_applicable`, 1 `carried_by_owner`,
+  zero `fail`/`blocked`/`not_run`/`deferred_to_reviewer` — done by
+  claude-code/sonnet-5
+- [x] Wrote `docs/phase10-workflow/reviews/section-11-review-10.md` (PASS)
+  and `docs/phase10-workflow/reviews/section-11-accepted.md` (acceptance
+  record) — done by claude-code/sonnet-5
+- [x] Moved §11 into `sections_history` with `single_provider_mode: true`
+  (implemented and reviewed entirely by `claude-code/sonnet-5` covering
+  both roles — cross-model independence suspended for the whole section,
+  including this acceptance; the first Codex turn after the outage lifts
+  should re-review the `BLD-04` carry), reset `section` to a fresh §12
+  record, reset `verification` to `not_run`, recorded `prev_actor_commit`
+  `9f561b5`, kept `last_green_commit` at `5d91b6e` with a new
+  independent-verification note — done by claude-code/sonnet-5
+- [x] Recorded the carried criterion (`BLD-04`, with its measurement,
+  candidate, root cause, and §12 resolution path) in
+  `section.carried_from_section_11` — done by claude-code/sonnet-5
+- [x] Flagged the §12 scoping question explicitly in the fresh section
+  record and the handoff: the standing prompt's owner-adopted "§12a
+  unattended ordering" pre-scopes the immediate work to four ordered phases
+  rather than the full `PHASE10.md` §12 Chart Room scope, and
+  `OWNER_FEEDBACK_LEDGER.md`'s board already routes its rows accordingly —
+  the next specify turn must reconcile against that before writing anything
+  — done by claude-code/sonnet-5
+- [x] State routed to `§12` / `specify` / `claude_lead` / `ready` /
+  `next_actor: claude`, `stop_reason: null`. No §12 work done — initializing
+  its state is the full extent of the accept turn — done by
+  claude-code/sonnet-5
+- [x] Changed no application source, no test, and no texture. Validator
+  exit 0 — done by claude-code/sonnet-5
+
+### §11 acceptance evidence
+
+- Acceptance record: `docs/phase10-workflow/reviews/section-11-accepted.md`
+- Authoritative PASS review: `docs/phase10-workflow/reviews/section-11-review-10.md`
+- Owner ruling this executes: commit `9f561b52179023f70c89fabfab62ea880df0a146`
+- Prior review turns: `docs/phase10-workflow/reviews/section-11-review.md`
+  through `section-11-review-9.md`
+- Acceptance ledger: `docs/phase10-workflow/acceptance/section-11.json`
+  (53 `pass`/`not_applicable`, 1 `carried_by_owner`: `BLD-04`)
+- Handoff to §12 `specify`:
+  `docs/phase10-handoffs/2026-07-30-section-11-claude-lead-accept-to-claude-lead-specify.md`
+- Machine state: `PHASE10_STATE.json` (`sections_history` §11, `section` §12)

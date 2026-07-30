@@ -9,9 +9,9 @@ them.
 ## Live route
 
 - Phase: 10
-- Current section: **§11 — Universe legibility and the draft rig**
+- Current section: **§12 — The Chart Room, the sky, and flight**
 - Managed range: §2–§18
-- Stage: `review`
+- Stage: `specify`
 - Role: `claude_lead`
 - Status: `ready`
 - Next actor: `claude`
@@ -34,13 +34,11 @@ Always read:
 
 Then read the current, specifically routed sources:
 
-- `docs/phase10-workflow/specs/section-11.md`
-- `UNIVERSE_IDEAS_5.md`
-- `UNIVERSE_IDEAS_4.md`
-- `UNIVERSE_LEGIBILITY_MOCK.html`
-- `UNIVERSE_DRAFT_RIG.html`
+- `UNIVERSE_IDEAS_6.md`
+- `UNIVERSE_STOCK_LAB.html`
+- `OWNER_FEEDBACK_LEDGER.md`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-30-section-11-claude-review-9-to-devan-blocked.md`
+- `docs/phase10-handoffs/2026-07-30-section-11-claude-lead-accept-to-claude-lead-specify.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -54,15 +52,15 @@ payload:
 
 ## Current section conditions
 
-Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for this section: UNIVERSE_IDEAS_5.md (legibility) -> UNIVERSE_IDEAS_4.md (the draft rig) -> OWNER_FEEDBACK_LEDGER.md -> the two owner-reviewed prototypes UNIVERSE_LEGIBILITY_MOCK.html and UNIVERSE_DRAFT_RIG.html -> PHASE10.md §11. main is GREEN at this section start: npm test 527/527 across 99 files and npm run build exit 0, both re-run by the accept turn at dbdeb39. §9's inherited red is closed and no exception is inherited. §9's testing prohibition carries forward: expect(source).toContain(...) is not valid coverage for rendered behaviour. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (the website is still relatively confusing). §11 runs under single_provider_mode: its compensating controls are mandatory, and its must_wait_for_codex list binds - the privacy boundary, the financial math core, and any gate weakening or exception.
+Inserted by owner direction on 2026-07-29 (PHASE10.md §12, 'full throttle ahead' on UNIVERSE_IDEAS_6.md round 6). Authority order for this section: UNIVERSE_IDEAS_6.md (round 6, adopted in full) -> UNIVERSE_STOCK_LAB.html (the working Chart Room mock, owner-reviewed) -> OWNER_FEEDBACK_LEDGER.md -> PHASE10.md §12. main is GREEN at this section start: npm test 107/107 files, 553/553 tests, and npm run build exit 0, both re-run by the accept turn at HEAD 9f561b5. §11's carried criterion is BLD-04 (see carried_from_section_11 below) -- must appear in this section's acceptance ledger with its measurement attached and the unmodified verifier re-run; may not be closed by assertion. IMPORTANT SCOPING NOTE FOR THE NEXT SPECIFY TURN: the Claude Lead standing prompt (docs/phase10-workflow/prompts/claude-lead.md) carries an owner-adopted '§12a unattended ordering' section (§8.5, July 29 2026) that pre-scopes the immediate work to four ordered phases (A: FB-19/FB-20 machine-checkable; B: FB-05 role-token mapping + FB-01 spacing/pull-back; C: the FB-17/FB-08+FB-15/FB-09/FB-12/FB-11/FB-21 variant experiments on a build-capture-park cadence; D: assemble REVIEW_SITTING.md and stop at owner-sitting) rather than the full original PHASE10.md §12 Chart Room/sky/cursor/type-ramp scope. OWNER_FEEDBACK_LEDGER.md §2's board already routes its rows to §12a/§12b accordingly and must be read, and its board-open rule (board_required_from_section: 12) binds starting with this section's spec. Read both before writing anything; do not default to specifying the full PHASE10.md §12 scope without reconciling it against that pre-scoping first.
 
 Open bounded findings:
 
-- {"id":"BLD-04-1","criterion":"BLD-04","opened":"review turn 8 (claude-code/sonnet-5)","summary":"Carried, high-risk long-task gate re-verified again in review turn 9 (claude-code/sonnet-5) against candidate 5d91b6e (remediation turn 9's further OrreryScene.tsx chunking): three independent measure-long-tasks.mjs invocations, two separate fresh server processes: 1 of 3 batches (15 fresh 1440x900 CPU-2x contexts) breaches the unchanged <50ms boundary (a single 59ms task); 2 of 3 are clean 0ms passes. Per the no-cherry-picking carried-criteria rule, graded FAIL -- corroborates real, measured improvement over review turn 8's 2-of-3-breaching rate, but not full elimination. Review turn 9 also independently read (not re-ran) the implementer's three diagnostic scripts (stage-correlate-diag.mjs, trace-long-task-diag.mjs, control-long-task-diag.mjs) and judged the instrumentation sound and the root-cause diagnosis -- a pre-mount Next.js RSC/hydration bootstrap script upstream of OrreryScene, not scene-construction code -- well-supported and independently plausible given this turn's own single, higher (59ms), environment-sensitive breach.","required_change":"No further OrreryScene.tsx chunking is expected to help -- the diagnosed cause starts 400-650ms before the scene's own construction stage begins. Resolution requires an owner decision between (1) an architecture-level SSR/loading-behaviour change (e.g. next/dynamic ssr:false code-splitting the 3D world, or shrinking the initial RSC payload) or (2) an owner-approved, scoped, non-generalizing gate exception. Both are gate/scope decisions single_provider_mode's reserved must_wait_for_codex list covers (\"any gate change\") -- do NOT authorize or implement either while single_provider_mode remains active without Devan's explicit direction on how to proceed given that constraint.","evidence":["docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json","docs/phase10-baseline/section-11/raw-review-8-bld04-longtasks.json","docs/phase10-baseline/section-11/scripts/stage-correlate-diag.mjs","docs/phase10-baseline/section-11/scripts/trace-long-task-diag.mjs","docs/phase10-baseline/section-11/scripts/control-long-task-diag.mjs"]}
+None.
 
 Acceptance ledger:
 
-- `docs/phase10-workflow/acceptance/section-11.json`
+- Created by the lead with the section specification.
 
 ## Global gates
 
@@ -103,7 +101,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `aa8228214aa47b5e2c8b59efda1432a583756335aea81806fbf3dab25e31e25b`
+- `PHASE10_STATE.json`: `802cdef327d3bccf4ba4662ce5afaba44c2e518e9532bf88912e66925f4d1943`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

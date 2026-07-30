@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
   "phase": 10,
-  "current_section": "§11",
+  "current_section": "\u00a712",
   "role": "claude_lead",
-  "stage": "review",
+  "stage": "specify",
   "status": "ready",
   "next_actor": "claude",
   "selected_direction": {
@@ -24,304 +24,158 @@
     ]
   },
   "section": {
-    "id": "§11",
-    "title": "Universe legibility and the draft rig",
-    "spec_doc": "docs/phase10-workflow/specs/section-11.md",
-    "acceptance_ledger": "docs/phase10-workflow/acceptance/section-11.json",
-    "design_proof": "docs/phase10-workflow/design-proofs/section-11.md",
-    "implementation_commit": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
-    "review_result": "fail",
-    "review_doc": "docs/phase10-workflow/reviews/section-11-review-9.md",
-    "findings": [
-      {
-        "id": "BLD-04-1",
-        "criterion": "BLD-04",
-        "opened": "review turn 8 (claude-code/sonnet-5)",
-        "summary": "Carried, high-risk long-task gate re-verified again in review turn 9 (claude-code/sonnet-5) against candidate 5d91b6e (remediation turn 9's further OrreryScene.tsx chunking): three independent measure-long-tasks.mjs invocations, two separate fresh server processes: 1 of 3 batches (15 fresh 1440x900 CPU-2x contexts) breaches the unchanged <50ms boundary (a single 59ms task); 2 of 3 are clean 0ms passes. Per the no-cherry-picking carried-criteria rule, graded FAIL -- corroborates real, measured improvement over review turn 8's 2-of-3-breaching rate, but not full elimination. Review turn 9 also independently read (not re-ran) the implementer's three diagnostic scripts (stage-correlate-diag.mjs, trace-long-task-diag.mjs, control-long-task-diag.mjs) and judged the instrumentation sound and the root-cause diagnosis -- a pre-mount Next.js RSC/hydration bootstrap script upstream of OrreryScene, not scene-construction code -- well-supported and independently plausible given this turn's own single, higher (59ms), environment-sensitive breach.",
-        "required_change": "No further OrreryScene.tsx chunking is expected to help -- the diagnosed cause starts 400-650ms before the scene's own construction stage begins. Resolution requires an owner decision between (1) an architecture-level SSR/loading-behaviour change (e.g. next/dynamic ssr:false code-splitting the 3D world, or shrinking the initial RSC payload) or (2) an owner-approved, scoped, non-generalizing gate exception. Both are gate/scope decisions single_provider_mode's reserved must_wait_for_codex list covers (\"any gate change\") -- do NOT authorize or implement either while single_provider_mode remains active without Devan's explicit direction on how to proceed given that constraint.",
-        "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json",
-          "docs/phase10-baseline/section-11/raw-review-8-bld04-longtasks.json",
-          "docs/phase10-baseline/section-11/scripts/stage-correlate-diag.mjs",
-          "docs/phase10-baseline/section-11/scripts/trace-long-task-diag.mjs",
-          "docs/phase10-baseline/section-11/scripts/control-long-task-diag.mjs"
-        ]
-      }
-    ],
-    "closed_findings_history": {
-      "MOB-11-1": "CLOSED (pass) review turn 8 (claude-code/sonnet-5). Independently rebuilt/started a fresh production server (port 3500, distinct from the implementer's) and re-ran the naming sweep with this turn's own copy of the verifier script against candidate 0c3a812: HOLDINGS present alongside RETURNS/RISK/NEWS/EARNINGS at both 390x844 and 320x844; CORRELATION/TRADES correctly still absent; zero banned nouns; zero overflow. Screenshot directly inspected. See docs/phase10-workflow/reviews/section-11-review-8.md and the ledger's MOB-11.reviewer field.",
-      "BHV-31": "CLOSED (pass) review turn 7 (claude-code/sonnet-5). Graded against the owner's 2026-07-30 ruling (spec §11.0): max ratio drift tolerance 0.02. Review turn 5's real keyboard-driven measurement (maxRatioDrift 0.0184) is below it -- pass, no new measurement needed. See docs/phase10-workflow/reviews/section-11-review-7.md and the ledger's BHV-31.reviewer field.",
-      "F10_VIS-16": "CLOSED review turn 6 (claude-code/sonnet-5). Independently re-verified with a fresh unseeded run against this turn's own independently built/started production server (port 3200, not the implementer's process): the implementer's own remediation-f10-ring-farside.mjs re-run 5 times, allSampledRingsVisibleAboveBackground true every run (ASML delta 17.0-20.9, CBRS delta 13.2-18.2 against the unweakened >6 threshold), corroborated by a fresh full-overview screenshot showing every ring as a complete, faint, continuous circle. git diff --stat 3e9656c e8faf0d confirms the fix touched only OrreryScene.tsx, scene-model.ts, scene-model.test.ts -- no scope drift. See docs/phase10-workflow/reviews/section-11-review-6.md and the ledger's VIS-16.reviewer field.",
-      "F7_TST-03": "CLOSED review turn 4 (claude-code/sonnet-5). Independently requested a fresh unattended evidence run through the camera daemon (request s11rvw1) -- its own production build, its own server, an unmodified sample-live-rgb.mjs. All eight holdings passed at their own naturally unoccluded phase (ASML deltaE 0, max IBM 7.571). See docs/phase10-workflow/reviews/section-11-review-4.md F7 and the acceptance ledger's TST-03.reviewer field.",
-      "F8_VIS-04": "CLOSED review turn 4 (claude-code/sonnet-5), same run as F7. The captioned temporal plate and eight retained frames were regenerated by this independently requested run and directly inspected. See section-11-review-4.md F8 and the ledger's VIS-04.reviewer field.",
-      "F9_BHV-20": "CLOSED review turn 5 (claude-code/sonnet-5). Independently re-verified with a fresh unseeded browser context against this turn's own independently built/started production server (not a re-read of the implementer's committed JSON): legend present on first visit, dismissed on first interaction, absent after reload, re-summoned from the Systems Manual, dismissed again after re-summon. See docs/phase10-workflow/reviews/section-11-review-5.md and the ledger's BHV-20.reviewer field."
-    },
-    "remediation_commits": [
-      "4658020094eb9c630d5ef2fd4e064726d6eca087",
-      "93994aeea6748cef0064807273704989a4dbd7d1",
-      "d7589a812fb2512a7ca7ab0b80fe10adf2dd4ff6",
-      "b21339e66f1bfa173c0413bf5bda909e54c52d0c",
-      "b1432d5",
-      "11978a6",
-      "7f798c8",
-      "15c0b38",
-      "e16e9c78e7f50d8ce4d7442caf4ed61b3e668a6a",
-      "f38b5e233114247f578256f6753fef9c22b2f900",
-      "e8faf0d3ae6ce7f14f9a9f0b44205f51f0b4ae77",
-      "0c3a812f5d755bf3f981741ecff6a9f5f2b2f20c",
-      "5d91b6e815c1443012031dbe6eba8d1b547790ef"
-    ],
-    "unperformed_criteria_note": "Superseded by review turn 6/7's decisions -- retained for history. Review turn 5's remediation (e8faf0d) fixed the sole bounded finding, F10/VIS-16, per G-SCOPE, and made no other application-source change.",
-    "review_6_decision": "claude-code/sonnet-5, review turn 6: independently re-verified F10/VIS-16 (CLOSED, see closed_findings_history). Per the prior turn's explicit instruction to decide whether BHV-31 pro-rata and MOB-11 are new findings or spec questions -- both are spec questions, not code-fixable findings: BHV-31 needs Devan to set a numeric tolerance for 'preserves the relative mix' (measured drift 0.0184, no spec-defined bound to grade against), and MOB-11 needs Devan to resolve a genuine two-reading spec ambiguity (does the mobile fallback need new sections, or only correct names for its existing ones). Neither is something remediation can fix without that input, so this turn routed both to Devan as a blocked handoff rather than to codex_implementation. See docs/phase10-workflow/reviews/section-11-review-6.md and docs/phase10-handoffs/2026-07-30-section-11-claude-review-6-to-devan-blocked.md.",
-    "review_7_decision": "claude-code/sonnet-5, review turn 7: graded both criteria the owner ruled on 2026-07-30 (commit 8ce63e2, spec section-11.md §11.0). BHV-31 CLOSED as pass (0.0184 measured drift < 0.02 owner-set tolerance, no new measurement needed). MOB-11 opens a new bounded finding, MOB-11-1: a fresh live re-check (this turn's own server, current HEAD) confirms the fallback's existing holdings list still carries no 'HOLDINGS' label while its siblings (RETURNS/RISK/EARNINGS/NEWS) all do -- a real gap under the owner's own corrected reading (existing sections need correct current names), not a re-opening of the CORRELATION/TRADES/ORBITS question he just closed. Routed to codex_implementation for remediation rather than accepted. See docs/phase10-workflow/reviews/section-11-review-7.md and docs/phase10-handoffs/2026-07-30-section-11-claude-review-7-to-codex-remediation.md.",
-    "remediation_8_decision": "codex_implementation remediation turn (claude-code/sonnet-5 covering the role under PHASE10_LOCK owner=codex, single_provider_mode): fixed the sole bounded finding MOB-11-1 exactly as scoped, no other change. src/components/observatory/orrery/OrreryWorld.tsx:379 -- the fallback's per-ticker holding list item text now reads 'HOLDINGS / {ticker} · {companyName}', matching the existing 'X / ...' label convention its siblings (NEWS, BELT BODY, RETURNS, RISK, EARNINGS) already use. Did not add CORRELATION/TRADES/ORBITS, per the owner's 2026-07-30 ruling. Verified live against this turn's own rebuilt production server (port 3400): at both 390x844 and 320x844, HOLDINGS now appears in document.body.innerText alongside RETURNS/RISK/NEWS/EARNINGS; CORRELATION/TRADES remain correctly absent; zero banned nouns; zero horizontal overflow. Screenshot directly inspected. npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) both this turn's own independent runs. Ledger implementer.MOB-11 updated to pass with new evidence; reviewer.MOB-11 left untouched (still fail from review turn 7) for the next review turn to re-grade. See docs/phase10-handoffs/2026-07-30-section-11-codex-remediation-8-to-claude-review.md.",
-    "review_8_decision": "claude-code/sonnet-5, review turn 8: independently re-verified and CLOSED MOB-11-1 (fresh server, own script copy, candidate 0c3a812). Then, per the prior turn's own instruction to run the full --require reviewer ledger check before considering acceptance (flagged outstanding since review turns 6/7), ran it: 93 issues across 44 of 54 criteria, none touching application source or thresholds -- required_artifacts named files no tooling had ever produced, and many reviewer.evidence arrays omitted screenshots already captured in the same verification session. Investigated (read the actual verifier scripts, directly viewed the highest-value candidate screenshots) before reconciling required_artifacts and evidence citations to the real, already-retained, already-substantively-judged-sufficient evidence -- no new verification invented, no threshold touched. Two items had no companion screenshot and were captured fresh this turn (BHV-20 legend first-visit; the reconciliation script is retained at scripts/reconcile-review-8-ledger.mjs, every path existence-checked before being written). This reduced the check to zero issues outside one criterion. That one criterion, BLD-04 (carried, high risk, closed since review turn 3), did NOT reconcile clean: three independent fresh-process re-measurements this turn found 2 of 3 batches breach the unchanged <50ms gate marginally (52ms, 50ms), 1 of 3 clean. Graded FAIL per the carried-criteria no-assertion rule rather than cherry-picking the passing run. Routed to codex_implementation for remediation on BLD-04 alone; the ledger-hygiene reconciliation is retained and should not be re-litigated by the next turn. See docs/phase10-workflow/reviews/section-11-review-8.md and docs/phase10-handoffs/2026-07-30-section-11-claude-review-8-to-codex-remediation.md.",
-    "remediation_bld04_r2_decision": "codex_implementation remediation turn (claude-code/sonnet-5 covering the role under PHASE10_LOCK owner=codex, single_provider_mode): worked BLD-04-1 only. Split OrreryScene.tsx's construction pipeline into six additional per-family animation-frame chunks not previously isolated (WebGL context creation/DOM setup; star population; nebula+aurora+wisps; moons; satellites; belt) using the same nextConstructionFrame pattern remediation-4 introduced. Re-measured the unmodified measure-long-tasks.mjs against the final code across two independent fresh production server processes, 9 batches / 45 fresh 1440x900 CPU-2x contexts total: 8 of 9 batches clean, 1 batch had a single 51ms context -- a real, measured drop from review turn 8's documented 2-of-3-batches-breach rate, but not full elimination. Then built a stage-correlation diagnostic (scripts/stage-correlate-diag.mjs) that timestamps every sceneConstructionStage transition and cross-references it against each captured long task: across every breach this turn observed with that instrumentation (11 breaches), the task's startTime falls 400-650ms BEFORE the scene's own 'model' stage begins -- before OrreryScene's effect has run at all. A CDP Tracing attribution script (scripts/trace-long-task-diag.mjs, diagnostic-only -- tracing overhead itself raises the breach rate, so it is not used for grading) corroborates this: the dominant event inside every captured breach window is HTMLDocumentParser::RunScriptsForPausedTreeBuilder -> EvaluateScript -> V8.CompileScript/V8.ParseProgram on an inline script at the /share URL -- Next.js's inline RSC/flight-payload bootstrap script, not Three.js/OrreryScene code. A control page (static HTML, zero app JS, identical throttle) recorded zero long tasks across 5 fresh contexts, ruling out generic environment noise as sufficient explanation on its own. Conclusion: the chunking strategy pursued across LT-01/remediation-3/remediation-4/this turn measurably helps (real headroom gained) but was only ever partially right about the mechanism -- the remaining marginal breach originates in the route's own hydration bootstrap, upstream of scene construction. Ledger implementer.BLD-04 set to deferred_to_reviewer (fail is not an allowed complete implementer status; no pass is claimed) with the full investigation and all raw evidence retained under docs/phase10-baseline/section-11/raw-remediation-9-*. Did not attempt code-splitting the 3D world or shrinking the RSC payload -- an architecture-level, SSR/loading-behaviour change outside a bounded remediation turn's scope and a gate-interpretation question for Devan, structurally similar to (but not assumed equal to, and not invoking) the non-precedential §1 owner exception for an analogous shared-bootstrap long task. No baseline-subtraction, gate redefinition, or exception applied. npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass), both this turn's own independent runs. See docs/phase10-handoffs/2026-07-30-section-11-codex-remediation-bld04-r2-to-claude-review.md.",
-    "review_9_decision": "claude-code/sonnet-5, review turn 9: independently verified npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 pages, /share smoke pass) against candidate 5d91b6e. Confirmed via git diff --stat cbcc9b3 5d91b6e that the only application-source change is the six new nextConstructionFrame yield points in OrreryScene.tsx the handoff described -- no scope drift. Independently re-measured BLD-04 with the unmodified measure-long-tasks.mjs, 3 batches across 2 fresh production server processes (own method, matching review turn 8): 1 of 3 batches (15 fresh contexts) breaches the unchanged <50ms gate (a single 59ms task); graded FAIL per the no-cherry-picking carried-criteria rule. Independently read (not re-ran) the implementer's three diagnostic scripts and judged the pre-mount-hydration root-cause diagnosis sound and well-supported. Did not route back to codex_implementation for a seventh remediation attempt: six chunking rounds have converted the original task into an occasional breach whose own diagnosis places it upstream of OrreryScene entirely, and the two remaining resolution paths (an SSR/loading-behaviour architecture change, or an owner-approved scoped gate exception) are both gate/scope decisions that single_provider_mode's reserved must_wait_for_codex list covers. Routed directly to Devan as a blocked handoff instead -- the same class of decision review turn 6 made for BHV-31/MOB-11. See docs/phase10-workflow/reviews/section-11-review-9.md and docs/phase10-handoffs/2026-07-30-section-11-claude-review-9-to-devan-blocked.md.",
+    "id": "\u00a712",
+    "title": "The Chart Room, the sky, and flight",
+    "spec_doc": null,
+    "acceptance_ledger": null,
+    "design_proof": null,
+    "implementation_commit": null,
+    "review_result": null,
+    "review_doc": null,
+    "findings": [],
+    "remediation_commits": [],
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
-      "UNIVERSE_IDEAS_5.md",
-      "UNIVERSE_IDEAS_4.md",
-      "UNIVERSE_LEGIBILITY_MOCK.html",
-      "UNIVERSE_DRAFT_RIG.html"
+      "UNIVERSE_IDEAS_6.md",
+      "UNIVERSE_STOCK_LAB.html",
+      "OWNER_FEEDBACK_LEDGER.md"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-claude-review-9-to-devan-blocked.md",
-    "note": "Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for this section: UNIVERSE_IDEAS_5.md (legibility) -> UNIVERSE_IDEAS_4.md (the draft rig) -> OWNER_FEEDBACK_LEDGER.md -> the two owner-reviewed prototypes UNIVERSE_LEGIBILITY_MOCK.html and UNIVERSE_DRAFT_RIG.html -> PHASE10.md §11. main is GREEN at this section start: npm test 527/527 across 99 files and npm run build exit 0, both re-run by the accept turn at dbdeb39. §9's inherited red is closed and no exception is inherited. §9's testing prohibition carries forward: expect(source).toContain(...) is not valid coverage for rendered behaviour. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (the website is still relatively confusing). §11 runs under single_provider_mode: its compensating controls are mandatory, and its must_wait_for_codex list binds - the privacy boundary, the financial math core, and any gate weakening or exception.",
-    "carried_from_section_10": {
-      "rule": "Six §10 criteria were carried by owner decision on 2026-07-29, not closed. Every one MUST appear in §11 acceptance with the measurement below attached, and §11 must re-run the named verifier and record the result. None may be closed by assertion.",
-      "owner_decision": "docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md",
-      "acceptance_record": "docs/phase10-workflow/reviews/section-10-accepted.md",
+    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-claude-lead-accept-to-claude-lead-specify.md",
+    "note": "Inserted by owner direction on 2026-07-29 (PHASE10.md \u00a712, 'full throttle ahead' on UNIVERSE_IDEAS_6.md round 6). Authority order for this section: UNIVERSE_IDEAS_6.md (round 6, adopted in full) -> UNIVERSE_STOCK_LAB.html (the working Chart Room mock, owner-reviewed) -> OWNER_FEEDBACK_LEDGER.md -> PHASE10.md \u00a712. main is GREEN at this section start: npm test 107/107 files, 553/553 tests, and npm run build exit 0, both re-run by the accept turn at HEAD 9f561b5. \u00a711's carried criterion is BLD-04 (see carried_from_section_11 below) -- must appear in this section's acceptance ledger with its measurement attached and the unmodified verifier re-run; may not be closed by assertion. IMPORTANT SCOPING NOTE FOR THE NEXT SPECIFY TURN: the Claude Lead standing prompt (docs/phase10-workflow/prompts/claude-lead.md) carries an owner-adopted '\u00a712a unattended ordering' section (\u00a78.5, July 29 2026) that pre-scopes the immediate work to four ordered phases (A: FB-19/FB-20 machine-checkable; B: FB-05 role-token mapping + FB-01 spacing/pull-back; C: the FB-17/FB-08+FB-15/FB-09/FB-12/FB-11/FB-21 variant experiments on a build-capture-park cadence; D: assemble REVIEW_SITTING.md and stop at owner-sitting) rather than the full original PHASE10.md \u00a712 Chart Room/sky/cursor/type-ramp scope. OWNER_FEEDBACK_LEDGER.md \u00a72's board already routes its rows to \u00a712a/\u00a712b accordingly and must be read, and its board-open rule (board_required_from_section: 12) binds starting with this section's spec. Read both before writing anything; do not default to specifying the full PHASE10.md \u00a712 scope without reconciling it against that pre-scoping first.",
+    "carried_from_section_11": {
+      "rule": "One \u00a711 criterion was carried by owner decision on 2026-07-30, not closed. Must appear in \u00a712 acceptance with the measurement below attached, and \u00a712 must re-run the named verifier and record the result. May not be closed by assertion. No gate was weakened.",
+      "owner_decision_commit": "9f561b52179023f70c89fabfab62ea880df0a146",
+      "acceptance_record": "docs/phase10-workflow/reviews/section-11-accepted.md",
       "items": [
-        {
-          "criteria": [
-            "TST-03",
-            "VIS-04"
-          ],
-          "risk": "high; VIS-04 is critical",
-          "measurement_at_carry": "sample-live-rgb.mjs aborts on NBIS at deltaE 33.123 against a <=8 gate. The authorised taper-floor fix (0.45 -> 0.85) widened every ribbon 1.89x and took IBM from deltaE 3.522 to 0.396, so the fix landed and worked; NBIS moved only 33.846 -> 30.522, so width was never the cause. The 49px cross-section through the published sample point is a ~12px band peaking at red 93 against the model's 179, with zero pixels within 2; the same NBIS arc reaches deltaE 3.44 some 165px away.",
-          "owner_observation": "NBIS trail is the same brightness as the other red planets.",
-          "resolved_in_11_by": "Re-derive the sampler - the published data-trail-sample-x/y projection or the ribbon's angular sweep - against the rebuilt view, and reconcile it with what a viewer actually sees. Do NOT loosen deltaE.",
-          "evidence": "docs/phase10-baseline/section-10/claude-review-5/raw-trail-mechanism.json"
-        },
-        {
-          "criteria": [
-            "DEF-02",
-            "VIS-02",
-            "BHV-05"
-          ],
-          "risk": "high; BHV-05 is medium",
-          "measurement_at_carry": "The shipped-view chirality verifier aborts on COST and fails 6 of 8 worlds. The inspector panel covers 96.8-100% of the sampled band at the approach camera, so the verifier cannot see what it measures. Two authorised texture regenerations moved the panel-free correlation margin by 0.018 and 0.021, inside the 0.002-0.011 round-to-round drift of five untouched worlds, and did not invert sign - mirroring a mark must invert a correlation that reads that mark, so the column-mean greyscale profile cannot discriminate handedness and substantiates neither pass nor fail.",
-          "owner_observation": "I honestly cannot see the planet at all because of the bug where the terminal covers up the screen... I do not see any logos on any of the planets.",
-          "resolved_in_11_by": "The planet-panel rebuild keeps the planet visible and shrinks the panel; then re-run the shipped-view verifier and record the result. A verifier that samples the mark directly rather than a terrain-dominated equatorial column profile is legitimate §11 work. Do NOT weaken the assertion.",
-          "evidence": "docs/phase10-baseline/section-10/claude-review-5/raw-strip-chirality-full-table.json"
-        },
         {
           "criteria": [
             "BLD-04"
           ],
           "risk": "high",
-          "measurement_at_carry": "measure-long-tasks.mjs unmodified, five fresh 1440x900 CPU-2x contexts, not baseline-subtracted: 65/57/58/58/57 ms against an unchanged 50 ms ceiling. Unmoved across five rounds (57-61, 56-62, 55-61, 56-60, 57-65). The round-3 CDP profile attributes 34.3 ms self time to Three.js shader-program acquisition (getParameters/getProgramCacheKey) and clears texture upload.",
-          "resolved_in_11_by": "Delete the embedded legacy dashboard and its Recharts instances, pause the off-screen radar, lazy-mount below-fold sections. PHASE10.md §11 already states this section should be a net refund against the long-task budget. Do NOT baseline-subtract or redefine the gate.",
-          "evidence": "docs/phase10-baseline/section-10/claude-review-5/raw-long-tasks-BLD-04.txt"
+          "measurement_at_carry": "measure-long-tasks.mjs unmodified, 3 batches across 2 fresh production server processes, 15 fresh 1440x900 CPU-2x contexts: 1 of 3 batches breached the unchanged <50ms boundary (a single 59ms task); 2 of 3 clean at 0ms. 77 prior runs at 0ms; eleven breaches spanning 57-64ms across the section's full history.",
+          "candidate": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
+          "root_cause": "Next.js pre-mount RSC/hydration bootstrap script, upstream of OrreryScene. Six rounds of scene-construction chunking measurably improved but could not reach it.",
+          "resolved_in_12_by": "An architecture-level SSR/loading-behaviour change (next/dynamic({ssr:false}) code-splitting the 3D world, or a smaller initial RSC payload), or an owner-approved scoped exception. PHASE10.md \u00a712's own Build dimension already states 'the sky work should be a net refund' and '\u00a711's carried long-task breach must clear or be re-measured with a current figure' -- both live paths remain open, neither authorized yet.",
+          "evidence": "docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json"
         }
       ]
-    },
-    "owner_feedback_new_for_this_section": [
-      "Trails are too long and read as cheap. Owner: Why are the trails so long? It seems like they are too long and cheap looking now... the trails do not even seem like they fit the vibe of the project anymore, they were a lot better before. Round 3 lengthened arcs from 18-30deg to 36-64deg to give the lightness ramp room. Shorten them, judged by eye and somewhere between the two, and reconcile against the ramp, which may no longer need the extra length now that hue carries magnitude.",
-      "No logos are visible on any planet. At OVERVIEW planets render at roughly 30-60px, too small for a mark to read; up close the panel blocks the view. The carved marks may be entirely correct and simply unviewable - the panel rebuild is the first chance to find out.",
-      "Standing items from OWNER_FEEDBACK_LEDGER.md §3.2 that PHASE10.md §11 already names: news headlines must hyperlink to the real article or the section is cut, correlation needs a plain-language explanation, the Mission Control radar draws two ellipses per planet where there must be one, and the planet panel is slightly too big."
-    ],
-    "design_gate": {
-      "route": "existing-package-equivalent",
-      "proof": "docs/phase10-workflow/design-proofs/section-11.md",
-      "package": [
-        "UNIVERSE_IDEAS_5.md",
-        "UNIVERSE_IDEAS_4.md",
-        "OWNER_FEEDBACK_LEDGER.md",
-        "UNIVERSE_LEGIBILITY_MOCK.html",
-        "UNIVERSE_DRAFT_RIG.html",
-        "PHASE10.md §11",
-        "docs/reference/README.md"
-      ],
-      "mapping_recorded": true,
-      "note": "DESIGN_GATE.md allows citing an owner-approved package only when it already contains every required item. Both prototypes are recorded as owner-reviewed and approved in PHASE10.md §11. Two items the package does not decide are resolved in the proof under a named rule and raised to Devan in the handoff: the DRAFT rig ships owner-gated under G-PUBLIC default, and the shortened trail arc band is set at 26-46 degrees pending owner visual confirmation. Neither blocks implementation."
-    },
-    "ux_skill_invoked": "portfolio-ux, invoked before writing the specification per the Claude Lead standing prompt; §11 is entirely user-facing.",
-    "owner_decisions_pending": [
-      "Is the DRAFT rig public on /share? UNIVERSE_IDEAS_4.md §8 offers it as a recommendation the owner can veto, so it is not decided. §11 ships it owner-gated under the G-PUBLIC default (PRV-10); opening it is a one-gate change and also a privacy-boundary change under single_provider_mode.",
-      "Is 26-46 degrees the right shortened trail arc? The owner rejected 36-64 degrees and asked for somewhere between that and round 2s 18-30, judged by eye. Set as a token pair, measured by the reviewer, and confirmed by owner visual review before acceptance."
-    ],
-    "owner_decisions_resolved_review_7": [
-      "BHV-31 -- RESOLVED by owner ruling 2026-07-30 (tolerance 0.02). Graded CLOSED/pass this turn.",
-      "MOB-11 -- RESOLVED by owner ruling 2026-07-30 (no new CORRELATION/TRADES/ORBITS sections). Grading it against that reading surfaced a real, narrower gap (HOLDINGS label missing) -- see findings[0], MOB-11-1."
-    ],
-    "scope_recommendation": "Advisory, not a blocker. §11 covers roughly twice §10s surface, and §10 took one implementation round, five reviews and four remediations and still carried six criteria. Recommendation to Devan: consider splitting §11 at the A-E / F seam - legibility plus the carried debt in one section, the DRAFT rig in the next. The seam is clean: no package A-E depends on F, and F closes no carried criterion. This spec covers all of §11 and implementation proceeds now; the risk-first sequence means nothing is lost by answering late.",
-    "owner_scope_note": "Scope: F2 and F3 with captures. F1 and F4 were remediated out-of-band by the owner-directed Fable drop a7f85ac; F1 is NOT closed because Devan re-reported small Mission Control fonts afterwards — root-cause which Mission Control text is off-ramp rather than nudging sizes. FB-17 joins F2: the panel must grow LEFT and wider (capture 460/520/580 and let him pick) while the planet moves left. Review must produce docs/phase10-baseline/section-11/contact-sheet.md with zero not_run visual criteria.",
-    "out_of_band_remediation": {
-      "commit": "a7f85ac",
-      "authorised_by": "Devan, July 29 2026",
-      "actor": "fable (cloud session)",
-      "handoff": "FABLE_IMPLEMENTATION_HANDOFF.md",
-      "covers": [
-        "F1 (FB-05, five-token ramp)",
-        "F4 (BHV-15, dead detents removed)",
-        "FB-03",
-        "FB-06",
-        "FB-14",
-        "FB-17"
-      ],
-      "verified_before_delivery": "425/425 tests across 84 files, tsc clean, eslint no new findings",
-      "not_covered": "F2 (ASML left-third anchor) and F3 (mark visibility at approach) — camera work that cannot be honestly verified without pixels; both remain in this routed remediation and must be done WITH captures.",
-      "note": "F1 is remediated in code but NOT closed: after this drop Devan reported Mission Control fonts still too small (FB-05, 4th report). Treat F1 as needing root-cause on Mission Control surfaces, not another size nudge."
-    },
-    "mark_repair": {
-      "authorised_by": "Devan, July 29 2026 — \"go and try to fix those two SVGs but if you fail after one attempt then just rely on colour and shape for identity\"",
-      "attempts_used": 1,
-      "finding": "Both supplied mark SVGs shipped their own background plate: ibm.svg had a full-canvas white <rect>, nbis.svg a full-bleed #e0ff4f rounded rect. Alpha was therefore ~100%, so the compositor received a solid block instead of a letterform. This is why four rounds of texture regeneration changed nothing.",
-      "repair": "Plates removed. Letterforms recoloured to read on a dark world: IBM #231F20 -> #F4F7FA, NBIS #052b42 -> #E0FF4F.",
-      "measured": "Rasterised alpha coverage at 512px width — IBM 100.00% -> 4.88%, NBIS 98.62% -> 20.98%.",
-      "next": "Regenerate the two planet textures, then capture. The standing do-not-regenerate rule was conditional on the marks being measurable; they now are.",
-      "owner_verdict": "Devan, July 29 2026: \"NONE OF THE PLANETS AT ALL HAVE ANY LOGOS NOT JUST IBM OR NBIS. I dont want to worry about this right now though.\" The one authorised attempt is spent. Per his own fallback instruction, planet identity now rests on colour and silhouette. F3 is resolved as carried_by_owner, not as a pass and not as a deferral. The residual defect is downstream of the art — six composites were already exact — so any future reopening starts at material/exposure/longitude, never at the SVGs."
-    },
-    "owner_decisions_resolving_block": [
-      "F3 / FB-04 — RESOLVED by owner fallback: identity rests on colour + silhouette. No further logo work in §11.",
-      "IBM/NBIS alpha repair — AUTHORISED and completed in one attempt, measured 100%->4.88% and 98.62%->20.98%.",
-      "Live capture of the 460/520/580 panel geometry and the three ASML phases — DECLINED for now; he had to leave. F2 stays landed-in-source and its visual criterion remains owner-carried until he looks.",
-      "F7/TST-03 + F8/VIS-04 — temporal per-holding sampling AUTHORISED. Trails stay 18-30. All thresholds stay. Re-lengthening and criterion removal both refused.",
-      "TST-03 magnitude ordering — SPEC CORRECTION accepted, Devan July 29 2026: ordering is asserted only between holdings whose EXPECTED colours differ. Source of the bug: round 3 §3.3 treated magnitude as a continuous channel and lengthened arcs to 36-64 degrees to give it room; the shipped ramp has discrete stops and both extremes clamp, so a strict rank was demanded between values the design makes equal. Failing observation: CBRS -18.51% and INTC -20.90% both map to #b3241d, both passed deltaE independently (4.218 and 1.022 against 8), differing by 0.0074 luminance. Every deltaE, hue-distance, chroma and clearance threshold is untouched, ordering is still enforced between different stops, and skipped pairs are emitted in the evidence so the narrowing is visible rather than silent.",
-      "BHV-31 — owner ruling, Devan 2026-07-30: maximum acceptable ratio drift is 0.02 (2.0 percentage points). The measured 0.0184 is the half-unit rounding the spec already mandates and is invisible on screen. Grade BHV-31 against this bound.",
-      "MOB-11 — owner ruling, Devan 2026-07-30: the below-1024px fallback does NOT grow CORRELATION/TRADES/ORBITS. It uses correct current names for the sections it already has. Follows the settled 2026-07-27 desktop-first decision; MOB-10 governs over a broad reading of BHV-10. Grade MOB-11 against the renaming-only reading.",
-      "BLD-04 — owner ruling, Devan 2026-07-30: CARRY, do not except. Record carried_by_owner into §12 with the failing measurement attached (one 59ms task, 1 of 3 batches, candidate 5d91b6e), exactly as §10 carried six criteria into §11. NO exception is granted and NO gate, threshold, verifier, sample point or baseline is weakened — the boundary remains <50ms. Root cause is Next.js pre-mount RSC/hydration bootstrap, upstream of OrreryScene; further scene chunking cannot reach it. §12 must carry BLD-04 in its acceptance ledger, re-run the unmodified script, and record the result; it may not be closed by assertion. The first Codex turn after single_provider_mode lifts should re-review this decision."
-    ],
-    "owner_capture_run": {
-      "ran_by": "Devan, July 29 2026, via npm run phase10:evidence -- 11 against the production build",
-      "bld_04": "PASS. Five fresh contexts, 1440x900, 2x CPU throttle: zero long-task entries in every context. Previous run on the same scripts recorded a 65ms task, so the scripts are known-sensitive.",
-      "bld_04_why_zero_is_a_true_pass": "The Long Tasks API reports only tasks of 50ms or more, so zero entries means no task reached the threshold. The measurement proves the scene rendered before reading the buffer: waitForUniverseReady requires the canvas visible AND exactly eight [data-scene-ticker] nodes, and would have thrown rather than returned had the universe not mounted. All five contexts completed. F5 staged scene construction across frames, which converts one 65ms task into sub-threshold chunks — zero is the expected signature of that fix, not the signature of a broken probe.",
-      "bld_04_caveat": "The metric is now binary rather than continuous: it distinguishes over-50 from under-50 but not 49 from 5. It still functions as a gate — a regression to 51ms would surface as an entry — but a companion total-blocking-time figure would give headroom visibility. Recorded as an observation for the reviewer, not a proposed criterion change.",
-      "captures": "10 of 10 shots landed at 20:10-20:12. The nine -failed frames in the directory are stale, dated 13:10, 13:14 and 19:44; the harness now clears them at the start of a run so they cannot be mistaken for this run output.",
-      "gate_unchanged": "The 50ms gate was never weakened, reinterpreted, or excepted at any point across six rounds."
-    },
-    "carried_to_section_12": {
-      "rule": "Carried by owner decision 2026-07-30, not closed. Must appear in §12 acceptance with the measurement below attached, and §12 must re-run the named verifier and record the result. May not be closed by assertion. No gate was weakened.",
-      "criteria": {
-        "BLD-04": {
-          "measurement_at_carry": "1 of 3 batches breached: a single 59ms task against the unchanged <50ms boundary. 77 prior runs at 0ms; eleven breaches spanning 57-64ms.",
-          "candidate": "5d91b6e",
-          "verifier": "docs/phase10-baseline/section-11/scripts/measure-long-tasks.mjs (unmodified)",
-          "root_cause": "Next.js pre-mount RSC/hydration bootstrap script, upstream of OrreryScene. Further scene-construction chunking cannot reach it.",
-          "live_paths": "architecture fix (next/dynamic ssr:false for the 3D world, or a smaller initial RSC payload), or a scoped exception. Neither authorized.",
-          "reserved_note": "Decided under single_provider_mode. The first Codex turn after it lifts should re-review."
-        }
-      }
     }
   },
   "sections_history": [
     {
-      "id": "§0",
+      "id": "\u00a70",
       "status": "complete",
       "accepted_commit": "0e71fc3a6bbbc64f0382c7642f9dfcb5212bd950",
       "note": "Baseline only, no production UI changed. Full history: legacy.section_0."
     },
     {
-      "id": "§1",
+      "id": "\u00a71",
       "status": "complete",
       "accepted_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
       "note": "Accepted under a documented, non-generalizing owner exception to the absolute long-task gate. Full history: legacy.section_1."
     },
     {
-      "id": "§2",
+      "id": "\u00a72",
       "status": "complete",
       "accepted_commit": "5de7f96eabb18904e55186d7eb02250fec193ed5"
     },
     {
-      "id": "§3",
+      "id": "\u00a73",
       "status": "complete",
       "accepted_commit": "b47a5e6f9dc5db463d6c4f8d3dccf7b99212c7d8",
       "note": "One remediation round (criterion 14, Timeline marker-label overlap) before pass. See docs/phase10-workflow/reviews/section-3-accepted.md."
     },
     {
-      "id": "§4",
+      "id": "\u00a74",
       "status": "complete",
       "accepted_commit": "b6950a8a1be3f732c29527b36153d0ad53a05a3b",
       "note": "Zero findings on first review. See docs/phase10-workflow/reviews/section-4-review.md."
     },
     {
-      "id": "§5",
+      "id": "\u00a75",
       "status": "complete",
       "accepted_commit": "72932ce3965f8df72a0fdc9cf2bc687c49d1e53c",
-      "note": "One remediation round (criterion 7 / §4 status-line convention, MetricExplain status prefix rendered as an isolated fragment) before pass. See docs/phase10-workflow/reviews/section-5-review.md."
+      "note": "One remediation round (criterion 7 / \u00a74 status-line convention, MetricExplain status prefix rendered as an isolated fragment) before pass. See docs/phase10-workflow/reviews/section-5-review.md."
     },
     {
-      "id": "§6",
+      "id": "\u00a76",
       "status": "complete",
       "accepted_commit": "139da143f7e9de48215aa17a52313ab1946bca67",
-      "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new §7 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
+      "note": "Zero findings on the full review after one environment-only implementation block (browser evidence produced at review; git-permission block resolved by Devan). Accepted in the same owner-directed turn as the roadmap amendment that inserted the new \u00a77 Spatial Observatory. See docs/phase10-workflow/reviews/section-6-review.md."
     },
     {
-      "id": "§7",
+      "id": "\u00a77",
       "status": "complete",
       "accepted_commit": "25de6a61994ce0c192120fa29c71497db955304f",
-      "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B″: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
+      "note": "Portfolio Orrery. Turn B's spike failed with no winner (both CSS and R3F rejected on the storytelling gate), replacing the section target per an owner-directed roadmap amendment. Devan's Option 2 owner decision authorized one further Codex remediation round (Turn B\u2033: R3F bundle/runtime + required visual system, PASS); Turn D round 2 then resolved three further bounded findings (focus restoration, a measured mobile-load regression, and a missing contrast-verification test) with zero findings remaining. See docs/phase10-workflow/reviews/section-7-review.md through section-7-review-5.md, docs/phase10-workflow/reviews/section-7-accepted.md, and docs/phase10-spike-section-7/DECISION.md."
     },
     {
-      "id": "§8",
+      "id": "\u00a78",
       "status": "complete",
       "accepted_commit": "6a68758d57474f5494ff2ce38056ebb37b5aa244",
-      "note": "The Stock Market Universe — /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes §9. See docs/phase10-workflow/reviews/section-8-accepted.md."
+      "note": "The Stock Market Universe \u2014 /share and / rebuilt as one explorable solar system with viewer-identity gating, retiring the five-chapter Field Journal navigation and absorbing its analysis into Mission Control. One implementation round, six review rounds, five remediation rounds, and three rounds of owner live review; final PASS with zero findings in docs/phase10-workflow/reviews/section-8-review-6.md. Accepted at the owner's roadmap-amendment commit 6a68758, which sits on top of the reviewed commit e6859e1 and changes no application source (src/ and public/ are byte-identical; only PHASE10.md, this file, and the validator's section bounds differ). Round-two creative scope was deliberately held out and becomes \u00a79. See docs/phase10-workflow/reviews/section-8-accepted.md."
     },
     {
-      "id": "§9",
+      "id": "\u00a79",
       "status": "complete",
       "accepted_commit": "589be88fa40bf42566c3834ae72fdd3923335511",
-      "note": "Universe craft and depth. One implementation round, five review rounds, four remediation rounds; findings F1-F9 all resolved and each independently confirmed by Claude Lead. The authoritative review (section-9-review-5.md) recorded BLOCKED rather than PASS: F9 closed, but §9 criteria 48, 53 and 55 were red on the tree because of five owner texture commits landed on top of the reviewed implementation. Accepted at 589be88 rather than HEAD by explicit owner decision (Option 1, docs/phase10-handoffs/2026-07-28-section-9-devan-to-claude-lead-resume.md): 589be88 is the last commit at which §9 satisfies its own criteria (11,727,680 texture bytes vs the 15,000,000 cap; minimum luminanceStdDev 0.101584 vs the 0.1 floor), both re-verified at acceptance directly from the manifest and the git tree. src/ is byte-identical between 589be88 and HEAD (git diff --name-only 589be88 HEAD -- src/ is empty), so the accepted implementation is exactly the reviewed one. main is deliberately left RED on npm test (2 failed / 497 passed of 499, both in planet-textures.test.ts) under a documented, time-boxed, non-generalizing owner exception; closing criteria 48 and 55 is §10 work item 5 and must NOT be raised as findings against §10’s implementer. §9’s after/overview-1440x900.png is deliberately not recaptured. See docs/phase10-workflow/reviews/section-9-accepted.md."
+      "note": "Universe craft and depth. One implementation round, five review rounds, four remediation rounds; findings F1-F9 all resolved and each independently confirmed by Claude Lead. The authoritative review (section-9-review-5.md) recorded BLOCKED rather than PASS: F9 closed, but \u00a79 criteria 48, 53 and 55 were red on the tree because of five owner texture commits landed on top of the reviewed implementation. Accepted at 589be88 rather than HEAD by explicit owner decision (Option 1, docs/phase10-handoffs/2026-07-28-section-9-devan-to-claude-lead-resume.md): 589be88 is the last commit at which \u00a79 satisfies its own criteria (11,727,680 texture bytes vs the 15,000,000 cap; minimum luminanceStdDev 0.101584 vs the 0.1 floor), both re-verified at acceptance directly from the manifest and the git tree. src/ is byte-identical between 589be88 and HEAD (git diff --name-only 589be88 HEAD -- src/ is empty), so the accepted implementation is exactly the reviewed one. main is deliberately left RED on npm test (2 failed / 497 passed of 499, both in planet-textures.test.ts) under a documented, time-boxed, non-generalizing owner exception; closing criteria 48 and 55 is \u00a710 work item 5 and must NOT be raised as findings against \u00a710\u2019s implementer. \u00a79\u2019s after/overview-1440x900.png is deliberately not recaptured. See docs/phase10-workflow/reviews/section-9-accepted.md."
     },
     {
-      "id": "§10",
+      "id": "\u00a710",
       "status": "complete",
       "accepted_commit": "3d853411651217ef18e9480b725b3289848b4d27",
       "acceptance_ledger": "docs/phase10-workflow/acceptance/section-10.json",
       "single_provider_mode": false,
-      "note": "Universe colour, material, and command structure. One implementation round, five review rounds, four remediation rounds, an owner bounded-triage rule, an owner triage approval and two owner decisions. The authoritative review (section-10-review-5.md) records FAIL, not pass: 71 of 77 criteria pass and six are carried to §11 unclosed (TST-03, VIS-04, DEF-02, VIS-02, BHV-05, BLD-04), each recorded in the ledger as carried_by_owner with its failing measurement attached. Accepted at 3d85341 by explicit owner decision (docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md), which rests on direct owner observation contradicting two instruments: the owner reports NBIS trail brightness matching its neighbours where the verifier reports red 93 against a model 179, and reports he cannot see any planet or mark at all because the inspector panel occludes them — the same 96.8-100% band occlusion that makes the chirality verifier unable to measure what it samples. NO owner exception was recorded and NO gate, threshold, verifier or sample point was weakened, redefined or baseline-subtracted; the six criteria are carried forward and must appear in §11 acceptance. Verified independently at acceptance rather than assumed: git diff --name-only 3d85341 HEAD -- src/ public/ package.json package-lock.json is empty, so the accepted implementation is byte-identical to HEAD, and npm test (527/527 across 99 files) plus npm run build both pass at HEAD. §9's inherited red is closed by this section: totalBytes 22,803,051 against §10's raised 30 MB ceiling and minimum luminanceStdDev 0.106628 against the 0.1 floor. Implemented by codex/gpt-5 and reviewed by claude-code/opus-5 across two providers — full cross-model independence, so single_provider_mode is false. See docs/phase10-workflow/reviews/section-10-accepted.md, section-10-review.md through section-10-review-5.md, and docs/phase10-workflow/SECTION_10_TRIAGE.md."
+      "note": "Universe colour, material, and command structure. One implementation round, five review rounds, four remediation rounds, an owner bounded-triage rule, an owner triage approval and two owner decisions. The authoritative review (section-10-review-5.md) records FAIL, not pass: 71 of 77 criteria pass and six are carried to \u00a711 unclosed (TST-03, VIS-04, DEF-02, VIS-02, BHV-05, BLD-04), each recorded in the ledger as carried_by_owner with its failing measurement attached. Accepted at 3d85341 by explicit owner decision (docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md), which rests on direct owner observation contradicting two instruments: the owner reports NBIS trail brightness matching its neighbours where the verifier reports red 93 against a model 179, and reports he cannot see any planet or mark at all because the inspector panel occludes them \u2014 the same 96.8-100% band occlusion that makes the chirality verifier unable to measure what it samples. NO owner exception was recorded and NO gate, threshold, verifier or sample point was weakened, redefined or baseline-subtracted; the six criteria are carried forward and must appear in \u00a711 acceptance. Verified independently at acceptance rather than assumed: git diff --name-only 3d85341 HEAD -- src/ public/ package.json package-lock.json is empty, so the accepted implementation is byte-identical to HEAD, and npm test (527/527 across 99 files) plus npm run build both pass at HEAD. \u00a79's inherited red is closed by this section: totalBytes 22,803,051 against \u00a710's raised 30 MB ceiling and minimum luminanceStdDev 0.106628 against the 0.1 floor. Implemented by codex/gpt-5 and reviewed by claude-code/opus-5 across two providers \u2014 full cross-model independence, so single_provider_mode is false. See docs/phase10-workflow/reviews/section-10-accepted.md, section-10-review.md through section-10-review-5.md, and docs/phase10-workflow/SECTION_10_TRIAGE.md."
+    },
+    {
+      "id": "\u00a711",
+      "status": "complete",
+      "accepted_commit": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
+      "acceptance_ledger": "docs/phase10-workflow/acceptance/section-11.json",
+      "single_provider_mode": true,
+      "note": "Universe legibility and the draft rig. One implementation round, ten review turns, nine remediation rounds, one out-of-band owner-directed Fable drop (a7f85ac, covering F1/F4/FB-03/FB-06/FB-14/FB-17), and one one-attempt-authorized mark repair. The authoritative review (section-11-review-10.md) records PASS: 53 of 54 criteria pass or are not applicable; one (BLD-04, carried from \u00a710) is carried again to \u00a712, recorded in the ledger as carried_by_owner with its failing measurement attached, by Devan's explicit non-generalizing ruling (commit 9f561b52179023f70c89fabfab62ea880df0a146): CARRY, not except -- the <50ms boundary is unweakened, unredefined, and un-baseline-subtracted; the criterion still fails and is not being pretended otherwise. Root cause: Next.js pre-mount RSC/hydration bootstrap upstream of OrreryScene, which six rounds of scene-construction chunking measurably improved (a consistent 55-65ms breach down to an intermittent single-batch 51-59ms breach) but could not reach structurally. Accepted at 5d91b6e (implementation-bearing HEAD); the owner's carry-ruling commit 9f561b5 sits one commit on top and changes no application source (git diff --name-only 5d91b6e 9f561b5 -- src/ public/ package.json package-lock.json scripts/ is empty), re-verified independently at acceptance: npm test 107/107 files, 553/553 tests, zero failures; npm run build exit 0, 18/18 pages, /share smoke pass. All five \u00a710-carried criteria other than BLD-04 (TST-03, VIS-04, DEF-02, VIS-02, BHV-05) closed in-section across review turns 4-8. single_provider_mode is true for the entire section, including this acceptance; the first Codex turn after it lifts should re-review the BLD-04 carry decision. See docs/phase10-workflow/reviews/section-11-accepted.md, section-11-review.md through section-11-review-10.md, and docs/phase10-workflow/SINGLE_PROVIDER_MODE.md."
     }
   ],
-  "prev_actor_commit": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
-  "prev_actor_commit_note": "5d91b6e was HEAD at the start of this review turn (claude_lead, review turn 9) -- remediation turn 9's own commit (OrreryScene.tsx further chunking + BLD-04-1 investigation evidence). This turn's commit adds the review-9 doc, the independent BLD-04 re-measurement evidence, and ledger/state/handoff bookkeeping, and sits on top of 5d91b6e. Its own hash is not self-referenceable in this file; the next turn records it via git log.",
+  "prev_actor_commit": "9f561b52179023f70c89fabfab62ea880df0a146",
+  "prev_actor_commit_note": "9f561b52179023f70c89fabfab62ea880df0a146 (owner(\u00a711): carry BLD-04 to \u00a712 -- no exception, no gate weakened) was HEAD at the start of this Claude Lead review turn (review turn 10). It changed no application source -- it routed state from blocked/devan back to ready/review/claude and recorded the owner's carry ruling. This turn grades against that ruling, accepts \u00a711 at the earlier candidate 5d91b6e (the last commit carrying \u00a711 application source), and initializes \u00a712.",
   "last_green_commit": "5d91b6e815c1443012031dbe6eba8d1b547790ef",
-  "last_green_commit_note_2": "Moved from 3d1882a to §10's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. §9's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against §10's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
-  "last_green_commit_note_4": "Moved from f271fc7 to e8faf0d (§11 review turn 6). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD e8faf0d, confirming it green. The eventual blocked-handoff commit changes no executable source.",
+  "last_green_commit_note_2": "Moved from 3d1882a to \u00a710's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. \u00a79's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against \u00a710's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
+  "last_green_commit_note_4": "Moved from f271fc7 to e8faf0d (\u00a711 review turn 6). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD e8faf0d, confirming it green. The eventual blocked-handoff commit changes no executable source.",
   "last_green_commit_note_5": "Reconfirmed green at e8faf0d by review turn 7 (claude-code/sonnet-5): npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass), both this turn's own independent runs.",
-  "last_green_commit_note_6": "Moved from e8faf0d to 0c3a812 (§11 review turn 8). Independently re-ran npm test (107 files, 553 tests, zero failures, raw-npm-test.txt) and npm run build (exit 0, 18/18 static pages, /share smoke pass, raw-npm-build.txt) against incoming HEAD 0c3a812, confirming it green. `npm test`/`npm run build` passing is orthogonal to BLD-04's live-browser long-task gate (a separate, additional runtime measurement, not part of either command) -- green here does not contradict the BLD-04-1 finding below.",
-  "last_green_commit_note_7": "Moved from 0c3a812 to 5d91b6e (§11 review turn 9). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD 5d91b6e, confirming it green. As with note_6, this is orthogonal to BLD-04's live-browser long-task gate -- green here does not contradict the BLD-04-1 finding, which remains open and is why this turn's status is blocked rather than accept.",
+  "last_green_commit_note_6": "Moved from e8faf0d to 0c3a812 (\u00a711 review turn 8). Independently re-ran npm test (107 files, 553 tests, zero failures, raw-npm-test.txt) and npm run build (exit 0, 18/18 static pages, /share smoke pass, raw-npm-build.txt) against incoming HEAD 0c3a812, confirming it green. `npm test`/`npm run build` passing is orthogonal to BLD-04's live-browser long-task gate (a separate, additional runtime measurement, not part of either command) -- green here does not contradict the BLD-04-1 finding below.",
+  "last_green_commit_note_7": "Moved from 0c3a812 to 5d91b6e (\u00a711 review turn 9). Independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against incoming HEAD 5d91b6e, confirming it green. As with note_6, this is orthogonal to BLD-04's live-browser long-task gate -- green here does not contradict the BLD-04-1 finding, which remains open and is why this turn's status is blocked rather than accept.",
   "production_code_changed_this_turn": false,
-  "production_code_note": "This review turn (claude_lead, claude-code/sonnet-5) changed no application source. It added docs/phase10-workflow/reviews/section-11-review-9.md, docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json, the acceptance-ledger BLD-04.reviewer entry and candidate_sha, this state file, ACTIVE_CONTEXT.md, and the routing handoff.",
+  "production_code_note": "This review-turn-10/accept turn (claude_lead, claude-code/sonnet-5) changed no application source. It updated docs/phase10-workflow/acceptance/section-11.json (BLD-04 reviewer.status fail -> carried_by_owner, evidence citation fixed to include the already-retained raw-review-8-bld04-longtasks.json), wrote docs/phase10-workflow/reviews/section-11-review-10.md and section-11-accepted.md, moved \u00a711 into sections_history, reset section to a fresh \u00a712 record, reset verification, and regenerated context/handoff/progress.",
   "verification": {
     "tests": {
       "command": "npm test",
-      "status": "pass",
-      "summary": "Review turn 9, independent run against candidate 5d91b6e: 107 test files passed; 553 tests passed; zero failures or skips.",
-      "finished_at": "2026-07-30T12:00:00Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     },
     "build": {
       "command": "npm run build",
-      "status": "pass",
-      "summary": "Review turn 9, independent run against candidate 5d91b6e: Next.js 16.2.11 production build exited 0, 18/18 pages generated, /share smoke check pass.",
-      "finished_at": "2026-07-30T12:01:00Z"
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     },
     "live_evidence": {
-      "command": "Two fresh production server processes this turn (ports 4400, 4500), unmodified measure-long-tasks.mjs, 3 batches / 15 fresh 1440x900 CPU-2x contexts, matching review turn 8's method",
-      "status": "BLD-04 independently re-measured, still FAIL -- 1 of 3 batches breaches the unchanged <50ms gate",
-      "summary": "Batch A (port 4400, first invocation): 59/0/0/0/0ms, FAIL. Batch B (same process, second invocation): 0/0/0/0/0ms, PASS. Batch C (second separate fresh process, port 4500): 0/0/0/0/0ms, PASS. Per the no-cherry-picking carried-criteria rule, graded FAIL. Corroborates the implementer's claimed improvement (review turn 8: 2-of-3 batches breaching; this turn: 1-of-3) without full elimination. Independently read (not re-ran) the implementer's three diagnostic scripts and judged the pre-mount-hydration root-cause diagnosis sound. Full raw output at docs/phase10-baseline/section-11/raw-review-9-bld04-longtasks.json. Both servers stopped after capture (verified via lsof).",
-      "finished_at": "2026-07-30T11:55:00Z"
+      "command": null,
+      "status": "not_run",
+      "summary": null,
+      "finished_at": null
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-30T12:05:00Z",
+  "updated_at": "2026-07-30T13:45:00Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,
-    "current_section": "§1",
+    "current_section": "\u00a71",
     "role": "codex_acceptance",
     "status": "complete",
     "next_agent": "devan",
@@ -348,7 +202,7 @@
       "completed_at": "2026-07-23T22:48:01Z",
       "baseline_report": "docs/phase10-baseline/section-0/README.md",
       "handoff": "docs/phase10-handoffs/2026-07-23-section-0-codex-to-claude.md",
-      "commit_subject": "phase10(§0): baseline selected Field Journal orbital hybrid",
+      "commit_subject": "phase10(\u00a70): baseline selected Field Journal orbital hybrid",
       "production_ui_changed": false
     },
     "section_1": {
@@ -360,7 +214,7 @@
       "refiner_completed_by": "claude-code/sonnet-5",
       "refiner_completed_at": "2026-07-24T00:30:00Z",
       "refiner_commit": "3887bed60aea9ee82bae0a8f3c58f627a5d6e1d0",
-      "refiner_commit_note": "Recorded in an immediate follow-up bookkeeping commit (6f92aaa) once the refinement commit's own hash was known (a state file committed inside a commit cannot contain that same commit's hash) — the same non-self-referential pattern the critic's own state-only commit already used relative to the builder commit.",
+      "refiner_commit_note": "Recorded in an immediate follow-up bookkeeping commit (6f92aaa) once the refinement commit's own hash was known (a state file committed inside a commit cannot contain that same commit's hash) \u2014 the same non-self-referential pattern the critic's own state-only commit already used relative to the builder commit.",
       "evidence_report": "docs/phase10-baseline/section-1/README.md",
       "css_vs_r3f_decision": "docs/phase10-spike-section-1/DECISION.md",
       "critic_report": "docs/phase10-reviews/2026-07-23-section-1-codex-critic.md",
@@ -368,16 +222,16 @@
       "acceptance_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance.md",
       "acceptance_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md",
       "acceptance_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-to-claude-refiner.md",
-      "commit_subject": "phase10(§1): CSS 3D technical spike and production Observatory shell",
-      "refiner_commit_subject": "phase10(§1): refine critic findings",
+      "commit_subject": "phase10(\u00a71): CSS 3D technical spike and production Observatory shell",
+      "refiner_commit_subject": "phase10(\u00a71): refine critic findings",
       "css_vs_r3f_result": "CSS 3D selected; no production Three.js/R3F dependency (reconfirmed by two refiner passes, including a representative-phone-profile measurement recreation)",
       "production_ui_changed": false,
       "shell_wired_into_share_or_home": false,
-      "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is §2 per PHASE10.md; §1 (builder and refiner) deliberately did not widen scope to do that here.",
+      "note": "The shell is built and proven via the owner-gated /dev/observatory-shell preview route only. Wiring it into /share and / is \u00a72 per PHASE10.md; \u00a71 (builder and refiner) deliberately did not widen scope to do that here.",
       "acceptance_remediation_completed_by": "claude-code/sonnet-5",
       "acceptance_remediation_completed_at": "2026-07-24T03:15:00Z",
       "acceptance_remediation_commit": "290ce5f5416394786cf1d34516e9d8de301e1ea0",
-      "acceptance_remediation_commit_subject": "phase10(§1): representative-phone performance evidence for acceptance remediation",
+      "acceptance_remediation_commit_subject": "phase10(\u00a71): representative-phone performance evidence for acceptance remediation",
       "acceptance_remediation_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation.md",
       "acceptance_remediation_summary": "Addressed the single bounded engineering-reliability finding from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance.md: declared explicit pass/fail thresholds before measuring, recreated both spikes and measured them on Playwright's 'Moto G4' device profile with CDP CPU 4x / Slow-4G-network throttling (5 repetitions per route), retained sanitized raw results and non-executing reproduction material (r3f-spike.patch, measure-phone.mjs), then removed the R3F route and all temporary dependencies again. See docs/phase10-spike-section-1/DECISION.md 'Phone-profile measurement recreation (acceptance remediation)'.",
       "acceptance_remediation_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
@@ -387,7 +241,7 @@
       "acceptance_remediation_2_summary": "Addressed both bounded Engineering Reliability findings from docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md. (1) Root-caused the 66-70ms long task via longtask attribution + resource-timing correlation to react-dom's client hydration chunk, then proved with a controlled same-route unauthenticated-baseline measurement that the task is caused entirely by the pre-existing (pre-Phase-10) root layout's DepthPullProvider + Next.js/React client runtime, not by the CSS 3D spike content itself (identical task duration with near-zero spike markup rendered). Because fixing this at the source requires editing src/app/layout.tsx in a way that changes / and /share (explicitly out of this remediation's scope), corrected the long-task budget from a whole-page absolute to an added-over-shared-shell-baseline differential, matching the methodology already used by the bundle and memory budgets in the same table; CSS 3D's added long-task time is ~0ms (median 0ms, range -1 to +13ms) vs R3F's ~119ms median, so CSS 3D now passes and the finding corroborates rather than weakens the existing decision. (2) Corrected the frame-stability script to capture exactly 60 raw rAF deltas and retain all of them; found the declared literal '<=16.7ms per sample' predicate is unachievable by any of the 20 retained runs (32-48/60 pass, universally, including both baselines) because 16.7ms sits on the exact 60Hz frame interval and ordinary timer jitter puts half of any smooth sequence fractionally above it; adopted the acceptance finding's explicitly allowed alternative (the >33.4ms dropped-frame predicate) as the graded criterion, under which every run on every route shows 0/60 dropped frames. Reran the full 5-repetition Moto G4 + CPU 4x + Slow 4G protocol for both routes plus new unauthenticated-baseline runs; CSS 3D now passes every declared threshold. See docs/phase10-spike-section-1/DECISION.md 'Long-task root cause and frame-stability predicate correction (acceptance remediation round 2)'.",
       "acceptance_remediation_2_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-codex-acceptance-remediation-2.md",
       "acceptance_remediation_2_commit": "487f66ec6dfc1901d6e9db5f54f8984cccc2e34e",
-      "acceptance_remediation_2_commit_note": "This hash is a best-effort record written in this immediate bookkeeping-only follow-up commit, since a commit cannot contain its own hash. Confirm against `git log` for the exact `phase10(§1): correct long-task and frame-stability measurement methodology` commit.",
+      "acceptance_remediation_2_commit_note": "This hash is a best-effort record written in this immediate bookkeeping-only follow-up commit, since a commit cannot contain its own hash. Confirm against `git log` for the exact `phase10(\u00a71): correct long-task and frame-stability measurement methodology` commit.",
       "acceptance_remediation_2_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
       "acceptance_remediation_2_refiner_handoff": "docs/phase10-handoffs/2026-07-24-section-1-codex-acceptance-remediation-2-to-claude-refiner.md",
       "acceptance_remediation_3_completed_by": "claude-code/sonnet-5",
@@ -396,14 +250,14 @@
       "acceptance_remediation_3_handoff": "docs/phase10-handoffs/2026-07-24-section-1-claude-refiner-to-devan-blocked.md",
       "acceptance_remediation_3_evidence": "docs/phase10-spike-section-1/raw/css-longtask-final.json",
       "acceptance_remediation_3_script": "docs/phase10-spike-section-1/measure-css-longtask-final.mjs",
-      "acceptance_remediation_3_result": "The absolute zero-task predicate fails honestly on 5/5 runs. Devan subsequently approved a documented §1-only exception because retained build/timing evidence attributes the repeated 66-72ms task to the shared Next.js/React root bootstrap rather than the route-owned CSS layer.",
+      "acceptance_remediation_3_result": "The absolute zero-task predicate fails honestly on 5/5 runs. Devan subsequently approved a documented \u00a71-only exception because retained build/timing evidence attributes the repeated 66-72ms task to the shared Next.js/React root bootstrap rather than the route-owned CSS layer.",
       "accepted_by": "codex/gpt-5",
       "accepted_at": "2026-07-24T04:38:53Z",
       "accepted_reviewed_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
       "accepted_review": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md",
       "owner_exception": {
         "approved_by": "Devan",
-        "scope": "Phase 10 §1 CSS-vs-R3F decision only",
+        "scope": "Phase 10 \u00a71 CSS-vs-R3F decision only",
         "absolute_boundary_ms": 50,
         "absolute_result": "FAIL in all five retained runs; observed tasks remain recorded without subtraction or concealment",
         "reason": "The absolute zero-long-task whole-page budget is an invalid proxy for this App Router architecture. Retained build/timing evidence identifies the repeated task with the shared Next.js/React root bootstrap chunk, while the authenticated CSS branch has no route-owned client hydration.",
@@ -418,41 +272,41 @@
       "tests": {
         "command": "npm test",
         "status": "pass",
-        "summary": "Codex Acceptance independently ran the full suite for final §1 acceptance: 54 test files passed; 310 of 310 tests passed.",
+        "summary": "Codex Acceptance independently ran the full suite for final \u00a71 acceptance: 54 test files passed; 310 of 310 tests passed.",
         "finished_at": "2026-07-24T04:41:34Z"
       },
       "build": {
         "command": "npm run build",
         "status": "pass",
-        "summary": "Codex Acceptance independently ran the Next.js 16.2.11 production build for final §1 acceptance: compilation and TypeScript passed; 16 route tasks generated and /dev/phase10-spike-r3f remained absent.",
+        "summary": "Codex Acceptance independently ran the Next.js 16.2.11 production build for final \u00a71 acceptance: compilation and TypeScript passed; 16 route tasks generated and /dev/phase10-spike-r3f remained absent.",
         "finished_at": "2026-07-24T04:41:34Z",
-        "font_network_behavior": "Unchanged from §0/§1: src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. Remains §13 work.",
-        "r3f_dependency_absent": "Confirmed by direct inspection and `git diff --quiet package.json package-lock.json` (no diff at all — --no-save was used for this pass's temporary installs, so the manifest files were never touched): three, @react-three/fiber, @types/three, and the temporary measurement tool (playwright) are all absent from package.json, package-lock.json, and node_modules at the final commit.",
-        "performance_bundle_budget_result": "ACCEPTED WITH OWNER-APPROVED §1-ONLY EXCEPTION. The 50ms classification boundary remains unchanged and raw/css-longtask-final.json honestly records FAIL in all five runs (57/72ms, 68ms, 71ms, 67ms, 66ms). The absolute zero-task whole-page budget is invalid as the §1 CSS-vs-R3F proxy because the repeated 66-72ms task aligns with a React DOM hydrateRoot/createRoot chunk classified as a rootMainFile and shared by every built App Router route. The authenticated CSS branch renders no route-owned client component and has no route-owned hydration; no long task is attributable to its CSS spatial layer. §1 replacement gate: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration — PASS. This exception is not precedent for future production audits. R3F remains 4.7x over its bundle budget and absent from production."
+        "font_network_behavior": "Unchanged from \u00a70/\u00a71: src/app/layout.tsx still imports Inter, JetBrains Mono, and Instrument Serif from next/font/google. Remains \u00a713 work.",
+        "r3f_dependency_absent": "Confirmed by direct inspection and `git diff --quiet package.json package-lock.json` (no diff at all \u2014 --no-save was used for this pass's temporary installs, so the manifest files were never touched): three, @react-three/fiber, @types/three, and the temporary measurement tool (playwright) are all absent from package.json, package-lock.json, and node_modules at the final commit.",
+        "performance_bundle_budget_result": "ACCEPTED WITH OWNER-APPROVED \u00a71-ONLY EXCEPTION. The 50ms classification boundary remains unchanged and raw/css-longtask-final.json honestly records FAIL in all five runs (57/72ms, 68ms, 71ms, 67ms, 66ms). The absolute zero-task whole-page budget is invalid as the \u00a71 CSS-vs-R3F proxy because the repeated 66-72ms task aligns with a React DOM hydrateRoot/createRoot chunk classified as a rootMainFile and shared by every built App Router route. The authenticated CSS branch renders no route-owned client component and has no route-owned hydration; no long task is attributable to its CSS spatial layer. \u00a71 replacement gate: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration \u2014 PASS. This exception is not precedent for future production audits. R3F remains 4.7x over its bundle budget and absent from production."
       },
       "visual": {
         "required": true,
         "status": "pass",
         "desktop_screenshot": "docs/phase10-baseline/section-1/desktop/observatory-shell-public-1440x900.jpg",
         "mobile_screenshot": "docs/phase10-baseline/section-1/mobile/observatory-shell-390x844.jpg",
-        "note": "All 13 desktop/mobile screenshots across docs/phase10-spike-section-1/ and docs/phase10-baseline/section-1/ were recaptured with headless Playwright (page.setViewportSize, no resize floor) against a real production server, and every file's pixel dimensions were verified with `sips -g pixelWidth -g pixelHeight` before being documented — full sips output is in DECISION.md. Every file now matches its filename/label exactly (previously: the shell public file labeled 1440x900 was 892x779, other desktop files labeled 1440x900 were 991x865, and mobile files were 614x667 substitutes).",
+        "note": "All 13 desktop/mobile screenshots across docs/phase10-spike-section-1/ and docs/phase10-baseline/section-1/ were recaptured with headless Playwright (page.setViewportSize, no resize floor) against a real production server, and every file's pixel dimensions were verified with `sips -g pixelWidth -g pixelHeight` before being documented \u2014 full sips output is in DECISION.md. Every file now matches its filename/label exactly (previously: the shell public file labeled 1440x900 was 892x779, other desktop files labeled 1440x900 were 991x865, and mobile files were 614x667 substitutes).",
         "genuine_390_320_capture": "Resolved this pass. Real 390x844 and 320x844 screenshots exist for the CSS spike, the R3F spike (390x844), and the production shell (public, and forced-no-3d-fallback at 390x844; public at 320x844). document.documentElement.scrollWidth === clientWidth (no horizontal overflow) was verified at every narrow capture.",
         "console": {
           "warnings": 0,
           "errors": 0
         },
-        "mobile_capture_limitation": "Resolved. The original ~614-991px browser-extension resize floor no longer applies — headless Playwright reaches exact 390/320px viewports directly. See docs/phase10-spike-section-1/DECISION.md 'Mobile capture limitation — resolved this pass' for the full method."
+        "mobile_capture_limitation": "Resolved. The original ~614-991px browser-extension resize floor no longer applies \u2014 headless Playwright reaches exact 390/320px viewports directly. See docs/phase10-spike-section-1/DECISION.md 'Mobile capture limitation \u2014 resolved this pass' for the full method."
       },
       "accessibility": {
         "status": "pass",
-        "chapter_navigation": "Unchanged from the reviewed builder commit: ObservatoryShell/ChapterOrbit provide real five-chapter semantic navigation (one <nav>, one real link per chapter, aria-current on the active one). Not yet wired into /share, /, or /dashboard (§2/§4/§6 do that) — expected, not a defect.",
+        "chapter_navigation": "Unchanged from the reviewed builder commit: ObservatoryShell/ChapterOrbit provide real five-chapter semantic navigation (one <nav>, one real link per chapter, aria-current on the active one). Not yet wired into /share, /, or /dashboard (\u00a72/\u00a74/\u00a76 do that) \u2014 expected, not a defect.",
         "focus": "Unchanged: the active chapter's h2 (tabIndex=-1) receives a visible :focus-visible outline and is the focus-restoration target after a client-side chapter change.",
         "headings": "Unchanged: exactly one h1 per shell instance.",
-        "reduced_motion": "Unchanged: pure CSS, verified by observatory-fallback.test.ts — now also asserting the concentric map's display:none/block toggle stays wired to the same reduced-motion/forced-no-3D selectors as every other fallback element.",
+        "reduced_motion": "Unchanged: pure CSS, verified by observatory-fallback.test.ts \u2014 now also asserting the concentric map's display:none/block toggle stays wired to the same reduced-motion/forced-no-3D selectors as every other fallback element.",
         "contrast": "FIXED: .freshnessLabel's --obs-ink-faint token changed from #726d63 (3.82:1, the critic's measured failure) to #847e73 (4.88:1, computed via the standard WCAG relative-luminance formula and asserted by a new regression test, observatory-contrast.test.ts, that computes the ratio directly from source tokens).",
-        "static_concentric_fallback": "ADDED: a decorative, aria-hidden concentric-rings map (.concentricMap/.concentricRing/.concentricCenter) renders only in the fallback layout (narrow viewport, reduced motion, forced no-3D), highlighting the active chapter's ring. Additive only — the five real chapter links remain the only controls, reading order and 44px targets are unchanged, and ChapterOrbit.test.tsx asserts the map contains zero focusable elements (no duplicate focus stops).",
+        "static_concentric_fallback": "ADDED: a decorative, aria-hidden concentric-rings map (.concentricMap/.concentricRing/.concentricCenter) renders only in the fallback layout (narrow viewport, reduced motion, forced no-3D), highlighting the active chapter's ring. Additive only \u2014 the five real chapter links remain the only controls, reading order and 44px targets are unchanged, and ChapterOrbit.test.tsx asserts the map contains zero focusable elements (no duplicate focus stops).",
         "known_issues": [
-          "The shell is proven at /dev/observatory-shell only; production routes still lack it until later sections wire it in (unchanged from the reviewed builder commit; explicitly out of §1's scope per PHASE10.md)."
+          "The shell is proven at /dev/observatory-shell only; production routes still lack it until later sections wire it in (unchanged from the reviewed builder commit; explicitly out of \u00a71's scope per PHASE10.md)."
         ]
       },
       "privacy": {
@@ -461,11 +315,11 @@
           "/dev/observatory-shell",
           "/dev/phase10-spike-css"
         ],
-        "logged_out_check": "Both routes render the sign-in form with zero authentication cookie present (curl, no cookie jar) against this pass's rebuilt production server. /dev/phase10-spike-r3f (recreated temporarily for phone-profile measurement) returns a genuine 404 after cleanup — confirmed via curl.",
+        "logged_out_check": "Both routes render the sign-in form with zero authentication cookie present (curl, no cookie jar) against this pass's rebuilt production server. /dev/phase10-spike-r3f (recreated temporarily for phone-profile measurement) returns a genuine 404 after cleanup \u2014 confirmed via curl.",
         "public_dollar_leak_check": "No $<digits>.<digits> pattern found in either retained route's unauthenticated HTML.",
         "shell_cross_render_check": "Unchanged: ObservatoryShell.test.tsx asserts the owner slot is never rendered in mode=\"public\".",
         "query_preservation_privacy_note": "Unchanged from the prior refiner pass: preservedQuery only echoes back caller-named query keys and carries no portfolio data.",
-        "raw_measurement_data_privacy_note": "docs/phase10-spike-section-1/raw/phone-measurements.json was checked with a direct grep for the temporary OWNER_PASSWORD value and the word 'password' before being committed — neither is present. It contains only performance timings/byte counts and the named phone-profile descriptor.",
+        "raw_measurement_data_privacy_note": "docs/phase10-spike-section-1/raw/phone-measurements.json was checked with a direct grep for the temporary OWNER_PASSWORD value and the word 'password' before being committed \u2014 neither is present. It contains only performance timings/byte counts and the named phone-profile descriptor.",
         "env_contents_accessed_or_output": false,
         "local_auth_method": "Temporary localhost-only OWNER_PASSWORD process override for this pass's live measurement capture and end-to-end privacy re-check; no environment-file contents were read at any point."
       },
@@ -479,7 +333,7 @@
       "reviewer": "codex/gpt-5",
       "reviewed_commit": "f8001ada9187faff7838c1b45fc52409c06eea0c",
       "report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-owner-exception.md",
-      "owner_exception": "For §1 only, the absolute zero-task whole-page budget is replaced by: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration. The 50ms boundary and all absolute observations remain unchanged. Do not generalize to future production audits.",
+      "owner_exception": "For \u00a71 only, the absolute zero-task whole-page budget is replaced by: CSS 3D must introduce no attributable route-owned long task and no route-owned client hydration. The 50ms boundary and all absolute observations remain unchanged. Do not generalize to future production audits.",
       "prior_final_remediation_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation-2.md",
       "prior_final_remediation_reviewed_commit": "919e8e8f93cabec403e758ea5ad2bc3bd1c773e9",
       "prior_acceptance_remediation_report": "docs/phase10-reviews/2026-07-24-section-1-codex-acceptance-remediation.md",
@@ -550,55 +404,55 @@
     "failure_count": {
       "consecutive": 0,
       "maximum": 3,
-      "note": "Reset after Devan made the required human scope decision and Codex accepted §1 with the documented, non-generalizable exception."
+      "note": "Reset after Devan made the required human scope decision and Codex accepted \u00a71 with the documented, non-generalizable exception."
     },
     "stop_reason": null,
-    "handoff_reason": "§1 accepted and complete with Devan's explicit long-task exception. §2 remains unstarted and requires Devan's explicit instruction.",
+    "handoff_reason": "\u00a71 accepted and complete with Devan's explicit long-task exception. \u00a72 remains unstarted and requires Devan's explicit instruction.",
     "updated_at": "2026-07-24T04:41:34Z"
   },
   "roadmap_amendment": {
     "amended_at": "2026-07-27",
     "amended_by": "Devan (owner), recorded by claude/fable-5 (cowork, owner-directed)",
-    "change": "Inserted a new §8 'The Stock Market Universe — /share rebuilt'. Former §8-§13 renumbered to §9-§14 with scope and acceptance criteria unchanged: §9 /compare, §10 after-hours, §11 /research, §12 /history, §13 /trades, §14 integration/local fonts/resilience/acceptance.",
-    "reason": "Owner direction change from a finance-first product to a creative-first one. /share becomes an explorable stock-market universe (solar system = portfolio, sun = portfolio whole, planet = holding). The five-chapter Field Journal navigation built in §2-§3 is retired; its analysis content moves into the dashboard the sun opens. §9-§14 target routes other than /share and were unaffected by the direction change.",
-    "scope_note": "Sections §0-§7 remain accepted and unchanged. No application code or dependency changed in this amendment turn.",
-    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from §2-§13 to §2-§14, and the completion check now requires §14 instead of §13. No other validation rule changed.",
+    "change": "Inserted a new \u00a78 'The Stock Market Universe \u2014 /share rebuilt'. Former \u00a78-\u00a713 renumbered to \u00a79-\u00a714 with scope and acceptance criteria unchanged: \u00a79 /compare, \u00a710 after-hours, \u00a711 /research, \u00a712 /history, \u00a713 /trades, \u00a714 integration/local fonts/resilience/acceptance.",
+    "reason": "Owner direction change from a finance-first product to a creative-first one. /share becomes an explorable stock-market universe (solar system = portfolio, sun = portfolio whole, planet = holding). The five-chapter Field Journal navigation built in \u00a72-\u00a73 is retired; its analysis content moves into the dashboard the sun opens. \u00a79-\u00a714 target routes other than /share and were unaffected by the direction change.",
+    "scope_note": "Sections \u00a70-\u00a77 remain accepted and unchanged. No application code or dependency changed in this amendment turn.",
+    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from \u00a72-\u00a713 to \u00a72-\u00a714, and the completion check now requires \u00a714 instead of \u00a713. No other validation rule changed.",
     "direction_docs": [
       "UNIVERSE_DIRECTION.md",
       "UNIVERSE_IDEAS.md"
     ],
-    "superseded": "PRODUCT_DIRECTION.md's description of /share as a five-chapter Field Journal with an Orrery entrance is superseded by the two direction documents for §8 onward. PRODUCT_DIRECTION.md was deliberately not rewritten here; reconciling it is a separate, later task.",
+    "superseded": "PRODUCT_DIRECTION.md's description of /share as a five-chapter Field Journal with an Orrery entrance is superseded by the two direction documents for \u00a78 onward. PRODUCT_DIRECTION.md was deliberately not rewritten here; reconciling it is a separate, later task.",
     "visual_references": "Committed docs/reference/ on 2026-07-27: planet-surface-mood-reference.jpg (owner's quality target for planet surfaces; contains a real logo/wordmark and must NOT be reproduced literally), concept-desktop-overview.png (OVERVIEW layout with the full encoding system), concept-sun-health-states.png (five discrete sun health states), and SUPERSEDED-concept-mobile-parade.png (retained only to make the desktop-first decision legible; do not build). docs/reference/README.md carries these cautions inline."
   },
   "roadmap_amendment_2": {
     "amended_at": "2026-07-28",
     "amended_by": "Devan (owner), recorded by claude/fable-5 (cowork, owner-directed)",
-    "change": "Inserted a new §9 'Universe craft and depth'. Former §9-§14 renumbered to §10-§15 with scope and acceptance criteria unchanged: §10 /compare, §11 after-hours, §12 /research, §13 /history, §14 /trades, §15 integration/local fonts/resilience/acceptance.",
-    "reason": "§8 built the universe and proved it works; the owner's verdict on its accepted state is that the textures are 'ambiguous garbage', Mission Control 'looks so generic and basic', and the scene lacks life. The round-2 creative work (UNIVERSE_IDEAS_2.md) is a section's worth of craft work and needed its own acceptance criteria rather than being folded into §8, which already ran fifteen turns.",
-    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from §2-§14 to §2-§15; the completion check now requires §15.",
+    "change": "Inserted a new \u00a79 'Universe craft and depth'. Former \u00a79-\u00a714 renumbered to \u00a710-\u00a715 with scope and acceptance criteria unchanged: \u00a710 /compare, \u00a711 after-hours, \u00a712 /research, \u00a713 /history, \u00a714 /trades, \u00a715 integration/local fonts/resilience/acceptance.",
+    "reason": "\u00a78 built the universe and proved it works; the owner's verdict on its accepted state is that the textures are 'ambiguous garbage', Mission Control 'looks so generic and basic', and the scene lacks life. The round-2 creative work (UNIVERSE_IDEAS_2.md) is a section's worth of craft work and needed its own acceptance criteria rather than being folded into \u00a78, which already ran fifteen turns.",
+    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from \u00a72-\u00a714 to \u00a72-\u00a715; the completion check now requires \u00a715.",
     "direction_docs": [
       "UNIVERSE_ROUND2_BRIEF.md",
       "UNIVERSE_IDEAS_2.md"
     ],
-    "carried_authorizations": "Public trade log (action/ticker/date/% impact only) and public stock news for held tickers, both authorized 2026-07-28 and recorded in UNIVERSE_IDEAS_2.md §9.3-9.4. Both are new disclosure surfaces requiring extended canary coverage.",
-    "testing_note": "§9's acceptance criteria explicitly forbid `expect(source).toContain(...)` as coverage for rendered behavior. §8 shipped five such guards; one passed while the trails it claimed to protect were fogged to invisibility."
+    "carried_authorizations": "Public trade log (action/ticker/date/% impact only) and public stock news for held tickers, both authorized 2026-07-28 and recorded in UNIVERSE_IDEAS_2.md \u00a79.3-9.4. Both are new disclosure surfaces requiring extended canary coverage.",
+    "testing_note": "\u00a79's acceptance criteria explicitly forbid `expect(source).toContain(...)` as coverage for rendered behavior. \u00a78 shipped five such guards; one passed while the trails it claimed to protect were fogged to invisibility."
   },
   "roadmap_amendment_3": {
     "amended_at": "2026-07-28",
     "amended_by": "Devan (owner), recorded by claude/fable-5 (cowork, owner-directed)",
-    "change": "Inserted a new §10 'Universe colour, material, and command structure'. Former §10-§15 renumbered to §11-§16 with scope and acceptance criteria unchanged: §11 /compare, §12 after-hours, §13 /research, §14 /history, §15 /trades, §16 integration.",
-    "reason": "The owner's live review of §9 produced a direction change (retro-but-colourful) plus a set of defects. The round-3 creative response (UNIVERSE_IDEAS_3.md rev 2) resolves the colour direction against the project's reserved red/green semantics via the Fraunhofer rule, and redesigns texture luminance, brand-mark integration, trail encoding, sun scale, the starfield, and Mission Control's structure. That is a section's worth of work.",
-    "why_not_folded_into_9": "Most of the owner's defects live in code §10 rewrites anyway — the trail-behind fix and the texture regeneration that corrects mirrored marks are already steps 2 and 5 of the round-3 sequence. Filing them into §9 would mean fixing them once and redesigning the same files immediately after. §9 has run seventeen turns; it closes on its own criteria and the owner's new scope becomes §10.",
-    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from §2-§15 to §2-§16; the completion check now requires §16.",
+    "change": "Inserted a new \u00a710 'Universe colour, material, and command structure'. Former \u00a710-\u00a715 renumbered to \u00a711-\u00a716 with scope and acceptance criteria unchanged: \u00a711 /compare, \u00a712 after-hours, \u00a713 /research, \u00a714 /history, \u00a715 /trades, \u00a716 integration.",
+    "reason": "The owner's live review of \u00a79 produced a direction change (retro-but-colourful) plus a set of defects. The round-3 creative response (UNIVERSE_IDEAS_3.md rev 2) resolves the colour direction against the project's reserved red/green semantics via the Fraunhofer rule, and redesigns texture luminance, brand-mark integration, trail encoding, sun scale, the starfield, and Mission Control's structure. That is a section's worth of work.",
+    "why_not_folded_into_9": "Most of the owner's defects live in code \u00a710 rewrites anyway \u2014 the trail-behind fix and the texture regeneration that corrects mirrored marks are already steps 2 and 5 of the round-3 sequence. Filing them into \u00a79 would mean fixing them once and redesigning the same files immediately after. \u00a79 has run seventeen turns; it closes on its own criteria and the owner's new scope becomes \u00a710.",
+    "validator_change": "scripts/phase10-validate-state.mjs section bounds widened from \u00a72-\u00a715 to \u00a72-\u00a716; the completion check now requires \u00a716.",
     "direction_docs": [
       "UNIVERSE_IDEAS_3.md",
       "UNIVERSE_PALETTE_3.html"
     ],
     "verification_note": "Every quantitative claim in UNIVERSE_IDEAS_3.md was independently recomputed before adoption: all eight world luminances matched to three decimals and the L~=0.15 visible/dark split the owner reported holds 8/8; both trail-ramp dark-end contrast floors (3.80, 3.08) and the neon end (17.28) exact; hue drift 3.5 deg (gain) and 0.5 deg (loss) against a 10 deg gate; paper pair 13.02:1; luminance monotonic along both signal ramps. Round-3 revision 1's six contrast claims and sixteen glass-hue firewall checks were also verified exact in a prior pass.",
-    "carried_defects": "Ten owner-reported defects are recorded in PHASE10.md §10 'Owner defects to close in this section' rather than being filed against §9."
+    "carried_defects": "Ten owner-reported defects are recorded in PHASE10.md \u00a710 'Owner defects to close in this section' rather than being filed against \u00a79."
   },
-  "last_green_commit_note": "Moved from 6a68758 (§8) to §9’s accepted commit 589be88, the last commit at which npm test was green. Verified at acceptance rather than assumed: at 589be88 all three assertions in planet-textures.test.ts pass (directory total 11,727,680 == manifest.totalBytes, <= the 15,000,000 cap; minimum luminanceStdDev 0.101584 >= the 0.1 floor), and the other 93 test files depend on src/, which is byte-identical between 589be88 and HEAD. HEAD itself is RED by documented owner exception - see sections_history §9.",
-  "owner_feedback_ledger": "OWNER_FEEDBACK_LEDGER.md — the durable record of owner decisions, open items, and standing rules. Read alongside the section spec. Newer than any older document it contradicts.",
+  "last_green_commit_note": "Moved from 6a68758 (\u00a78) to \u00a79\u2019s accepted commit 589be88, the last commit at which npm test was green. Verified at acceptance rather than assumed: at 589be88 all three assertions in planet-textures.test.ts pass (directory total 11,727,680 == manifest.totalBytes, <= the 15,000,000 cap; minimum luminanceStdDev 0.101584 >= the 0.1 floor), and the other 93 test files depend on src/, which is byte-identical between 589be88 and HEAD. HEAD itself is RED by documented owner exception - see sections_history \u00a79.",
+  "owner_feedback_ledger": "OWNER_FEEDBACK_LEDGER.md \u2014 the durable record of owner decisions, open items, and standing rules. Read alongside the section spec. Newer than any older document it contradicts.",
   "single_provider_mode": {
     "active": true,
     "since": "2026-07-30",
@@ -618,16 +472,17 @@
     "what_happened": "This turn's preflight found a clean tree at 3d85341 and a valid PHASE10_LOCK with owner=claude. While the review's live browser measurements were running, the owner committed against the same working tree and swept this review's then-uncommitted round-5 evidence files into that commit alongside their own changes.",
     "handled": "Recorded, not corrected. Nothing was reverted, rewritten, or re-attributed. Part of this review's evidence therefore carries c0beef68 as its commit rather than the review commit; the files are the ones this turn produced.",
     "impact_on_this_review": "None on the verdict. git diff --name-only 3d85341 c0beef68 -- src/ public/ scripts/ package.json package-lock.json is empty, so the candidate is unaffected and remains 3d85341. single_provider_mode.active is false and stage/role/next_actor were not changed, so this turn's mandate was unchanged.",
-    "note": "G-SERIAL assumes one actor at a time. It held for agents; the owner wrote concurrently. Worth avoiding — a mid-turn commit could as easily have landed on a file the turn was mid-write on.",
-    "retained_in": "docs/phase10-workflow/reviews/section-10-accepted.md — carried into §10's acceptance record; this key describes the round-5 review turn, not the live one."
+    "note": "G-SERIAL assumes one actor at a time. It held for agents; the owner wrote concurrently. Worth avoiding \u2014 a mid-turn commit could as easily have landed on a file the turn was mid-write on.",
+    "retained_in": "docs/phase10-workflow/reviews/section-10-accepted.md \u2014 carried into \u00a710's acceptance record; this key describes the round-5 review turn, not the live one."
   },
   "stale_index_lock_event": {
     "observed_by": "claude-code/opus-5 (Claude Lead)",
     "observed_at": "2026-07-29",
-    "what_happened": "The first commit attempt of this accept turn failed with 'Unable to create .git/index.lock: File exists'. The lock was a zero-byte file timestamped 23:18 on 2026-07-28, the same minute as the owner commit dbdeb39 — a crash artifact from that session, not a live operation.",
+    "what_happened": "The first commit attempt of this accept turn failed with 'Unable to create .git/index.lock: File exists'. The lock was a zero-byte file timestamped 23:18 on 2026-07-28, the same minute as the owner commit dbdeb39 \u2014 a crash artifact from that session, not a live operation.",
     "checks_before_removing": "ps showed no git process of any kind running against this repository. lsof reported one read-only descriptor held by com.apple.Virtualization.VirtualMachine (the sandbox layer this environment runs inside), not by git. The file was zero bytes, so no partial index write was in flight.",
-    "action": "Removed the stale .git/index.lock and re-ran the commit. Nothing was cleaned, stashed, discarded, reset, or absorbed; no working-tree file was touched. Stopping instead was not the safer option — a blocked handoff also requires a commit, so it would have left the turn's work uncommitted and the tree dirty.",
+    "action": "Removed the stale .git/index.lock and re-ran the commit. Nothing was cleaned, stashed, discarded, reset, or absorbed; no working-tree file was touched. Stopping instead was not the safer option \u2014 a blocked handoff also requires a commit, so it would have left the turn's work uncommitted and the tree dirty.",
     "follow_up": "Second occurrence of an owner git session leaving state behind mid-turn, after mid_turn_repository_event in the round-5 review. Worth checking whether the owner's tooling exits cleanly."
   },
-  "last_green_commit_note_3": "Moved from e16e9c7 to f271fc7. This blocked remediation turn independently re-ran npm test (106 files, 549 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against the unchanged executable candidate at incoming HEAD f271fc7, confirming it green. The eventual blocked-handoff commit changes no executable source."
+  "last_green_commit_note_3": "Moved from e16e9c7 to f271fc7. This blocked remediation turn independently re-ran npm test (106 files, 549 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) against the unchanged executable candidate at incoming HEAD f271fc7, confirming it green. The eventual blocked-handoff commit changes no executable source.",
+  "last_green_commit_note_8": "Unchanged from 5d91b6e at \u00a711 acceptance. This turn independently re-ran npm test (107 files, 553 tests, zero failures) and npm run build (exit 0, 18/18 static pages, /share smoke pass) at HEAD 9f561b5, one commit ahead of 5d91b6e (the owner's carry-ruling commit, which touches no src/, public/, package.json, package-lock.json, or scripts/ file -- confirmed via git diff --name-only), confirming the accepted candidate remains green."
 }
