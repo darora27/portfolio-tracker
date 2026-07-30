@@ -1091,7 +1091,7 @@ Recorded July 29 alongside the adoption:
 
 ---
 
-## §12c. Mission Control content rework + the Chart Room
+## §14. Mission Control content rework + the Chart Room
 
 Adopted July 30, 2026 from the owner-requested Fable consult (FB-34). The
 authority is **`MISSION_CONTROL_ARCHITECTURE.md`**; this section is assembled
@@ -1124,7 +1124,38 @@ goes back with *"no new parts."*
 **`/share` projection is unchanged in kind** — percentages only, VALUE and
 realized/unrealized owner-only, privacy canaries extended to every new surface.
 
-## §13. `/compare` guided simulation story
+## §13. Universe fixes from the July 30 owner sitting
+
+> **The original §13 (`/compare` guided simulation story) is CUT**, per
+> `UNIVERSE_AUDIT.md` §6: the canned scenarios retired with `/compare` when the
+> DRAFT rig replaced it (round 4 §8, owner-accepted). The number is reused here
+> rather than left as a gap.
+
+Everything Devan raised at the §12a sitting that concerns the universe itself.
+Authority: `OWNER_FEEDBACK_LEDGER.md`.
+
+**The largest item, and it moves first: FB-26.** Trails and orbital direction
+must encode **daily** return, not weekly. `TST-03` and `VIS-04` both sample the
+same field and move with it — neither may be weakened to accommodate the change.
+
+**Carried, with his words attached:** FB-01 spacing — *"the orbits could be
+spread out just a little bit more and the system should be zoomed out a little
+bit more too. but the proportions are good."* **The proportions are CONFIRMED;
+do not re-derive them.** One nudge of the gap term and `OVERVIEW_BELT_SPAN_PCT`
+below 0.80. · FB-05 fonts, sixth report, *"a bit bigger"* · FB-17 panel width —
+he picked 600 from the strip and then found the live panel too small, so **the
+capture/live disagreement is the finding**, not the number · FB-02 background.
+
+**New defects from the sitting:** FB-22 a yellow semi-circle haze above the sun
+· FB-23 the PORTFOLIO chip floating loose in the orbits instead of sitting on
+the sun · FB-24 moons that do nothing when clicked · FB-25 the planet panel
+carrying too little · FB-31 the orange tabs, removed · FB-32 the top-right
+block, which dies into the strip in §14.
+
+**Parked by owner:** FB-12, the DRAFT rig — *"leave it as is for now since many
+other things need to be fixed before this."*
+
+## §13-original. `/compare` guided simulation story — CUT
 
 ### Purpose
 
@@ -1164,7 +1195,7 @@ Turn three correct simulations into an educational explanation of divergence.
 
 ---
 
-## §14. After-hours capability spike and conditional holdings slice
+## §14-original. After-hours capability spike — PARKED
 
 Consolidated July 25, 2026 by owner direction from the former §8
 (capability spike) and former §9 (conditional slice). The capability gate

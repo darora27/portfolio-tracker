@@ -9,13 +9,13 @@ them.
 ## Live route
 
 - Phase: 10
-- Current section: **§12 — The Chart Room, the sky, and flight**
+- Current section: **§13 — Universe fixes from the July 30 owner sitting**
 - Managed range: §2–§18
-- Stage: `owner-sitting`
+- Stage: `specify`
 - Role: `claude_lead`
 - Status: `ready`
-- Next actor: `devan`
-- Expected actor for this stage: `devan`
+- Next actor: `claude`
+- Expected actor for this stage: `claude`
 - Stop reason: none
 
 The current state is before the
@@ -34,12 +34,7 @@ Always read:
 
 Then read the current, specifically routed sources:
 
-- `docs/phase10-workflow/specs/section-12.md`
-- `UNIVERSE_IDEAS_6.md`
-- `UNIVERSE_STOCK_LAB.html`
-- `OWNER_FEEDBACK_LEDGER.md`
-- `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-30-section-12-codex-implementation-to-claude-lead-review.md`
+None recorded.
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -53,7 +48,7 @@ payload:
 
 ## Current section conditions
 
-Inserted by owner direction on 2026-07-29 (PHASE10.md §12, 'full throttle ahead' on UNIVERSE_IDEAS_6.md round 6). Authority order for this section: UNIVERSE_IDEAS_6.md (round 6, adopted in full) -> UNIVERSE_STOCK_LAB.html (the working Chart Room mock, owner-reviewed) -> OWNER_FEEDBACK_LEDGER.md -> PHASE10.md §12. main is GREEN at this section start: npm test 107/107 files, 553/553 tests, and npm run build exit 0, both re-run by the accept turn at HEAD 9f561b5. §11's carried criterion is BLD-04 (see carried_from_section_11 below) -- must appear in this section's acceptance ledger with its measurement attached and the unmodified verifier re-run; may not be closed by assertion. IMPORTANT SCOPING NOTE FOR THE NEXT SPECIFY TURN: the Claude Lead standing prompt (docs/phase10-workflow/prompts/claude-lead.md) carries an owner-adopted '§12a unattended ordering' section (§8.5, July 29 2026) that pre-scopes the immediate work to four ordered phases (A: FB-19/FB-20 machine-checkable; B: FB-05 role-token mapping + FB-01 spacing/pull-back; C: the FB-17/FB-08+FB-15/FB-09/FB-12/FB-11/FB-21 variant experiments on a build-capture-park cadence; D: assemble REVIEW_SITTING.md and stop at owner-sitting) rather than the full original PHASE10.md §12 Chart Room/sky/cursor/type-ramp scope. OWNER_FEEDBACK_LEDGER.md §2's board already routes its rows to §12a/§12b accordingly and must be read, and its board-open rule (board_required_from_section: 12) binds starting with this section's spec. Read both before writing anything; do not default to specifying the full PHASE10.md §12 scope without reconciling it against that pre-scoping first.
+Universe fixes from the July 30 sitting. Carries FB-01 (one nudge; proportions blessed, do NOT re-derive), FB-05 (6th report), FB-17 (live-vs-capture gap), FB-02 background, plus the new defect rows FB-22 yellow haze above the sun, FB-23 floating PORTFOLIO chip, FB-24 dead moons, FB-25 thin planet panel, FB-31 orange tabs, FB-32 top-right block. FB-26 - trails and orbital direction move from WEEKLY to DAILY return - is the largest item and drags TST-03 and VIS-04 with it, since both verifiers sample the same field. §12c follows with the Mission Control content rework per MISSION_CONTROL_ARCHITECTURE.md.
 
 Open bounded findings:
 
@@ -61,7 +56,7 @@ None.
 
 Acceptance ledger:
 
-- `docs/phase10-workflow/acceptance/section-12.json`
+- Created by the lead with the section specification.
 
 ## Global gates
 
@@ -102,8 +97,8 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `951a8dde001c1a8c2a24700688cb2b80457b9162ff7f25c4015cdd13e0ea8d6a`
-- `PHASE10.md`: `eab515c74610b3caa1e502a14562aaa693f1aef98860dc206599aec70f84dea8`
+- `PHASE10_STATE.json`: `675ad1402d6dce5243c6a2f5d6774054d6ab6cd108d50992f1afe1287e672f2f`
+- `PHASE10.md`: `a74fc05623bb8cb4335ab29c55b529150a39528d8ece45c6db8c2f1b415f55ee`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
 - `docs/phase10-workflow/DESIGN_GATE.md`: `bf5a35b998fc240e58f083da48093444cffd8daabfad450caa09256b255be25c`

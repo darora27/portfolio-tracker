@@ -1,7 +1,7 @@
 # Mission Control content architecture — FB-34, adopted
 
 **Owner-requested Fable consult, delivered and adopted July 30, 2026.**
-This document is the authority for the Mission Control content rework. A
+This document is the authority for the Mission Control content rework. This is **§14**. A
 section spec is assembled *from* it; nothing here is re-derived.
 
 Devan's request, in his words:
