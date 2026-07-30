@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§13 — Universe fixes from the July 30 owner sitting**
 - Managed range: §2–§18
-- Stage: `remediate`
-- Role: `codex_implementation`
+- Stage: `review`
+- Role: `claude_lead`
 - Status: `ready`
-- Next actor: `codex`
-- Expected actor for this stage: `codex`
+- Next actor: `claude`
+- Expected actor for this stage: `claude`
 - Stop reason: none
 
 The current state is before the
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `6e64fe139de96a9d9dfc6671e426e34ab4168aed048bc886f345c49cc746bd59`
+- `PHASE10_STATE.json`: `a20f07121fe04a6337c220df7d3e056bd5a05c9f6edd712aa3213514db095249`
 - `PHASE10.md`: `a74fc05623bb8cb4335ab29c55b529150a39528d8ece45c6db8c2f1b415f55ee`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

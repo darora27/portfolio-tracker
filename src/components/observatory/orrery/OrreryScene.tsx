@@ -1962,6 +1962,30 @@ export default function OrreryScene({
         planet.label.dataset.trailSampleY = String(
           (-trailSamplePosition.y * 0.5 + 0.5) * labelRect.height,
         );
+        // FB-26 verification methodology (owner ruling, §13): publish the
+        // same projection at every candidate fraction along this trail, so a
+        // verifier can walk them looking for a point clear of this planet's
+        // own disc and on the ribbon's solid core, instead of trusting one
+        // fixed fraction to be valid for every orbit-radius/disc-size
+        // combination. Nothing about the trail's rendered geometry changes.
+        planet.label.dataset.trailSampleCandidates = JSON.stringify(
+          planet.trailDescriptor.sampleSearchFractions.map((fraction) => {
+            const angle = planet.trailDescriptor.sweep.tailRadians * fraction;
+            trailSamplePosition
+              .set(
+                Math.cos(angle) * planet.descriptor.orbitRadius,
+                0.025,
+                Math.sin(angle) * planet.descriptor.orbitRadius,
+              )
+              .applyMatrix4(planet.orbit.matrixWorld)
+              .project(camera);
+            return {
+              fraction,
+              x: (trailSamplePosition.x * 0.5 + 0.5) * labelRect.width,
+              y: (-trailSamplePosition.y * 0.5 + 0.5) * labelRect.height,
+            };
+          }),
+        );
         // A short arc of points diametrically opposite the planet on its
         // own ring, projected through the real camera. The overview camera
         // is oblique (see cameraForOverview: an elevated, forward-offset

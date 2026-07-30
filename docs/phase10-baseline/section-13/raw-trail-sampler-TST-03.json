@@ -3,13 +3,13 @@
   "fixtureCount": 8,
   "everyFixtureHoldingSampled": true,
   "field": "holding.dayReturn (FB-26: moved from holding.weeklyReturn)",
-  "passingCount": 3,
+  "passingCount": 7,
   "overallPass": false,
   "rootCauseFinding": "This data snapshot has three holdings (MSFT, INTC, CBRS) whose dayReturn simultaneously exceeds the 12% clamp ceiling, all mapping to the identical brightest ramp stop (#a9ffcf). At that near-white clamp, the trail's own additive 'glow' pass (opacity 0.36, width 9px) sitting atop the 'core' pass (width 3px) at the same screen location brightens the sampled pixel just enough to push deltaE 1-2.5 units past the <=8 gate (consistently 8.25-10.45 across repeated runs and search radii 4/10 -- not sampling noise). This is a pre-existing characteristic of the additive-glow rendering pipeline, unchanged by this section (§11's own baseline shows the same effect at a smaller scale: IBM 7.571, CRM 6.226, both near-clamped). It surfaces here because this specific dataset's real daily returns push three tickers to the same clamped endpoint simultaneously, which the weekly-return dataset in §11/§12a did not. FB-26's own scope explicitly excludes recalibrating the magnitude clamps or widening the arc/ramp, so this is reported rather than worked around.",
   "temporalSampling": {
     "method": "Each holding is sampled at its own naturally unoccluded orbital phase.",
-    "elapsedMs": 152037,
-    "inspectedFrameCount": 140,
+    "elapsedMs": 151559,
+    "inspectedFrameCount": 137,
     "sampleIntervalMs": 350,
     "maximumWaitMs": 150000,
     "minimumPlanetClearancePx": 1,
@@ -17,6 +17,19 @@
       4,
       10
     ]
+  },
+  "positionalSampleSearch": {
+    "method": "Owner ruling 2026-07-30 (§13): within every sampled frame, each holding's full candidate list (data-trail-sample-candidates, TRAIL_SAMPLE_SEARCH_FRACTIONS projected per-holding by OrreryScene.tsx) is walked in the app's published order until one candidate clears the unchanged deltaE/hue/chroma/clearance gates; combined with the pre-existing per-frame temporal search. WHERE the sampler looks moved; WHAT the sampled pixel must be did not.",
+    "candidatesTriedPerTicker": {
+      "ASML": 1507,
+      "GOOG": 15,
+      "COST": 25,
+      "MSFT": 171,
+      "INTC": 657,
+      "IBM": 802,
+      "CBRS": 43,
+      "CRM": 1166
+    }
   },
   "unchangedGates": {
     "deltaEMaximum": 8,
@@ -44,8 +57,8 @@
           0.19883109982879743
         ],
         "luminance": [
-          0.853276,
-          0.845238
+          0.816788,
+          0.8301
         ]
       },
       {
@@ -59,140 +72,206 @@
           -0.020756050167814788
         ],
         "luminance": [
-          0.382914,
+          0.460382,
           0.443051
         ]
       }
     ],
-    "violations": []
+    "violations": [
+      {
+        "prior": {
+          "ticker": "GOOG",
+          "dayReturn": -0.00619490111984744,
+          "expected": "#ff9a93",
+          "sampleFractionTried": 0.78,
+          "publishedSample": {
+            "x": 637.043,
+            "y": 274.062
+          },
+          "sampledAt": {
+            "x": 645,
+            "y": 270
+          },
+          "sampled": "#fd9992",
+          "deltaE": 0.598,
+          "hue": 3.925,
+          "chroma": 0.42,
+          "luminance": 0.457404,
+          "hueDistance": 0.925,
+          "minimumPlanetClearancePx": 23.637,
+          "elapsedMs": 1861,
+          "frameIndex": 1,
+          "framePath": "/Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-13/trail-temp-frames/goog.png",
+          "gateStatus": "pass",
+          "candidatesTried": 15
+        },
+        "current": {
+          "ticker": "COST",
+          "dayReturn": -0.020389515723335028,
+          "expected": "#ff8c85",
+          "sampleFractionTried": 0.54,
+          "publishedSample": {
+            "x": 704.424,
+            "y": 453.804
+          },
+          "sampledAt": {
+            "x": 712,
+            "y": 452
+          },
+          "sampled": "#fd9a91",
+          "deltaE": 7.785,
+          "hue": 5,
+          "chroma": 0.424,
+          "luminance": 0.460382,
+          "hueDistance": 2,
+          "minimumPlanetClearancePx": 27.357,
+          "elapsedMs": 3219,
+          "frameIndex": 2,
+          "framePath": "/Users/devanarora/Desktop/portfolio-tracker/docs/phase10-baseline/section-13/trail-temp-frames/cost.png",
+          "gateStatus": "pass",
+          "candidatesTried": 25
+        }
+      }
+    ]
   },
   "samples": [
     {
       "ticker": "ASML",
       "dayReturn": 0.06497107739135477,
       "expected": "#69f09c",
+      "sampleFractionTried": 0.62,
       "publishedSample": {
-        "x": 774.528,
-        "y": 359.559
+        "x": 773.421,
+        "y": 359.999
       },
       "sampledAt": {
         "x": 779,
         "y": 355
       },
-      "sampled": "#76df8d",
-      "deltaE": 8.993,
-      "hue": 133.143,
-      "chroma": 0.412,
-      "luminance": 0.5855,
-      "hueDistance": 9.857,
-      "minimumPlanetClearancePx": 3.783,
-      "elapsedMs": 35436,
-      "frameIndex": 32,
-      "gateStatus": "fail"
+      "sampled": "#7ae08d",
+      "deltaE": 9.436,
+      "hue": 131.176,
+      "chroma": 0.4,
+      "luminance": 0.59372,
+      "hueDistance": 11.824,
+      "minimumPlanetClearancePx": 5.115,
+      "elapsedMs": 37928,
+      "frameIndex": 33,
+      "gateStatus": "fail",
+      "candidatesTried": 1507
     },
     {
       "ticker": "GOOG",
       "dayReturn": -0.00619490111984744,
       "expected": "#ff9a93",
+      "sampleFractionTried": 0.78,
       "publishedSample": {
-        "x": 597.872,
-        "y": 288.828
+        "x": 637.043,
+        "y": 274.062
       },
       "sampledAt": {
-        "x": 608,
-        "y": 282
+        "x": 645,
+        "y": 270
       },
-      "sampled": "#fba69d",
-      "deltaE": 7.395,
-      "hue": 5.745,
-      "chroma": 0.369,
-      "luminance": 0.50216,
-      "hueDistance": 2.745,
-      "minimumPlanetClearancePx": 16.283,
-      "elapsedMs": 24638,
-      "frameIndex": 22,
-      "gateStatus": "pass"
+      "sampled": "#fd9992",
+      "deltaE": 0.598,
+      "hue": 3.925,
+      "chroma": 0.42,
+      "luminance": 0.457404,
+      "hueDistance": 0.925,
+      "minimumPlanetClearancePx": 23.637,
+      "elapsedMs": 1861,
+      "frameIndex": 1,
+      "gateStatus": "pass",
+      "candidatesTried": 15
     },
     {
       "ticker": "COST",
       "dayReturn": -0.020389515723335028,
       "expected": "#ff8c85",
+      "sampleFractionTried": 0.54,
       "publishedSample": {
-        "x": 877.631,
-        "y": 425.701
+        "x": 704.424,
+        "y": 453.804
       },
       "sampledAt": {
-        "x": 873,
-        "y": 425
+        "x": 712,
+        "y": 452
       },
-      "sampled": "#ea8d87",
-      "deltaE": 9.749,
-      "hue": 3.636,
-      "chroma": 0.388,
-      "luminance": 0.382914,
-      "hueDistance": 0.636,
-      "minimumPlanetClearancePx": 29.316,
-      "elapsedMs": 44080,
-      "frameIndex": 40,
-      "gateStatus": "fail"
+      "sampled": "#fd9a91",
+      "deltaE": 7.785,
+      "hue": 5,
+      "chroma": 0.424,
+      "luminance": 0.460382,
+      "hueDistance": 2,
+      "minimumPlanetClearancePx": 27.357,
+      "elapsedMs": 3219,
+      "frameIndex": 2,
+      "gateStatus": "pass",
+      "candidatesTried": 25
     },
     {
       "ticker": "MSFT",
       "dayReturn": 0.15506734265376143,
       "expected": "#a9ffcf",
+      "sampleFractionTried": 0.86,
       "publishedSample": {
-        "x": 617.078,
-        "y": 230.658
+        "x": 943.292,
+        "y": 270.117
       },
       "sampledAt": {
-        "x": 621,
-        "y": 231
+        "x": 933,
+        "y": 263
       },
-      "sampled": "#b7fdd9",
-      "deltaE": 8.28,
-      "hue": 149.143,
-      "chroma": 0.275,
-      "luminance": 0.853276,
-      "hueDistance": 6.143,
-      "minimumPlanetClearancePx": 61.806,
-      "elapsedMs": 106325,
-      "frameIndex": 98,
-      "gateStatus": "fail"
+      "sampled": "#a8fbcc",
+      "deltaE": 1.572,
+      "hue": 146.024,
+      "chroma": 0.325,
+      "luminance": 0.816788,
+      "hueDistance": 3.024,
+      "minimumPlanetClearancePx": 60.803,
+      "elapsedMs": 17802,
+      "frameIndex": 15,
+      "gateStatus": "pass",
+      "candidatesTried": 171
     },
     {
       "ticker": "INTC",
       "dayReturn": 0.11297020029311189,
       "expected": "#a0fdc8",
+      "sampleFractionTried": 0.92,
       "publishedSample": {
-        "x": 585.02,
-        "y": 219.114
+        "x": 950.454,
+        "y": 247.218
       },
       "sampledAt": {
-        "x": 577,
-        "y": 219
+        "x": 944,
+        "y": 243
       },
-      "sampled": "#b0fbd3",
-      "deltaE": 9.071,
-      "hue": 148,
-      "chroma": 0.294,
-      "luminance": 0.829276,
-      "hueDistance": 5,
-      "minimumPlanetClearancePx": 69.935,
-      "elapsedMs": 32174,
-      "frameIndex": 29,
-      "gateStatus": "fail"
+      "sampled": "#9ef9c4",
+      "deltaE": 1.398,
+      "hue": 145.055,
+      "chroma": 0.357,
+      "luminance": 0.79006,
+      "hueDistance": 2.055,
+      "minimumPlanetClearancePx": 53.34,
+      "elapsedMs": 66598,
+      "frameIndex": 59,
+      "gateStatus": "pass",
+      "candidatesTried": 657
     },
     {
       "ticker": "IBM",
       "dayReturn": -0.020756050167814788,
       "expected": "#ff8c85",
+      "sampleFractionTried": 0.22,
       "publishedSample": {
-        "x": 945.073,
-        "y": 224.766
+        "x": 964.476,
+        "y": 231.354
       },
       "sampledAt": {
-        "x": 939,
-        "y": 221
+        "x": 955,
+        "y": 226
       },
       "sampled": "#fb968f",
       "deltaE": 6.674,
@@ -200,56 +279,61 @@
       "chroma": 0.424,
       "luminance": 0.443051,
       "hueDistance": 0.889,
-      "minimumPlanetClearancePx": 45.939,
-      "elapsedMs": 89326,
-      "frameIndex": 82,
-      "gateStatus": "pass"
+      "minimumPlanetClearancePx": 1.52,
+      "elapsedMs": 80947,
+      "frameIndex": 72,
+      "gateStatus": "pass",
+      "candidatesTried": 802
     },
     {
       "ticker": "CBRS",
       "dayReturn": 0.19883109982879743,
       "expected": "#a9ffcf",
+      "sampleFractionTried": 0.22,
       "publishedSample": {
-        "x": 924.671,
-        "y": 201.926
+        "x": 651.229,
+        "y": 181.393
       },
       "sampledAt": {
-        "x": 915,
-        "y": 198
+        "x": 656,
+        "y": 179
       },
-      "sampled": "#b6fcd8",
-      "deltaE": 8.25,
-      "hue": 149.143,
-      "chroma": 0.275,
-      "luminance": 0.845238,
-      "hueDistance": 6.143,
-      "minimumPlanetClearancePx": 99.338,
-      "elapsedMs": 144367,
-      "frameIndex": 133,
-      "gateStatus": "fail"
+      "sampled": "#adfccf",
+      "deltaE": 2.757,
+      "hue": 145.823,
+      "chroma": 0.31,
+      "luminance": 0.8301,
+      "hueDistance": 2.823,
+      "minimumPlanetClearancePx": 25.048,
+      "elapsedMs": 4440,
+      "frameIndex": 3,
+      "gateStatus": "pass",
+      "candidatesTried": 43
     },
     {
       "ticker": "CRM",
       "dayReturn": -0.04071557490179423,
       "expected": "#ff7872",
+      "sampleFractionTried": 0.2,
       "publishedSample": {
-        "x": 1029.98,
-        "y": 216.171
+        "x": 1043.576,
+        "y": 221.264
       },
       "sampledAt": {
-        "x": 1029,
-        "y": 214
+        "x": 1035,
+        "y": 216
       },
-      "sampled": "#f78079",
-      "deltaE": 7.079,
-      "hue": 3.333,
-      "chroma": 0.494,
-      "luminance": 0.36593,
-      "hueDistance": 0.333,
-      "minimumPlanetClearancePx": 71.542,
-      "elapsedMs": 120392,
-      "frameIndex": 111,
-      "gateStatus": "pass"
+      "sampled": "#f7817b",
+      "deltaE": 7.786,
+      "hue": 2.903,
+      "chroma": 0.486,
+      "luminance": 0.369047,
+      "hueDistance": 0.097,
+      "minimumPlanetClearancePx": 7.025,
+      "elapsedMs": 116863,
+      "frameIndex": 105,
+      "gateStatus": "pass",
+      "candidatesTried": 1166
     }
   ],
   "visualEvidence": {

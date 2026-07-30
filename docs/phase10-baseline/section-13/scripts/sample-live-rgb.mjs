@@ -11,6 +11,19 @@ import path from "node:path";
 // LUTs/clamps, renamed per the §13 spec's function-rename table). Every
 // threshold, the temporal per-holding sampling method, and the owner's
 // same-ramp-stop ordering correction are unchanged from §11/§12a.
+//
+// Owner ruling, 2026-07-30 ("sampler searches for a valid point; no threshold
+// moves"): review round 2 found the single fixed TRAIL_SAMPLE_FRACTION cannot
+// be measured for every holding -- ASML's fixed point sits inside its own
+// planet disc, COST's lands on the ribbon's antialiased edge. Authorised fix:
+// walk candidate positions along each holding's own trail (published by the
+// app as data-trail-sample-candidates, one projected screen point per
+// TRAIL_SAMPLE_SEARCH_FRACTIONS entry -- see scene-model.ts) until one clears
+// the EXISTING, UNCHANGED gates (deltaE<=8, hueDistance<=10, chroma>0.3,
+// minimum planet clearance). This changes only WHERE this script samples,
+// never WHAT the sampled pixel must be. Combined with the pre-existing
+// temporal (per-frame) search: for each frame, every unaccepted ticker's full
+// candidate list is tried before moving to the next frame.
 const CRITERION = "TST-03";
 const runtimeProcess = globalThis.process;
 const runtimeCwd = runtimeProcess?.cwd() ?? globalThis.nodeRepl?.cwd;
@@ -189,21 +202,42 @@ async function readDescriptors(page) {
   return page
     .locator("[data-scene-ticker]")
     .evaluateAll((labels) =>
-      labels.map((label) => ({
-        ticker: label.dataset.sceneTicker,
-        dayReturn: label.dataset.dailyReturn === "null"
-          ? null
-          : Number(label.dataset.dailyReturn),
-        x: Number(label.dataset.trailSampleX),
-        y: Number(label.dataset.trailSampleY),
-        planetCenterX: Number(label.dataset.planetCenterX),
-        planetCenterY: Number(label.dataset.planetCenterY),
-        planetRadiusPx: Number(label.dataset.planetRadiusPx),
-      })),
+      labels.map((label) => {
+        let candidates;
+        try {
+          candidates = JSON.parse(label.dataset.trailSampleCandidates ?? "null");
+        } catch {
+          candidates = null;
+        }
+        return {
+          ticker: label.dataset.sceneTicker,
+          dayReturn: label.dataset.dailyReturn === "null"
+            ? null
+            : Number(label.dataset.dailyReturn),
+          x: Number(label.dataset.trailSampleX),
+          y: Number(label.dataset.trailSampleY),
+          // FB-26 owner ruling (§13): per-ticker candidate positions along
+          // this holding's own trail, published by scene-model.ts's
+          // TRAIL_SAMPLE_SEARCH_FRACTIONS via OrreryScene.tsx. Falls back to
+          // the single published point only if the app ever fails to emit
+          // the array (never observed; keeps this script from throwing).
+          trailSampleCandidates:
+            Array.isArray(candidates) && candidates.length > 0
+              ? candidates
+              : [{
+                fraction: null,
+                x: Number(label.dataset.trailSampleX),
+                y: Number(label.dataset.trailSampleY),
+              }],
+          planetCenterX: Number(label.dataset.planetCenterX),
+          planetCenterY: Number(label.dataset.planetCenterY),
+          planetRadiusPx: Number(label.dataset.planetRadiusPx),
+        };
+      }),
     );
 }
 
-function evaluateSample(descriptor, descriptors, sampled, elapsedMs, frameIndex) {
+function evaluateSample(descriptor, descriptors, published, sampled, elapsedMs, frameIndex) {
   const { hue, chroma } = hueChroma(sampled.channels);
   const anchor =
     descriptor.dayReturn === null || Math.abs(descriptor.dayReturn) <= 0.002
@@ -221,9 +255,10 @@ function evaluateSample(descriptor, descriptors, sampled, elapsedMs, frameIndex)
     ticker: descriptor.ticker,
     dayReturn: descriptor.dayReturn,
     expected: rampForReturnFromPayload(descriptor.dayReturn),
+    sampleFractionTried: published.fraction,
     publishedSample: {
-      x: Number(descriptor.x.toFixed(3)),
-      y: Number(descriptor.y.toFixed(3)),
+      x: Number(published.x.toFixed(3)),
+      y: Number(published.y.toFixed(3)),
     },
     sampledAt: {
       x: sampled.x,
@@ -365,6 +400,7 @@ try {
   const fixtureOrder = initialDescriptors.map(({ ticker }) => ticker);
   const accepted = new Map();
   const bestAttempts = new Map();
+  const candidatesTriedTotal = new Map(fixtureOrder.map((ticker) => [ticker, 0]));
   const startedAt = Date.now();
   let frameIndex = 0;
 
@@ -380,34 +416,55 @@ try {
     for (const descriptor of descriptors) {
       if (accepted.has(descriptor.ticker)) continue;
       const expected = rampForReturnFromPayload(descriptor.dayReturn);
-      const sampled = sampleAt(descriptor.x, descriptor.y, expected, data, info);
-      const attempt = evaluateSample(
-        descriptor,
-        descriptors,
-        sampled,
-        elapsedMs,
-        frameIndex,
-      );
-      const priorBest = bestAttempts.get(descriptor.ticker);
-      if (
-        !priorBest ||
-        attempt.result.deltaE < priorBest.result.deltaE ||
-        (
-          attempt.result.deltaE === priorBest.result.deltaE &&
-          attempt.result.minimumPlanetClearancePx >
-            priorBest.result.minimumPlanetClearancePx
-        )
-      ) {
-        bestAttempts.set(descriptor.ticker, { result: attempt.result, framePath: screenshot });
+      // FB-26 owner ruling (§13): walk this ticker's candidate positions
+      // along its own trail (in the app's published search order) within
+      // this single frame before moving on -- a structural own-disc/edge
+      // problem does not resolve by waiting for a different frame at the
+      // same fraction, only by sampling a different position. The first
+      // candidate to clear every existing, unchanged gate wins; every
+      // candidate tried this frame is counted toward the honest total.
+      let framePass = null;
+      for (const candidate of descriptor.trailSampleCandidates) {
+        const sampled = sampleAt(candidate.x, candidate.y, expected, data, info);
+        const attempt = evaluateSample(
+          descriptor,
+          descriptors,
+          candidate,
+          sampled,
+          elapsedMs,
+          frameIndex,
+        );
+        candidatesTriedTotal.set(
+          descriptor.ticker,
+          candidatesTriedTotal.get(descriptor.ticker) + 1,
+        );
+        const priorBest = bestAttempts.get(descriptor.ticker);
+        if (
+          !priorBest ||
+          attempt.result.deltaE < priorBest.result.deltaE ||
+          (
+            attempt.result.deltaE === priorBest.result.deltaE &&
+            attempt.result.minimumPlanetClearancePx >
+              priorBest.result.minimumPlanetClearancePx
+          )
+        ) {
+          bestAttempts.set(descriptor.ticker, { result: attempt.result, framePath: screenshot });
+        }
+        if (attempt.pass) {
+          framePass = attempt;
+          break;
+        }
       }
-      if (!attempt.pass) continue;
+      if (!framePass) continue;
       accepted.set(descriptor.ticker, {
-        ...attempt.result,
+        ...framePass.result,
         framePath: screenshot,
       });
       console.error(
         `captured ${descriptor.ticker} at ${(elapsedMs / 1000).toFixed(1)}s ` +
-        `(ΔE ${attempt.result.deltaE}, clearance ${attempt.result.minimumPlanetClearancePx}px)`,
+        `(ΔE ${framePass.result.deltaE}, clearance ${framePass.result.minimumPlanetClearancePx}px, ` +
+        `fraction ${framePass.result.sampleFractionTried}, ` +
+        `${candidatesTriedTotal.get(descriptor.ticker)} candidates tried total)`,
       );
     }
 
@@ -437,6 +494,10 @@ try {
       gateStatus: "fail",
     };
     if (acceptedSample) source.gateStatus = "pass";
+    // Owner ruling (§13): a ticker with no valid point is a reportable
+    // failure, never a silent skip -- record exactly how many candidate
+    // positions (across every sampled frame) were tried and rejected.
+    source.candidatesTried = candidatesTriedTotal.get(ticker);
     return source;
   });
   for (const sample of samples) {
@@ -518,6 +579,16 @@ try {
       maximumWaitMs: MAX_WAIT_MS,
       minimumPlanetClearancePx: MIN_PLANET_CLEARANCE_PX,
       sampleRadiusPxTried: [4, 10],
+    },
+    positionalSampleSearch: {
+      method: "Owner ruling 2026-07-30 (§13): within every sampled frame, each " +
+        "holding's full candidate list (data-trail-sample-candidates, " +
+        "TRAIL_SAMPLE_SEARCH_FRACTIONS projected per-holding by OrreryScene.tsx) " +
+        "is walked in the app's published order until one candidate clears the " +
+        "unchanged deltaE/hue/chroma/clearance gates; combined with the " +
+        "pre-existing per-frame temporal search. WHERE the sampler looks moved; " +
+        "WHAT the sampled pixel must be did not.",
+      candidatesTriedPerTicker: Object.fromEntries(candidatesTriedTotal),
     },
     unchangedGates: {
       deltaEMaximum: 8,

@@ -24,6 +24,42 @@ export const ACTIVE_RING_OPACITY =
 // FB-01 (§13): owner-fixed pull-back number, one more small step, 0.80 -> 0.75.
 export const OVERVIEW_BELT_SPAN_PCT = 0.75;
 export const TRAIL_SAMPLE_FRACTION = 0.62;
+// FB-26 verification methodology (owner ruling, 2026-07-30, §13): a single
+// fixed sample fraction assumes one position along every trail is clear of
+// its own planet disc and sits on the ribbon's solid core -- true for most
+// holdings but not all (a tight-orbit/large-disc holding can overlap its own
+// disc at 0.62; a holding whose ribbon narrows or antialiases near 0.62 can
+// land on an edge). The sampler now WALKS this ordered list of fractions
+// per holding until it finds one that clears the existing gates -- it moves
+// where the sample is taken, never what pixel value the gates require.
+export const TRAIL_SAMPLE_SEARCH_STEP = 0.08;
+export const TRAIL_SAMPLE_SEARCH_MIN = 0.2;
+export const TRAIL_SAMPLE_SEARCH_MAX = 0.92;
+
+export function buildTrailSampleSearchFractions(
+  base: number = TRAIL_SAMPLE_FRACTION,
+  step: number = TRAIL_SAMPLE_SEARCH_STEP,
+  min: number = TRAIL_SAMPLE_SEARCH_MIN,
+  max: number = TRAIL_SAMPLE_SEARCH_MAX,
+): number[] {
+  const seen = new Set<number>();
+  const order: number[] = [];
+  const add = (candidate: number) => {
+    const clamped = Math.min(max, Math.max(min, candidate));
+    const rounded = Math.round(clamped * 1000) / 1000;
+    if (seen.has(rounded)) return;
+    seen.add(rounded);
+    order.push(rounded);
+  };
+  add(base);
+  for (let ring = 1; ring <= 6; ring += 1) {
+    add(base + step * ring);
+    add(base - step * ring);
+  }
+  return order;
+}
+
+export const TRAIL_SAMPLE_SEARCH_FRACTIONS = buildTrailSampleSearchFractions();
 
 const OVERVIEW_FOV_DEGREES = 42;
 export const APPROACH_CAMERA_DISTANCE = 6.2;
@@ -131,6 +167,7 @@ export type SceneModel = {
     magnitude: number | null;
     sweep: { headRadians: 0; tailRadians: number };
     sampleFraction: typeof TRAIL_SAMPLE_FRACTION;
+    sampleSearchFractions: readonly number[];
     head: {
       fraction: 0.12;
       color: string;
@@ -1180,6 +1217,7 @@ export function buildOverviewSceneModel({
           holding.dayReturn === null ? null : Math.abs(holding.dayReturn),
         sweep: trailSweepAngles(direction, arcRadians),
         sampleFraction: TRAIL_SAMPLE_FRACTION,
+        sampleSearchFractions: TRAIL_SAMPLE_SEARCH_FRACTIONS,
         head: {
           fraction: 0.12,
           color: UNIVERSE_PALETTE.signal.whiteHot,
