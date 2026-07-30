@@ -1,0 +1,52 @@
+{
+  "loginOk": true,
+  "weightsBeforeEdit": [
+    29,
+    23.5,
+    14,
+    9,
+    8.5,
+    7.5,
+    4.5,
+    4
+  ],
+  "urlBeforeEdit": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=58.47.28.18.17.15.9.8",
+  "weightsAfterEdit": [
+    54,
+    15.5,
+    9,
+    6.5,
+    6,
+    5,
+    2,
+    2
+  ],
+  "urlAfterEdit": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=108.31.18.13.12.10.4.4",
+  "editActuallyChangedWeights": true,
+  "urlAfterBack": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=98.35.20.14.13.11.5.4",
+  "backLandedOnBlank": false,
+  "weightsAfterBack": [
+    49,
+    17.5,
+    10,
+    7,
+    6.5,
+    5.5,
+    2.5,
+    2
+  ],
+  "backRestoredPreEditWeights": false,
+  "urlAfterForward": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=108.31.18.13.12.10.4.4",
+  "weightsAfterForward": [
+    54,
+    15.5,
+    9,
+    6.5,
+    6,
+    5,
+    2,
+    2
+  ],
+  "forwardRestoredEditedWeights": true,
+  "pass": false
+}

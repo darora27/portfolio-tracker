@@ -1,0 +1,94 @@
+{
+  "loginOk": true,
+  "weightsBefore": [
+    29,
+    23.5,
+    14,
+    9,
+    8.5,
+    7.5,
+    4.5,
+    4
+  ],
+  "sumBefore": 100,
+  "weightsAfter": [
+    18,
+    13,
+    49,
+    5.5,
+    5,
+    4,
+    3,
+    2.5
+  ],
+  "sumAfter": 100,
+  "grownWeightChanged": {
+    "before": 14,
+    "after": 49
+  },
+  "editActuallyChangedWeights": true,
+  "proRataRatios": {
+    "before": [
+      {
+        "index": 0,
+        "ratio": 0.3372093023255814
+      },
+      {
+        "index": 1,
+        "ratio": 0.27325581395348836
+      },
+      {
+        "index": 3,
+        "ratio": 0.10465116279069768
+      },
+      {
+        "index": 4,
+        "ratio": 0.09883720930232558
+      },
+      {
+        "index": 5,
+        "ratio": 0.0872093023255814
+      },
+      {
+        "index": 6,
+        "ratio": 0.05232558139534884
+      },
+      {
+        "index": 7,
+        "ratio": 0.046511627906976744
+      }
+    ],
+    "after": [
+      {
+        "index": 0,
+        "ratio": 0.35294117647058826
+      },
+      {
+        "index": 1,
+        "ratio": 0.2549019607843137
+      },
+      {
+        "index": 3,
+        "ratio": 0.10784313725490197
+      },
+      {
+        "index": 4,
+        "ratio": 0.09803921568627451
+      },
+      {
+        "index": 5,
+        "ratio": 0.0784313725490196
+      },
+      {
+        "index": 6,
+        "ratio": 0.058823529411764705
+      },
+      {
+        "index": 7,
+        "ratio": 0.049019607843137254
+      }
+    ]
+  },
+  "maxRatioDrift": 0.01835385316917465,
+  "pass": false
+}

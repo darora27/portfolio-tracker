@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "\u00a711",
   "spec_doc": "docs/phase10-workflow/specs/section-11.md",
-  "candidate_sha": "f38b5e233114247f578256f6753fef9c22b2f900",
+  "candidate_sha": "0fae59d288b144f88e7ce832bc9807a9b5704449",
   "criteria": [
     {
       "id": "BHV-10",
@@ -325,11 +325,11 @@
         "notes": "F9 fixed: added a Legend component (src/components/observatory/orrery/Legend.tsx) rendering the existing .orientationLine CSS bar with the required copy, gated by a localStorage dismiss key (stock-market-universe-legend-seen) exactly mirroring FirstVisitOrientation's pattern, and wired a 'SHOW LEGEND' button into SystemsManual.tsx that dispatches a summon event. This sandbox launches Chromium directly (per AGENTS.md Live Verification): ran npm run build && npm run start, then node docs/phase10-baseline/section-11/scripts/legend-first-visit.mjs against a fresh unseeded context on the real production /share route. Result (raw-legend-first-visit.json): legendPresentFirstVisit true, dismissed on first interaction (localStorage key set to true), absent after reload, re-summoned via the Systems Manual's SHOW LEGEND button, and dismissed again on the next interaction. pass: true."
       },
       "reviewer": {
-        "status": "fail",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-4-audit.json"
+          "docs/phase10-baseline/section-11/raw-review-5-legend-first-visit.json"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): F9. A fresh unseeded context found no legend text (SUN = WHOLE PORTFOLIO pattern) on first visit, after interaction, after reload, or after opening the Systems Manual. Source confirms this is not a timing gap: no .tsx under src/components/observatory/orrery/ references styles.legend (orphaned CSS only), and SystemsManual.tsx carries no legend copy to summon. See docs/phase10-workflow/reviews/section-11-review-4.md F9."
+        "notes": "claude-code/sonnet-5 (review turn 5, single_provider_mode): F9 independently re-verified. Ran the implementer's own legend-first-visit.mjs script fresh (not a re-read of committed JSON) against this turn's own independently built/started production server, fresh unseeded context: legendPresentFirstVisit true, dismissed on first interaction (localStorage set), absent after reload, re-summoned via the Systems Manual's SHOW LEGEND button, dismissed again after re-summon. pass: true. Source inspected: Legend.tsx mirrors FirstVisitOrientation.tsx's dismiss/persist/re-summon pattern exactly; .orientationLine is hidden outside the overview camera (orrery.module.css:388), matching the spec's bottom bar. F9 CLOSED."
       }
     },
     {
@@ -440,9 +440,11 @@
       "reviewer": {
         "status": "not_run",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json"
+          "docs/phase10-baseline/section-11/raw-review-5-bhv31-keyboard-siphon.json",
+          "docs/phase10-baseline/section-11/raw-review-5-bhv30-31-keyboard.json",
+          "docs/phase10-baseline/section-11/raw-review-5-draft-followup.json"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): PARTIAL, left not_run rather than asserted. Pro-rata breathing confirmed (untouched-holding weight ratios identical before/after a grab-and-pull, maxRatioDrift 0.0) and pit-rail confirmed (a keyboard-zeroed circle docked on the pit rail, still labelled). The siphon latch was not observed in this turn's synthetic drag-into-B sequence ([data-counterparty=\"true\"] never appeared) -- inconclusive between a harness coordinate/timing miss and a real gap, not asserted as a failure. See section-11-review-4.md."
+        "notes": "claude-code/sonnet-5 (review turn 5): PARTIAL, left not_run rather than asserted -- same as review-4. Root cause identified this turn for the pointer-drag inconclusiveness: mouse.down/move/up drag gestures do not register ANY weight change under this Playwright/headless-Chromium harness (confirmed 3x across two review turns and two distinct gesture patterns -- grownWeightChanged stayed exactly 29/29 every time), most likely a setPointerCapture-retargeting quirk of CDP-dispatched synthetic pointer events rather than a real app defect; this also means review-4's own maxRatioDrift:0.0 pro-rata confirmation and BHV-30's sum-invariant confirmation were measured against a no-op, not a real edit, and should not be relied on as positive evidence of those specific claims. Switching to the keyboard path: the SIPHON LATCH (Space, spec 7.4.4) is confirmed working cleanly -- latches exactly the focused circle (data-counterparty=true), releases cleanly on a second press (raw-review-5-bhv31-keyboard-siphon.json, pass:true). Pit-rail zeroing was already confirmed by review-4 via keyboard. Pro-rata breathing under a REAL keyboard-driven edit (index 2 grown 14% -> 49%) shows measurable ratio drift among untouched holdings (maxRatioDrift 0.0184, i.e. up to ~1.8 percentage points) -- plausibly explained by the half-unit largest-remainder rounding the spec mandates (7.3), but no tolerance for 'preserves the relative mix' is defined anywhere in the spec, so this turn does not assert pass or fail against a threshold of its own invention. Needs a spec-defined tolerance before grading. Recommend the next turn: (1) investigate the pointer-drag harness gap directly (real trackpad-equivalent input, or Opus-in-Cowork's real Chrome extension, per AGENTS.md's attended-camera path) since it currently blocks conclusive drag-specific coverage of BHV-30/31/33, and (2) get an owner or spec decision on the pro-rata rounding tolerance."
       }
     },
     {
@@ -500,7 +502,7 @@
         "evidence": [
           "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, mid-drag readout sample: 'DRAFT MIX ▼ 4.7%', 'MOVED 0.0 OF 100', 'TOP-2 52.5 · HHI 1,835' -- real computed values, not placeholders, confirming the readouts are wired to the drag rather than static. Caveat: this turn's two sample points (mid-drag, settled) happened to read the same value, so it does not independently distinguish continuous live update from update-on-pointermove landing on the same rounded figure; noted in section-11-review-4.md as a weaker positive than ideal but not a failure."
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live, mid-drag readout sample: 'DRAFT MIX \u25bc 4.7%', 'MOVED 0.0 OF 100', 'TOP-2 52.5 \u00b7 HHI 1,835' -- real computed values, not placeholders, confirming the readouts are wired to the drag rather than static. Caveat: this turn's two sample points (mid-drag, settled) happened to read the same value, so it does not independently distinguish continuous live update from update-on-pointermove landing on the same rounded figure; noted in section-11-review-4.md as a weaker positive than ideal but not a failure."
       }
     },
     {
@@ -524,11 +526,13 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
+        "status": "pass",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-4-owner-audit.json"
+          "docs/phase10-baseline/section-11/raw-review-5-bhv34-keyboard.json",
+          "docs/phase10-baseline/section-11/raw-review-5-bhv34-isolated.json",
+          "docs/phase10-baseline/section-11/raw-review-5-draft-followup.json"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): PARTIAL, left not_run rather than asserted. URL draft-param encoding confirmed (draft= query param present after edits) and COPY TEST LINK button confirmed visible. page.url() read identically before and after goBack() while rendered weights changed -- contradictory in this turn's data, most likely an async URL-read timing gap in the harness rather than a confirmed history defect. Needs a cleaner re-test (explicit waitForURL/poll) before grading. See section-11-review-4.md."
+        "notes": "claude-code/sonnet-5 (review turn 5): review-4's pointer-drag-based edit never actually changed a weight (grownWeightChanged before:29/after:29) -- this turn's own pointer-drag re-attempt (raw-review-5-draft-followup.json) reproduced the same no-op, and an isolated single-edit re-test (raw-review-5-bhv34-isolated.json) confirmed goBack() from a state with no real edit correctly falls through to the browser's pre-navigation about:blank, not a defect. Switching to the keyboard-adjustment path (Shift+ArrowRight, spec-legal per 7.4.4) produced a real, observable weight change (29% -> 54%) and a real URL-encoded draft param. Polled Back navigation (waitForFunction on location.href, replacing review-4's fixed 500ms wait) landed on a distinct, valid intermediate draft= URL with correspondingly different rendered weights -- each committed keystroke pushes its own history entry, so one goBack() undoes one step, not the whole edit sequence, which is correct per spec 7.7 (pushState on commit). Forward exactly restored the post-edit URL and weights. COPY TEST LINK button confirmed visible. PASS, evidenced via the keyboard path since pointer-drag does not register under this harness (see BHV-31 note on the same root cause)."
       }
     },
     {
@@ -760,7 +764,7 @@
         "evidence": [
           "docs/phase10-baseline/section-11/raw-review-4-audit.json"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live geometry, both scales. Panel chart: 170px tall, 3 axis hairlines, solid baseline found, 2 dots (start/end), endpoint chip text '▼ 12.0%'. Room chart (RETURNS section, scrolled into view): 320px tall, 3 hairlines, 2 dots. Matches spec 3.4 at both scales."
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live geometry, both scales. Panel chart: 170px tall, 3 axis hairlines, solid baseline found, 2 dots (start/end), endpoint chip text '\u25bc 12.0%'. Room chart (RETURNS section, scrolled into view): 320px tall, 3 hairlines, 2 dots. Matches spec 3.4 at both scales."
       }
     },
     {
@@ -816,11 +820,14 @@
         "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
       },
       "reviewer": {
-        "status": "not_run",
+        "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-review-4-ring-alpha.json"
+          "docs/phase10-baseline/section-11/raw-review-5-ring-alpha.json",
+          "docs/phase10-baseline/section-11/raw-review-5-ring-alpha-v2.json",
+          "docs/phase10-baseline/section-11/raw-review-5-ring-alpha.png",
+          "docs/phase10-baseline/section-11/raw-review-5-ring-alpha-v2.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): PARTIAL, left not_run. Source confirms the required token pair (OVERVIEW_RING_ALPHA = { peak: 0.55, floor: 0.22 }, scene-model.ts:20) rather than a single constant. Pixel far-side sampling (no DOM ring-geometry signal exists, so this locates the sun by warm-pixel scan and samples each planet's own orbit radius on the opposite bearing): ASML's ring confirmed visible above background (+10.9 luminance). The second sampled ring (MSFT, larger orbit) read identical to its background reference -- most likely a targeting miss from compounding sun-center estimation error at larger radius, not asserted as an absent ring. Needs a corrected second measurement before grading pass or fail. See section-11-review-4.md."
+        "notes": "claude-code/sonnet-5 (review turn 5): NEW FINDING F10 (see review-5 report). review-4's ring-alpha measurement located the sun by a pixel-scan heuristic that landed its ASML reference sample directly on the GOOG ticker label overlay (visually confirmed), producing a false +10.9 luminance delta. This turn located the sun from the render loop's own existing DOM signal (mount.dataset.evidenceSunX/Y, .sceneMount -- no new attribute added) and re-measured with a 15-point median-luminance arc sampler (robust to a single label collision at one angle) on the smallest and second-largest on-canvas orbits (largest orbit's far side falls off the 1440x900 canvas at this sun position -- recorded, not sampled). Result: both sampled rings read at background level at the far side (ASML delta -0.7, INTC delta -0.7, against a >6 pass threshold) -- direct RGB inspection at ASML's exact far-side point shows uniform dark starfield green with no ring signature. A targeted near-planet check (+/-15 degrees from the planet's own angle) DOES show a distinct blue tint above background (21,42,82 and 31,62,120 vs ~5,18,14 background), confirming the ring renders and is visible near its peak-alpha zone, but that visibility does not sustain to the far side / floor alpha as VIS-16 requires ('full circle always present', far-side alpha >= 0.22). FAIL."
       }
     },
     {
@@ -908,7 +915,7 @@
           "docs/phase10-baseline/section-11/raw-review-4-followup.json",
           "docs/phase10-baseline/section-11/raw-review-4-vis19.png"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live. The PORTFOLIO readout is compound text (PORTFOLIO · TODAY ▼ 1.7%), not an exact-match leaf node -- a first pass with a too-strict selector produced a false negative, corrected in this follow-up. Located, bounding rect checked against all eight [data-scene-ticker] label rects: zero overlaps."
+        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): Live. The PORTFOLIO readout is compound text (PORTFOLIO \u00b7 TODAY \u25bc 1.7%), not an exact-match leaf node -- a first pass with a too-strict selector produced a false negative, corrected in this follow-up. Located, bounding rect checked against all eight [data-scene-ticker] label rects: zero overlaps."
       }
     },
     {
@@ -1148,7 +1155,7 @@
           "docs/phase10-baseline/section-11/raw-review-4-audit.json",
           "docs/phase10-baseline/section-11/raw-review-4-followup.json"
         ],
-        "notes": "claude-code/sonnet-5 (review turn 4, single_provider_mode): PARTIAL, left not_run rather than asserted. No banned jargon nouns found at either width, even after scrolling fully through the fallback to trigger any lazy mounts. RETURNS/RISK/NEWS/EARNINGS and 3 of 5 window words (TODAY/WEEK/SINCE START) present; HOLDINGS/CORRELATION/TRADES and 30D/SINCE BUY absent. This may be a scope mismatch rather than a defect: the below-1024px fallback (nav[aria-label=\"Portfolio bodies\"], OrreryWorld.tsx) is a holdings list, not the Mission Control descent room, and may never be expected to carry room-only section headers. Needs scope confirmation against the spec before grading pass or fail. See section-11-review-4.md."
+        "notes": "claude-code/sonnet-5 (review turn 5): re-read per the remediation handoff's request, left not_run rather than asserted -- this remains a genuine scope ambiguity, not something resolvable by more browser measurement. BHV-10 names 'the fallback' as one of five places every renamed noun must appear, which argues MOB-11 is a real gap. But MOB-10 describes the fallback as 'the existing tested 2D fallback... a genuinely reflowed semantic list' -- i.e. a holdings list, not a re-implementation of Mission Control's seven-section descent room -- and nothing in the spec explicitly requires the fallback to grow CORRELATION/TRADES/ORBITS sections it does not otherwise have content for on mobile. Both readings are defensible from the same spec text. Resolving this requires a product/spec decision (does the mobile fallback grow new sections, or does BHV-10's 'the fallback' clause only bind the nouns the fallback already shows), not another verifier run. Left for spec/owner routing rather than graded unilaterally by the reviewer."
       }
     },
     {

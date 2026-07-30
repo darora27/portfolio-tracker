@@ -1,0 +1,49 @@
+{
+  "loginOk": true,
+  "urlAfterInitialLoad": "http://127.0.0.1:3100/?focus=portfolio&camera=command",
+  "historyLengthAfterLoad": 2,
+  "urlAfterOpeningDraft": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=58.47.28.18.17.15.9.8",
+  "historyLengthAfterOpeningDraft": 2,
+  "urlAfterEdit": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=58.47.28.18.17.15.9.8",
+  "historyLengthAfterEdit": 2,
+  "weightsBeforeEdit": [
+    29,
+    23.5,
+    14,
+    9,
+    8.5,
+    7.5,
+    4.5,
+    4
+  ],
+  "weightsAfterEdit": [
+    29,
+    23.5,
+    14,
+    9,
+    8.5,
+    7.5,
+    4.5,
+    4
+  ],
+  "editActuallyChangedWeights": false,
+  "urlAfterBack": "about:blank",
+  "historyLengthAfterBack": 2,
+  "weightsAfterBack": [],
+  "backLandedOnBlank": true,
+  "backRestoredPreEditWeights": false,
+  "urlAfterForward": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=58.47.28.18.17.15.9.8",
+  "weightsAfterForward": [
+    29,
+    23.5,
+    14,
+    9,
+    8.5,
+    7.5,
+    4.5,
+    4
+  ],
+  "forwardRestoredEditedWeights": true,
+  "copyButtonVisible": true,
+  "pass": false
+}

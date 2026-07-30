@@ -1,0 +1,51 @@
+{
+  "loginOk": true,
+  "BHV-31.siphonLatch": {
+    "latchedFound": false,
+    "latchedIndex": null,
+    "allCounterpartyAttrs": [
+      {
+        "index": "0",
+        "counterparty": null
+      },
+      {
+        "index": "1",
+        "counterparty": null
+      },
+      {
+        "index": "2",
+        "counterparty": null
+      },
+      {
+        "index": "3",
+        "counterparty": null
+      },
+      {
+        "index": "4",
+        "counterparty": null
+      },
+      {
+        "index": "5",
+        "counterparty": null
+      },
+      {
+        "index": "6",
+        "counterparty": null
+      },
+      {
+        "index": "7",
+        "counterparty": null
+      }
+    ]
+  },
+  "BHV-34.urlHasDraftParam": true,
+  "BHV-34.urlAfterEdits": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=58.47.28.18.17.15.9.8",
+  "BHV-34.urlAfterBackPolled": "about:blank",
+  "BHV-34.pollError": null,
+  "BHV-34.backChangedUrl": true,
+  "BHV-34.weightsChangedAfterBack": true,
+  "BHV-34.urlAfterForwardPolled": "http://127.0.0.1:3100/?focus=portfolio&camera=command&draft=58.47.28.18.17.15.9.8",
+  "BHV-34.urlRestoredAfterForward": true,
+  "BHV-34.weightsRestoredAfterForward": true,
+  "BHV-34.copyButtonVisible": true
+}

@@ -1,0 +1,121 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sunCenterSource": "mount.dataset.evidenceSunX/evidenceSunY (existing render-loop DOM signal)",
+  "sunCenter": {
+    "x": 720,
+    "y": 295.3235253174633
+  },
+  "method": "median luminance over a 15-point, +/-14deg arc at the far-side radius vs. the same arc offset +40px further out, robust to a single label-text collision at one exact angle",
+  "tokenPair": {
+    "note": "OVERVIEW_RING_ALPHA = { peak: 0.55, floor: 0.22 } — src/lib/observatory/scene-model.ts:20"
+  },
+  "measurements": [
+    {
+      "ticker": "ASML",
+      "orbitRadiusPx": 103.6846515053226,
+      "farSideCenterPoint": {
+        "x": 616.3688755430524,
+        "y": 298.6547415471347
+      },
+      "farSideArcSamples": [
+        18.5904,
+        19.305600000000002,
+        19.305600000000002,
+        18.5904,
+        21.5904,
+        21.5904,
+        18.5904,
+        17.5904,
+        20.0878,
+        20.0878,
+        21.0878,
+        16.875199999999996,
+        16.875199999999996,
+        16.875199999999996,
+        16.3004
+      ],
+      "farSideMedianLuminance": 18.5904,
+      "referenceArcSamples": [
+        19.305600000000002,
+        19.305600000000002,
+        18.5904,
+        17.5904,
+        16.802999999999997,
+        231.59199999999998,
+        246.3794,
+        244.3794,
+        226.3072,
+        226.3072,
+        16.087799999999998,
+        16.087799999999998,
+        15.8752,
+        15.16,
+        66.152
+      ],
+      "referenceMedianLuminance": 19.305600000000002,
+      "ringVisibleAboveBackground": false,
+      "luminanceDelta": -0.715200000000003
+    },
+    {
+      "ticker": "INTC",
+      "orbitRadiusPx": 478.15371118386685,
+      "farSideCenterPoint": {
+        "x": 255.74921034665346,
+        "y": 180.85878915322394
+      },
+      "farSideArcSamples": [
+        10.082600000000001,
+        9.3674,
+        10.87,
+        10.082600000000001,
+        10.082600000000001,
+        10.082600000000001,
+        10.0104,
+        10.0104,
+        10.0104,
+        10.0104,
+        10.082600000000001,
+        10.082600000000001,
+        10.082600000000001,
+        44.8816,
+        12.010399999999999
+      ],
+      "farSideMedianLuminance": 10.082600000000001,
+      "referenceArcSamples": [
+        10.7978,
+        10.7978,
+        10.87,
+        10.7978,
+        10.7978,
+        10.7978,
+        10.082600000000001,
+        10.082600000000001,
+        10.082600000000001,
+        10.082600000000001,
+        8.5078,
+        8.5078,
+        50.596799999999995,
+        60.581199999999995,
+        174.79099999999997
+      ],
+      "referenceMedianLuminance": 10.7978,
+      "ringVisibleAboveBackground": false,
+      "luminanceDelta": -0.7151999999999994
+    }
+  ],
+  "excludedOffCanvas": [
+    {
+      "ticker": "CBRS",
+      "orbitRadiusPx": 501.1481035070512,
+      "farPoint": {
+        "x": 1065.2405721794971,
+        "y": -67.93721983660316
+      },
+      "reason": "far side falls outside the 1440x900 canvas at this sun position/orbit radius"
+    }
+  ],
+  "allSampledRingsVisibleAboveBackground": false
+}

@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§11 — Universe legibility and the draft rig**
 - Managed range: §2–§18
-- Stage: `review`
-- Role: `claude_lead`
+- Stage: `remediate`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -40,7 +40,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-30-section-11-codex-remediation-9-to-claude-review.md`
+- `docs/phase10-handoffs/2026-07-30-section-11-claude-review-5-to-codex-remediation.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -58,7 +58,7 @@ Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for
 
 Open bounded findings:
 
-- {"id":"F9","criterion":"BHV-20","risk":"medium","evidence":"docs/phase10-baseline/section-11/raw-review-4-audit.json","summary":"A fresh unseeded browser context (review turn 4, claude-code/sonnet-5) found no legend text matching 'SUN = WHOLE PORTFOLIO' on first visit, after interaction, after reload, or after opening the Systems Manual. Source confirms this is not a timing issue: no .tsx under src/components/observatory/orrery/ references styles.legend (the CSS module still defines .legend rules in orrery.module.css, but nothing renders them), and SystemsManual.tsx carries no legend copy for a summon path to reveal. The spec (section 5.5) frames this as fixing a regression -- a permanent legend the owner's oldest standing rule forbids -- but the evidence is that the legend was removed outright rather than made first-visit-dismissable-and-summonable.","required_change":"Implement the first-visit-only legend bar per spec 5.5: appears on first visit, dismisses on the first interaction, does not return on reload, and is re-openable from the Systems Manual. Do not restore a permanent legend -- that recreates the exact regression the spec is fixing.","ledger_rows":[],"remediation_result":"PASS for implementer evidence: added src/components/observatory/orrery/Legend.tsx, a first-visit-gated component (localStorage key stock-market-universe-legend-seen) rendering the pre-existing .orientationLine CSS bar with the required 'SUN = WHOLE PORTFOLIO * PLANET = ONE HOLDING * CLICK EITHER TO OPEN' copy, mirroring FirstVisitOrientation's dismiss-once/localStorage/custom-event pattern exactly. Wired into OrreryWorld.tsx. Added a 'SHOW LEGEND' button to SystemsManual.tsx dispatching UNIVERSE_LEGEND_EVENT, mirroring the existing SHOW ORIENTATION button. This sandbox launches Chromium directly (AGENTS.md Live Verification is authoritative): ran npm run build && npm run start, then node docs/phase10-baseline/section-11/scripts/legend-first-visit.mjs against a fresh unseeded context on the real production /share route. Result: legend present on first visit, dismissed on first interaction (localStorage set), absent after reload, re-summoned via the Systems Manual's SHOW LEGEND button, and dismissed again on the next interaction after re-summon. Unit tests added: Legend.test.tsx (3 cases) and an extended SystemsManual.test.tsx case for the new button.","remediation_evidence":"src/components/observatory/orrery/Legend.tsx; src/components/observatory/orrery/Legend.test.tsx; src/components/observatory/orrery/SystemsManual.tsx; src/components/observatory/orrery/SystemsManual.test.tsx; src/components/observatory/orrery/OrreryWorld.tsx; docs/phase10-baseline/section-11/scripts/legend-first-visit.mjs; docs/phase10-baseline/section-11/raw-legend-first-visit.json"}
+- {"id":"F10","criterion":"VIS-16","risk":"high","evidence":"docs/phase10-baseline/section-11/raw-review-5-ring-alpha-v2.json","summary":"Review turn 5 corrected review-4's VIS-16 sun-center estimation error (its ASML far-side reference point had landed directly on the GOOG ticker label overlay, producing a false +10.9 luminance reading) by sourcing sun position from the render loop's own existing DOM signal (mount.dataset.evidenceSunX/Y) instead of a pixel-scan estimate, and by sampling a 15-point median luminance arc instead of one exact point (robust to a single label collision). Both re-sampled rings (ASML, smallest orbit; INTC, second-largest on-canvas orbit) read at background level at the far side: delta -0.7 against a >6 pass threshold, confirmed by direct RGB inspection showing uniform dark starfield with no ring signature. A targeted near-planet check (+/-15deg from the planet's own angle) does show a distinct blue-tinted ring above background, confirming the ring renders near its peak-alpha zone but does not sustain to the far side / floor alpha as VIS-16 requires ('full circle always present', far-side alpha >= 0.22).","required_change":"Investigate why the rendered far-side alpha does not read above background at the 0.22 floor token (src/lib/observatory/scene-model.ts:20) -- check per-fragment alpha application across the full ring geometry, and consider whether 0.22 is simply imperceptible at this background/exposure combination (a product decision if so, not only a code fix). Do not weaken the >6 luminance-delta threshold or the two-ring sampling requirement.","ledger_rows":[]}
 
 Acceptance ledger:
 
@@ -103,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `3a9300642bd542bbab2255e89b1fda9aa7fcc7d919cb4584208c8828d22e0ad5`
+- `PHASE10_STATE.json`: `5e14bff5db162ce71368dfbba3004c4c1ce6b678ae2b002b8dfa77b711a852d6`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

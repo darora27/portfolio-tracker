@@ -1,0 +1,69 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sunCenterSource": "mount.dataset.evidenceSunX/evidenceSunY (existing render-loop DOM signal, not pixel-estimated)",
+  "sunCenter": {
+    "x": 720,
+    "y": 295.3235253174633
+  },
+  "tokenPair": {
+    "note": "OVERVIEW_RING_ALPHA = { peak: 0.55, floor: 0.22 } — src/lib/observatory/scene-model.ts:20"
+  },
+  "measurements": [
+    {
+      "ticker": "ASML",
+      "orbitRadiusPx": 103.75862445581438,
+      "farSidePoint": {
+        "x": 616.2867010302401,
+        "y": 298.3900813290061
+      },
+      "farSidePeakPixel": [
+        9,
+        22,
+        16
+      ],
+      "farSidePeakLuminance": 18.803,
+      "referencePoint": {
+        "x": 576.3041744639107,
+        "y": 299.57226971194814
+      },
+      "referencePixel": [
+        238,
+        248,
+        255
+      ],
+      "referenceLuminance": 246.3794,
+      "ringVisibleAboveBackground": false,
+      "luminanceDelta": -227.5764
+    },
+    {
+      "ticker": "CBRS",
+      "orbitRadiusPx": 502.91392168821494,
+      "farSidePoint": {
+        "x": 1069.245030716586,
+        "y": -66.54706086990694
+      },
+      "farSidePeakPixel": [
+        9,
+        17,
+        13
+      ],
+      "farSidePeakLuminance": 15.010399999999999,
+      "referencePoint": {
+        "x": 1097.0227489825045,
+        "y": -95.3289712988423
+      },
+      "referencePixel": [
+        8,
+        16,
+        12
+      ],
+      "referenceLuminance": 14.010399999999999,
+      "ringVisibleAboveBackground": false,
+      "luminanceDelta": 1
+    }
+  ],
+  "allSampledRingsVisibleAboveBackground": false
+}

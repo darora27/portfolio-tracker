@@ -1,0 +1,75 @@
+{
+  "loginOk": true,
+  "stateAfterLatch": [
+    {
+      "index": 0,
+      "counterparty": null
+    },
+    {
+      "index": 1,
+      "counterparty": null
+    },
+    {
+      "index": 2,
+      "counterparty": null
+    },
+    {
+      "index": 3,
+      "counterparty": "true"
+    },
+    {
+      "index": 4,
+      "counterparty": null
+    },
+    {
+      "index": 5,
+      "counterparty": null
+    },
+    {
+      "index": 6,
+      "counterparty": null
+    },
+    {
+      "index": 7,
+      "counterparty": null
+    }
+  ],
+  "latchedFound": true,
+  "latchedIndex": 3,
+  "stateAfterRelease": [
+    {
+      "index": 0,
+      "counterparty": null
+    },
+    {
+      "index": 1,
+      "counterparty": null
+    },
+    {
+      "index": 2,
+      "counterparty": null
+    },
+    {
+      "index": 3,
+      "counterparty": null
+    },
+    {
+      "index": 4,
+      "counterparty": null
+    },
+    {
+      "index": 5,
+      "counterparty": null
+    },
+    {
+      "index": 6,
+      "counterparty": null
+    },
+    {
+      "index": 7,
+      "counterparty": null
+    }
+  ],
+  "releasedCleanly": true,
+  "pass": true
+}
