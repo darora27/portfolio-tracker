@@ -939,21 +939,27 @@
         "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
-        "status": "deferred_to_reviewer",
+        "status": "pass",
         "evidence": [
           "OWNER_FEEDBACK_LEDGER.md",
           "PHASE10_STATE.json",
           "docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs",
-          "docs/phase10-baseline/section-11/raw-remediation-f7-geometry.json",
-          "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
-          "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png",
+          "docs/phase10-baseline/section-11/raw-owner-rgb-20260729-232124.txt",
+          "docs/phase10-baseline/section-11/raw-temporal-trail-samples.json",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/asml-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/goog-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/cost-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/msft-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/ibm-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/intc-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/crm-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/cbrs-trail-phase.png",
+          "docs/phase10-baseline/section-11/contact-sheet.md",
           "docs/phase10-baseline/section-11/raw-trail-sampler-derivation.md",
-          "docs/phase10-baseline/section-11/raw-remediation-f7-browser-gap.txt",
-          "docs/phase10-baseline/section-11/raw-remediation-f7-temporal-gates.txt",
-          "docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.json",
-          "docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.png"
+          "docs/phase10-baseline/section-11/raw-remediation-f7-temporal-gates.txt"
         ],
-        "notes": "The owner-authorised temporal per-holding verifier is implemented and emits a captioned pixel plate only after all eight fixture holdings satisfy the unchanged deltaE, hue, chroma, ordering and planet-clearance gates. No application source, trail geometry, fixture or threshold changed. Live grading is blocked at needs-capture: the managed CLI denies normal multi-process Chromium at MachPortRendezvous, while its permitted single-process mode renders the retained semantic no-WebGL fallback with zero canvas/scene nodes; the committed readiness-failure PNG and JSON prove that environment boundary and are not criterion evidence. Exact normal-Terminal command: `npm run build && npm run start`, then `PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs`. No visual pass is claimed. Recorded by codex/gpt-5."
+        "notes": "PASS on the unattended production camera run at 2026-07-29 23:21 America/New_York. The captioned temporal plate and eight retained 1440x900 source frames show each fixture holding at its own naturally unoccluded phase. All eight satisfy the unchanged gates: deltaE <= 8, hue distance <= 10 degrees, chroma > 0.3, at least 1px planet clearance, and ordering wherever expected ramp colours differ. ASML sampled exact #b3241d at deltaE 0 with 2.157px clearance; the largest deltaE was IBM 7.571 and the lowest passing chroma was CRM 0.318. The owner-confirmed 18-30 degree arc, fixture and thresholds are unchanged. The generated plate was inspected directly and contains all eight captioned crosshair samples. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -1359,21 +1365,27 @@
         "rule": "Must be re-run and recorded in \u00a711. May not be closed by assertion."
       },
       "implementer": {
-        "status": "deferred_to_reviewer",
+        "status": "pass",
         "evidence": [
           "OWNER_FEEDBACK_LEDGER.md",
           "PHASE10_STATE.json",
           "docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs",
+          "docs/phase10-baseline/section-11/raw-owner-rgb-20260729-232124.txt",
+          "docs/phase10-baseline/section-11/raw-temporal-trail-samples.json",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/asml-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/goog-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/cost-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/msft-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/ibm-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/intc-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/crm-trail-phase.png",
+          "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/cbrs-trail-phase.png",
+          "docs/phase10-baseline/section-11/contact-sheet.md",
           "docs/phase10-baseline/section-11/raw-trail-sampler-derivation.md",
-          "docs/phase10-baseline/section-11/raw-remediation-f7-geometry.json",
-          "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
-          "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png",
-          "docs/phase10-baseline/section-11/raw-remediation-f7-browser-gap.txt",
-          "docs/phase10-baseline/section-11/raw-remediation-f7-temporal-gates.txt",
-          "docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.json",
-          "docs/phase10-baseline/section-11/raw-temporal-sampler-readiness-failure.png"
+          "docs/phase10-baseline/section-11/raw-remediation-f7-temporal-gates.txt"
         ],
-        "notes": "Devan supplied the previously missing decision: temporal per-holding sampling is authorised, the confirmed 18-30 degree trails stay fixed, and every deltaE, hue, chroma, magnitude-ordering and fixture threshold stays unchanged. The verifier now waits for each holding's own published sample coordinate to become colour-valid and at least 1px clear of every projected planet disc, retains the full 1440x900 frame for that phase, checks all eight holdings plus same-direction ordering, and builds a captioned pixel plate. Live grading is blocked at needs-capture because normal Chromium is denied by this managed CLI and single-process Chromium produces the tested no-WebGL fallback with zero canvas/scene nodes; the retained readiness-failure artifacts prove that environment condition only. Exact normal-Terminal command: `npm run build && npm run start`, then `PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs`. No TST-03 pass is claimed. Recorded by codex/gpt-5."
+        "notes": "PASS on the unattended production camera run at 2026-07-29 23:21 America/New_York. The owner-authorised temporal verifier sampled all eight fixture holdings, retained their full 1440x900 frames and emitted the captioned plate. Every unchanged threshold passed: deltaE maximum 8, hue-distance maximum 10 degrees, chroma strictly above 0.3, minimum planet clearance 1px, all-holdings fixture and magnitude ordering between different expected ramp stops. ASML, the prior blocker, sampled exact #b3241d at deltaE 0 and 2.157px clearance. IBM passed at deltaE 7.571; CRM passed at deltaE 5.9 and chroma 0.318. Same-stop comparisons are emitted rather than silently ignored, and ordering remains enforced between different stops. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",

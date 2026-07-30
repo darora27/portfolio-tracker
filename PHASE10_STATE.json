@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§11",
-  "role": "codex_implementation",
-  "stage": "remediate",
+  "role": "claude_lead",
+  "stage": "review",
   "status": "ready",
-  "next_actor": "codex",
+  "next_actor": "claude",
   "selected_direction": {
     "name": "Field Journal",
     "recorded_by": "Devan",
@@ -43,7 +43,9 @@
         "ledger_rows": [],
         "owner_decision": "OWNER DECISION, Devan, July 29 2026 — AUTHORISED: temporal per-holding sampling. Sample each holding at the orbital phase where its own ribbon is unoccluded, instead of demanding one frozen still show all eight. EXPLICITLY UNCHANGED: the 18-30 degree arc band (owner-confirmed, \"trails look fine\"), and every existing delta-E, hue and ordering threshold. He rejected re-lengthening the trails and rejected dropping the criterion. This changes HOW the verifier looks, never WHAT must be true.",
         "correction": "The routed finding assumed a 26-46 degree band; the candidate and the authoritative FB-03 record are 18-30. At 18-30 ASML sits radius 31.06px with its furthest valid sample 7.104px INSIDE the disc, so no truthful single-still coordinate exists. The prior attempt sampled #504b83 against an expected #b3241d at delta-E 81.6 — it was reading the planet, not the trail. That is the same class of error as the round-3 chirality misdiagnosis: a verifier that samples screen space must account for what else occupies that screen space.",
-        "assumption_corrected": "arc band 26-46 -> 18-30 degrees"
+        "assumption_corrected": "arc band 26-46 -> 18-30 degrees",
+        "remediation_result": "PASS for implementer evidence: the unattended production camera sampled every fixture holding at its own naturally unoccluded phase. ASML sampled exact #b3241d at deltaE 0 with 2.157px planet clearance; all eight cleared deltaE <= 8, hue distance <= 10 degrees, chroma > 0.3, the 1px clearance floor, and ordering between different expected ramp stops. The 18-30 degree owner-confirmed trail band and every threshold remain unchanged.",
+        "remediation_evidence": "docs/phase10-baseline/section-11/raw-owner-rgb-20260729-232124.txt; docs/phase10-baseline/section-11/raw-temporal-trail-samples.json; docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png; docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/"
       },
       {
         "id": "F8",
@@ -55,7 +57,9 @@
         "ledger_rows": [],
         "owner_decision": "OWNER DECISION, Devan, July 29 2026 — AUTHORISED: temporal per-holding sampling. Sample each holding at the orbital phase where its own ribbon is unoccluded, instead of demanding one frozen still show all eight. EXPLICITLY UNCHANGED: the 18-30 degree arc band (owner-confirmed, \"trails look fine\"), and every existing delta-E, hue and ordering threshold. He rejected re-lengthening the trails and rejected dropping the criterion. This changes HOW the verifier looks, never WHAT must be true.",
         "correction": "The routed finding assumed a 26-46 degree band; the candidate and the authoritative FB-03 record are 18-30. At 18-30 ASML sits radius 31.06px with its furthest valid sample 7.104px INSIDE the disc, so no truthful single-still coordinate exists. The prior attempt sampled #504b83 against an expected #b3241d at delta-E 81.6 — it was reading the planet, not the trail. That is the same class of error as the round-3 chirality misdiagnosis: a verifier that samples screen space must account for what else occupies that screen space.",
-        "assumption_corrected": "arc band 26-46 -> 18-30 degrees"
+        "assumption_corrected": "arc band 26-46 -> 18-30 degrees",
+        "remediation_result": "PASS for implementer visual evidence: the new captioned temporal plate shows all eight holdings at their valid sampled phases with crosshairs and expected/sample/deltaE captions. It is backed by eight current-run 1440x900 frames and the passing machine-readable TST-03 record. No taste verdict is claimed.",
+        "remediation_evidence": "docs/phase10-baseline/section-11/pixel-samples/temporal-trail-samples.png; docs/phase10-baseline/section-11/pixel-samples/temporal-trail-frames/; docs/phase10-baseline/section-11/raw-temporal-trail-samples.json; docs/phase10-baseline/section-11/contact-sheet.md"
       }
     ],
     "remediation_commits": [
@@ -69,7 +73,7 @@
       "15c0b38",
       "e16e9c78e7f50d8ce4d7442caf4ed61b3e668a6a"
     ],
-    "unperformed_criteria_note": "Review turn 3 closed F5/BLD-04 and F6/VIS-11 with fresh independent evidence (reproduced on separate server starts from both the owner's and the implementer's prior runs), then ran the full newly-reachable matrix left by review-2: 34 criteria moved from not_run to a freshly-evidenced pass (BHV-10, BHV-12, BHV-13, BHV-14, BHV-16, BHV-17, BHV-18, BHV-19, BHV-21, BHV-22, BHV-30, VIS-12, VIS-13, VIS-15, VIS-17, VIS-18, ACC-10, ACC-11, ACC-12, TST-10, TST-11, TST-12, BLD-10, BLD-11, PRV-11, PRV-12, PRV-14; plus reconfirmation of the already-passing BHV-15, TST-13, BLD-12, PRV-10, PRV-13), and found F7/TST-03 and F8/VIS-04 newly/re-failing with reproduced live evidence. The five owner-carried criteria (BHV-11, VIS-10, VIS-02, DEF-02, BHV-05) were not reopened -- nothing this turn touched logo marks, panel width, or Mission Control typography. Still not_run, honestly: BHV-20, BHV-31, BHV-32, BHV-33, BHV-34 (partially evidenced -- URL param format confirmed correct, drag-to-URL and back/forward-undo inconclusive), BHV-35 (button selector did not locate RESET TO BOOK), VIS-14 (strong structural/source evidence, not independently live-pixel-measured), VIS-16 (visually inconclusive, no reliable live ring-alpha sampling method used this turn), VIS-19, VIS-20, MOB-10, MOB-11, ACC-13. These are not implicit passes. See docs/phase10-workflow/reviews/section-11-review-3.md.",
+    "unperformed_criteria_note": "F7/TST-03 and F8/VIS-04 now carry fresh implementer passes from the unattended production camera, with the eight source frames, captioned temporal plate and machine-readable result retained. Review turn 3's prior matrix remains authoritative for unaffected criteria. The five owner-carried criteria (BHV-11, VIS-10, VIS-02, DEF-02, BHV-05) were not reopened because this turn changed no logo mark, panel width or Mission Control typography. Still for independent review, honestly: BHV-20, BHV-31, BHV-32, BHV-33, BHV-34, BHV-35, VIS-14, VIS-16, VIS-19, VIS-20, MOB-10, MOB-11 and ACC-13. The reviewer must independently re-run F7/F8 and complete the remaining visual/browser matrix; no reviewer result was edited by this turn.",
     "accepted_commit": null,
     "accepted_at": null,
     "direction_docs": [
@@ -79,7 +83,7 @@
       "UNIVERSE_DRAFT_RIG.html"
     ],
     "visual_reference_dir": "docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)",
-    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-codex-remediation-6-to-devan-needs-capture.md",
+    "handoff": "docs/phase10-handoffs/2026-07-30-section-11-codex-remediation-7-to-claude-review.md",
     "note": "Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for this section: UNIVERSE_IDEAS_5.md (legibility) -> UNIVERSE_IDEAS_4.md (the draft rig) -> OWNER_FEEDBACK_LEDGER.md -> the two owner-reviewed prototypes UNIVERSE_LEGIBILITY_MOCK.html and UNIVERSE_DRAFT_RIG.html -> PHASE10.md §11. main is GREEN at this section start: npm test 527/527 across 99 files and npm run build exit 0, both re-run by the accept turn at dbdeb39. §9's inherited red is closed and no exception is inherited. §9's testing prohibition carries forward: expect(source).toContain(...) is not valid coverage for rendered behaviour. Two owner observations remain carried unclosed from §8: D1 (unreproduced green-trail report - do not change colour logic until a contradicting ticker is named, then treat as severe) and D2 (the website is still relatively confusing). §11 runs under single_provider_mode: its compensating controls are mandatory, and its must_wait_for_codex list binds - the privacy boundary, the financial math core, and any gate weakening or exception.",
     "carried_from_section_10": {
       "rule": "Six §10 criteria were carried by owner decision on 2026-07-29, not closed. Every one MUST appear in §11 acceptance with the measurement below attached, and §11 must re-run the named verifier and record the result. None may be closed by assertion.",
@@ -258,34 +262,34 @@
       "note": "Universe colour, material, and command structure. One implementation round, five review rounds, four remediation rounds, an owner bounded-triage rule, an owner triage approval and two owner decisions. The authoritative review (section-10-review-5.md) records FAIL, not pass: 71 of 77 criteria pass and six are carried to §11 unclosed (TST-03, VIS-04, DEF-02, VIS-02, BHV-05, BLD-04), each recorded in the ledger as carried_by_owner with its failing measurement attached. Accepted at 3d85341 by explicit owner decision (docs/phase10-handoffs/2026-07-29-section-10-devan-to-claude-lead-accept.md), which rests on direct owner observation contradicting two instruments: the owner reports NBIS trail brightness matching its neighbours where the verifier reports red 93 against a model 179, and reports he cannot see any planet or mark at all because the inspector panel occludes them — the same 96.8-100% band occlusion that makes the chirality verifier unable to measure what it samples. NO owner exception was recorded and NO gate, threshold, verifier or sample point was weakened, redefined or baseline-subtracted; the six criteria are carried forward and must appear in §11 acceptance. Verified independently at acceptance rather than assumed: git diff --name-only 3d85341 HEAD -- src/ public/ package.json package-lock.json is empty, so the accepted implementation is byte-identical to HEAD, and npm test (527/527 across 99 files) plus npm run build both pass at HEAD. §9's inherited red is closed by this section: totalBytes 22,803,051 against §10's raised 30 MB ceiling and minimum luminanceStdDev 0.106628 against the 0.1 floor. Implemented by codex/gpt-5 and reviewed by claude-code/opus-5 across two providers — full cross-model independence, so single_provider_mode is false. See docs/phase10-workflow/reviews/section-10-accepted.md, section-10-review.md through section-10-review-5.md, and docs/phase10-workflow/SECTION_10_TRIAGE.md."
     }
   ],
-  "prev_actor_commit": "c81ef2a28b4e0d3a184aef7bdfbff094d882d6b1",
-  "prev_actor_commit_note": "c81ef2a28b4e0d3a184aef7bdfbff094d882d6b1 was HEAD at the start of this resumed remediation turn for §11. Recorded by codex/gpt-5.",
+  "prev_actor_commit": "b51efab2b9af64146da7d5d0ecb31d654f7bf81d",
+  "prev_actor_commit_note": "b51efab2b9af64146da7d5d0ecb31d654f7bf81d was HEAD at the start of this resumed camera-evidence remediation turn for §11. Recorded by codex/gpt-5.",
   "last_green_commit": "f271fc77e73d425f8f6d6baa507b021aac257a0c",
   "last_green_commit_note_2": "Moved from 3d1882a to §10's accepted commit 3d85341. Verified at acceptance rather than assumed: npm test 527/527 across 99 files and npm run build exit 0 were both re-run by this turn at HEAD dbdeb39, whose src/, public/, package.json and package-lock.json are byte-identical to 3d85341. §9's documented inherited-red exception is discharged - the two planet-textures.test.ts assertions that left main red now pass against §10's raised 30 MB ceiling (totalBytes 22,803,051) and the 0.1 luminanceStdDev floor (minimum 0.106628, CBRS).",
   "production_code_changed_this_turn": false,
-  "production_code_note": "This remediation turn changed no application source, public asset, package manifest, route, privacy boundary, financial math core, gate, threshold, fixture, or owner-confirmed trail geometry. It completed the owner-authorised temporal per-holding verifier and aligned the §11 spec/implementer ledger with Devan's July 29 decision. Recorded by codex/gpt-5.",
+  "production_code_note": "This resumed remediation turn changed no application source, public asset, package manifest, route, privacy boundary, financial math core, gate, threshold, fixture, renderer, or owner-confirmed trail geometry. It used the unattended production camera to close the F7/TST-03 and F8/VIS-04 implementer evidence gap and routed the unchanged candidate to independent review. Recorded by codex/gpt-5.",
   "verification": {
     "tests": {
       "command": "npm test",
       "status": "pass",
-      "summary": "Temporal-sampler remediation run: 106 test files passed; 549 tests passed; zero failures or skips.",
-      "finished_at": "2026-07-30T02:24:26Z"
+      "summary": "Resumed camera-evidence remediation run: 106 test files passed; 549 tests passed; zero failures or skips.",
+      "finished_at": "2026-07-30T03:27:47Z"
     },
     "build": {
       "command": "npm run build",
       "status": "pass",
-      "summary": "Temporal-sampler remediation run: Next.js 16.2.11 production build exited 0; TypeScript clean; 18/18 static pages; /share smoke passed.",
-      "finished_at": "2026-07-30T02:24:26Z"
+      "summary": "Resumed camera-evidence remediation run: Next.js 16.2.11 production build exited 0; TypeScript clean; 18/18 static pages; /share smoke passed.",
+      "finished_at": "2026-07-30T03:27:56Z"
     },
     "live_evidence": {
-      "command": "npm run build && npm run start; then PHASE10_BASE_URL=http://127.0.0.1:3000/share node docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs",
-      "status": "blocked",
-      "summary": "NEEDS-CAPTURE. The owner-authorised temporal verifier is implemented, syntax-valid, and structurally accepted, but this managed CLI denied normal multi-process Chromium at MachPortRendezvous. Its permitted single-process launch rendered the tested semantic no-WebGL fallback with canvasCount=0 and sceneTickerCount=0, retained in raw-temporal-sampler-readiness-failure.json/png. No TST-03 or VIS-04 pass is claimed. Devan must run the exact normal-Terminal command and read the final machine-readable line.",
-      "finished_at": "2026-07-30T02:24:26Z"
+      "command": "unattended camera request s11f7r7: npm run phase10:evidence -- 11",
+      "status": "pass",
+      "summary": "F7/TST-03 and F8/VIS-04 implementer evidence passed against the production WebGL view. All eight fixture holdings were captured at naturally unoccluded phases; ASML sampled exact #b3241d at deltaE 0 with 2.157px planet clearance. Every unchanged deltaE, hue, chroma, ordering, fixture and 18-30 degree arc clause held. The camera also reconfirmed BLD-04 at 0ms maximum across five fresh 1440x900 CPU-2x contexts and captured 10/10 declared route frames.",
+      "finished_at": "2026-07-30T03:24:36Z"
     }
   },
   "stop_reason": null,
-  "updated_at": "2026-07-30T02:26:40Z",
+  "updated_at": "2026-07-30T03:28:12Z",
   "legacy": {
     "schema_version": 1,
     "phase": 10,

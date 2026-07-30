@@ -70,7 +70,14 @@ NEWS headlines — each must be a real anchor to the article (FB-10)
 
 ![news-links](captures/news-links.png)
 
+### temporal-trail-samples
+
+Eight naturally unoccluded trail phases — TST-03 colour gates and VIS-04
+direction/magnitude encoding at the owner-confirmed 18–30° arc (FB-03)
+
+![temporal-trail-samples](pixel-samples/temporal-trail-samples.png)
+
 ---
 
-10/10 captured.
+11/11 captured.
 Complete.
