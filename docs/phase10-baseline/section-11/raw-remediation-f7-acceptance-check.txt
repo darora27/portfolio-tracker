@@ -1,0 +1,5 @@
+
+> portfolio-tracker@0.1.0 phase10:acceptance
+> node scripts/phase10-acceptance.mjs check docs/phase10-workflow/acceptance/section-11.json --require implementer
+
+docs/phase10-workflow/acceptance/section-11.json is valid for implementer.

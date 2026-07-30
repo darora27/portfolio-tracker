@@ -1,0 +1,90 @@
+{
+  "criterion": "TST-03",
+  "candidate_sha": "f271fc77e73d425f8f6d6baa507b021aac257a0c",
+  "kind": "non-live geometry and committed-pixel diagnosis",
+  "implemented_arc_band_degrees": {
+    "minimum": 18,
+    "maximum": 30,
+    "source": "src/lib/observatory/scene-model.ts",
+    "owner_record": "OWNER_FEEDBACK_LEDGER.md FB-03",
+    "owner_verdict": "trails look fine."
+  },
+  "routed_finding_assumption": {
+    "minimum": 26,
+    "maximum": 46,
+    "sources": [
+      "PHASE10_STATE.json section.findings F7/F8",
+      "docs/phase10-workflow/acceptance/section-11.json VIS-04",
+      "docs/phase10-workflow/reviews/section-11-review-3.md"
+    ],
+    "matches_candidate": false
+  },
+  "prior_live_sample": {
+    "evidence": "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
+    "ticker": "ASML",
+    "weekly_return": -0.1427157736449879,
+    "arc_degrees": 30,
+    "sample_fraction": 0.62,
+    "sample_angle_degrees": 18.6,
+    "sample": {
+      "x": 823.2217798084996,
+      "y": 306.4665963223913,
+      "expected": "#b3241d",
+      "sampled": "#504b83",
+      "delta_e": 81.622
+    },
+    "planet_radius_px": {
+      "value": 31.058224955171227,
+      "source": "docs/phase10-baseline/section-11/raw-review-3-audit.json"
+    }
+  },
+  "renderer_model_reconstruction": {
+    "method": "Rebuilt the 1440x900 overview camera and current eight-holding payload with buildOverviewSceneModel, then searched orbital phase in 0.01 degree increments for the old DOM sample coordinate.",
+    "matched_orbit_rotation_degrees": 4.58,
+    "old_coordinate_reproduction": {
+      "x": 823.4311054254437,
+      "y": 306.55037918235644,
+      "error_px": 0.22547013445897476
+    },
+    "planet": {
+      "center_x": 823.731376301474,
+      "center_y": 291.4839237050336,
+      "radius_px": 31.17232283983833
+    },
+    "furthest_in_ribbon_candidate": {
+      "fraction": 0.96,
+      "angle_degrees": 28.8,
+      "x": 819.7794894594185,
+      "y": 315.22548319003096,
+      "clearance_from_planet_edge_px": -7.104106113373529,
+      "result": "still occluded by the planet"
+    }
+  },
+  "committed_pixel_search": {
+    "image": "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png",
+    "asml_region": {
+      "x": [650, 1000],
+      "y": [180, 420],
+      "rgb_distance_from_expected_less_than_12_count": 0
+    },
+    "whole_frame_exact_expected_pixels": {
+      "rgb_distance_less_than_3_count": 30,
+      "bounds": {
+        "min_x": 240,
+        "max_x": 1151,
+        "min_y": 462,
+        "max_y": 650
+      },
+      "interpretation": "The expected saturated loss-red exists only on the visible INTC/CBRS ribbons, not near ASML. Repointing ASML at those pixels would not sample ASML."
+    }
+  },
+  "conclusion": {
+    "sampler_only_fix_available": false,
+    "reason": "At the owner-confirmed 18-30 degree band, ASML has no visible ribbon pixel in the graded frame. Moving the coordinate within the current ribbon remains behind the planet; sampling another holding would be false evidence.",
+    "forbidden_or_owner_gated_alternatives": [
+      "Re-lengthen the arc, contrary to FB-03 and the F7 prohibition.",
+      "Draw the trail through or over the planet, changing owner-confirmed pixels.",
+      "Change the unmodified verifier to sample each holding at a naturally visible orbital phase."
+    ]
+  }
+}

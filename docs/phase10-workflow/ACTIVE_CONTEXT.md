@@ -13,10 +13,10 @@ them.
 - Managed range: §2–§18
 - Stage: `remediate`
 - Role: `codex_implementation`
-- Status: `ready`
-- Next actor: `codex`
+- Status: `blocked`
+- Next actor: `devan`
 - Expected actor for this stage: `codex`
-- Stop reason: none
+- Stop reason: owner-decision: F7/TST-03 and F8/VIS-04 assume the current arc band is 26-46 degrees, but the candidate and authoritative FB-03 record use the owner-confirmed 18-30 degree band. At that band ASML's entire ribbon is occluded in the graded frame, so no truthful sampler-only coordinate exists. Re-lengthening, changing rendered depth/geometry, or changing the mandated unmodified single-still verifier each requires Devan's direction. See the current handoff.
 
 The current state is before the
 terminal section. Never infer the terminal section from prose; read
@@ -40,7 +40,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-review-3-to-codex-implementation.md`
+- `docs/phase10-handoffs/2026-07-29-section-11-codex-remediation-5-to-devan-blocked.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -104,7 +104,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `25a94dda91fbe5d5ffa559e83686f890ef15b1266bd5cd33ccbdfceeb3122551`
-- `PHASE10_STATE.json`: `ca4429e0927b05afe55266a4e16fec5525f3e3bd16f90a6c683e329b5621fe11`
+- `PHASE10_STATE.json`: `aa5e26c734c86c34f5e9c45141806b368f1db554262748bcf795e70957ef0a98`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

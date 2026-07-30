@@ -940,10 +940,14 @@
       "implementer": {
         "status": "deferred_to_reviewer",
         "evidence": [
-          "docs/phase10-baseline/section-11/raw-non-live-verifier-matrix.json",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "OWNER_FEEDBACK_LEDGER.md",
+          "docs/phase10-baseline/section-11/raw-remediation-f7-geometry.json",
+          "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
+          "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png",
+          "docs/phase10-baseline/section-11/raw-trail-sampler-derivation.md",
+          "docs/phase10-baseline/section-11/raw-remediation-f7-browser-gap.txt"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "Explicit schema non-pass routed to Devan for an accepted-direction decision; a reviewer cannot resolve it without that decision. F7/F8 and this criterion still describe 26-46 degree arcs, but the candidate and newer authoritative FB-03 owner record use 18-30 degrees and close that visual choice on Devan's sentence \"trails look fine.\" Reconstructing the committed ASML frame shows even a 96%-of-ribbon coordinate remains 7.104px inside the planet disc, and the ASML image region contains no pixel near expected #b3241d. A sampler-only fix cannot sample an occluded ribbon; re-lengthening, drawing over the planet, sampling another holding, or changing the mandated unmodified temporal method each requires owner authority. No visual pass is claimed and no gate changed. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
@@ -1352,9 +1356,12 @@
         "evidence": [
           "docs/phase10-baseline/section-11/scripts/sample-live-rgb.mjs",
           "docs/phase10-baseline/section-11/raw-trail-sampler-derivation.md",
-          "docs/phase10-baseline/section-11/raw-browser-runtime-gap.json"
+          "docs/phase10-baseline/section-11/raw-remediation-f7-geometry.json",
+          "docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json",
+          "docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png",
+          "docs/phase10-baseline/section-11/raw-remediation-f7-browser-gap.txt"
         ],
-        "notes": "Live verifier deferred: browser discovery for http://localhost:3000/share returned \"No browser is available\" with available backends []; the Browser skill prohibited a standalone fallback. Non-live evidence is retained, no live artifact is claimed, and Claude must execute the accepted browser/visual verifier."
+        "notes": "Explicit schema non-pass routed to Devan for an accepted-direction decision; a reviewer cannot resolve it without that decision. The routed finding assumes a 26-46 degree arc, while the candidate and newer authoritative FB-03 owner record use the owner-confirmed 18-30 degree band. The retained renderer reconstruction reproduces the old ASML coordinate within 0.226px and shows the furthest in-ribbon candidate still 7.104px inside the projected planet disc. The committed ASML region contains no pixel within RGB distance 12 of expected #b3241d; the only exact expected pixels belong to INTC/CBRS and cannot truthfully be republished as ASML. The unchanged verifier was attempted again, but this sandbox denied Chromium before navigation; that launch failure is retained separately and is not a pixel result. Devan must authorize either temporal per-holding sampling or a new visual geometry target. DeltaE, hue-lock, ordering, fixture, and arc gates are unchanged. Recorded by codex/gpt-5."
       },
       "reviewer": {
         "status": "fail",
