@@ -16,7 +16,8 @@
     "phase10:acceptance": "node scripts/phase10-acceptance.mjs",
     "phase10:workflow:report": "node scripts/phase10-workflow-report.mjs",
     "phase10:workflow:test": "node scripts/phase10-workflow-selftest.mjs && bash scripts/phase10-relay-selftest.sh",
-    "phase10:capture": "node scripts/phase10-capture.mjs"
+    "phase10:capture": "node scripts/phase10-capture.mjs",
+    "phase10:evidence": "bash scripts/phase10-evidence.sh"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.8",
