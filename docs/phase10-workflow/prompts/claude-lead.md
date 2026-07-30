@@ -77,8 +77,14 @@ extension against the owner's real browser.
 
 ## Camera protocol — owner-adopted §8.4, July 29 2026
 
-You cannot launch Chromium yourself. A daemon in a plain Terminal can, and it
-is the only camera you have.
+**Try launching Chromium yourself first.** A Claude Code turn confirmed
+`playwright.chromium.launch` working directly in this sandbox on 2026-07-30
+(§11 review-4) — the older blanket claim that terminal agents cannot was
+generalised from four *Codex* denials and is wrong for you. Attempt the direct
+launch before anything else.
+
+The daemon below is the **fallback** for when that genuinely fails, and the
+only camera a Codex turn has.
 
 **To get pixels — unattended, always `evidence`:**
 

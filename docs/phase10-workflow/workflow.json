@@ -117,7 +117,8 @@
     "review_sitting_path": "REVIEW_SITTING.md",
     "unattended_camera_command": "evidence",
     "unattended_camera_poll_minutes": 12,
-    "unattended_camera_note": "Unattended agents request command:evidence, never capture. phase10:capture requires an already-listening dev server and exits 3 without one, which is always true when nobody is at the machine. phase10:evidence builds, serves, shoots and tears down on its own; the 12-minute window is mostly npm run build."
+    "unattended_camera_note": "Unattended agents request command:evidence, never capture. phase10:capture requires an already-listening dev server and exits 3 without one, which is always true when nobody is at the machine. phase10:evidence builds, serves, shoots and tears down on its own; the 12-minute window is mostly npm run build.",
+    "browser_launch_reality": "Corrected 2026-07-30. Claude Code terminal turns CAN launch Chromium directly (confirmed in §11 review-4 via playwright.chromium.launch on a data: URL) and must attempt that first. Codex CLI turns cannot — four recorded Mach-port denials, all Codex. Opus in Cowork can, via the Chrome extension. The camera daemon is the fallback, not the first move."
   },
   "global_gates": [
     {

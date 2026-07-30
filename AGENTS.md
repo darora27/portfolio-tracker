@@ -55,10 +55,19 @@ taste verdicts.
 
 ### Attended camera — owner-adopted July 29 2026
 
-Terminal agents on this Mac cannot launch Chromium (macOS sandbox, Mach-port
-denial, confirmed four times). **Opus in Cowork mode can** — it drives the
-owner's real Chrome through the extension and has already used it to measure
-the sun-to-ASML gap at ~5px and to confirm ASML carries no brand mark.
+**Who can actually launch a browser here — corrected 2026-07-30.**
+
+| Actor | Can launch Chromium? |
+|---|---|
+| **Claude Code, terminal agent** | **YES.** §11 review-4 confirmed `playwright.chromium.launch` succeeding on a `data:` URL before any other work. **Try a direct launch FIRST.** |
+| Codex CLI, terminal agent | No — macOS Mach-port denial, four recorded instances, all Codex. |
+| Opus in Cowork | Yes, via the Chrome extension against the owner's real browser. |
+
+The earlier blanket claim that "terminal agents on this Mac cannot launch
+Chromium" was written from four Codex denials and wrongly generalised to
+Claude. It cost round trips. A Claude turn that defers a visual criterion
+without first attempting a direct launch is skipping the cheapest option it
+has; the camera daemon is the fallback, not the first move.
 
 - Screenshots Opus takes in Chrome, **saved under
   `docs/phase10-baseline/<section>/attended/` and committed**, are valid
