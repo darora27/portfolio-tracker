@@ -1,11 +1,16 @@
 {
   "genuineLabelFontSize": null,
   "inactiveTab": {
-    "background": "rgba(2, 11, 8, 0.62)",
-    "borderBottom": "rgba(137, 213, 158, 0.15)"
+    "background": "rgba(0, 0, 0, 0)",
+    "borderBottomWidth": "1px",
+    "borderBottomColor": "rgba(213, 186, 140, 0.28)",
+    "borderBottomStyle": "solid"
   },
   "activeTab": {
-    "background": "rgba(34, 23, 8, 0.74)",
-    "borderBottom": "rgba(239, 187, 98, 0.52)"
-  }
+    "background": "rgba(0, 0, 0, 0)",
+    "borderBottomWidth": "2px",
+    "borderBottomColor": "rgb(255, 240, 207)",
+    "borderBottomStyle": "solid"
+  },
+  "activeDiffersFromInactive": true
 }

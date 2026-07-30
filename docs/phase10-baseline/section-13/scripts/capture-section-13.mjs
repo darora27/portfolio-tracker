@@ -183,18 +183,33 @@ async function captureMissionControl(browser) {
   const measurement = await page.evaluate(() => {
     const labelEl = document.querySelector(".radarTimestamp, [class*='radarPairLine'], [class*='railStations'] a");
     const label = labelEl ? getComputedStyle(labelEl).fontSize : null;
-    const inactiveTab = document.querySelector('nav a:not([aria-current="page"])');
-    const activeTab = document.querySelector('nav a[aria-current="page"]');
+    const inactiveTab = document.querySelector('[class*="missionControl"] nav a:not([aria-current="page"])');
+    const activeTab = document.querySelector('[class*="missionControl"] nav a[aria-current="page"]');
     const inactiveStyle = inactiveTab ? getComputedStyle(inactiveTab) : null;
     const activeStyle = activeTab ? getComputedStyle(activeTab) : null;
     return {
       genuineLabelFontSize: label,
       inactiveTab: inactiveStyle
-        ? { background: inactiveStyle.backgroundColor, borderBottom: inactiveStyle.borderBottomColor }
+        ? {
+            background: inactiveStyle.backgroundColor,
+            borderBottomWidth: inactiveStyle.borderBottomWidth,
+            borderBottomColor: inactiveStyle.borderBottomColor,
+            borderBottomStyle: inactiveStyle.borderBottomStyle,
+          }
         : null,
       activeTab: activeStyle
-        ? { background: activeStyle.backgroundColor, borderBottom: activeStyle.borderBottomColor }
+        ? {
+            background: activeStyle.backgroundColor,
+            borderBottomWidth: activeStyle.borderBottomWidth,
+            borderBottomColor: activeStyle.borderBottomColor,
+            borderBottomStyle: activeStyle.borderBottomStyle,
+          }
         : null,
+      activeDiffersFromInactive:
+        activeStyle && inactiveStyle
+          ? activeStyle.borderBottomWidth !== inactiveStyle.borderBottomWidth ||
+            activeStyle.borderBottomColor !== inactiveStyle.borderBottomColor
+          : null,
     };
   });
   results.fb05fb31 = measurement;

@@ -8,8 +8,8 @@
   "rootCauseFinding": "This data snapshot has three holdings (MSFT, INTC, CBRS) whose dayReturn simultaneously exceeds the 12% clamp ceiling, all mapping to the identical brightest ramp stop (#a9ffcf). At that near-white clamp, the trail's own additive 'glow' pass (opacity 0.36, width 9px) sitting atop the 'core' pass (width 3px) at the same screen location brightens the sampled pixel just enough to push deltaE 1-2.5 units past the <=8 gate (consistently 8.25-10.45 across repeated runs and search radii 4/10 -- not sampling noise). This is a pre-existing characteristic of the additive-glow rendering pipeline, unchanged by this section (§11's own baseline shows the same effect at a smaller scale: IBM 7.571, CRM 6.226, both near-clamped). It surfaces here because this specific dataset's real daily returns push three tickers to the same clamped endpoint simultaneously, which the weekly-return dataset in §11/§12a did not. FB-26's own scope explicitly excludes recalibrating the magnitude clamps or widening the arc/ramp, so this is reported rather than worked around.",
   "temporalSampling": {
     "method": "Each holding is sampled at its own naturally unoccluded orbital phase.",
-    "elapsedMs": 151825,
-    "inspectedFrameCount": 138,
+    "elapsedMs": 152037,
+    "inspectedFrameCount": 140,
     "sampleIntervalMs": 350,
     "maximumWaitMs": 150000,
     "minimumPlanetClearancePx": 1,
@@ -35,28 +35,13 @@
     "skippedSameStopPairs": [
       {
         "pair": [
-          "INTC",
-          "MSFT"
-        ],
-        "sharedExpected": "#a9ffcf",
-        "dayReturn": [
-          0.11919882755251598,
-          0.16948327956163256
-        ],
-        "luminance": [
-          0.841945,
-          0.853276
-        ]
-      },
-      {
-        "pair": [
           "MSFT",
           "CBRS"
         ],
         "sharedExpected": "#a9ffcf",
         "dayReturn": [
-          0.16948327956163256,
-          0.19629257925497368
+          0.15506734265376143,
+          0.19883109982879743
         ],
         "luminance": [
           0.853276,
@@ -65,17 +50,17 @@
       },
       {
         "pair": [
-          "IBM",
-          "COST"
+          "COST",
+          "IBM"
         ],
         "sharedExpected": "#ff8c85",
         "dayReturn": [
-          -0.020005299417064082,
-          -0.021446978019157514
+          -0.020389515723335028,
+          -0.020756050167814788
         ],
         "luminance": [
-          0.443051,
-          0.38616
+          0.382914,
+          0.443051
         ]
       }
     ],
@@ -84,11 +69,11 @@
   "samples": [
     {
       "ticker": "ASML",
-      "dayReturn": 0.06513229594567571,
+      "dayReturn": 0.06497107739135477,
       "expected": "#69f09c",
       "publishedSample": {
-        "x": 773.268,
-        "y": 360.04
+        "x": 774.528,
+        "y": 359.559
       },
       "sampledAt": {
         "x": 779,
@@ -100,18 +85,18 @@
       "chroma": 0.412,
       "luminance": 0.5855,
       "hueDistance": 9.857,
-      "minimumPlanetClearancePx": 5.313,
-      "elapsedMs": 37379,
-      "frameIndex": 33,
+      "minimumPlanetClearancePx": 3.783,
+      "elapsedMs": 35436,
+      "frameIndex": 32,
       "gateStatus": "fail"
     },
     {
       "ticker": "GOOG",
-      "dayReturn": -0.004824874910650423,
+      "dayReturn": -0.00619490111984744,
       "expected": "#ff9a93",
       "publishedSample": {
-        "x": 597.621,
-        "y": 289.016
+        "x": 597.872,
+        "y": 288.828
       },
       "sampledAt": {
         "x": 608,
@@ -123,41 +108,41 @@
       "chroma": 0.369,
       "luminance": 0.50216,
       "hueDistance": 2.745,
-      "minimumPlanetClearancePx": 16.397,
-      "elapsedMs": 26093,
-      "frameIndex": 23,
+      "minimumPlanetClearancePx": 16.283,
+      "elapsedMs": 24638,
+      "frameIndex": 22,
       "gateStatus": "pass"
     },
     {
       "ticker": "COST",
-      "dayReturn": -0.021446978019157514,
+      "dayReturn": -0.020389515723335028,
       "expected": "#ff8c85",
       "publishedSample": {
-        "x": 862.795,
-        "y": 431.385
+        "x": 877.631,
+        "y": 425.701
       },
       "sampledAt": {
-        "x": 859,
-        "y": 430
+        "x": 873,
+        "y": 425
       },
-      "sampled": "#ea8e88",
-      "deltaE": 10.156,
-      "hue": 3.673,
-      "chroma": 0.384,
-      "luminance": 0.38616,
-      "hueDistance": 0.673,
-      "minimumPlanetClearancePx": 31.318,
-      "elapsedMs": 40670,
-      "frameIndex": 36,
+      "sampled": "#ea8d87",
+      "deltaE": 9.749,
+      "hue": 3.636,
+      "chroma": 0.388,
+      "luminance": 0.382914,
+      "hueDistance": 0.636,
+      "minimumPlanetClearancePx": 29.316,
+      "elapsedMs": 44080,
+      "frameIndex": 40,
       "gateStatus": "fail"
     },
     {
       "ticker": "MSFT",
-      "dayReturn": 0.16948327956163256,
+      "dayReturn": 0.15506734265376143,
       "expected": "#a9ffcf",
       "publishedSample": {
-        "x": 618.072,
-        "y": 230.515
+        "x": 617.078,
+        "y": 230.658
       },
       "sampledAt": {
         "x": 621,
@@ -169,41 +154,41 @@
       "chroma": 0.275,
       "luminance": 0.853276,
       "hueDistance": 6.143,
-      "minimumPlanetClearancePx": 62.774,
-      "elapsedMs": 108062,
+      "minimumPlanetClearancePx": 61.806,
+      "elapsedMs": 106325,
       "frameIndex": 98,
       "gateStatus": "fail"
     },
     {
       "ticker": "INTC",
-      "dayReturn": 0.11919882755251598,
-      "expected": "#a9ffcf",
+      "dayReturn": 0.11297020029311189,
+      "expected": "#a0fdc8",
       "publishedSample": {
-        "x": 544.118,
-        "y": 228.691
+        "x": 585.02,
+        "y": 219.114
       },
       "sampledAt": {
-        "x": 551,
-        "y": 225
+        "x": 577,
+        "y": 219
       },
-      "sampled": "#b8fbd9",
-      "deltaE": 9.695,
-      "hue": 149.552,
-      "chroma": 0.263,
-      "luminance": 0.841945,
-      "hueDistance": 6.552,
-      "minimumPlanetClearancePx": 26.576,
-      "elapsedMs": 150749,
-      "frameIndex": 137,
+      "sampled": "#b0fbd3",
+      "deltaE": 9.071,
+      "hue": 148,
+      "chroma": 0.294,
+      "luminance": 0.829276,
+      "hueDistance": 5,
+      "minimumPlanetClearancePx": 69.935,
+      "elapsedMs": 32174,
+      "frameIndex": 29,
       "gateStatus": "fail"
     },
     {
       "ticker": "IBM",
-      "dayReturn": -0.020005299417064082,
+      "dayReturn": -0.020756050167814788,
       "expected": "#ff8c85",
       "publishedSample": {
-        "x": 941.683,
-        "y": 223.69
+        "x": 945.073,
+        "y": 224.766
       },
       "sampledAt": {
         "x": 939,
@@ -215,18 +200,18 @@
       "chroma": 0.424,
       "luminance": 0.443051,
       "hueDistance": 0.889,
-      "minimumPlanetClearancePx": 49.416,
-      "elapsedMs": 92765,
-      "frameIndex": 84,
+      "minimumPlanetClearancePx": 45.939,
+      "elapsedMs": 89326,
+      "frameIndex": 82,
       "gateStatus": "pass"
     },
     {
       "ticker": "CBRS",
-      "dayReturn": 0.19629257925497368,
+      "dayReturn": 0.19883109982879743,
       "expected": "#a9ffcf",
       "publishedSample": {
-        "x": 923.409,
-        "y": 201.626
+        "x": 924.671,
+        "y": 201.926
       },
       "sampledAt": {
         "x": 915,
@@ -238,32 +223,32 @@
       "chroma": 0.275,
       "luminance": 0.845238,
       "hueDistance": 6.143,
-      "minimumPlanetClearancePx": 100.835,
-      "elapsedMs": 146357,
+      "minimumPlanetClearancePx": 99.338,
+      "elapsedMs": 144367,
       "frameIndex": 133,
       "gateStatus": "fail"
     },
     {
       "ticker": "CRM",
-      "dayReturn": -0.04379445801040449,
-      "expected": "#ff7770",
+      "dayReturn": -0.04071557490179423,
+      "expected": "#ff7872",
       "publishedSample": {
-        "x": 1007.721,
-        "y": 208.552
+        "x": 1029.98,
+        "y": 216.171
       },
       "sampledAt": {
-        "x": 999,
-        "y": 204
+        "x": 1029,
+        "y": 214
       },
-      "sampled": "#fb827b",
-      "deltaE": 7.284,
-      "hue": 3.281,
-      "chroma": 0.502,
-      "luminance": 0.379046,
-      "hueDistance": 0.281,
-      "minimumPlanetClearancePx": 65.547,
-      "elapsedMs": 120154,
-      "frameIndex": 109,
+      "sampled": "#f78079",
+      "deltaE": 7.079,
+      "hue": 3.333,
+      "chroma": 0.494,
+      "luminance": 0.36593,
+      "hueDistance": 0.333,
+      "minimumPlanetClearancePx": 71.542,
+      "elapsedMs": 120392,
+      "frameIndex": 111,
       "gateStatus": "pass"
     }
   ],

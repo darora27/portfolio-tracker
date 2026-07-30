@@ -888,7 +888,7 @@
   font-weight: 600;
 }
 
-.missionControl nav a[aria-current="page"] {
+.missionControl .missionStrip nav a[aria-current="page"] {
   color: var(--universe-cabinet-cream);
   background: none;
   border-bottom: 2px solid var(--universe-cabinet-cream);
