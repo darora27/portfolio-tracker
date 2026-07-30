@@ -18,6 +18,40 @@ govern within that boundary.
 
 ---
 
+
+## 0.1 Owner ledger board — post-sitting, 2026-07-30
+
+Rule 2 requires every open/designed row to be accounted for here. §12a's
+mechanical work is complete and at `owner-sitting`; the thirteen rows opened by
+Devan's sitting feedback are **all scheduled §12b**, none deferred.
+
+| Row | Disposition |
+|---|---|
+| FB-22 yellow haze above the sun | scheduled §12b |
+| FB-23 PORTFOLIO % floating loose in the orbits | scheduled §12b |
+| FB-24 moons do nothing when clicked | scheduled §12b |
+| FB-25 planet panel needs more content | scheduled §12b |
+| **FB-26 trails/direction must encode DAILY, not weekly** | **scheduled §12b, early** — core encoding change; TST-03 and VIS-04 key off the same field and move with it |
+| FB-27 HOLDINGS shows only the 8 planet tickers | scheduled §12b |
+| **FB-28 Mission Control content rework** | **scheduled §12b — BLOCKED ON FB-34** |
+| FB-29 NEWS demoted from a main component | scheduled §12b, folded into FB-28 |
+| FB-30 TRADES / "BOOK impact" unexplained | scheduled §12b |
+| FB-31 orange tabs removed | scheduled §12b |
+| FB-32 top-right information too small or unnecessary | scheduled §12b |
+| FB-33 CORRELATION and EARNINGS do not earn their place | scheduled §12b, folded into FB-28 |
+| **FB-34 Fable content audit** | **scheduled §12b, FIRST — blocks FB-28** |
+
+Carried open from before the sitting and also §12b: FB-01 (one more nudge,
+proportions confirmed), FB-02 background, FB-05 fonts (6th), FB-13 Chart Room
+(3rd), FB-17 panel width live-vs-capture gap. FB-12 DRAFT rig is **parked by
+owner**. FB-11 is superseded by FB-33.
+
+**Ordering constraint.** FB-34 is an owner-requested Fable consult and it
+blocks FB-28. Nothing in the Mission Control content rework is designed before
+it returns. FB-26 and the small defect rows do not depend on it and can
+proceed.
+
+
 ## 0. What this section is for
 
 §11 made the universe readable in the panel and Mission Control's structure.
