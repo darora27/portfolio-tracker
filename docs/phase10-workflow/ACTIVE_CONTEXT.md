@@ -9,9 +9,9 @@ them.
 ## Live route
 
 - Phase: 10
-- Current section: **§13 — Universe fixes from the July 30 owner sitting**
+- Current section: **§14 — The Chart Room — individual stock analytics**
 - Managed range: §2–§18
-- Stage: `review`
+- Stage: `specify`
 - Role: `claude_lead`
 - Status: `ready`
 - Next actor: `claude`
@@ -34,7 +34,7 @@ Always read:
 
 Then read the current, specifically routed sources:
 
-- `docs/phase10-workflow/specs/section-13.md`
+None recorded.
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -48,15 +48,15 @@ payload:
 
 ## Current section conditions
 
-Universe fixes from the July 30 sitting. Round 3 review: the owner's sample-point-search ruling is implemented correctly and independently re-verified (candidate 33789ee). ASML's residual TST-03/VIS-04 failure is confirmed structural and reproducible across three independent runs (deltaE 9.436 each time); GOOG/IBM/CRM still pass as required. Routed back to Devan with a narrower question than round 2's: the method question is answered, but he explicitly refused 'carrying forward' as a resolution path, so only he can decide whether this confirmed residual failure is acceptable as a documented owner exception. FB-01 (one nudge; proportions blessed, do NOT re-derive), FB-05 (6th report), FB-17 (live-vs-capture gap), FB-02 background, FB-22, FB-23, FB-24, FB-25, FB-31 all pass their criteria; FB-22/FB-31 already closed on committed capture (round 2), the rest stay open on the owner ledger pending his own sentence (taste-oriented closes-when). FB-32 top-right block is named on the board but scheduled §14 (PHASE10.md §13: "dies into the strip in §14"), not actioned here.
+Roadmap title (PHASE10.md §14): 'The Chart Room — individual stock analytics'. Promoted ahead of the Mission Control rework by owner ruling f392a049d4a4a9e49dda1404890d5941b00040ff on 2026-07-30 -- previously this was stage two of a combined §14; it is now its own section because it had slipped four owner reports behind content work that was already wiring up existing components. Authority: UNIVERSE_STOCK_LAB.html (repo root, tracked; the owner's same-day correction confirmed all three copies -- base, _2, _3 -- exist and are byte-identical, md5 2879d448097aa40683f9c33c5bfeaf0c; an earlier ledger note claiming a copy was missing was false). Stage one per PHASE10.md §14: header stat line; the full-scale graph with 7D/30D/SINCE BUY/MAX detents, RETURN/PRICE modes, and VOO SAME PERIOD / BOOK SAME PERIOD / DEPTH / TRADES / COST overlays; the six benches (DISTRIBUTION, VS MARKET, DEPTH, MOVES WITH, CONTRIBUTION & POSITION, THE COMPANY), each keeping its plain-English question. Stage two: a HOLDINGS row click and an ORBITS ring/blip click, plus FULL ANALYSIS ▸. Two things the mock says about itself the build must honour: marked DEMO DATA - ROUND 6 MOCK - NOT LIVE, so every figure comes from real data or is absent; §3 FLIGHT MODEL LIVE is the already-confirmed cursor physics, not new work. Not a rebuild: five of six benches map onto existing components (CorrelationHeatmap, ContributionChart, BetaTable, HoldingRiskTable) -- the layout is new, most of the maths is not. main is GREEN at this section start: npm test 112/112 files, 583/584 tests (1 intentional skip), npm run build exit 0, both re-run independently by the §13 accept turn at HEAD 33789ee (unchanged since). READ BEFORE SPECIFYING: PHASE10_STATE.json's top-level roadmap_numbering_conflict key -- PHASE10.md has a duplicate '## §15.' heading introduced by the same owner commit that created this section; it does not block §14 but must be resolved before whoever specifies the real §15. Also re-check OWNER_FEEDBACK_LEDGER.md's board-debt count against board_required_from_section: 12 before scoping -- several rows (FB-01, FB-05, FB-17, FB-02, FB-23, FB-24, FB-25) remain open pending Devan's own taste sentence.
 
 Open bounded findings:
 
-- {"id":"F3","criterion":"TST-03, VIS-04","risk":"critical","status":"blocked_for_owner_decision","evidence":"docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json; docs/phase10-baseline/section-13/review-scripts-3/out/review3-tst03-vis04.json; docs/phase10-workflow/reviews/section-13-review-3.md","summary":"The owner's ruling (ee7f12b, sampler searches for a valid point) is implemented correctly and independently re-verified: the search walks the exact +/-0.08 fractions specified, every gate is byte-for-byte unchanged, and the three previously-passing tickers (GOOG, IBM, CRM) still pass. ASML's failure is confirmed genuine, structural, and reproducible: three independent runs (the implementer's and two of the reviewer's, against separately built production servers) all found the same best-achievable deltaE of 9.436, against the unweakened <=8 gate -- a stable geometry-determined ceiling, not sampling noise. A new nuance this round: INTC is a marginal/flaky case, passing easily in 2 of 3 independent runs but missing narrowly (8.81 vs the 8.0 gate) in a third -- a real, timing-dependent difference in which live orbital frame the 150s search happens to land on, not a script bug. Practical count: 7/8 passing under normal operation, occasionally 6/8 on an unlucky run, with ASML the one dependable, structurally-explained failure.","required_change":"Not a bounded implementation fix -- the method is correctly implemented and the owner already ruled on it. What remains is narrower: the owner explicitly REFUSED the carried_by_owner path for this row ('That would defer the same broken sampler a third time'), the only mechanism this project has previously used to accept a section with a residual failing critical criterion (see section-10/11 BLD-04). Closing this now requires Devan's own explicit decision on whether a confirmed, reproducible, structurally-explained single-ticker (ASML) residual failure -- after a correctly-implemented, exhaustive search -- can be accepted as a documented, non-generalizing owner exception (distinct in kind from 'carrying forward'), or whether he wants something else. See docs/phase10-workflow/reviews/section-13-review-3.md for full reasoning."}
+None.
 
 Acceptance ledger:
 
-- `docs/phase10-workflow/acceptance/section-13.json`
+- Created by the lead with the section specification.
 
 ## Global gates
 
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `93ca12681fe4f6690969fe2d4b520418c3055c426be912474504286ac2c5597c`
+- `PHASE10_STATE.json`: `80a7ab9578984b7b16bc794dcc034e5e1e75658d899036e25d64bd6c74588926`
 - `PHASE10.md`: `1d6a648ab1528ca8e7a7214268431dcb7563697834282f668f2d82f3f394db3d`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
