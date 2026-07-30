@@ -110,7 +110,7 @@ These hashes make stale generated context mechanically detectable:
 - `docs/phase10-workflow/DESIGN_GATE.md`: `bf5a35b998fc240e58f083da48093444cffd8daabfad450caa09256b255be25c`
 - `docs/phase10-workflow/design-proofs/TEMPLATE.md`: `c50b4b9b94047b9686931b65f4d98133f8cb3a13ccead24fa8d3b9ec536f62f0`
 - `docs/phase10-workflow/PROVIDER_OUTAGE.md`: `8488ee51a7e81dc24c4d17a1dc552a509bec40e0d1ebc9e241a9eb0ff6fdb5af`
-- `docs/phase10-workflow/prompts/claude-lead.md`: `515ce99d4eca269426031b1e1fa5fa54d7a267f33135df1de959974adc1e89c2`
-- `docs/phase10-workflow/prompts/codex-implementation.md`: `6f349233e70f9daa939791c052a415830e021beac82066912884fd39b2cc0493`
+- `docs/phase10-workflow/prompts/claude-lead.md`: `d7a07749153b6c5daee9d8ffcdeec25381f0f5b434be3f2208e8fc06c3830db2`
+- `docs/phase10-workflow/prompts/codex-implementation.md`: `7c8e8071827c657ece471ed684923be041491fae75e0275c3b8b64faf1d5fbec`
 - `docs/phase10-handoffs/TEMPLATE.md`: `c4fec8f8169d5b3e18564c28823002c18dcc119cb0c1271ed1958e94fad705cf`
 - `docs/phase10-workflow/acceptance/README.md`: `3bad4f6fb4e608fc9ba5f996bd3475dab2ee6a2d250c2a57b6f3c8c570e2ce2f`

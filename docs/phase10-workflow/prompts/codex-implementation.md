@@ -50,9 +50,11 @@ each captioned with the criteria and ledger rows it evidences. Cap sections at
 
 ## Attended camera — owner-adopted July 29 2026
 
-Terminal agents on this Mac cannot launch Chromium (macOS sandbox, Mach-port
-denial, confirmed four times). **Opus in Cowork mode can**, via the Chrome
-extension against the owner's real browser.
+**Corrected 2026-07-30.** Claude Code terminal turns **CAN** launch Chromium
+directly — §11 review-4 confirmed `playwright.chromium.launch` on a `data:`
+URL. Codex CLI turns cannot: four Mach-port denials, all Codex. Opus in Cowork
+can, via the Chrome extension. The earlier blanket claim generalised Codex's
+limit to everyone and cost round trips.
 
 - Opus screenshots committed under `docs/phase10-baseline/<section>/attended/`
   are valid capture evidence, equal in standing to harness output.
