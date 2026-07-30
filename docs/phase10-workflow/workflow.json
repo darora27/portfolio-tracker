@@ -114,7 +114,10 @@
     "attended_capture_dir_pattern": "docs/phase10-baseline/section-{N}/attended",
     "attended_capture_note": "Opus-in-Cowork Chrome screenshots committed here are valid capture evidence. Opus measures, never judges taste. parked_owner is for absence only.",
     "parked_owner_rule": "parked_owner is valid ONLY with at least one evidence path under docs/phase10-baseline/section-<current>/. No capture attached means the status is rejected. Any parked_owner blocks section pass and accept exactly the way not_run does. Parked is pixels-attached-judgment-pending; it is never countable.",
-    "review_sitting_path": "REVIEW_SITTING.md"
+    "review_sitting_path": "REVIEW_SITTING.md",
+    "unattended_camera_command": "evidence",
+    "unattended_camera_poll_minutes": 12,
+    "unattended_camera_note": "Unattended agents request command:evidence, never capture. phase10:capture requires an already-listening dev server and exits 3 without one, which is always true when nobody is at the machine. phase10:evidence builds, serves, shoots and tears down on its own; the 12-minute window is mostly npm run build."
   },
   "global_gates": [
     {

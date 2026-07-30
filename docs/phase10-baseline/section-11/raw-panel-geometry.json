@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-07-30T02:33:35.828Z",
+  "capturedAt": "2026-07-30T03:09:16.773Z",
   "route": "http://127.0.0.1:3000/share",
   "measurements": [
     {
@@ -11,20 +11,20 @@
         "height": 900
       },
       "disc": {
-        "centerX": 646.5701614127134,
-        "centerY": 438.14408595309936,
-        "centerFractionX": 0.44900705653660655,
-        "radius": 231.41974580213025,
-        "right": 877.9899072148437
+        "centerX": 678.3224844223353,
+        "centerY": 429.32924255185833,
+        "centerFractionX": 0.4710572808488439,
+        "radius": 213.16395351348692,
+        "right": 891.4864379358222
       },
       "panel": {
         "left": 960,
         "right": 1420,
         "width": 460
       },
-      "gapPx": 82.0100927851563,
+      "gapPx": 68.51356206417779,
       "unoccluded": true,
-      "renderExposure": 1.6902254089356241
+      "renderExposure": 1.6961398965810663
     },
     {
       "shot": "panel-width-520",
@@ -35,20 +35,20 @@
         "height": 900
       },
       "disc": {
-        "centerX": 459.8080073801291,
-        "centerY": 471.20361029414505,
-        "centerFractionX": 0.31931111623620073,
-        "radius": 312.2967877151082,
-        "right": 772.1047950952373
+        "centerX": 457.4667250688635,
+        "centerY": 471.78982780086903,
+        "centerFractionX": 0.3176852257422663,
+        "radius": 312.62519833113396,
+        "right": 770.0919233999975
       },
       "panel": {
         "left": 900,
         "right": 1420,
         "width": 520
       },
-      "gapPx": 127.89520490476275,
+      "gapPx": 129.90807660000246,
       "unoccluded": true,
-      "renderExposure": 1.6736985415971486
+      "renderExposure": 1.6736007809381523
     },
     {
       "shot": "panel-width-580",
@@ -59,20 +59,20 @@
         "height": 900
       },
       "disc": {
-        "centerX": 454.01657699111695,
-        "centerY": 472.74814105152205,
-        "centerFractionX": 0.31528928957716457,
-        "radius": 313.1914061790735,
-        "right": 767.2079831701905
+        "centerX": 457.24792872655473,
+        "centerY": 472.13153126266417,
+        "centerFractionX": 0.3175332838378852,
+        "radius": 312.7045144314537,
+        "right": 769.9524431580085
       },
       "panel": {
         "left": 840,
         "right": 1420,
         "width": 580
       },
-      "gapPx": 72.79201682980954,
+      "gapPx": 70.04755684199154,
       "unoccluded": true,
-      "renderExposure": 1.6734741197897836
+      "renderExposure": 1.6734899489459618
     }
   ]
 }

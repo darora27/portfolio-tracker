@@ -67,12 +67,24 @@ extension against the owner's real browser.
 You cannot launch Chromium yourself. A daemon in a plain Terminal can, and it
 is the only camera you have.
 
-**To get pixels:**
+**To get pixels — unattended, always `evidence`:**
 
 1. Write `.phase10-camera/request.json`:
-   `{"id":"<alphanumeric>","command":"capture"|"evidence","section":"<n>"}`
-2. Poll `.phase10-camera/done-<id>.json` for up to **6 minutes**, inside this
+   `{"id":"<alphanumeric>","command":"evidence","section":"<n>"}`
+2. Poll `.phase10-camera/done-<id>.json` for up to **12 minutes**, inside this
    same turn.
+
+**Never request `"capture"` in an unattended run.** `phase10:capture` assumes
+a dev server is already listening and exits 3 with "Cannot reach
+http://localhost:3000" when one is not — which is always the case when nobody
+is at the machine. `phase10:evidence` is self-contained: it runs the
+production build, starts the server, takes the long-task measurement, runs the
+trail sampler, shoots the captures, and tears the server down again behind an
+EXIT trap. That end-to-end pass is why the poll window is 12 minutes rather
+than 6 — most of it is `npm run build`.
+
+`"capture"` remains correct only when a human is present with `npm run dev`
+already running.
 
 **CAMERA DOWN** — a heartbeat file older than 60s, or a poll timeout. When it
 happens: leave the item `open`, log `CAMERA DOWN`, and **move to the next

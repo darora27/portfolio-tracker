@@ -103,7 +103,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 
 These hashes make stale generated context mechanically detectable:
 
-- `docs/phase10-workflow/workflow.json`: `0daa8455ff33ac3865c2ea0824ac867e46be68a1717f2b0aacb481cfd3660239`
+- `docs/phase10-workflow/workflow.json`: `f769b04c61a2c7b463d6c0d2cf5ee4004fd89db1d15ff36688a3543f225d0ae0`
 - `PHASE10_STATE.json`: `a264c41bf50a1dd6f580b4eb87e25871107ff50f6997c75f148f9dd81a0f402f`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
@@ -111,7 +111,7 @@ These hashes make stale generated context mechanically detectable:
 - `docs/phase10-workflow/DESIGN_GATE.md`: `bf5a35b998fc240e58f083da48093444cffd8daabfad450caa09256b255be25c`
 - `docs/phase10-workflow/design-proofs/TEMPLATE.md`: `c50b4b9b94047b9686931b65f4d98133f8cb3a13ccead24fa8d3b9ec536f62f0`
 - `docs/phase10-workflow/PROVIDER_OUTAGE.md`: `8488ee51a7e81dc24c4d17a1dc552a509bec40e0d1ebc9e241a9eb0ff6fdb5af`
-- `docs/phase10-workflow/prompts/claude-lead.md`: `be0d8894be8e38b90c5ac7cf58e5fb46890efe7b8feca71f46f0fcb0f29bfe8e`
-- `docs/phase10-workflow/prompts/codex-implementation.md`: `404fe4f9c6328a839f9867b023f1f4cd4a272474a24ce72fb1befd791b325b87`
+- `docs/phase10-workflow/prompts/claude-lead.md`: `abf9018af9d2c261b524a00f837f6687442a6302c4ac05cba50ebb53ff5b4bb6`
+- `docs/phase10-workflow/prompts/codex-implementation.md`: `f9878e2472edc8f660d5935fe1a0a58833169428dad8b3033607c3cba7eee8d8`
 - `docs/phase10-handoffs/TEMPLATE.md`: `c4fec8f8169d5b3e18564c28823002c18dcc119cb0c1271ed1958e94fad705cf`
 - `docs/phase10-workflow/acceptance/README.md`: `3bad4f6fb4e608fc9ba5f996bd3475dab2ee6a2d250c2a57b6f3c8c570e2ce2f`
