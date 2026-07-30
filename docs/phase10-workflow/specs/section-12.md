@@ -39,6 +39,7 @@ Devan's sitting feedback are **all scheduled §12b**, none deferred.
 | FB-31 orange tabs removed | scheduled §12b |
 | FB-32 top-right information too small or unnecessary | scheduled §12b |
 | FB-33 CORRELATION and EARNINGS do not earn their place | scheduled §12b, folded into FB-28 |
+| FB-35 pie chart + History tab content in Mission Control | scheduled §12b, with FB-28 — `CompositionDonut`, `CompositionOverTimeChart`, `DailyReturnsChart`, `DrawdownChart` all already exist |
 | **FB-34 Fable content audit** | **scheduled §12b, FIRST — blocks FB-28** |
 
 Carried open from before the sitting and also §12b: FB-01 (one more nudge,
