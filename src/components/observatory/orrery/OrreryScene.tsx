@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, type RefObject } from "react";
 import {
   AdditiveBlending,
   BufferGeometry,
@@ -522,6 +522,7 @@ export default function OrreryScene({
   nextEarningsDays = null,
   tradeComet = null,
   auroraWeeklySeries = [],
+  sunTelemetryRef,
   onHover,
   onSelect,
   onSelectPortfolio,
@@ -543,6 +544,7 @@ export default function OrreryScene({
   nextEarningsDays?: number | null;
   tradeComet?: TradeCometInput | null;
   auroraWeeklySeries?: readonly number[];
+  sunTelemetryRef?: RefObject<HTMLDivElement | null>;
   onHover: (ticker: string | null) => void;
   onSelect: (ticker: string) => void;
   onSelectPortfolio: () => void;
@@ -926,6 +928,42 @@ export default function OrreryScene({
     }
     dockingRing.visible = false;
     scene.add(dockingRing);
+
+    // FB-02 (§13), move 5: one faint ecliptic graticule -- a great-circle
+    // ring with sparse tick marks in the orbital plane. Ambient tier,
+    // decorative, encodes nothing.
+    const graticuleMaterial = new MeshBasicMaterial({
+      color: UNIVERSE_PALETTE.cabinet.ringSlate,
+      transparent: true,
+      opacity: 0.1,
+      depthWrite: false,
+      fog: false,
+      side: 2,
+    });
+    const graticule = new Group();
+    const graticuleRingGeometry = new RingGeometry(
+      outerRadius * 1.62,
+      outerRadius * 1.63,
+      128,
+    );
+    graticuleRingGeometry.rotateX(-Math.PI / 2);
+    graticule.add(new Mesh(graticuleRingGeometry, graticuleMaterial));
+    const GRATICULE_TICK_COUNT = 12;
+    const graticuleTickGeometries: RingGeometry[] = [];
+    for (let index = 0; index < GRATICULE_TICK_COUNT; index += 1) {
+      const tickGeometry = new RingGeometry(
+        outerRadius * 1.6,
+        outerRadius * 1.66,
+        4,
+        1,
+        index * ((Math.PI * 2) / GRATICULE_TICK_COUNT),
+        0.03,
+      );
+      tickGeometry.rotateX(-Math.PI / 2);
+      graticuleTickGeometries.push(tickGeometry);
+      graticule.add(new Mesh(tickGeometry, graticuleMaterial));
+    }
+    scene.add(graticule);
     mount.dataset.sceneConstructionStage = "sun";
     await nextConstructionFrame();
 
@@ -1106,8 +1144,8 @@ export default function OrreryScene({
       label.className = styles.sceneLabel;
       label.textContent = holding.ticker;
       label.dataset.sceneTicker = holding.ticker;
-      label.dataset.weeklyReturn =
-        holding.weeklyReturn === null ? "null" : String(holding.weeklyReturn);
+      label.dataset.dailyReturn =
+        holding.dayReturn === null ? "null" : String(holding.dayReturn);
       label.dataset.trailColor = trailDescriptor.color;
       label.style.setProperty(
         "--planet-label-color",
@@ -1368,6 +1406,28 @@ export default function OrreryScene({
     const loadTextures = async () => {
       await nextTextureFrame();
       await nextTextureFrame();
+      // FB-02 (§13), move 3: the nebula's flat RingGeometry colour is
+      // replaced by one offline-generated filament texture
+      // (scripts/generate-nebula-texture.mjs). The texture ships as a flat
+      // white RGB with a filament-density alpha channel, so the existing
+      // gold/ember material.color tint (nebulaForHealth) still carries the
+      // same sign->hue encoding -- only the flat fill becomes textured.
+      try {
+        const filament = await loadTexture(
+          "/textures/nebula/filament.ktx2",
+          "base",
+        );
+        if (!textureCancelled) {
+          filament.colorSpace = SRGBColorSpace;
+          loadedTextures.push(filament);
+          nebulaMaterial.map = filament;
+          nebulaMaterial.needsUpdate = true;
+        } else {
+          filament.dispose();
+        }
+      } catch {
+        // Falls back to the flat colour fill if the texture fails to load.
+      }
       for (const planet of planetRuntimes) {
         const ticker = planet.holding.ticker.toLowerCase();
         const uniforms = planet.mesh.material.uniforms;
@@ -2040,12 +2100,18 @@ export default function OrreryScene({
       const canvasRect = renderer.domElement.getBoundingClientRect();
       sun.getWorldPosition(projected);
       projected.project(camera);
-      mount.dataset.evidenceSunX = String(
-        (projected.x * 0.5 + 0.5) * canvasRect.width,
-      );
-      mount.dataset.evidenceSunY = String(
-        (-projected.y * 0.5 + 0.5) * canvasRect.height,
-      );
+      const sunScreenX = (projected.x * 0.5 + 0.5) * canvasRect.width;
+      const sunScreenY = (-projected.y * 0.5 + 0.5) * canvasRect.height;
+      mount.dataset.evidenceSunX = String(sunScreenX);
+      mount.dataset.evidenceSunY = String(sunScreenY);
+      // FB-23 (§13): the PORTFOLIO chip tracks the sun's actual per-frame
+      // projected screen position, the same technique planet labels use,
+      // instead of a static frame-center CSS position.
+      const sunTelemetryElement = sunTelemetryRef?.current;
+      if (sunTelemetryElement) {
+        sunTelemetryElement.style.left = `${sunScreenX}px`;
+        sunTelemetryElement.style.top = `${sunScreenY}px`;
+      }
       const firstMoon = moonRuntimes[0];
       if (firstMoon) {
         firstMoon.mesh.getWorldPosition(projected);
@@ -2223,6 +2289,9 @@ export default function OrreryScene({
         if (child instanceof Mesh) child.geometry.dispose();
       });
       dockingRingMaterial.dispose();
+      graticuleRingGeometry.dispose();
+      graticuleTickGeometries.forEach((geometry) => geometry.dispose());
+      graticuleMaterial.dispose();
       rockGeometry.dispose();
       rockMaterial.dispose();
       moonGeometry.dispose();

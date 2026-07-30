@@ -14,7 +14,7 @@
   --type-readout: 24px;
   --type-title: 15px;
   --type-body: 13px;
-  --type-label: 11px;
+  --type-label: 12px;
   --phosphor: #9de7b2;
   --phosphor-dim: #79b98b;
   --amber: var(--universe-glass-gold);
@@ -29,7 +29,7 @@
      evidence variants -- 600/660/720px -- without a shipped default
      change; the .inspector rule below inherits this rather than
      redeclaring it, so the override actually reaches it. */
-  --panel-width: 460px;
+  --panel-width: 600px;
   position: relative;
   min-height: 100svh;
   overflow: hidden;
@@ -74,12 +74,10 @@
   position: absolute;
   z-index: 0;
   inset: -4%;
-  background:
-    radial-gradient(circle, rgba(228, 248, 225, 0.9) 0 1px, transparent 1.4px) 0 0 / 89px 83px,
-    radial-gradient(circle, rgba(157, 231, 178, 0.65) 0 1px, transparent 1.5px) 41px 23px / 137px 131px,
-    radial-gradient(ellipse at 50% 62%, rgba(46, 119, 77, 0.2), transparent 40%),
-    radial-gradient(ellipse at 70% 24%, rgba(114, 72, 28, 0.12), transparent 29%),
-    linear-gradient(150deg, #010504, #04110d 55%, var(--universe-cabinet-void));
+  /* FB-02 (§13), move 1: the repeating dot-grid tile and ellipse washes are
+   * retired -- a performance refund, not a replacement. Only the dark base
+   * gradient and the pointer-parallax transform remain. */
+  background: linear-gradient(150deg, #010504, #04110d 55%, var(--universe-cabinet-void));
   transform: translate3d(
     calc(var(--orrery-pointer-x) * -7px),
     calc(var(--orrery-pointer-y) * -5px),
@@ -96,6 +94,20 @@
   opacity: 0.12;
   background: repeating-linear-gradient(0deg, transparent 0 3px, rgba(157, 231, 178, 0.16) 3px 4px);
   mix-blend-mode: screen;
+}
+
+/* FB-02 (§13), move 4: the TVA register -- a static corner vignette plus
+ * static warm grain, both purely ambient framing (no new encoding). Sits
+ * above the 3D scene, below the scanline/UI chrome. */
+.skyVignette {
+  position: fixed;
+  z-index: 15;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35) 100%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.13  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-repeat: no-repeat, repeat;
 }
 
 .commandBar {
@@ -698,7 +710,7 @@
 
   [data-camera="approach"] .detailBay > span:first-child,
   [data-camera="approach"] .detailBay h2 {
-    font-size: var(--mission-label-size, 11px);
+    font-size: var(--mission-label-size, 12px);
   }
 }
 
@@ -838,12 +850,29 @@
   justify-content: center;
   min-height: 44px;
   padding: 0.45rem 0.75rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hudButton {
   border: 1px solid rgba(235, 210, 165, 0.35);
   border-bottom: 0;
   color: var(--universe-cabinet-window-word);
   background: #3b1f12;
-  text-decoration: none;
-  white-space: nowrap;
+}
+
+/* FB-31 (§13): the base tab rules -- apply whenever no stripVariant query
+ * param is present, i.e. always in production -- now match the
+ * already-owner-CONFIRMED variant B boxless / cream-underline treatment
+ * ("B is fine"). Scope is narrow: only the tab background/border/text
+ * treatment; .missionStrip's own hero/chips row above the tabs is FB-32,
+ * untouched here. */
+.missionControl nav a {
+  border: none;
+  background: none;
+  color: var(--universe-cabinet-window-word);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .missionControl nav a,
@@ -861,7 +890,8 @@
 
 .missionControl nav a[aria-current="page"] {
   color: var(--universe-cabinet-cream);
-  background: #7d3d1d;
+  background: none;
+  border-bottom: 2px solid var(--universe-cabinet-cream);
   text-decoration: none;
 }
 
@@ -1092,7 +1122,7 @@
   left: 0.4rem;
   margin: 0;
   color: var(--universe-glass-cyan);
-  font-size: var(--mission-label-size, 11px);
+  font-size: var(--mission-label-size, 12px);
 }
 
 .missionRail {
@@ -2593,11 +2623,12 @@
 }
 
 /* Holding rail width — FB-17. The owner asked that the rail grow horizontally
-   to the left and choose from real 600 / 660 / 720px captures. It remains
-   right-anchored, so changing this one evidence token cannot push the planet
-   right or alter orbital positions. --panel-width itself is NOT redeclared
-   here -- it inherits from .world (default 460px), so a capture-time inline
-   override on .world actually reaches this rule instead of being shadowed. */
+   to the left and choose from real 600 / 660 / 720px captures; he picked 600,
+   now the default. It remains right-anchored, so changing this one evidence
+   token cannot push the planet right or alter orbital positions.
+   --panel-width itself is NOT redeclared here -- it inherits from .world
+   (default 600px), so a capture-time inline override on .world actually
+   reaches this rule instead of being shadowed. */
 @media (min-width: 1024px) {
   [data-camera="approach"] .inspector {
     /* FB-19: 10rem clears .manualButton's bounding box (top 6.5rem, 44px

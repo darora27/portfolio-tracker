@@ -9,6 +9,7 @@ const holding = {
   weight: 0.21,
   weeklyReturn: 0.02,
   portfolioRelativeReturn: 0.01,
+  contributionPct: 0.008,
   volatilityPct: 0.22,
   betaVsVoo: 1.03,
   dayReturn: -0.012,
@@ -40,6 +41,25 @@ describe("PlanetDetail", () => {
     expect(screen.queryByRole("heading", { name: "NEWS" })).toBeNull();
     expect(screen.getByRole("link", { name: "FULL ANALYSIS ▸" })).toBeTruthy();
     expect(screen.getByRole("link", { name: "◂ BACK TO SYSTEM" })).toBeTruthy();
+  });
+
+  it("FB-25 (§13): shows CONTRIB and VS VOO when populated, omits them when null", () => {
+    const { container, rerender } = render(
+      <PlanetDetail holding={holding} news={[]} basePath="/share" forceNo3d />,
+    );
+    expect(screen.getByText("CONTRIB")).toBeTruthy();
+    expect(screen.getByText("VS VOO")).toBeTruthy();
+    rerender(
+      <PlanetDetail
+        holding={{ ...holding, contributionPct: null, portfolioRelativeReturn: null }}
+        news={[]}
+        basePath="/share"
+        forceNo3d
+      />,
+    );
+    expect(screen.queryByText("CONTRIB")).toBeNull();
+    expect(screen.queryByText("VS VOO")).toBeNull();
+    expect(container.textContent).not.toContain("VS VOO —");
   });
 
   it("omits the 30D window when no return can be computed", () => {

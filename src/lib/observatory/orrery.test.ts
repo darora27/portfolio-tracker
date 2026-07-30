@@ -8,8 +8,8 @@ import {
   ORRERY_PLANET_CLEARANCE,
   ORRERY_PLANET_COUNT,
   ORRERY_SUN_CLEARANCE,
-  angularSpeedForWeeklyReturn,
-  directionForWeeklyReturn,
+  angularSpeedForReturn,
+  directionForReturn,
   healthScalarForPortfolio,
   orbitRadiiForPlanetRadii,
   radiusForWeight,
@@ -31,23 +31,23 @@ describe("Portfolio Orrery encodings", () => {
   });
 
   it("maps positive, negative, flat, and unavailable returns to explicit directions", () => {
-    expect(directionForWeeklyReturn(0.02)).toBe("clockwise");
-    expect(directionForWeeklyReturn(-0.02)).toBe("counterclockwise");
-    expect(directionForWeeklyReturn(ORRERY_FLAT_EPSILON)).toBe("neutral");
-    expect(directionForWeeklyReturn(-ORRERY_FLAT_EPSILON)).toBe("neutral");
-    expect(directionForWeeklyReturn(null)).toBe("neutral");
+    expect(directionForReturn(0.02)).toBe("clockwise");
+    expect(directionForReturn(-0.02)).toBe("counterclockwise");
+    expect(directionForReturn(ORRERY_FLAT_EPSILON)).toBe("neutral");
+    expect(directionForReturn(-ORRERY_FLAT_EPSILON)).toBe("neutral");
+    expect(directionForReturn(null)).toBe("neutral");
   });
 
   it("maps absolute return monotonically to a safely clamped angular speed", () => {
     const magnitudes = [0.002, 0.01, 0.03, 0.06, 0.12];
-    const speeds = magnitudes.map(angularSpeedForWeeklyReturn);
+    const speeds = magnitudes.map(angularSpeedForReturn);
     expect(speeds[0]).toBe(ORRERY_MIN_ANGULAR_SPEED);
     expect(speeds.at(-1)).toBe(ORRERY_MAX_ANGULAR_SPEED);
     expect(speeds).toEqual([...speeds].sort((a, b) => a - b));
-    expect(angularSpeedForWeeklyReturn(-0.03)).toBe(angularSpeedForWeeklyReturn(0.03));
-    expect(angularSpeedForWeeklyReturn(0)).toBe(0);
-    expect(angularSpeedForWeeklyReturn(null)).toBe(0);
-    expect(angularSpeedForWeeklyReturn(0.5)).toBe(ORRERY_MAX_ANGULAR_SPEED);
+    expect(angularSpeedForReturn(-0.03)).toBe(angularSpeedForReturn(0.03));
+    expect(angularSpeedForReturn(0)).toBe(0);
+    expect(angularSpeedForReturn(null)).toBe(0);
+    expect(angularSpeedForReturn(0.5)).toBe(ORRERY_MAX_ANGULAR_SPEED);
   });
 
   it("computes the trailing seven-calendar-day holding return", () => {
@@ -71,9 +71,9 @@ describe("Portfolio Orrery encodings", () => {
     expect(orbitRadii[0]).toBe(ORRERY_SUN_CLEARANCE);
     expect(orbitRadii).toEqual([...orbitRadii].sort((a, b) => a - b));
     for (let index = 0; index < orbitRadii.length - 1; index += 1) {
-      // FB-01 (§12a): gap formula 1.6x(ri+ri+1) -> 1.75x(ri+ri+1)+0.55.
+      // FB-01 (§13): gap formula 1.75x(ri+ri+1)+0.55 -> 1.82x(ri+ri+1)+0.55.
       expect(orbitRadii[index + 1] - orbitRadii[index]).toBeCloseTo(
-        1.75 * (planetRadii[index] + planetRadii[index + 1]) + 0.55,
+        1.82 * (planetRadii[index] + planetRadii[index + 1]) + 0.55,
         12,
       );
     }

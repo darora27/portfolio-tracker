@@ -66,18 +66,18 @@ export function radiusForWeight(weight: number): number {
   );
 }
 
-export function directionForWeeklyReturn(
-  weeklyReturn: number | null,
+export function directionForReturn(
+  returnValue: number | null,
 ): OrreryDirection {
-  if (weeklyReturn === null || Math.abs(weeklyReturn) <= ORRERY_FLAT_EPSILON) {
+  if (returnValue === null || Math.abs(returnValue) <= ORRERY_FLAT_EPSILON) {
     return "neutral";
   }
-  return weeklyReturn > 0 ? "clockwise" : "counterclockwise";
+  return returnValue > 0 ? "clockwise" : "counterclockwise";
 }
 
-export function angularSpeedForWeeklyReturn(weeklyReturn: number | null): number {
-  if (directionForWeeklyReturn(weeklyReturn) === "neutral") return 0;
-  const magnitude = Math.abs(weeklyReturn ?? 0);
+export function angularSpeedForReturn(returnValue: number | null): number {
+  if (directionForReturn(returnValue) === "neutral") return 0;
+  const magnitude = Math.abs(returnValue ?? 0);
   const clamped = Math.min(MAX_SPEED_RETURN, Math.max(MIN_SPEED_RETURN, magnitude));
   if (clamped === MAX_SPEED_RETURN) return ORRERY_MAX_ANGULAR_SPEED;
   const normalized = (clamped - MIN_SPEED_RETURN) / (MAX_SPEED_RETURN - MIN_SPEED_RETURN);
@@ -104,14 +104,14 @@ export function orbitRadiiForPlanetRadii(
       orbitRadii.push(Math.max(ORRERY_SUN_CLEARANCE, firstOrbitRadius));
       continue;
     }
-    // FB-01 (§12a): owner-fixed gap formula, UNIVERSE_AUDIT.md §5.1 --
-    // 1.6x(ri+ri+1) -> 1.75x(ri+ri+1)+0.55. The added flat 0.55 term is what
-    // widens the minimum edge-to-edge clearance at closest approach; the
+    // FB-01 (§13): owner-fixed gap formula, one more small step --
+    // 1.75x(ri+ri+1)+0.55 -> 1.82x(ri+ri+1)+0.55. The added flat 0.55 term is
+    // what widens the minimum edge-to-edge clearance at closest approach; the
     // multiplier alone (as before) scales with disc size but never
     // guarantees an absolute floor between two small adjacent planets.
     orbitRadii.push(
       orbitRadii[index - 1] +
-        1.75 * (planetRadii[index - 1] + radius) +
+        1.82 * (planetRadii[index - 1] + radius) +
         0.55,
     );
   }

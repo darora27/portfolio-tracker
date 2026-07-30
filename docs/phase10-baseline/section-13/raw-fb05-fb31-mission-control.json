@@ -1,0 +1,11 @@
+{
+  "genuineLabelFontSize": null,
+  "inactiveTab": {
+    "background": "rgba(2, 11, 8, 0.62)",
+    "borderBottom": "rgba(137, 213, 158, 0.15)"
+  },
+  "activeTab": {
+    "background": "rgba(34, 23, 8, 0.74)",
+    "borderBottom": "rgba(239, 187, 98, 0.52)"
+  }
+}

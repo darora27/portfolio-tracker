@@ -27,7 +27,7 @@ import {
 } from "@/lib/observatory/draft-return";
 import type { PublicOrreryHolding } from "@/lib/observatory/orrery";
 import { planetIdentityForTicker } from "@/lib/observatory/planet-identity";
-import { rampForWeekly } from "@/lib/observatory/universe-palette";
+import { rampForReturn } from "@/lib/observatory/universe-palette";
 import { concentrationStatus } from "@/lib/portfolio/concentration-status";
 import styles from "./orrery.module.css";
 
@@ -370,7 +370,7 @@ export function DraftRig({
                         borderColor: counterparty === index
                           ? "var(--universe-glass-scope-hero)"
                           : identity.labelHex,
-                        "--draft-trail": rampForWeekly(holding.weeklyReturn),
+                        "--draft-trail": rampForReturn(holding.weeklyReturn),
                       } as CSSProperties}
                       onPointerDown={(event) => onPointerDown(event, index)}
                       onPointerMove={onPointerMove}

@@ -21,7 +21,7 @@ import {
  * rendered coverage — the rendered check is the capture review's job.
  */
 
-const RAMP_PX = new Set([56, 24, 15, 13, 11]);
+const RAMP_PX = new Set([56, 24, 15, 13, 12]);
 const RAMP_TOKENS = [
   "--type-hero",
   "--type-readout",
@@ -81,11 +81,11 @@ describe("universe type ramp (FB-05)", () => {
   it("keeps the Mission Control layout contract on the ramp", () => {
     expect(MISSION_CONTROL_LAYOUT.dayNumberPx).toBe(56);
     expect(MISSION_CONTROL_LAYOUT.bodyTextPx).toBe(15);
-    expect(MISSION_CONTROL_LAYOUT.bayLabelPx).toBe(11);
+    expect(MISSION_CONTROL_LAYOUT.bayLabelPx).toBe(12);
     expect(MISSION_CONTROL_CSS_PROPERTIES).toMatchObject({
       "--mission-day-size": "56px",
       "--mission-body-size": "15px",
-      "--mission-label-size": "11px",
+      "--mission-label-size": "12px",
     });
   });
 });

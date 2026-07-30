@@ -1,0 +1,75 @@
+{
+  "capturedAt": "2026-07-30T19:28:18.479Z",
+  "constants": {
+    "gapCoefficient": "1.75 -> 1.82",
+    "additiveTerm": 0.55,
+    "overviewBeltSpanPct": "0.80 -> 0.75"
+  },
+  "planets": [
+    {
+      "ticker": "ASML",
+      "x": 801.9462345183049,
+      "y": 332.22400170561804,
+      "radius": 20.81865974003665
+    },
+    {
+      "ticker": "GOOG",
+      "x": 606.9162280008735,
+      "y": 284.9384162000456,
+      "radius": 16.80712103279984
+    },
+    {
+      "ticker": "COST",
+      "x": 752.8710615431542,
+      "y": 453.32630530538114,
+      "radius": 16.258271640436533
+    },
+    {
+      "ticker": "MSFT",
+      "x": 888.9767705073612,
+      "y": 247.34159307177447,
+      "radius": 10.676643229255092
+    },
+    {
+      "ticker": "INTC",
+      "x": 377.1928399087537,
+      "y": 342.52197567846156,
+      "radius": 11.577665113432488
+    },
+    {
+      "ticker": "IBM",
+      "x": 1107.290740577093,
+      "y": 434.15943931150724,
+      "radius": 13.35788365748465
+    },
+    {
+      "ticker": "CBRS",
+      "x": 664.2317790590969,
+      "y": 180.86262296247583,
+      "radius": 8.331223481169957
+    },
+    {
+      "ticker": "CRM",
+      "x": 422.24221781985403,
+      "y": 622.1937836294323,
+      "radius": 16.42747320343446
+    }
+  ],
+  "minimumEdgeToEdgePx": 90.075,
+  "minimumEdgeToEdgeRatioToLargerDiameter": 2.1633,
+  "minimumEdgeToEdgePair": [
+    "ASML",
+    "MSFT"
+  ],
+  "passesFloor": true,
+  "frameMargins": {
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "left": 365.6,
+    "top": 172.5,
+    "right": 319.4,
+    "bottom": 261.4
+  }
+}

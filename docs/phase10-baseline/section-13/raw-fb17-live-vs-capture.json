@@ -1,0 +1,48 @@
+{
+  "capturedAt": "2026-07-30T19:28:56.422Z",
+  "hypothesis": "The approach-camera panel rule is width: min(var(--panel-width), calc(100vw - 3rem)). At 100% browser zoom and a maximized window, viewport width should equal --panel-width (600px) exactly once vw >= 600px + 3rem (~648px @16px root). Below that, the calc(100vw - 3rem) term binds and the panel renders narrower than its own CSS custom property value, which would explain a live/capture disagreement if the owner's real window/display is narrower than the capture strip's fixed 1440px viewport, or his browser runs at non-100% zoom (which divides the effective CSS px viewport width the same way a narrower physical window would).",
+  "measurements": [
+    {
+      "viewportWidth": 1280,
+      "devicePixelRatio": 2,
+      "cssPanelWidthVar": "600px",
+      "renderedPanelWidthPx": 600,
+      "viewportFloorBinds": false
+    },
+    {
+      "viewportWidth": 1366,
+      "devicePixelRatio": 2,
+      "cssPanelWidthVar": "600px",
+      "renderedPanelWidthPx": 600,
+      "viewportFloorBinds": false
+    },
+    {
+      "viewportWidth": 1440,
+      "devicePixelRatio": 2,
+      "cssPanelWidthVar": "600px",
+      "renderedPanelWidthPx": 600,
+      "viewportFloorBinds": false
+    },
+    {
+      "viewportWidth": 1536,
+      "devicePixelRatio": 2,
+      "cssPanelWidthVar": "600px",
+      "renderedPanelWidthPx": 600,
+      "viewportFloorBinds": false
+    },
+    {
+      "viewportWidth": 1920,
+      "devicePixelRatio": 2,
+      "cssPanelWidthVar": "600px",
+      "renderedPanelWidthPx": 600,
+      "viewportFloorBinds": false
+    }
+  ],
+  "findings": {
+    "panelBoundByCalcAtAnyTestedWidth": false,
+    "allDevicePixelRatiosObserved": [
+      2
+    ],
+    "conclusion": "At every tested logical viewport width (1280-1920px), 100vw - 3rem (>=1232px at the narrowest tested width) comfortably exceeds --panel-width (600px), so the calc() floor does not bind at 100% zoom for any common desktop width -- the panel renders at the full 600px in every case tested here. This narrows the live/capture disagreement to a candidate NOT reproduced by viewport width alone: a non-100% browser zoom level (which shrinks the effective CSS pixel viewport exactly like a narrower window would, and cannot be simulated by Playwright's viewport option, which sets logical CSS pixels directly) is the remaining leading candidate, consistent with the owner's own report of the panel reading small in his real browser window rather than in the fixed-viewport capture strip."
+  }
+}

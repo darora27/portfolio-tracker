@@ -18,9 +18,12 @@
         "docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json",
+          "docs/phase10-baseline/section-13/trail-daily-1440x900.png"
+        ],
+        "notes": "Not an environment-only gap -- full live-browser evidence was obtained, deferred because closing it requires a scope decision outside implementer authority. 3/8 tickers pass the deltaE<=8 gate (GOOG 7.395, IBM 6.674, CRM 7.284); 5/8 fail (ASML 8.993, COST 10.156, MSFT 8.28, INTC 9.695, CBRS 8.25). Reproduced identically across three independent runs and two search radii (4px, 10px) -- not sampling noise. Root cause (measured, not guessed): this live data snapshot has three holdings (MSFT +16.9%, INTC +11.9%, CBRS +19.6%) whose dayReturn simultaneously exceeds the encoding's 12% clamp ceiling, all mapping to the identical brightest ramp stop #a9ffcf. At that near-white clamp, the trail's own additive glow pass (opacity 0.36) sitting atop the core pass at the same screen point brightens the sampled pixel 1-2.5 deltaE units past the gate. This is a pre-existing characteristic of the additive-glow rendering pipeline unchanged by this section -- section 11's own baseline shows the same effect at smaller scale on its one near-clamped ticker (CRM, deltaE 6.226) -- it surfaces more here only because real daily returns (unlike the prior weekly dataset) push three tickers to the same clamped endpoint at once. The magnitude-ordering check has zero violations (samples pinned to the same ramp stop are explicitly exempted from ordering per the existing FB-03 owner ruling, recorded in skippedSameStopPairs). No clamp, arc, or ramp constant was touched or loosened to chase this -- FB-26's own scope explicitly forbids that, and this is exactly the kind of design-vs-tool conflict FB-03's precedent says only the owner may resolve (there, by authorizing a sampling-method change; here, the resolution -- carry, re-measure differently, or accept -- is likewise the owner's call, not mine to make unilaterally)."
       },
       "reviewer": {
         "status": "not_run",
@@ -42,9 +45,12 @@
         "docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "deferred_to_reviewer",
+        "evidence": [
+          "docs/phase10-baseline/section-13/trail-daily-1440x900.png",
+          "docs/phase10-baseline/section-13/raw-trail-sampler-TST-03.json"
+        ],
+        "notes": "Not an environment-only gap -- the captioned 1440x900 temporal per-holding pixel plate is committed and shows every holding's trail carrying direction (clockwise=green for positive dayReturn, counterclockwise=red/pink for negative) and magnitude via the daily-return-sourced ramp. Arc band, 12% white-hot head, and every other non-numeric-tolerance clause are unchanged and visually present. The numeric deltaE<=8 tolerance itself fails for 5/8 holdings for the same measured root cause recorded against TST-03 (shared evidence file) -- deferred rather than silently passed, since closing it (carry, re-measure differently, or accept) is a scope decision for the owner, not the implementer."
       },
       "reviewer": {
         "status": "not_run",
@@ -66,9 +72,12 @@
         "docs/phase10-baseline/section-13/raw-fb01-spacing-measurement.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/overview-1440x900.png",
+          "docs/phase10-baseline/section-13/raw-fb01-spacing-measurement.json"
+        ],
+        "notes": "Measured against the new constants (gap 1.82x+0.55, belt span 0.75): minimum edge-to-edge distance 90.1px between ASML/MSFT, ratio 2.16x the larger disc's diameter (floor is 1.0x). Frame margins (left 365.6, top 172.5, right 319.4, bottom 261.4) are visibly larger than the section-12 capture. ORRERY_MIN_RADIUS/ORRERY_MAX_RADIUS untouched."
       },
       "reviewer": {
         "status": "not_run",
@@ -89,9 +98,11 @@
         "docs/phase10-baseline/section-13/raw-mission-control-text-roles.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/raw-mission-control-text-roles.txt"
+        ],
+        "notes": "8/8 tests pass. --type-label raised 11px->12px; genuineLabel-role rendered assertions now resolve to exactly 12px. --type-body/title/readout/hero unchanged. MISSION_CONTROL_TEXT_ROLES role->token map unchanged."
       },
       "reviewer": {
         "status": "not_run",
@@ -112,9 +123,11 @@
         "docs/phase10-baseline/section-13/mission-control-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/mission-control-1440x900.png"
+        ],
+        "notes": "Capture at 1440x900 with Mission Control open (?focus=portfolio&camera=command on /share). Label/window-word text visibly larger than the section-12 12px->11px baseline; corroborated by TST-01's rendered 12px assertion."
       },
       "reviewer": {
         "status": "not_run",
@@ -136,9 +149,12 @@
         "docs/phase10-baseline/section-13/raw-fb17-live-vs-capture.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/panel-width-live-default.png",
+          "docs/phase10-baseline/section-13/raw-fb17-live-vs-capture.json"
+        ],
+        "notes": "Live production default (npm run build && npm run start, no query params) renders the approach panel at exactly 600px across all five tested viewport widths (1280/1366/1440/1536/1920), all at devicePixelRatio 2. The calc(100vw - 3rem) responsive floor does not bind at any tested width (100vw-3rem >= 1232px, well above 600px), so viewport width alone does not reproduce the owner's live/capture disagreement. Leading remaining candidate per the investigation: non-100% browser zoom, which shrinks the effective CSS pixel viewport the same way a narrower window would but cannot be simulated by Playwright's viewport option. The calc() floor itself was not changed -- it is a genuine constraint, not a bug -- since the investigation did not find a units/precedence defect."
       },
       "reviewer": {
         "status": "not_run",
@@ -161,9 +177,13 @@
         "docs/phase10-baseline/section-13/raw-fb02-aurora-floor.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/sky-before-1440x900.png",
+          "docs/phase10-baseline/section-13/sky-after-1440x900.png",
+          "docs/phase10-baseline/section-13/raw-fb02-aurora-floor.json"
+        ],
+        "notes": "sky-before cites section-12's own overview-1440x900.png (same starfield/aurora code as this section's pre-image, no rebuild-toggle needed). sky-after is a fresh capture of the current build. Confirmed via computed style: .starField's backgroundImage is now only the base linear-gradient (dot-grid/ellipse layers absent from source). Aurora alpha at rest measured 0.3003 (floor 0.14, formula 0.14+wildness*0.26, cap unchanged 0.40). Nebula: offline KTX2 filament texture generated (scripts/generate-nebula-texture.mjs, 29,016 bytes, public/textures/nebula/filament.ktx2), loaded via the existing texture worker and applied as nebulaMaterial.map, alpha cap 0.18 unchanged. Vignette+grain: .skyVignette CSS overlay (radial corner darkening <=0.35, static SVG-turbulence umber grain <=0.05 alpha), verified present in DOM. Graticule: one ring + 12 tick marks, ring slate color, alpha 0.10, kept (did not read as clutter). Contrast floor (3.06:1) re-confirmed from source doc, not re-derived."
       },
       "reviewer": {
         "status": "not_run",
@@ -185,9 +205,13 @@
         "docs/phase10-baseline/section-13/raw-fb22-fb23-sun-region.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/sun-region-1440x900.png",
+          "docs/phase10-baseline/section-13/sun-crop-detail-1440x900.png",
+          "docs/phase10-baseline/section-13/raw-fb22-fb23-sun-region.json"
+        ],
+        "notes": "Root-caused via live capture and pixel sampling directly above the sun's projected center (not guessed): a vertical pixel scan straight up from the sun found bright yellow/gold values (e.g. rgb(251,229,101), rgb(244,172,77)) 20-100px above the sun's disc edge, matching a visible soft yellow glow bulging above the sphere in the crop. This is the aurora mesh (candidate a) -- at the overview camera's elevated, forward-offset angle, its prior position (yInOuterRadii 0.92, zInOuterRadii -0.72) placed it close enough behind the sun in screen projection to visually merge with its silhouette. Fixed by repositioning it further up/back (yInOuterRadii 1.65, zInOuterRadii -1.35) -- opacity/formula (raised by FB-02 in this same section) was deliberately left untouched since the owner wants the aurora reliably visible, not hidden. Re-captured after the fix: the same vertical scan and crop show a clean sun silhouette with no haze. Not the glow shells (symmetric full-sphere, opacity too low at rest to read as a distinct shape) or the docking ring (hover-only, only visible on interaction, and full 360 degrees rather than a semi-circle)."
       },
       "reviewer": {
         "status": "not_run",
@@ -209,9 +233,13 @@
         "docs/phase10-baseline/section-13/raw-fb22-fb23-sun-region.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/sun-region-1440x900.png",
+          "docs/phase10-baseline/section-13/sun-region-approach-1440x900.png",
+          "docs/phase10-baseline/section-13/raw-fb22-fb23-sun-region.json"
+        ],
+        "notes": "Wired via a ref (sunTelemetryRef) passed from OrreryWorld.tsx down to OrreryScene.tsx, written every frame in the same render loop that already projects the sun for the evidence hooks (sun.getWorldPosition + camera.project), matching the planet-label pattern (direct style writes, no React state). Measured: overview camera, sun/chip both at x=720; after clicking a planet (approach camera), sun/chip both moved together to x=560.9 (measured, not assumed) -- a 159px shift, both chip and sun exactly together in both states. Chip no longer drifts to a static frame-center position."
       },
       "reviewer": {
         "status": "not_run",
@@ -232,9 +260,11 @@
         "docs/phase10-baseline/section-13/raw-bhv01-moon-linkable-news.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/raw-bhv01-moon-linkable-news.txt"
+        ],
+        "notes": "Fixed in src/lib/dashboard-data.ts: publicNewsCounts now filters on isUsableNewsUrl(item.url) (the same real-URL predicate groupNewsByTicker/newsByHolding already uses) in addition to the existing headline/recency filters, replacing the raw item count. New integration test in dashboard-data.source.test.ts asserts a holding with a news item carrying an empty url produces newsCount 0, and the same holding with a real https:// url produces newsCount 1. 28/28 tests pass (scene-model.test.ts + dashboard-data.source.test.ts)."
       },
       "reviewer": {
         "status": "not_run",
@@ -256,9 +286,12 @@
         "docs/phase10-baseline/section-13/raw-fb24-moon-news.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/moon-click-1440x900.png",
+          "docs/phase10-baseline/section-13/raw-fb24-moon-news.json"
+        ],
+        "notes": "Clicked the ASML moon (the only moon on this live data snapshot) at its evidence-hook screen position; the resulting panel shows a real headline ('AMD Fell 8% as China Unveils New Technology...') linking to a genuine finnhub.io article URL."
       },
       "reviewer": {
         "status": "not_run",
@@ -279,9 +312,11 @@
         "docs/phase10-baseline/section-13/planet-panel-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/planet-panel-1440x900.png"
+        ],
+        "notes": "ASML's panel shows all five stats: WEIGHT 26.6%, VOL 56.7%, BETA 2.77, CONTRIB (down arrow) 2.0%, VS VOO (down arrow) 7.2%. Both new fields are already-computed, already-public percentages (contributionPct, portfolioRelativeReturn) with no new privacy surface."
       },
       "reviewer": {
         "status": "not_run",
@@ -302,9 +337,12 @@
         "docs/phase10-baseline/section-13/tab-strip-default-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/tab-strip-default-1440x900.png",
+          "docs/phase10-baseline/section-13/raw-fb05-fb31-mission-control.json"
+        ],
+        "notes": "Edited .missionControl nav a (orrery.module.css). The tab strip's real nav lives inside .missionStrip, matched by the more specific .missionControl .missionStrip nav a (border/padding/font-size only) -- but that rule never sets background-color/color, so the general rule's background:none/color/letter-spacing/text-transform still apply to it per normal cascade (confirmed by inspecting the live rendered tab anchor's computed style, not assumed from source alone). Capture at Mission Control's production default (no query params) shows a clean boxless tab strip with a cream underline on the active tab, no #3b1f12/#7d3d1d orange anywhere. .missionStrip's own hero/chips row is untouched (FB-32, out of scope)."
       },
       "reviewer": {
         "status": "not_run",
@@ -325,9 +363,11 @@
         "docs/phase10-baseline/section-13/fallback-390x844.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/fallback-390x844.png"
+        ],
+        "notes": "390x844 capture shows the same semantic fallback list layout as before (holdings with WEIGHT/TODAY/direction/TRAIL/ARC lines -- these lines already read from dayReturn per the same shared JSX FB-26 touched, so their content correctly reflects the daily encoding, not a regression). document.documentElement.scrollWidth === clientWidth confirmed (no horizontal overflow)."
       },
       "reviewer": {
         "status": "not_run",
@@ -348,9 +388,11 @@
         "docs/phase10-baseline/section-13/raw-prv01-share-canary.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/raw-prv01-share-canary.txt"
+        ],
+        "notes": "2/2 tests pass unchanged. FB-25's CONTRIB/VS VOO are already-public percentages (no dollar figures). Diff reviewed: no new route, no new dollar-figure field, no privacy-relevant path touched by any of this section's ten ledger rows."
       },
       "reviewer": {
         "status": "not_run",
@@ -371,9 +413,11 @@
         "docs/phase10-baseline/section-13/raw-npm-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/raw-npm-test.txt"
+        ],
+        "notes": "112 test files, 583/584 tests passed (1 intentional skip), zero failures, run against this turn's final candidate (after the FB-22 aurora reposition edit)."
       },
       "reviewer": {
         "status": "not_run",
@@ -394,9 +438,11 @@
         "docs/phase10-baseline/section-13/raw-npm-build.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-13/raw-npm-build.txt"
+        ],
+        "notes": "Exit 0, 18/18 routes generated, same route list as main at section start (no route added/removed). /share smoke check passes (200, Mission Control manifest 200)."
       },
       "reviewer": {
         "status": "not_run",

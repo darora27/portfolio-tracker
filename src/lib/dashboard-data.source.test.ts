@@ -158,5 +158,42 @@ describe("dashboard-data §8 public projection", () => {
       degraded.publicOrreryHoldings.find(({ ticker }) => ticker === "NEW")
         ?.newsCount,
     ).toBe(0);
+
+    // FB-24 (§13): a holding with news items that have no usable http(s) URL
+    // must not produce a moon -- newsCount has to match the same linkable
+    // predicate PlanetDetail.tsx's click destination uses, not a raw count.
+    getCompanyNews.mockImplementation(async (ticker: string) => {
+      if (ticker !== "NEW") return [];
+      return [
+        {
+          headline: "NEW reports strong quarter",
+          source: "Wire",
+          url: "",
+          datetime: Math.floor(new Date("2026-07-27").getTime() / 1000),
+        },
+      ];
+    });
+    const noLinkableNews = await getDashboardData();
+    expect(
+      noLinkableNews.publicOrreryHoldings.find(({ ticker }) => ticker === "NEW")
+        ?.newsCount,
+    ).toBe(0);
+
+    getCompanyNews.mockImplementation(async (ticker: string) => {
+      if (ticker !== "NEW") return [];
+      return [
+        {
+          headline: "NEW reports strong quarter",
+          source: "Wire",
+          url: "https://example.test/new-earnings",
+          datetime: Math.floor(new Date("2026-07-27").getTime() / 1000),
+        },
+      ];
+    });
+    const withLinkableNews = await getDashboardData();
+    expect(
+      withLinkableNews.publicOrreryHoldings.find(({ ticker }) => ticker === "NEW")
+        ?.newsCount,
+    ).toBe(1);
   });
 });

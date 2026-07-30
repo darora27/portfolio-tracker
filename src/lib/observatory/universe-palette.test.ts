@@ -12,7 +12,7 @@ import {
   contrastRatio,
   firewallViolations,
   hueChroma,
-  rampForWeekly,
+  rampForReturn,
   rampGain,
   rampLoss,
   relativeLuminance,
@@ -108,17 +108,17 @@ describe("the Fraunhofer universe palette", () => {
     const midpointMagnitude = 0.002 + (0.12 - 0.002) * 0.5;
     expect(rampGain(0.5)).toBe(UNIVERSE_PALETTE.signal.gain);
     expect(rampLoss(0.5)).toBe(UNIVERSE_PALETTE.signal.loss);
-    expect(rampForWeekly(midpointMagnitude)).toBe(
+    expect(rampForReturn(midpointMagnitude)).toBe(
       UNIVERSE_PALETTE.signal.gain,
     );
-    expect(rampForWeekly(-midpointMagnitude)).toBe(
+    expect(rampForReturn(-midpointMagnitude)).toBe(
       UNIVERSE_PALETTE.signal.loss,
     );
-    expect(rampForWeekly(null)).toBe(UNIVERSE_PALETTE.signal.flat);
-    expect(rampForWeekly(0)).toBe(UNIVERSE_PALETTE.signal.flat);
-    expect(rampForWeekly(0.002)).toBe(UNIVERSE_PALETTE.signal.flat);
-    expect(rampForWeekly(1)).toBe(rampGain(1));
-    expect(rampForWeekly(-1)).toBe(rampLoss(1));
+    expect(rampForReturn(null)).toBe(UNIVERSE_PALETTE.signal.flat);
+    expect(rampForReturn(0)).toBe(UNIVERSE_PALETTE.signal.flat);
+    expect(rampForReturn(0.002)).toBe(UNIVERSE_PALETTE.signal.flat);
+    expect(rampForReturn(1)).toBe(rampGain(1));
+    expect(rampForReturn(-1)).toBe(rampLoss(1));
   });
 
   it("caps ambient washes and names aurora as the single 0.40 exception", () => {

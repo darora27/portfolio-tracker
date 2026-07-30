@@ -4,7 +4,7 @@ export const MISSION_CONTROL_LAYOUT = {
   plotFraction: 0.55,
   dayNumberPx: 56,
   bodyTextPx: 15,
-  bayLabelPx: 11,
+  bayLabelPx: 12,
   dominantGutterPx: 20,
   stripGutterPx: 10,
   detailMinWidthPx: 560,

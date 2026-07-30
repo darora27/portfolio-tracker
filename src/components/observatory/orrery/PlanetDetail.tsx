@@ -89,6 +89,12 @@ export function PlanetDetail({
         <span>WEIGHT <b>{plainPercent(holding.weight)}</b></span>
         <span>VOL <b>{plainPercent(holding.volatilityPct)}</b></span>
         <span>BETA <b>{holding.betaVsVoo?.toFixed(2) ?? "—"}</b></span>
+        {holding.contributionPct !== null && holding.contributionPct !== undefined ? (
+          <span>CONTRIB <b>{signedPercent(holding.contributionPct)}</b></span>
+        ) : null}
+        {holding.portfolioRelativeReturn !== null && holding.portfolioRelativeReturn !== undefined ? (
+          <span>VS VOO <b>{signedPercent(holding.portfolioRelativeReturn)}</b></span>
+        ) : null}
       </section>
 
       {linkableNews.length ? (

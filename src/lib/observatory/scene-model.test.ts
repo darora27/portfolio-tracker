@@ -39,14 +39,14 @@ import {
   sunRadiusForPlanetRadii,
   sunVisualParameters,
   TRAIL_SAMPLE_FRACTION,
-  trailArcLengthForWeeklyReturn,
+  trailArcLengthForReturn,
   trailRibbonHalfWidths,
   trailSweepAngles,
   weatherWispsForHealth,
   weeklyReturnsFromIndexSeries,
 } from "./scene-model";
 import { planetIdentityForTicker } from "./planet-identity";
-import { UNIVERSE_PALETTE, rampForWeekly } from "./universe-palette";
+import { UNIVERSE_PALETTE, rampForReturn } from "./universe-palette";
 
 const holdings: PublicOrreryHolding[] = [
   {
@@ -138,9 +138,9 @@ describe("pure overview scene descriptor", () => {
       planetIdentityForTicker(model.planets[0].ticker).renderExposure,
     );
     expect(model.trails[0].arcRadians).toBe(
-      trailArcLengthForWeeklyReturn(-0.06),
+      trailArcLengthForReturn(-0.067),
     );
-    expect(model.trails[0].color).toBe(rampForWeekly(-0.06));
+    expect(model.trails[0].color).toBe(rampForReturn(-0.067));
     expect(model.trails[0].head).toEqual({
       fraction: 0.12,
       color: UNIVERSE_PALETTE.signal.whiteHot,
@@ -173,17 +173,17 @@ describe("pure overview scene descriptor", () => {
     expect(model.planets[0].projectedDiameterPx).toBe(
       model.planets[0].bounds.width,
     );
-    // FB-01 (§12a): the pull-back (smaller radii, wider gap, tighter belt
-    // span) shrinks every projected diameter and the belt's own viewport
-    // share -- these floors/ceilings are recalibrated to the new geometry,
-    // not the pre-§12a scale.
-    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(43);
-    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(47);
+    // FB-01 (§13): one more small step (gap 1.75->1.82, belt span 0.80->0.75)
+    // shrinks every projected diameter and the belt's own viewport share a
+    // little further -- these floors/ceilings are recalibrated to the new
+    // geometry, not the pre-§13 scale.
+    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(40);
+    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(44);
     expect(
       Math.min(...model.planets.map(({ projectedDiameterPx }) => projectedDiameterPx)),
-    ).toBeGreaterThanOrEqual(17);
-    expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.79);
-    expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.81);
+    ).toBeGreaterThanOrEqual(15);
+    expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.74);
+    expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.76);
   });
 
   it("keeps the production-weight composition in spec across a full 1440x900 orbital phase sweep", () => {
@@ -204,9 +204,9 @@ describe("pure overview scene descriptor", () => {
         orbitalPhaseRadians: (phaseIndex / 360) * Math.PI * 2,
       });
 
-      // FB-01 (§12a): OVERVIEW_BELT_SPAN_PCT 0.88 -> 0.80.
-      expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.79);
-      expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.81);
+      // FB-01 (§13): OVERVIEW_BELT_SPAN_PCT 0.80 -> 0.75.
+      expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.74);
+      expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.76);
       expect(model.belt.viewportSpanPct).toBeCloseTo(
         model.belt.bounds.width / viewport.width,
         12,
@@ -267,15 +267,16 @@ describe("pure overview scene descriptor", () => {
       }
     }
 
-    // FB-01 (§12a): recalibrated for the pull-back's smaller radii and wider
-    // gap. The gap formula's additive +0.55 term also means the
-    // gap/(r_i+r_i+1) ratio is no longer a single constant across every
-    // adjacent pair (unlike the old pure 1.6x multiplier) -- it is always
-    // strictly greater than the 1.75 multiplier alone, by 0.55/(r_i+r_i+1).
-    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(41);
-    expect(heaviestDiameterMax).toBeLessThanOrEqual(49);
-    expect(smallestDiameter).toBeGreaterThanOrEqual(16);
-    expect(minimumSpacingRatio).toBeGreaterThan(1.75);
+    // FB-01 (§13): recalibrated for one more small step (gap 1.75->1.82,
+    // belt span 0.80->0.75), which shrinks every projected diameter and
+    // widens spacing a little further. The gap formula's additive +0.55
+    // term also means the gap/(r_i+r_i+1) ratio is no longer a single
+    // constant across every adjacent pair -- it is always strictly greater
+    // than the 1.82 multiplier alone, by 0.55/(r_i+r_i+1).
+    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(37);
+    expect(heaviestDiameterMax).toBeLessThanOrEqual(45);
+    expect(smallestDiameter).toBeGreaterThanOrEqual(15);
+    expect(minimumSpacingRatio).toBeGreaterThan(1.82);
     expect(minimumSpacingRatio).toBeLessThan(2.5);
     expect([...seenPlanets]).toEqual(
       productionOverviewHoldings.map(({ ticker }) => ticker),
@@ -329,7 +330,7 @@ describe("pure overview scene descriptor", () => {
     }
   });
 
-  it("keeps adjacent rings apart per the FB-01 (§12a) gap formula", () => {
+  it("keeps adjacent rings apart per the FB-01 (§13) gap formula", () => {
     const model = buildOverviewSceneModel({
       holdings,
       healthScalar: 0,
@@ -339,13 +340,13 @@ describe("pure overview scene descriptor", () => {
       const current = model.planets[index];
       const next = model.planets[index + 1];
       const spacing = next.orbitRadius - current.orbitRadius;
-      // FB-01 (§12a): 1.6x(ri+ri+1) -> 1.75x(ri+ri+1)+0.55.
+      // FB-01 (§13): 1.75x(ri+ri+1)+0.55 -> 1.82x(ri+ri+1)+0.55.
       expect(spacing).toBeCloseTo(
-        1.75 * (current.radius + next.radius) + 0.55,
+        1.82 * (current.radius + next.radius) + 0.55,
         12,
       );
       expect(spacing + Number.EPSILON * 4).toBeGreaterThanOrEqual(
-        1.75 * (current.radius + next.radius) + 0.55,
+        1.82 * (current.radius + next.radius) + 0.55,
       );
     }
   });
@@ -428,14 +429,14 @@ describe("pure overview scene descriptor", () => {
   });
 
   it("clamps every new scalar encoding and handles unavailable values", () => {
-    expect(trailArcLengthForWeeklyReturn(0.00001)).toBe(
-      trailArcLengthForWeeklyReturn(0.002),
+    expect(trailArcLengthForReturn(0.00001)).toBe(
+      trailArcLengthForReturn(0.002),
     );
-    expect(trailArcLengthForWeeklyReturn(1)).toBe(
-      trailArcLengthForWeeklyReturn(0.12),
+    expect(trailArcLengthForReturn(1)).toBe(
+      trailArcLengthForReturn(0.12),
     );
-    expect(trailArcLengthForWeeklyReturn(null)).toBe(
-      trailArcLengthForWeeklyReturn(0.002),
+    expect(trailArcLengthForReturn(null)).toBe(
+      trailArcLengthForReturn(0.002),
     );
     expect(satelliteBlinkSeconds(0.01)).toBe(2.4);
     expect(satelliteBlinkSeconds(2)).toBe(0.6);
@@ -627,22 +628,22 @@ describe("pure overview scene descriptor", () => {
       tailRadians: Math.PI / 3,
     });
     // FB-03: the owner's band — "they were a lot better before" (18–30°).
-    expect(trailArcLengthForWeeklyReturn(0.002) * 180 / Math.PI).toBeCloseTo(
+    expect(trailArcLengthForReturn(0.002) * 180 / Math.PI).toBeCloseTo(
       18,
       10,
     );
-    expect(trailArcLengthForWeeklyReturn(0.12) * 180 / Math.PI).toBeCloseTo(
+    expect(trailArcLengthForReturn(0.12) * 180 / Math.PI).toBeCloseTo(
       30,
       10,
     );
     const model = buildOverviewSceneModel({
-      holdings: [{ ...holdings[2], weeklyReturn: 0.001 }],
+      holdings: [{ ...holdings[2], dayReturn: 0.001 }],
       healthScalar: 0,
       sunspotIntensity: 0,
     });
     expect(model.trails[0]).toMatchObject({
       color: UNIVERSE_PALETTE.signal.flat,
-      arcRadians: trailArcLengthForWeeklyReturn(0.002),
+      arcRadians: trailArcLengthForReturn(0.002),
     });
   });
 
@@ -730,7 +731,8 @@ describe("pure overview scene descriptor", () => {
       weekly.map((value) => Math.abs(value)),
     );
     expect(descriptor.colorSamples).toHaveLength(64);
-    expect(descriptor.opacity).toBeGreaterThanOrEqual(0.02);
+    // FB-02 (§13): floor raised 0.02 -> 0.14, cap unchanged at 0.40.
+    expect(descriptor.opacity).toBeGreaterThanOrEqual(0.14);
     expect(descriptor.opacity).toBeLessThanOrEqual(0.4);
     expect(descriptor.chord.screenClearanceSunRadii).toBeGreaterThanOrEqual(
       1.2,
@@ -739,7 +741,7 @@ describe("pure overview scene descriptor", () => {
 
   it("maps radar ring colour and blip diameter from their one inputs", () => {
     expect(radarRingColor(null)).toBe(UNIVERSE_PALETTE.signal.flat);
-    expect(radarRingColor(0.061)).toBe(rampForWeekly(0.061));
+    expect(radarRingColor(0.061)).toBe(rampForReturn(0.061));
     expect(radarBlipDiameterPx(-1)).toBe(12);
     expect(radarBlipDiameterPx(0.04)).toBe(14);
     expect(radarBlipDiameterPx(0.16)).toBe(18);

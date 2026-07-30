@@ -2,8 +2,8 @@ import {
   ORRERY_MAX_ANGULAR_SPEED,
   ORRERY_PLANET_CLEARANCE,
   ORRERY_SUN_CLEARANCE,
-  angularSpeedForWeeklyReturn,
-  directionForWeeklyReturn,
+  angularSpeedForReturn,
+  directionForReturn,
   orbitRadiiForPlanetRadii,
   radiusForWeight,
   type OrreryDirection,
@@ -14,15 +14,15 @@ import {
   UNIVERSE_PALETTE,
   UNIVERSE_RAMP_LUTS,
   rampAurora,
-  rampForWeekly,
+  rampForReturn,
 } from "./universe-palette";
 
 export const OVERVIEW_RING_ALPHA = { peak: 0.85, floor: 0.7 } as const;
 export const OVERVIEW_RING_OPACITY = 1;
 export const ACTIVE_RING_OPACITY =
   0.7 / OVERVIEW_RING_ALPHA.peak;
-// FB-01 (§12a): owner-fixed pull-back number, UNIVERSE_AUDIT.md §5.1.
-export const OVERVIEW_BELT_SPAN_PCT = 0.8;
+// FB-01 (§13): owner-fixed pull-back number, one more small step, 0.80 -> 0.75.
+export const OVERVIEW_BELT_SPAN_PCT = 0.75;
 export const TRAIL_SAMPLE_FRACTION = 0.62;
 
 const OVERVIEW_FOV_DEGREES = 42;
@@ -525,13 +525,13 @@ export function trailColorForDirection(direction: OrreryDirection): string {
   return UNIVERSE_PALETTE.signal.flat;
 }
 
-export function trailArcLengthForWeeklyReturn(
-  weeklyReturn: number | null,
+export function trailArcLengthForReturn(
+  returnValue: number | null,
 ): number {
-  if (weeklyReturn === null) return (MIN_TRAIL_DEGREES * Math.PI) / 180;
+  if (returnValue === null) return (MIN_TRAIL_DEGREES * Math.PI) / 180;
   const magnitude = Math.min(
     MAX_TRAIL_RETURN,
-    Math.max(MIN_TRAIL_RETURN, Math.abs(weeklyReturn)),
+    Math.max(MIN_TRAIL_RETURN, Math.abs(returnValue)),
   );
   const normalized =
     (magnitude - MIN_TRAIL_RETURN) /
@@ -687,13 +687,23 @@ export function auroraDescriptor(
         Math.min(1, percentMagnitudes[sourceIndex] / MAX_TRAIL_RETURN),
       );
     }),
-    opacity: Number((0.02 + wildness * 0.38).toFixed(4)),
+    // FB-02 (§13), move 2: floor raised 0.02+wildness*0.38 -> 0.14+wildness*0.26
+    // so the aurora can never silently vanish again; cap unchanged at 0.40.
+    opacity: Number((0.14 + wildness * 0.26).toFixed(4)),
+    // FB-22 (§13): root-caused to this mesh -- at the overview camera's
+    // elevated, forward-offset angle, the prior yInOuterRadii/zInOuterRadii
+    // placed it close enough behind the sun to read as an unexplained
+    // yellow/gold semi-circle haze bulging above the sun's own silhouette
+    // (confirmed by a live capture and pixel sample directly above the sun
+    // center, see docs/phase10-baseline/section-13/sun-region-1440x900.png).
+    // Pushed further up and back so it clears the sun's rendered disc in the
+    // overview frame instead of visually merging with it.
     chord: {
       screenClearanceSunRadii: 1.2,
       widthInOuterRadii: 2.6,
       heightInOuterRadii: 0.52,
-      yInOuterRadii: 0.92,
-      zInOuterRadii: -0.72,
+      yInOuterRadii: 1.65,
+      zInOuterRadii: -1.35,
     },
   };
 }
@@ -728,8 +738,8 @@ export function approachExposure(renderExposure: number): number {
   return Math.sqrt(Math.max(0, renderExposure));
 }
 
-export function radarRingColor(weeklyReturn: number | null): string {
-  return rampForWeekly(weeklyReturn);
+export function radarRingColor(returnValue: number | null): string {
+  return rampForReturn(returnValue);
 }
 
 export function radarBlipDiameterPx(weight: number): number {
@@ -1040,8 +1050,8 @@ export function buildOverviewSceneModel({
       rank: index + 1,
       radius,
       initialAngle: index * 2.399963,
-      direction: directionForWeeklyReturn(holding.weeklyReturn),
-      angularSpeed: angularSpeedForWeeklyReturn(holding.weeklyReturn),
+      direction: directionForReturn(holding.dayReturn),
+      angularSpeed: angularSpeedForReturn(holding.dayReturn),
       spinPeriodSeconds,
       spinRadiansPerSecond: decorativeSpinRadiansPerSecond(holding.ticker),
       brandHex: planetIdentityForTicker(holding.ticker).brandHex,
@@ -1140,7 +1150,6 @@ export function buildOverviewSceneModel({
     viewport,
     overviewCamera,
     rings: holdings.map((holding, index) => {
-      const direction = directionForWeeklyReturn(holding.weeklyReturn);
       return {
         ticker: holding.ticker,
         radius: planets[index].orbitRadius,
@@ -1160,15 +1169,15 @@ export function buildOverviewSceneModel({
     }),
     planets,
     trails: holdings.map((holding) => {
-      const direction = directionForWeeklyReturn(holding.weeklyReturn);
-      const arcRadians = trailArcLengthForWeeklyReturn(holding.weeklyReturn);
+      const direction = directionForReturn(holding.dayReturn);
+      const arcRadians = trailArcLengthForReturn(holding.dayReturn);
       return {
         ticker: holding.ticker,
         direction,
-        color: rampForWeekly(holding.weeklyReturn),
+        color: rampForReturn(holding.dayReturn),
         arcRadians,
         magnitude:
-          holding.weeklyReturn === null ? null : Math.abs(holding.weeklyReturn),
+          holding.dayReturn === null ? null : Math.abs(holding.dayReturn),
         sweep: trailSweepAngles(direction, arcRadians),
         sampleFraction: TRAIL_SAMPLE_FRACTION,
         head: {
@@ -1263,11 +1272,11 @@ export function buildOverviewSceneModel({
 }
 
 export function normalizedTrailMagnitude(
-  weeklyReturn: number | null,
+  returnValue: number | null,
 ): number {
-  if (weeklyReturn === null) return 0;
+  if (returnValue === null) return 0;
   return Math.min(
     1,
-    angularSpeedForWeeklyReturn(weeklyReturn) / ORRERY_MAX_ANGULAR_SPEED,
+    angularSpeedForReturn(returnValue) / ORRERY_MAX_ANGULAR_SPEED,
   );
 }

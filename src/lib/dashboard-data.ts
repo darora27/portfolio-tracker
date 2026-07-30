@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase/client";
 import { getQuotes, getUpcomingEarnings, getCompanyNews } from "@/lib/finnhub";
 import type { EarningsEvent } from "@/lib/finnhub-earnings";
-import type { NewsItem } from "@/lib/finnhub-news";
+import { isUsableNewsUrl, type NewsItem } from "@/lib/finnhub-news";
 import { dailyReturns, priceReturns } from "@/lib/math/returns";
 import { correlationMatrix } from "@/lib/math/correlation";
 import { twr } from "@/lib/math/twr";
@@ -227,11 +227,16 @@ export async function getDashboardData(): Promise<DashboardData> {
     heldTickers,
   );
   const nowSeconds = Math.floor(Date.now() / 1000);
+  // FB-24 (§13): moon existence/sizing must key off the same linkable
+  // (http/https URL) count PlanetDetail.tsx's click destination already
+  // uses -- a moon that exists but opens to zero real headlines was the
+  // owner's "do nothing" report.
   const publicNewsCounts = new Map(
     heldTickers.map((ticker, index) => [
       ticker,
       (newsByTicker[index] ?? []).filter(
         (item) =>
+          isUsableNewsUrl(item.url) &&
           isPublicNewsHeadline(item.headline) &&
           item.datetime >= nowSeconds - 7 * 24 * 60 * 60 &&
           item.datetime <= nowSeconds,

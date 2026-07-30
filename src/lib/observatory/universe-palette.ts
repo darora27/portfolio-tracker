@@ -1,6 +1,6 @@
 const LUT_SIZE = 64;
-const MIN_WEEKLY_MAGNITUDE = 0.002;
-const MAX_WEEKLY_MAGNITUDE = 0.12;
+const MIN_RETURN_MAGNITUDE = 0.002;
+const MAX_RETURN_MAGNITUDE = 0.12;
 
 type Hex = `#${string}`;
 type AmbientToken = {
@@ -191,26 +191,26 @@ export const rampIce = ice.sample;
 export const rampGain = gain.sample;
 export const rampLoss = loss.sample;
 
-export function normalizedWeeklyMagnitude(weeklyReturn: number): number {
+export function normalizedReturnMagnitude(returnValue: number): number {
   const magnitude = Math.min(
-    MAX_WEEKLY_MAGNITUDE,
-    Math.max(MIN_WEEKLY_MAGNITUDE, Math.abs(weeklyReturn)),
+    MAX_RETURN_MAGNITUDE,
+    Math.max(MIN_RETURN_MAGNITUDE, Math.abs(returnValue)),
   );
   return (
-    (magnitude - MIN_WEEKLY_MAGNITUDE) /
-    (MAX_WEEKLY_MAGNITUDE - MIN_WEEKLY_MAGNITUDE)
+    (magnitude - MIN_RETURN_MAGNITUDE) /
+    (MAX_RETURN_MAGNITUDE - MIN_RETURN_MAGNITUDE)
   );
 }
 
-export function rampForWeekly(weeklyReturn: number | null): Hex {
+export function rampForReturn(returnValue: number | null): Hex {
   if (
-    weeklyReturn === null ||
-    Math.abs(weeklyReturn) <= MIN_WEEKLY_MAGNITUDE
+    returnValue === null ||
+    Math.abs(returnValue) <= MIN_RETURN_MAGNITUDE
   ) {
     return UNIVERSE_PALETTE.signal.flat;
   }
-  const amount = normalizedWeeklyMagnitude(weeklyReturn);
-  return weeklyReturn > 0 ? rampGain(amount) : rampLoss(amount);
+  const amount = normalizedReturnMagnitude(returnValue);
+  return returnValue > 0 ? rampGain(amount) : rampLoss(amount);
 }
 
 function linearChannel(channel: number): number {

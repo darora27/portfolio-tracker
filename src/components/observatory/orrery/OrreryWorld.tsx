@@ -11,7 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import {
-  directionForWeeklyReturn,
+  directionForReturn,
   type BeltResolution,
   type PublicOrreryHolding,
 } from "@/lib/observatory/orrery";
@@ -23,11 +23,11 @@ import { MISSION_CONTROL_CSS_PROPERTIES } from "@/lib/observatory/mission-contro
 import {
   moonBucketForStoryCount,
   satelliteBlinkSeconds,
-  trailArcLengthForWeeklyReturn,
+  trailArcLengthForReturn,
 } from "@/lib/observatory/scene-model";
 import {
   UNIVERSE_CSS_PROPERTIES,
-  rampForWeekly,
+  rampForReturn,
 } from "@/lib/observatory/universe-palette";
 import { usePrefersReducedMotion } from "@/components/ui/usePrefersReducedMotion";
 import { FirstVisitOrientation } from "./FirstVisitOrientation";
@@ -150,6 +150,7 @@ export function OrreryWorld({
 }) {
   const router = useRouter();
   const worldRef = useRef<HTMLElement>(null);
+  const sunTelemetryRef = useRef<HTMLDivElement>(null);
   const previousTickerRef = useRef<string | null>(selectedTicker);
   const previousPortfolioRef = useRef(portfolioSelected);
   const priorCameraRef = useRef<OrreryCameraState>("overview");
@@ -157,9 +158,9 @@ export function OrreryWorld({
   const [sunFocused, setSunFocused] = useState(false);
   const [beltOpen, setBeltOpen] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  // FB-17 (§12a): capture-only evidence override, e.g. ?panelWidth=660 --
+  // FB-17 (§13): capture-only evidence override, e.g. ?panelWidth=660 --
   // never read by production navigation, only by the build-capture-park
-  // variant captures. Absent entirely, the CSS default (460px) applies.
+  // variant captures. Absent entirely, the CSS default (600px) applies.
   // Read post-mount (not a lazy useState initializer) so server and
   // client's first render match -- SSR always has no `window` to read.
   const [panelWidthOverride, setPanelWidthOverride] = useState<number | null>(null);
@@ -336,6 +337,7 @@ export function OrreryWorld({
       data-selected-holding={selectedTicker ?? ""}
     >
       <div className={styles.starField} aria-hidden="true" />
+      <div className={styles.skyVignette} aria-hidden="true" />
       <div className={styles.scanlines} aria-hidden="true" />
       <header className={styles.commandBar}>
         <div>
@@ -366,6 +368,7 @@ export function OrreryWorld({
             nextEarningsDays={nextEarningsHolding?.nextEarningsDays ?? null}
             tradeComet={tradeComet}
             auroraWeeklySeries={auroraWeeklySeries}
+            sunTelemetryRef={sunTelemetryRef}
             forceNo3d={forceNo3d}
             onHover={setHoveredTicker}
             onSelect={navigateToHolding}
@@ -395,7 +398,12 @@ export function OrreryWorld({
           />
         ) : null}
 
-        <div className={styles.sunTelemetry} aria-hidden="true" data-label-obstacle="portfolio-readout">
+        <div
+          ref={sunTelemetryRef}
+          className={styles.sunTelemetry}
+          aria-hidden="true"
+          data-label-obstacle="portfolio-readout"
+        >
           <strong>
             PORTFOLIO · TODAY {formatSignalPercent(
               portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct,
@@ -466,10 +474,10 @@ export function OrreryWorld({
                       >
                         <span className={styles.ticker}>HOLDINGS / {holding.ticker} · {holding.companyName}</span>
                         <span className={styles.orbitFacts}>
-                          WEIGHT {formatWeightPercent(holding.weight)} · WEEK {formatPercent(holding.weeklyReturn)} · {directionForWeeklyReturn(holding.weeklyReturn)}
+                          WEIGHT {formatWeightPercent(holding.weight)} · TODAY {formatPercent(holding.dayReturn)} · {directionForReturn(holding.dayReturn)}
                         </span>
                         <span className={styles.orbitFacts}>
-                          TODAY {formatPercent(holding.dayReturn)} · TRAIL {rampForWeekly(holding.weeklyReturn)} · {(trailArcLengthForWeeklyReturn(holding.weeklyReturn) * 180 / Math.PI).toFixed(0)}° ARC
+                          TODAY {formatPercent(holding.dayReturn)} · TRAIL {rampForReturn(holding.dayReturn)} · {(trailArcLengthForReturn(holding.dayReturn) * 180 / Math.PI).toFixed(0)}° ARC
                         </span>
                       </Link>
                     </li>
@@ -632,7 +640,7 @@ export function OrreryWorld({
                 <li key={holding.ticker}>
                   <strong>{holding.ticker}</strong>
                   <span>WEIGHT {formatWeightPercent(holding.weight)}</span>
-                  <span>WEEK {formatPercent(holding.weeklyReturn)} · {directionForWeeklyReturn(holding.weeklyReturn)}</span>
+                  <span>TODAY {formatPercent(holding.dayReturn)} · {directionForReturn(holding.dayReturn)}</span>
                 </li>
               ))}
             </ul>

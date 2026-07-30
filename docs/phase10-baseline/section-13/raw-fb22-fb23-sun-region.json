@@ -1,0 +1,44 @@
+{
+  "capturedAt": "2026-07-30T19:29:07.598Z",
+  "fb23ChipTracking": {
+    "overview": {
+      "sunX": 720,
+      "sunY": 329.93738515183645,
+      "chipLeft": 720,
+      "chipTop": 320.171875,
+      "auroraAlpha": 0.3003
+    },
+    "afterDragTilt": {
+      "sunX": 719.2869451287982,
+      "sunY": 329.95209920865955,
+      "chipLeft": 719.28125,
+      "chipTop": 320.1875
+    },
+    "chipTrackedSunOverview": true,
+    "chipTrackedSunAfterTilt": true,
+    "sunMovedBetweenStates": false
+  },
+  "fb22AuroraFloor": {
+    "auroraAlphaAtRest": 0.3003,
+    "floor": 0.14,
+    "passesFloor": true
+  },
+  "fb22Notes": "Identify the actual haze cause from the two committed captures above (sun-region-1440x900.png, sun-region-drag-tilt-1440x900.png) before any further code change.",
+  "fb23ChipTrackingApproachComparison": {
+    "overview": {
+      "sunX": 720,
+      "sunY": 329.9396000468489,
+      "chipLeft": 720,
+      "chipTop": 320.1875
+    },
+    "approach": {
+      "sunX": 560.8721707626459,
+      "sunY": 350.2848422628854,
+      "chipLeft": 560.859375,
+      "chipTop": 340.53125
+    },
+    "chipTrackedSunOverview": true,
+    "chipTrackedSunApproach": true,
+    "sunMovedBetweenStates": true
+  }
+}

@@ -152,7 +152,7 @@ export function SystemPlot({
           const blipX = 50 + Math.cos(angle) * radial;
           const blipY = 50 + Math.sin(angle) * radial;
           const selected = activeTicker === holding.ticker;
-          const signal = radarRingColor(holding.weeklyReturn);
+          const signal = radarRingColor(holding.dayReturn);
           const blipDiameter = radarBlipDiameterPx(holding.weight);
           return (
             <div key={holding.ticker}>

@@ -1,0 +1,24 @@
+{
+  "capturedAt": "2026-07-30T19:33:54.841Z",
+  "move1RetireTileWallpaper": {
+    "note": "starField background now only the dark base linear-gradient + pointer-parallax transform; two dot-grid radial-gradients and two ellipse washes removed from source (orrery.module.css .starField rule).",
+    "computedBackgroundImageSample": "linear-gradient(150deg, rgb(1, 5, 4), rgb(4, 17, 13) 55%, rgb(2, 7, 6))"
+  },
+  "move2AuroraFloor": {
+    "formula": "0.14 + wildness * 0.26 (was 0.02 + wildness * 0.38), cap unchanged at 0.40",
+    "auroraAlphaAtRest": 0.3003,
+    "floor": 0.14,
+    "passesFloor": true
+  },
+  "move3NebulaTexture": {
+    "note": "flat RingGeometry color replaced by offline-generated filament KTX2 texture (scripts/generate-nebula-texture.mjs), 512x256, 29016 bytes, public/textures/nebula/filament.ktx2. Loaded via the existing texture worker (planet-texture.worker.ts) and applied as nebulaMaterial.map; material.color (gold/ember hue anchors) still tints it. Alpha cap 0.18 unchanged."
+  },
+  "move4VignetteGrain": {
+    "note": "static radial black corner vignette (transparent center, 0.35 at corners) plus static warm-grain SVG turbulence overlay (alpha cap 0.05 umber), CSS-only, added as .skyVignette, z-index 15 (above scene, below scanlines/UI chrome).",
+    "elementPresentInDom": true
+  },
+  "move5Graticule": {
+    "note": "one faint ecliptic great-circle ring plus 12 sparse tick marks, ring slate color (UNIVERSE_PALETTE.cabinet.ringSlate), alpha 0.10, in the orbital plane (rotateX(-PI/2)), radius 1.6-1.66x outerRadius. Kept -- did not read as clutter in review captures."
+  },
+  "contrastCheck": "Re-confirmed from UNIVERSE_IDEAS_6.md section 2.2 rather than re-derived: loss-ramp dark-end floor 3.06:1 under worst-case vignette+grain, above the 3.0 gate. No source value in this section changes that computation."
+}
