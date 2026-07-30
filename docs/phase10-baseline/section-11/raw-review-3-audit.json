@@ -1,0 +1,153 @@
+{
+  "BHV-10.overview": {
+    "bannedFound": [],
+    "requiredPresent": [
+      "RETURNS",
+      "RISK",
+      "NEWS",
+      "EARNINGS"
+    ],
+    "requiredMissing": [
+      "ORBITS",
+      "HOLDINGS",
+      "CORRELATION",
+      "TRADES"
+    ]
+  },
+  "BHV-20.legendBarPersistent": false,
+  "BHV-17.errorFurniturePresent": false,
+  "BHV-17.zeroAsRealPattern": false,
+  "VIS-18.sunDominance": {
+    "sunRadiusPx": null,
+    "sunFound": false,
+    "planets": [
+      {
+        "ticker": "ASML",
+        "radius": 31.058224955171227
+      },
+      {
+        "ticker": "GOOG",
+        "radius": 25.78468532941139
+      },
+      {
+        "ticker": "COST",
+        "radius": 26.489457599682623
+      },
+      {
+        "ticker": "MSFT",
+        "radius": 14.828296681237816
+      },
+      {
+        "ticker": "IBM",
+        "radius": 18.512946227447543
+      },
+      {
+        "ticker": "INTC",
+        "radius": 21.466869026961035
+      },
+      {
+        "ticker": "CRM",
+        "radius": 12.559735864376478
+      },
+      {
+        "ticker": "CBRS",
+        "radius": 27.428318143309554
+      }
+    ],
+    "largestPlanetRadius": 31.058224955171227
+  },
+  "BHV-21.afterZoomOut": {
+    "sectorMapPresent": false,
+    "growthLinkPresent": false,
+    "stillOverviewLabel": true
+  },
+  "BHV-16.duplicateHero": false,
+  "BHV-16.emptyNewsZoneWhenNoLinks": "n/a-ASML-has-news",
+  "VIS-12.weightNoSign": {
+    "raw": "26.3%",
+    "hasArrow": false,
+    "hasExplicitSign": false
+  },
+  "BHV-12.panelLines": [
+    "SPIN = SCENERY · ORBIT = WEEK",
+    "ASML · ASML Holding",
+    "TODAY",
+    "▼ 2.0%",
+    "WEEK ▼ 14.3%",
+    "30D ▼ 12.0%",
+    "SINCE BUY ▼ 12.0% (SIMPLE)",
+    "SINCE BUY · ▼ 12.0%",
+    "7D",
+    "SINCE BUY",
+    "86",
+    "100",
+    "115",
+    "▼ 12.0%",
+    "WEIGHT 26.3%",
+    "VOL 56.7%",
+    "BETA 2.77",
+    "NEWS",
+    "07-29",
+    "ASML Holding (ASML) Looks Fully Valued After A 12% Pullback",
+    "07-29",
+    "Is the AI rally running out of steam?",
+    "07-29",
+    "SKHY, MU, Samsung's Memory Technology Lead Over China’s CXMT Unlikely To Narrow Soon, Says Futurum Analyst",
+    "FULL ANALYSIS ▸",
+    "◂ BACK TO SYSTEM"
+  ],
+  "BHV-13.geometry": {
+    "discRight": 874.7000218959677,
+    "panelLeft": 960,
+    "unoccluded": true
+  },
+  "BHV-18.correlationCopyPresent": false,
+  "BHV-10.room": {
+    "bannedFound": [],
+    "requiredPresent": [
+      "ORBITS",
+      "HOLDINGS",
+      "RETURNS",
+      "RISK",
+      "CORRELATION",
+      "NEWS",
+      "TRADES",
+      "EARNINGS"
+    ]
+  },
+  "VIS-15.sectionOrder": [
+    {
+      "id": "holdings",
+      "present": true
+    },
+    {
+      "id": "returns",
+      "present": true
+    },
+    {
+      "id": "risk",
+      "present": true
+    },
+    {
+      "id": "correlation",
+      "present": true
+    },
+    {
+      "id": "earnings",
+      "present": true
+    },
+    {
+      "id": "news",
+      "present": true
+    },
+    {
+      "id": "trades",
+      "present": true
+    }
+  ],
+  "BHV-14.stripSticky": {
+    "stripBeforeScrollTop": null,
+    "stripAfterScrollTop": null,
+    "staysNearZero": false
+  }
+}

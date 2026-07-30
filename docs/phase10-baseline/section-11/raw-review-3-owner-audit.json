@@ -1,0 +1,74 @@
+{
+  "loginOk": true,
+  "missionControlMode": "private",
+  "xirrText": "XIRR — (needs 90d)",
+  "valueColumnPresent": true,
+  "draftButtonVisible": true,
+  "draftRigOpened": true,
+  "draftWeightRows": [
+    {
+      "index": "0",
+      "label": "ASML, 29.0 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+      "ticker": "ASML",
+      "weightPct": 29
+    },
+    {
+      "index": "1",
+      "label": "GOOG, 23.5 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+      "ticker": "GOOG",
+      "weightPct": 23.5
+    },
+    {
+      "index": "2",
+      "label": "COST, 14.0 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+      "ticker": "COST",
+      "weightPct": 14
+    },
+    {
+      "index": "3",
+      "label": "MSFT, 9.0 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+      "ticker": "MSFT",
+      "weightPct": 9
+    },
+    {
+      "index": "4",
+      "label": "IBM, 8.5 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+      "ticker": "IBM",
+      "weightPct": 8.5
+    },
+    {
+      "index": "5",
+      "label": "INTC, 7.5 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+      "ticker": "INTC",
+      "weightPct": 7.5
+    },
+    {
+      "index": "6",
+      "label": "CRM, 4.5 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+      "ticker": "CRM",
+      "weightPct": 4.5
+    },
+    {
+      "index": "7",
+      "label": "CBRS, 4.0 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+      "ticker": "CBRS",
+      "weightPct": 4
+    }
+  ],
+  "draftWeightSum": 100,
+  "keyboardFocusReachesCircle": "0",
+  "keyboardArrowChangedWeight": {
+    "before": "ASML, 29.0 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+    "after": "ASML, 29.5 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+    "changed": true
+  },
+  "shiftArrowChangedWeight": {
+    "after": "ASML, 29.5 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+    "afterShift": "ASML, 34.5 percent. Arrow keys adjust; Shift changes five percent; Space latches counterparty.",
+    "changed": true
+  },
+  "ariaLiveRegionText": [
+    "ASML 34.5%. Others adjusted."
+  ],
+  "ghostToggleVisible": true
+}

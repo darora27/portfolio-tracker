@@ -1,0 +1,9 @@
+{
+  "urlBeforeDrag": "http://127.0.0.1:3000/?focus=portfolio&camera=command&draft=58.47.28.18.17.15.9.8",
+  "urlAfterDrag": "http://127.0.0.1:3000/?focus=portfolio&camera=command&draft=58.47.28.18.17.15.9.8",
+  "urlChangedOnRelease": false,
+  "draftParamPresent": true,
+  "urlAfterBack": "about:blank",
+  "backUndid": false,
+  "resetButtonVisible": false
+}

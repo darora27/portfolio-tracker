@@ -1,0 +1,11 @@
+{
+  "candidate": "current production candidate",
+  "measurement": {
+    "viewport": "1440x900",
+    "cpuThrottle": 2,
+    "waitUntil": "domcontentloaded",
+    "postReadinessWindowMs": 5000
+  },
+  "longTasks": [],
+  "longTaskAttribution": []
+}

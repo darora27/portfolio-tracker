@@ -1,0 +1,1 @@
+machine-readable: {"criterion":"TST-03","pass":false,"measured":null,"error":"ASML deltaE 79.692 > 8"}

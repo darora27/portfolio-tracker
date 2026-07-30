@@ -1,0 +1,22 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "largestPlanet": {
+    "ticker": "ASML",
+    "radiusPx": 31.035136975593616,
+    "diameterPx": 62.07027395118723
+  },
+  "sun": {
+    "approxCenter": {
+      "x": 719.5,
+      "y": 284
+    },
+    "horizontalDiameterPx": 117,
+    "verticalDiameterPx": 119,
+    "estimatedRadiusPx": 59
+  },
+  "ratioSunDiameterToLargestPlanetDiameter": 1.9010710359164282,
+  "passesVIS18_1_5x": true
+}

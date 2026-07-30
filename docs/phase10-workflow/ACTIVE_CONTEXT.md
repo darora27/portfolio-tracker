@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§11 — Universe legibility and the draft rig**
 - Managed range: §2–§18
-- Stage: `review`
-- Role: `claude_lead`
+- Stage: `remediate`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -40,7 +40,7 @@ Then read the current, specifically routed sources:
 - `UNIVERSE_LEGIBILITY_MOCK.html`
 - `UNIVERSE_DRAFT_RIG.html`
 - `docs/reference/ (see its README.md - one mockup is superseded, and the planet mood reference must not be reproduced literally)`
-- `docs/phase10-handoffs/2026-07-29-section-11-codex-remediation-4-to-devan-needs-capture.md`
+- `docs/phase10-handoffs/2026-07-29-section-11-claude-lead-review-3-to-codex-implementation.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -58,8 +58,8 @@ Inserted by owner direction on 2026-07-28 (PHASE10.md §11). Authority order for
 
 Open bounded findings:
 
-- {"id":"F5","criterion":"BLD-04","risk":"high","evidence":"docs/phase10-baseline/section-11/raw-remediation-3-owner-profile.json; docs/phase10-baseline/section-11/raw-remediation-3-owner-long-tasks.txt","summary":"Owner-run production measurement, five fresh contexts at 1440x900 with 2x CPU throttle: 58, 64, 60, 58, 57 ms. Maximum 64 ms against a <50 ms gate. The staged compileAsync shader warmup did not clear it.","required_change":"THE STANDING HYPOTHESIS IS DISPROVEN — do not spend another round on shader compilation. The retained profiler attributes the 65 ms task as follows: largest single frame 4.5 ms (6.9% of the task); the top FIFTEEN frames together account for only 37.7 ms (58%); the only shader/program-attributable frame is a generic native (program) entry at 2.9 ms; the garbage collector accounts for 3.4 ms. This is diffuse scene-construction work plus GC pressure, not one blocking compile. Attack it as such: find the largest contiguous block of synchronous scene construction and yield it across frames, and reduce allocation during construction to cut the GC contribution. Re-measure the five-context figure against the unchanged 50 ms gate.","ledger_rows":["LT-01"]}
-- {"id":"F6","criterion":"VIS-11","risk":"medium","evidence":"docs/phase10-baseline/section-11/captures/asml-panel-type.png","summary":"SATISFIED IN THE CAPTURE, for the reviewer to grade formally. The owner-run production capture shows the planet panel summary row reading WEEK 14.3% / 30D 12.0% / SINCE BUY 12.0%, so the 30D window is rendered as required. The chart detent group correctly shows only 7D and SINCE BUY: the series carries fewer than 30 points, so a 30D detent would overstate its window, and SINCE BUY collapses MAX under the F4 contract. The range-30d shot failing is therefore expected and was predicted in the remediation-3 handoff — it demands a control that must not exist.","required_change":"Retire or re-scope the range-30d capture shot so it does not demand a detent the data cannot honestly support. No product change.","ledger_rows":[]}
+- {"id":"F7","criterion":"TST-03","risk":"high","evidence":"docs/phase10-baseline/section-11/raw-rgb-pixel-output.txt; docs/phase10-baseline/section-11/raw-rgb-pixel-output-diagnostic.json; docs/phase10-baseline/section-11/pixel-samples/overview-trail-samples.png","summary":"Reviewer turn 3 independently re-ran the self-deriving sample-live-rgb.mjs (unmodified from §10, reads live data-trail-sample-x/y and data-weekly-return each run) on two separate server starts. Both times ASML fails at deltaE 79.7-81.6, sampling a dark blue-violet (hue ~245-263deg) far from the expected loss-red (#b3241d, hue ~3deg) -- the sample point is landing off the trail ribbon entirely, not merely over-threshold. IBM (deltaE 8.14) and CRM (chroma 0.294) are marginal boundary cases riding along. ASML's bad sample also breaks the magnitude-ordering check for INTC/CBRS as a downstream consequence.","required_change":"Re-derive the trailSampleAngle projection (OrreryScene.tsx) so the sample point lands inside the current 26-46deg arc for every holding -- most likely broken by the VIS-04 arc-shortening change without a matching sampler update, per the reviewer's diagnostic hypothesis (not mandated, confirm against the real geometry). Re-run sample-live-rgb.mjs unmodified; all eight holdings must clear deltaE <= 8 and the hue-lock/ordering checks. Do NOT loosen deltaE, re-widen the arc band, or exclude ASML from the fixture.","ledger_rows":[]}
+- {"id":"F8","criterion":"VIS-04","risk":"critical","evidence":"same as F7 (VIS-04 follows TST-03 per its own ledger entry)","summary":"VIS-04's ledger entry states it follows TST-03's remaining sample. Because F7/TST-03 fails this turn (now on ASML), VIS-04 cannot be independently passed -- the trail colour/magnitude encoding it certifies is exactly what the broken sampler cannot currently locate. The 26-46deg arc-band change itself is implemented and not separately disputed.","required_change":"Resolves once F7 is fixed and sample-live-rgb.mjs passes for all eight holdings. Re-run and record VIS-04's own pixel evidence at that point -- it is a visual-kind criterion and needs its own confirmation, not just the passing script.","ledger_rows":[]}
 
 Acceptance ledger:
 
@@ -104,7 +104,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `25a94dda91fbe5d5ffa559e83686f890ef15b1266bd5cd33ccbdfceeb3122551`
-- `PHASE10_STATE.json`: `05181da42f7395ee8391e6ecd359dfaa893494694a7da540e7a98962d9253c37`
+- `PHASE10_STATE.json`: `ca4429e0927b05afe55266a4e16fec5525f3e3bd16f90a6c683e329b5621fe11`
 - `PHASE10.md`: `4f430bf4c71ebb7cf62fe91fd8d7c516f31999c66b5ee08093b8421a56d2efa8`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
