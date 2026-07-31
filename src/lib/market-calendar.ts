@@ -82,3 +82,61 @@ export function isMarketHoliday(isoDate: string): boolean {
 export function isTradingDay(isoDate: string): boolean {
   return !isWeekend(isoDate) && !isMarketHoliday(isoDate);
 }
+
+const WEEKDAY_LABELS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+/** Short uppercase weekday for an ISO date — "THU" for 2026-07-30. */
+export function weekdayLabel(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-").map(Number);
+  return WEEKDAY_LABELS[weekdayOf(y, m, d)];
+}
+
+/**
+ * Wall-clock date and time in America/New_York for an instant.
+ *
+ * Uses Intl rather than a fixed UTC offset so DST is handled by the
+ * platform's tz database instead of by us: the same instant is 13:30 or
+ * 14:30 UTC depending on the date, and hardcoding either produces an hour
+ * of wrong answers twice a year.
+ */
+export function newYorkParts(now: Date): {
+  date: string;
+  hour: number;
+  minute: number;
+} {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(now);
+  const get = (type: string) =>
+    parts.find((part) => part.type === type)?.value ?? "";
+  return {
+    date: `${get("year")}-${get("month")}-${get("day")}`,
+    // Some ICU builds render midnight as hour "24" under hour12:false.
+    hour: Number(get("hour")) % 24,
+    minute: Number(get("minute")),
+  };
+}
+
+const SESSION_OPEN_MINUTES = 9 * 60 + 30; // 09:30 ET
+const SESSION_CLOSE_MINUTES = 16 * 60; // 16:00 ET
+
+/**
+ * Whether the NYSE regular session is open at this instant — a trading day
+ * AND between 09:30 and 16:00 New York time.
+ *
+ * `isTradingDay` alone is not this: it is true all day on a trading day,
+ * including at 3am, which is why "today's change" could read as a live
+ * figure when nothing had traded yet.
+ */
+export function isMarketSessionOpen(now: Date): boolean {
+  const { date, hour, minute } = newYorkParts(now);
+  if (!isTradingDay(date)) return false;
+  const minutes = hour * 60 + minute;
+  return minutes >= SESSION_OPEN_MINUTES && minutes < SESSION_CLOSE_MINUTES;
+}

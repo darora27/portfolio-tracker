@@ -1,4 +1,9 @@
 import type { CashFlow } from "@/lib/math/types";
+import {
+  isMarketSessionOpen,
+  newYorkParts,
+  weekdayLabel,
+} from "@/lib/market-calendar";
 
 export type Trade = {
   date: string;
@@ -153,6 +158,111 @@ export function dayChange(shares: number, livePrice: number | null, prevClose: n
     day: shares * (livePrice - prevClose),
     dayPct: prevClose !== 0 ? livePrice / prevClose - 1 : null,
   };
+}
+
+export type DailyDirection = "up" | "down" | "flat";
+
+export type DailyChange = {
+  /** Fractional change — 0.0123 means +1.23%. Null when unavailable. */
+  pct: number | null;
+  /** Position-level dollar change. Null when unavailable. */
+  dollars: number | null;
+  /** "TODAY" during a live session, else "<WEEKDAY> CLOSE" of the carried day. */
+  label: string;
+  /** Null whenever pct is null — missing data has no direction. */
+  direction: DailyDirection | null;
+  /** True when this is a carried prior-session figure, not a live one. */
+  carried: boolean;
+};
+
+/**
+ * Below this, a move is reported as flat rather than up or down. 5 basis
+ * points: small enough that a real move is never swallowed, large enough
+ * that float noise on an unchanged price never renders an arrow.
+ */
+const FLAT_EPSILON = 0.0005;
+
+function directionFor(pct: number | null): DailyDirection | null {
+  if (pct === null) return null;
+  if (Math.abs(pct) < FLAT_EPSILON) return "flat";
+  return pct > 0 ? "up" : "down";
+}
+
+/**
+ * The single source of "the daily move" for every surface — hero strip,
+ * holdings rows, movers line, planet panel, Chart Room header, and the
+ * scene model's orbital inputs.
+ *
+ * Two regimes:
+ *
+ * - **Session open.** Live quote measured against the last completed close.
+ *   Labelled "TODAY".
+ * - **Session closed** (nights, weekends, holidays, or no live quote). The
+ *   last completed close measured against the one before it — the market's
+ *   most recent actual day — labelled "<WEEKDAY> CLOSE" so the figure never
+ *   claims to be today's.
+ *
+ * The second regime is the fix for every holding reading 0.0%: outside a
+ * session the live price and the latest close are the *same number*, so
+ * measuring one against the other yields a real, meaningful zero for
+ * thirteen positions at once. Carrying the prior session instead reports
+ * the last thing that actually happened, which is what a reader means by
+ * "how is it doing".
+ *
+ * Missing data propagates as null and never as zero (CLAUDE.md: never show
+ * zeros as if they were real). A null pct yields a null direction, so a
+ * missing figure cannot render an arrow.
+ */
+export function resolveDailyChange({
+  shares,
+  quotePrice,
+  closes,
+  now,
+  firstTradeDate,
+  firstTradePrice,
+}: {
+  shares: number;
+  /** Live price, or null when no usable quote is available. */
+  quotePrice: number | null;
+  /** This ticker's close history. Order does not matter; sorted internally. */
+  closes: PricePoint[];
+  now: Date;
+  firstTradeDate?: string;
+  firstTradePrice?: number;
+}): DailyChange {
+  const sorted = [...closes].sort((a, b) => (a.date < b.date ? -1 : 1));
+  const measure = (from: number | null, to: number) => {
+    if (from === null || from <= 0) return { pct: null, dollars: null };
+    return { pct: to / from - 1, dollars: shares * (to - from) };
+  };
+
+  if (isMarketSessionOpen(now) && quotePrice !== null) {
+    const today = newYorkParts(now).date;
+    const priorClose = [...sorted].reverse().find((point) => point.date < today);
+    const { prevClose } = resolvePrevClose(
+      firstTradeDate,
+      firstTradePrice,
+      priorClose,
+      today,
+    );
+    const { pct, dollars } = measure(prevClose, quotePrice);
+    return {
+      pct,
+      dollars,
+      label: "TODAY",
+      direction: directionFor(pct),
+      carried: false,
+    };
+  }
+
+  const last = sorted[sorted.length - 1];
+  const previous = sorted[sorted.length - 2];
+  const label = last ? `${weekdayLabel(last.date)} CLOSE` : "CLOSE";
+  if (!last || !previous) {
+    return { pct: null, dollars: null, label, direction: null, carried: true };
+  }
+  const { pct, dollars } = measure(previous.price, last.price);
+  return { pct, dollars, label, direction: directionFor(pct), carried: true };
 }
 
 /**
