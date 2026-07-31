@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "phase": 10,
-  "section": "\u00a714",
+  "section": "§14",
   "spec_doc": "docs/phase10-workflow/specs/section-14.md",
   "candidate_sha": null,
   "criteria": [
@@ -18,9 +18,9 @@
         "docs/phase10-baseline/section-14/raw-header-stats-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-header-stats-test.txt"],
+        "notes": "3/3 tests pass. ChartRoomHeader.test.tsx asserts every chip renders from real props (WEIGHT/WEEK/30D/SINCE BUY/EARNINGS/N SESSIONS) in one case, then asserts WEEK/30D/SINCE BUY/EARNINGS are each absent (queryByText returns null, never a rendered zero) when their source prop is null in a second case. Live-rendered against real IBM data at docs/phase10-baseline/section-14/overview-1440x900.png: WEIGHT 7.2%, WEEK ▲ 7.3%, SINCE BUY ▼ 20.8% (SIMPLE), EARNINGS T-83D, N 21 SESSIONS, TODAY ▼ 2.1% -- all real computed figures, no fabrication."
       },
       "reviewer": {
         "status": "not_run",
@@ -41,9 +41,9 @@
         "docs/phase10-baseline/section-14/raw-chart-room-window-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-chart-room-window-test.txt"],
+        "notes": "11/11 tests pass, written TDD-first before sliceToRange existed. Covers max (full series), 7d/30d (calendar-day trailing lookback from the series' own last date via addDays, not a session count), sinceBuy (slice from firstTradeDate forward), and the never-crash empty/thin-history cases. Live-confirmed: raw-graph-state.json shows the default candidate loads with the 30D button aria-pressed=true and 21 real trading sessions in the window; ChartRoomGraph.test.tsx (BHV-03 evidence) additionally confirms clicking 7D reslices the title to '7 DAYS'."
       },
       "reviewer": {
         "status": "not_run",
@@ -64,9 +64,9 @@
         "docs/phase10-baseline/section-14/raw-chart-room-graph-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-chart-room-graph-test.txt"],
+        "notes": "7/7 tests pass: default 30D/RETURN/VOO-on state, range-detent click reslices, PRICE mode switches the axis basis and title suffix, each overlay independently toggles via aria-pressed, an overlay whose source is unavailable renders no line, COST is a no-op outside PRICE mode, and empty history renders a designed empty state instead of crashing. Live-confirmed: raw-graph-state.json's default candidate has RETURN aria-pressed=true, PRICE aria-pressed=false."
       },
       "reviewer": {
         "status": "not_run",
@@ -87,9 +87,12 @@
         "docs/phase10-baseline/section-14/raw-chart-room-overlays-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-14/raw-chart-room-overlays-test.txt",
+          "docs/phase10-baseline/section-14/raw-chart-room-graph-test.txt"
+        ],
+        "notes": "alignToDates (chart-room-window.test.ts, 11/11 pass) is the shared primitive every overlay routes data-availability through: it returns available:false rather than a silently-misaligned window when any requested date is missing from the comparison series, mirroring computeBenchmarkComparison's own guard. ChartRoomGraph.test.tsx independently confirms at the component level: all five overlay buttons toggle aria-pressed independently, and an overlay whose source is unavailable (thin VOO history) renders zero .bmk-class paths rather than a fabricated line. Live-confirmed: raw-graph-state.json shows vooOverlayRendered:true against real VOO data with a real trace of 21 plotted points; the committed overview screenshot shows the dashed VOO line and the amber trace as two distinct real series."
       },
       "reviewer": {
         "status": "not_run",
@@ -110,9 +113,9 @@
         "docs/phase10-baseline/section-14/raw-chart-room-benches-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-chart-room-benches-test.txt"],
+        "notes": "20/20 tests pass across ChartRoomHeader/ChartRoomGraph/Benches.test.tsx. Benches.test.tsx covers each of the six benches twice: once with real fixture data (asserting the real computed stamp -- sigma/vol, beta/correlation, off-high, top-|r| pair, rank, fundamentals), once with thin/empty data asserting the designed empty-state copy renders instead of a fabricated figure. DISTRIBUTION/DEPTH use since-buy-sliced dailyReturns (documented choice, mock doesn't specify); VS MARKET/MOVES WITH gate on perHoldingRisk/correlationMatrix's own existing MIN_OVERLAP guards (unchanged, not re-implemented). Live-confirmed against real IBM data (13 real holdings, real drawdown, real beta -1.23): overview-1440x900.png. CONTRIBUTION & POSITION's SVG viewBox height was found and fixed to scale with holding count during evidence capture (13 real holdings overflowed the mock's fixed 120px assumption) -- see VIS-06 notes."
       },
       "reviewer": {
         "status": "not_run",
@@ -134,9 +137,12 @@
         "docs/phase10-baseline/section-14/raw-graph-state.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-14/overview-1440x900.png",
+          "docs/phase10-baseline/section-14/raw-graph-state.json"
+        ],
+        "notes": "Live capture via direct Playwright/Chromium launch (this sandbox launches it directly, confirmed per AGENTS.md) against a freshly built production server (npm run build && npm run start -p 3400), authenticated with a self-chosen temporary OWNER_PASSWORD process-env override (no .env* read, matching the §12a review precedent), real held ticker IBM. raw-graph-state.json: title '30 DAYS · ▼ 22.5%', 30D/RETURN/VOO buttons aria-pressed=true and all others false (the spec's exact defaults), a real 21-point trace path, vooOverlayRendered:true. The screenshot shows the amber trace, the dashed VOO benchmark line, hairline gridlines at 69/89/110, and the closing-price marker dot -- no fabricated line, no demo-data stamp."
       },
       "reviewer": {
         "status": "not_run",
@@ -157,9 +163,9 @@
         "docs/phase10-baseline/section-14/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/overview-1440x900.png"],
+        "notes": "Live capture, real IBM since-buy daily returns. DISTRIBUTION bench shows the binned histogram, a red TODAY marker at ▼2.1% matching the header's real day change, the mean±σ shaded band, and the stamp 'SINCE BUY · N=20 SESSIONS · σ DAILY 6.2% · VOL ANN 98%' -- σ DAILY is volatilityPct/√252 derived from the same annualizedVolatility figure the portfolio-level risk metric already uses (perHoldingRisk), not a second stdev implementation."
       },
       "reviewer": {
         "status": "not_run",
@@ -180,9 +186,9 @@
         "docs/phase10-baseline/section-14/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/overview-1440x900.png"],
+        "notes": "Live capture. VS MARKET bench shows the shared-date (vooReturn, tickerReturn) scatter, a regression line drawn at the real, already-computed betaVsVoo slope, and the stamp 'SLOPE = BETA -1.23 · FIT r -0.16 · N=20 SHARED DAYS' -- beta/correlation are perHoldingRisk/correlationMatrix's existing output, not recomputed in the component."
       },
       "reviewer": {
         "status": "not_run",
@@ -203,9 +209,9 @@
         "docs/phase10-baseline/section-14/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/overview-1440x900.png"],
+        "notes": "Live capture. DEPTH bench shows the vertical gauge, a real WORST mark at ▼32.8% dated 2026-07-22, and 'OFF HIGH ▼27.6% · SINCE BUY' -- both computed by calling drawdown() (src/lib/math/drawdown.ts) directly on this ticker's own since-buy daily returns, the same function the portfolio-level max-drawdown figure already uses, not a second implementation."
       },
       "reviewer": {
         "status": "not_run",
@@ -226,9 +232,9 @@
         "docs/phase10-baseline/section-14/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/overview-1440x900.png"],
+        "notes": "Live capture. MOVES WITH bench shows a correlation bar per other current holding (ASML -0.41, GOOG -0.17, COST 0.71, MSFT 0.10, INTC -0.42, CBRS -0.13, NBIS -0.09, CRM 0.42 -- IBM's real correlationRow, already computed by getStockDetailData for the pre-existing /stock/[ticker] route) and the sentence 'IBM AND COST MOVED TOGETHER ON MOST SHARED DAYS -- ONE BET, TWICE.', generated by feeding the top-|r| entry (COST, 0.71, correctly picked over the more negative -0.42 by absolute value) into the already-shipped correlationPairSentence (FB-11)."
       },
       "reviewer": {
         "status": "not_run",
@@ -240,7 +246,7 @@
       "id": "VIS-06",
       "dimension": "visual",
       "risk": "high",
-      "description": "CONTRIBUTION & POSITION bench capture: real contribution ranking bar with this ticker highlighted, four owner tiles (VALUE/COST BASIS/DAY $/SINCE BUY $) with real or correctly-omitted values.",
+      "description": "CONTRIBUTION & POSITION bench capture: real contribution ranking bar with this ticker highlighted, four owner tiles with real (or correctly-omitted) values.",
       "verifier": {
         "kind": "browser",
         "command": null
@@ -249,9 +255,9 @@
         "docs/phase10-baseline/section-14/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/overview-1440x900.png"],
+        "notes": "Live capture. Ranks all 13 real current holdings by real contribution (MSFT +1.6% down to INTC -3.0%), IBM highlighted in cream at real rank 11 of 13, matching the stamp. All four owner tiles render real figures (VALUE $1,773.92, COST BASIS $2,239.84, DAY $ -$37.60, SINCE BUY $ -$465.92). Bug found and fixed during this capture: the mock's fixed 120px-tall SVG viewBox assumed ~7 holdings; with 13 real holdings the rows overflowed and visually overlapped the stamp text below. Fixed by scaling the viewBox height to the real ranked-holding count (Math.max(120, 20 + ranked.length*15)) and adding min-width:0 to .inst so CSS Grid can shrink the cell instead of forcing the row wider than its column -- re-captured clean, all 13 rows legible with no overlap, and MOB-01's overflow check (raw-mobile-target-sizes.json) confirms no regression on mobile."
       },
       "reviewer": {
         "status": "not_run",
@@ -272,9 +278,9 @@
         "docs/phase10-baseline/section-14/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/overview-1440x900.png"],
+        "notes": "Live capture. Real 52-week range ($199-$332, marker at real price $222), real facts (P/E 19.5, MKT CAP $209.3B, DIV YIELD 3.01%), real analyst consensus bar (SB 9 / B 10 / H 9 / S 1, zero SS -- correctly omitted since n=0), and three real, dated, linkable news headlines (all through the existing isUsableNewsUrl filter, FB-24/FB-10 precedent) -- none of it is the mock's demo placeholder copy."
       },
       "reviewer": {
         "status": "not_run",
@@ -296,9 +302,12 @@
         "docs/phase10-baseline/section-14/raw-chart-room-text-roles.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-14/overview-1440x900.png",
+          "docs/phase10-baseline/section-14/raw-chart-room-text-roles.json"
+        ],
+        "notes": "chart-room-layout.test.ts (25/25 pass with chart-room-window.test.ts, raw-new-unit-tests.txt) source-parses the real chart-room.module.css and confirms every CHART_ROOM_TEXT_ROLES selector resolves to its assigned token, and that --type-label is declared at 12px (current production floor), never the mock's stale 11px. raw-chart-room-text-roles.json is the live-browser half, real getComputedStyle() (not source-parse) against the rendered IBM page: kicker 12px, benchHeader 15px, benchQuestion 12px, chipLabelWeight 12px -- all match their assigned tokens exactly."
       },
       "reviewer": {
         "status": "not_run",
@@ -319,9 +328,9 @@
         "docs/phase10-baseline/section-14/overview-1440x900.png"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/overview-1440x900.png"],
+        "notes": "Live capture script queried getByText('DEMO DATA') against the rendered page: 0 matches (demoStampCount:0, printed to the capture run's own stdout). The committed screenshot is visually clean of any demo-data marking -- confirms the negative capture directly, not inferred from source."
       },
       "reviewer": {
         "status": "not_run",
@@ -343,9 +352,12 @@
         "docs/phase10-baseline/section-14/raw-mobile-target-sizes.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-14/mobile-390.png",
+          "docs/phase10-baseline/section-14/raw-mobile-target-sizes.json"
+        ],
+        "notes": "Live capture at real 390x844 viewport against real IBM data. raw-mobile-target-sizes.json: 11/11 graph control buttons all >=44x44 CSS px (smallest measured exactly 44x44), horizontalOverflow:false, bodyScrollWidth===bodyClientWidth===390 -- re-measured after finding and fixing the CONTRIBUTION bench overflow bug (see VIS-06). Screenshot confirms single-column stack in source order: strip, graph, DISTRIBUTION, VS MARKET, DEPTH, MOVES WITH, CONTRIBUTION & POSITION, THE COMPANY -- matching spec section 8 exactly, all 13 real holdings legible in the contribution ranking with no clipping."
       },
       "reviewer": {
         "status": "not_run",
@@ -366,9 +378,9 @@
         "docs/phase10-baseline/section-14/raw-keyboard-operability.json"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-keyboard-operability.json"],
+        "notes": "Live keyboard test against the real rendered page: the 7D range button is a native <button> (no non-semantic handlers), .focus() moves document.activeElement to it (focusedIsSevenD:true), getComputedStyle at focus shows outlineStyle:'solid' (the CSS module's :focus-visible rule, not the browser default suppressed), and activating it (click, equivalent to a real Enter/Space key on a native button) flips aria-pressed from 'false' to 'true' after the state update flushes. All range/mode/overlay controls are plain <button type=\"button\"> elements with no tabindex overrides, so native tab order and Enter/Space activation apply uniformly."
       },
       "reviewer": {
         "status": "not_run",
@@ -389,9 +401,9 @@
         "docs/phase10-baseline/section-14/raw-privacy-regression-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-privacy-regression-test.txt"],
+        "notes": "3/3 tests pass, new file src/app/stock/[ticker]/page.test.tsx (this route had no colocated test before this section). Asserts: (1) unauthenticated renders only the login form ('Sign in to view this position', a password input, the /share link) and never contains 'CHART ROOM' or any Chart Room content, and getStockDetailData is never called -- no data fetch, no figure can leak; (2) the same holds even when OWNER_PASSWORD is unset entirely; (3) generateMetadata returns robots:{index:false,follow:false} unchanged. The route/session-gate/dynamic=force-dynamic/404-on-unheld-ticker logic in page.tsx is otherwise untouched by this section's rewrite -- only the authenticated body was replaced (spec section 2)."
       },
       "reviewer": {
         "status": "not_run",
@@ -412,9 +424,9 @@
         "docs/phase10-baseline/section-14/raw-new-unit-tests.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-new-unit-tests.txt"],
+        "notes": "25/25 tests pass across 2 files. chart-room-window.test.ts (11 tests) was written and run red before sliceToRange/alignToDates existed, per CLAUDE.md's TDD rule. chart-room-layout.test.ts (14 tests) source-parses the real stylesheet against CHART_ROOM_TEXT_ROLES. The only other new comparator in spec section 6 (MOVES WITH's top-|r| pair pick, CONTRIBUTION's descending sort) reuses already-tested logic (a plain Math.abs reduce mirroring FB-11's convention, and ContributionChart's own b.contribution-a.contribution sort) rather than introducing an untested primitive; both are additionally covered by Benches.test.tsx (BHV-05 evidence)."
       },
       "reviewer": {
         "status": "not_run",
@@ -435,9 +447,9 @@
         "docs/phase10-baseline/section-14/raw-npm-test.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-npm-test.txt"],
+        "notes": "118 test files, 631 passed, 1 intentional skip (unchanged from §13's baseline) -- up from 112 files / 583 passed at §13 acceptance, an increase from this section's 6 new test files (chart-room-window, chart-room-layout, ChartRoomHeader, ChartRoomGraph, Benches, stock/[ticker]/page) and zero regressions elsewhere."
       },
       "reviewer": {
         "status": "not_run",
@@ -458,9 +470,9 @@
         "docs/phase10-baseline/section-14/raw-npm-build.txt"
       ],
       "implementer": {
-        "status": "not_run",
-        "evidence": [],
-        "notes": null
+        "status": "pass",
+        "evidence": ["docs/phase10-baseline/section-14/raw-npm-build.txt"],
+        "notes": "Exit 0, 18/18 routes (identical list to §13's accepted build, /stock/[ticker] reused not duplicated), /share smoke PASS."
       },
       "reviewer": {
         "status": "not_run",

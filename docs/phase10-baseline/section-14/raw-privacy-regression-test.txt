@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /Users/devanarora/Desktop/portfolio-tracker
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  20:32:50
+   Duration  239ms (transform 84ms, setup 0ms, import 40ms, tests 108ms, environment 0ms)
+

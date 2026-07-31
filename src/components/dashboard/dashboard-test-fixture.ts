@@ -82,4 +82,17 @@ export const dashboardTestFixture = {
   orreryBelt: { planetTickers: ["IBM"], beltTickers: [] },
   twr7d: -0.01,
   voo7d: 0.005,
+  vooCloseHistory: [
+    { date: "2026-06-24", price: 520 },
+    { date: "2026-07-23", price: 529.2 },
+  ],
+  bookGrowthIndex: [
+    { date: "2026-06-24", index: 1 },
+    { date: "2026-07-23", index: 0.971 },
+  ],
+  firstTradeDateByTicker: { IBM: "2026-01-05", MSFT: "2026-02-10" },
+  trades: [
+    { date: "2026-01-05", ticker: "IBM", action: "buy", shares: 10, price: 200 },
+    { date: "2026-02-10", ticker: "MSFT", action: "buy", shares: 5, price: 400 },
+  ],
 } satisfies DashboardData;

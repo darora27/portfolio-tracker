@@ -6,14 +6,19 @@ import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getStockDetailData } from "@/lib/stock-data";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { NavBar } from "@/components/layout/NavBar";
-import { StockHeader } from "@/components/stock/StockHeader";
-import { StockPriceChart } from "@/components/stock/StockPriceChart";
-import { FundamentalsRow } from "@/components/stock/FundamentalsRow";
-import { AnalystConsensus } from "@/components/stock/AnalystConsensus";
-import { StockNews } from "@/components/stock/StockNews";
-import { CorrelationRow } from "@/components/stock/CorrelationRow";
-import { StatCard } from "@/components/ui/StatCard";
-import { formatCurrency, formatSignedPercent } from "@/lib/format";
+import { ChartRoomHeader } from "@/components/observatory/chart-room/ChartRoomHeader";
+import { ChartRoomGraph } from "@/components/observatory/chart-room/ChartRoomGraph";
+import { DistributionBench } from "@/components/observatory/chart-room/DistributionBench";
+import { VsMarketBench } from "@/components/observatory/chart-room/VsMarketBench";
+import { DepthBench } from "@/components/observatory/chart-room/DepthBench";
+import { MovesWithBench } from "@/components/observatory/chart-room/MovesWithBench";
+import { ContributionBench } from "@/components/observatory/chart-room/ContributionBench";
+import { CompanyBench } from "@/components/observatory/chart-room/CompanyBench";
+import chartRoomStyles from "@/components/observatory/chart-room/chart-room.module.css";
+import { companyNameForTicker } from "@/lib/observatory/orrery";
+import { priceReturns } from "@/lib/math/returns";
+import { trailingReturn } from "@/lib/portfolio/trailing-return";
+import { daysBetween, todayInTimeZone } from "@/lib/date";
 
 // Reflects live DB + Finnhub state, never static. Owner-gated — never
 // part of the public /share surface.
@@ -56,63 +61,73 @@ export default async function StockDetailPage({ params }: { params: Promise<{ ti
   const data = await getStockDetailData(ticker);
   if (!data) notFound();
 
-  const hasRecommendation = data.recommendation !== null && data.recommendation.length > 0;
+  const priceIndexHistory = data.priceHistory.map((p) => ({ date: p.date, index: p.price }));
+  const weeklyReturn = trailingReturn(priceIndexHistory, 7);
+  const monthlyReturn = trailingReturn(priceIndexHistory, 30);
+  const today = todayInTimeZone("America/New_York");
+  const earningsInDays = data.nextEarnings ? daysBetween(today, data.nextEarnings.date) : null;
+
+  const firstTradeDate = data.firstTradeDate;
+  const sinceBuyReturns = firstTradeDate
+    ? data.dailyReturns.filter((r) => r.date >= firstTradeDate)
+    : data.dailyReturns;
+  const vooDailyReturns = priceReturns(data.vooCloseHistory);
 
   return (
     <>
       <NavBar variant="private" />
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="space-y-8">
-          <StockHeader
-            ticker={data.ticker}
-            sector={data.sector}
-            aiExposure={data.aiExposure}
-            value={data.value}
-            shares={data.shares}
-            weight={data.weight}
+      <div className={chartRoomStyles.chartRoom}>
+        <ChartRoomHeader
+          ticker={data.ticker}
+          companyName={companyNameForTicker(data.ticker)}
+          dayPct={data.dayPct}
+          weight={data.weight}
+          weeklyReturn={weeklyReturn}
+          monthlyReturn={monthlyReturn}
+          sinceBuyPct={data.gainPct}
+          earningsInDays={earningsInDays}
+          sessionCount={data.priceHistory.length}
+        />
+
+        <main className={chartRoomStyles.main}>
+          <ChartRoomGraph
+            priceHistory={data.priceHistory}
+            vooCloseHistory={data.vooCloseHistory}
+            bookGrowthIndex={data.bookGrowthIndex}
+            trades={data.trades}
+            costPerShare={data.costPerShare}
+            firstTradeDate={data.firstTradeDate}
           />
 
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <StatCard
-              label="Since purchase"
-              value={data.gain !== null ? data.gain : "—"}
-              format={data.gain !== null ? "signedUsd" : undefined}
-              sublabel={data.gainPct !== null ? formatSignedPercent(data.gainPct, 1) : undefined}
+          <div className={chartRoomStyles.bench}>
+            <DistributionBench dailyReturns={sinceBuyReturns} volatilityPct={data.volatilityPct} />
+            <VsMarketBench
+              dailyReturns={sinceBuyReturns}
+              vooDailyReturns={vooDailyReturns}
+              betaVsVoo={data.betaVsVoo}
+              correlationWithVoo={data.correlationWithVoo}
             />
-            <StatCard
-              label="Day"
-              value={data.day !== null ? data.day : "—"}
-              format={data.day !== null ? "signedUsd" : undefined}
-              sublabel={data.dayPct !== null ? formatSignedPercent(data.dayPct, 2) : undefined}
-            />
-            <StatCard
-              label="Cost basis"
-              value={data.costBasis}
-              format="usd"
-              sublabel={`${formatCurrency(data.costPerShare)}/share`}
-            />
-            <StatCard
-              label="Contribution"
-              value={data.contribution !== null ? data.contribution : "—"}
-              format={data.contribution !== null ? "signedPct" : undefined}
-            />
+            <DepthBench dailyReturns={sinceBuyReturns} />
+            <MovesWithBench ticker={data.ticker} correlationRow={data.correlationRow} />
           </div>
 
-          <section>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
-              Price since purchase
-            </h2>
-            <StockPriceChart data={data.priceHistory} costPerShare={data.costPerShare} />
-          </section>
-
-          <FundamentalsRow metric={data.metric} price={data.price} positionValue={data.value} />
-
-          {hasRecommendation && <AnalystConsensus trend={data.recommendation![0]} />}
-
-          {data.news.length > 0 && <StockNews items={data.news} />}
-
-          <CorrelationRow cells={data.correlationRow} />
-        </div>
+          <div className={chartRoomStyles.plates}>
+            <ContributionBench
+              ticker={data.ticker}
+              contributionRanking={data.contributionRanking}
+              value={data.value}
+              costBasis={data.costBasis}
+              day={data.day}
+              gain={data.gain}
+            />
+            <CompanyBench
+              metric={data.metric}
+              price={data.price}
+              recommendation={data.recommendation?.[0] ?? null}
+              news={data.news}
+            />
+          </div>
+        </main>
       </div>
     </>
   );

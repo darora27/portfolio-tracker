@@ -1,0 +1,51 @@
+{
+  "title": "30 DAYS · ▼ 22.5%",
+  "buttons": [
+    {
+      "label": "7D",
+      "ariaPressed": "false"
+    },
+    {
+      "label": "30D",
+      "ariaPressed": "true"
+    },
+    {
+      "label": "SINCE BUY",
+      "ariaPressed": "false"
+    },
+    {
+      "label": "MAX",
+      "ariaPressed": "false"
+    },
+    {
+      "label": "RETURN",
+      "ariaPressed": "true"
+    },
+    {
+      "label": "PRICE",
+      "ariaPressed": "false"
+    },
+    {
+      "label": "VOO · SAME PERIOD",
+      "ariaPressed": "true"
+    },
+    {
+      "label": "BOOK · SAME PERIOD",
+      "ariaPressed": "false"
+    },
+    {
+      "label": "DEPTH",
+      "ariaPressed": "false"
+    },
+    {
+      "label": "TRADES",
+      "ariaPressed": "false"
+    },
+    {
+      "label": "COST OWNER",
+      "ariaPressed": "false"
+    }
+  ],
+  "tracePathPointCount": 21,
+  "vooOverlayRendered": true
+}

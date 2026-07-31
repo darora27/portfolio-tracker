@@ -1,0 +1,12 @@
+{
+  "buttonCount": 11,
+  "allAtLeast44": true,
+  "smallest": {
+    "label": "7D",
+    "width": 44,
+    "height": 44
+  },
+  "horizontalOverflow": false,
+  "bodyScrollWidth": 390,
+  "bodyClientWidth": 390
+}

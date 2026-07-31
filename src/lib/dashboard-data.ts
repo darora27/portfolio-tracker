@@ -126,6 +126,14 @@ export type DashboardData = {
   /** Trailing 7-calendar-day return, for the surface tier's weeklySubline. Null when history isn't old enough yet. */
   twr7d: number | null;
   voo7d: number | null;
+  /** §14: raw VOO close-price history (not indexed), for the Chart Room's VOO · SAME PERIOD overlay. */
+  vooCloseHistory: { date: string; price: number }[];
+  /** §14: the portfolio's own TWR growth index (started at 1, unmultiplied by 100), for the Chart Room's BOOK · SAME PERIOD overlay. */
+  bookGrowthIndex: { date: string; index: number }[];
+  /** §14: each currently-held ticker's first-ever trade date, for the Chart Room's SINCE BUY range/bench window. */
+  firstTradeDateByTicker: Record<string, string>;
+  /** §14: every trade for currently-held tickers, for the Chart Room graph's TRADES overlay. */
+  trades: { date: string; ticker: string; action: string; shares: number; price: number }[];
 };
 
 /**
@@ -532,5 +540,17 @@ export async function getDashboardData(): Promise<DashboardData> {
     orreryBelt,
     twr7d,
     voo7d,
+    vooCloseHistory: vooCloses,
+    bookGrowthIndex: growthIndexSeries,
+    firstTradeDateByTicker: Object.fromEntries(
+      [...firstTradeByTicker.entries()].map(([ticker, info]) => [ticker, info.date]),
+    ),
+    trades: (trades ?? []).map((t) => ({
+      date: t.date,
+      ticker: t.ticker,
+      action: t.action,
+      shares: t.shares,
+      price: t.price,
+    })),
   };
 }

@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§14 — The Chart Room — individual stock analytics**
 - Managed range: §2–§18
-- Stage: `implement`
-- Role: `codex_implementation`
+- Stage: `review`
+- Role: `claude_lead`
 - Status: `ready`
-- Next actor: `codex`
-- Expected actor for this stage: `codex`
+- Next actor: `claude`
+- Expected actor for this stage: `claude`
 - Stop reason: none
 
 The current state is before the
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `dec8c2a7ffd18dc1ee5e63a39125c94853e0d1bcddbff73f47a939c0eacd4e14`
+- `PHASE10_STATE.json`: `29c52b74ce221347ca784416b2a87d9b82a8957531be214e3feafe38071083bf`
 - `PHASE10.md`: `1d6a648ab1528ca8e7a7214268431dcb7563697834282f668f2d82f3f394db3d`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

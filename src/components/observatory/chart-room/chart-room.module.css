@@ -1,0 +1,366 @@
+/* §14 The Chart Room, stage one. Authority: UNIVERSE_STOCK_LAB.html.
+   Type ramp values are current production (12px --type-label floor,
+   post-FB-05) -- the mock's own inline :root predates that fix and is not
+   reused verbatim. Gain/loss/flat/trace colors are the mock's own values,
+   already firewall-checked in UNIVERSE_IDEAS_3.md (gain #63ef98 and loss
+   #ff665f both sit inside that document's approved gain/loss hue ranges). */
+.chartRoom {
+  --type-hero: 56px;
+  --type-readout: 24px;
+  --type-title: 15px;
+  --type-body: 13px;
+  --type-label: 12px;
+  --void: #020706;
+  --glass: #010806;
+  --cream: #fff0cf;
+  --teletype: #f6d493;
+  --amber: #ffd68c;
+  --trace: #e6a14d;
+  --baseline: #f4dba8;
+  --word: #d5ba8c;
+  --gain: #63ef98;
+  --loss: #ff665f;
+  --flat: #e3b65c;
+  --slate: #66756f;
+  --phosphor: #9de7b2;
+  --benchmark: #5fa8c9;
+  --umber: #21120d;
+  position: relative;
+  min-height: 100vh;
+  background: var(--void);
+  color: var(--cream);
+  font: 400 var(--type-body) / 1.45 var(--font-mono, ui-monospace, monospace);
+}
+
+.strip {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 1rem;
+  align-items: center;
+  min-height: 64px;
+  padding: 0.5rem 0.9rem;
+  background: var(--glass);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+.kicker {
+  color: var(--word);
+  font-size: var(--type-label);
+  letter-spacing: 0.22em;
+}
+.idplate b {
+  display: block;
+  color: var(--cream);
+  font-size: var(--type-title);
+  letter-spacing: 0.08em;
+}
+.hero {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  justify-self: end;
+}
+.hero span {
+  color: var(--word);
+  font-size: var(--type-label);
+  letter-spacing: 0.1em;
+}
+.hero strong {
+  font-size: var(--type-readout);
+  font-variant-numeric: tabular-nums;
+}
+.chips {
+  grid-column: 1 / -2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  padding-bottom: 0.2rem;
+}
+.chips span {
+  color: var(--word);
+  font-size: var(--type-label);
+  letter-spacing: 0.09em;
+}
+.chips b {
+  color: #f5ead1;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.strip nav {
+  grid-column: -2 / -1;
+  display: flex;
+  gap: 1rem;
+  justify-self: end;
+}
+.strip nav a {
+  color: var(--baseline);
+  font-size: var(--type-label);
+  letter-spacing: 0.12em;
+  text-decoration: none;
+}
+.strip nav a:hover {
+  color: var(--cream);
+}
+
+.main {
+  width: min(1360px, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 1.2rem 0 4rem;
+}
+
+.inst {
+  position: relative;
+  /* Grid items refuse to shrink below their content's min-content size by
+     default -- an SVG with an explicit intrinsic size (e.g. a fixed-height
+     override) would otherwise force the whole .bench/.plates track wider
+     than the viewport instead of scaling down with it. */
+  min-width: 0;
+  margin-bottom: 1rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(213, 186, 140, 0.32);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(35, 72, 58, 0.14), transparent 60%),
+    var(--glass);
+}
+.instHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.22);
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.6rem;
+}
+.instHead h2 {
+  color: var(--cream);
+  font-size: var(--type-title);
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+.instHead h2 i {
+  font-style: normal;
+  color: var(--gain);
+}
+.instHead h2 i[data-neg] {
+  color: var(--loss);
+}
+.q {
+  color: var(--word);
+  font-size: var(--type-label);
+  letter-spacing: 0.06em;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+}
+.controls button {
+  min-height: 30px;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid rgba(213, 186, 140, 0.35);
+  background: transparent;
+  color: var(--word);
+  font: 600 var(--type-label) var(--font-mono, ui-monospace, monospace);
+  letter-spacing: 0.08em;
+}
+.controls button[aria-pressed="true"] {
+  color: var(--glass);
+  background: var(--baseline);
+  border-color: var(--baseline);
+}
+.controls button:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+}
+.controls .owner {
+  border-style: dashed;
+  color: var(--amber);
+}
+.controls .sep {
+  align-self: center;
+  color: rgba(213, 186, 140, 0.4);
+  font-size: var(--type-label);
+}
+
+.chartRoom svg text {
+  font: 600 var(--type-label) var(--font-mono, ui-monospace, monospace);
+  fill: var(--word);
+}
+.hair {
+  stroke: rgba(255, 240, 207, 0.1);
+}
+.base {
+  stroke: var(--baseline);
+  stroke-width: 1.5;
+}
+.trace {
+  stroke: var(--trace);
+  stroke-width: 2;
+  fill: none;
+}
+.benchBar {
+  fill: var(--trace);
+}
+.bmk {
+  stroke: var(--benchmark);
+  stroke-width: 1.6;
+  stroke-dasharray: 5 4;
+  fill: none;
+}
+.book {
+  stroke: var(--teletype);
+  stroke-width: 1.4;
+  stroke-dasharray: 2 3;
+  fill: none;
+}
+.depthfill {
+  fill: rgba(217, 111, 35, 0.16);
+}
+.peak {
+  stroke: rgba(255, 214, 140, 0.55);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  fill: none;
+}
+.gainFill {
+  fill: var(--gain);
+}
+.lossFill {
+  fill: var(--loss);
+}
+
+.bench {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.bench .inst {
+  margin: 0;
+}
+.stamp {
+  margin-top: 0.4rem;
+  color: var(--word);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+}
+.sentence {
+  margin-top: 0.35rem;
+  color: #f5ead1;
+  font-size: var(--type-body);
+}
+
+.plates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.tile {
+  padding: 0.5rem;
+  border: 1px dashed rgba(255, 214, 140, 0.45);
+}
+.tile span {
+  display: block;
+  color: var(--word);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+}
+.tile b {
+  color: var(--amber);
+  font-size: var(--type-readout);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+.facts .tile {
+  border-style: solid;
+  border-color: rgba(213, 186, 140, 0.3);
+}
+.facts .tile b {
+  color: #f5ead1;
+}
+.newslist {
+  list-style: none;
+  margin-top: 0.2rem;
+}
+.newslist li {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.32rem 0;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.14);
+}
+.newslist time {
+  color: var(--word);
+  font-size: var(--type-label);
+}
+.newslist a {
+  color: #f5ead1;
+  font-size: var(--type-body);
+  text-decoration: none;
+}
+.newslist a:hover {
+  text-decoration: underline;
+}
+.ownertag {
+  color: var(--amber);
+  font-size: var(--type-label);
+  letter-spacing: 0.1em;
+  border: 1px dashed rgba(255, 214, 140, 0.5);
+  padding: 0.05rem 0.35rem;
+}
+
+.empty {
+  color: var(--slate);
+  font-size: var(--type-body);
+  padding: 0.6rem 0;
+}
+
+/* MOB-01: 390px single-column collapse, every interactive control >=44x44
+   CSS px -- the mock's own 30px min-height is a demo-viewport artifact,
+   raised here rather than shipped as-is. */
+@media (max-width: 480px) {
+  .main {
+    width: calc(100% - 1.5rem);
+    padding: 0.8rem 0 3rem;
+  }
+  .strip {
+    grid-template-columns: 1fr auto;
+  }
+  .chips {
+    grid-column: 1 / -1;
+  }
+  .strip nav {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+  .bench {
+    grid-template-columns: 1fr;
+  }
+  .plates {
+    grid-template-columns: 1fr;
+  }
+  .tiles,
+  .facts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .controls button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
