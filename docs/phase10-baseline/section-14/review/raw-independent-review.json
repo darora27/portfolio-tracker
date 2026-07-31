@@ -1,0 +1,75 @@
+{
+  "prv01_unauth_has_chart_room": false,
+  "prv01_unauth_has_login_hint": true,
+  "demoStampCount": 0,
+  "graphState": {
+    "title": "30 DAYS · ▼ 22.5%",
+    "buttons": [
+      {
+        "label": "7D",
+        "ariaPressed": "false"
+      },
+      {
+        "label": "30D",
+        "ariaPressed": "true"
+      },
+      {
+        "label": "SINCE BUY",
+        "ariaPressed": "false"
+      },
+      {
+        "label": "MAX",
+        "ariaPressed": "false"
+      },
+      {
+        "label": "RETURN",
+        "ariaPressed": "true"
+      },
+      {
+        "label": "PRICE",
+        "ariaPressed": "false"
+      },
+      {
+        "label": "VOO · SAME PERIOD",
+        "ariaPressed": "true"
+      },
+      {
+        "label": "BOOK · SAME PERIOD",
+        "ariaPressed": "false"
+      },
+      {
+        "label": "DEPTH",
+        "ariaPressed": "false"
+      },
+      {
+        "label": "TRADES",
+        "ariaPressed": "false"
+      },
+      {
+        "label": "COST OWNER",
+        "ariaPressed": "false"
+      }
+    ],
+    "tracePathPointCount": 21,
+    "vooOverlayRendered": true
+  },
+  "contributionOverflowCheck": {
+    "found": true,
+    "svgHeight": 222.3515625,
+    "svgOverflowsSection": false,
+    "bodyScrollWidth": 1440,
+    "bodyClientWidth": 1440
+  },
+  "textRoles": {
+    "kicker": "12px",
+    "typeLabelCustomProp": ""
+  },
+  "mobileCheck": {
+    "buttonCount": 12,
+    "undersizedCount": 0,
+    "undersized": [],
+    "bodyScrollWidth": 390,
+    "bodyClientWidth": 390,
+    "horizontalOverflow": false
+  }
+}

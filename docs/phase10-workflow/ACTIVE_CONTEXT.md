@@ -9,9 +9,9 @@ them.
 ## Live route
 
 - Phase: 10
-- Current section: **§14 — The Chart Room — individual stock analytics**
+- Current section: **§15 — Mission Control content rework**
 - Managed range: §2–§18
-- Stage: `review`
+- Stage: `specify`
 - Role: `claude_lead`
 - Status: `ready`
 - Next actor: `claude`
@@ -34,7 +34,7 @@ Always read:
 
 Then read the current, specifically routed sources:
 
-- `docs/phase10-workflow/specs/section-14.md`
+None recorded.
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -48,7 +48,7 @@ payload:
 
 ## Current section conditions
 
-Roadmap title (PHASE10.md §14): 'The Chart Room — individual stock analytics'. Promoted ahead of the Mission Control rework by owner ruling f392a049d4a4a9e49dda1404890d5941b00040ff on 2026-07-30 -- previously this was stage two of a combined §14; it is now its own section because it had slipped four owner reports behind content work that was already wiring up existing components. Authority: UNIVERSE_STOCK_LAB.html (repo root, tracked; the owner's same-day correction confirmed all three copies -- base, _2, _3 -- exist and are byte-identical, md5 2879d448097aa40683f9c33c5bfeaf0c; an earlier ledger note claiming a copy was missing was false). Stage one per PHASE10.md §14 (this section's scope): header stat line; the full-scale graph with 7D/30D/SINCE BUY/MAX detents, RETURN/PRICE modes, and VOO SAME PERIOD / BOOK SAME PERIOD / DEPTH / TRADES / COST overlays; the six benches (DISTRIBUTION, VS MARKET, DEPTH, MOVES WITH, CONTRIBUTION & POSITION, THE COMPANY), each keeping its plain-English question. Stage two (a HOLDINGS row click, an ORBITS ring/blip click, plus FULL ANALYSIS ▸) is explicitly §15's work per PHASE10.md's own text and is out of scope here. Two things the mock says about itself the build must honour: marked DEMO DATA - ROUND 6 MOCK - NOT LIVE, so every figure comes from real data or is absent (the stamp itself must not ship); §3 FLIGHT MODEL LIVE is the already-confirmed cursor physics, not new work. Not a rebuild: the underlying math/data of five of six benches maps onto already-tested lib functions (correlationMatrix, perHoldingRisk, computeBenchmarkComparison, drawdown, annualizedVolatility) and the existing /stock/[ticker] route's getStockDetailData -- the layout is new, most of the maths is not. main is GREEN at this section start: npm test 112/112 files, 583/584 tests (1 intentional skip), npm run build exit 0, both re-run independently by the §13 accept turn at HEAD 33789ee; this specify turn re-confirmed git diff --name-only 33789ee HEAD -- src/ public/ package.json package-lock.json scripts/ is still empty. READ BEFORE SPECIFYING §15: PHASE10_STATE.json's top-level roadmap_numbering_conflict key -- PHASE10.md has a duplicate '## §15.' heading introduced by the same owner commit that created this section; it does not block §14 and was not touched by this turn.
+Roadmap title per the §13-acceptance split: 'Mission Control content rework', plus the Chart Room's stage two (the doors: a HOLDINGS row click, an ORBITS ring/blip click, FULL ANALYSIS ▸), which PHASE10.md's own text binds to this section. FIRST ACTION BEFORE ANYTHING ELSE: resolve PHASE10_STATE.json's top-level roadmap_numbering_conflict key -- PHASE10.md currently has two '## §15.' headings (the pre-existing /research section and the new Mission Control-rework section created by owner commit f392a049). That key's own must_resolve_before field names this exact turn. Authority once resolved: MISSION_CONTROL_ARCHITECTURE.md §4-§6 for the content rework; §14's stage-two doors per PHASE10.md and the §14 design proof's freeze-boundary note. main is GREEN at this section start: npm test 118/118 files, 631/632 tests (1 intentional skip), npm run build exit 0, both independently re-run by the §14 accept turn at HEAD 739049d. OWNER_FEEDBACK_LEDGER.md board-debt: FB-27, FB-28, FB-29, FB-30, FB-32, FB-33, FB-35 (7 rows) are already scheduled here per §14's own spec-time board (docs/phase10-workflow/specs/section-14.md §0); combined with whatever remains open elsewhere this is far past the 5-row landing-section threshold, so this section is a landing section by the ledger's own rule 2 unless the owner overrides in writing -- re-count the live board before scoping, do not assume the §14-spec-time count is still exact.
 
 Open bounded findings:
 
@@ -56,7 +56,7 @@ None.
 
 Acceptance ledger:
 
-- `docs/phase10-workflow/acceptance/section-14.json`
+- Created by the lead with the section specification.
 
 ## Global gates
 
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `29c52b74ce221347ca784416b2a87d9b82a8957531be214e3feafe38071083bf`
+- `PHASE10_STATE.json`: `e18545cc8e000e4d94665f0d156a1cd22ac4a7c34e3e4ccb1ca6d8a6df9661e5`
 - `PHASE10.md`: `1d6a648ab1528ca8e7a7214268431dcb7563697834282f668f2d82f3f394db3d`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

@@ -1,0 +1,9 @@
+{
+  "focusInfo": {
+    "tag": "BUTTON",
+    "text": "7D",
+    "outlineStyle": "solid",
+    "ariaPressedBefore": "false"
+  },
+  "ariaPressedAfterEnter": "true"
+}
