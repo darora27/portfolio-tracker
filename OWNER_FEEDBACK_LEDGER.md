@@ -64,6 +64,36 @@ before the link is shared.
 Re-deploying is **owner-gated**. It is not a section outcome, not an agent
 decision, and not implied by a green validate.
 
+## 1c. INTAKE — July 31, 2026, sixth written round
+
+Transcribed under rule 1 (intake in the same turn) **before** analysis, so the
+record exists independently of any conclusion drawn from it. Source:
+`feedback 7 31.docx`, 12 items + 9 screenshots. Grouping and design are
+delegated to Fable — see `FABLE_ROUND7_BRIEF.md`. **This block is the record,
+not the analysis; do not treat the dispositions below as a design.**
+
+| # | His words (verbatim, abbreviated only where marked …) | Disposition |
+|---|---|---|
+| 1 | *"When the market is closed, I do not want the planets to just not orbit. I want them to display whatever trend correlated to how the market closed the prior day and then when the market opens, it automatically changes to the updated daily trend"* | **joins FB-26** (weekly→daily), 2nd report. Likely the same root cause as the `TODAY 0.0%` defect — see FB-38. |
+| 2 | *"I still don't see any satelites or anything else creative that would make the solar system look better"* | **FB-38 new** — 2nd report |
+| 3 | *"You removed the star grid background from before but now it looks too plane. Come up with something much more creative"* | **FB-02 → `regressed`**, 5th report. Critical detail: a change *removed a star grid he liked*. This is a regression, not an unmet request. |
+| 4 | *"…the planet dashboard needs much more information in a bigger font. I can hardly read what is on the dashboard and it all looks heavily designed by artificial intelligence it does not look unique"* | **FB-05 → `regressed`**, 7th report. New surface named (planet terminal) + a new axis: *generic-looking*, not just small. |
+| 5 | *"…the graphs need to be better or easier on the eyes… you overcomplicated the graph with buttons that don't matter like depth and cost… on the top of the screen I see tabs for overview, dashboard, history, trades, research displaying the old UI which I do not like."* | **FB-39 new** (Chart Room graph legibility + junk controls) · tab half joins item 11 |
+| 6 | *(images 1–4)* *"These are screenshots from previous iterations… I like how the information is displayed much more in this then compared to what you have made so far."* | **FB-40 new — the structural one.** 2nd report of "the old dashboard was better content-wise." |
+| 7 | *(image 5)* *"To some degree I like the style of this but I hate the functionality of it. It is hard to read and it's hard to interpret. You need to change it back to what it was before…"* | **FB-40**, RETURNS section specifically |
+| 8 | *(image 6)* *"I want the orbits to all be different colors. I also want the circles on them to spin based on their daily trend or last recorded daily trend but they can move very very slow. Also ASML is covered up."* | **FB-41 new.** ⚠ Collides with the Fraunhofer reservation — needs an explicit decision, not a silent break or a silent refusal. ASML occlusion is a separate defect. |
+| 9 | *(image 7)* *"You can hardly read any of this stuff"* | **FB-05 → `regressed`**, holdings table surface |
+| 10 | *(image 8)* *"There is no where near enough news. I want the major headlines and daily reports. All of them. Biggest moves. All of that stuff but I want it in a different section"* | **FB-42 new.** Note: reverses the July 30 decision to demote NEWS to a footer line. Architecture change, owner-initiated. |
+| 11 | *(image 9)* *"This stuff is garbage. I KEEP TELLING YOU THAT WE DO NOT NEED THOSE TABS AT THE TOP. The only reason why tabs at the top would be useful was if we were switching to another page but all of those tabs are LOCATED ON THE SAME PAGE. I would be okay if the tabs took you to different pages maybe one showing history and one showing research."* | **FB-08 → `regressed`**, 3rd report — and note FB-08 was *closed* on his own "B is fine" on Jul 30. He approved a treatment, then rejected the concept. The row closed on the wrong question. |
+| 12 | *"…I like the looks of this website a lot better but everything is just garbage now and it feels like you have no clue what direction I want this project to actually go in."* | **FB-40.** Two separable claims: the *look* is better, the *content and legibility* are worse. |
+
+**FB-38** — no satellites or creative objects in the system · 2 reports · open · §13 · closes on his sentence
+**FB-39** — Chart Room graphs hard to read; `depth`/`cost` controls are noise · 1 · open · §14 · closes on his sentence
+**FB-40** — **the old dashboard displayed information better** · 2 · open · §15 · the structural row; see `FABLE_ROUND7_BRIEF.md` §1
+**FB-41** — orbits should each be a different colour; markers spin on daily trend, very slowly; ASML is occluded · 1 · open · §13 · needs a Fraunhofer decision first
+**FB-42** — news is far too thin; wants headlines, daily reports, biggest moves, in its own section · 1 · open · §15 · reverses the Jul 30 demotion, at his request
+**FB-43** — `TODAY 0.0%` shown for all 13 holdings · 1 · open · **suspected `CLAUDE.md` violation** ("never show zeros as if they were real"); probable shared root cause with FB-26/item 1 · §13 · closes on a capture showing a real or explicitly-stale value
+
 ## 2. The board
 
 | ID | Item (his words, abbreviated) | Reports | Status | Design | Scheduled | Closes when |
