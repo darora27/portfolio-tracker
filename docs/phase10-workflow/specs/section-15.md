@@ -17,7 +17,8 @@ assembled from the architecture document and re-derives nothing from it.
 
 | Row | Disposition |
 |---|---|
-| **FB-36** — the app takes a while to load; 26 MB of planet textures | **DEFERRED from §15 — DJA.** Not a Mission Control content item, and §15 is mid-flight. It is a loading-strategy change scheduled to §16, and the progressive path is already half-built: `public/textures/planets/thumbs/` holds 32px versions that nothing in `src/` references. |
+| **FB-36** — painfully slow load: 18.2 s to first byte | **DEFERRED from §15 — DJA.** Scheduled §16. Root cause measured live: `/share` is `force-dynamic` and blocks first byte on ~24 Finnhub calls. Not a Mission Control content item. |
+| **FB-37** — 21.8 MB texture payload | **DEFERRED from §15 — DJA.** Scheduled §16, after FB-36. Split out when measurement showed textures were not in the critical path at all. |
 
 
 ## 0. The ledger board
