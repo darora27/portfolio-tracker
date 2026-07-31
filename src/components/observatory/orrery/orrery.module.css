@@ -4301,3 +4301,49 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* R7 feedback, Jul 31 — the risk section, with scales that mean something. */
+.meterScale {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--universe-cabinet-window-word);
+  font: 400 var(--type-label) var(--font-mono, monospace);
+  font-style: normal;
+}
+
+.riskChart {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 420px;
+  overflow: visible;
+}
+
+.riskZero {
+  stroke: rgba(244, 240, 223, 0.4);
+  stroke-width: 1;
+}
+
+.drawdownArea {
+  fill: rgba(255, 102, 95, 0.16);
+}
+
+.drawdownLine {
+  fill: none;
+  stroke: var(--universe-signal-loss);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.dailyBar[data-signal="up"] {
+  fill: var(--universe-signal-gain);
+}
+
+.dailyBar[data-signal="down"] {
+  fill: var(--universe-signal-loss);
+}
+
+.riskAxisLabel {
+  fill: var(--universe-cabinet-window-word);
+  font: 500 var(--type-label) var(--font-mono, monospace);
+}

@@ -94,6 +94,27 @@ not the analysis; do not treat the dispositions below as a design.**
 **FB-42** — news is far too thin; wants headlines, daily reports, biggest moves, in its own section · 1 · open · §15 · reverses the Jul 30 demotion, at his request
 **FB-43** — `TODAY 0.0%` shown for all 13 holdings · 1 · open · **suspected `CLAUDE.md` violation** ("never show zeros as if they were real"); probable shared root cause with FB-26/item 1 · §13 · closes on a capture showing a real or explicitly-stale value
 
+## 1d. INTAKE — July 31, 2026 (evening), first look at R7 W1–W4
+
+Screenshots of Mission Control after W1–W4 landed. Five items, all addressed
+the same evening; recorded here because rule 1 does not bend for same-turn
+fixes.
+
+| # | His words | Disposition |
+|---|---|---|
+| 1 | *"any number in the table that is positive needs to be green and any number that is negative needs to be red"* | **landed.** Signed cells carry their sign as data; CSS colours them from the signal palette. This is what the Fraunhofer reservation was held open for. |
+| 2 | *"the graph is just way too small make it better"* | **landed.** Root cause: a fixed 170px height against a 640-wide viewBox made the browser letterbox the plot and centre it, leaving wide empty margins. Now holds its aspect ratio and fills the room. |
+| 3 | *"I want a pie chart rather then mix. sector breakdown and AI exposure is fine"* | **landed.** Donut with identity-coloured slices and a legend; sector and AI blocks untouched, as he said. |
+| 4 | *"i dont know what composition since start is supposed to mean"* | **landed.** The heading named its own mechanism, not its content. Now "SHARE OF THE BOOK · OVER TIME" with one plain line under it. |
+| 5 | *"all the risk data is not displayed correctly"* | **landed — he was right, three separate faults.** Meters scaled by bare multipliers (vol ×220, beta ×50, off-high ×300) with no stated top, so beta 2.44 and off-high 12.3% both pinned at full regardless of value. Drawdown drawn with the row sparkline, which has no zero line — and a drawdown series is defined by its distance below zero. "Daily returns" drawn as a LINE, coloured by comparing its last point to its first, which means nothing for a return series; they are discrete signed events, so bars. All three replaced with stated scales and real baselines. |
+| — | *"I am also not sure what exactly you wanted me to look at after this run"* | **fair, and mine.** Asking him to look without naming what to look for wastes his time. Future rounds name the specific thing per item. |
+
+**Found while fixing, not reported by him:** the book's line measured 4.8° from
+VOO's generated gold — near enough to read as the same line. W2's collision
+check covered the thirteen holdings but not the book's own colour, which is
+not a holding and so was never in the checked set. The book now takes the
+room's cream.
+
 ## 2. The board
 
 | ID | Item (his words, abbreviated) | Reports | Status | Design | Scheduled | Closes when |

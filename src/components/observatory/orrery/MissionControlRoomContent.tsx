@@ -33,10 +33,9 @@ const BENCHMARK_CHART_KEYS: Record<BenchmarkTicker, "vooIndex" | "vtiIndex" | "x
  * the same reason: it is an aggregate, not a company.
  *
  * Jul 31: the book's old amber measured 4.8 degrees from VOO's generated
- * gold — near enough
- * to read as the same line. The book is the subject of the chart, so it takes
- * the cream the room already uses for primary ink rather than competing for a
- * hue. Measured, not eyeballed.
+ * gold — near enough to read as the same line. It now takes the cream the
+ * room already uses for primary ink rather than competing for a hue.
+ * Measured, not eyeballed.
  */
 const BOOK_LINE_COLOR = "#F4F0DF";
 const OTHER_LINE_COLOR = "#8A8880";
@@ -127,15 +126,21 @@ function CompositionPie({
   if (total <= 0) return null;
   const RADIUS = 82;
   const INNER = 48;
-  let angle = -Math.PI / 2; // start at twelve o'clock
+  const START = -Math.PI / 2; // twelve o'clock
 
-  const arcs = slices.map((slice) => {
+  const point = (radius: number, at: number) =>
+    `${(100 + Math.cos(at) * radius).toFixed(2)} ${(100 + Math.sin(at) * radius).toFixed(2)}`;
+
+  // Each slice's start is the sum of the weights before it. Derived rather
+  // than accumulated in a mutable variable, so the arcs depend only on the
+  // input and a re-render cannot start from a stale angle.
+  const arcs = slices.map((slice, index) => {
+    const before = slices
+      .slice(0, index)
+      .reduce((sum, earlier) => sum + earlier.weight, 0);
+    const from = START + (before / total) * Math.PI * 2;
     const sweep = (slice.weight / total) * Math.PI * 2;
-    const from = angle;
-    const to = angle + sweep;
-    angle = to;
-    const point = (radius: number, at: number) =>
-      `${(100 + Math.cos(at) * radius).toFixed(2)} ${(100 + Math.sin(at) * radius).toFixed(2)}`;
+    const to = from + sweep;
     const large = sweep > Math.PI ? 1 : 0;
     return {
       ticker: slice.ticker,
@@ -179,6 +184,105 @@ function CompositionPie({
         ))}
       </ul>
     </div>
+  );
+}
+
+/**
+ * R7 feedback, Jul 31: "all the risk data is not displayed correctly."
+ *
+ * It was. Three separate faults:
+ *
+ * 1. The meters scaled by bare multipliers — vol × 220, beta × 50, off-high
+ *    × 300 — with no scale stated anywhere. Beta 2.44 × 50 clamps to a full
+ *    bar, off-high 12.3% × 300 likewise, so two of the three read "maximum"
+ *    regardless of the value. A bar with no top is not a measurement.
+ * 2. Drawdown was drawn with the row sparkline, which has no zero line. A
+ *    drawdown series is defined by its distance below zero; without that
+ *    baseline the shape is unreadable.
+ * 3. "Daily returns" was a LINE. Daily returns are discrete signed events —
+ *    bars — and the sparkline coloured the whole series by comparing its
+ *    last point to its first, which means nothing for a return series.
+ */
+function RiskMeter({
+  label,
+  value,
+  display,
+  max,
+  maxLabel,
+  children,
+}: {
+  label: string;
+  value: number | null;
+  display: string;
+  /** Top of the scale. Stated, and shown, so the bar means something. */
+  max: number;
+  maxLabel: string;
+  children?: React.ReactNode;
+}) {
+  const filled =
+    value === null || !Number.isFinite(value)
+      ? 0
+      : Math.min(100, Math.max(0, (Math.abs(value) / max) * 100));
+  return (
+    <article>
+      <span>{label}</span>
+      <strong>{display}</strong>
+      <i style={{ "--meter": `${filled}%` } as CSSProperties} />
+      <em className={styles.meterScale}>0 — {maxLabel}</em>
+      {children}
+    </article>
+  );
+}
+
+/** Drawdown against a real zero line, with the worst point marked. */
+function DrawdownChart({ points }: { points: readonly { date: string; drawdown: number }[] }) {
+  const worst = Math.min(...points.map((point) => point.drawdown), 0);
+  const floor = Math.min(worst, -0.01) * 1.1;
+  const x = (index: number) => (index / Math.max(1, points.length - 1)) * 300;
+  const y = (value: number) => (value / floor) * 56;
+  const line = points
+    .map((point, index) => `${index === 0 ? "M" : "L"}${x(index).toFixed(1)} ${y(point.drawdown).toFixed(1)}`)
+    .join(" ");
+  return (
+    <svg viewBox="0 0 300 72" className={styles.riskChart} role="img"
+      aria-label={`Drawdown since start, worst ${(worst * 100).toFixed(1)} percent`}>
+      <line x1="0" x2="300" y1="0" y2="0" className={styles.riskZero} />
+      <path d={`${line} L300 0 L0 0 Z`} className={styles.drawdownArea} />
+      <path d={line} className={styles.drawdownLine} />
+      <text x="300" y="70" textAnchor="end" className={styles.riskAxisLabel}>
+        WORST {(worst * 100).toFixed(1)}%
+      </text>
+    </svg>
+  );
+}
+
+/** One bar per day, green above the line and red below it. */
+function DailyReturnBars({ points }: { points: readonly { date: string; return: number }[] }) {
+  const extent = Math.max(...points.map((point) => Math.abs(point.return)), 0.005);
+  const width = 300 / Math.max(1, points.length);
+  return (
+    <svg viewBox="0 0 300 72" className={styles.riskChart} role="img"
+      aria-label={`Daily returns since start, largest move ${(extent * 100).toFixed(1)} percent`}>
+      <line x1="0" x2="300" y1="36" y2="36" className={styles.riskZero} />
+      {points.map((point, index) => {
+        const height = (Math.abs(point.return) / extent) * 32;
+        const up = point.return >= 0;
+        return (
+          <rect
+            key={point.date}
+            x={index * width + width * 0.15}
+            y={up ? 36 - height : 36}
+            width={Math.max(1, width * 0.7)}
+            height={Math.max(0.5, height)}
+            data-signal={up ? "up" : "down"}
+            className={styles.dailyBar}
+          />
+        );
+      })}
+      <text x="300" y="70" textAnchor="end" className={styles.riskAxisLabel}>
+        ±{(extent * 100).toFixed(1)}%
+      </text>
+    </svg>
   );
 }
 
@@ -468,10 +572,15 @@ export function MissionControlRoomContent({
 
       <LazyMissionSection id="risk" title="RISK" minHeight={440}>
         <div className={styles.riskInstruments}>
-          <article>
-            <span>VOL · SINCE START</span>
-            <strong>{plainPercent(data.volatilityPct)}</strong>
-            <i style={{ "--meter": `${Math.min(100, Math.max(0, (data.volatilityPct ?? 0) * 220))}%` } as CSSProperties} />
+          <RiskMeter
+            label="VOL · SINCE START"
+            value={data.volatilityPct}
+            display={plainPercent(data.volatilityPct)}
+            /* 60% annualised is roughly a very volatile single tech name;
+               a whole book at the top of this scale is genuinely extreme. */
+            max={0.6}
+            maxLabel="60%"
+          >
             <RoomMetricDisclosure
               explanation={volatilityExplanation({
                 volatilityPct: data.volatilityPct,
@@ -480,11 +589,17 @@ export function MissionControlRoomContent({
                 pricesAsOf: data.pricesAsOf,
               })}
             />
-          </article>
-          <article>
-            <span>BETA · SAME PERIOD VOO</span>
-            <strong>{data.betaVsVoo?.toFixed(2) ?? "—"}</strong>
-            <i style={{ "--meter": `${Math.min(100, Math.max(0, (data.betaVsVoo ?? 0) * 50))}%` } as CSSProperties} />
+          </RiskMeter>
+          <RiskMeter
+            label="BETA · SAME PERIOD VOO"
+            value={data.betaVsVoo}
+            display={data.betaVsVoo?.toFixed(2) ?? "—"}
+            /* 1.0 is the market itself; 3.0 tops the scale so a beta above
+               the index still has somewhere to go. The old ×50 pinned
+               anything past 2.0 at full. */
+            max={3}
+            maxLabel="3.0"
+          >
             <RoomMetricDisclosure
               explanation={betaExplanation({
                 betaVsVoo: data.betaVsVoo,
@@ -493,12 +608,15 @@ export function MissionControlRoomContent({
                 pricesAsOf: data.pricesAsOf,
               })}
             />
-          </article>
-          <article>
-            <span>OFF HIGH · SINCE {data.allTimeHigh?.peakDate.slice(5).replace("-", "·") ?? "—"}</span>
-            <strong>{signedPercent(data.allTimeHigh?.pct)}</strong>
-            <i style={{ "--meter": `${Math.min(100, Math.abs(data.allTimeHigh?.pct ?? 0) * 300)}%` } as CSSProperties} />
-          </article>
+          </RiskMeter>
+          <RiskMeter
+            label={`OFF HIGH · SINCE ${data.allTimeHigh?.peakDate.slice(5).replace("-", "·") ?? "—"}`}
+            value={data.allTimeHigh?.pct ?? null}
+            display={signedPercent(data.allTimeHigh?.pct)}
+            /* A 40% fall from the high is a bear market for a whole book. */
+            max={0.4}
+            maxLabel="40%"
+          />
         </div>
         <div className={styles.riskHistoryCharts}>
           <div>
@@ -514,7 +632,7 @@ export function MissionControlRoomContent({
               />
             </h4>
             {data.drawdownSeries.length >= 2 ? (
-              <Trend points={data.drawdownSeries.map((point) => point.drawdown)} width={280} height={48} />
+              <DrawdownChart points={data.drawdownSeries} />
             ) : (
               <p className={styles.mixEmpty}>NOT ENOUGH HISTORY YET</p>
             )}
@@ -522,7 +640,7 @@ export function MissionControlRoomContent({
           <div>
             <h4>DAILY RETURNS · SINCE START</h4>
             {data.dailyReturnBars.length >= 2 ? (
-              <Trend points={data.dailyReturnBars.map((point) => point.return)} width={280} height={48} />
+              <DailyReturnBars points={data.dailyReturnBars} />
             ) : (
               <p className={styles.mixEmpty}>NOT ENOUGH HISTORY YET</p>
             )}
