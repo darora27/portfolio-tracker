@@ -28,12 +28,17 @@ const BENCHMARK_CHART_KEYS: Record<BenchmarkTicker, "vooIndex" | "vtiIndex" | "x
 };
 
 /**
- * R7-W3(a). The book keeps the amber it has always had — it is the subject
- * of the chart, not one series among equals, and it is not a holding so it
- * takes no identity colour. "Other" is deliberately neutral for the same
- * reason: it is an aggregate, not a company.
+ * The book is the subject of the chart, not one series among equals, and it
+ * is not a holding, so it takes no identity colour. "Other" is neutral for
+ * the same reason: it is an aggregate, not a company.
+ *
+ * Jul 31: the book's old amber measured 4.8 degrees from VOO's generated
+ * gold — near enough
+ * to read as the same line. The book is the subject of the chart, so it takes
+ * the cream the room already uses for primary ink rather than competing for a
+ * hue. Measured, not eyeballed.
  */
-const BOOK_LINE_COLOR = "#FFD68C";
+const BOOK_LINE_COLOR = "#F4F0DF";
 const OTHER_LINE_COLOR = "#8A8880";
 
 function signedPercent(value: number | null | undefined, digits = 1): string {
@@ -64,6 +69,24 @@ function dailyGlyphPercent(
   return `${glyph} ${Math.abs(value * 100).toFixed(digits)}%`;
 }
 
+/**
+ * R7 feedback, Jul 31: "any number in the table that is positive needs to be
+ * green and any number that is negative needs to be red."
+ *
+ * This is exactly what the Fraunhofer reservation exists for — green 125-165
+ * and red 345-20 are held back from every other use precisely so they can
+ * mean gain and loss here. Identity colour never enters those hues (W2), so
+ * the two systems coexist rather than compete.
+ *
+ * `sign` is derived once and rendered as data, so the colour decision lives
+ * in CSS with the rest of the signal palette rather than inline.
+ */
+function signOf(value: number | null | undefined): "up" | "down" | "flat" | "none" {
+  if (value === null || value === undefined || !Number.isFinite(value)) return "none";
+  if (Math.abs(value) < 0.00005) return "flat";
+  return value > 0 ? "up" : "down";
+}
+
 function plainPercent(value: number | null | undefined, digits = 1): string {
   if (value === null || value === undefined || !Number.isFinite(value)) return "—";
   return `${Math.abs(value * 100).toFixed(digits)}%`;
@@ -81,6 +104,82 @@ function earningsChipFor(
     .filter((event) => event.ticker === ticker)
     .sort((left, right) => left.date.localeCompare(right.date))[0];
   return next ? `T−${Math.max(0, daysBetween(today, next.date))}D` : null;
+}
+
+/**
+ * R7 feedback, Jul 31: "I want a pie chart rather than mix."
+ *
+ * The bar cards showed each weight against a 100% track, which answers "how
+ * big is ASML" but not "how is the book divided" — the question a pie is for,
+ * and the one the old composition donut he liked was answering. Slices take
+ * identity colour, so a holding is the same colour here, in RETURNS, and on
+ * its orbit.
+ *
+ * Drawn as arcs rather than a stroked circle so the slices meet cleanly and
+ * a tiny holding still renders a visible sliver.
+ */
+function CompositionPie({
+  slices,
+}: {
+  slices: readonly { ticker: string; weight: number }[];
+}) {
+  const total = slices.reduce((sum, slice) => sum + slice.weight, 0);
+  if (total <= 0) return null;
+  const RADIUS = 82;
+  const INNER = 48;
+  let angle = -Math.PI / 2; // start at twelve o'clock
+
+  const arcs = slices.map((slice) => {
+    const sweep = (slice.weight / total) * Math.PI * 2;
+    const from = angle;
+    const to = angle + sweep;
+    angle = to;
+    const point = (radius: number, at: number) =>
+      `${(100 + Math.cos(at) * radius).toFixed(2)} ${(100 + Math.sin(at) * radius).toFixed(2)}`;
+    const large = sweep > Math.PI ? 1 : 0;
+    return {
+      ticker: slice.ticker,
+      weight: slice.weight,
+      d: [
+        `M${point(RADIUS, from)}`,
+        `A${RADIUS} ${RADIUS} 0 ${large} 1 ${point(RADIUS, to)}`,
+        `L${point(INNER, to)}`,
+        `A${INNER} ${INNER} 0 ${large} 0 ${point(INNER, from)}`,
+        "Z",
+      ].join(" "),
+    };
+  });
+
+  return (
+    <div className={styles.compositionPie}>
+      <svg viewBox="0 0 200 200" role="img" aria-label="Holdings by percentage of the book">
+        {arcs.map((arc) => (
+          <path
+            key={arc.ticker}
+            d={arc.d}
+            fill={identityColor(arc.ticker)}
+            stroke="#050B0A"
+            strokeWidth={1.5}
+          />
+        ))}
+        <text x="100" y="96" textAnchor="middle" className={styles.pieCount}>
+          {slices.length}
+        </text>
+        <text x="100" y="112" textAnchor="middle" className={styles.pieCountLabel}>
+          POSITIONS
+        </text>
+      </svg>
+      <ul className={styles.pieLegend}>
+        {arcs.map((arc) => (
+          <li key={arc.ticker}>
+            <i style={{ background: identityColor(arc.ticker) }} aria-hidden="true" />
+            <span>{arc.ticker}</span>
+            <b>{plainPercent(arc.weight)}</b>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 function Trend({
@@ -182,7 +281,14 @@ export function MissionControlRoomContent({
       <LazyMissionSection id="holdings" title="HOLDINGS" minHeight={420}>
         {data.movers.length && best && worst ? (
           <p className={styles.moversLine}>
-            BEST {dailyColumnLabel} {signedPercent(best.dayPct)} {best.ticker} · WORST {signedPercent(worst.dayPct)} {worst.ticker}
+            BEST {dailyColumnLabel}{" "}
+            <span data-signal={signOf(best.dayPct)}>
+              {signedPercent(best.dayPct)} {best.ticker}
+            </span>{" "}
+            · WORST{" "}
+            <span data-signal={signOf(worst.dayPct)}>
+              {signedPercent(worst.dayPct)} {worst.ticker}
+            </span>
           </p>
         ) : null}
         <div className={styles.holdingsTableWrap}>
@@ -214,14 +320,20 @@ export function MissionControlRoomContent({
                       <Link href={href}>{row.ticker}</Link>
                     </th>
                     <td>{plainPercent(row.weight)}</td>
-                    <td data-direction={row.dayDirection ?? "none"}>
+                    <td data-signal={row.dayDirection ?? "none"}>
                       {dailyGlyphPercent(row.dayPct, row.dayDirection)}
                     </td>
-                    <td>{signedPercent(orrery?.weeklyReturn ?? null)}</td>
-                    <td>{signedPercent(row.gainPct)} (SIMPLE)</td>
+                    <td data-signal={signOf(orrery?.weeklyReturn)}>
+                      {signedPercent(orrery?.weeklyReturn ?? null)}
+                    </td>
+                    <td data-signal={signOf(row.gainPct)}>
+                      {signedPercent(row.gainPct)} (SIMPLE)
+                    </td>
                     <td>{chip ?? ""}</td>
                     {mode === "private" ? (
-                      <td>{row.day === null ? "—" : formatSignedCurrency(row.day)}</td>
+                      <td data-signal={signOf(row.day)}>
+                        {row.day === null ? "—" : formatSignedCurrency(row.day)}
+                      </td>
                     ) : null}
                     {mode === "private" ? <td>{formatCurrency(row.value)}</td> : null}
                   </tr>
@@ -295,26 +407,13 @@ export function MissionControlRoomContent({
       </LazyMissionSection>
 
       <LazyMissionSection id="mix" title="MIX" minHeight={380}>
-        <div className={styles.mixDonut} aria-label="Holdings by percentage">
-          {data.donutSlices.length ? (
-            [...data.donutSlices].sort((a, b) => b.weight - a.weight).map((slice) => (
-              /* R7-W3(c). The bar wears the holding's identity colour, so a
-                 ticker is the same colour here, in RETURNS, and on its orbit. */
-              <article key={slice.ticker}>
-                <span>{slice.ticker}</span>
-                <strong>{plainPercent(slice.weight)}</strong>
-                <i
-                  style={{
-                    "--meter": `${Math.min(100, slice.weight * 100)}%`,
-                    "--identity": identityColor(slice.ticker),
-                  } as CSSProperties}
-                />
-              </article>
-            ))
-          ) : (
-            <p className={styles.mixEmpty}>NO HOLDINGS YET</p>
-          )}
-        </div>
+        {data.donutSlices.length ? (
+          <CompositionPie
+            slices={[...data.donutSlices].sort((a, b) => b.weight - a.weight)}
+          />
+        ) : (
+          <p className={styles.mixEmpty}>NO HOLDINGS YET</p>
+        )}
         <div className={styles.mixClassifications}>
           <div>
             <h4>SECTOR</h4>
@@ -342,7 +441,10 @@ export function MissionControlRoomContent({
           </div>
         </div>
         <div>
-          <h4>COMPOSITION · SINCE START</h4>
+          <h4>SHARE OF THE BOOK · OVER TIME</h4>
+          <p className={styles.sectionHint}>
+            how much of the portfolio each holding has been, week by week
+          </p>
           {data.compositionHistory.points.length >= 2 ? (
             <div className={styles.compositionHistoryList}>
               {compositionTickers.map((ticker) => {

@@ -4207,3 +4207,97 @@
   fill: var(--universe-cabinet-window-word);
   font: 600 var(--type-label)/1 var(--font-mono, monospace);
 }
+
+
+/* R7 feedback, Jul 31. Positive green, negative red — the use the Fraunhofer
+   reservation was held open for. Neutral columns (weight, value, earnings)
+   carry no signal attribute and keep the cream. */
+.holdingsTable td[data-signal="up"],
+.moversLine span[data-signal="up"] {
+  color: var(--universe-signal-gain);
+}
+
+.holdingsTable td[data-signal="down"],
+.moversLine span[data-signal="down"] {
+  color: var(--universe-signal-loss);
+}
+
+.holdingsTable td[data-signal="flat"],
+.holdingsTable td[data-signal="none"],
+.moversLine span[data-signal="flat"] {
+  color: var(--universe-cabinet-cream);
+}
+
+/* The plot letterboxed itself: a fixed 170px height against a 640-wide
+   viewBox left empty margins either side of a small chart. Holding the
+   aspect ratio instead lets it fill whatever width the room gives it. */
+.multiReturnPlot .returnPlot {
+  height: auto;
+  aspect-ratio: 640 / 174;
+  min-height: 300px;
+}
+
+/* R7 feedback, Jul 31: a pie, not a row of bars. */
+.compositionPie {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 1.4rem;
+  align-items: center;
+}
+
+.compositionPie svg {
+  width: 100%;
+  height: auto;
+}
+
+.pieCount {
+  fill: var(--universe-cabinet-cream);
+  font: 600 var(--type-readout) var(--font-mono, monospace);
+}
+
+.pieCountLabel {
+  fill: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+}
+
+.pieLegend {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.3rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pieLegend li {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: var(--type-body);
+  color: var(--universe-cabinet-cream);
+}
+
+.pieLegend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.pieLegend b {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* One plain line under a heading whose name was not self-explanatory. */
+.sectionHint {
+  margin: 0.1rem 0 0.6rem;
+  color: var(--universe-cabinet-window-word);
+  font: 400 var(--type-body)/1.4 var(--font-mono, monospace);
+}
+
+@media (max-width: 720px) {
+  .compositionPie {
+    grid-template-columns: 1fr;
+  }
+}
