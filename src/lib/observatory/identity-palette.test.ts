@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
+  GENERATED_SLOT_COUNT,
   IDENTITY,
+  MIN_USEFUL_SEPARATION,
   dimmed,
   identityColor,
   identityColorsForAudit,
+  minimumHueSeparation,
   reservationBreaches,
 } from "./identity-palette";
 import { hueChroma } from "./universe-palette";
@@ -106,6 +109,58 @@ describe("identityColor", () => {
       ["NVDA", "AAPL", "TSLA", "AMZN", "META"].map(identityColor),
     );
     expect(colours.size).toBeGreaterThan(1);
+  });
+});
+
+describe("changing the book", () => {
+  const SYNTHETIC = Array.from({ length: 1000 }, (_, index) =>
+    `T${index.toString(36).toUpperCase()}X`,
+  );
+  const REALISTIC = [
+    "NVDA", "AAPL", "TSLA", "AMZN", "META", "AMD",
+    "PLTR", "SPY", "QQQ", "DIA", "V", "JPM", "WMT", "XOM",
+  ];
+
+  it("never gives a new stock a colour already worn by a holding", () => {
+    // The whole reason for slot-based generation. Hashing straight onto the
+    // arc would collide, because the thirteen assigned colours already occupy
+    // most of the 215° of permitted space.
+    const assigned = HELD.map((ticker) => hueChroma(IDENTITY[ticker]).hue as number);
+    for (const ticker of [...SYNTHETIC, ...REALISTIC]) {
+      const hue = hueChroma(identityColor(ticker)).hue as number;
+      for (let index = 0; index < assigned.length; index += 1) {
+        expect(
+          circularDistance(hue, assigned[index]),
+          `${ticker} collides with ${HELD[index]}`,
+        ).toBeGreaterThanOrEqual(MIN_USEFUL_SEPARATION);
+      }
+    }
+  });
+
+  it("keeps every other colour unchanged when a stock is sold", () => {
+    // Colours key off the ticker, never off rank or position, so filtering a
+    // table or selling out of a name cannot repaint the rest of the book.
+    for (const ticker of HELD.filter((name) => name !== "MEI")) {
+      expect(identityColor(ticker)).toBe(IDENTITY[ticker]);
+    }
+  });
+
+  it("still separates a fourteenth holding usefully", () => {
+    const separation = minimumHueSeparation([...HELD, "NVDA"]);
+    expect(separation).not.toBeNull();
+    expect(separation as number).toBeGreaterThanOrEqual(MIN_USEFUL_SEPARATION);
+  });
+
+  it("reports the current book's separation honestly", () => {
+    expect(minimumHueSeparation(HELD) as number).toBeCloseTo(15.9, 1);
+    expect(minimumHueSeparation(["ASML"])).toBeNull();
+  });
+
+  it("documents its own ceiling", () => {
+    // 8 free slots + 13 assigned = 21 holdings before hue alone stops working.
+    // Past that the answer is a second channel — dashed strokes, hollow
+    // markers — not more hues. Asserted so the ceiling cannot move silently.
+    expect(GENERATED_SLOT_COUNT).toBe(8);
   });
 });
 

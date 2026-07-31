@@ -61,11 +61,6 @@ const PERMITTED_BANDS: readonly (readonly [number, number])[] = [
   [260, 330], // indigo through orchid
 ];
 
-const PERMITTED_WIDTH = PERMITTED_BANDS.reduce(
-  (total, [low, high]) => total + (high - low),
-  0,
-);
-
 /** FNV-1a. Stable across runs and processes, unlike a hash of object identity. */
 function hashTicker(ticker: string): number {
   let hash = 0x811c9dc5;
@@ -76,16 +71,66 @@ function hashTicker(ticker: string): number {
   return hash;
 }
 
-/** Maps a hash onto the permitted arcs, skipping the reserved bands entirely. */
-function hueForTicker(ticker: string): number {
-  let offset = hashTicker(ticker) % PERMITTED_WIDTH;
+/**
+ * Below this, two hues stop being reliably tellable apart in a 4px line or a
+ * 6px dot — the sizes these colours are actually used at.
+ */
+export const MIN_USEFUL_SEPARATION = 8;
+
+/**
+ * The gaps left between the assigned colours, roomiest first.
+ *
+ * The permitted arcs total 215°, and thirteen holdings at ~16° apart already
+ * occupy most of it — so a generated colour cannot simply be hashed onto the
+ * arc, or it would land on top of an existing holding. Instead each free gap
+ * contributes its midpoint, which is the position furthest from both
+ * neighbours, and a new ticker takes one of those.
+ *
+ * Derived from IDENTITY rather than hardcoded, so changing an assigned colour
+ * re-derives the free space instead of silently invalidating it.
+ */
+const GENERATED_SLOTS: readonly { hue: number; clearance: number }[] = (() => {
+  const assigned = Object.values(IDENTITY)
+    .map((hex) => hueChroma(hex).hue)
+    .filter((hue): hue is number => hue !== null);
+  // Clearance is measured against EVERY assigned hue, not only those inside
+  // the band being subdivided. IBM's 330.2° sits a fraction outside its band,
+  // and a slot that ignored it would report a clearance it does not have.
+  const clearanceOf = (hue: number) =>
+    assigned.reduce((closest, other) => {
+      const raw = Math.abs(hue - other) % 360;
+      return Math.min(closest, Math.min(raw, 360 - raw));
+    }, 360);
+
+  const slots: { hue: number; clearance: number }[] = [];
   for (const [low, high] of PERMITTED_BANDS) {
-    const width = high - low;
-    if (offset < width) return low + offset;
-    offset -= width;
+    const boundaries = [
+      low,
+      ...assigned.filter((hue) => hue >= low && hue <= high).sort((a, b) => a - b),
+      high,
+    ];
+    for (let index = 0; index < boundaries.length - 1; index += 1) {
+      const hue = (boundaries[index] + boundaries[index + 1]) / 2;
+      const clearance = clearanceOf(hue);
+      if (clearance < MIN_USEFUL_SEPARATION) continue;
+      slots.push({ hue, clearance });
+    }
   }
-  return PERMITTED_BANDS[0][0];
-}
+  return slots.sort((a, b) => b.clearance - a.clearance);
+})();
+
+/**
+ * How many more holdings can be added before hue alone stops distinguishing
+ * them. Exposed so the limit is a number the tests can assert on rather than
+ * a claim in a comment.
+ */
+export const GENERATED_SLOT_COUNT = GENERATED_SLOTS.length;
+
+/**
+ * Lightness variants, so two tickers landing in the same hue slot are still
+ * separable. Hue space is the scarce resource here; lightness is not.
+ */
+const VALUE_STEPS = [0.94, 0.78, 0.62];
 
 function hsvToHex(hue: number, saturation: number, value: number): string {
   const chroma = value * saturation;
@@ -120,7 +165,40 @@ function hsvToHex(hue: number, saturation: number, value: number): string {
  */
 export function identityColor(ticker: string): string {
   const key = ticker.toUpperCase();
-  return IDENTITY[key] ?? hsvToHex(hueForTicker(key), 0.62, 0.88);
+  const assigned = IDENTITY[key];
+  if (assigned) return assigned;
+
+  const hash = hashTicker(key);
+  const slot = GENERATED_SLOTS[hash % GENERATED_SLOTS.length];
+  // A second, independent draw from the hash — using the same bits for both
+  // hue and lightness would make them correlate and waste the variation.
+  const value = VALUE_STEPS[(hash >>> 8) % VALUE_STEPS.length];
+  return hsvToHex(slot.hue, 0.66, value);
+}
+
+/**
+ * The smallest hue gap in a book — the honest measure of whether colour is
+ * still doing its job.
+ *
+ * Returns null for fewer than two tickers. Below MIN_USEFUL_SEPARATION the
+ * palette has not broken, but hue has stopped being sufficient on its own and
+ * a second channel (dashed strokes, hollow markers) is needed.
+ */
+export function minimumHueSeparation(
+  tickers: readonly string[],
+): number | null {
+  const hues = tickers
+    .map((ticker) => hueChroma(identityColor(ticker)).hue)
+    .filter((hue): hue is number => hue !== null);
+  if (hues.length < 2) return null;
+  let smallest = 360;
+  for (let i = 0; i < hues.length; i += 1) {
+    for (let j = i + 1; j < hues.length; j += 1) {
+      const raw = Math.abs(hues[i] - hues[j]) % 360;
+      smallest = Math.min(smallest, Math.min(raw, 360 - raw));
+    }
+  }
+  return smallest;
 }
 
 /** Orbit strokes and other structural lines: present, but never louder than the planet. */
