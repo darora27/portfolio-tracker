@@ -1,0 +1,1202 @@
+[
+  {
+    "ticker": "ASML",
+    "index": 0,
+    "rows": [
+      {
+        "deg": 0,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "blip",
+        "correct": true
+      },
+      {
+        "deg": 15,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "blip",
+        "correct": true
+      },
+      {
+        "deg": 30,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 45,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 60,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 75,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 90,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 105,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 120,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 135,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 150,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 165,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 180,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 195,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 210,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 225,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 240,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 255,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 270,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 285,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 300,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 315,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 330,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 345,
+        "resolvedTicker": "ASML",
+        "resolvedKind": "blip",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "ticker": "GOOG",
+    "index": 1,
+    "rows": [
+      {
+        "deg": 0,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 15,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 30,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 45,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 60,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 75,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 90,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 105,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 120,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 135,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 150,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 165,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 180,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 195,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 210,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 225,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 240,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 255,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 270,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 285,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 300,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 315,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 330,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 345,
+        "resolvedTicker": "GOOG",
+        "resolvedKind": "ring",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "ticker": "COST",
+    "index": 2,
+    "rows": [
+      {
+        "deg": 0,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 15,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 30,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 45,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 60,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 75,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 90,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 105,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 120,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 135,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 150,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 165,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 180,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 195,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 210,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 225,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 240,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 255,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 270,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 285,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 300,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 315,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 330,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 345,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "ticker": "MSFT",
+    "index": 3,
+    "rows": [
+      {
+        "deg": 0,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 15,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 30,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 45,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 60,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 75,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 90,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 105,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 120,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 135,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 150,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 165,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 180,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 195,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 210,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 225,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 240,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 255,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 270,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 285,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 300,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 315,
+        "resolvedTicker": "COST",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 330,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 345,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "ticker": "INTC",
+    "index": 4,
+    "rows": [
+      {
+        "deg": 0,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 15,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 30,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 45,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 60,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 75,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 90,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 105,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 120,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 135,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 150,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 165,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 180,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 195,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 210,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 225,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 240,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 255,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 270,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 285,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 300,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 315,
+        "resolvedTicker": "MSFT",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 330,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 345,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "ticker": "IBM",
+    "index": 5,
+    "rows": [
+      {
+        "deg": 0,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 15,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 30,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 45,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 60,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 75,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 90,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 105,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 120,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 135,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 150,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 165,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 180,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 195,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 210,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 225,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 240,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 255,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "blip",
+        "correct": true
+      },
+      {
+        "deg": 270,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 285,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 300,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 315,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 330,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 345,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "ticker": "CBRS",
+    "index": 6,
+    "rows": [
+      {
+        "deg": 0,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 15,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 30,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 45,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 60,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 75,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 90,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 105,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 120,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 135,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 150,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 165,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 180,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 195,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 210,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 225,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 240,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 255,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 270,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 285,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 300,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 315,
+        "resolvedTicker": "INTC",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 330,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 345,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "ticker": "CRM",
+    "index": 7,
+    "rows": [
+      {
+        "deg": 0,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 15,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 30,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 45,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 60,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 75,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 90,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 105,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 120,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 135,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 150,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 165,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 180,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 195,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 210,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 225,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 240,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 255,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 270,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 285,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      },
+      {
+        "deg": 300,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 315,
+        "resolvedTicker": "IBM",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 330,
+        "resolvedTicker": "CBRS",
+        "resolvedKind": "ring",
+        "correct": false
+      },
+      {
+        "deg": 345,
+        "resolvedTicker": "CRM",
+        "resolvedKind": "ring",
+        "correct": true
+      }
+    ]
+  }
+]

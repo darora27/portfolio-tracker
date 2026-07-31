@@ -2,10 +2,10 @@
   "schema_version": 2,
   "phase": 10,
   "current_section": "§15",
-  "role": "claude_lead",
-  "stage": "review",
+  "role": "codex_implementation",
+  "stage": "remediate",
   "status": "ready",
-  "next_actor": "claude",
+  "next_actor": "codex",
   "roadmap_numbering_conflict": {
     "flagged_at": "2026-07-30",
     "flagged_by": "claude-code/sonnet-5 (Claude Lead, §13 review turn 4 / accept)",
@@ -58,12 +58,39 @@
           "docs/phase10-baseline/section-15/review/raw-radar-ring-hittest.json",
           "docs/phase10-baseline/section-15/review/orbits-ring-overlap-1440.png"
         ],
-        "required_change": "Fix the ring's hit-test area so a click/double-click on a given ring resolves to that ring's own ticker, in both public and private mode. Mechanism (pointer-events scoping, clip-path, z-index ordering, or an equivalent) is the implementer's own judgment call -- not prescribed by this finding. Re-verify BHV-08 and VIS-08 with a script that clicks a NAMED ring/blip and asserts the resulting URL/destination contains that same ticker, for multiple tickers in both modes."
+        "required_change": "Fix the ring's hit-test area so a click/double-click on a given ring resolves to that ring's own ticker, in both public and private mode. Mechanism (pointer-events scoping, clip-path, z-index ordering, or an equivalent) is the implementer's own judgment call -- not prescribed by this finding. Re-verify BHV-08 and VIS-08 with a script that clicks a NAMED ring/blip and asserts the resulting URL/destination contains that same ticker, for multiple tickers in both modes.",
+        "resolved": {
+          "resolved_at": "2026-07-31",
+          "resolved_by": "codex_implementation (remediate), commit b27525be532fbac1c38f9559d9e436ad8b82f351",
+          "how": "The specific symptom described (every ring collapsing to the single last-DOM-rendered ring, CRM) is fixed by z-index-by-size stacking. A narrower variant of the same criteria (BHV-08/VIS-08) survives and is recorded as F2."
+        }
+      },
+      {
+        "id": "F2",
+        "criteria": [
+          "BHV-08",
+          "VIS-08"
+        ],
+        "risk": "critical",
+        "summary": "Two of the largest ORBITS rings (CBRS, CRM) still navigate to a neighboring ring's ticker when clicked at a non-cardinal point on their own visible stroke; the smaller five rings are clean.",
+        "root_cause": "The F1 remediation (commit b27525b) stacks rings by z-index (holdings.length - index, smaller ring on top), which is geometrically correct for ring-vs-ring RECTANGLE containment: every ring's hit-box uses one ringSize% for both width and height, so all 8 boxes are self-similar (same aspect ratio, same center) and a smaller box is a strict geometric subset of every larger box in every direction -- there is no direction a smaller ring's rectangle can escape past a larger ring's own rectangle. The residual defect is a DIFFERENT mismatch: the visible stroke is an ellipse inscribed in that rectangle (border-radius:50% on the ::before), touching the rectangle's true edge only at the four cardinal points (0/90/180/270deg). At any other angle the visible curve sits inside the rectangle, short of its true edge -- and for the two outermost rings (CBRS, CRM), the next-smaller neighbor's rectangle (only ~12-14% smaller by ringSize%) still reaches out far enough in one axis-dominant direction to cover the point where the outer ring's visible curve is drawn, so the smaller (higher z-index) ring intercepts the click instead.",
+        "reproduction": "docs/phase10-baseline/section-15/review-2/scripts/radar-ring-sweep.mjs -- a 24-angle-per-ring hit-test sweep. The four smallest rings (ASML/GOOG/COST/MSFT's own neighbors) are clean at every sampled angle; MSFT/INTC/IBM misroute at 4/24 sampled angles (the four ~45deg diagonals); CBRS and CRM misroute at 12/24 -- half the compass. Confirmed with real dispatched double-clicks (docs/phase10-baseline/section-15/review-2/scripts/confirm-crm-45.mjs / raw-confirm-diagonal-misroute.json): CRM's own ring at 45deg opens /stock/IBM (private) / ?holding=IBM&camera=approach (public) instead of CRM's own destination, in both modes; CBRS's own ring at 45deg opens /stock/INTC / ?holding=INTC&camera=approach instead of CBRS's own destination.",
+        "scope_note": "Same BHV-08/VIS-08 criteria as F1 (both require the correct real ticker for the ring clicked); narrower in area (roughly half the compass on the two outermost rings, not virtually the whole radar) but identical in kind and risk. PRV-01 unaffected: the public-mode misroute still never produces a /stock/ URL, only a wrong-ticker ?holding= destination.",
+        "evidence": [
+          "docs/phase10-baseline/section-15/review-2/raw-radar-ring-sweep.json",
+          "docs/phase10-baseline/section-15/review-2/raw-confirm-diagonal-misroute.json",
+          "docs/phase10-baseline/section-15/review-2/raw-radar-ring-diagonal-click.json",
+          "docs/phase10-baseline/section-15/review-2/private-CRM-45deg-before.png",
+          "docs/phase10-baseline/section-15/review-2/public-CRM-45deg-before.png",
+          "docs/phase10-baseline/section-15/review-2/private-CBRS-45deg-before.png",
+          "docs/phase10-baseline/section-15/review-2/public-CBRS-45deg-before.png"
+        ],
+        "required_change": "Fix the ring's hit-test area so it holds at every angle, not only the cardinal points the round-1 remediation's own test sampled. A mechanism that clips each ring's actual clickable area to its own visible annulus/ellipse (e.g. a clip-path sized to the ring's own stroke, keeping the ticker label as a sibling/absolutely-positioned element outside the clipped area so the label itself is unaffected) is one option; z-index-only stacking of same-shaped rectangles cannot fully close this because the defect is geometric (ellipse-vs-rectangle mismatch), not a stacking-order problem. Re-verify BHV-08 and VIS-08 with an angle SWEEP per ring (not a single fixed point), in both modes, plus a real double-click confirmation at any failing angles found."
       }
     ],
     "note": "Roadmap title per the §13-acceptance split: 'Mission Control content rework', plus the Chart Room's stage two (the doors: a HOLDINGS row click, an ORBITS ring/blip click, FULL ANALYSIS ▸), which PHASE10.md's own text binds to this section. Authority: MISSION_CONTROL_ARCHITECTURE.md (owner-adopted whole, FB-34) for the content rework; §14's stage-two doors per PHASE10.md and the §14 design proof's freeze-boundary note. This is a landing section by the ledger's own rule 2 (18 open/designed rows counted at spec time, unchanged from §14's own count; this section closes eight of them by construction: FB-13 stage two, FB-27, FB-28, FB-29, FB-30, FB-32, FB-33, FB-35, plus executes FB-11's already-recorded retirement) -- PHASE10.md §15's own roadmap text and MISSION_CONTROL_ARCHITECTURE.md §10 are the authority for this scope; no further owner override needed because this section is itself the landing turn rule 2 requires. main was GREEN at this section's spec-time confirmation: npm test 118/118 files, 631/632 tests (1 intentional skip), npm run build exit 0, both independently re-run by the §14 accept turn at HEAD 739049d; not re-run this turn since no application source changed. Design proof: docs/phase10-workflow/design-proofs/section-15.md (existing-package-equivalent, citing MISSION_CONTROL_ARCHITECTURE.md). Spec and acceptance ledger written this turn -- see production_code_note_15. Highest-risk decision for the implementer: the three Chart Room doors (HOLDINGS row, ORBITS ring/blip, FULL ANALYSIS ▸) resolve to /stock/<ticker> in private mode ONLY; /stock/[ticker] is owner-gated and its own page.tsx header comment states it is 'never part of the public /share surface' -- public-mode doors must keep their exact pre-existing destinations unchanged (spec section 2). The ACTIVITY keep/cut verdict (architecture §9.2) is not due yet and is not a blocker.",
     "review_result": "fail",
-    "implementation_commit": "9c04ab4af96322f5603f72a5e01f0f4941af863f"
+    "implementation_commit": "b27525be532fbac1c38f9559d9e436ad8b82f351"
   },
   "sections_history": [
     {

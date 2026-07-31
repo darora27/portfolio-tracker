@@ -3,7 +3,7 @@
   "phase": 10,
   "section": "§15",
   "spec_doc": "docs/phase10-workflow/specs/section-15.md",
-  "candidate_sha": "9c04ab4af96322f5603f72a5e01f0f4941af863f",
+  "candidate_sha": "b27525be532fbac1c38f9559d9e436ad8b82f351",
   "criteria": [
     {
       "id": "BHV-01",
@@ -233,11 +233,13 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-15/review/raw-radar-ring-vs-blip-routing.json",
-          "docs/phase10-baseline/section-15/review/raw-radar-ring-hittest.json",
-          "docs/phase10-baseline/section-15/review/orbits-ring-overlap-1440.png"
+          "docs/phase10-baseline/section-15/review-2/raw-radar-ring-diagonal-click.json",
+          "docs/phase10-baseline/section-15/review-2/raw-radar-ring-sweep.json",
+          "docs/phase10-baseline/section-15/review-2/raw-confirm-diagonal-misroute.json",
+          "docs/phase10-baseline/section-15/review-2/private-CRM-45deg-before.png",
+          "docs/phase10-baseline/section-15/review-2/private-CBRS-45deg-before.png"
         ],
-        "notes": "HOLDINGS row and FULL ANALYSIS doors independently re-verified correct for a DIFFERENT ticker than the implementer's own evidence (GOOG). The ORBITS ring door does not resolve to the correct real ticker: SystemPlot.tsx's .radarRingTarget buttons are all absolutely centered on the identical pixel (orrery.module.css) regardless of size, and border-radius does not restrict hit-testing to the visible stroke, so DOM-order stacking (not the ring a user visually clicks) decides the destination. Reproduced deterministically: double-clicking ASML/GOOG/COST/MSFT/IBM's ring all navigated to /stock/CRM (5/5). The blip affordance (the small dot) is unaffected and routes correctly. See docs/phase10-workflow/reviews/section-15-review.md for full root-cause analysis."
+        "notes": "F1's original symptom (all rings collapsing to CRM) is fixed. A narrower critical variant survives (F2): the round-1 remediation's z-index-by-size stacking is correct for ring-vs-ring rectangle containment, but the visible stroke is an ellipse inscribed short of each rectangle's true edge, so a click on a large ring's own visible stroke at a non-cardinal angle can still land inside a smaller neighbor's rectangle. 24-angle sweep: CBRS and CRM (the two largest rings) misroute at 12/24 sampled angles; MSFT/INTC/IBM at 4/24; the four smallest rings clean. Confirmed with real double-clicks: CRM ring at 45 degrees opens /stock/IBM, CBRS ring at 45 degrees opens /stock/INTC, in both modes. See docs/phase10-workflow/reviews/section-15-review-2.md."
       }
     },
     {
@@ -494,10 +496,14 @@
       "reviewer": {
         "status": "fail",
         "evidence": [
-          "docs/phase10-baseline/section-15/review/raw-radar-ring-vs-blip-routing.json",
-          "docs/phase10-baseline/section-15/review/orbits-ring-overlap-1440.png"
+          "docs/phase10-baseline/section-15/review-2/raw-confirm-diagonal-misroute.json",
+          "docs/phase10-baseline/section-15/review-2/private-CRM-45deg-before.png",
+          "docs/phase10-baseline/section-15/review-2/public-CRM-45deg-before.png",
+          "docs/phase10-baseline/section-15/review-2/private-CBRS-45deg-before.png",
+          "docs/phase10-baseline/section-15/review-2/public-CBRS-45deg-before.png",
+          "docs/phase10-baseline/section-15/contact-sheet.md"
         ],
-        "notes": "The paired private/public negative capture is correct for the HOLDINGS row and FULL ANALYSIS doors (independently re-verified with a different ticker). It is not correct for the ORBITS door: the required doors-private.json/doors-public.json evidence records only one arbitrary ring/blip trace each and never establishes which ticker was actually clicked, so it could not and did not catch that the ring affordance resolves to the wrong ticker for 5/5 rings tested. See BHV-08 and docs/phase10-workflow/reviews/section-15-review.md."
+        "notes": "The private/public paired negative capture is correct for the HOLDINGS row and FULL ANALYSIS doors. It is not correct for the ORBITS ring at non-cardinal angles: paired private/public captures at 45 degrees on CRM's and CBRS's own rings show both modes resolving to a different ring's destination (IBM and INTC respectively) instead of the clicked ring's own ticker. See BHV-08 and docs/phase10-workflow/reviews/section-15-review-2.md."
       }
     },
     {
