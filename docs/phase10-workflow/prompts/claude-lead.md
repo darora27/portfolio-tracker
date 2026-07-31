@@ -159,6 +159,32 @@ sheet (≤ 12 frames, each captioned with its row **and its question**), route
 Every question in the sitting is phrased **for looking, not measuring**:
 "Which of these three looks right?" — never "is the panel width correct?"
 
+## Turn hygiene — background work, added 2026-07-31 after two lost turns
+
+**A turn must never end while waiting on something it started.** Two
+consecutive §15 turns did exactly this — one said *"I'll pick this up as soon
+as it completes"*, the next said *"waiting for the background sweep"* — and
+both ended immediately after. Their work was stranded uncommitted and each
+halted the relay on a dirty tree.
+
+**You do not resume.** The next turn is a cold process with no memory of yours.
+There is no "I'll pick this up".
+
+So, when you need a long-running verification:
+
+1. **Run it in the FOREGROUND and wait for it.** This is the default. A sweep
+   that takes ten minutes is fine; a turn that ends at minute two is not.
+2. If it genuinely cannot finish inside your turn, **commit what you have
+   before you end**, with the result stated honestly — including "this
+   verification did not complete and nothing here is verified". A committed
+   partial with an honest label costs the next turn nothing. An uncommitted
+   partial costs it the whole round.
+3. **Never leave the tree dirty.** Whatever you have, commit it or restore it.
+   `git status --porcelain` must be empty when you stop.
+
+Scratch and debug scaffolding goes in `.scratch-debug/`, which is gitignored —
+never commit throwaway repro scripts as though they were evidence.
+
 ## 0. Preflight, in order
 
 1. Check `STOP` before any other repository read or write. If present, report
