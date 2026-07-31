@@ -64,6 +64,7 @@ export const MISSION_CONTROL_TEXT_ROLES = {
       "Genuine labels, stamps and window words -- legitimately unchanged.",
     selectors: [
       ".radarRingTarget > span",
+      ".radarRingLabel > span",
       ".radarTimestamp",
       ".radarPairLine",
       ".railStations a",

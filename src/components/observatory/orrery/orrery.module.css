@@ -1072,6 +1072,10 @@
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: var(--radar-ring-z, 0);
+  /* F2 (§15 review rounds 2-3): restricts this button's own hit-test region
+     to the true ellipse its ::before border draws, not its bounding
+     rectangle -- see SystemPlot.tsx's module-level comment. */
+  clip-path: ellipse(50% 50% at 50% 50%);
 }
 
 .radarRingTarget::before {
@@ -1090,6 +1094,34 @@
   padding: 0.12rem 0.2rem;
   background: #030908;
   font-size: var(--type-label);
+  transform: translate(55%, -50%);
+}
+
+/* F2 (§15 review rounds 2-3): the ticker label for a >=1024px ring. It
+   mirrors .radarRingTarget's own box exactly (same size/position props) but
+   carries no clip-path, so it stays visible/paintable even though it sits
+   past its ring's own clipped edge -- clip-path on the ring button would
+   otherwise clip this text away along with the button's hit region. Purely
+   decorative (pointer-events: none); the ring button's own aria-label is
+   the accessible name. Unused below 1024px, where the label stays a child
+   of .radarRingTarget instead (see SystemPlot.tsx). */
+.radarRingLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: var(--radar-ring-z, 0);
+}
+
+.radarRingLabel > span {
+  position: absolute;
+  top: 50%;
+  right: -0.2rem;
+  padding: 0.12rem 0.2rem;
+  background: #030908;
+  font-size: var(--type-label);
+  color: var(--radar-signal);
   transform: translate(55%, -50%);
 }
 
@@ -2524,6 +2556,11 @@
     height: 44px !important;
     border-radius: 2px;
     transform: none;
+    /* F2 (§15): below 1024px the ring becomes a flat 44px row, not a
+       circle -- an ellipse clip-path would cut its corners off. The label
+       stays a child of this button at this width (SystemPlot.tsx), so it
+       needs the same unclipped box. */
+    clip-path: none;
   }
   .radarRingTarget::before {
     border-radius: 2px;

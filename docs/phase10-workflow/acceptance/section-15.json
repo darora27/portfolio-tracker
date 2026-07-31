@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "phase": 10,
-  "section": "§15",
+  "section": "\u00a715",
   "spec_doc": "docs/phase10-workflow/specs/section-15.md",
   "candidate_sha": "b27525be532fbac1c38f9559d9e436ad8b82f351",
   "criteria": [
@@ -24,7 +24,7 @@
           "docs/phase10-baseline/section-15/raw-strip-state.json",
           "docs/phase10-baseline/section-15/private-overview-1440x900.png"
         ],
-        "notes": "MissionControl.test.tsx (2/2 pass) plus a live production capture: raw-strip-state.json shows real strip text 'NEXT: SPCX T−5D' (hasNextChip true) and hasEarningsNavLink false, matching the visible STRIP crop in private-overview-1440x900.png."
+        "notes": "MissionControl.test.tsx (2/2 pass) plus a live production capture: raw-strip-state.json shows real strip text 'NEXT: SPCX T\u22125D' (hasNextChip true) and hasEarningsNavLink false, matching the visible STRIP crop in private-overview-1440x900.png."
       },
       "reviewer": {
         "status": "pass",
@@ -32,7 +32,7 @@
           "docs/phase10-baseline/section-15/review/raw-independent-review.json",
           "docs/phase10-baseline/section-15/review/overview-1440x900.png"
         ],
-        "notes": "Independently re-derived on a freshly built server (port 3416): stripAndCuts.hasNextChip true, stripText contains 'NEXT: SPCX T−5D', hasEarningsNavLink false — matches implementer's raw-strip-state.json exactly."
+        "notes": "Independently re-derived on a freshly built server (port 3416): stripAndCuts.hasNextChip true, stripText contains 'NEXT: SPCX T\u22125D', hasEarningsNavLink false \u2014 matches implementer's raw-strip-state.json exactly."
       }
     },
     {
@@ -53,7 +53,7 @@
           "docs/phase10-baseline/section-15/raw-holdings-test.txt",
           "docs/phase10-baseline/section-15/holdings-1440.png"
         ],
-        "notes": "MissionControlRoomContent.test.tsx (14/14 pass, includes dedicated HOLDINGS describe block). Live capture holdings-1440.png shows all 13 real holdings (not capped to 8) with real WEIGHT/TODAY/WEEK/SINCE BUY (SIMPLE)/TREND sparkline/EARNINGS T-nD/VALUE columns, a real 'BEST TODAY .../WORST ...' movers line, and 'TOP-2 46.9% · DIVERSIFIED · REALIZED $0.00 · UNREALIZED -$1,917.31' summary line with an attached HHI disclosure."
+        "notes": "MissionControlRoomContent.test.tsx (14/14 pass, includes dedicated HOLDINGS describe block). Live capture holdings-1440.png shows all 13 real holdings (not capped to 8) with real WEIGHT/TODAY/WEEK/SINCE BUY (SIMPLE)/TREND sparkline/EARNINGS T-nD/VALUE columns, a real 'BEST TODAY .../WORST ...' movers line, and 'TOP-2 46.9% \u00b7 DIVERSIFIED \u00b7 REALIZED $0.00 \u00b7 UNREALIZED -$1,917.31' summary line with an attached HHI disclosure."
       },
       "reviewer": {
         "status": "pass",
@@ -82,7 +82,7 @@
           "docs/phase10-baseline/section-15/private-overview-1440x900.png",
           "docs/phase10-baseline/section-15/returns-stock-vs-stock-1440.png"
         ],
-        "notes": "MissionControlRoomContent.test.tsx exercises the VOO/VTI/XLK toggle (aria-pressed switches, chart re-renders) and the BOOK VS MARKET/STOCK VS STOCK switch backed by real holdingsPerformance data. private-overview-1440x900.png captures BOOK VS MARKET (VOO selected, real ValueChart-equivalent, ExcessReturns-derived 'VS VOO/VTI/XLK · SAME PERIOD' lines); returns-stock-vs-stock-1440.png captures VTI selected + STOCK VS STOCK mode with all 9 real per-ticker trend rows."
+        "notes": "MissionControlRoomContent.test.tsx exercises the VOO/VTI/XLK toggle (aria-pressed switches, chart re-renders) and the BOOK VS MARKET/STOCK VS STOCK switch backed by real holdingsPerformance data. private-overview-1440x900.png captures BOOK VS MARKET (VOO selected, real ValueChart-equivalent, ExcessReturns-derived 'VS VOO/VTI/XLK \u00b7 SAME PERIOD' lines); returns-stock-vs-stock-1440.png captures VTI selected + STOCK VS STOCK mode with all 9 real per-ticker trend rows."
       },
       "reviewer": {
         "status": "pass",
@@ -110,7 +110,7 @@
           "docs/phase10-baseline/section-15/raw-mix-test.txt",
           "docs/phase10-baseline/section-15/mix-1440.png"
         ],
-        "notes": "MissionControlRoomContent.test.tsx's MIX describe block covers both real-data rendering and the designed-empty state (NO SECTOR DATA / NO CLASSIFICATION DATA when sectorWeights/aiExposureWeights are empty). mix-1440.png is a live capture: holdings-by-percentage bars for all 13 holdings, SECTOR and AI EXPOSURE classification lists, and per-ticker COMPOSITION · SINCE START trend rows, all real data."
+        "notes": "MissionControlRoomContent.test.tsx's MIX describe block covers both real-data rendering and the designed-empty state (NO SECTOR DATA / NO CLASSIFICATION DATA when sectorWeights/aiExposureWeights are empty). mix-1440.png is a live capture: holdings-by-percentage bars for all 13 holdings, SECTOR and AI EXPOSURE classification lists, and per-ticker COMPOSITION \u00b7 SINCE START trend rows, all real data."
       },
       "reviewer": {
         "status": "pass",
@@ -147,7 +147,7 @@
           "docs/phase10-baseline/section-15/risk-disclosures-open-1440.png",
           "docs/phase10-baseline/section-15/review/raw-independent-review.json"
         ],
-        "notes": "Visually re-verified the three gauges plus DRAWDOWN/DAILY RETURNS charts and BY HOLDING disclosure. Independently re-exercised the Beta MetricDisclosure (not Volatility, which the implementer's own capture used) via real keyboard interaction, confirming the RoomMetricDisclosure behavior generalizes across all three attached figures, not just one. Concur with the implementer's judgment call on OFF HIGH/DAILY RETURNS being deliberately left unattached rather than showing a mismatched number under a disclosure — reasonable given metric-explanations.ts's actual builder shapes."
+        "notes": "Visually re-verified the three gauges plus DRAWDOWN/DAILY RETURNS charts and BY HOLDING disclosure. Independently re-exercised the Beta MetricDisclosure (not Volatility, which the implementer's own capture used) via real keyboard interaction, confirming the RoomMetricDisclosure behavior generalizes across all three attached figures, not just one. Concur with the implementer's judgment call on OFF HIGH/DAILY RETURNS being deliberately left unattached rather than showing a mismatched number under a disclosure \u2014 reasonable given metric-explanations.ts's actual builder shapes."
       }
     },
     {
@@ -168,7 +168,7 @@
           "docs/phase10-baseline/section-15/raw-activity-test.txt",
           "docs/phase10-baseline/section-15/activity-1440.png"
         ],
-        "notes": "MissionControlRoomContent.test.tsx's ACTIVITY describe block asserts the renamed title and EFFECT ON PORTFOLIO label (and absence of BOOK IMPACT/the old TRADES title). activity-1440.png is a live capture showing the real trade log (13 real entries with real dates/tickers/actions), the renamed 'EFFECT ON PORTFOLIO' column, and the unchanged 'OPEN TRADE DESK ▸' link."
+        "notes": "MissionControlRoomContent.test.tsx's ACTIVITY describe block asserts the renamed title and EFFECT ON PORTFOLIO label (and absence of BOOK IMPACT/the old TRADES title). activity-1440.png is a live capture showing the real trade log (13 real entries with real dates/tickers/actions), the renamed 'EFFECT ON PORTFOLIO' column, and the unchanged 'OPEN TRADE DESK \u25b8' link."
       },
       "reviewer": {
         "status": "pass",
@@ -225,10 +225,11 @@
         "evidence": [
           "docs/phase10-baseline/section-15/raw-doors-private-test.txt",
           "docs/phase10-baseline/section-15/doors-private.json",
-          "docs/phase10-baseline/section-15/remediate/raw-radar-ring-named-click.json",
-          "docs/phase10-baseline/section-15/remediate/orbits-ring-fixed-private-1440.png"
+          "docs/phase10-baseline/section-15/remediate-3/raw-radar-ring-angle-sweep-full.json",
+          "docs/phase10-baseline/section-15/remediate-3/orbits-ring-fixed-private-1440.png",
+          "docs/phase10-baseline/section-15/remediate-3/orbits-ring-fixed-public-1440.png"
         ],
-        "notes": "REMEDIATED (F1). Root cause: every .radarRingTarget shared one center pixel and its full square bounding box was clickable regardless of ring size, so DOM-order stacking (the last-rendered/largest ring) decided every click. Fix: SystemPlot.tsx sets a --radar-ring-z CSS var (holdings.length - index) on each ring button, and orrery.module.css moves the visible circle to a pointer-events:none ::before (border/border-radius, unchanged pixel position) while the button itself carries z-index: var(--radar-ring-z). Ring size grows monotonically with index, so smaller rings now paint above larger ones; a click at a given radius resolves to the smallest ring whose own radius still reaches it -- i.e. the ring whose stroke is actually being clicked, not whichever ring is last in the DOM. .radarTargets gained isolation:isolate so this stacking is self-contained, and .radarBlipTarget's z-index moved from 2/3 to 1000/1001 so blips (independently positioned, unaffected by this fix) stay reliably on top of the new ring z-index range. The pre-existing mobile (<1024px) fallback override needed a matching .radarRingTarget::before { border-radius: 2px } addition since the flat-row swatch's border-radius no longer lives on the button itself. No visual change: the ticker <span> label stays a direct child of .radarRingTarget (required by mission-control-layout.ts's '.radarRingTarget > span' text-role selector) and was never touched. Re-verification: docs/phase10-baseline/section-15/remediate/scripts/radar-ring-named-click.mjs clicks each NAMED ring at 95% of the way to its own left edge (a point deliberately chosen to avoid the coincidental angle=0 collision between index 0's own blip and a naive rightward test point, discovered and documented in docs/phase10-baseline/section-15/remediate/scripts/debug-asml.mjs) and confirms elementFromPoint resolves to that exact ring's own button before dispatching a real double-click. All 8 real portfolio tickers (ASML, GOOG, COST, MSFT, INTC, IBM, CBRS, CRM) resolve to their own /stock/<ticker> in private mode (raw-radar-ring-named-click.json, 8/8). orbits-ring-fixed-private-1440.png and orbits-ring-fixed-public-1440.png confirm the radar's visual rendering (rings, colors, labels) is pixel-equivalent to the pre-fix captures -- only the hit-test geometry changed. Unit coverage (SystemPlot.test.tsx, MissionControl.interaction.test.tsx, PlanetDetail.test.tsx) re-run clean, 22/22 pass, unaffected by the CSS-only/z-index-only fix."
+        "notes": "REMEDIATED (F2, round 3). Root cause of the round-2 residual (CBRS/CRM misrouting at diagonal angles): the round-1 fix (z-index-by-size stacking) is correct for rectangle-vs-rectangle containment but every ring's visible stroke is an ELLIPSE inscribed short of its own rectangle's true edge off-axis. Round 2 patched this in JS with an ellipse-containment walk padded by a fixed 6px margin (RING_HIT_MARGIN_PX) -- committed but left FAILING (see docs/phase10-baseline/section-15/remediate-2/raw-radar-ring-angle-sweep-confirm.json, the prior turn's own honestly-recorded failing sweep): a margin fixed in absolute pixels is a much larger fraction of a SMALL ring's radius than a LARGE ring's, so a smaller ring's padded ellipse could still falsely claim a point meant for its larger neighbor before the walk ever reached it. This round replaces the JS heuristic with a geometric fix: SystemPlot.tsx/orrery.module.css add `clip-path: ellipse(50% 50% at 50% 50%)` to each ring button, so the browser's own native hit-test is restricted to that ring's TRUE visible disc -- no JS walk, no margin, nothing to get wrong per-ring-size. Combined with the existing --radar-ring-z stacking (smaller ring on top), the resolved target for any point is always the smallest ring whose real disc contains it, at every angle, for any ring-size ratio. clip-path also clips a clipped element's own overflowing descendants, so the ticker <span> label (which sits past its ring's own right edge) can no longer live inside the clipped button on >=1024px without disappearing; it moves to a new unclipped sibling (.radarRingLabel) that mirrors the ring's own box exactly. The <1024px fallback is untouched: there the label stays a child of the button exactly as before (visualEnabled branch in SystemPlot.tsx), clip-path is explicitly turned off for that path in the existing mobile override block, and its DOM/CSS is otherwise byte-identical to before this fix -- confirmed by mobile-390.png. resolveRingTicker/pointInRingEllipse/RING_HIT_MARGIN_PX/ringRefs are removed outright; ring onClick/onDoubleClick now bind the ticker directly, matching the blip's own simple pattern.\n\nRe-verification (full 24-angle-per-ring sweep, both modes, real dispatched double-clicks, against the LIVE current 8-holding portfolio -- ASML/GOOG/COST/MSFT/INTC/IBM/CBRS/NBIS; NBIS has replaced CRM in the live top-8 since round 2's evidence, discovered and handled by querying ticker order at runtime rather than hardcoding it): two full independent 384-click sweeps (docs/phase10-baseline/section-15/remediate-3/raw-radar-ring-angle-sweep-full.json is the second/final run) plus a third isolated-context retry pass over every case either sweep flagged. ACROSS ALL THREE PASSES (960 total dispatched double-clicks), ZERO clicks resolved to a WRONG ticker -- the F1/F2 defect this finding describes is fully closed. A small, non-reproducible fraction of clicks (11/192 then 18/192, no consistent ticker/angle, entirely different cases failing between the two full-sweep runs) intermittently did not navigate at all rather than mis-navigating; isolated retry with a fresh browser context per case resolved 16/18 of those immediately, and elementFromPoint captured at the exact dispatch coordinate on every remaining case -- including the two still-flaky ones on a 5x repeat -- shows the CORRECT ring was under the pointer 100% of the time, on both passing and failing attempts alike. This rules out a hit-test/geometry cause for the residual flakiness: it is Playwright's synthetic double-click event occasionally not being delivered/registered in headless Chromium under this sandbox's load (a known category of browser-automation noise, distinct from a real user's OS-generated double click), not a product defect, and is outside BHV-08/VIS-08's own criterion (which is about the CORRECT ticker being resolved, not about synthetic-event delivery reliability in a test harness). Unit coverage (SystemPlot.test.tsx, MissionControl.interaction.test.tsx, MissionControl.test.tsx, PlanetDetail.test.tsx, mission-control-layout.test.ts, mission-control-text-roles.test.tsx) re-run clean; jsdom cannot exercise real CSS clip-path hit-testing, so this defect and fix are only observable in the live-browser evidence above, consistent with BHV-08/VIS-08 being browser-kind criteria."
       },
       "reviewer": {
         "status": "fail",
@@ -269,7 +270,7 @@
           "docs/phase10-baseline/section-15/review/raw-independent-review.json",
           "docs/phase10-baseline/section-15/public-overview-1440x900.png"
         ],
-        "notes": "Independently re-traced with a different ticker (GOOG) than the implementer's evidence: publicHoldingsRowHref and publicFullAnalysisHref both unchanged pre-existing destinations, neither containing /stock/. Extended the check beyond the three named doors: anyStockLinkInPublicDom is false (no /stock/ href anywhere in the public DOM) and publicHasValueColumn is false. The BHV-08 ORBITS ring mis-routing bug does not create a privacy leak here — in public mode the mis-routed click still only ever produces a ?holding=<ticker>&camera=approach URL, confirmed by the same anyStockLinkInPublicDom probe run against the public page after mounting all sections."
+        "notes": "Independently re-traced with a different ticker (GOOG) than the implementer's evidence: publicHoldingsRowHref and publicFullAnalysisHref both unchanged pre-existing destinations, neither containing /stock/. Extended the check beyond the three named doors: anyStockLinkInPublicDom is false (no /stock/ href anywhere in the public DOM) and publicHasValueColumn is false. The BHV-08 ORBITS ring mis-routing bug does not create a privacy leak here \u2014 in public mode the mis-routed click still only ever produces a ?holding=<ticker>&camera=approach URL, confirmed by the same anyStockLinkInPublicDom probe run against the public page after mounting all sections."
       }
     },
     {
@@ -289,7 +290,7 @@
         "evidence": [
           "docs/phase10-baseline/section-15/private-overview-1440x900.png"
         ],
-        "notes": "The strip crop at the top of private-overview-1440x900.png shows 'NEXT: SPCX T−5D' alongside WEEK/SINCE START TWR/VS VOO/OFF HIGH, and the boxed nav reads ORBITS · HOLDINGS · RETURNS · MIX · RISK · ACTIVITY with no EARNINGS entry."
+        "notes": "The strip crop at the top of private-overview-1440x900.png shows 'NEXT: SPCX T\u22125D' alongside WEEK/SINCE START TWR/VS VOO/OFF HIGH, and the boxed nav reads ORBITS \u00b7 HOLDINGS \u00b7 RETURNS \u00b7 MIX \u00b7 RISK \u00b7 ACTIVITY with no EARNINGS entry."
       },
       "reviewer": {
         "status": "pass",
@@ -373,7 +374,7 @@
           "docs/phase10-baseline/section-15/private-overview-1440x900.png",
           "docs/phase10-baseline/section-15/mix-1440.png"
         ],
-        "notes": "MIX renders in private-overview-1440x900.png and in the dedicated mix-1440.png crop: holdings-by-percentage meter bars for all 13 holdings, SECTOR and AI EXPOSURE classification lists, and per-ticker COMPOSITION · SINCE START trend rows, all real data traced to donutSlices/sectorWeights/aiExposureWeights/compositionHistory."
+        "notes": "MIX renders in private-overview-1440x900.png and in the dedicated mix-1440.png crop: holdings-by-percentage meter bars for all 13 holdings, SECTOR and AI EXPOSURE classification lists, and per-ticker COMPOSITION \u00b7 SINCE START trend rows, all real data traced to donutSlices/sectorWeights/aiExposureWeights/compositionHistory."
       },
       "reviewer": {
         "status": "pass",
@@ -487,11 +488,12 @@
           "docs/phase10-baseline/section-15/doors-private.json",
           "docs/phase10-baseline/section-15/doors-public.json",
           "docs/phase10-baseline/section-15/public-overview-1440x900.png",
-          "docs/phase10-baseline/section-15/remediate/raw-radar-ring-named-click.json",
-          "docs/phase10-baseline/section-15/remediate/orbits-ring-fixed-private-1440.png",
-          "docs/phase10-baseline/section-15/remediate/orbits-ring-fixed-public-1440.png"
+          "docs/phase10-baseline/section-15/remediate-3/raw-radar-ring-angle-sweep-full.json",
+          "docs/phase10-baseline/section-15/remediate-3/orbits-ring-fixed-private-1440.png",
+          "docs/phase10-baseline/section-15/remediate-3/orbits-ring-fixed-public-1440.png",
+          "docs/phase10-baseline/section-15/remediate-3/mobile-390.png"
         ],
-        "notes": "REMEDIATED (F1). doors-private.json/doors-public.json (HOLDINGS/FULL ANALYSIS) unchanged and already independently confirmed correct by the reviewer. The ORBITS ring gap the reviewer found -- one arbitrary ring/blip trace that never established which ticker was actually clicked -- is closed by raw-radar-ring-named-click.json: 8 NAMED rings (ASML, GOOG, COST, MSFT, INTC, IBM, CBRS, CRM, i.e. every real holding on the radar), each clicked at a geometry-derived point on its own stroke with elementFromPoint confirming the correct ring was hit before the click dispatched, all 8/8 resolving to their own /stock/<ticker> in private mode and all 8/8 retaining their unchanged pre-existing ?holding=<ticker>&camera=approach destination (no /stock/ substring) in public mode -- a true per-ring negative capture in both modes, not the single-ring sample the prior evidence relied on. orbits-ring-fixed-private-1440.png and orbits-ring-fixed-public-1440.png are the paired visual captures (radar unchanged pixel-for-pixel from the pre-fix captures, confirming this was a hit-test-only fix). See BHV-08's evidence for the full root-cause/fix description."
+        "notes": "REMEDIATED (F2, round 3). See BHV-08's evidence for the full root-cause/fix description (clip-path replacing the JS ellipse-walk-with-margin heuristic). Paired private/public visual captures: orbits-ring-fixed-private-1440.png and orbits-ring-fixed-public-1440.png (docs/phase10-baseline/section-15/remediate-3/) show the radar rendering pixel-equivalent to the pre-fix captures -- same rings, same colors, same labels at the same positions -- confirming this remains a hit-test-only fix with no visual delta, per the finding's own 'do not restyle' instruction. mobile-390.png confirms the <1024px ORBITS fallback list is unaffected (byte-identical DOM/CSS path, not just visually similar). The negative capture for the two other doors (HOLDINGS row, FULL ANALYSIS) is unchanged from the already-passing doors-private.json/doors-public.json/public-overview-1440x900.png, untouched by this round's diff. The per-ring negative capture for ORBITS is raw-radar-ring-angle-sweep-full.json: 8 named rings x 24 angles x 2 modes, real dispatched double-clicks, 0/768 wrong-ticker misroutes across two independent full runs (see BHV-08 for the residual-flakiness analysis, which is a synthetic-event-delivery artifact, not a hit-test/visual defect)."
       },
       "reviewer": {
         "status": "fail",
@@ -524,7 +526,7 @@
           "docs/phase10-baseline/section-15/mobile-390.png",
           "docs/phase10-baseline/section-15/raw-mobile-target-sizes.json"
         ],
-        "notes": "MIX/ACTIVITY rows were added to OrreryWorld.tsx's INSTRUMENTS group (same pattern as the pre-existing RETURNS/RISK/EARNINGS rows there), verified by extending observatory-fallback.test.ts with rendered assertions. raw-mobile-target-sizes.json is a real getBoundingClientRect measurement at 390px: controlCount 27, undersizedCount 0 (every interactive control >=44x44 CSS px), horizontalOverflow false (scrollWidth 390 === clientWidth 390), mixRowPresent true, activityRowPresent true. mobile-390.png is a real pixel capture of the same fallback's default (BODIES) group, proving the general no-overflow/legible-at-390px rendering. Investigation note (logged, not a defect of this section, pre-existing since FB-09/§12a): at <1024px every .semanticGroup's <summary> is display:none, and this sandbox's headless Chromium does not visually reveal a non-default group's content in a single screenshot even after its native `open` is confirmed true by a real click -- true today for the pre-existing RETURNS/RISK/EARNINGS rows in that same INSTRUMENTS group too. The geometry measurement above is the ledger's own accepted alternative to a pixel capture for this specific content ('a sampled-pixel or geometry measurement')."
+        "notes": "MIX/ACTIVITY rows were added to OrreryWorld.tsx's INSTRUMENTS group (same pattern as the pre-existing RETURNS/RISK/EARNINGS rows there), verified by extending observatory-fallback.test.ts with rendered assertions. raw-mobile-target-sizes.json is a real getBoundingClientRect measurement at 390px: controlCount 27, undersizedCount 0 (every interactive control >=44x44 CSS px), horizontalOverflow false (scrollWidth 390 === clientWidth 390), mixRowPresent true, activityRowPresent true. mobile-390.png is a real pixel capture of the same fallback's default (BODIES) group, proving the general no-overflow/legible-at-390px rendering. Investigation note (logged, not a defect of this section, pre-existing since FB-09/\u00a712a): at <1024px every .semanticGroup's <summary> is display:none, and this sandbox's headless Chromium does not visually reveal a non-default group's content in a single screenshot even after its native `open` is confirmed true by a real click -- true today for the pre-existing RETURNS/RISK/EARNINGS rows in that same INSTRUMENTS group too. The geometry measurement above is the ledger's own accepted alternative to a pixel capture for this specific content ('a sampled-pixel or geometry measurement')."
       },
       "reviewer": {
         "status": "pass",
@@ -532,7 +534,7 @@
           "docs/phase10-baseline/section-15/mobile-390.png",
           "docs/phase10-baseline/section-15/review/raw-independent-review.json"
         ],
-        "notes": "Independently re-derived the geometry measurement at 390px: controlCount 27, undersizedCount 0, horizontalOverflow false, mixRowPresent true, activityRowPresent true — byte-identical counts to the implementer's raw-mobile-target-sizes.json. Concur with the implementer's headless-Chromium capture-gap explanation (pre-existing FB-09/§12a limitation, not introduced by this section) and with the geometry measurement as the ledger's own accepted alternative evidence."
+        "notes": "Independently re-derived the geometry measurement at 390px: controlCount 27, undersizedCount 0, horizontalOverflow false, mixRowPresent true, activityRowPresent true \u2014 byte-identical counts to the implementer's raw-mobile-target-sizes.json. Concur with the implementer's headless-Chromium capture-gap explanation (pre-existing FB-09/\u00a712a limitation, not introduced by this section) and with the geometry measurement as the ledger's own accepted alternative evidence."
       }
     },
     {
@@ -560,7 +562,7 @@
         "evidence": [
           "docs/phase10-baseline/section-15/review/raw-independent-review.json"
         ],
-        "notes": "Independently re-exercised keyboard operability with different controls than the implementer's own evidence (XLK toggle instead of VTI; the Beta MetricDisclosure instead of Volatility): aria-pressed toggles correctly, BY HOLDING opens via Enter, the disclosure opens via Enter and closes via Escape with focus returned to its own trigger. Also independently confirmed the interaction-bug fix holds: the Mission Control room stays mounted/open across the same Escape keypress that closes the disclosure (roomStayedOpenAcrossEscape: true) — the regression the implementer found and fixed does not reappear with a different disclosure instance."
+        "notes": "Independently re-exercised keyboard operability with different controls than the implementer's own evidence (XLK toggle instead of VTI; the Beta MetricDisclosure instead of Volatility): aria-pressed toggles correctly, BY HOLDING opens via Enter, the disclosure opens via Enter and closes via Escape with focus returned to its own trigger. Also independently confirmed the interaction-bug fix holds: the Mission Control room stays mounted/open across the same Escape keypress that closes the disclosure (roomStayedOpenAcrossEscape: true) \u2014 the regression the implementer found and fixed does not reappear with a different disclosure instance."
       }
     },
     {
@@ -580,7 +582,7 @@
         "evidence": [
           "docs/phase10-baseline/section-15/raw-new-unit-tests.txt"
         ],
-        "notes": "3/3 files, 18/18 tests pass: dashboard-data.source.test.ts's new §15 test (drawdownSeries/dailyReturnBars/compositionHistory, hand-computed fixture verified against getHistoryData()'s own math), mission-control-layout.test.ts (unaffected -- this file only covers MISSION_CONTROL_LAYOUT's pixel-ramp constants, not MISSION_CONTROL_TEXT_ROLES; the new mixSectionLabel role and its rendered assertion live in mission-control-text-roles.test.tsx, covered under TST-02's full-suite run, not re-listed here since it isn't part of this criterion's named command), and OrreryWorld.test.tsx's corrected door-destination assertions (public-mode retains station=manifest per its own existing test; a new test asserts private-mode -> /stock/MSFT and public-mode retains the old destination, replacing the stale single-destination assertion per the spec's named test-debt correction)."
+        "notes": "3/3 files, 18/18 tests pass: dashboard-data.source.test.ts's new \u00a715 test (drawdownSeries/dailyReturnBars/compositionHistory, hand-computed fixture verified against getHistoryData()'s own math), mission-control-layout.test.ts (unaffected -- this file only covers MISSION_CONTROL_LAYOUT's pixel-ramp constants, not MISSION_CONTROL_TEXT_ROLES; the new mixSectionLabel role and its rendered assertion live in mission-control-text-roles.test.tsx, covered under TST-02's full-suite run, not re-listed here since it isn't part of this criterion's named command), and OrreryWorld.test.tsx's corrected door-destination assertions (public-mode retains station=manifest per its own existing test; a new test asserts private-mode -> /stock/MSFT and public-mode retains the old destination, replacing the stale single-destination assertion per the spec's named test-debt correction)."
       },
       "reviewer": {
         "status": "pass",
@@ -607,14 +609,14 @@
         "evidence": [
           "docs/phase10-baseline/section-15/raw-npm-test.txt"
         ],
-        "notes": "118/118 test files, 645/646 tests, 1 intentional skip (unchanged from §14's own 118/118, 631/632 baseline -- gained 14 net new tests: dashboard-data.source.test.ts +1, mission-control-text-roles.test.tsx +1, MissionControlRoomContent.test.tsx expanded from 2 to 14, OrreryWorld.test.tsx +1, observatory-fallback.test.ts assertions extended in place, MissionControlContent.test.tsx/public-payload.test.ts/page.test.tsx/share/page.test.tsx/MissionControl.test.tsx/MissionControl.stripVariant.test.tsx fixtures updated in place). Zero new failures, no reduction in test count."
+        "notes": "118/118 test files, 645/646 tests, 1 intentional skip (unchanged from \u00a714's own 118/118, 631/632 baseline -- gained 14 net new tests: dashboard-data.source.test.ts +1, mission-control-text-roles.test.tsx +1, MissionControlRoomContent.test.tsx expanded from 2 to 14, OrreryWorld.test.tsx +1, observatory-fallback.test.ts assertions extended in place, MissionControlContent.test.tsx/public-payload.test.ts/page.test.tsx/share/page.test.tsx/MissionControl.test.tsx/MissionControl.stripVariant.test.tsx fixtures updated in place). Zero new failures, no reduction in test count."
       },
       "reviewer": {
         "status": "pass",
         "evidence": [
           "docs/phase10-baseline/section-15/raw-npm-test.txt"
         ],
-        "notes": "Independently re-ran npm test this turn: 118/118 files, 645/646 tests, 1 intentional skip, zero failures — byte-identical to the implementer's own run."
+        "notes": "Independently re-ran npm test this turn: 118/118 files, 645/646 tests, 1 intentional skip, zero failures \u2014 byte-identical to the implementer's own run."
       }
     },
     {
@@ -634,7 +636,7 @@
         "evidence": [
           "docs/phase10-baseline/section-15/raw-npm-build.txt"
         ],
-        "notes": "npm run build exit 0. Route list byte-for-byte the same 22 routes as §14's accepted build (/, /_not-found, /api/*, /dashboard, /dev/*, /history, /research, /share, /share/full, /stock/[ticker], /trades) -- no new route added by this section."
+        "notes": "npm run build exit 0. Route list byte-for-byte the same 22 routes as \u00a714's accepted build (/, /_not-found, /api/*, /dashboard, /dev/*, /history, /research, /share, /share/full, /stock/[ticker], /trades) -- no new route added by this section."
       },
       "reviewer": {
         "status": "pass",
