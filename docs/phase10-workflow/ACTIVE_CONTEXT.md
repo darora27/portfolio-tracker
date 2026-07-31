@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§15 — Mission Control content rework**
 - Managed range: §2–§18
-- Stage: `review`
-- Role: `claude_lead`
+- Stage: `remediate`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -52,7 +52,7 @@ Roadmap title per the §13-acceptance split: 'Mission Control content rework', p
 
 Open bounded findings:
 
-None.
+- {"id":"F1","criteria":["BHV-08","VIS-08"],"risk":"critical","summary":"The ORBITS ring click (as opposed to the blip dot) does not navigate to the correct real ticker in either mode.","root_cause":"SystemPlot.tsx's .radarRingTarget buttons are all absolutely centered on the identical pixel (orrery.module.css: position:absolute; top:50%; left:50%; transform:translate(-50%,-50%)) regardless of ring size, and border-radius:50% does not restrict a button's hit-test area to its visible stroke -- the full square bounding box is clickable. With no differentiating z-index in the default state, ordinary DOM-order stacking (not visual position) decides which ring receives a click near the shared center: the last-rendered (largest) ring wins for virtually the entire radar's clickable area.","reproduction":"docs/phase10-baseline/section-15/review/scripts/radar-blip-check.mjs and radar-hittest.mjs. Double-clicking ASML/GOOG/COST/MSFT/IBM's ring all navigated to /stock/CRM (5/5, deterministic, confirmed via document.elementsFromPoint at the radar's exact center). The blip affordance is unaffected and routes correctly for the same tickers.","scope_note":"SystemPlot.tsx/orrery.module.css's ring CSS is pre-existing and was not touched by this section's diff -- the defect is inherited, not newly introduced. It is in scope because §15 is the section that newly wires this exact click to the owner-gated /stock/<ticker> route and is the section that declares BHV-08/VIS-08, both explicitly requiring 'the correct real ticker'. PRV-01 is unaffected: the mis-routed click never produces a /stock/ URL in public mode.","evidence":["docs/phase10-baseline/section-15/review/raw-radar-ring-vs-blip-routing.json","docs/phase10-baseline/section-15/review/raw-radar-ring-hittest.json","docs/phase10-baseline/section-15/review/orbits-ring-overlap-1440.png"],"required_change":"Fix the ring's hit-test area so a click/double-click on a given ring resolves to that ring's own ticker, in both public and private mode. Mechanism (pointer-events scoping, clip-path, z-index ordering, or an equivalent) is the implementer's own judgment call -- not prescribed by this finding. Re-verify BHV-08 and VIS-08 with a script that clicks a NAMED ring/blip and asserts the resulting URL/destination contains that same ticker, for multiple tickers in both modes."}
 
 Acceptance ledger:
 
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `b3d6531072ea27e22a4bb097ec3ffbe0ef76be1f26212f7828b8ca5a6bf045ac`
+- `PHASE10_STATE.json`: `b18addd54729a8d615b611174e099ad45b944b916c69fe9ca27e35ca67bb7b34`
 - `PHASE10.md`: `5100059a82f78bf77a51708fca43a127ddd5521e9d22d5b027ba23d9ccd0ee73`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

@@ -1,0 +1,64 @@
+{
+  "doorsPrivate": {
+    "mode": "private",
+    "rowCount": 13,
+    "firstRowHref": "/stock/ASML",
+    "secondRowTicker": "GOOG",
+    "secondRowHref": "/stock/GOOG",
+    "fullAnalysisDoorHref": "/stock/GOOG",
+    "orbitsTicker": "ASML",
+    "orbitsDoorNavigated": "http://127.0.0.1:3416/stock/CRM"
+  },
+  "doorsPublic": {
+    "mode": "public",
+    "publicFirstRowHref": "/share?holding=ASML&camera=approach",
+    "publicSecondRowTicker": "GOOG",
+    "publicSecondRowHref": "/share?holding=GOOG&camera=approach",
+    "publicFullAnalysisHref": "/share?focus=portfolio&camera=command&station=manifest&anchor=GOOG",
+    "publicOrbitsNavigated": "http://127.0.0.1:3416/share?holding=CRM&camera=approach",
+    "publicHasValueColumn": false,
+    "anyStockLinkInPublicDom": false
+  },
+  "stripAndCuts": {
+    "stripText": "WEEK ▼ 0.6%SINCE START TWR ▼ 5.3%VS VOO · SAME PERIOD ▼ 6.2%OFF HIGH ▼ 12.3%NEXT: SPCX T−5D",
+    "hasNextChip": true,
+    "hasEarningsNavLink": false,
+    "correlationSectionPresent": false,
+    "earningsSectionPresent": false,
+    "footerNewsPresent": true,
+    "footerNewsHeadlineCount": 3,
+    "mixSectionPresent": true,
+    "activityTitlePresent": true,
+    "bookImpactAbsent": true,
+    "effectOnPortfolioPresent": true
+  },
+  "keyboard": {
+    "benchmarkToggle": {
+      "beforePressed": "false",
+      "afterPressed": "true"
+    },
+    "stockVsStockPressed": "true",
+    "byHoldingDisclosure": {
+      "detailsOpenAfterEnter": true
+    },
+    "metricDisclosure": {
+      "triggerLabel": "Beta ⓘ",
+      "expandedAfterEnter": "true",
+      "expandedAfterEscape": "false",
+      "focusReturnedToTrigger": true,
+      "roomVisibleBeforeEscape": true,
+      "roomVisibleAfterEscape": true,
+      "roomStayedOpenAcrossEscape": true
+    }
+  },
+  "mobile": {
+    "controlCount": 27,
+    "undersizedCount": 0,
+    "undersized": [],
+    "horizontalOverflow": false,
+    "bodyScrollWidth": 390,
+    "bodyClientWidth": 390,
+    "mixRowPresent": true,
+    "activityRowPresent": true
+  }
+}

@@ -1,0 +1,248 @@
+{
+  "cx": 719.9921875,
+  "cy": 468.125,
+  "stackAtCenter": [
+    {
+      "tag": "BUTTON",
+      "ticker": "CRM",
+      "cls": "orrery-module__nrz9QG__radarRingTarget"
+    },
+    {
+      "tag": "BUTTON",
+      "ticker": "CBRS",
+      "cls": "orrery-module__nrz9QG__radarRingTarget"
+    },
+    {
+      "tag": "BUTTON",
+      "ticker": "IBM",
+      "cls": "orrery-module__nrz9QG__radarRingTarget"
+    },
+    {
+      "tag": "BUTTON",
+      "ticker": "INTC",
+      "cls": "orrery-module__nrz9QG__radarRingTarget"
+    },
+    {
+      "tag": "BUTTON",
+      "ticker": "MSFT",
+      "cls": "orrery-module__nrz9QG__radarRingTarget"
+    },
+    {
+      "tag": "BUTTON",
+      "ticker": "COST",
+      "cls": "orrery-module__nrz9QG__radarRingTarget"
+    },
+    {
+      "tag": "BUTTON",
+      "ticker": "GOOG",
+      "cls": "orrery-module__nrz9QG__radarRingTarget"
+    },
+    {
+      "tag": "BUTTON",
+      "ticker": "ASML",
+      "cls": "orrery-module__nrz9QG__radarRingTarget"
+    },
+    {
+      "tag": "DIV",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__radarTargets"
+    },
+    {
+      "tag": "CANVAS",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__systemPlot"
+    },
+    {
+      "tag": "DIV",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__systemPlotFrame"
+    },
+    {
+      "tag": "SECTION",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__missionDescentSection orrery-module__nrz9QG__orbitsSection"
+    },
+    {
+      "tag": "DIV",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__missionDescent"
+    },
+    {
+      "tag": "SECTION",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__missionControl"
+    },
+    {
+      "tag": "CANVAS",
+      "ticker": null,
+      "cls": ""
+    },
+    {
+      "tag": "DIV",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__sceneMount"
+    },
+    {
+      "tag": "DIV",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__canvasLayer"
+    },
+    {
+      "tag": "SECTION",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__stage"
+    },
+    {
+      "tag": "DIV",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__starField"
+    },
+    {
+      "tag": "MAIN",
+      "ticker": null,
+      "cls": "orrery-module__nrz9QG__world"
+    },
+    {
+      "tag": "BODY",
+      "ticker": null,
+      "cls": "min-h-full"
+    },
+    {
+      "tag": "HTML",
+      "ticker": null,
+      "cls": "inter_fe8b9d92-module__LINzvG__variable jetbrains_mono_7d65b77b-module__VxV-Ta__variable instrument_serif_bed06b21-module__swPsvG__variable h-full antialiased"
+    }
+  ],
+  "allRings": [
+    {
+      "i": 0,
+      "ticker": "ASML",
+      "width": 144.359375,
+      "height": 44.0625,
+      "cx": 719.984375,
+      "cy": 468.125
+    },
+    {
+      "i": 1,
+      "ticker": "GOOG",
+      "width": 288.734375,
+      "height": 88.140625,
+      "cx": 719.984375,
+      "cy": 468.125
+    },
+    {
+      "i": 2,
+      "ticker": "COST",
+      "width": 433.09375,
+      "height": 132.21875,
+      "cx": 719.984375,
+      "cy": 468.125
+    },
+    {
+      "i": 3,
+      "ticker": "MSFT",
+      "width": 577.46875,
+      "height": 176.296875,
+      "cx": 719.984375,
+      "cy": 468.125
+    },
+    {
+      "i": 4,
+      "ticker": "INTC",
+      "width": 721.828125,
+      "height": 220.375,
+      "cx": 719.984375,
+      "cy": 468.125
+    },
+    {
+      "i": 5,
+      "ticker": "IBM",
+      "width": 866.203125,
+      "height": 264.4375,
+      "cx": 719.984375,
+      "cy": 468.125
+    },
+    {
+      "i": 6,
+      "ticker": "CBRS",
+      "width": 1010.5625,
+      "height": 308.515625,
+      "cx": 719.984375,
+      "cy": 468.125
+    },
+    {
+      "i": 7,
+      "ticker": "CRM",
+      "width": 1154.9375,
+      "height": 352.59375,
+      "cx": 719.984375,
+      "cy": 468.125
+    }
+  ],
+  "allBlips": [
+    {
+      "i": 0,
+      "ticker": "ASML",
+      "left": 782.015625,
+      "top": 457.96875,
+      "w": 20.3125,
+      "h": 20.3125
+    },
+    {
+      "i": 1,
+      "ticker": "GOOG",
+      "left": 801.3515625,
+      "top": 492.8671875,
+      "w": 18.984375,
+      "h": 18.984375
+    },
+    {
+      "i": 2,
+      "ticker": "COST",
+      "left": 666.6171875,
+      "top": 524.3828125,
+      "w": 16.796875,
+      "h": 16.796875
+    },
+    {
+      "i": 3,
+      "ticker": "MSFT",
+      "left": 454.75,
+      "top": 500.15625,
+      "w": 16.03125,
+      "h": 16.03125
+    },
+    {
+      "i": 4,
+      "ticker": "INTC",
+      "left": 382.4921875,
+      "top": 415.6328125,
+      "w": 15.421875,
+      "h": 15.421875
+    },
+    {
+      "i": 5,
+      "ticker": "IBM",
+      "left": 599.96875,
+      "top": 332.75,
+      "w": 15.34375,
+      "h": 15.34375
+    },
+    {
+      "i": 6,
+      "ticker": "CBRS",
+      "left": 1009.6640625,
+      "top": 336.2265625,
+      "w": 14.046875,
+      "h": 14.046875
+    },
+    {
+      "i": 7,
+      "ticker": "CRM",
+      "left": 1289.734375,
+      "top": 451.84375,
+      "w": 13.8125,
+      "h": 13.8125
+    }
+  ]
+}

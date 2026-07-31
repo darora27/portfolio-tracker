@@ -1,0 +1,46 @@
+{
+  "ringClicks": [
+    {
+      "targetTicker": "ASML",
+      "navigatedTo": "http://127.0.0.1:3416/stock/CRM"
+    },
+    {
+      "targetTicker": "GOOG",
+      "navigatedTo": "http://127.0.0.1:3416/stock/CRM"
+    },
+    {
+      "targetTicker": "COST",
+      "navigatedTo": "http://127.0.0.1:3416/stock/CRM"
+    },
+    {
+      "targetTicker": "MSFT",
+      "navigatedTo": "http://127.0.0.1:3416/stock/CRM"
+    },
+    {
+      "targetTicker": "IBM",
+      "navigatedTo": "http://127.0.0.1:3416/stock/CRM"
+    }
+  ],
+  "blipClicks": [
+    {
+      "targetTicker": "ASML",
+      "navigatedTo": "http://127.0.0.1:3416/?focus=portfolio&camera=command"
+    },
+    {
+      "targetTicker": "GOOG",
+      "navigatedTo": "http://127.0.0.1:3416/stock/GOOG"
+    },
+    {
+      "targetTicker": "COST",
+      "navigatedTo": "http://127.0.0.1:3416/stock/COST"
+    },
+    {
+      "targetTicker": "MSFT",
+      "navigatedTo": "http://127.0.0.1:3416/stock/MSFT"
+    },
+    {
+      "targetTicker": "IBM",
+      "navigatedTo": "http://127.0.0.1:3416/stock/IBM"
+    }
+  ]
+}
