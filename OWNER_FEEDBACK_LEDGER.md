@@ -49,6 +49,21 @@ read has failed.
 
 ---
 
+## 1b. Deploy standing — CHANGED July 31, 2026
+
+**The site is not resume-ready and is being taken down at the owner's
+direction.** Devan sent his resume on July 31 *without* the link: *"it is
+obvious that this project is not working. There are many things that I am not
+happy [with]."*
+
+The deploy was announced on a green protocol and an 18-second page. Nothing in
+the tooling measured the deployed URL — see `DEPLOY_READINESS.md` for the gate
+written in response, which every future deploy must pass on the live URL
+before the link is shared.
+
+Re-deploying is **owner-gated**. It is not a section outcome, not an agent
+decision, and not implied by a green validate.
+
 ## 2. The board
 
 | ID | Item (his words, abbreviated) | Reports | Status | Design | Scheduled | Closes when |
