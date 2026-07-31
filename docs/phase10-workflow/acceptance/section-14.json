@@ -1,0 +1,472 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "section": "\u00a714",
+  "spec_doc": "docs/phase10-workflow/specs/section-14.md",
+  "candidate_sha": null,
+  "criteria": [
+    {
+      "id": "BHV-01",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "Header stat line (WEIGHT/WEEK/30D/SINCE BUY/EARNINGS T-nD/N SESSIONS) renders from real computed values per spec section 4; each chip is absent, never a zero or fabricated figure, when its source field is null.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/chart-room/ChartRoomHeader.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-header-stats-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-02",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Graph range detents (7D/30D/SINCE BUY/MAX) reslice the displayed series correctly via sliceToRange; default is 30D.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/portfolio/chart-room-window.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-chart-room-window-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-03",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "Graph RETURN/PRICE mode toggle switches the Y-axis basis correctly (indexed-to-100 vs raw dollar price); default is RETURN.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/chart-room/ChartRoomGraph.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-chart-room-graph-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-04",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "All five graph overlays (VOO SAME PERIOD, BOOK SAME PERIOD, DEPTH, TRADES, COST) are independently toggleable, each sourced from real/existing data per spec section 5, each renders nothing (not a fabricated line) when its source is unavailable for the selected window.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/portfolio/chart-room-window.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-chart-room-overlays-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BHV-05",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "Every one of the six benches sources only real, already-computed values per spec section 6; a bench with insufficient underlying data (thin history, too few shared trading days) renders its designed empty state, never a zero or a fabricated number.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/chart-room"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-chart-room-benches-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-01",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "Full-scale graph capture: default state (30D/RETURN/VOO on) matches the design proof's structure -- title, trace line, VOO overlay, axis labels, all from real data.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png",
+        "docs/phase10-baseline/section-14/raw-graph-state.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-02",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "DISTRIBUTION bench capture: histogram, today marker, mean+/-sigma band, real sigma/annualized-vol stamp.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-03",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "VS MARKET bench capture: scatter, regression line at the real betaVsVoo slope, real correlation stamp.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-04",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "DEPTH bench capture: gauge, real max-drawdown mark and current off-high, computed via drawdown() on since-buy dailyReturns.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-05",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "MOVES WITH bench capture: correlation bars matching correlationRow's real values, sentence names the real top-|r| pair.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-06",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "CONTRIBUTION & POSITION bench capture: real contribution ranking bar with this ticker highlighted, four owner tiles (VALUE/COST BASIS/DAY $/SINCE BUY $) with real or correctly-omitted values.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-07",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "THE COMPANY bench capture: 52-week range, P/E, market cap, div yield, analyst consensus, three real linkable news headlines (or each sub-part's correct empty state).",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-08",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "CHART_ROOM_TEXT_ROLES role-to-token map holds on a live capture at current production ramp values (12px --type-label floor, post-FB-05) -- legible, no stale 11px value shipped.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png",
+        "docs/phase10-baseline/section-14/raw-chart-room-text-roles.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "VIS-09",
+      "dimension": "visual",
+      "risk": "low",
+      "description": "The mock's 'DEMO DATA - ROUND 6 MOCK - NOT LIVE' stamp is verifiably absent from the shipped page (negative capture).",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/overview-1440x900.png"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "MOB-01",
+      "dimension": "mobile",
+      "risk": "critical",
+      "description": "At 390px: single-column stack in source order per spec section 8 (strip, graph, six benches), no horizontal overflow, every interactive control >=44x44 CSS px.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/mobile-390.png",
+        "docs/phase10-baseline/section-14/raw-mobile-target-sizes.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "ACC-01",
+      "dimension": "accessibility",
+      "risk": "high",
+      "description": "Range/mode/overlay controls are keyboard-operable: tab order, visible focus, correct aria-pressed state after activation.",
+      "verifier": {
+        "kind": "browser",
+        "command": null
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-keyboard-operability.json"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "PRV-01",
+      "dimension": "privacy",
+      "risk": "critical",
+      "description": "/stock/[ticker] remains owner-gated exactly as today: an unauthenticated request shows only the login form (no figures leak), robots:{index:false} unchanged, route never linked from /share; regression test covers the unauthenticated path.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/app/stock"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-privacy-regression-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-01",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "New pure functions (sliceToRange, alignToDates, the CHART_ROOM_TEXT_ROLES map, any new selector/comparator logic in spec section 6) each have unit tests written before implementation (TDD) and passing.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/portfolio/chart-room-window.test.ts src/lib/observatory/chart-room-layout.test.ts"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-new-unit-tests.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "TST-02",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "Full suite green: npm test, no new failures, no reduction in test count beyond intentional skips.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-npm-test.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    },
+    {
+      "id": "BLD-01",
+      "dimension": "build",
+      "risk": "critical",
+      "description": "npm run build exits 0; route list unchanged (no new route -- /stock/[ticker] is reused, not duplicated).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm run build"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-14/raw-npm-build.txt"
+      ],
+      "implementer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      },
+      "reviewer": {
+        "status": "not_run",
+        "evidence": [],
+        "notes": null
+      }
+    }
+  ]
+}

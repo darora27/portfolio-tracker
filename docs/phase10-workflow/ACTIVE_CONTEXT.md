@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§14 — The Chart Room — individual stock analytics**
 - Managed range: §2–§18
-- Stage: `specify`
-- Role: `claude_lead`
+- Stage: `implement`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -34,7 +34,7 @@ Always read:
 
 Then read the current, specifically routed sources:
 
-None recorded.
+- `docs/phase10-workflow/specs/section-14.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -48,7 +48,7 @@ payload:
 
 ## Current section conditions
 
-Roadmap title (PHASE10.md §14): 'The Chart Room — individual stock analytics'. Promoted ahead of the Mission Control rework by owner ruling f392a049d4a4a9e49dda1404890d5941b00040ff on 2026-07-30 -- previously this was stage two of a combined §14; it is now its own section because it had slipped four owner reports behind content work that was already wiring up existing components. Authority: UNIVERSE_STOCK_LAB.html (repo root, tracked; the owner's same-day correction confirmed all three copies -- base, _2, _3 -- exist and are byte-identical, md5 2879d448097aa40683f9c33c5bfeaf0c; an earlier ledger note claiming a copy was missing was false). Stage one per PHASE10.md §14: header stat line; the full-scale graph with 7D/30D/SINCE BUY/MAX detents, RETURN/PRICE modes, and VOO SAME PERIOD / BOOK SAME PERIOD / DEPTH / TRADES / COST overlays; the six benches (DISTRIBUTION, VS MARKET, DEPTH, MOVES WITH, CONTRIBUTION & POSITION, THE COMPANY), each keeping its plain-English question. Stage two: a HOLDINGS row click and an ORBITS ring/blip click, plus FULL ANALYSIS ▸. Two things the mock says about itself the build must honour: marked DEMO DATA - ROUND 6 MOCK - NOT LIVE, so every figure comes from real data or is absent; §3 FLIGHT MODEL LIVE is the already-confirmed cursor physics, not new work. Not a rebuild: five of six benches map onto existing components (CorrelationHeatmap, ContributionChart, BetaTable, HoldingRiskTable) -- the layout is new, most of the maths is not. main is GREEN at this section start: npm test 112/112 files, 583/584 tests (1 intentional skip), npm run build exit 0, both re-run independently by the §13 accept turn at HEAD 33789ee (unchanged since). READ BEFORE SPECIFYING: PHASE10_STATE.json's top-level roadmap_numbering_conflict key -- PHASE10.md has a duplicate '## §15.' heading introduced by the same owner commit that created this section; it does not block §14 but must be resolved before whoever specifies the real §15. Also re-check OWNER_FEEDBACK_LEDGER.md's board-debt count against board_required_from_section: 12 before scoping -- several rows (FB-01, FB-05, FB-17, FB-02, FB-23, FB-24, FB-25) remain open pending Devan's own taste sentence.
+Roadmap title (PHASE10.md §14): 'The Chart Room — individual stock analytics'. Promoted ahead of the Mission Control rework by owner ruling f392a049d4a4a9e49dda1404890d5941b00040ff on 2026-07-30 -- previously this was stage two of a combined §14; it is now its own section because it had slipped four owner reports behind content work that was already wiring up existing components. Authority: UNIVERSE_STOCK_LAB.html (repo root, tracked; the owner's same-day correction confirmed all three copies -- base, _2, _3 -- exist and are byte-identical, md5 2879d448097aa40683f9c33c5bfeaf0c; an earlier ledger note claiming a copy was missing was false). Stage one per PHASE10.md §14 (this section's scope): header stat line; the full-scale graph with 7D/30D/SINCE BUY/MAX detents, RETURN/PRICE modes, and VOO SAME PERIOD / BOOK SAME PERIOD / DEPTH / TRADES / COST overlays; the six benches (DISTRIBUTION, VS MARKET, DEPTH, MOVES WITH, CONTRIBUTION & POSITION, THE COMPANY), each keeping its plain-English question. Stage two (a HOLDINGS row click, an ORBITS ring/blip click, plus FULL ANALYSIS ▸) is explicitly §15's work per PHASE10.md's own text and is out of scope here. Two things the mock says about itself the build must honour: marked DEMO DATA - ROUND 6 MOCK - NOT LIVE, so every figure comes from real data or is absent (the stamp itself must not ship); §3 FLIGHT MODEL LIVE is the already-confirmed cursor physics, not new work. Not a rebuild: the underlying math/data of five of six benches maps onto already-tested lib functions (correlationMatrix, perHoldingRisk, computeBenchmarkComparison, drawdown, annualizedVolatility) and the existing /stock/[ticker] route's getStockDetailData -- the layout is new, most of the maths is not. main is GREEN at this section start: npm test 112/112 files, 583/584 tests (1 intentional skip), npm run build exit 0, both re-run independently by the §13 accept turn at HEAD 33789ee; this specify turn re-confirmed git diff --name-only 33789ee HEAD -- src/ public/ package.json package-lock.json scripts/ is still empty. READ BEFORE SPECIFYING §15: PHASE10_STATE.json's top-level roadmap_numbering_conflict key -- PHASE10.md has a duplicate '## §15.' heading introduced by the same owner commit that created this section; it does not block §14 and was not touched by this turn.
 
 Open bounded findings:
 
@@ -56,7 +56,7 @@ None.
 
 Acceptance ledger:
 
-- Created by the lead with the section specification.
+- `docs/phase10-workflow/acceptance/section-14.json`
 
 ## Global gates
 
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `80a7ab9578984b7b16bc794dcc034e5e1e75658d899036e25d64bd6c74588926`
+- `PHASE10_STATE.json`: `dec8c2a7ffd18dc1ee5e63a39125c94853e0d1bcddbff73f47a939c0eacd4e14`
 - `PHASE10.md`: `1d6a648ab1528ca8e7a7214268431dcb7563697834282f668f2d82f3f394db3d`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
