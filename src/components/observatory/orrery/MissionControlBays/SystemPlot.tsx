@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
 import { LIVE_QUOTE_REFRESH_INTERVAL_MS } from "@/lib/observatory/data-refresh";
 import type { PublicOrreryHolding } from "@/lib/observatory/orrery";
 import {
@@ -11,6 +11,43 @@ import {
   UNIVERSE_PALETTE,
 } from "@/lib/observatory/universe-palette";
 import styles from "../orrery.module.css";
+
+// F2 (§15 review round 2): every ring's clickable box is a rectangle, but its
+// visible stroke is an ellipse inscribed in that rectangle -- touching the
+// rectangle's edge only at the four cardinal points. At a diagonal angle a
+// smaller (higher z-index, per --radar-ring-z) neighbor's rectangle corner
+// can still reach out far enough to cover a point that sits on a LARGER
+// ring's own visible curve, so the native DOM hit-test resolves to the wrong
+// ticker there. Rather than clip-path (which would also clip the ticker
+// <span> label -- it renders outside its ring's own box, and clip-path
+// clips overflowing descendants along with the element it's applied to),
+// resolve the correct ring in JS: the ring whose native handler fired is
+// always the smallest-index ring whose RECTANGLE contains the click (thanks
+// to the existing z-index-by-size stacking), and since every ring's ellipse
+// is a subset of its own rectangle, the true target ring's index can only be
+// the same or larger. Walk upward from the ring that received the event
+// until the first ring whose own ellipse actually contains the point.
+//
+// RING_HIT_MARGIN_PX pads that ellipse outward by a few CSS px: a 1px-wide
+// stroke is not a realistic click target on its own (MouseEvent.clientX/Y
+// are integer-rounded, so a point meant to land exactly on the boundary can
+// round to just outside it), and this matches every other interactive
+// element on this surface having real click tolerance. It stays far below
+// the gap between adjacent rings (with 8 holdings at 1440px this measured
+// ~72px; it shrinks toward 1/holdings.length of the plot radius as holdings
+// grow, but stays well clear of a low-single-digit px margin for any
+// realistic portfolio size), so it cannot resurrect the F1/F2 cross-ring
+// ambiguity this whole mechanism exists to prevent.
+const RING_HIT_MARGIN_PX = 6;
+
+function pointInRingEllipse(rect: DOMRect, clientX: number, clientY: number) {
+  const rx = rect.width / 2 + RING_HIT_MARGIN_PX;
+  const ry = rect.height / 2 + RING_HIT_MARGIN_PX;
+  if (rx <= 0 || ry <= 0) return false;
+  const nx = (clientX - (rect.left + rect.width / 2)) / rx;
+  const ny = (clientY - (rect.top + rect.height / 2)) / ry;
+  return nx * nx + ny * ny <= 1;
+}
 
 export function SystemPlot({
   holdings,
@@ -29,6 +66,7 @@ export function SystemPlot({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
+  const ringRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [visualEnabled, setVisualEnabled] = useState(false);
   const [visible, setVisible] = useState(true);
@@ -129,6 +167,22 @@ export function SystemPlot({
     onOpenTicker(ticker);
   };
 
+  // Resolves a ring click to the ticker whose own visible ellipse actually
+  // contains the point, starting from the ring index whose rectangle
+  // native hit-testing picked (see pointInRingEllipse's comment above).
+  const resolveRingTicker = (
+    event: MouseEvent<HTMLButtonElement>,
+    startIndex: number,
+  ) => {
+    for (let index = startIndex; index < holdings.length; index++) {
+      const rect = ringRefs.current[index]?.getBoundingClientRect();
+      if (rect && pointInRingEllipse(rect, event.clientX, event.clientY)) {
+        return holdings[index].ticker;
+      }
+    }
+    return holdings[startIndex].ticker;
+  };
+
   return (
     <div
       ref={frameRef}
@@ -156,11 +210,17 @@ export function SystemPlot({
           const blipDiameter = radarBlipDiameterPx(holding.weight);
           // ringSize grows monotonically with index, so every ring shares the same
           // center point and nests inside every larger one; --radar-ring-z stacks
-          // smaller rings above larger ones so a click on a ring's own stroke hits
-          // that ring rather than whichever ring paints last in DOM order.
+          // smaller rings above larger ones so a click near a ring's own stroke
+          // hits that ring's rectangle rather than whichever ring paints last in
+          // DOM order. resolveRingTicker then narrows that rectangle-level pick
+          // down to whichever ring's own ellipse the click point truly falls in
+          // (see pointInRingEllipse's comment above SystemPlot).
           return (
             <div key={holding.ticker}>
               <button
+                ref={(el) => {
+                  ringRefs.current[index] = el;
+                }}
                 type="button"
                 className={styles.radarRingTarget}
                 data-radar-ticker={holding.ticker}
@@ -173,8 +233,8 @@ export function SystemPlot({
                   "--radar-ring-z": holdings.length - index,
                 } as React.CSSProperties}
                 aria-label={`${holding.ticker} radar ring, ${(holding.weight * 100).toFixed(1)} percent weight`}
-                onClick={() => onSelectTicker(holding.ticker)}
-                onDoubleClick={() => onOpenTicker(holding.ticker)}
+                onClick={(event) => onSelectTicker(resolveRingTicker(event, index))}
+                onDoubleClick={(event) => onOpenTicker(resolveRingTicker(event, index))}
                 onKeyDown={(event) => onKeyDown(event, holding.ticker)}
               >
                 <span>{holding.ticker}</span>

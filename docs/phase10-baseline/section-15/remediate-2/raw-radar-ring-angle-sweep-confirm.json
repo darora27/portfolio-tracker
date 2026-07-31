@@ -1,0 +1,1560 @@
+{
+  "private": [
+    {
+      "ticker": "ASML",
+      "wrongCount": 5,
+      "wrong": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": false
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": false
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": false
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": false
+        }
+      ],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 15,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 30,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 60,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 75,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 120,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 150,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 165,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 195,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": false
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": false
+        },
+        {
+          "deg": 255,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": false
+        },
+        {
+          "deg": 285,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 300,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": false
+        },
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/stock/ASML",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "ticker": "GOOG",
+      "wrongCount": 3,
+      "wrong": [
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": false
+        }
+      ],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 15,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 30,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 60,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 75,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 120,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 150,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 165,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 195,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 255,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": false
+        },
+        {
+          "deg": 285,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 300,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/stock/GOOG",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "ticker": "COST",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 15,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 30,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 60,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 75,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 120,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 150,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 165,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 195,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 255,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 285,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 300,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/stock/COST",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "ticker": "MSFT",
+      "wrongCount": 2,
+      "wrong": [
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        }
+      ],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 15,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 30,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 60,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 75,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 120,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 150,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 165,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 195,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 255,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 285,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 300,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/MSFT",
+          "correct": true
+        },
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "ticker": "INTC",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 15,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 30,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 60,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 75,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 120,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 150,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 165,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 195,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 255,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 285,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 300,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/stock/INTC",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "ticker": "IBM",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 15,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 30,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 60,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 75,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 120,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 150,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 165,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 195,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 255,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 285,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 300,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/stock/IBM",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "ticker": "CBRS",
+      "wrongCount": 1,
+      "wrong": [
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        }
+      ],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 15,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 30,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 60,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 75,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 120,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 150,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 165,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 195,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/?focus=portfolio&camera=command",
+          "correct": false
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 255,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 285,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 300,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CBRS",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "ticker": "CRM",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 15,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 30,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 60,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 75,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 105,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 120,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 150,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 165,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 195,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 210,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 240,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 255,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 285,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 300,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 330,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        },
+        {
+          "deg": 345,
+          "navigatedTo": "http://127.0.0.1:3419/stock/CRM",
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "public": [
+    {
+      "ticker": "ASML",
+      "wrongCount": 3,
+      "wrong": [
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": false,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": false,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": false,
+          "noStockLink": true
+        }
+      ],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=ASML&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=ASML&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=ASML&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=ASML&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=ASML&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": false,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": false,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": false,
+          "noStockLink": true
+        }
+      ]
+    },
+    {
+      "ticker": "GOOG",
+      "wrongCount": 1,
+      "wrong": [
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": false,
+          "noStockLink": true
+        }
+      ],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": false,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=GOOG&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        }
+      ]
+    },
+    {
+      "ticker": "COST",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=COST&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        }
+      ]
+    },
+    {
+      "ticker": "MSFT",
+      "wrongCount": 2,
+      "wrong": [
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?focus=portfolio&camera=command",
+          "correct": false,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?focus=portfolio&camera=command",
+          "correct": false,
+          "noStockLink": true
+        }
+      ],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=MSFT&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=MSFT&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=MSFT&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=MSFT&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?focus=portfolio&camera=command",
+          "correct": false,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?focus=portfolio&camera=command",
+          "correct": false,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=MSFT&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=MSFT&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        }
+      ]
+    },
+    {
+      "ticker": "INTC",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=INTC&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=INTC&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=INTC&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=INTC&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=INTC&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=INTC&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=INTC&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=INTC&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        }
+      ]
+    },
+    {
+      "ticker": "IBM",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=IBM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=IBM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=IBM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=IBM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=IBM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=IBM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=IBM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=IBM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        }
+      ]
+    },
+    {
+      "ticker": "CBRS",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CBRS&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CBRS&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CBRS&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CBRS&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CBRS&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CBRS&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CBRS&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CBRS&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        }
+      ]
+    },
+    {
+      "ticker": "CRM",
+      "wrongCount": 0,
+      "wrong": [],
+      "rows": [
+        {
+          "deg": 0,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CRM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 45,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CRM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 90,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CRM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 135,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CRM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 180,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CRM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 225,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CRM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 270,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CRM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        },
+        {
+          "deg": 315,
+          "navigatedTo": "http://127.0.0.1:3419/share?holding=CRM&camera=approach",
+          "correct": true,
+          "noStockLink": true
+        }
+      ]
+    }
+  ]
+}
