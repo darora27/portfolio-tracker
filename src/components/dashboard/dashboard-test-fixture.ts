@@ -21,12 +21,14 @@ export const dashboardTestFixture = {
       value: 1_800, costBasis: 2_000, gain: -200, gainPct: -0.1,
       weight: 0.42, contribution: -0.027, day: -80, dayPct: -0.042,
       isNewToday: false, sparkline: [190, 180], prevClose: 188,
+      dayLabel: "TODAY", dayDirection: "down" as const, dayCarried: false,
     },
     {
       ticker: "MSFT", shares: 5, price: 440, priceAsOf: "2026-07-23",
       value: 2_200, costBasis: 2_000, gain: 200, gainPct: 0.1,
       weight: 0.31, contribution: 0.011, day: 40, dayPct: 0.02,
       isNewToday: false, sparkline: [430, 440], prevClose: 431,
+      dayLabel: "TODAY", dayDirection: "up" as const, dayCarried: false,
     },
   ],
   winners: [{

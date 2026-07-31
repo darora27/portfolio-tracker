@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import type { Position } from "@/lib/portfolio/holdings";
+import type { DailyDirection, Position } from "@/lib/portfolio/holdings";
 import { formatCurrency, formatSignedCurrency, formatSignedPercent } from "@/lib/format";
 import { DataTable, DataTableHead, DataTableBody, DataTableRow, Th, Td } from "@/components/ui/DataTable";
 import { Sparkline } from "@/components/ui/Sparkline";
@@ -14,6 +14,16 @@ export type PositionRow = Position & {
   sparkline: number[];
   /** The reference price day/dayPct were computed against — needed to recompute both client-side as new live quotes arrive. */
   prevClose: number | null;
+  /**
+   * R7-W1. "TODAY" during a live session, otherwise "<WEEKDAY> CLOSE" for the
+   * carried prior session. Every surface showing a daily figure renders this
+   * label rather than assuming the figure is today's.
+   */
+  dayLabel: string;
+  /** Null when dayPct is null, so a missing figure cannot render an arrow. */
+  dayDirection: DailyDirection | null;
+  /** True when day/dayPct are a carried prior session rather than live. */
+  dayCarried: boolean;
 };
 
 function DayCell({

@@ -26,7 +26,7 @@ import {
   buildXirrCashFlows,
   computeHoldings,
   concentration,
-  dayChange,
+  resolveDailyChange,
   latestKnownPrices,
   latestPriceDate,
   mergePrices,
@@ -181,6 +181,7 @@ export async function getDashboardData(): Promise<DashboardData> {
   // a hard 500 for the whole dashboard over one optional, additive table.
   if (sectorError && sectorError.code !== "PGRST205") throw sectorError;
 
+  const now = new Date();
   const today = todayInTimeZone("America/New_York");
 
   // Current holdings are derived from trades, never read from a stored table.
@@ -288,12 +289,26 @@ export async function getDashboardData(): Promise<DashboardData> {
       today,
     );
     const boughtToday = firstTrade?.date === today;
-    const { day, dayPct } = dayChange(p.shares, p.price, prevClose);
+    // R7-W1. Replaces dayChange(p.shares, p.price, prevClose), which compared
+    // the live price against the latest close — the same number outside a
+    // session, so every holding reported a real 0.0%. resolveDailyChange
+    // carries the last completed session instead and labels it honestly.
+    const daily = resolveDailyChange({
+      shares: p.shares,
+      quotePrice: liveQuotes.get(p.ticker)?.price ?? null,
+      closes: pricesByTicker.get(p.ticker) ?? [],
+      now,
+      firstTradeDate: firstTrade?.date,
+      firstTradePrice: firstTrade?.price,
+    });
     return {
       ...p,
       contribution: p.gain !== null && totalCost !== 0 ? p.gain / totalCost : null,
-      day,
-      dayPct,
+      day: daily.dollars,
+      dayPct: daily.pct,
+      dayLabel: daily.label,
+      dayDirection: daily.direction,
+      dayCarried: daily.carried,
       isNewToday: boughtToday,
       sparkline: (pricesByTicker.get(p.ticker) ?? []).slice(-SPARKLINE_POINTS).map((pt) => pt.price),
       prevClose,
