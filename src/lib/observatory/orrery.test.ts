@@ -10,6 +10,9 @@ import {
   ORRERY_SUN_CLEARANCE,
   angularSpeedForReturn,
   directionForReturn,
+  orbitalDriftDegreesPerMinute,
+  ORRERY_DRIFT_MAX_DEG_PER_MIN,
+  ORRERY_DRIFT_MIN_DEG_PER_MIN,
   healthScalarForPortfolio,
   orbitRadiiForPlanetRadii,
   radiusForWeight,
@@ -48,6 +51,23 @@ describe("Portfolio Orrery encodings", () => {
     expect(angularSpeedForReturn(0)).toBe(0);
     expect(angularSpeedForReturn(null)).toBe(0);
     expect(angularSpeedForReturn(0.5)).toBe(ORRERY_MAX_ANGULAR_SPEED);
+  });
+
+  it("R7-W4(b): drifts in degrees per minute, slow enough to read", () => {
+    // Devan asked for motion that reads the daily trend and "can move very
+    // very slow". The old ceiling was 0.055 rad/s — 189 deg/min, a full orbit
+    // in under two minutes, which is animation rather than a reading.
+    expect(orbitalDriftDegreesPerMinute(0.01)).toBeCloseTo(2.4, 10);
+    expect(orbitalDriftDegreesPerMinute(0.001)).toBe(ORRERY_DRIFT_MIN_DEG_PER_MIN);
+    expect(orbitalDriftDegreesPerMinute(0.05)).toBe(ORRERY_DRIFT_MAX_DEG_PER_MIN);
+    expect(orbitalDriftDegreesPerMinute(-0.05)).toBe(ORRERY_DRIFT_MAX_DEG_PER_MIN);
+    expect(orbitalDriftDegreesPerMinute(null)).toBe(0);
+    // A flat day parks the planet rather than nudging it — which is exactly
+    // what "the planets just don't orbit" looked like when W1's defect made
+    // every holding flat at once. The behaviour is right; the input was wrong.
+    expect(orbitalDriftDegreesPerMinute(0.0001)).toBe(0);
+    // Even the fastest holding takes an hour to come round.
+    expect(ORRERY_DRIFT_MAX_DEG_PER_MIN * 60).toBeLessThanOrEqual(360);
   });
 
   it("computes the trailing seven-calendar-day holding return", () => {

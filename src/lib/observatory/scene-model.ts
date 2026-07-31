@@ -779,6 +779,44 @@ export function radarRingColor(returnValue: number | null): string {
   return rampForReturn(returnValue);
 }
 
+/**
+ * R7-W4(c). Where a ring's ticker label sits.
+ *
+ * Every label was pinned to its ring's right edge on the same centre line.
+ * Concentric rings all share that line, so the innermost label landed on the
+ * hub and was unreadable — the "ASML is covered up" in Devan's July 31
+ * screenshot. The outer labels were fine, which is why this reads as one
+ * broken label rather than a broken layout.
+ *
+ * Two deterministic corrections, both pure geometry so they can be tested
+ * without a browser:
+ *
+ * - `dy` staggers labels across three baselines, so neighbouring rings can
+ *   never share one even as the book grows and rings crowd together.
+ * - `dx` pushes a label outward when its ring is too small for the label to
+ *   clear the hub, with a leader line drawn back to the ring so the
+ *   association survives the push.
+ */
+export const RADAR_LABEL_ROW_PX = 15;
+export const RADAR_LABEL_PUSH_PX = 14;
+/** Radius of the hub furniture a label must not overlap. */
+export const RADAR_HUB_RADIUS_PX = 46;
+
+export function radarLabelPlacement(
+  index: number,
+  ringRadiusPx: number,
+): { dx: number; dy: number; leader: boolean } {
+  const clearance = RADAR_HUB_RADIUS_PX - ringRadiusPx;
+  const dx = clearance > 0 ? Math.ceil(clearance) + RADAR_LABEL_PUSH_PX : 0;
+  return {
+    dx,
+    // -1, 0, +1 rows. Adjacent indexes always differ, which is the property
+    // that matters; the absolute row assignment does not.
+    dy: ((index % 3) - 1) * RADAR_LABEL_ROW_PX,
+    leader: dx > 0,
+  };
+}
+
 export function radarBlipDiameterPx(weight: number): number {
   return Math.max(12, 10 + Math.sqrt(Math.max(0, weight)) * 20);
 }

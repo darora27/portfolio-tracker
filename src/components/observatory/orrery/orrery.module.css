@@ -1082,7 +1082,8 @@
   content: "";
   position: absolute;
   inset: 0;
-  border: 1px solid var(--radar-signal);
+  /* R7-W4(a). The ring carries identity; the blip carries gain/loss. */
+  border: 1px solid var(--radar-identity-dim, var(--radar-signal));
   border-radius: 50%;
   pointer-events: none;
 }
@@ -1114,15 +1115,30 @@
   z-index: var(--radar-ring-z, 0);
 }
 
+/* R7-W4(c). --label-dx pushes a label clear of the hub when its ring is too
+   small; --label-dy staggers it across three baselines so neighbouring rings
+   never share one. Both default to 0, so a label with no placement lands
+   exactly where it used to. */
 .radarRingLabel > span {
   position: absolute;
   top: 50%;
-  right: -0.2rem;
+  right: calc(-0.2rem - var(--label-dx, 0px));
   padding: 0.12rem 0.2rem;
   background: #030908;
   font-size: var(--type-label);
-  color: var(--radar-signal);
-  transform: translate(55%, -50%);
+  color: var(--radar-identity, var(--radar-signal));
+  transform: translate(55%, calc(-50% + var(--label-dy, 0px)));
+}
+
+/* The leader keeps a pushed label attached to the ring it names. */
+.radarRingLabel[data-pushed="true"] > span::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: var(--label-dx, 0px);
+  height: 1px;
+  background: var(--radar-identity-dim, currentColor);
 }
 
 .radarBlipTarget {

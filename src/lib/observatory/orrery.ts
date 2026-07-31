@@ -4,8 +4,7 @@ export const ORRERY_FLAT_EPSILON = 0.0005;
 // FB-01 (§12a): owner-fixed pull-back numbers, UNIVERSE_AUDIT.md §5.1.
 export const ORRERY_MIN_RADIUS = 0.62;
 export const ORRERY_MAX_RADIUS = 1.35;
-export const ORRERY_MIN_ANGULAR_SPEED = 0.012;
-export const ORRERY_MAX_ANGULAR_SPEED = 0.055;
+
 export const ORRERY_SUN_CLEARANCE = 3.4;
 export const ORRERY_PLANET_CLEARANCE = 0.18;
 export const ORRERY_BELT_HYSTERESIS_BAND = 0.005;
@@ -13,8 +12,6 @@ export const ORRERY_PLANET_COUNT = 8;
 
 const MIN_WEIGHT = 0.01;
 const MAX_WEIGHT = 0.35;
-const MIN_SPEED_RETURN = 0.002;
-const MAX_SPEED_RETURN = 0.12;
 const SUNSPOT_FULL_INTENSITY_DRAWDOWN = -0.2;
 
 const COMPANY_NAMES: Record<string, string> = {
@@ -75,14 +72,43 @@ export function directionForReturn(
   return returnValue > 0 ? "clockwise" : "counterclockwise";
 }
 
-export function angularSpeedForReturn(returnValue: number | null): number {
+/**
+ * R7-W4(b). Orbital drift, in degrees per minute.
+ *
+ * Devan asked for the motion to read the daily trend and to "move very very
+ * slow". The previous ceiling was 0.055 rad/s — about 189°/min, a planet
+ * crossing its whole orbit in under two minutes, which is animation rather
+ * than a reading. The band is now 0.6°/min to 6°/min: the fastest holding
+ * takes an hour to cover a quarter of its orbit, so position is something
+ * you notice between visits rather than something that moves while you look.
+ *
+ * A holding moving 1% drifts at 2.4°/min; the clamps bite below 0.25% and
+ * above 2.5%, keeping a quiet day visible and a violent one from dominating.
+ */
+const DEG_PER_MIN_TO_RAD_PER_SEC = Math.PI / 180 / 60;
+export const ORRERY_DRIFT_MIN_DEG_PER_MIN = 0.6;
+export const ORRERY_DRIFT_MAX_DEG_PER_MIN = 6;
+const DRIFT_DEG_PER_MIN_PER_PERCENT = 2.4;
+
+export const ORRERY_MIN_ANGULAR_SPEED =
+  ORRERY_DRIFT_MIN_DEG_PER_MIN * DEG_PER_MIN_TO_RAD_PER_SEC;
+export const ORRERY_MAX_ANGULAR_SPEED =
+  ORRERY_DRIFT_MAX_DEG_PER_MIN * DEG_PER_MIN_TO_RAD_PER_SEC;
+
+export function orbitalDriftDegreesPerMinute(returnValue: number | null): number {
   if (directionForReturn(returnValue) === "neutral") return 0;
-  const magnitude = Math.abs(returnValue ?? 0);
-  const clamped = Math.min(MAX_SPEED_RETURN, Math.max(MIN_SPEED_RETURN, magnitude));
-  if (clamped === MAX_SPEED_RETURN) return ORRERY_MAX_ANGULAR_SPEED;
-  const normalized = (clamped - MIN_SPEED_RETURN) / (MAX_SPEED_RETURN - MIN_SPEED_RETURN);
-  return ORRERY_MIN_ANGULAR_SPEED +
-    normalized * (ORRERY_MAX_ANGULAR_SPEED - ORRERY_MIN_ANGULAR_SPEED);
+  const percent = Math.abs(returnValue ?? 0) * 100;
+  return Math.min(
+    ORRERY_DRIFT_MAX_DEG_PER_MIN,
+    Math.max(
+      ORRERY_DRIFT_MIN_DEG_PER_MIN,
+      DRIFT_DEG_PER_MIN_PER_PERCENT * percent,
+    ),
+  );
+}
+
+export function angularSpeedForReturn(returnValue: number | null): number {
+  return orbitalDriftDegreesPerMinute(returnValue) * DEG_PER_MIN_TO_RAD_PER_SEC;
 }
 
 export function orbitRadiiForPlanetRadii(

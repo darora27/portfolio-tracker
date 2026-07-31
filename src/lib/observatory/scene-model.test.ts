@@ -44,6 +44,7 @@ import {
   trailSweepAngles,
   weatherWispsForHealth,
   weeklyReturnsFromIndexSeries,
+  radarLabelPlacement,
 } from "./scene-model";
 import { planetIdentityForTicker } from "./planet-identity";
 import { UNIVERSE_PALETTE, rampForReturn } from "./universe-palette";
@@ -820,5 +821,35 @@ describe("pure overview scene descriptor", () => {
       weight: 0.02,
       visualRadius: beltBodyRadiusForWeight(0.02),
     });
+  });
+});
+
+describe("R7-W4(c) — radar label placement", () => {
+  it("pushes a label clear of the hub only when its ring is too small", () => {
+    // The reported defect: "ASML is covered up". Every label sat on the same
+    // centre line at its ring's right edge, so the innermost one landed on
+    // the hub. Outer labels were always fine, which is why it read as one
+    // broken label rather than a broken layout.
+    const inner = radarLabelPlacement(0, 10);
+    expect(inner.dx).toBeGreaterThan(0);
+    expect(inner.leader).toBe(true);
+
+    const outer = radarLabelPlacement(7, 200);
+    expect(outer.dx).toBe(0);
+    expect(outer.leader).toBe(false);
+  });
+
+  it("never gives two neighbouring rings the same baseline", () => {
+    // The property that matters as the book grows and rings crowd; the
+    // absolute row assignment does not matter.
+    for (let index = 0; index < 20; index += 1) {
+      expect(radarLabelPlacement(index, 200).dy).not.toBe(
+        radarLabelPlacement(index + 1, 200).dy,
+      );
+    }
+  });
+
+  it("is pure — same inputs, same placement", () => {
+    expect(radarLabelPlacement(3, 42)).toEqual(radarLabelPlacement(3, 42));
   });
 });

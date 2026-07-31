@@ -5,8 +5,10 @@ import { LIVE_QUOTE_REFRESH_INTERVAL_MS } from "@/lib/observatory/data-refresh";
 import type { PublicOrreryHolding } from "@/lib/observatory/orrery";
 import {
   radarBlipDiameterPx,
+  radarLabelPlacement,
   radarRingColor,
 } from "@/lib/observatory/scene-model";
+import { dimmed, identityColor } from "@/lib/observatory/identity-palette";
 import {
   UNIVERSE_PALETTE,
 } from "@/lib/observatory/universe-palette";
@@ -181,14 +183,27 @@ export function SystemPlot({
           const blipX = 50 + Math.cos(angle) * radial;
           const blipY = 50 + Math.sin(angle) * radial;
           const selected = activeTicker === holding.ticker;
+          /* R7-W4(a). Two encodings, two channels, deliberately split:
+           * the RING says which holding this is (identity colour, dimmed so
+           * it never outshouts the blip sitting on it), and the BLIP says how
+           * that holding is doing (the gain/loss ramp). Before this the ring
+           * carried the return too — and since every dayReturn resolved to a
+           * flat 0.0%, every ring came out the same amber. W1 fixes the
+           * zeros; this makes the rings tell them apart. */
           const signal = radarRingColor(holding.dayReturn);
+          const identity = identityColor(holding.ticker);
           const blipDiameter = radarBlipDiameterPx(holding.weight);
           const ringStyle = {
             width: `${ringSize}%`,
             height: `${ringSize}%`,
             "--radar-signal": signal,
+            "--radar-identity": identity,
+            "--radar-identity-dim": dimmed(holding.ticker),
             "--radar-ring-z": holdings.length - index,
           } as React.CSSProperties;
+          // Ring radius as a fraction of the plot's own box; the label
+          // placement only needs the ratio, not the resolved pixel width.
+          const label = radarLabelPlacement(index, (ringSize / 100) * 240);
           // ringSize grows monotonically with index, so every ring shares the same
           // center point and nests inside every larger one. clip-path restricts
           // each ring's own hit-test region to its true visible ellipse (not its
@@ -213,7 +228,16 @@ export function SystemPlot({
                 {visualEnabled ? null : <span>{holding.ticker}</span>}
               </button>
               {visualEnabled ? (
-                <span className={styles.radarRingLabel} style={ringStyle} aria-hidden="true">
+                <span
+                  className={styles.radarRingLabel}
+                  style={{
+                    ...ringStyle,
+                    "--label-dx": `${label.dx}px`,
+                    "--label-dy": `${label.dy}px`,
+                  } as React.CSSProperties}
+                  data-pushed={label.leader ? "true" : "false"}
+                  aria-hidden="true"
+                >
                   <span>{holding.ticker}</span>
                 </span>
               ) : null}
