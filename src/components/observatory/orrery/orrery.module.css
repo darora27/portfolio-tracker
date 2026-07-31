@@ -3193,7 +3193,11 @@
 .holdingsTable {
   width: 100%;
   border-collapse: collapse;
-  font-size: var(--type-body);
+  /* R7-W3(b) / FB-05, 7th report. The role moves up a ramp step rather than
+     the ramp moving: this is a table of numbers people read, not chrome.
+     Header stays --type-body so the data outranks its own labels. */
+  font-size: var(--type-title);
+  color: var(--universe-cabinet-cream);
 }
 
 .holdingsTable th,
@@ -3482,8 +3486,15 @@
   display: block;
   width: var(--meter);
   height: 100%;
-  background: var(--universe-glass-scope-hero);
+  /* R7-W3(c). Falls back to the old amber when --identity is absent, so a
+     ticker without a colour degrades to the previous look rather than to
+     nothing. */
+  background: var(--identity, var(--universe-glass-scope-hero));
   content: "";
+}
+
+.mixDonut i {
+  height: 6px;
 }
 
 .mixClassifications {
@@ -4147,4 +4158,36 @@
   .draftRunner {
     animation: none !important;
   }
+}
+
+/* R7-W3(a) — multi-series returns plot.
+   Series colours are inline (they come from identity-palette at runtime);
+   only the chrome lives here. Every font-size resolves to a ramp token, so
+   the type-ramp gate stays green. */
+.multiReturnPlot {
+  display: block;
+}
+
+.seriesToggleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin: 0 0 0.6rem;
+}
+
+.seriesToggleRow button {
+  min-height: 38px;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid currentColor;
+  font: 600 var(--type-label)/1.15 var(--font-mono, monospace);
+}
+
+.returnDateTick {
+  fill: rgba(244, 240, 223, 0.62);
+  font: 500 var(--type-label)/1 var(--font-mono, monospace);
+}
+
+.returnTooltipDate {
+  fill: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label)/1 var(--font-mono, monospace);
 }

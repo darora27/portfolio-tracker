@@ -29,11 +29,13 @@ const positionRows = [
     ticker: "IBM", shares: 10, costBasis: 18_000, price: 180, priceAsOf: "2026-07-23",
     value: 1_800, gain: -200, gainPct: -0.1, weight: 0.6, contribution: -0.011,
     day: -20, dayPct: -0.011, isNewToday: false, sparkline: [190, 185, 180], prevClose: 182,
+    dayLabel: "TODAY", dayDirection: "down" as const, dayCarried: false,
   },
   {
     ticker: "MSFT", shares: 5, costBasis: 2_000, price: 440, priceAsOf: "2026-07-23",
     value: 1_200, gain: 200, gainPct: 0.1, weight: 0.4, contribution: 0.1,
     day: 30, dayPct: 0.026, isNewToday: false, sparkline: [420, 430, 440], prevClose: 428.5,
+    dayLabel: "TODAY", dayDirection: "up" as const, dayCarried: false,
   },
 ];
 
@@ -153,35 +155,84 @@ describe("MissionControlRoomContent — HOLDINGS (BHV-02, door #1: BHV-08/PRV-01
 });
 
 describe("MissionControlRoomContent — RETURNS (BHV-03)", () => {
-  it("offers a per-benchmark toggle across VOO/VTI/XLK and an ExcessReturns-derived line per benchmark", () => {
-    render(<MissionControlRoomContent data={baseData} basePath="/share" mode="public" />);
+  /* R7-W3(a). These two tests previously asserted a benchmark RADIO — pick
+   * one of VOO/VTI/XLK — and a column of per-stock sparklines. Devan's July 31
+   * feedback named both as the thing the older dashboard did better: he wants
+   * the benchmarks on screen together and the stocks compared against each
+   * other on one pair of axes. The behaviour changed, so the assertions
+   * changed with it. They are rewritten, not removed: the questions they ask
+   * (are all three benchmarks reachable, is STOCK VS STOCK backed by real
+   * holdingsPerformance data) are still the right questions. */
+
+  it("shows the book against all three benchmarks at once, each independently toggleable", () => {
+    const { container } = render(
+      <MissionControlRoomContent data={baseData} basePath="/share" mode="public" />,
+    );
     const voo = screen.getByRole("button", { name: "VOO" });
     const vti = screen.getByRole("button", { name: "VTI" });
     const xlk = screen.getByRole("button", { name: "XLK" });
-    expect(voo.getAttribute("aria-pressed")).toBe("true");
+
+    // All on by default — the comparison is the point of the section.
+    for (const chip of [voo, vti, xlk]) {
+      expect(chip.getAttribute("aria-pressed")).toBe("true");
+    }
+    expect(
+      screen.getByRole("button", { name: "BOOK" }).getAttribute("aria-pressed"),
+    ).toBe("true");
+
+    // Independent, not mutually exclusive: hiding VTI leaves VOO alone.
     fireEvent.click(vti);
-    expect(vti.getAttribute("aria-pressed")).toBe("true");
-    expect(voo.getAttribute("aria-pressed")).toBe("false");
-    expect(xlk).toBeTruthy();
+    expect(vti.getAttribute("aria-pressed")).toBe("false");
+    expect(voo.getAttribute("aria-pressed")).toBe("true");
+    expect(xlk.getAttribute("aria-pressed")).toBe("true");
+
+    // One drawn line per visible series, and one fewer once VTI is off.
+    const paths = container.querySelectorAll(`.${styles.returnPlot} path`);
+    expect(paths.length).toBe(3);
+
     expect(screen.getByText(/VS VOO · SAME PERIOD/)).toBeTruthy();
     expect(screen.getByText(/VS VTI · SAME PERIOD/)).toBeTruthy();
     expect(screen.getByText(/VS XLK · SAME PERIOD/)).toBeTruthy();
   });
 
-  it("switches between BOOK VS MARKET and STOCK VS STOCK, the latter backed by real holdingsPerformance data", () => {
+  it("plots holdings against each other in STOCK VS STOCK, from real holdingsPerformance data", () => {
     const { container } = render(
       <MissionControlRoomContent data={baseData} basePath="/share" mode="public" />,
     );
     expect(screen.queryByRole("button", { name: "IBM" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "STOCK VS STOCK" }));
+
     const ibmToggle = screen.getByRole("button", { name: "IBM" });
-    expect(ibmToggle).toBeTruthy();
-    const list = container.querySelector(`.${styles.stockPerformanceList}`);
-    expect(list?.textContent).toContain("▼ 8.0%");
-    expect(list?.textContent).toContain("▲ 12.0%");
+    expect(ibmToggle.getAttribute("aria-pressed")).toBe("true");
+    expect(screen.getByRole("button", { name: "MSFT" })).toBeTruthy();
+
+    // Two holdings, two lines on one pair of axes — which is what comparing
+    // them to each other requires, and what a column of sparklines cannot do.
+    expect(
+      container.querySelectorAll(`.${styles.returnPlot} path`).length,
+    ).toBe(2);
+
     fireEvent.click(ibmToggle);
-    expect(list?.textContent).not.toContain("▼ 8.0%");
-    expect(list?.textContent).toContain("▲ 12.0%");
+    expect(ibmToggle.getAttribute("aria-pressed")).toBe("false");
+    expect(
+      container.querySelectorAll(`.${styles.returnPlot} path`).length,
+    ).toBe(1);
+  });
+
+  it("switches a series off without changing any other series' colour", () => {
+    // Colour follows the entity, never its rank — so hiding one line must not
+    // repaint the rest. This is the rendered counterpart of the palette test.
+    const { container } = render(
+      <MissionControlRoomContent data={baseData} basePath="/share" mode="public" />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "STOCK VS STOCK" }));
+    const strokeOf = (ticker: string) =>
+      container
+        .querySelector(`[data-series="${ticker}"]`)
+        ?.getAttribute("style") ?? "";
+    const msftBefore = strokeOf("MSFT");
+    fireEvent.click(screen.getByRole("button", { name: "IBM" }));
+    expect(strokeOf("MSFT")).toBe(msftBefore);
   });
 });
 

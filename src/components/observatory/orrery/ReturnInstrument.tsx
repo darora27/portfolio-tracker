@@ -13,6 +13,27 @@ export type ReturnInstrumentPoint = {
   benchmarkIndex?: number;
 };
 
+/**
+ * R7-W3(a). One named line on the plot.
+ *
+ * The four screenshots Devan said displayed information better all shared
+ * this shape: several series at once, each its own colour, each individually
+ * toggleable, with a hover readout giving exact values for every visible
+ * line at a date. The single-benchmark path below stays exactly as it was —
+ * PlanetDetail and the §11 detent evidence both depend on it — and this is
+ * an additive second mode.
+ */
+export type ReturnSeries = {
+  id: string;
+  label: string;
+  /** Identity colour from lib/observatory/identity-palette, or the book's gold. */
+  color: string;
+  /** Index values aligned to the shared date axis. Null where the series has no point. */
+  values: readonly (number | null)[];
+  /** Benchmarks render dashed, so the lines are distinguishable without colour alone. */
+  dashed?: boolean;
+};
+
 type ReturnRange = "7d" | "30d" | "since" | "max";
 
 function rangesFor(
@@ -89,6 +110,241 @@ function compactDate(value: string): string {
         day: "numeric",
         timeZone: "UTC",
       }).toUpperCase();
+}
+
+const PLOT = { left: 38, right: 604, top: 18, bottom: 142 } as const;
+
+/**
+ * R7-W3(a) — several series at once, each toggleable, with a hover readout
+ * that reports every visible line.
+ *
+ * Deliberately a sibling of ReturnInstrument rather than a rewrite of it.
+ * ReturnInstrument carries the §11 detent rules and is depended on by
+ * PlanetDetail and a committed evidence test; folding two behaviours into it
+ * would put that at risk for no gain. The shared helpers above are reused.
+ */
+export function MultiReturnPlot({
+  dates,
+  series,
+  initiallyHidden = [],
+  ariaLabel,
+}: {
+  dates: readonly string[];
+  series: readonly ReturnSeries[];
+  /** Series ids that start switched off — the tail of a 13-stock book. */
+  initiallyHidden?: readonly string[];
+  ariaLabel: string;
+}) {
+  const [hidden, setHidden] = useState<ReadonlySet<string>>(
+    () => new Set(initiallyHidden),
+  );
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+
+  const visible = useMemo(
+    () => series.filter((item) => !hidden.has(item.id)),
+    [series, hidden],
+  );
+
+  const { min, max } = useMemo(() => {
+    const values = visible
+      .flatMap((item) => item.values)
+      .filter((value): value is number => typeof value === "number");
+    // 100 is always in frame: every series is indexed to it, so a plot that
+    // cropped it would hide whether a line is above or below its own start.
+    const all = [...values, 100];
+    const low = Math.min(...all);
+    const high = Math.max(...all);
+    const pad = Math.max(1, (high - low) * 0.08);
+    return { min: low - pad, max: high + pad };
+  }, [visible]);
+
+  const xFor = (index: number) =>
+    PLOT.left +
+    (index / Math.max(1, dates.length - 1)) * (PLOT.right - PLOT.left);
+  const yFor = (value: number) =>
+    PLOT.top + ((max - value) / (max - min || 1)) * (PLOT.bottom - PLOT.top);
+
+  const pathOf = (item: ReturnSeries) => {
+    const drawable = item.values
+      .map((value, index) => ({ value, index }))
+      .filter((point): point is { value: number; index: number } =>
+        typeof point.value === "number",
+      );
+    if (drawable.length < 2) return "";
+    return drawable
+      .map(
+        ({ value, index }, position) =>
+          `${position === 0 ? "M" : "L"}${xFor(index).toFixed(1)} ${yFor(value).toFixed(1)}`,
+      )
+      .join(" ");
+  };
+
+  const onMove = (event: MouseEvent<SVGSVGElement>) => {
+    if (dates.length < 2) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    if (rect.width === 0) return;
+    // Screen pixels -> viewBox units (the svg is 640 wide however it is laid
+    // out) -> position along the plot area.
+    const viewBoxX = ((event.clientX - rect.left) / rect.width) * 640;
+    const ratio =
+      (viewBoxX - PLOT.left) / (PLOT.right - PLOT.left);
+    setHoverIndex(
+      Math.max(
+        0,
+        Math.min(dates.length - 1, Math.round(ratio * (dates.length - 1))),
+      ),
+    );
+  };
+
+  const baselineY = yFor(100);
+  const tickIndexes =
+    dates.length >= 3
+      ? [0, Math.floor((dates.length - 1) / 2), dates.length - 1]
+      : dates.map((_, index) => index);
+
+  const readout =
+    hoverIndex === null
+      ? []
+      : visible
+          .map((item) => ({ item, value: item.values[hoverIndex] }))
+          .filter((row): row is { item: ReturnSeries; value: number } =>
+            typeof row.value === "number",
+          );
+
+  return (
+    <section className={styles.multiReturnPlot}>
+      <div
+        className={styles.seriesToggleRow}
+        role="group"
+        aria-label="Series shown"
+      >
+        {series.map((item) => {
+          const on = !hidden.has(item.id);
+          return (
+            <button
+              key={item.id}
+              type="button"
+              aria-pressed={on}
+              data-series={item.id}
+              // Off-state is hollow: the chip keeps its colour as an outline so
+              // the reader can still see which line it would bring back.
+              style={{
+                borderColor: item.color,
+                background: on ? item.color : "transparent",
+                color: on ? "#0B0F0E" : item.color,
+              }}
+              onClick={() =>
+                setHidden((current) => {
+                  const next = new Set(current);
+                  if (next.has(item.id)) next.delete(item.id);
+                  else next.add(item.id);
+                  return next;
+                })
+              }
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+      <svg
+        className={styles.returnPlot}
+        viewBox="0 0 640 174"
+        role="img"
+        aria-label={ariaLabel}
+        onMouseMove={onMove}
+        onMouseLeave={() => setHoverIndex(null)}
+      >
+        {[min, (min + max) / 2, max].map((value) => (
+          <g key={value}>
+            <line
+              className={styles.returnHairline}
+              x1={PLOT.left}
+              x2={PLOT.right}
+              y1={yFor(value)}
+              y2={yFor(value)}
+            />
+            <text x="2" y={yFor(value) + 3}>
+              {value.toFixed(0)}
+            </text>
+          </g>
+        ))}
+        <line
+          className={styles.returnBaseline}
+          x1={PLOT.left}
+          x2={PLOT.right}
+          y1={baselineY}
+          y2={baselineY}
+        />
+        {tickIndexes.map((index) => (
+          <text
+            key={index}
+            className={styles.returnDateTick}
+            x={xFor(index)}
+            y={PLOT.bottom + 18}
+            textAnchor={
+              index === 0 ? "start" : index === dates.length - 1 ? "end" : "middle"
+            }
+          >
+            {compactDate(dates[index] ?? "")}
+          </text>
+        ))}
+        {visible.map((item) => (
+          <path
+            key={item.id}
+            d={pathOf(item)}
+            fill="none"
+            stroke={item.color}
+            strokeWidth={2}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            strokeDasharray={item.dashed ? "5 4" : undefined}
+          />
+        ))}
+        {hoverIndex !== null && readout.length > 0 ? (
+          <g className={styles.returnCrosshair}>
+            <line
+              x1={xFor(hoverIndex)}
+              x2={xFor(hoverIndex)}
+              y1={PLOT.top}
+              y2={PLOT.bottom}
+            />
+            {readout.map(({ item, value }) => (
+              <circle
+                key={item.id}
+                cx={xFor(hoverIndex)}
+                cy={yFor(value)}
+                r="3"
+                fill={item.color}
+              />
+            ))}
+            <g
+              transform={`translate(${Math.max(
+                PLOT.left + 2,
+                Math.min(PLOT.right - 132, xFor(hoverIndex) - 65),
+              )} 2)`}
+            >
+              <rect width="130" height={18 + readout.length * 14} rx="2" />
+              <text x="8" y="13" className={styles.returnTooltipDate}>
+                {compactDate(dates[hoverIndex] ?? "")}
+              </text>
+              {readout.map(({ item, value }, row) => (
+                <g key={item.id} transform={`translate(0 ${27 + row * 14})`}>
+                  <rect x="8" y="-6" width="7" height="7" fill={item.color} rx="1" />
+                  <text x="21" y="0">
+                    {item.label}
+                  </text>
+                  <text x="122" y="0" textAnchor="end">
+                    {value.toFixed(2)}
+                  </text>
+                </g>
+              ))}
+            </g>
+          </g>
+        ) : null}
+      </svg>
+    </section>
+  );
 }
 
 export function ReturnInstrument({
