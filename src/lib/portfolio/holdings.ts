@@ -1,6 +1,7 @@
 import type { CashFlow } from "@/lib/math/types";
 import {
   isMarketSessionOpen,
+  lastTradingDayOnOrBefore,
   newYorkParts,
   weekdayLabel,
 } from "@/lib/market-calendar";
@@ -193,21 +194,25 @@ function directionFor(pct: number | null): DailyDirection | null {
  * holdings rows, movers line, planet panel, Chart Room header, and the
  * scene model's orbital inputs.
  *
- * Two regimes:
+ * It works by assembling the price series for the most recent *trading* day
+ * — `asOf`, which on a Saturday is the previous Friday — and measuring its
+ * last point against the one before it.
  *
- * - **Session open.** Live quote measured against the last completed close.
- *   Labelled "TODAY".
- * - **Session closed** (nights, weekends, holidays, or no live quote). The
- *   last completed close measured against the one before it — the market's
- *   most recent actual day — labelled "<WEEKDAY> CLOSE" so the figure never
- *   claims to be today's.
+ * A quote stands in for asOf's price: the live price during a session, or
+ * that session's close once trading has ended and before the snapshot job
+ * has recorded it. It is injected only when no close is on file for asOf.
+ * That guard is the crux — with a close already recorded, the quote and the
+ * close describe the *same session*, and measuring one against the other is
+ * how thirteen holdings came to report a real, arithmetically correct 0.0%.
  *
- * The second regime is the fix for every holding reading 0.0%: outside a
- * session the live price and the latest close are the *same number*, so
- * measuring one against the other yields a real, meaningful zero for
- * thirteen positions at once. Carrying the prior session instead reports
- * the last thing that actually happened, which is what a reader means by
- * "how is it doing".
+ * The original defect had the same shape one step earlier: with no live
+ * quote, the position's price fell back to the latest recorded close while
+ * the reference resolved to that same close, so every row measured a day
+ * against itself. Building the series explicitly makes that unrepresentable.
+ *
+ * "TODAY" is only claimed when a session is running and a quote is what was
+ * actually measured. A session can be open while no quote arrived — a
+ * rate-limited or failing Finnhub — and that figure is carried, not live.
  *
  * Missing data propagates as null and never as zero (CLAUDE.md: never show
  * zeros as if they were real). A null pct yields a null direction, so a
@@ -236,33 +241,53 @@ export function resolveDailyChange({
     return { pct: to / from - 1, dollars: shares * (to - from) };
   };
 
-  if (isMarketSessionOpen(now) && quotePrice !== null) {
-    const today = newYorkParts(now).date;
-    const priorClose = [...sorted].reverse().find((point) => point.date < today);
-    const { prevClose } = resolvePrevClose(
-      firstTradeDate,
-      firstTradePrice,
-      priorClose,
-      today,
-    );
-    const { pct, dollars } = measure(prevClose, quotePrice);
-    return {
-      pct,
-      dollars,
-      label: "TODAY",
-      direction: directionFor(pct),
-      carried: false,
-    };
-  }
+  // The trading day this figure describes. On a weekend or holiday that is
+  // the previous Friday, not the calendar date, so a Saturday reader is never
+  // shown "SAT CLOSE" for a session that did not happen.
+  const asOf = lastTradingDayOnOrBefore(newYorkParts(now).date);
 
-  const last = sorted[sorted.length - 1];
-  const previous = sorted[sorted.length - 2];
-  const label = last ? `${weekdayLabel(last.date)} CLOSE` : "CLOSE";
-  if (!last || !previous) {
-    return { pct: null, dollars: null, label, direction: null, carried: true };
+  // A quote stands in for asOf's price — the live price mid-session, or that
+  // session's close once trading has ended and before the snapshot job has
+  // recorded it. It is only injected when no close is on file for asOf;
+  // otherwise the recorded close and the quote are the same session, and
+  // using both would measure a day against itself and report zero.
+  const hasRecordedClose = sorted.some((point) => point.date === asOf);
+  const series =
+    quotePrice !== null && !hasRecordedClose
+      ? [...sorted.filter((point) => point.date < asOf), { date: asOf, price: quotePrice }]
+      : sorted;
+
+  const last = series[series.length - 1];
+  const previous = series[series.length - 2];
+
+  // "Live" means both that a session is running AND that a quote is what we
+  // actually measured. A session can be open while no quote arrived — a
+  // rate-limited or failing Finnhub — and that figure is carried, not live.
+  const usedQuote = quotePrice !== null && !hasRecordedClose;
+  const live = isMarketSessionOpen(now) && usedQuote;
+  const label = live
+    ? "TODAY"
+    : last
+      ? `${weekdayLabel(last.date)} CLOSE`
+      : "CLOSE";
+
+  if (!last) {
+    return { pct: null, dollars: null, label, direction: null, carried: !live };
   }
-  const { pct, dollars } = measure(previous.price, last.price);
-  return { pct, dollars, label, direction: directionFor(pct), carried: true };
+  const { prevClose } = resolvePrevClose(
+    firstTradeDate,
+    firstTradePrice,
+    previous,
+    last.date,
+  );
+  const { pct, dollars } = measure(prevClose, last.price);
+  return {
+    pct,
+    dollars,
+    label,
+    direction: directionFor(pct),
+    carried: !live,
+  };
 }
 
 /**

@@ -83,6 +83,22 @@ export function isTradingDay(isoDate: string): boolean {
   return !isWeekend(isoDate) && !isMarketHoliday(isoDate);
 }
 
+/**
+ * The most recent trading day on or before an ISO date. Saturday and Sunday
+ * both resolve to Friday; the day after Thanksgiving resolves past the
+ * holiday. Bounded at 10 days, which clears the longest run of consecutive
+ * non-trading days the NYSE calendar can produce.
+ */
+export function lastTradingDayOnOrBefore(isoDate: string): string {
+  let candidate = isoDate;
+  for (let i = 0; i < 10; i += 1) {
+    if (isTradingDay(candidate)) return candidate;
+    const [y, m, d] = candidate.split("-").map(Number);
+    candidate = new Date(Date.UTC(y, m - 1, d - 1)).toISOString().slice(0, 10);
+  }
+  return candidate;
+}
+
 const WEEKDAY_LABELS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 /** Short uppercase weekday for an ISO date — "THU" for 2026-07-30. */

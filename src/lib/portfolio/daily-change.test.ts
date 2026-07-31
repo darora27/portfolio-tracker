@@ -120,7 +120,10 @@ describe("resolveDailyChange — (b) closed market, carries the last real day", 
   it("carries across a weekend rather than reporting a flat Saturday", () => {
     const result = resolveDailyChange({
       shares: 1,
-      quotePrice: 220,
+      // No quote at the weekend — the realistic case, and the one that used
+      // to collapse to 0.0% when the fallback price and the reference close
+      // resolved to the same recorded day.
+      quotePrice: null,
       closes: CLOSES,
       now: WEEKEND,
     });
@@ -152,6 +155,64 @@ describe("resolveDailyChange — (b) closed market, carries the last real day", 
     expect(result.carried).toBe(true);
     expect(result.label).toBe("THU CLOSE");
     expect(result.pct).toBeCloseTo(0.1, 10);
+  });
+});
+
+describe("the same answer regardless of when the page is rendered", () => {
+  // A first pass at this selector made the result depend on wall-clock time:
+  // with one recorded close and a live quote, it answered during a session
+  // and returned null outside one. dashboard-data.source.test.ts caught it by
+  // failing in the evening and passing during the day — the worst kind of
+  // test failure, since it would have looked like flakiness.
+  const ONE_CLOSE = [{ date: "2026-07-29", price: 3.5 }];
+
+  it("measures a quote against the only prior close, in session or out", () => {
+    for (const now of [DURING_SESSION, AFTER_CLOSE]) {
+      const result = resolveDailyChange({
+        shares: 1,
+        quotePrice: 3.8,
+        closes: ONE_CLOSE,
+        now,
+      });
+      expect(result.pct).toBeCloseTo(3.8 / 3.5 - 1, 12);
+    }
+  });
+
+  it("does not count a session twice when its close is already recorded", () => {
+    // The quote and the recorded close describe the same session. Measuring
+    // one against the other is precisely how a real 0.0% was manufactured.
+    const result = resolveDailyChange({
+      shares: 1,
+      quotePrice: 220, // equals the 2026-07-30 close already in CLOSES
+      closes: CLOSES,
+      now: AFTER_CLOSE,
+    });
+    expect(result.pct).toBeCloseTo(0.1, 10); // Thu vs Wed, not Thu vs Thu
+  });
+
+  it("attributes a weekend quote to Friday, never to Saturday", () => {
+    const withFriday = [...CLOSES, { date: "2026-07-31", price: 250 }];
+    const result = resolveDailyChange({
+      shares: 1,
+      quotePrice: 250,
+      closes: withFriday,
+      now: WEEKEND,
+    });
+    expect(result.label).toBe("FRI CLOSE");
+    expect(result.pct).toBeCloseTo(250 / 220 - 1, 12);
+  });
+
+  it("reports a figure as carried when the session is open but no quote came", () => {
+    // A rate-limited or failing Finnhub during market hours. The number is
+    // real but it is not live, and the label must not claim otherwise.
+    const result = resolveDailyChange({
+      shares: 10,
+      quotePrice: null,
+      closes: CLOSES,
+      now: DURING_SESSION,
+    });
+    expect(result.carried).toBe(true);
+    expect(result.label).toBe("THU CLOSE");
   });
 });
 
