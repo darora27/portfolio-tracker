@@ -98,6 +98,7 @@ export function ReturnInstrument({
   ariaLabel,
   sinceLabel = "SINCE BUY",
   sinceIndex = 0,
+  benchmarkLabel = "VOO",
 }: {
   points: readonly ReturnInstrumentPoint[];
   initialRange?: ReturnRange;
@@ -107,6 +108,8 @@ export function ReturnInstrument({
   sinceLabel?: string;
   /** First index inside the since-window; earlier points are pre-purchase history. */
   sinceIndex?: number;
+  /** §15 BHV-03: which benchmark `points[].benchmarkIndex` represents (VOO/VTI/XLK). */
+  benchmarkLabel?: string;
 }) {
   const RANGES = useMemo(() => rangesFor(sinceLabel), [sinceLabel]);
   const visibleRanges = useMemo(() => {
@@ -197,7 +200,7 @@ export function ReturnInstrument({
             aria-pressed={benchmarkVisible}
             onClick={() => setBenchmarkVisible((visible) => !visible)}
           >
-            VOO · SAME PERIOD {benchmarkVisible ? "ON" : "OFF"}
+            {benchmarkLabel} · SAME PERIOD {benchmarkVisible ? "ON" : "OFF"}
           </button>
         ) : null}
       </header>
@@ -283,7 +286,7 @@ export function ReturnInstrument({
       </svg>
       {hasBenchmark && benchmarkVisible ? (
         <p className={styles.benchmarkConclusion}>
-          VOO · SAME PERIOD {signedReturn(benchmarkReturn)}
+          {benchmarkLabel} · SAME PERIOD {signedReturn(benchmarkReturn)}
         </p>
       ) : null}
     </section>

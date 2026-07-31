@@ -71,6 +71,17 @@ export const MISSION_CONTROL_TEXT_ROLES = {
       ".plotReadouts span",
     ],
   },
+  /**
+   * §15: MIX's SECTOR/AI EXPOSURE/COMPOSITION subsection headers and RISK's
+   * DRAWDOWN/DAILY RETURNS chart headers -- new selectors this section
+   * introduces, pinned to the already-shipped 12px floor (no new sizes, no
+   * reopening FB-05's still-open row).
+   */
+  mixSectionLabel: {
+    token: "--type-label",
+    description: "MIX/RISK subsection headers (SECTOR, AI EXPOSURE, COMPOSITION, DRAWDOWN, DAILY RETURNS).",
+    selectors: [".mixClassifications h4", ".riskHistoryCharts h4"],
+  },
 } as const;
 
 export type MissionControlTextRole = keyof typeof MISSION_CONTROL_TEXT_ROLES;

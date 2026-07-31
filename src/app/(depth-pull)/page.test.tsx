@@ -44,12 +44,26 @@ const dashboardFixture = {
     { date: "2026-07-23", portfolioIndex: 97.1, vooIndex: 101.7 },
   ],
   positionRows: [
-    { ticker: "IBM", contribution: -0.027, weight: 0.42 },
-    { ticker: "MSFT", contribution: 0.011, weight: 0.31 },
+    {
+      ticker: "IBM", shares: 10, costBasis: 1_800, price: 180, priceAsOf: "2026-07-23",
+      value: 1_800, gain: -200, gainPct: -0.1, weight: 0.42, contribution: -0.027,
+      day: -80, dayPct: -0.042, isNewToday: false, sparkline: [190, 180], prevClose: 188,
+    },
+    {
+      ticker: "MSFT", shares: 5, costBasis: 2_000, price: 440, priceAsOf: "2026-07-23",
+      value: 2_200, gain: 200, gainPct: 0.1, weight: 0.31, contribution: 0.011,
+      day: 40, dayPct: 0.02, isNewToday: false, sparkline: [430, 440], prevClose: 431,
+    },
   ],
   movers: [{ ticker: "IBM", day: -123.45, dayPct: -0.042 }],
   top2ConcentrationPct: 0.73,
   hhi: 3000,
+  realizedGain: 500,
+  unrealizedGain: 600,
+  donutSlices: [
+    { ticker: "IBM", weight: 0.42, value: 1_800 },
+    { ticker: "MSFT", weight: 0.31, value: 2_200 },
+  ],
   sectorWeights: [{ label: "Technology", weight: 0.61 }],
   aiExposureWeights: [{ label: "High", weight: 0.44 }],
   correlationTickers: ["IBM", "MSFT"],
@@ -57,15 +71,39 @@ const dashboardFixture = {
   allTimeHigh: { pct: -0.046, peakDate: "2026-07-01" },
   bestDay: { date: "2026-07-05", r: 0.023 },
   worstDay: { date: "2026-07-18", r: -0.031 },
+  betaVsVoo: 1.04,
+  maxDrawdown: -0.081,
+  drawdownSeries: [
+    { date: "2026-06-24", drawdown: 0 },
+    { date: "2026-07-23", drawdown: -0.081 },
+  ],
+  dailyReturnBars: [
+    { date: "2026-07-23", return: -0.042 },
+  ],
+  compositionHistory: {
+    tickers: ["IBM", "MSFT"],
+    hasOther: false,
+    points: [
+      { date: "2026-06-24", IBM: 45, MSFT: 30 },
+      { date: "2026-07-23", IBM: 42, MSFT: 31 },
+    ],
+  },
+  holdingsPerformance: { tickers: ["IBM", "MSFT"], hasOther: false, points: [] },
+  holdingRisks: [],
   benchmarkComparisons: [
     {
       ticker: "VOO",
       available: true,
+      beta: 1.04,
       twrPct: 0.017,
       excessReturnPct: -0.046,
+      chartIndex: [100, 101.7],
     },
+    { ticker: "VTI", available: false, beta: null, twrPct: null, excessReturnPct: null, chartIndex: [] },
+    { ticker: "XLK", available: false, beta: null, twrPct: null, excessReturnPct: null, chartIndex: [] },
   ],
   upcomingEarnings: [],
+  publicTradeLog: [],
   totalValue: 123456.78,
   totalCost: 100000,
   simpleReturnPct: 0.2345678,
@@ -160,11 +198,11 @@ describe("private / owner universe", () => {
   it("uses the owner Mission Control on the gated route", async () => {
     const html = await renderHome({
       focus: "portfolio",
-      station: "comms",
+      station: "hazard",
     });
     expect(html).toContain('data-mode="private"');
     expect(html).toContain("Private universe / owner access");
-    expect(html).toContain('href="#news"');
+    expect(html).toContain('href="#risk"');
     expect(html).toContain("HOLDINGS");
     expect(html).not.toContain("Owner research station");
     expect(getResearchData).not.toHaveBeenCalled();

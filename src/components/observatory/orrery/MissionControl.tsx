@@ -11,6 +11,9 @@ import {
   type ReactNode,
 } from "react";
 import type { PublicOrreryHolding } from "@/lib/observatory/orrery";
+import type { EarningsEvent } from "@/lib/finnhub-earnings";
+import type { PublicNewsItem } from "@/lib/observatory/public-news";
+import { daysBetween, todayInTimeZone } from "@/lib/date";
 import { MISSION_CONTROL_CSS_PROPERTIES } from "@/lib/observatory/mission-control-layout";
 import { SystemPlot } from "./MissionControlBays/SystemPlot";
 import {
@@ -29,12 +32,21 @@ const DraftRig = dynamic(
 // deliberately last since PLOT already scrolls into view by default.
 const FOLDED_CHIP_DESTINATIONS = [
   { anchor: "holdings", label: "HOLDINGS" },
-  { anchor: "correlation", label: "CORRELATION" },
-  { anchor: "news", label: "NEWS" },
-  { anchor: "trades", label: "TRADES" },
+  { anchor: "mix", label: "MIX" },
+  { anchor: "trades", label: "ACTIVITY" },
   { anchor: "orbits", label: "ORBITS" },
-  { anchor: "earnings", label: "EARNINGS" },
 ] as const;
+
+// §15 BHV-01: the single soonest upcoming-earnings entry across all
+// holdings, same daysBetween/date-formatting pattern the room's own
+// (now-removed) EARNINGS section already used. Absent (not zero/dashed)
+// when there is no upcoming earnings data at all.
+function nextEarningsChip(upcomingEarnings: readonly EarningsEvent[]): string | null {
+  const next = [...upcomingEarnings].sort((left, right) => left.date.localeCompare(right.date))[0];
+  if (!next) return null;
+  const today = todayInTimeZone("America/New_York");
+  return `NEXT: ${next.ticker} T−${Math.max(0, daysBetween(today, next.date))}D`;
+}
 
 export function MissionControl({
   activePanel,
@@ -53,6 +65,8 @@ export function MissionControl({
   footerEquipment = null,
   draftParam = null,
   stripVariant = null,
+  upcomingEarnings = [],
+  newsByHolding = {},
 }: {
   activePanel: MissionControlPanelId;
   mode: "public" | "private";
@@ -71,9 +85,11 @@ export function MissionControl({
   signalPair?: string | null;
   footerEquipment?: ReactNode;
   draftParam?: string | null;
-  newsByHolding?: unknown;
+  newsByHolding?: Record<string, PublicNewsItem[]>;
   /** FB-08 + FB-15 (§12a): capture-only, never set in production. */
   stripVariant?: "a" | "b" | "c" | null;
+  /** §15 BHV-01: source for the strip's NEXT chip. */
+  upcomingEarnings?: readonly EarningsEvent[];
 }) {
   const [activeTicker, setActiveTicker] = useState<string | null>(null);
   const [briefingOpen, setBriefingOpen] = useState(false);
@@ -81,16 +97,28 @@ export function MissionControl({
     mode === "private" && draftParam !== null,
   );
   const routeToHolding = useCallback((ticker: string) => {
+    // §15 BHV-08/PRV-01 (door #2, ORBITS): private mode opens the Chart
+    // Room; public/`/share` mode keeps its exact pre-existing destination.
+    // /stock/[ticker] is owner-gated and never part of the public surface.
     window.location.assign(
-      `${basePath}?holding=${encodeURIComponent(ticker)}&camera=approach`,
+      mode === "private"
+        ? `/stock/${encodeURIComponent(ticker)}`
+        : `${basePath}?holding=${encodeURIComponent(ticker)}&camera=approach`,
     );
-  }, [basePath]);
+  }, [basePath, mode]);
+  const allNews = Object.values(newsByHolding)
+    .flat()
+    .filter(({ url }) => /^https?:\/\//i.test(url))
+    .sort((left, right) => right.datetime - left.datetime)
+    .slice(0, 3);
   const resolveTicker = useCallback((target: EventTarget | null) => {
     const element = target instanceof Element
       ? target.closest<HTMLElement>("[data-radar-ticker]")
       : null;
     setActiveTicker(element?.dataset.radarTicker ?? null);
   }, []);
+
+  const nextChip = nextEarningsChip(upcomingEarnings);
 
   useEffect(() => {
     const panel = MISSION_CONTROL_PANELS.find(({ id }) => id === activePanel);
@@ -128,6 +156,7 @@ export function MissionControl({
               <a href="#returns">SINCE START TWR <b>{twrReadout}</b></a>
               <a href="#returns">VS VOO · SAME PERIOD <b>{marketReadout}</b></a>
               <a href="#risk">OFF HIGH <b>{offHighReadout}</b></a>
+              {nextChip ? <span>{nextChip}</span> : null}
               {FOLDED_CHIP_DESTINATIONS.map((destination) => (
                 <a key={destination.anchor} href={`#${destination.anchor}`} className={styles.missionFoldedChip}>
                   {destination.label}
@@ -140,6 +169,7 @@ export function MissionControl({
               <span>SINCE START TWR <b>{twrReadout}</b></span>
               <span>VS VOO · SAME PERIOD <b>{marketReadout}</b></span>
               <span>OFF HIGH <b>{offHighReadout}</b></span>
+              {nextChip ? <span>{nextChip}</span> : null}
             </>
           )}
         </div>
@@ -154,7 +184,6 @@ export function MissionControl({
                 {panel.label}
               </a>
             ))}
-            <a href="#earnings">EARNINGS</a>
           </nav>
         )}
         {mode === "private" && holdings.length === 8 ? (
@@ -188,7 +217,6 @@ export function MissionControl({
               {panel.label}
             </a>
           ))}
-          <a href="#earnings">EARNINGS</a>
         </nav>
       ) : null}
 
@@ -236,6 +264,22 @@ export function MissionControl({
             </button>
           ) : null}
           <span>SOL-DEVAN · READ-ONLY INSTRUMENTS</span>
+          {allNews.length ? (
+            <div className={styles.footerNews} aria-label="Recent news">
+              <span className={styles.footerNewsLabel}>NEWS</span>
+              <ol className={styles.roomNews}>
+                {allNews.map((item) => (
+                  <li key={`${item.ticker}-${item.datetime}-${item.url}`}>
+                    <a href={item.url} target="_blank" rel="noreferrer">
+                      <time>{new Date(item.datetime * 1000).toISOString().slice(5, 10)}</time>
+                      <strong>{item.ticker}</strong>
+                      <span>{item.headline}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ) : null}
           {briefingOpen ? (
             <p className={styles.briefingPaper}>
               <b>PORTFOLIO LINK</b>

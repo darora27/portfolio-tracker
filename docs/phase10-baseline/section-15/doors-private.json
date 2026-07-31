@@ -1,0 +1,6 @@
+{
+  "mode": "private",
+  "holdingsRowDoorHref": "/stock/ASML",
+  "fullAnalysisDoorHref": "/stock/IBM",
+  "orbitsDoorNavigated": "http://localhost:3415/stock/CRM"
+}

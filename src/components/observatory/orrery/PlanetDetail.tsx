@@ -34,12 +34,18 @@ export function PlanetDetail({
   basePath,
   forceNo3d,
   transmissionsFirst = false,
+  mode = "public",
 }: {
   holding: PublicOrreryHolding;
   news: readonly PublicNewsItem[];
   basePath: string;
   forceNo3d: boolean;
   transmissionsFirst?: boolean;
+  /** §15 BHV-08/PRV-01 (door #3, FULL ANALYSIS): private mode opens the
+   * Chart Room; public/`/share` mode keeps its exact pre-existing
+   * destination. Defaults to "public" -- a caller that forgets to pass mode
+   * must never leak the owner-gated route. */
+  mode?: "public" | "private";
 }) {
   const newsRef = useRef<HTMLElement>(null);
   const chart = holding.chart ?? [];
@@ -120,7 +126,11 @@ export function PlanetDetail({
 
       <footer className={styles.planetFooter}>
         <Link
-          href={`${basePath}?focus=portfolio&camera=command&station=manifest&anchor=${encodeURIComponent(holding.ticker)}`}
+          href={
+            mode === "private"
+              ? `/stock/${encodeURIComponent(holding.ticker)}`
+              : `${basePath}?focus=portfolio&camera=command&station=manifest&anchor=${encodeURIComponent(holding.ticker)}`
+          }
           scroll={false}
         >
           FULL ANALYSIS ▸

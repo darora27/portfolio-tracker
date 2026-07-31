@@ -1,0 +1,15 @@
+{
+  "returnsToggle": {
+    "focusedIsVti": "VTI",
+    "beforePressed": "false",
+    "afterPressed": "true"
+  },
+  "byHoldingDisclosure": {
+    "detailsOpenAfterEnter": true
+  },
+  "metricDisclosure": {
+    "expandedAfterEnter": "true",
+    "expandedAfterEscape": "false",
+    "focusReturnedToTrigger": true
+  }
+}

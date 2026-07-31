@@ -116,6 +116,10 @@ describe("regrouped semantic terminal preserves every encoding (ACC-01)", () => 
     expect(screen.getByText(/RETURNS \/ VS VOO/)).toBeTruthy();
     expect(screen.getByText(/RISK \/ VOL/)).toBeTruthy();
     expect(screen.getByText(/EARNINGS \//)).toBeTruthy();
+    // §15 §13 (MOB-01): the fallback gains values-only MIX and ACTIVITY
+    // rows, same treatment RETURNS/RISK/EARNINGS already get.
+    expect(screen.getByText(/MIX \/ TOP MSFT/)).toBeTruthy();
+    expect(screen.getByText(/ACTIVITY \/ \d+ TRADES LOGGED/)).toBeTruthy();
     expect(screen.getByText(/ASTEROID BELT/)).toBeTruthy();
     expect(screen.getByText(/NEBULA (?:EMBER|GOLD)/)).toBeTruthy();
     expect(container.querySelectorAll("summary").length).toBeGreaterThanOrEqual(5);

@@ -25,10 +25,13 @@ describe("MissionControl", () => {
       />,
     );
     for (const anchor of [
-      "orbits", "holdings", "returns", "risk", "correlation", "news", "trades", "earnings",
+      "orbits", "holdings", "returns", "mix", "risk", "trades",
     ]) {
       expect(html).toContain(`href=\"#${anchor}\"`);
     }
+    expect(html).not.toContain('href="#correlation"');
+    expect(html).not.toContain('href="#news"');
+    expect(html).not.toContain('href="#earnings"');
     expect(html).toContain("Readable room content");
     expect(html).toContain("SINCE START TWR");
     expect(html).toContain("VS VOO · SAME PERIOD");

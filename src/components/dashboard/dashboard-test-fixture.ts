@@ -95,4 +95,19 @@ export const dashboardTestFixture = {
     { date: "2026-01-05", ticker: "IBM", action: "buy", shares: 10, price: 200 },
     { date: "2026-02-10", ticker: "MSFT", action: "buy", shares: 5, price: 400 },
   ],
+  drawdownSeries: [
+    { date: "2026-06-24", drawdown: 0 },
+    { date: "2026-07-23", drawdown: -0.081 },
+  ],
+  dailyReturnBars: [
+    { date: "2026-07-23", return: -0.042 },
+  ],
+  compositionHistory: {
+    tickers: ["IBM", "MSFT"],
+    hasOther: false,
+    points: [
+      { date: "2026-06-24", IBM: 45, MSFT: 30 },
+      { date: "2026-07-23", IBM: 42, MSFT: 31 },
+    ],
+  },
 } satisfies DashboardData;

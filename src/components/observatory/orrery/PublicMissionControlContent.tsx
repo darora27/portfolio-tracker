@@ -1,12 +1,10 @@
 import Link from "next/link";
 import type { DashboardData } from "@/lib/dashboard-data";
 import type { MissionControlPanelId } from "./mission-control-panels";
-import { CommsBay } from "./MissionControlBays/CommsBay";
 import { HazardBay } from "./MissionControlBays/HazardBay";
 import { LogBay } from "./MissionControlBays/LogBay";
 import { ManifestBay } from "./MissionControlBays/ManifestBay";
 import { ScopeBay } from "./MissionControlBays/ScopeBay";
-import { SignalsBay } from "./MissionControlBays/SignalsBay";
 import styles from "./orrery.module.css";
 
 function pct(value: number | null): string {
@@ -36,26 +34,6 @@ export function PublicMissionControlContent({
         winRate={data.winRatePct ?? 0}
         best={data.bestDay?.r ?? null}
         worst={data.worstDay?.r ?? null}
-      />
-    );
-  }
-  if (panel === "signals") {
-    return (
-      <SignalsBay
-        basePath={basePath}
-        tickers={data.correlationTickers}
-        cells={data.correlationCells}
-        holdings={data.publicOrreryHoldings}
-        hhi={data.hhi}
-      />
-    );
-  }
-  if (panel === "comms") {
-    return (
-      <CommsBay
-        events={data.upcomingEarnings}
-        newsByHolding={data.newsByHolding ?? {}}
-        basePath={basePath}
       />
     );
   }

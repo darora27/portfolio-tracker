@@ -40,6 +40,8 @@ import {
   type BenchmarkTicker,
 } from "@/lib/portfolio/benchmark-comparison";
 import { classificationWeights, type ClassificationWeight } from "@/lib/portfolio/classification-weights";
+import { getHistoryData } from "@/lib/history-data";
+import type { CompositionHistorySeries } from "@/lib/portfolio/composition-history";
 import { buildHoldingsPerformance, type HoldingsPerformanceSeries } from "@/lib/portfolio/holdings-performance";
 import { perHoldingRisk, type HoldingRisk } from "@/lib/portfolio/per-holding-risk";
 import {
@@ -134,6 +136,12 @@ export type DashboardData = {
   firstTradeDateByTicker: Record<string, string>;
   /** §14: every trade for currently-held tickers, for the Chart Room graph's TRADES overlay. */
   trades: { date: string; ticker: string; action: string; shares: number; price: number }[];
+  /** §15: same series /history's DrawdownChart already renders, via getHistoryData(). Oldest first. */
+  drawdownSeries: { date: string; drawdown: number }[];
+  /** §15: same series /history's DailyReturnsChart already renders, via getHistoryData(). Oldest first. */
+  dailyReturnBars: { date: string; return: number }[];
+  /** §15: same series /history's CompositionOverTimeChart already renders, via getHistoryData(). */
+  compositionHistory: CompositionHistorySeries;
 };
 
 /**
@@ -148,6 +156,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     { data: snapshotPositions, error: positionsError },
     { data: benchmarkRows, error: benchmarksError },
     { data: sectorRows, error: sectorError },
+    historyData,
   ] = await Promise.all([
     supabase.from("trades").select("*").order("date", { ascending: true }),
     supabase.from("snapshots").select("*").order("date", { ascending: true }),
@@ -156,6 +165,10 @@ export async function getDashboardData(): Promise<DashboardData> {
     // Cached sector classification only — never a live Finnhub call from the
     // page-load path. Refreshed exclusively by ensureSectorCached at trade entry.
     supabase.from("ticker_sector").select("ticker, sector"),
+    // §15: drawdownSeries/dailyReturnBars/compositionHistory are already
+    // computed and tested for /history — a second call to the same pure
+    // function, not a re-derivation (spec §3).
+    getHistoryData(),
   ]);
 
   if (tradesError) throw tradesError;
@@ -552,5 +565,8 @@ export async function getDashboardData(): Promise<DashboardData> {
       shares: t.shares,
       price: t.price,
     })),
+    drawdownSeries: historyData.drawdownSeries,
+    dailyReturnBars: historyData.dailyReturnBars,
+    compositionHistory: historyData.compositionHistory,
   };
 }

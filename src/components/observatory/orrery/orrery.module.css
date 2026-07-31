@@ -3298,6 +3298,296 @@
   border-bottom: 1px solid rgba(43, 26, 16, 0.25);
 }
 
+/* §15: shared small trend line, reused by HOLDINGS/RETURNS/MIX/RISK. */
+.roomSpark {
+  color: var(--universe-cabinet-window-word);
+  vertical-align: middle;
+}
+
+.roomSpark[data-signal="positive"] {
+  color: var(--universe-signal-gain);
+}
+
+.roomSpark[data-signal="negative"] {
+  color: var(--universe-signal-loss);
+}
+
+/* §15 HOLDINGS (BHV-02): movers line and TOP-2/HHI summary line. */
+.moversLine {
+  max-width: 48ch;
+  margin: 0;
+  color: var(--universe-cabinet-amber-chrome);
+  font-size: var(--type-body);
+  letter-spacing: 0.02em;
+}
+
+.holdingsSummaryLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+}
+
+/* §15 RETURNS (BHV-03): per-benchmark and BOOK VS MARKET/STOCK VS STOCK
+   toggle groups -- same aria-pressed pattern .rangeDetents already uses. */
+.benchmarkToggleGroup,
+.modeSwitch,
+.stockToggleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: 0 0 0.6rem;
+}
+
+.benchmarkToggleGroup button,
+.modeSwitch button,
+.stockToggleRow button {
+  min-height: 38px;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(157, 231, 178, 0.28);
+  color: #b9cdb8;
+  background: #071712;
+  font: 600 var(--type-label)/1.15 var(--font-mono, monospace);
+}
+
+.benchmarkToggleGroup button[aria-pressed="true"],
+.modeSwitch button[aria-pressed="true"],
+.stockToggleRow button[aria-pressed="true"] {
+  color: #010504;
+  background: var(--universe-cabinet-amber-chrome);
+}
+
+.excessReturnsList {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--universe-glass-benchmark-voo);
+  font: 600 var(--type-label)/1.3 var(--font-mono, monospace);
+}
+
+.stockPerformanceList {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stockPerformanceList li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 28px;
+  color: var(--universe-cabinet-cream);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+}
+
+.stockPerformanceList li > b {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* §15 MIX (BHV-04): holdings-by-percentage bars, sector/AI classification
+   lists, composition-over-time trend rows -- same meter-bar and materials
+   .riskInstruments already established. */
+.mixDonut {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.6rem;
+}
+
+.mixDonut article {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.6rem;
+  border: 1px solid rgba(213, 186, 140, 0.2);
+}
+
+.mixDonut span {
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+}
+
+.mixDonut strong {
+  font-size: var(--type-title);
+}
+
+.mixDonut i {
+  position: relative;
+  height: 5px;
+  background: rgba(213, 186, 140, 0.16);
+}
+
+.mixDonut i::after {
+  display: block;
+  width: var(--meter);
+  height: 100%;
+  background: var(--universe-glass-scope-hero);
+  content: "";
+}
+
+.mixClassifications {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.mixClassifications h4,
+.riskHistoryCharts h4 {
+  margin: 0 0 0.3rem;
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+}
+
+.mixClassifications p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.14);
+  font-size: var(--type-body);
+}
+
+.mixEmpty {
+  margin: 0;
+  color: rgba(213, 186, 140, 0.45);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+}
+
+.compositionHistoryList {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.compositionHistoryRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--universe-cabinet-cream);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+}
+
+.compositionHistoryRow > b {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+/* §15 RISK (BHV-05): drawdown/daily-return history charts, side by side
+   with .mixClassifications' own two-column rhythm. */
+.riskHistoryCharts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.riskHistoryCharts h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.byHoldingDisclosure {
+  margin: 0;
+  padding: 0;
+}
+
+.byHoldingDisclosure summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+}
+
+.byHoldingDisclosure ul {
+  display: grid;
+  gap: 0;
+  margin: 0.3rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.byHoldingDisclosure li {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.8rem;
+  min-height: 32px;
+  align-items: center;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.14);
+  font-size: var(--type-body);
+}
+
+/* §15 RISK (ACC-01): MetricDisclosure's behavior re-skinned to the room's
+   materials -- same disclosure idiom `.briefingFolder`/`.semanticGroup`
+   already use in this file. */
+.metricDisclosure {
+  position: relative;
+  display: inline-block;
+}
+
+.metricDisclosureTrigger {
+  min-height: 28px;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid rgba(213, 186, 140, 0.3);
+  color: var(--universe-cabinet-amber-chrome);
+  background: transparent;
+  font: 600 var(--type-label) var(--font-mono, monospace);
+}
+
+.metricDisclosurePanel {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 0.3rem);
+  left: 0;
+  display: grid;
+  gap: 0.4rem;
+  width: min(320px, 84vw);
+  padding: 0.7rem;
+  border: 1px solid rgba(213, 186, 140, 0.4);
+  background: #050d0a;
+  font-size: var(--type-body);
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+}
+
+.metricDisclosurePanel p {
+  margin: 0;
+}
+
+.metricDisclosurePanel button {
+  min-height: 32px;
+  justify-self: start;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(213, 186, 140, 0.3);
+  color: var(--universe-cabinet-cream);
+  background: transparent;
+  font: 600 var(--type-label) var(--font-mono, monospace);
+}
+
+/* §15 §11: NEWS demoted from its own section to a three-headline footer
+   line -- same .roomNews materials the retired standalone section used. */
+.footerNews {
+  flex-basis: 100%;
+  order: 5;
+}
+
+.footerNewsLabel {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label) var(--font-mono, monospace);
+  letter-spacing: 0.1em;
+}
+
 .missionFooter {
   position: relative;
   display: flex;
@@ -3745,8 +4035,20 @@
     width: min(100% - 1rem, 700px);
   }
   .missionHalfRow,
-  .riskInstruments {
+  .riskInstruments,
+  .mixClassifications,
+  .riskHistoryCharts {
     grid-template-columns: 1fr;
+  }
+  .mixDonut {
+    grid-template-columns: 1fr;
+  }
+  .benchmarkToggleGroup button,
+  .modeSwitch button,
+  .stockToggleRow button,
+  .metricDisclosureTrigger,
+  .byHoldingDisclosure summary {
+    min-height: 44px;
   }
   .orbitsSection {
     min-height: auto;

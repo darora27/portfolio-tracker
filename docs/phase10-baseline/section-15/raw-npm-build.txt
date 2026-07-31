@@ -1,0 +1,49 @@
+
+> portfolio-tracker@0.1.0 build
+> node scripts/build.mjs
+
+▲ Next.js 16.2.11 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.5s
+  Running TypeScript ...
+  Finished TypeScript in 3.8s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/18) ...
+  Generating static pages using 7 workers (4/18) 
+  Generating static pages using 7 workers (8/18) 
+  Generating static pages using 7 workers (13/18) 
+✓ Generating static pages using 7 workers (18/18) in 491ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/cron/snapshot
+├ ƒ /api/export/history.csv
+├ ƒ /api/export/trades.csv
+├ ƒ /api/quotes
+├ ƒ /api/settings
+├ ƒ /api/trades
+├ ƒ /dashboard
+├ ƒ /dev/observatory-shell
+├ ƒ /dev/phase10-portfolio-orrery
+├ ƒ /dev/phase10-spike-css
+├ ƒ /dev/phase10-spike-css-world
+├ ƒ /dev/phase10-spike-r3f-world
+├ ƒ /dev/surface-scratch
+├ ƒ /history
+├ ƒ /research
+├ ƒ /share
+├ ƒ /share/full
+├ ƒ /stock/[ticker]
+└ ƒ /trades
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Share route smoke: PASS (/share 200; Mission Control manifest 200)

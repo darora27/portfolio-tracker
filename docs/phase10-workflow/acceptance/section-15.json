@@ -17,7 +17,15 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-strip-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-strip-test.txt",
+          "docs/phase10-baseline/section-15/raw-strip-state.json",
+          "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+        ],
+        "notes": "MissionControl.test.tsx (2/2 pass) plus a live production capture: raw-strip-state.json shows real strip text 'NEXT: SPCX T−5D' (hasNextChip true) and hasEarningsNavLink false, matching the visible STRIP crop in private-overview-1440x900.png."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -32,7 +40,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-holdings-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-holdings-test.txt",
+          "docs/phase10-baseline/section-15/holdings-1440.png"
+        ],
+        "notes": "MissionControlRoomContent.test.tsx (14/14 pass, includes dedicated HOLDINGS describe block). Live capture holdings-1440.png shows all 13 real holdings (not capped to 8) with real WEIGHT/TODAY/WEEK/SINCE BUY (SIMPLE)/TREND sparkline/EARNINGS T-nD/VALUE columns, a real 'BEST TODAY .../WORST ...' movers line, and 'TOP-2 46.9% · DIVERSIFIED · REALIZED $0.00 · UNREALIZED -$1,917.31' summary line with an attached HHI disclosure."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -47,7 +62,15 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-returns-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-returns-test.txt",
+          "docs/phase10-baseline/section-15/private-overview-1440x900.png",
+          "docs/phase10-baseline/section-15/returns-stock-vs-stock-1440.png"
+        ],
+        "notes": "MissionControlRoomContent.test.tsx exercises the VOO/VTI/XLK toggle (aria-pressed switches, chart re-renders) and the BOOK VS MARKET/STOCK VS STOCK switch backed by real holdingsPerformance data. private-overview-1440x900.png captures BOOK VS MARKET (VOO selected, real ValueChart-equivalent, ExcessReturns-derived 'VS VOO/VTI/XLK · SAME PERIOD' lines); returns-stock-vs-stock-1440.png captures VTI selected + STOCK VS STOCK mode with all 9 real per-ticker trend rows."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -62,7 +85,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-mix-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-mix-test.txt",
+          "docs/phase10-baseline/section-15/mix-1440.png"
+        ],
+        "notes": "MissionControlRoomContent.test.tsx's MIX describe block covers both real-data rendering and the designed-empty state (NO SECTOR DATA / NO CLASSIFICATION DATA when sectorWeights/aiExposureWeights are empty). mix-1440.png is a live capture: holdings-by-percentage bars for all 13 holdings, SECTOR and AI EXPOSURE classification lists, and per-ticker COMPOSITION · SINCE START trend rows, all real data."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -77,7 +107,15 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-risk-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-risk-test.txt",
+          "docs/phase10-baseline/section-15/risk-1440.png",
+          "docs/phase10-baseline/section-15/risk-disclosures-open-1440.png"
+        ],
+        "notes": "MissionControlRoomContent.test.tsx covers the three gauges, drawdown/daily-return history, BY HOLDING disclosure toggling, and RoomMetricDisclosure's open/close/focus/Escape behavior (plus a regression test confirming Escape does not bubble to Mission Control's own exit-the-room handler -- a real interaction bug found and fixed during this turn, RoomMetricDisclosure.tsx's onKeyDown now calls stopPropagation). Attached MetricDisclosure explanations cover VOL (volatilityExplanation), BETA (betaExplanation), and the DRAWDOWN chart (maxDrawdownExplanation) -- the three figures with a 1:1-matching architecture-named builder; OFF HIGH and DAILY RETURNS are deliberately left without one rather than attaching a mismatched number (see handoff notes). risk-1440.png captures the section at rest; risk-disclosures-open-1440.png captures BY HOLDING open (13 real per-holding VOL/BETA rows) with the Volatility disclosure panel open showing real explanatory text."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -92,7 +130,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-activity-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-activity-test.txt",
+          "docs/phase10-baseline/section-15/activity-1440.png"
+        ],
+        "notes": "MissionControlRoomContent.test.tsx's ACTIVITY describe block asserts the renamed title and EFFECT ON PORTFOLIO label (and absence of BOOK IMPACT/the old TRADES title). activity-1440.png is a live capture showing the real trade log (13 real entries with real dates/tickers/actions), the renamed 'EFFECT ON PORTFOLIO' column, and the unchanged 'OPEN TRADE DESK ▸' link."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -107,7 +152,15 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-cuts-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-cuts-test.txt",
+          "docs/phase10-baseline/section-15/raw-cuts-state.json",
+          "docs/phase10-baseline/section-15/footer-news-1440.png"
+        ],
+        "notes": "raw-cuts-state.json (live capture) confirms correlationSectionPresent:false, earningsSectionPresent:false, footerNewsPresent:true, footerNewsHeadlineCount:3. footer-news-1440.png shows the real 3-headline NEWS line inside MissionControl.tsx's footer alongside BRIEFING/DRAFT, each headline a real GOOG/MSFT/SPCX story with a working link. mission-control-panels.ts now orders plot/manifest/scope/mix/hazard/log with mix inserted and signals/comms removed; MissionControl.test.tsx confirms the anchors."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -122,7 +175,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-doors-private-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-doors-private-test.txt",
+          "docs/phase10-baseline/section-15/doors-private.json"
+        ],
+        "notes": "Unit coverage across MissionControlRoomContent/MissionControl.interaction/PlanetDetail (22/22 pass). Live private-mode trace doors-private.json: HOLDINGS row -> /stock/ASML, FULL ANALYSIS -> /stock/IBM, ORBITS double-click on a real radar blip -> navigated to http://localhost:3415/stock/CRM. All three doors resolve to /stock/<ticker> with the real clicked/opened ticker."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -137,7 +197,15 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-privacy-regression-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-privacy-regression-test.txt",
+          "docs/phase10-baseline/section-15/doors-public.json",
+          "docs/phase10-baseline/section-15/public-overview-1440x900.png"
+        ],
+        "notes": "PlanetDetail.test.tsx + page.test.tsx pass (10/10). Live public-mode trace doors-public.json: HOLDINGS row -> /share?holding=ASML&camera=approach (unchanged), FULL ANALYSIS -> /share?focus=portfolio&camera=command&station=manifest&anchor=IBM (unchanged) -- neither contains '/stock/'. public-overview-1440x900.png shows the full public projection with no dollar figures anywhere (no VALUE column, no REALIZED/UNREALIZED line) across HOLDINGS/RETURNS/MIX, extending the existing canary pattern to the reworked sections."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -149,7 +217,13 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/private-overview-1440x900.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+        ],
+        "notes": "The strip crop at the top of private-overview-1440x900.png shows 'NEXT: SPCX T−5D' alongside WEEK/SINCE START TWR/VS VOO/OFF HIGH, and the boxed nav reads ORBITS · HOLDINGS · RETURNS · MIX · RISK · ACTIVITY with no EARNINGS entry."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -161,7 +235,13 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/private-overview-1440x900.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/holdings-1440.png"
+        ],
+        "notes": "The full-descent private-overview-1440x900.png capture (taken at an extreme resized viewport to fit the whole room in one shot) does not reliably paint the HOLDINGS table specifically -- a resize-timing artifact of that technique, not of this section's code (ORBITS/MIX/RISK/ACTIVITY paint fine in the same file). holdings-1440.png is a dedicated normal-viewport Playwright locator screenshot of #holdings, which does not share that failure mode: it shows all 13 real holdings, WEIGHT/TODAY/WEEK/SINCE BUY (SIMPLE)/TREND sparkline/EARNINGS/VALUE columns, the real movers line, and the TOP-2/HHI summary line."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -173,7 +253,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/private-overview-1440x900.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/private-overview-1440x900.png",
+          "docs/phase10-baseline/section-15/returns-stock-vs-stock-1440.png"
+        ],
+        "notes": "private-overview-1440x900.png's RETURNS crop shows VOO selected, BOOK VS MARKET mode (real portfolio-vs-VOO chart, -5.3% chip, VS VOO/VTI/XLK lines). returns-stock-vs-stock-1440.png shows VTI selected and STOCK VS STOCK mode active, all 9 real per-ticker toggles/trend rows."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -185,7 +272,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/private-overview-1440x900.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/private-overview-1440x900.png",
+          "docs/phase10-baseline/section-15/mix-1440.png"
+        ],
+        "notes": "MIX renders in private-overview-1440x900.png and in the dedicated mix-1440.png crop: holdings-by-percentage meter bars for all 13 holdings, SECTOR and AI EXPOSURE classification lists, and per-ticker COMPOSITION · SINCE START trend rows, all real data traced to donutSlices/sectorWeights/aiExposureWeights/compositionHistory."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -197,7 +291,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/private-overview-1440x900.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/risk-1440.png",
+          "docs/phase10-baseline/section-15/risk-disclosures-open-1440.png"
+        ],
+        "notes": "risk-1440.png shows the three gauges (VOL 37.8%, BETA 2.44, OFF HIGH -12.3%) plus DRAWDOWN and DAILY RETURNS history charts. risk-disclosures-open-1440.png shows BY HOLDING open (13 real per-holding VOL/BETA rows) with the Volatility MetricDisclosure panel open, real explanatory text visible."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -209,7 +310,13 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/private-overview-1440x900.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/activity-1440.png"
+        ],
+        "notes": "activity-1440.png (dedicated locator capture, same rationale as VIS-02) shows the renamed 'ACTIVITY' title and 'EFFECT ON PORTFOLIO' column label on the real trade log, in the room's existing paper-terminal materials, unchanged."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -221,7 +328,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/private-overview-1440x900.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/footer-news-1440.png",
+          "docs/phase10-baseline/section-15/raw-cuts-state.json"
+        ],
+        "notes": "footer-news-1440.png shows the real 3-headline NEWS footer line (GOOG/MSFT/SPCX, real dates and links) alongside BRIEFING/DRAFT. raw-cuts-state.json is the negative-capture measurement: correlationSectionPresent:false, earningsSectionPresent:false (both computed via document.getElementById against the live production DOM)."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -234,7 +348,15 @@
         "docs/phase10-baseline/section-15/doors-private.json",
         "docs/phase10-baseline/section-15/public-overview-1440x900.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/doors-private.json",
+          "docs/phase10-baseline/section-15/doors-public.json",
+          "docs/phase10-baseline/section-15/public-overview-1440x900.png"
+        ],
+        "notes": "doors-private.json (real Playwright trace, private mode): HOLDINGS row -> /stock/ASML, FULL ANALYSIS -> /stock/IBM, ORBITS double-click -> navigated to /stock/CRM -- all three doors resolve to /stock/<ticker>. doors-public.json (same traces, public mode): HOLDINGS row -> /share?holding=ASML&camera=approach, FULL ANALYSIS -> /share?focus=portfolio&camera=command&station=manifest&anchor=IBM -- both unchanged pre-existing destinations, neither containing '/stock/'. ORBITS' public-mode destination was not separately re-traced with the radar blip (its double-click needs the WebGL scene, only exercised in the private trace); it is not independently measured here -- MissionControl.tsx's routeToHolding constructs the identical `${basePath}?holding=${ticker}&camera=approach` string in public mode for both the HOLDINGS row and the ORBITS blip (same conditional, same template), so the HOLDINGS row's measured public destination is the same code path, not a separate one. public-overview-1440x900.png is the paired negative capture."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -246,7 +368,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/mobile-390.png"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/mobile-390.png",
+          "docs/phase10-baseline/section-15/raw-mobile-target-sizes.json"
+        ],
+        "notes": "MIX/ACTIVITY rows were added to OrreryWorld.tsx's INSTRUMENTS group (same pattern as the pre-existing RETURNS/RISK/EARNINGS rows there), verified by extending observatory-fallback.test.ts with rendered assertions. raw-mobile-target-sizes.json is a real getBoundingClientRect measurement at 390px: controlCount 27, undersizedCount 0 (every interactive control >=44x44 CSS px), horizontalOverflow false (scrollWidth 390 === clientWidth 390), mixRowPresent true, activityRowPresent true. mobile-390.png is a real pixel capture of the same fallback's default (BODIES) group, proving the general no-overflow/legible-at-390px rendering. Investigation note (logged, not a defect of this section, pre-existing since FB-09/§12a): at <1024px every .semanticGroup's <summary> is display:none, and this sandbox's headless Chromium does not visually reveal a non-default group's content in a single screenshot even after its native `open` is confirmed true by a real click -- true today for the pre-existing RETURNS/RISK/EARNINGS rows in that same INSTRUMENTS group too. The geometry measurement above is the ledger's own accepted alternative to a pixel capture for this specific content ('a sampled-pixel or geometry measurement')."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -258,7 +387,14 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-keyboard-operability.json"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-keyboard-operability.json",
+          "docs/phase10-baseline/section-15/doors-private.json"
+        ],
+        "notes": "raw-keyboard-operability.json is a real Playwright keyboard trace: RETURNS' VTI toggle focuses and activates via Enter (aria-pressed false -> true); the BY HOLDING <details> opens via Enter on the focused <summary> (detailsOpenAfterEnter: true); a MetricDisclosure opens via Enter (aria-expanded true), closes via Escape (aria-expanded false), and returns focus to its own trigger (focusReturnedToTrigger: true) -- this last behavior required a real fix during this turn (RoomMetricDisclosure.tsx's Escape handler now calls stopPropagation so it does not also trigger Mission Control's own exit-the-room Escape listener). The three doors themselves are real <a>/interactive elements (not click-only handlers) per doors-private.json's real navigation traces, so they inherit normal keyboard/Enter activation; not re-traced separately by keyboard here."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -273,7 +409,13 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-new-unit-tests.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-new-unit-tests.txt"
+        ],
+        "notes": "3/3 files, 18/18 tests pass: dashboard-data.source.test.ts's new §15 test (drawdownSeries/dailyReturnBars/compositionHistory, hand-computed fixture verified against getHistoryData()'s own math), mission-control-layout.test.ts (unaffected -- this file only covers MISSION_CONTROL_LAYOUT's pixel-ramp constants, not MISSION_CONTROL_TEXT_ROLES; the new mixSectionLabel role and its rendered assertion live in mission-control-text-roles.test.tsx, covered under TST-02's full-suite run, not re-listed here since it isn't part of this criterion's named command), and OrreryWorld.test.tsx's corrected door-destination assertions (public-mode retains station=manifest per its own existing test; a new test asserts private-mode -> /stock/MSFT and public-mode retains the old destination, replacing the stale single-destination assertion per the spec's named test-debt correction)."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -285,7 +427,13 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-npm-test.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-npm-test.txt"
+        ],
+        "notes": "118/118 test files, 645/646 tests, 1 intentional skip (unchanged from §14's own 118/118, 631/632 baseline -- gained 14 net new tests: dashboard-data.source.test.ts +1, mission-control-text-roles.test.tsx +1, MissionControlRoomContent.test.tsx expanded from 2 to 14, OrreryWorld.test.tsx +1, observatory-fallback.test.ts assertions extended in place, MissionControlContent.test.tsx/public-payload.test.ts/page.test.tsx/share/page.test.tsx/MissionControl.test.tsx/MissionControl.stripVariant.test.tsx fixtures updated in place). Zero new failures, no reduction in test count."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     },
     {
@@ -297,7 +445,13 @@
       "required_artifacts": [
         "docs/phase10-baseline/section-15/raw-npm-build.txt"
       ],
-      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "implementer": {
+        "status": "pass",
+        "evidence": [
+          "docs/phase10-baseline/section-15/raw-npm-build.txt"
+        ],
+        "notes": "npm run build exit 0. Route list byte-for-byte the same 22 routes as §14's accepted build (/, /_not-found, /api/*, /dashboard, /dev/*, /history, /research, /share, /share/full, /stock/[ticker], /trades) -- no new route added by this section."
+      },
       "reviewer": { "status": "not_run", "evidence": [], "notes": null }
     }
   ]

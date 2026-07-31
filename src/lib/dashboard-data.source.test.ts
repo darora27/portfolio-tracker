@@ -196,4 +196,70 @@ describe("dashboard-data §8 public projection", () => {
         ?.newsCount,
     ).toBe(1);
   });
+
+  it("§15: exposes drawdownSeries/dailyReturnBars/compositionHistory, the same getHistoryData() series /history already renders", async () => {
+    const trades = [
+      { date: "2026-07-01", ticker: "AAA", action: "buy" as const, shares: 1, price: 100, realized_gain: null },
+    ];
+    const snapshots = [
+      { id: 1, date: "2026-07-01", total_cost: 100, total_value: 100 },
+      { id: 2, date: "2026-07-02", total_cost: 100, total_value: 110 },
+      { id: 3, date: "2026-07-03", total_cost: 100, total_value: 99 },
+    ];
+    const snapshotPositions = [
+      { snapshot_id: 1, ticker: "AAA", close_price: 100, value: 100 },
+      { snapshot_id: 2, ticker: "AAA", close_price: 110, value: 110 },
+      { snapshot_id: 3, ticker: "AAA", close_price: 99, value: 99 },
+    ];
+    const rows = {
+      trades,
+      snapshots,
+      snapshot_positions: snapshotPositions,
+      benchmarks: [],
+      ticker_sector: [],
+    };
+
+    from.mockImplementation((table: keyof typeof rows) => ({
+      select: vi.fn(() => {
+        if (table === "snapshot_positions") {
+          return Promise.resolve({ data: rows[table], error: null });
+        }
+        if (table === "benchmarks") {
+          return {
+            in: vi.fn().mockResolvedValue({ data: rows[table], error: null }),
+          };
+        }
+        return {
+          order: vi.fn().mockResolvedValue({ data: rows[table], error: null }),
+        };
+      }),
+    }));
+    getQuotes.mockResolvedValue(new Map([["AAA", { price: 99, timestamp: 1_722_038_400 }]]));
+    getUpcomingEarnings.mockResolvedValue([]);
+    getCompanyNews.mockResolvedValue([]);
+
+    const result = await getDashboardData();
+
+    expect(result.drawdownSeries.map((p) => p.date)).toEqual([
+      "2026-07-01",
+      "2026-07-02",
+      "2026-07-03",
+    ]);
+    expect(result.drawdownSeries[0].drawdown).toBeCloseTo(0, 10);
+    expect(result.drawdownSeries[1].drawdown).toBeCloseTo(0, 10);
+    expect(result.drawdownSeries[2].drawdown).toBeCloseTo(-0.1, 10);
+    expect(result.dailyReturnBars.map((p) => p.date)).toEqual([
+      "2026-07-02",
+      "2026-07-03",
+    ]);
+    expect(result.dailyReturnBars[0].return).toBeCloseTo(0.1, 10);
+    expect(result.dailyReturnBars[1].return).toBeCloseTo(-0.1, 10);
+    expect(result.compositionHistory.tickers).toEqual(["AAA"]);
+    expect(result.compositionHistory.hasOther).toBe(false);
+    expect(result.compositionHistory.points).toEqual([
+      { date: "2026-07-01", AAA: 100 },
+      { date: "2026-07-02", AAA: 100 },
+      { date: "2026-07-03", AAA: 100 },
+    ]);
+  });
 });

@@ -205,6 +205,11 @@ export function OrreryWorld({
   const nextEarningsHolding = nextEarnings
     ? holdings.find(({ ticker }) => ticker === nextEarnings.ticker)
     : null;
+  // §15 §13 (MOB-01): values-only MIX/ACTIVITY rows for the sub-1024px
+  // fallback, same treatment RETURNS/RISK/EARNINGS above already get --
+  // real data already carried by this component's own props, no new
+  // plumbing.
+  const topHoldingByWeight = [...holdings].sort((a, b) => b.weight - a.weight)[0] ?? null;
 
   const navigateToHolding = useCallback(
     (ticker: string) => {
@@ -546,6 +551,16 @@ export function OrreryWorld({
                     EARNINGS / {nextEarningsHolding ? `T−${nextEarningsHolding.nextEarningsDays}D · ${nextEarningsHolding.ticker}` : "NO UPCOMING EARNINGS"}
                   </Link>
                 </li>
+                <li>
+                  <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=mix${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false} onFocus={() => setOpenTerminalGroup("instruments")}>
+                    MIX / TOP {topHoldingByWeight ? `${topHoldingByWeight.ticker} ${formatWeightPercent(topHoldingByWeight.weight)}` : "NO HOLDINGS"}
+                  </Link>
+                </li>
+                <li>
+                  <Link className={styles.bodyControl} href={`${basePath}?focus=portfolio&camera=command&station=log${forceNo3d ? "&no3d=1" : ""}`} prefetch={false} scroll={false} onFocus={() => setOpenTerminalGroup("instruments")}>
+                    ACTIVITY / {publicTradeLog.length} TRADES LOGGED
+                  </Link>
+                </li>
               </ol>
               <button
                 type="button"
@@ -627,6 +642,7 @@ export function OrreryWorld({
               basePath={basePath}
               forceNo3d={forceNo3d}
               transmissionsFirst={transmissionsFirst}
+              mode={missionMode}
             />
           </aside>
         ) : null}
@@ -667,6 +683,7 @@ export function OrreryWorld({
           marketReadout={formatSignalPercent(portfolioSummary.marketRelativePct)}
           offHighReadout={formatSignalPercent(portfolioSummary.drawdownPct)}
           newsByHolding={newsByHolding}
+          upcomingEarnings={upcomingEarnings}
           signalPair={missionSignalPair}
           draftParam={draftParam}
           stripVariant={stripVariant}

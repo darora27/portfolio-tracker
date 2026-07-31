@@ -79,9 +79,6 @@ describe.each(["a", "b", "c"] as const)("tab-strip variant %s", (stripVariant) =
         expect(control.hasAttribute("href")).toBe(true);
       }
     }
-    // EARNINGS is not one of the seven MISSION_CONTROL_PANELS destinations
-    // but is present in every variant unchanged.
-    expect(container.querySelectorAll('a[href="#earnings"]').length).toBeGreaterThanOrEqual(1);
   });
 
   it.skipIf(stripVariant === "a")(

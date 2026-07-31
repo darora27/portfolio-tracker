@@ -129,8 +129,25 @@ describe("Portfolio Orrery remediation route", () => {
       expect(screen.getByText(label)).toBeTruthy();
     }
     expect(screen.queryByText("VOO UNAVAILABLE")).toBeNull();
+    // §15 §2.3 (BHV-08/PRV-01, door #3): public mode keeps the exact
+    // pre-existing Mission Control destination -- retired only in private
+    // mode. baseProps carries no missionMode, so OrreryWorld's own default
+    // ("public") applies here.
     expect(screen.getByRole("link", { name: "FULL ANALYSIS ▸" }).getAttribute("href"))
       .toContain("station=manifest");
+  });
+
+  it("§15 §2.3: FULL ANALYSIS opens the Chart Room (/stock/<ticker>) in private mode only", () => {
+    const { rerender } = render(
+      <OrreryWorld {...baseProps} selectedTicker="MSFT" missionMode="private" />,
+    );
+    expect(screen.getByRole("link", { name: "FULL ANALYSIS ▸" }).getAttribute("href"))
+      .toBe("/stock/MSFT");
+    rerender(<OrreryWorld {...baseProps} selectedTicker="MSFT" missionMode="public" />);
+    expect(screen.getByRole("link", { name: "FULL ANALYSIS ▸" }).getAttribute("href"))
+      .toContain("station=manifest");
+    expect(screen.getByRole("link", { name: "FULL ANALYSIS ▸" }).getAttribute("href"))
+      .not.toContain("/stock/");
   });
 
   it("returns from approach in one gesture and keeps an explicit overview link", () => {
@@ -193,7 +210,7 @@ describe("Portfolio Orrery remediation route", () => {
   it("keeps the static semantic map when reduced motion disables the scene", () => {
     stubMedia(true, true);
     render(<OrreryWorld {...baseProps} />);
-    expect(screen.getAllByRole("link").length).toBe(holdings.length + 4);
+    expect(screen.getAllByRole("link").length).toBe(holdings.length + 6);
     expect(screen.queryByTestId("orrery-canvas")).toBeNull();
   });
 
@@ -218,7 +235,7 @@ describe("Portfolio Orrery remediation route", () => {
 
   it("provides 44px-class semantic controls without duplicate canvas focus stops", () => {
     render(<OrreryWorld {...baseProps} />);
-    expect(screen.getAllByRole("link")).toHaveLength(holdings.length + 4);
+    expect(screen.getAllByRole("link")).toHaveLength(holdings.length + 6);
     expect(screen.getByRole("button", { name: "Open systems manual" })).toBeTruthy();
     expect(screen.getByRole("button", { name: /ASTEROID BELT/ })).toBeTruthy();
   });

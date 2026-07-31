@@ -71,6 +71,10 @@ const publicFixture = {
   movers: [{ ticker: "IBM", day: 12345.67, dayPct: -0.021 }],
   top2ConcentrationPct: 0.73,
   hhi: 2100,
+  donutSlices: [
+    { ticker: "IBM", weight: 0.42, value: 999999.99 },
+    { ticker: "MSFT", weight: 0.31, value: 100 },
+  ],
   sectorWeights: [{ label: "Technology", weight: 0.61 }],
   aiExposureWeights: [{ label: "High", weight: 0.44 }],
   correlationTickers: ["IBM", "MSFT"],
@@ -79,13 +83,36 @@ const publicFixture = {
   bestDay: { date: "2026-07-05", r: 0.023 },
   worstDay: { date: "2026-07-18", r: -0.031 },
   winRatePct: 52.5,
+  betaVsVoo: 1.04,
+  maxDrawdown: -0.081,
+  drawdownSeries: [
+    { date: "2026-06-24", drawdown: 0 },
+    { date: "2026-07-23", drawdown: -0.081 },
+  ],
+  dailyReturnBars: [
+    { date: "2026-07-23", return: -0.0113 },
+  ],
+  compositionHistory: {
+    tickers: ["IBM", "MSFT"],
+    hasOther: false,
+    points: [
+      { date: "2026-06-24", IBM: 45, MSFT: 30 },
+      { date: "2026-07-23", IBM: 42, MSFT: 31 },
+    ],
+  },
+  holdingsPerformance: { tickers: ["IBM", "MSFT"], hasOther: false, points: [] },
+  holdingRisks: [],
   benchmarkComparisons: [
     {
       ticker: "VOO",
       available: true,
+      beta: 1.04,
       twrPct: 0.017,
       excessReturnPct: -0.046,
+      chartIndex: [100, 101.7],
     },
+    { ticker: "VTI", available: false, beta: null, twrPct: null, excessReturnPct: null, chartIndex: [] },
+    { ticker: "XLK", available: false, beta: null, twrPct: null, excessReturnPct: null, chartIndex: [] },
   ],
   publicOrreryHoldings: [
     {
@@ -198,9 +225,8 @@ describe("/share Stock Market Universe rendered output", () => {
     ["plot", "orbits"],
     ["manifest", "holdings"],
     ["scope", "returns"],
+    ["mix", "mix"],
     ["hazard", "risk"],
-    ["signals", "correlation"],
-    ["comms", "news"],
     ["log", "trades"],
   ])(
     "renders the public-safe %s station without owner canaries",
@@ -231,7 +257,7 @@ describe("/share Stock Market Universe rendered output", () => {
     expect(plot).toContain("HOLDINGS");
 
     const log = await renderShare({ focus: "portfolio", station: "log" });
-    expect(log).toContain("TRADES");
+    expect(log).toContain("ACTIVITY");
     expect(log).not.toContain("PRIVATE_TRADE_REASON");
     expect(log).not.toContain("24680.13579");
 

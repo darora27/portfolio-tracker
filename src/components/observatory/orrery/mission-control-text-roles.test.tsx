@@ -214,18 +214,41 @@ describe("Mission Control text roles resolve to their assigned ramp token (FB-05
         publicOrreryHoldings: [
           { ticker: "MSFT", weight: 1, dayReturn: 0.01, weeklyReturn: 0.03 },
         ],
-        positionRows: [{ ticker: "MSFT", value: 12345 }],
-        correlationTickers: ["MSFT"],
-        correlationCells: [[1]],
+        positionRows: [{
+          ticker: "MSFT", shares: 10, costBasis: 10_000, price: 1_234.5, priceAsOf: "2026-07-23",
+          value: 12345, gain: 2345, gainPct: 0.2345, weight: 1, contribution: 0.2345,
+          day: 50, dayPct: 0.01, isNewToday: false, sparkline: [1200, 1234.5], prevClose: 1222.3,
+        }],
+        movers: [],
+        top2ConcentrationPct: 1,
+        hhi: 10_000,
+        realizedGain: 0,
+        unrealizedGain: 2345,
+        donutSlices: [{ ticker: "MSFT", weight: 1, value: 12345 }],
+        sectorWeights: [],
+        aiExposureWeights: [],
+        benchmarkComparisons: [
+          { ticker: "VOO", available: true, beta: 1, twrPct: 0.01, excessReturnPct: 0, chartIndex: [100] },
+          { ticker: "VTI", available: false, beta: null, twrPct: null, excessReturnPct: null, chartIndex: [] },
+          { ticker: "XLK", available: false, beta: null, twrPct: null, excessReturnPct: null, chartIndex: [] },
+        ],
+        holdingsPerformance: { tickers: ["MSFT"], hasOther: false, points: [] },
+        holdingRisks: [],
+        drawdownSeries: [],
+        dailyReturnBars: [],
+        compositionHistory: { tickers: [], hasOther: false, points: [] },
         publicTradeLog: [],
         upcomingEarnings: [],
         newsByHolding: {},
         chartData: [{ date: "2026-07-01", portfolioIndex: 100 }],
         volatilityPct: 0.2,
+        maxDrawdown: 0,
         betaVsVoo: 1,
         allTimeHigh: { pct: -0.08, peakDate: "2026-06-30" },
         historyDays: 34,
         xirrPct: 0.4,
+        dailyChangeAsOf: "2026-07-23",
+        pricesAsOf: "2026-07-23",
       } as unknown as DashboardData;
       const html = renderToStaticMarkup(
         <MissionControlRoomContent data={data} basePath="/share" mode="public" />,
@@ -245,6 +268,56 @@ describe("Mission Control text roles resolve to their assigned ramp token (FB-05
       for (const selector of MISSION_CONTROL_TEXT_ROLES.genuineLabel.selectors) {
         expectSelectorOnRole(selector, "genuineLabel");
       }
+    });
+  });
+
+  describe("mixSectionLabel -> --type-label (§15)", () => {
+    it(".mixClassifications h4 / .riskHistoryCharts h4 (rendered): MIX and RISK's new subsection headers", () => {
+      expectSelectorOnRole(".mixClassifications h4", "mixSectionLabel");
+      expectSelectorOnRole(".riskHistoryCharts h4", "mixSectionLabel");
+      const data = {
+        publicOrreryHoldings: [{ ticker: "MSFT", weight: 1, dayReturn: 0.01, weeklyReturn: 0.03 }],
+        positionRows: [{
+          ticker: "MSFT", shares: 10, costBasis: 10_000, price: 1_234.5, priceAsOf: "2026-07-23",
+          value: 12345, gain: 2345, gainPct: 0.2345, weight: 1, contribution: 0.2345,
+          day: 50, dayPct: 0.01, isNewToday: false, sparkline: [1200, 1234.5], prevClose: 1222.3,
+        }],
+        movers: [],
+        top2ConcentrationPct: 1,
+        hhi: 10_000,
+        realizedGain: 0,
+        unrealizedGain: 2345,
+        donutSlices: [{ ticker: "MSFT", weight: 1, value: 12345 }],
+        sectorWeights: [{ label: "Technology", weight: 1 }],
+        aiExposureWeights: [{ label: "High", weight: 1 }],
+        benchmarkComparisons: [
+          { ticker: "VOO", available: true, beta: 1, twrPct: 0.01, excessReturnPct: 0, chartIndex: [100] },
+          { ticker: "VTI", available: false, beta: null, twrPct: null, excessReturnPct: null, chartIndex: [] },
+          { ticker: "XLK", available: false, beta: null, twrPct: null, excessReturnPct: null, chartIndex: [] },
+        ],
+        holdingsPerformance: { tickers: ["MSFT"], hasOther: false, points: [] },
+        holdingRisks: [],
+        drawdownSeries: [],
+        dailyReturnBars: [],
+        compositionHistory: { tickers: [], hasOther: false, points: [] },
+        publicTradeLog: [],
+        upcomingEarnings: [],
+        newsByHolding: {},
+        chartData: [{ date: "2026-07-01", portfolioIndex: 100 }],
+        volatilityPct: 0.2,
+        maxDrawdown: 0,
+        betaVsVoo: 1,
+        allTimeHigh: { pct: -0.08, peakDate: "2026-06-30" },
+        historyDays: 34,
+        xirrPct: 0.4,
+        dailyChangeAsOf: "2026-07-23",
+        pricesAsOf: "2026-07-23",
+      } as unknown as DashboardData;
+      const html = renderToStaticMarkup(
+        <MissionControlRoomContent data={data} basePath="/share" mode="public" />,
+      );
+      expect(html).toContain("SECTOR");
+      expect(html).toContain("DRAWDOWN");
     });
   });
 
