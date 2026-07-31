@@ -1058,18 +1058,29 @@
 .radarTargets {
   position: absolute;
   inset: 0;
+  isolation: isolate;
 }
 
 .radarRingTarget {
   position: absolute;
   top: 50%;
   left: 50%;
-  border: 1px solid var(--radar-signal);
-  border-radius: 50%;
+  border: none;
   color: var(--radar-signal);
   background: transparent;
+  padding: 0;
   transform: translate(-50%, -50%);
   cursor: pointer;
+  z-index: var(--radar-ring-z, 0);
+}
+
+.radarRingTarget::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--radar-signal);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .radarRingTarget > span {
@@ -1084,7 +1095,7 @@
 
 .radarBlipTarget {
   position: absolute;
-  z-index: 2;
+  z-index: 1000;
   min-width: 12px;
   min-height: 12px;
   padding: 0;
@@ -1096,11 +1107,15 @@
   cursor: pointer;
 }
 
+.radarBlipTarget[data-active="true"],
+.radarBlipTarget:focus-visible {
+  z-index: 1001;
+}
+
 .radarRingTarget[data-active="true"],
 .radarBlipTarget[data-active="true"],
 .radarRingTarget:focus-visible,
 .radarBlipTarget:focus-visible {
-  z-index: 3;
   outline: 2px solid #fff4d7;
   outline-offset: 3px;
   filter: brightness(1.45);
@@ -2509,6 +2524,9 @@
     height: 44px !important;
     border-radius: 2px;
     transform: none;
+  }
+  .radarRingTarget::before {
+    border-radius: 2px;
   }
   .radarRingTarget > span {
     position: relative;

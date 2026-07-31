@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§15 — Mission Control content rework**
 - Managed range: §2–§18
-- Stage: `remediate`
-- Role: `codex_implementation`
+- Stage: `review`
+- Role: `claude_lead`
 - Status: `ready`
-- Next actor: `codex`
-- Expected actor for this stage: `codex`
+- Next actor: `claude`
+- Expected actor for this stage: `claude`
 - Stop reason: none
 
 The current state is before the
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `b18addd54729a8d615b611174e099ad45b944b916c69fe9ca27e35ca67bb7b34`
+- `PHASE10_STATE.json`: `fc4f3e329ffe28618459d51473de804b1543a033ca7038fe531a820c2be54203`
 - `PHASE10.md`: `5100059a82f78bf77a51708fca43a127ddd5521e9d22d5b027ba23d9ccd0ee73`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`

@@ -1,0 +1,110 @@
+{
+  "private": [
+    {
+      "ticker": "ASML",
+      "hitTestTicker": "ASML",
+      "navigatedTo": "http://127.0.0.1:3417/stock/ASML",
+      "resolvedCorrectly": true
+    },
+    {
+      "ticker": "GOOG",
+      "hitTestTicker": "GOOG",
+      "navigatedTo": "http://127.0.0.1:3417/stock/GOOG",
+      "resolvedCorrectly": true
+    },
+    {
+      "ticker": "COST",
+      "hitTestTicker": "COST",
+      "navigatedTo": "http://127.0.0.1:3417/stock/COST",
+      "resolvedCorrectly": true
+    },
+    {
+      "ticker": "MSFT",
+      "hitTestTicker": "MSFT",
+      "navigatedTo": "http://127.0.0.1:3417/stock/MSFT",
+      "resolvedCorrectly": true
+    },
+    {
+      "ticker": "INTC",
+      "hitTestTicker": "INTC",
+      "navigatedTo": "http://127.0.0.1:3417/stock/INTC",
+      "resolvedCorrectly": true
+    },
+    {
+      "ticker": "IBM",
+      "hitTestTicker": "IBM",
+      "navigatedTo": "http://127.0.0.1:3417/stock/IBM",
+      "resolvedCorrectly": true
+    },
+    {
+      "ticker": "CBRS",
+      "hitTestTicker": "CBRS",
+      "navigatedTo": "http://127.0.0.1:3417/stock/CBRS",
+      "resolvedCorrectly": true
+    },
+    {
+      "ticker": "CRM",
+      "hitTestTicker": "CRM",
+      "navigatedTo": "http://127.0.0.1:3417/stock/CRM",
+      "resolvedCorrectly": true
+    }
+  ],
+  "public": [
+    {
+      "ticker": "ASML",
+      "hitTestTicker": "ASML",
+      "navigatedTo": "http://127.0.0.1:3417/share?holding=ASML&camera=approach",
+      "containsStockLink": false,
+      "resolvedToUnchangedDestination": true
+    },
+    {
+      "ticker": "GOOG",
+      "hitTestTicker": "GOOG",
+      "navigatedTo": "http://127.0.0.1:3417/share?holding=GOOG&camera=approach",
+      "containsStockLink": false,
+      "resolvedToUnchangedDestination": true
+    },
+    {
+      "ticker": "COST",
+      "hitTestTicker": "COST",
+      "navigatedTo": "http://127.0.0.1:3417/share?holding=COST&camera=approach",
+      "containsStockLink": false,
+      "resolvedToUnchangedDestination": true
+    },
+    {
+      "ticker": "MSFT",
+      "hitTestTicker": "MSFT",
+      "navigatedTo": "http://127.0.0.1:3417/share?holding=MSFT&camera=approach",
+      "containsStockLink": false,
+      "resolvedToUnchangedDestination": true
+    },
+    {
+      "ticker": "INTC",
+      "hitTestTicker": "INTC",
+      "navigatedTo": "http://127.0.0.1:3417/share?holding=INTC&camera=approach",
+      "containsStockLink": false,
+      "resolvedToUnchangedDestination": true
+    },
+    {
+      "ticker": "IBM",
+      "hitTestTicker": "IBM",
+      "navigatedTo": "http://127.0.0.1:3417/share?holding=IBM&camera=approach",
+      "containsStockLink": false,
+      "resolvedToUnchangedDestination": true
+    },
+    {
+      "ticker": "CBRS",
+      "hitTestTicker": "CBRS",
+      "navigatedTo": "http://127.0.0.1:3417/share?holding=CBRS&camera=approach",
+      "containsStockLink": false,
+      "resolvedToUnchangedDestination": true
+    },
+    {
+      "ticker": "CRM",
+      "hitTestTicker": "CRM",
+      "navigatedTo": "http://127.0.0.1:3417/share?holding=CRM&camera=approach",
+      "containsStockLink": false,
+      "resolvedToUnchangedDestination": true
+    }
+  ]
+}

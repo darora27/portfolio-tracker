@@ -154,6 +154,10 @@ export function SystemPlot({
           const selected = activeTicker === holding.ticker;
           const signal = radarRingColor(holding.dayReturn);
           const blipDiameter = radarBlipDiameterPx(holding.weight);
+          // ringSize grows monotonically with index, so every ring shares the same
+          // center point and nests inside every larger one; --radar-ring-z stacks
+          // smaller rings above larger ones so a click on a ring's own stroke hits
+          // that ring rather than whichever ring paints last in DOM order.
           return (
             <div key={holding.ticker}>
               <button
@@ -166,6 +170,7 @@ export function SystemPlot({
                   width: `${ringSize}%`,
                   height: `${ringSize}%`,
                   "--radar-signal": signal,
+                  "--radar-ring-z": holdings.length - index,
                 } as React.CSSProperties}
                 aria-label={`${holding.ticker} radar ring, ${(holding.weight * 100).toFixed(1)} percent weight`}
                 onClick={() => onSelectTicker(holding.ticker)}
