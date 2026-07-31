@@ -1312,7 +1312,12 @@ fake data.
 
 ---
 
-## §15. `/research` prioritization and filing context
+## §15-original. `/research` prioritization and filing context — CUT
+
+> **CUT by `UNIVERSE_AUDIT.md` §6**, adopted by Devan: *"§15 (`/research`) —
+> cut; NEWS + moons absorbed it; Reddit stays parked until the owner clarifies
+> which problem it solves (ledger D3)."* The §15 number now belongs to the
+> Mission Control content rework above. Retained below as history.
 
 ### Purpose
 
@@ -1349,7 +1354,13 @@ while preserving insider filings.
 
 ---
 
-## §16. `/history` event narrative
+## §16-original. `/history` event narrative — CUT
+
+> **CUT by `UNIVERSE_AUDIT.md` §6**, adopted by Devan: *"§16 (`/history`) —
+> cut; the aurora, RETURNS, and the Chart Room's DEPTH carry it."* Its three
+> charts are not lost — `CompositionOverTimeChart`, `DrawdownChart` and
+> `DailyReturnsChart` are scheduled into MIX and RISK by FB-35. Retained below
+> as history.
 
 ### Purpose
 
