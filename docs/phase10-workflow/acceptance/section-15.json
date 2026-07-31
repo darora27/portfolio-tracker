@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "phase": 10,
+  "section": "§15",
+  "spec_doc": "docs/phase10-workflow/specs/section-15.md",
+  "candidate_sha": null,
+  "criteria": [
+    {
+      "id": "BHV-01",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "STRIP gains a NEXT: <ticker> T-nD chip sourced from real upcomingEarnings data (absent when none scheduled); the EARNINGS nav link is removed from both strip-variant nav renders (spec section 4).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControl.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-strip-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "BHV-02",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "HOLDINGS shows all real holdings (not eight), with real WEIGHT/TODAY/WEEK/SINCE BUY/sparkline/T-nD values per spec section 6, a real movers line, and a real TOP-2/HHI-tier summary line; no fabricated or zero-standing-in figures.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-holdings-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "BHV-03",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "RETURNS offers a working per-benchmark toggle (VOO/VTI/XLK) with a real ExcessReturns-derived conclusion line, and a working BOOK VS MARKET / STOCK VS STOCK mode switch backed by real holdingsPerformance data (spec section 7).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-returns-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "BHV-04",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "MIX renders real composition-by-percentage, sector/AI classification, and composition-over-time data per spec section 8; each sub-part renders its own designed-empty state when its source is thin, never a fabricated shape.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-mix-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "BHV-05",
+      "dimension": "behavioral",
+      "risk": "high",
+      "description": "RISK retains its three real gauges, adds real drawdown and daily-return history charts and a real per-holding BY HOLDING disclosure, and every figure in the section has an attached, real MetricDisclosure-equivalent explanation (spec section 9).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-risk-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "BHV-06",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "ACTIVITY (renamed from TRADES) shows the real trade log with its impact column labeled EFFECT ON PORTFOLIO; OPEN TRADE DESK remains unchanged (spec section 10).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-activity-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "BHV-07",
+      "dimension": "behavioral",
+      "risk": "medium",
+      "description": "The CORRELATION and standalone EARNINGS sections are absent from the room; NEWS is a real three-headline footer line with working links; mission-control-panels.ts reflects the new section set and order per spec section 11.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx src/components/observatory/orrery/MissionControl.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-cuts-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "BHV-08",
+      "dimension": "behavioral",
+      "risk": "critical",
+      "description": "In private mode, all three doors (HOLDINGS row, ORBITS ring/blip, FULL ANALYSIS) navigate to /stock/<ticker> for the correct real ticker (spec section 2).",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/MissionControlRoomContent.test.tsx src/components/observatory/orrery/MissionControl.interaction.test.tsx src/components/observatory/orrery/PlanetDetail.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-doors-private-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "PRV-01",
+      "dimension": "privacy",
+      "risk": "critical",
+      "description": "In public/share mode, none of the three doors ever link to /stock/[ticker]; each retains its exact pre-existing public-mode destination (spec section 2); every reworked/new section's public-mode projection stays percentages-only with VALUE/realized/unrealized owner-only, matching the existing canary-test pattern extended to MIX/RISK/ACTIVITY.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/components/observatory/orrery/PlanetDetail.test.tsx src/app/\\(depth-pull\\)/page.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-privacy-regression-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "VIS-01",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "STRIP capture: NEXT chip present with real data, no EARNINGS nav link.",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "VIS-02",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "HOLDINGS capture: full holdings list, real chips/sparklines, movers line, TOP-2/HHI line.",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "VIS-03",
+      "dimension": "visual",
+      "risk": "high",
+      "description": "RETURNS capture: both the per-benchmark toggle states and both BOOK VS MARKET / STOCK VS STOCK mode states.",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "VIS-04",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "MIX capture: donut, classification bars, composition-over-time, real data.",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "VIS-05",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "RISK capture: gauges, two history charts, BY HOLDING disclosure open, at least one MetricDisclosure open.",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "VIS-06",
+      "dimension": "visual",
+      "risk": "low",
+      "description": "ACTIVITY capture: renamed title and column label.",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "VIS-07",
+      "dimension": "visual",
+      "risk": "medium",
+      "description": "Footer + cuts capture: three-headline NEWS line present in the footer; CORRELATION and EARNINGS sections verifiably absent (negative capture).",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/private-overview-1440x900.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "VIS-08",
+      "dimension": "visual",
+      "risk": "critical",
+      "description": "Private-mode capture/trace showing all three doors resolving to /stock/<ticker>, paired with a public-mode capture/trace showing all three doors at their unchanged pre-existing destinations (negative capture for the Chart Room link).",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/doors-private.json",
+        "docs/phase10-baseline/section-15/public-overview-1440x900.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "MOB-01",
+      "dimension": "mobile",
+      "risk": "high",
+      "description": "At 390px, the existing fallback carries MIX and ACTIVITY values-only, no horizontal overflow, every interactive control >=44x44 CSS px.",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/mobile-390.png"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "ACC-01",
+      "dimension": "accessibility",
+      "risk": "high",
+      "description": "RETURNS' toggles, the BY HOLDING disclosure, and the three doors are keyboard-operable with correct focus and aria-pressed/open state.",
+      "verifier": { "kind": "browser", "command": null },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-keyboard-operability.json"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "TST-01",
+      "dimension": "tests",
+      "risk": "high",
+      "description": "New/extended pure-function and data-plumbing coverage: DashboardData's three new fields (spec section 3), the extended MISSION_CONTROL_TEXT_ROLES map, and the corrected OrreryWorld.test.tsx door-destination assertions (spec section 2.3), each tested before/alongside implementation.",
+      "verifier": {
+        "kind": "command",
+        "command": "npm test -- --run src/lib/dashboard-data.source.test.ts src/lib/observatory/mission-control-layout.test.ts src/app/dev/phase10-portfolio-orrery/OrreryWorld.test.tsx"
+      },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-new-unit-tests.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "TST-02",
+      "dimension": "tests",
+      "risk": "critical",
+      "description": "Full suite green: npm test, no new failures, no reduction in test count beyond intentional skips.",
+      "verifier": { "kind": "command", "command": "npm test" },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-npm-test.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    },
+    {
+      "id": "BLD-01",
+      "dimension": "build",
+      "risk": "critical",
+      "description": "npm run build exits 0; route list unchanged (no new route).",
+      "verifier": { "kind": "command", "command": "npm run build" },
+      "required_artifacts": [
+        "docs/phase10-baseline/section-15/raw-npm-build.txt"
+      ],
+      "implementer": { "status": "not_run", "evidence": [], "notes": null },
+      "reviewer": { "status": "not_run", "evidence": [], "notes": null }
+    }
+  ]
+}

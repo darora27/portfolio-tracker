@@ -11,11 +11,11 @@ them.
 - Phase: 10
 - Current section: **§15 — Mission Control content rework**
 - Managed range: §2–§18
-- Stage: `specify`
-- Role: `claude_lead`
+- Stage: `implement`
+- Role: `codex_implementation`
 - Status: `ready`
-- Next actor: `claude`
-- Expected actor for this stage: `claude`
+- Next actor: `codex`
+- Expected actor for this stage: `codex`
 - Stop reason: none
 
 The current state is before the
@@ -34,7 +34,7 @@ Always read:
 
 Then read the current, specifically routed sources:
 
-None recorded.
+- `docs/phase10-workflow/specs/section-15.md`
 
 Historical sources are available on demand and are not recurring prompt
 payload:
@@ -48,7 +48,7 @@ payload:
 
 ## Current section conditions
 
-Roadmap title per the §13-acceptance split: 'Mission Control content rework', plus the Chart Room's stage two (the doors: a HOLDINGS row click, an ORBITS ring/blip click, FULL ANALYSIS ▸), which PHASE10.md's own text binds to this section. FIRST ACTION BEFORE ANYTHING ELSE: resolve PHASE10_STATE.json's top-level roadmap_numbering_conflict key -- PHASE10.md currently has two '## §15.' headings (the pre-existing /research section and the new Mission Control-rework section created by owner commit f392a049). That key's own must_resolve_before field names this exact turn. Authority once resolved: MISSION_CONTROL_ARCHITECTURE.md §4-§6 for the content rework; §14's stage-two doors per PHASE10.md and the §14 design proof's freeze-boundary note. main is GREEN at this section start: npm test 118/118 files, 631/632 tests (1 intentional skip), npm run build exit 0, both independently re-run by the §14 accept turn at HEAD 739049d. OWNER_FEEDBACK_LEDGER.md board-debt: FB-27, FB-28, FB-29, FB-30, FB-32, FB-33, FB-35 (7 rows) are already scheduled here per §14's own spec-time board (docs/phase10-workflow/specs/section-14.md §0); combined with whatever remains open elsewhere this is far past the 5-row landing-section threshold, so this section is a landing section by the ledger's own rule 2 unless the owner overrides in writing -- re-count the live board before scoping, do not assume the §14-spec-time count is still exact. BLOCKED 2026-07-30: the roadmap_numbering_conflict this note flags is unresolved and routed to Devan -- see docs/phase10-handoffs/2026-07-30-section-15-claude-lead-specify-to-devan-blocked.md and production_code_note_14. No design proof, spec, or acceptance ledger exists yet for the real §15. Roadmap defect from f392a04 repaired 2026-07-30: renaming the Mission Control rework to §15 collided with the pre-existing §15 (/research). No renumbering was needed - /research and /history were already CUT by UNIVERSE_AUDIT.md §6, adopted by the owner, so both are now marked §15-original and §16-original CUT, matching the §13-original and §14-original pattern. The terminal stays §18.
+Roadmap title per the §13-acceptance split: 'Mission Control content rework', plus the Chart Room's stage two (the doors: a HOLDINGS row click, an ORBITS ring/blip click, FULL ANALYSIS ▸), which PHASE10.md's own text binds to this section. Authority: MISSION_CONTROL_ARCHITECTURE.md (owner-adopted whole, FB-34) for the content rework; §14's stage-two doors per PHASE10.md and the §14 design proof's freeze-boundary note. This is a landing section by the ledger's own rule 2 (18 open/designed rows counted at spec time, unchanged from §14's own count; this section closes eight of them by construction: FB-13 stage two, FB-27, FB-28, FB-29, FB-30, FB-32, FB-33, FB-35, plus executes FB-11's already-recorded retirement) -- PHASE10.md §15's own roadmap text and MISSION_CONTROL_ARCHITECTURE.md §10 are the authority for this scope; no further owner override needed because this section is itself the landing turn rule 2 requires. main was GREEN at this section's spec-time confirmation: npm test 118/118 files, 631/632 tests (1 intentional skip), npm run build exit 0, both independently re-run by the §14 accept turn at HEAD 739049d; not re-run this turn since no application source changed. Design proof: docs/phase10-workflow/design-proofs/section-15.md (existing-package-equivalent, citing MISSION_CONTROL_ARCHITECTURE.md). Spec and acceptance ledger written this turn -- see production_code_note_15. Highest-risk decision for the implementer: the three Chart Room doors (HOLDINGS row, ORBITS ring/blip, FULL ANALYSIS ▸) resolve to /stock/<ticker> in private mode ONLY; /stock/[ticker] is owner-gated and its own page.tsx header comment states it is 'never part of the public /share surface' -- public-mode doors must keep their exact pre-existing destinations unchanged (spec section 2). The ACTIVITY keep/cut verdict (architecture §9.2) is not due yet and is not a blocker.
 
 Open bounded findings:
 
@@ -56,7 +56,7 @@ None.
 
 Acceptance ledger:
 
-- Created by the lead with the section specification.
+- `docs/phase10-workflow/acceptance/section-15.json`
 
 ## Global gates
 
@@ -97,7 +97,7 @@ Two independent full gates remain mandatory: the implementation actor verifies t
 These hashes make stale generated context mechanically detectable:
 
 - `docs/phase10-workflow/workflow.json`: `d4d3d79d4cce68fee497e08cff2d9fdad3195046198d29afe20ad23e40d50050`
-- `PHASE10_STATE.json`: `5fae12a14421e985724dcf9822e37e4556e2d4a2359654be61752ed133dd9150`
+- `PHASE10_STATE.json`: `259f6bc6b91b5e30fea811c9dda854dd1278b1b14c3205645be6df0778418705`
 - `PHASE10.md`: `5100059a82f78bf77a51708fca43a127ddd5521e9d22d5b027ba23d9ccd0ee73`
 - `docs/phase10-workflow/README.md`: `e433e1d9ce499eff3e2dcd6b1e9614ab04c0ddf8dc260a60a5566f4359a8c85d`
 - `docs/PHASE10_AGENT_WORKFLOW.md`: `e9edfff440ec614bd1da26cc9e358987e6a4cd9953559e7391551c2f7a1a4804`
