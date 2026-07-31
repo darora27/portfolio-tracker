@@ -12,6 +12,14 @@ assembled from the architecture document and re-derives nothing from it.
 
 ---
 
+
+## 0.2 Ledger board addendum — FB-36, 2026-07-31
+
+| Row | Disposition |
+|---|---|
+| **FB-36** — the app takes a while to load; 26 MB of planet textures | **DEFERRED from §15 — DJA.** Not a Mission Control content item, and §15 is mid-flight. It is a loading-strategy change scheduled to §16, and the progressive path is already half-built: `public/textures/planets/thumbs/` holds 32px versions that nothing in `src/` references. |
+
+
 ## 0. The ledger board
 
 Per `OWNER_FEEDBACK_LEDGER.md` rule 2: every open/designed row is marked
