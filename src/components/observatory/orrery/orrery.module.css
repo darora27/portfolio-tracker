@@ -4231,23 +4231,43 @@
 /* The plot letterboxed itself: a fixed 170px height against a 640-wide
    viewBox left empty margins either side of a small chart. Holding the
    aspect ratio instead lets it fill whatever width the room gives it. */
+/* Taller viewBox: rotated date labels need room below the plot, and the
+   extra height is also what stops the series from looking cramped. */
 .multiReturnPlot .returnPlot {
   height: auto;
-  aspect-ratio: 640 / 174;
-  min-height: 300px;
+  aspect-ratio: 640 / 210;
+  min-height: 340px;
 }
 
 /* R7 feedback, Jul 31: a pie, not a row of bars. */
+/* R7 Jul 31 (M1): "a much larger donut that has lines pointing to each
+   section… There shound not have to be a key." His own spreadsheet pie is
+   the reference — labels outside, leader lines in, no legend. */
 .compositionPie {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 1.4rem;
-  align-items: center;
+  display: block;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .compositionPie svg {
   width: 100%;
   height: auto;
+}
+
+.pieLeader {
+  fill: none;
+  stroke: rgba(244, 240, 223, 0.45);
+  stroke-width: 1;
+}
+
+.pieLabelTicker {
+  fill: var(--universe-cabinet-cream);
+  font: 600 var(--type-body) var(--font-mono, monospace);
+}
+
+.pieLabelPercent {
+  fill: var(--universe-cabinet-window-word);
+  font: 500 var(--type-label) var(--font-mono, monospace);
 }
 
 .pieCount {

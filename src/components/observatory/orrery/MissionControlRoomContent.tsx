@@ -5,7 +5,6 @@ import { useState, type CSSProperties } from "react";
 import type { DashboardData } from "@/lib/dashboard-data";
 import type { BenchmarkTicker } from "@/lib/portfolio/benchmark-comparison";
 import type { DailyDirection } from "@/lib/portfolio/holdings";
-import { daysBetween, todayInTimeZone } from "@/lib/date";
 import { formatCurrency, formatSignedCurrency } from "@/lib/format";
 import { concentrationStatus } from "@/lib/portfolio/concentration-status";
 import {
@@ -14,7 +13,6 @@ import {
   maxDrawdownExplanation,
   volatilityExplanation,
 } from "@/lib/observatory/metric-explanations";
-import { sparklineGeometry } from "@/lib/sparkline";
 import { LazyMissionSection } from "./LazyMissionSection";
 import { MultiReturnPlot, type ReturnSeries } from "./ReturnInstrument";
 import { identityColor } from "@/lib/observatory/identity-palette";
@@ -91,20 +89,6 @@ function plainPercent(value: number | null | undefined, digits = 1): string {
   return `${Math.abs(value * 100).toFixed(digits)}%`;
 }
 
-/** §15 §6: per-row earnings chip, same daysBetween pattern the room's own
- * (now-removed) EARNINGS section used — derived fresh per ticker, not
- * reused from the 7-day-capped orrery field. Absent when none scheduled. */
-function earningsChipFor(
-  ticker: string,
-  upcomingEarnings: DashboardData["upcomingEarnings"],
-  today: string,
-): string | null {
-  const next = upcomingEarnings
-    .filter((event) => event.ticker === ticker)
-    .sort((left, right) => left.date.localeCompare(right.date))[0];
-  return next ? `T−${Math.max(0, daysBetween(today, next.date))}D` : null;
-}
-
 /**
  * R7 feedback, Jul 31: "I want a pie chart rather than mix."
  *
@@ -124,65 +108,109 @@ function CompositionPie({
 }) {
   const total = slices.reduce((sum, slice) => sum + slice.weight, 0);
   if (total <= 0) return null;
-  const RADIUS = 82;
-  const INNER = 48;
-  const START = -Math.PI / 2; // twelve o'clock
 
-  const point = (radius: number, at: number) =>
-    `${(100 + Math.cos(at) * radius).toFixed(2)} ${(100 + Math.sin(at) * radius).toFixed(2)}`;
+  const CX = 300;
+  const CY = 215;
+  const R = 150;
+  const START = -Math.PI / 2;
+  const LABEL_X_LEFT = 20;
+  const LABEL_X_RIGHT = 580;
+  const ROW = 26;
 
-  // Each slice's start is the sum of the weights before it. Derived rather
-  // than accumulated in a mutable variable, so the arcs depend only on the
-  // input and a re-render cannot start from a stale angle.
-  const arcs = slices.map((slice, index) => {
+  const point = (radius: number, at: number) => ({
+    x: CX + Math.cos(at) * radius,
+    y: CY + Math.sin(at) * radius,
+  });
+
+  const wedges = slices.map((slice, index) => {
     const before = slices
       .slice(0, index)
       .reduce((sum, earlier) => sum + earlier.weight, 0);
     const from = START + (before / total) * Math.PI * 2;
     const sweep = (slice.weight / total) * Math.PI * 2;
     const to = from + sweep;
+    const mid = from + sweep / 2;
+    const outer = point(R, from);
+    const outerEnd = point(R, to);
     const large = sweep > Math.PI ? 1 : 0;
     return {
       ticker: slice.ticker,
       weight: slice.weight,
+      mid,
+      // Right half of the circle sends its label right, left half left.
+      side: Math.cos(mid) >= 0 ? ("right" as const) : ("left" as const),
+      anchor: point(R + 12, mid),
       d: [
-        `M${point(RADIUS, from)}`,
-        `A${RADIUS} ${RADIUS} 0 ${large} 1 ${point(RADIUS, to)}`,
-        `L${point(INNER, to)}`,
-        `A${INNER} ${INNER} 0 ${large} 0 ${point(INNER, from)}`,
+        `M${CX} ${CY}`,
+        `L${outer.x.toFixed(2)} ${outer.y.toFixed(2)}`,
+        `A${R} ${R} 0 ${large} 1 ${outerEnd.x.toFixed(2)} ${outerEnd.y.toFixed(2)}`,
         "Z",
       ].join(" "),
     };
   });
 
+  /* Labels are stacked down each side in the order their wedges appear, then
+   * pushed apart so none overlap — the leader line keeps each attached to its
+   * own wedge, which is what lets the key go away. */
+  const place = (side: "left" | "right") => {
+    const rows = wedges.filter((wedge) => wedge.side === side);
+    const sorted = [...rows].sort((a, b) => a.anchor.y - b.anchor.y);
+    return sorted.map((wedge, index) => {
+      const ideal = wedge.anchor.y;
+      const floor = 24 + index * ROW;
+      return { wedge, y: Math.max(ideal, floor) };
+    });
+  };
+
+  const labels = [...place("left"), ...place("right")];
+
   return (
     <div className={styles.compositionPie}>
-      <svg viewBox="0 0 200 200" role="img" aria-label="Holdings by percentage of the book">
-        {arcs.map((arc) => (
+      <svg
+        viewBox="0 0 600 430"
+        role="img"
+        aria-label={`Portfolio allocation by stock: ${slices
+          .map((slice) => `${slice.ticker} ${(slice.weight * 100).toFixed(1)} percent`)
+          .join(", ")}`}
+      >
+        {wedges.map((wedge) => (
           <path
-            key={arc.ticker}
-            d={arc.d}
-            fill={identityColor(arc.ticker)}
+            key={wedge.ticker}
+            d={wedge.d}
+            fill={identityColor(wedge.ticker)}
             stroke="#050B0A"
             strokeWidth={1.5}
           />
         ))}
-        <text x="100" y="96" textAnchor="middle" className={styles.pieCount}>
-          {slices.length}
-        </text>
-        <text x="100" y="112" textAnchor="middle" className={styles.pieCountLabel}>
-          POSITIONS
-        </text>
+        {labels.map(({ wedge, y }) => {
+          const elbowX = wedge.side === "right" ? LABEL_X_RIGHT - 46 : LABEL_X_LEFT + 46;
+          const textX = wedge.side === "right" ? LABEL_X_RIGHT : LABEL_X_LEFT;
+          return (
+            <g key={`label-${wedge.ticker}`}>
+              <polyline
+                className={styles.pieLeader}
+                points={`${wedge.anchor.x.toFixed(1)},${wedge.anchor.y.toFixed(1)} ${elbowX},${y} ${textX + (wedge.side === "right" ? -4 : 4)},${y}`}
+              />
+              <text
+                x={textX}
+                y={y - 3}
+                textAnchor={wedge.side === "right" ? "end" : "start"}
+                className={styles.pieLabelTicker}
+              >
+                {wedge.ticker}
+              </text>
+              <text
+                x={textX}
+                y={y + 11}
+                textAnchor={wedge.side === "right" ? "end" : "start"}
+                className={styles.pieLabelPercent}
+              >
+                {plainPercent(wedge.weight)}
+              </text>
+            </g>
+          );
+        })}
       </svg>
-      <ul className={styles.pieLegend}>
-        {arcs.map((arc) => (
-          <li key={arc.ticker}>
-            <i style={{ background: identityColor(arc.ticker) }} aria-hidden="true" />
-            <span>{arc.ticker}</span>
-            <b>{plainPercent(arc.weight)}</b>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
@@ -286,25 +314,6 @@ function DailyReturnBars({ points }: { points: readonly { date: string; return: 
   );
 }
 
-function Trend({
-  points,
-  width = 64,
-  height = 20,
-}: {
-  points: number[];
-  width?: number;
-  height?: number;
-}) {
-  if (points.length < 2) return null;
-  const { coords } = sparklineGeometry(points, width, height);
-  const signal = points.at(-1)! >= points[0] ? "positive" : "negative";
-  return (
-    <svg width={width} height={height} aria-hidden="true" data-signal={signal} className={styles.roomSpark}>
-      <polyline points={coords} fill="none" stroke="currentColor" strokeWidth={1.5} />
-    </svg>
-  );
-}
-
 export function MissionControlRoomContent({
   data,
   basePath,
@@ -314,7 +323,6 @@ export function MissionControlRoomContent({
   basePath: string;
   mode: "public" | "private";
 }) {
-  const today = todayInTimeZone("America/New_York");
   const publicOrreryByTicker = new Map(data.publicOrreryHoldings.map((h) => [h.ticker, h]));
   const [returnsMode, setReturnsMode] = useState<"book" | "stock">("book");
 
@@ -375,11 +383,6 @@ export function MissionControlRoomContent({
     ? data.movers.reduce((a, b) => (b.dayPct < a.dayPct ? b : a))
     : null;
 
-  const compositionTickers = [
-    ...data.compositionHistory.tickers,
-    ...(data.compositionHistory.hasOther ? ["Other"] : []),
-  ];
-
   return (
     <>
       <LazyMissionSection id="holdings" title="HOLDINGS" minHeight={420}>
@@ -406,7 +409,10 @@ export function MissionControlRoomContent({
                 <th>{dailyColumnLabel}</th>
                 <th>WEEK</th>
                 <th>SINCE BUY</th>
-                <th>EARNINGS</th>
+                {/* R7 Jul 31 (H1): the earnings chip gave up this column to
+                    the number he actually reads down. Earnings move to their
+                    own two-month forecast — see H2. */}
+                {mode === "private" ? <th>GAIN / LOSS</th> : null}
                 {mode === "private" ? <th>DAY $</th> : null}
                 {mode === "private" ? <th>VALUE</th> : null}
               </tr>
@@ -414,7 +420,6 @@ export function MissionControlRoomContent({
             <tbody>
               {data.positionRows.map((row) => {
                 const orrery = publicOrreryByTicker.get(row.ticker);
-                const chip = earningsChipFor(row.ticker, data.upcomingEarnings, today);
                 const href = mode === "private"
                   ? `/stock/${encodeURIComponent(row.ticker)}`
                   : `${basePath}?holding=${encodeURIComponent(row.ticker)}&camera=approach`;
@@ -433,7 +438,11 @@ export function MissionControlRoomContent({
                     <td data-signal={signOf(row.gainPct)}>
                       {signedPercent(row.gainPct)} (SIMPLE)
                     </td>
-                    <td>{chip ?? ""}</td>
+                    {mode === "private" ? (
+                      <td data-signal={signOf(row.gain)}>
+                        {row.gain === null ? "—" : formatSignedCurrency(row.gain)}
+                      </td>
+                    ) : null}
                     {mode === "private" ? (
                       <td data-signal={signOf(row.day)}>
                         {row.day === null ? "—" : formatSignedCurrency(row.day)}
@@ -543,30 +552,6 @@ export function MissionControlRoomContent({
               <p className={styles.mixEmpty}>NO CLASSIFICATION DATA</p>
             )}
           </div>
-        </div>
-        <div>
-          <h4>SHARE OF THE BOOK · OVER TIME</h4>
-          <p className={styles.sectionHint}>
-            how much of the portfolio each holding has been, week by week
-          </p>
-          {data.compositionHistory.points.length >= 2 ? (
-            <div className={styles.compositionHistoryList}>
-              {compositionTickers.map((ticker) => {
-                const series = data.compositionHistory.points.map(
-                  (point) => (typeof point[ticker] === "number" ? (point[ticker] as number) : 0),
-                );
-                return (
-                  <div key={ticker} className={styles.compositionHistoryRow}>
-                    <span>{ticker}</span>
-                    <Trend points={series} width={96} height={24} />
-                    <b>{series.at(-1)?.toFixed(1) ?? "0.0"}%</b>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <p className={styles.mixEmpty}>NOT ENOUGH HISTORY YET</p>
-          )}
         </div>
       </LazyMissionSection>
 

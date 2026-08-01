@@ -145,18 +145,43 @@ export function MultiReturnPlot({
     [series, hidden],
   );
 
+  /**
+   * R7 Jul 31 (R1/R2). The axis reads in percent growth, not an index out of
+   * 100, and it is given room.
+   *
+   * His own spreadsheet is the spec: a series spanning about −8% to +7% is
+   * plotted on an axis running −15% to +10%. Ours fitted the data tightly
+   * with 8% padding, which is what "all the data is cramped" describes — a
+   * chart where every wiggle touches an edge reads as noise rather than
+   * shape. Padding is now 35% of the span with a ±2% floor, and the bounds
+   * round outward to whole percents so the gridlines land on readable
+   * numbers instead of arbitrary ones.
+   */
   const { min, max } = useMemo(() => {
     const values = visible
       .flatMap((item) => item.values)
       .filter((value): value is number => typeof value === "number");
-    // 100 is always in frame: every series is indexed to it, so a plot that
-    // cropped it would hide whether a line is above or below its own start.
+    // 100 — zero growth — is always in frame: every series is indexed to it,
+    // so a plot that cropped it would hide whether a line is up or down.
     const all = [...values, 100];
     const low = Math.min(...all);
     const high = Math.max(...all);
-    const pad = Math.max(1, (high - low) * 0.08);
-    return { min: low - pad, max: high + pad };
+    const span = Math.max(high - low, 2);
+    const pad = Math.max(2, span * 0.35);
+    // Round outward to whole percentage points.
+    return {
+      min: Math.floor(low - pad),
+      max: Math.ceil(high + pad),
+    };
   }, [visible]);
+
+  /** Index value -> growth percent, which is what the axis actually shows. */
+  const asPercent = (index: number) => index - 100;
+  const formatPercent = (index: number, digits = 0) => {
+    const percent = asPercent(index);
+    const sign = percent > 0 ? "+" : percent < 0 ? "−" : "";
+    return `${sign}${Math.abs(percent).toFixed(digits)}%`;
+  };
 
   const xFor = (index: number) =>
     PLOT.left +
@@ -197,10 +222,19 @@ export function MultiReturnPlot({
   };
 
   const baselineY = yFor(100);
+  /* R7 Jul 31 (R3): "more dates at the bottom". His spreadsheet labels every
+   * date; at this width that would collide, so the axis takes as many evenly
+   * spaced labels as fit at ~62px apart, always including both ends. */
+  const tickCount = Math.max(
+    2,
+    Math.min(9, Math.floor((PLOT.right - PLOT.left) / 62), dates.length),
+  );
   const tickIndexes =
-    dates.length >= 3
-      ? [0, Math.floor((dates.length - 1) / 2), dates.length - 1]
-      : dates.map((_, index) => index);
+    dates.length <= tickCount
+      ? dates.map((_, index) => index)
+      : Array.from({ length: tickCount }, (_, step) =>
+          Math.round((step / (tickCount - 1)) * (dates.length - 1)),
+        );
 
   const readout =
     hoverIndex === null
@@ -249,26 +283,28 @@ export function MultiReturnPlot({
       </div>
       <svg
         className={styles.returnPlot}
-        viewBox="0 0 640 174"
+        viewBox="0 0 640 210"
         role="img"
         aria-label={ariaLabel}
         onMouseMove={onMove}
         onMouseLeave={() => setHoverIndex(null)}
       >
-        {[min, (min + max) / 2, max].map((value) => (
-          <g key={value}>
-            <line
-              className={styles.returnHairline}
-              x1={PLOT.left}
-              x2={PLOT.right}
-              y1={yFor(value)}
-              y2={yFor(value)}
-            />
-            <text x="2" y={yFor(value) + 3}>
-              {value.toFixed(0)}
-            </text>
-          </g>
-        ))}
+        {Array.from({ length: 5 }, (_, step) => min + ((max - min) * step) / 4).map(
+          (value) => (
+            <g key={value}>
+              <line
+                className={styles.returnHairline}
+                x1={PLOT.left}
+                x2={PLOT.right}
+                y1={yFor(value)}
+                y2={yFor(value)}
+              />
+              <text x="2" y={yFor(value) + 3}>
+                {formatPercent(value)}
+              </text>
+            </g>
+          ),
+        )}
         <line
           className={styles.returnBaseline}
           x1={PLOT.left}
@@ -282,9 +318,8 @@ export function MultiReturnPlot({
             className={styles.returnDateTick}
             x={xFor(index)}
             y={PLOT.bottom + 18}
-            textAnchor={
-              index === 0 ? "start" : index === dates.length - 1 ? "end" : "middle"
-            }
+            textAnchor="end"
+            transform={`rotate(-45 ${xFor(index)} ${PLOT.bottom + 18})`}
           >
             {compactDate(dates[index] ?? "")}
           </text>
@@ -335,7 +370,7 @@ export function MultiReturnPlot({
                     {item.label}
                   </text>
                   <text x="122" y="0" textAnchor="end">
-                    {value.toFixed(2)}
+                    {formatPercent(value, 1)}
                   </text>
                 </g>
               ))}

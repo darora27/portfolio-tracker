@@ -57,7 +57,7 @@ describe("Portfolio Orrery encodings", () => {
     // Devan asked for motion that reads the daily trend and "can move very
     // very slow". The old ceiling was 0.055 rad/s — 189 deg/min, a full orbit
     // in under two minutes, which is animation rather than a reading.
-    expect(orbitalDriftDegreesPerMinute(0.01)).toBeCloseTo(2.4, 10);
+    expect(orbitalDriftDegreesPerMinute(0.01)).toBeCloseTo(24, 10);
     expect(orbitalDriftDegreesPerMinute(0.001)).toBe(ORRERY_DRIFT_MIN_DEG_PER_MIN);
     expect(orbitalDriftDegreesPerMinute(0.05)).toBe(ORRERY_DRIFT_MAX_DEG_PER_MIN);
     expect(orbitalDriftDegreesPerMinute(-0.05)).toBe(ORRERY_DRIFT_MAX_DEG_PER_MIN);
@@ -66,8 +66,12 @@ describe("Portfolio Orrery encodings", () => {
     // what "the planets just don't orbit" looked like when W1's defect made
     // every holding flat at once. The behaviour is right; the input was wrong.
     expect(orbitalDriftDegreesPerMinute(0.0001)).toBe(0);
-    // Even the fastest holding takes an hour to come round.
-    expect(ORRERY_DRIFT_MAX_DEG_PER_MIN * 60).toBeLessThanOrEqual(360);
+    // Jul 31: "either the planets are moving too slow or they are not moving
+    // at all". Motion has to be legible in the seconds someone actually looks,
+    // so the ceiling must clear roughly a degree per second.
+    expect(ORRERY_DRIFT_MAX_DEG_PER_MIN / 60).toBeGreaterThanOrEqual(0.9);
+    // ...and the floor must still move perceptibly over a minute.
+    expect(ORRERY_DRIFT_MIN_DEG_PER_MIN).toBeGreaterThanOrEqual(5);
   });
 
   it("computes the trailing seven-calendar-day holding return", () => {

@@ -73,22 +73,33 @@ export function directionForReturn(
 }
 
 /**
- * R7-W4(b). Orbital drift, in degrees per minute.
+ * Orbital drift, in degrees per minute.
  *
- * Devan asked for the motion to read the daily trend and to "move very very
- * slow". The previous ceiling was 0.055 rad/s — about 189°/min, a planet
- * crossing its whole orbit in under two minutes, which is animation rather
- * than a reading. The band is now 0.6°/min to 6°/min: the fastest holding
- * takes an hour to cover a quarter of its orbit, so position is something
- * you notice between visits rather than something that moves while you look.
+ * TWO CORRECTIONS, IN ORDER, BOTH FROM HIM.
  *
- * A holding moving 1% drifts at 2.4°/min; the clamps bite below 0.25% and
- * above 2.5%, keeping a quiet day visible and a violent one from dominating.
+ * The original ceiling was 0.055 rad/s — about 189°/min, a full orbit in
+ * under two minutes. W4(b) cut that to 0.6–6°/min on Fable's spec, reading
+ * his "they can move very very slow" literally.
+ *
+ * Seeing it, he said: *"Either the planets are moving too slow or they are
+ * not moving at all. I want them to have some movement."* Both readings of
+ * that sentence point the same way — at 6°/min a planet moves a tenth of a
+ * degree per second, which is genuinely indistinguishable from stopped over
+ * the seconds someone actually looks at it. "Slow" meant unhurried, not
+ * imperceptible.
+ *
+ * The band is now 6–60°/min. At the top a planet crosses its orbit in six
+ * minutes and moves a visible degree per second; at the bottom it still
+ * takes an hour. Motion is legible within a few seconds of looking, which is
+ * the only test that matters here.
+ *
+ * A holding moving 1% drifts at 24°/min; the clamps bite below 0.25% and
+ * above 2.5%, so a quiet day still moves and a violent one does not spin.
  */
 const DEG_PER_MIN_TO_RAD_PER_SEC = Math.PI / 180 / 60;
-export const ORRERY_DRIFT_MIN_DEG_PER_MIN = 0.6;
-export const ORRERY_DRIFT_MAX_DEG_PER_MIN = 6;
-const DRIFT_DEG_PER_MIN_PER_PERCENT = 2.4;
+export const ORRERY_DRIFT_MIN_DEG_PER_MIN = 6;
+export const ORRERY_DRIFT_MAX_DEG_PER_MIN = 60;
+const DRIFT_DEG_PER_MIN_PER_PERCENT = 24;
 
 export const ORRERY_MIN_ANGULAR_SPEED =
   ORRERY_DRIFT_MIN_DEG_PER_MIN * DEG_PER_MIN_TO_RAD_PER_SEC;

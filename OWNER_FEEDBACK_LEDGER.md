@@ -115,6 +115,52 @@ check covered the thirteen holdings but not the book's own colour, which is
 not a holding and so was never in the checked set. The book now takes the
 room's cream.
 
+## 1e. INTAKE — July 31, 2026 (late), with his original spreadsheet attached
+
+He sent `Devan's Investments (5).pdf` — the Google Sheet this project replaced —
+and said: *"As you can see I display the information in a clear way that makes
+it easy for a viewer to know exactly what I am trying to convey in all of my
+data and graphs I want you to do that the same for all the content."*
+
+**That PDF is now a reference, not just feedback.** Committed under
+`docs/owner-feedback-2026-07-31/`. What his own charts do, which ours did not:
+
+- **Y-axis in percent**, not an index out of 100. `10.00% / 5.00% / 0.00% /
+  −5.00% / −10.00%`, with a bold zero line.
+- **A generous y-range.** His portfolio series spans about −8% to +7% and the
+  axis runs −15% to +10%. Ours fits the data tightly, which is what "all the
+  data is cramped" means.
+- **Every date on the x-axis**, rotated 45°.
+- **Named axes** — "Cumulative Growth (%)", "Date".
+- **A pie with leader lines** to labels outside the circle, each carrying
+  ticker and percentage. No legend.
+- **A heat-mapped growth column** — green and red intensity scaled to size.
+
+| # | His words | Where |
+|---|---|---|
+| H1 | *"Instead of the earnings column though i would rather that column be filled with total gains/losses for each stock"* | **new · HOLDINGS** |
+| H2 | *"Rather then having earnings there I would want them somewhere else and I really only want a earnings forecast for the upcoming two months… it is july now so i would want to see the earnings for july and august"* | **new · rolling two-month window** |
+| R1 | *"it needs to be a percentage rather than a number out of 100. A percentage is just easier to read"* | **new · RETURNS** |
+| R2 | *"the graphs need to have a much wider y axis because all the data is cramped"* | **new · RETURNS** |
+| R3 | *"And have more dates at the bottom"* | **new · RETURNS** |
+| M1 | *"Mix needs to be a much larger donut that has lines pointing to each section with labels of the stock and percentage. There shound not have to be a key. Think of a standard pie graph."* | **new · MIX.** His own pie is the spec. |
+| M2 | *"Share of Book is honestly useless data that I do not understand"* | **cut.** Renamed once already this evening and still not earning its place. |
+| K1 | *"The graph showing the drawdown needs to be more. I also dont understand what the drawdown completely means"* | **new · RISK.** Two things: bigger, and explained in plain words. |
+| K2 | *"The Daily Returns needs to be much larger and have dates… I should be able to click on the bar for a labeled day and see the date and percentage"* | **new · RISK** |
+| S1 | *"The activity section takes up too much space and has useless information"* | **new** |
+| S2 | *"i do not know what effect on porfolio actually means"* | **new.** The column was RENAMED to this in §15 to replace "BOOK", and the new name is no clearer. Second failed attempt at the same label. |
+| S3 | *"If news is incorporated for each stock individually then there does not need to be a seperate news section"* | **reverses FB-42**, his own Jul 31 morning ask for a bigger news section. Later instruction wins; FB-42 is superseded, not forgotten. |
+| U1 | *"Either the planets are moving too slow or they are not moving at all. I want them to have some movement"* | **REGRESSION, and mine.** W4(b) set drift to 0.6–6°/min on Fable's spec. That is the correct reading of "very very slow" and the wrong answer for him. Raise it until motion is visible in a few seconds. |
+| U2 | *"The logo on the sun Portfolio Today and the percentage up does not need to be there"* | **new** |
+| U3 | *"ASML needs to be spaced out more from the sun"* | **new · FB-01 adjacent** |
+| U4 | *"All planet labels need to be closer to the planets… NBIS shows the right distance but costo is way too far"* | **new** |
+| U5 | *"Instead of having different hues of the trails mean something, I would rather the color red or green be the same for all planets… The larger the trail and speed of the planet is indication for how much a stock is up or down for the day"* | **MAJOR — supersedes FB-03.** Hue-as-magnitude is replaced by two channels: colour = sign only (one green, one red), LENGTH and SPEED = magnitude. He confirmed the 18–30° band on Jul 29; this replaces that decision by his own later instruction. **Do not begin until the encoding change is written down and the Fraunhofer implications are stated.** |
+
+**Standing instruction from this round, applying to everything:** match the
+clarity of his spreadsheet. Named axes, real units, percent where a percent is
+meant, labels attached to what they label, and no chart that needs a key to be
+read.
+
 ## 2. The board
 
 | ID | Item (his words, abbreviated) | Reports | Status | Design | Scheduled | Closes when |
