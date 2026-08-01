@@ -307,26 +307,43 @@ describe("MissionControlRoomContent — RISK (BHV-05)", () => {
 });
 
 describe("MissionControlRoomContent — ACTIVITY (BHV-06)", () => {
-  it("renames TRADES to ACTIVITY and BOOK IMPACT to EFFECT ON PORTFOLIO", () => {
+  /* R7 Jul 31: "i do not know what effect on porfolio actually means" — and
+   * it did not mean what it said. The figure is trade total ÷ portfolio cost
+   * basis: how BIG the trade was relative to the book, not what it did to
+   * performance. This is the column's THIRD name (BOOK IMPACT → EFFECT ON
+   * PORTFOLIO → % OF BOOK) and the first one describing the arithmetic. */
+  it("renames TRADES to ACTIVITY and names the impact column for what it measures", () => {
     const html = renderToStaticMarkup(
       <MissionControlRoomContent data={baseData} basePath="/" mode="private" />,
     );
     expect(html).toContain("ACTIVITY");
     expect(html).not.toContain("TRADES</h3>");
-    expect(html).toContain("EFFECT ON PORTFOLIO");
+    expect(html).toContain("OF BOOK");
     expect(html).not.toContain("BOOK IMPACT");
+    expect(html).not.toContain("EFFECT ON PORTFOLIO");
     expect(html).toContain("OPEN TRADE DESK");
   });
 });
 
 describe("MissionControlRoomContent — cuts (BHV-07)", () => {
-  it("never renders a CORRELATION or standalone EARNINGS section", () => {
+  /* EARNINGS IS BACK, BY HIS OWN LATER INSTRUCTION.
+   *
+   * §15 cut the standalone section and put earnings on holdings rows as T−nD
+   * chips; he confirmed that on July 30. On July 31 he replaced it: "Rather
+   * then having earnings there I would want them somewhere else and I really
+   * only want a earnings forecast for the upcoming two months."
+   *
+   * So the chips left the table and the section returned — not a regression
+   * and not a forgotten decision, but a superseded one. CORRELATION and the
+   * standalone NEWS section stay cut, so those assertions stand. */
+  it("keeps CORRELATION cut, and renders EARNINGS as the two-month forecast he asked for", () => {
     const html = renderToStaticMarkup(
       <MissionControlRoomContent data={baseData} basePath="/share" mode="public" />,
     );
     expect(html).not.toContain("CORRELATION");
-    expect(html).not.toContain('id="earnings"');
     expect(html).not.toContain('id="correlation"');
     expect(html).not.toContain('id="news"');
+    expect(html).toContain('id="earnings"');
+    expect(html).toContain("NEXT TWO MONTHS");
   });
 });

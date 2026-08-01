@@ -91,10 +91,12 @@ describe("MissionControlRoomContent", () => {
     for (const name of ["HOLDINGS", "RETURNS", "MIX", "RISK", "ACTIVITY"]) {
       expect(html).toContain(name);
     }
-    // §15 §11: CORRELATION and standalone EARNINGS are cut; NEWS is footer
-    // content in MissionControl.tsx now, not rendered by this component.
+    // §15 §11 cut CORRELATION and the standalone EARNINGS section; NEWS is
+    // footer content in MissionControl.tsx, not rendered here. R7 Jul 31
+    // restored EARNINGS as a two-month forecast at his request, superseding
+    // his own July 30 confirmation of the chips-only design.
     expect(html).not.toContain("CORRELATION");
-    expect(html).not.toContain('id="earnings"');
+    expect(html).toContain('id="earnings"');
     expect(html).not.toMatch(/\$12/);
     expect(html).not.toContain("XIRR");
   });
