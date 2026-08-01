@@ -112,7 +112,24 @@ function compactDate(value: string): string {
       }).toUpperCase();
 }
 
-const PLOT = { left: 38, right: 604, top: 18, bottom: 142 } as const;
+/**
+ * R7 Jul 31, third pass on the same complaint — and the first two missed it.
+ *
+ * "Wider y axis" then "narrowed" both sounded like the DATA RANGE, so that
+ * is what changed, twice, in opposite directions. What he meant: *"it just
+ * needs to be a larger scale… can still be +10 to −11, but the y axis needs
+ * to be much larger so you can better see the changes."*
+ *
+ * The range was never the problem. The plot area was 124 units tall against
+ * 566 wide — a letterbox, where a 2% move is a few pixels of vertical travel
+ * no matter how the bounds are chosen. The fix is geometric: the plot is now
+ * 282 units tall, so the same ±10% span gets more than double the vertical
+ * distance and a small move becomes a visible one.
+ *
+ * `left` widens too, because percent labels ("+10.5%") need more room than
+ * the bare index numbers they replaced.
+ */
+const PLOT = { left: 54, right: 604, top: 18, bottom: 300 } as const;
 
 /**
  * R7-W3(a) — several series at once, each toggleable, with a hover readout
@@ -156,14 +173,10 @@ export function MultiReturnPlot({
    * percents. Then: *"I told you wrong the returns y axis needs to be
    * narrowed so you can differentiate the graphs better."*
    *
-   * Both sentences describe the same complaint from opposite sides, and the
-   * second is the real one. With four series inside one band, a wide axis
-   * squeezes them into a flat ribbon where no line is distinguishable from
-   * its neighbour. A tight axis spreads them apart vertically, which is what
-   * "differentiate the graphs" needs. Padding is now 10% of span with a
-   * 0.4-point floor, and the bounds are no longer rounded outward — that
-   * rounding alone could add two points of dead space to a series that only
-   * moves three.
+   * Resolved on the third pass: neither sentence was about the range. See
+   * PLOT above — the plot area was too SHORT, so no choice of bounds could
+   * make a small move visible. Padding stays modest at 10% with a 0.4-point
+   * floor; the height is what does the work now.
    */
   const { min, max } = useMemo(() => {
     const values = visible
@@ -287,13 +300,16 @@ export function MultiReturnPlot({
       </div>
       <svg
         className={styles.returnPlot}
-        viewBox="0 0 640 210"
+        viewBox="0 0 640 340"
         role="img"
         aria-label={ariaLabel}
         onMouseMove={onMove}
         onMouseLeave={() => setHoverIndex(null)}
       >
-        {Array.from({ length: 5 }, (_, step) => min + ((max - min) * step) / 4).map(
+        {/* Seven gridlines, not five: a taller axis can carry more without
+            crowding, and more reference lines is what makes a small move
+            readable against a number rather than just visible. */}
+        {Array.from({ length: 7 }, (_, step) => min + ((max - min) * step) / 6).map(
           (value) => (
             <g key={value}>
               <line

@@ -4231,12 +4231,13 @@
 /* The plot letterboxed itself: a fixed 170px height against a 640-wide
    viewBox left empty margins either side of a small chart. Holding the
    aspect ratio instead lets it fill whatever width the room gives it. */
-/* Taller viewBox: rotated date labels need room below the plot, and the
-   extra height is also what stops the series from looking cramped. */
+/* R7 Jul 31: "the y axis needs to be much larger so you can better see the
+   changes". The aspect ratio is what actually delivers that — a taller box
+   gives the same percent span more vertical distance to move through. */
 .multiReturnPlot .returnPlot {
   height: auto;
-  aspect-ratio: 640 / 210;
-  min-height: 340px;
+  aspect-ratio: 640 / 340;
+  min-height: 460px;
 }
 
 /* R7 feedback, Jul 31: a pie, not a row of bars. */
