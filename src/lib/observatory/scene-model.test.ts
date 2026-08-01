@@ -291,7 +291,13 @@ describe("pure overview scene descriptor", () => {
     // back, and every projected diameter shrinks by roughly a tenth.
     expect(heaviestDiameterMin).toBeGreaterThanOrEqual(31);
     expect(heaviestDiameterMax).toBeLessThanOrEqual(45);
-    expect(smallestDiameter).toBeGreaterThanOrEqual(15);
+    // 15 -> 13. The FOURTH floor in this family to move, all from the one
+    // change: ORRERY_SUN_CLEARANCE 3.4 -> 9.0. The first three were fixed one
+    // failing assertion at a time, which is why this took four rounds — a
+    // failing expect() hides every assertion after it in the same test, so
+    // "fix the failure" finds them serially. The right move after the first
+    // one was to grep every projected-diameter bound in the file at once.
+    expect(smallestDiameter).toBeGreaterThanOrEqual(13);
     expect(minimumSpacingRatio).toBeGreaterThan(1.82);
     expect(minimumSpacingRatio).toBeLessThan(2.5);
     expect([...seenPlanets]).toEqual(
