@@ -286,7 +286,10 @@ describe("pure overview scene descriptor", () => {
     // term also means the gap/(r_i+r_i+1) ratio is no longer a single
     // constant across every adjacent pair -- it is always strictly greater
     // than the 1.82 multiplier alone, by 0.55/(r_i+r_i+1).
-    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(37);
+    // 37 -> 31: same cause as the floors above. ORRERY_SUN_CLEARANCE 3.4 ->
+    // 9.0 inflates the system, the camera fits the outer orbit and pulls
+    // back, and every projected diameter shrinks by roughly a tenth.
+    expect(heaviestDiameterMin).toBeGreaterThanOrEqual(31);
     expect(heaviestDiameterMax).toBeLessThanOrEqual(45);
     expect(smallestDiameter).toBeGreaterThanOrEqual(15);
     expect(minimumSpacingRatio).toBeGreaterThan(1.82);
@@ -658,10 +661,49 @@ describe("pure overview scene descriptor", () => {
       healthScalar: 0,
       sunspotIntensity: 0,
     });
+    /* R7 U5 changed what colour means, so this assertion had to change with
+     * it. Under the old ramp a +0.1% day drew a near-flat AMBER, because hue
+     * varied with magnitude and 0.1% is barely any magnitude. Colour is now
+     * the SIGN alone: +0.1% is a gain, so it draws full green, and the fact
+     * that it is a small gain is carried by the arc being at its 12 degree
+     * floor. That is the whole point of the change he asked for — one
+     * channel per variable. */
     expect(model.trails[0]).toMatchObject({
-      color: UNIVERSE_PALETTE.signal.flat,
+      color: UNIVERSE_PALETTE.signal.gain,
       arcRadians: trailArcLengthForReturn(0.002),
     });
+
+    /* FLAT still exists, and is now the only thing that draws amber: a move
+     * inside ORRERY_FLAT_EPSILON has no sign worth reporting. Added because
+     * the case above stopped covering it once colour became sign-only. */
+    const flat = buildOverviewSceneModel({
+      holdings: [{ ...holdings[2], dayReturn: 0.0001 }],
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    expect(flat.trails[0]).toMatchObject({
+      color: UNIVERSE_PALETTE.signal.flat,
+      direction: "neutral",
+    });
+
+    /* And a loss draws the same red every loss draws, regardless of size —
+     * the other half of "the color red or green be the same for all planets". */
+    const down = buildOverviewSceneModel({
+      holdings: [{ ...holdings[2], dayReturn: -0.004 }],
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    const deepDown = buildOverviewSceneModel({
+      holdings: [{ ...holdings[2], dayReturn: -0.09 }],
+      healthScalar: 0,
+      sunspotIntensity: 0,
+    });
+    expect(down.trails[0].color).toBe(UNIVERSE_PALETTE.signal.loss);
+    expect(deepDown.trails[0].color).toBe(down.trails[0].color);
+    // Same colour, different length — magnitude lives in the arc now.
+    expect(deepDown.trails[0].arcRadians).toBeGreaterThan(
+      down.trails[0].arcRadians,
+    );
   });
 
   it("keeps the sampled trail core measurable without glow overlap", () => {
