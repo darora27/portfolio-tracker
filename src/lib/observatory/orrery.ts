@@ -5,7 +5,13 @@ export const ORRERY_FLAT_EPSILON = 0.0005;
 export const ORRERY_MIN_RADIUS = 0.62;
 export const ORRERY_MAX_RADIUS = 1.35;
 
-export const ORRERY_SUN_CLEARANCE = 3.4;
+/* Jul 31, second report: "ASML orbit is still way too close to the sun I
+ * want it much farther away… You can hardly see it." The innermost orbit
+ * starts here, so this number alone decides how much room the first planet
+ * gets. 3.4 -> 6.2 nearly doubles the gap between the sun's edge and the
+ * first ring; every outer orbit shifts out with it, since they are computed
+ * cumulatively from this one. */
+export const ORRERY_SUN_CLEARANCE = 6.2;
 export const ORRERY_PLANET_CLEARANCE = 0.18;
 export const ORRERY_BELT_HYSTERESIS_BAND = 0.005;
 export const ORRERY_PLANET_COUNT = 8;

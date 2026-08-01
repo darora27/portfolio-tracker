@@ -149,13 +149,21 @@ export function MultiReturnPlot({
    * R7 Jul 31 (R1/R2). The axis reads in percent growth, not an index out of
    * 100, and it is given room.
    *
-   * His own spreadsheet is the spec: a series spanning about −8% to +7% is
-   * plotted on an axis running −15% to +10%. Ours fitted the data tightly
-   * with 8% padding, which is what "all the data is cramped" describes — a
-   * chart where every wiggle touches an edge reads as noise rather than
-   * shape. Padding is now 35% of the span with a ±2% floor, and the bounds
-   * round outward to whole percents so the gridlines land on readable
-   * numbers instead of arbitrary ones.
+   * TWO CORRECTIONS FROM HIM, and the second reverses the first.
+   *
+   * "The graphs need to have a much wider y axis because all the data is
+   * cramped" → padding went to 35% of span, rounded outward to whole
+   * percents. Then: *"I told you wrong the returns y axis needs to be
+   * narrowed so you can differentiate the graphs better."*
+   *
+   * Both sentences describe the same complaint from opposite sides, and the
+   * second is the real one. With four series inside one band, a wide axis
+   * squeezes them into a flat ribbon where no line is distinguishable from
+   * its neighbour. A tight axis spreads them apart vertically, which is what
+   * "differentiate the graphs" needs. Padding is now 10% of span with a
+   * 0.4-point floor, and the bounds are no longer rounded outward — that
+   * rounding alone could add two points of dead space to a series that only
+   * moves three.
    */
   const { min, max } = useMemo(() => {
     const values = visible
@@ -166,13 +174,9 @@ export function MultiReturnPlot({
     const all = [...values, 100];
     const low = Math.min(...all);
     const high = Math.max(...all);
-    const span = Math.max(high - low, 2);
-    const pad = Math.max(2, span * 0.35);
-    // Round outward to whole percentage points.
-    return {
-      min: Math.floor(low - pad),
-      max: Math.ceil(high + pad),
-    };
+    const span = Math.max(high - low, 0.8);
+    const pad = Math.max(0.4, span * 0.1);
+    return { min: low - pad, max: high + pad };
   }, [visible]);
 
   /** Index value -> growth percent, which is what the axis actually shows. */
@@ -300,7 +304,9 @@ export function MultiReturnPlot({
                 y2={yFor(value)}
               />
               <text x="2" y={yFor(value) + 3}>
-                {formatPercent(value)}
+                {/* A narrow axis needs a decimal, or five gridlines all
+                    round to the same whole percent and say nothing. */}
+                {formatPercent(value, max - min < 6 ? 1 : 0)}
               </text>
             </g>
           ),

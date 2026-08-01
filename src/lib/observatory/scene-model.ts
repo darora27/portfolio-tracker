@@ -78,8 +78,12 @@ const ORBIT_PROJECTION_SAMPLES = 180;
  * was still too long on his screen. Back to the band he called better —
  * the hue-lightness ramp now carries magnitude, so the arc no longer needs
  * the extra length (round 3's own argument, honestly inverted). */
-export const MIN_TRAIL_DEGREES = 18;
-export const MAX_TRAIL_DEGREES = 30;
+/* R7 U5. Length is now the magnitude channel, so it needs a range wide
+ * enough to read as one. 18-30 degrees is a 1.7x spread — invisible as a
+ * signal once hue stops carrying the information. 12-72 is 6x: a flat day is
+ * a stub and a violent one is a fifth of the orbit. */
+export const MIN_TRAIL_DEGREES = 12;
+export const MAX_TRAIL_DEGREES = 72;
 const MIN_TRAIL_RETURN = 0.002;
 const MAX_TRAIL_RETURN = 0.12;
 const TRAIL_TAPER_FLOOR = 0.85;
@@ -1249,7 +1253,20 @@ export function buildOverviewSceneModel({
       return {
         ticker: holding.ticker,
         direction,
-        color: rampForReturn(holding.dayReturn),
+        /* R7 U5, Jul 31, asked twice: "Instead of having different hues of
+         * the trails mean something, I would rather the color red or green be
+         * the same for all planets whether they are having a positive day or
+         * negative day. The larger the trail and speed of the planet is
+         * indication for how much a stock is up or down."
+         *
+         * So colour carries SIGN ONLY — one green, one red, identical across
+         * every planet — and magnitude moves entirely to length and speed.
+         * rampForReturn varied hue by size, which put two variables in one
+         * channel and made neither readable at a glance.
+         *
+         * This supersedes FB-03, which he confirmed on July 29 at an 18-30
+         * degree band, by his own later instruction. */
+        color: trailColorForDirection(direction),
         arcRadians,
         magnitude:
           holding.dayReturn === null ? null : Math.abs(holding.dayReturn),

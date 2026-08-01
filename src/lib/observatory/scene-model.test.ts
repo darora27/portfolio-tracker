@@ -141,7 +141,10 @@ describe("pure overview scene descriptor", () => {
     expect(model.trails[0].arcRadians).toBe(
       trailArcLengthForReturn(-0.067),
     );
-    expect(model.trails[0].color).toBe(rampForReturn(-0.067));
+    /* R7 U5: colour is the SIGN, identical for every planet, and magnitude
+     * lives in length and speed instead. Previously rampForReturn(-0.067) —
+     * a hue that varied with size. He asked for this twice. */
+    expect(model.trails[0].color).toBe(UNIVERSE_PALETTE.signal.loss);
     expect(model.trails[0].head).toEqual({
       fraction: 0.12,
       color: UNIVERSE_PALETTE.signal.whiteHot,

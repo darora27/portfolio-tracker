@@ -709,7 +709,22 @@ export default function OrreryScene({
     const lookAt = overviewLookAt.clone();
     const lookAtTarget = overviewLookAt.clone();
     let zoomScale = 1;
+    /* R7 Jul 31: "I would also like to be able to rotate the solar system
+     * around on my own."
+     *
+     * Drag already orbited the camera — but `dragTilt` was clamped to ±10°,
+     * which over a full-width drag is a nudge, not a rotation. That is why it
+     * read as "I can't rotate it": the control existed and its range did not.
+     *
+     * Yaw is now unbounded, so the system can be turned all the way around
+     * and kept there. Vertical drag raises and lowers the camera between a
+     * near-flat pass and a steep overhead look; both ends are clamped short
+     * of degenerate, because at zero elevation the orbits collapse into a
+     * line and directly overhead the trails stop reading as arcs. */
     let dragTilt = 0;
+    let dragElevation = 1;
+    const MIN_ELEVATION = 0.35;
+    const MAX_ELEVATION = 2.4;
 
     const renderer = new WebGLRenderer({
       antialias: true,
@@ -1499,7 +1514,9 @@ export default function OrreryScene({
     let pointerClientY = -1000;
     let dragging = false;
     let dragStartX = 0;
+    let dragStartY = 0;
     let dragStartTilt = 0;
+    let dragStartElevation = 1;
     let rocketFlight: RocketFlight | null = null;
     const cometStartedAt = performance.now();
 
@@ -1623,14 +1640,25 @@ export default function OrreryScene({
     const onPointerMove = (event: PointerEvent) => {
       readPointer(event);
       if (dragging) {
-        dragTilt = Math.max(-10, Math.min(10, dragStartTilt + (event.clientX - dragStartX) * 0.08));
+        // 0.28 deg per pixel: a 900px drag turns the system roughly 250°,
+        // so a full look-around is one comfortable gesture rather than four.
+        dragTilt = dragStartTilt + (event.clientX - dragStartX) * 0.28;
+        dragElevation = Math.max(
+          MIN_ELEVATION,
+          Math.min(
+            MAX_ELEVATION,
+            dragStartElevation - (event.clientY - dragStartY) * 0.004,
+          ),
+        );
       }
       pick();
     };
     const onPointerDown = (event: PointerEvent) => {
       dragging = true;
       dragStartX = event.clientX;
+      dragStartY = event.clientY;
       dragStartTilt = dragTilt;
+      dragStartElevation = dragElevation;
       renderer.domElement.setPointerCapture(event.pointerId);
     };
     const onPointerUp = (event: PointerEvent) => {
@@ -1684,6 +1712,7 @@ export default function OrreryScene({
       if (Math.abs(zoomScale - bounded) < 0.001) zoomScale = bounded;
     };
     const onDoubleClick = () => callbacksRef.current.onExitOverview();
+
     renderer.domElement.addEventListener("pointermove", onPointerMove, { passive: true });
     renderer.domElement.addEventListener("pointerdown", onPointerDown);
     renderer.domElement.addEventListener("pointerup", onPointerUp);
@@ -2217,6 +2246,9 @@ export default function OrreryScene({
           .copy(overviewPosition)
           .multiplyScalar(zoomScale)
           .applyAxisAngle(new Vector3(0, 1, 0), tiltRadians);
+        // Vertical drag lifts the camera without changing its distance, so
+        // raising the view does not also zoom it.
+        cameraTarget.y *= dragElevation;
         cameraTarget.x += pointerX * 0.12;
         lookAtTarget.set(
           overviewLookAt.x + pointerX * 0.15,
