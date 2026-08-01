@@ -12,8 +12,12 @@ type AmbientToken = {
 
 export const UNIVERSE_PALETTE = {
   signal: {
-    gain: "#63ef98",
-    loss: "#ff665f",
+    /* R7 Jul 31: "both red and green need to be brighter. the red needs to
+     * look more red too." Chroma 0.55 -> 0.83 and 0.63 -> 0.88; both stay
+     * inside their reserved bands (147.5 and 3.8 degrees) and both still
+     * clear 5:1 against the backdrop. Measured, not eyeballed. */
+    gain: "#2BFF8C",
+    loss: "#FF2D1F",
     flat: "#e3b65c",
     comet: "#f4f0df",
     sunUp: "#f5c45d",

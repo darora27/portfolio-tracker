@@ -71,10 +71,6 @@ function formatWeightPercent(value: number): string {
   return `${(value * 100).toFixed(1)}%`;
 }
 
-function formatTelemetryPercent(value: number | null | undefined): string {
-  if (value === null || value === undefined) return "—";
-  return `${value >= 0 ? "+" : ""}${(value * 100).toFixed(1)}%`;
-}
 
 function formatSignalPercent(value: number | null | undefined): string {
   if (value === null || value === undefined) return "—";
@@ -150,7 +146,6 @@ export function OrreryWorld({
 }) {
   const router = useRouter();
   const worldRef = useRef<HTMLElement>(null);
-  const sunTelemetryRef = useRef<HTMLDivElement>(null);
   const previousTickerRef = useRef<string | null>(selectedTicker);
   const previousPortfolioRef = useRef(portfolioSelected);
   const priorCameraRef = useRef<OrreryCameraState>("overview");
@@ -373,7 +368,6 @@ export function OrreryWorld({
             nextEarningsDays={nextEarningsHolding?.nextEarningsDays ?? null}
             tradeComet={tradeComet}
             auroraWeeklySeries={auroraWeeklySeries}
-            sunTelemetryRef={sunTelemetryRef}
             forceNo3d={forceNo3d}
             onHover={setHoveredTicker}
             onSelect={navigateToHolding}
@@ -403,18 +397,12 @@ export function OrreryWorld({
           />
         ) : null}
 
-        <div
-          ref={sunTelemetryRef}
-          className={styles.sunTelemetry}
-          aria-hidden="true"
-          data-label-obstacle="portfolio-readout"
-        >
-          <strong>
-            PORTFOLIO · TODAY {formatSignalPercent(
-              portfolioSummary.dayReturnPct ?? portfolioSummary.returnPct,
-            )}
-          </strong>
-        </div>
+        {/* R7 Jul 31, asked twice: "The logo on the sun Portfolio Today and
+            the percentage up does not need to be there if it is clearly seen
+            in the mission control." Removed. The figure lives in the strip
+            and in HOLDINGS; repeating it over the sun bought nothing and sat
+            on top of the thing it was labelling. OrreryScene's
+            sunTelemetryRef prop is optional, so nothing downstream breaks. */}
 
         <nav
           className={styles.semanticMap}

@@ -2,8 +2,10 @@
    Type ramp values are current production (12px --type-label floor,
    post-FB-05) -- the mock's own inline :root predates that fix and is not
    reused verbatim. Gain/loss/flat/trace colors are the mock's own values,
-   already firewall-checked in UNIVERSE_IDEAS_3.md (gain #63ef98 and loss
-   #ff665f both sit inside that document's approved gain/loss hue ranges). */
+   already firewall-checked in UNIVERSE_IDEAS_3.md. R7 Jul 31: brightened on
+   his ask — gain #2BFF8C at hue 147.5 and loss #FF2D1F at hue 3.8 still sit
+   inside the approved bands, with chroma raised from 0.55/0.63 to
+   0.83/0.88. Measured against the same firewall rule, not eyeballed. */
 .chartRoom {
   --type-hero: 56px;
   --type-readout: 24px;
@@ -18,8 +20,8 @@
   --trace: #e6a14d;
   --baseline: #f4dba8;
   --word: #d5ba8c;
-  --gain: #63ef98;
-  --loss: #ff665f;
+  --gain: #2BFF8C;
+  --loss: #FF2D1F;
   --flat: #e3b65c;
   --slate: #66756f;
   --phosphor: #9de7b2;

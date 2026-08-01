@@ -5,7 +5,7 @@ import { formatDate, formatMarketCap, formatNumber, formatPercent } from "@/lib/
 import styles from "./chart-room.module.css";
 
 const CONSENSUS_SEGMENTS: { key: keyof Omit<RecommendationTrend, "period">; label: string; color: string }[] = [
-  { key: "strongBuy", label: "SB", color: "#63ef98" },
+  { key: "strongBuy", label: "SB", color: "#2BFF8C" },
   { key: "buy", label: "B", color: "#a9ffcf" },
   { key: "hold", label: "H", color: "var(--flat)" },
   { key: "sell", label: "S", color: "#ff9d97" },

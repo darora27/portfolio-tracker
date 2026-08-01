@@ -528,8 +528,8 @@ describe("pure overview scene descriptor", () => {
 
   it("maps the public trade event to one honest comet colour", () => {
     expect(cometColor("buy", 0)).toBe("#f4f0df");
-    expect(cometColor("sell", 1)).toBe("#63ef98");
-    expect(cometColor("sell", -1)).toBe("#ff665f");
+    expect(cometColor("sell", 1)).toBe("#2BFF8C");
+    expect(cometColor("sell", -1)).toBe("#FF2D1F");
     expect(
       buildOverviewSceneModel({
         holdings,
@@ -544,7 +544,7 @@ describe("pure overview scene descriptor", () => {
       }).comet,
     ).toEqual({
       action: "sell",
-      color: "#ff665f",
+      color: "#FF2D1F",
       ticker: "ASML",
       date: "2026-07-28",
     });
