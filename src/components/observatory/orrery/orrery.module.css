@@ -4374,3 +4374,70 @@
   fill: var(--universe-cabinet-window-word);
   font: 500 var(--type-label) var(--font-mono, monospace);
 }
+
+/* R7 Jul 31 (K1/K2): the risk charts, larger and interrogable. */
+.riskChart {
+  max-width: 100%;
+}
+
+.drawdownWorstDot {
+  fill: var(--universe-signal-loss);
+  stroke: #050b0a;
+  stroke-width: 1.5;
+}
+
+.dailyBarHit {
+  cursor: pointer;
+}
+
+.dailyBarHit:focus-visible {
+  outline: 2px solid var(--universe-cabinet-amber-chrome);
+  outline-offset: -1px;
+}
+
+.dailyBar[data-selected="true"] {
+  stroke: var(--universe-cabinet-cream);
+  stroke-width: 1.5;
+}
+
+/* R7 Jul 31 (H2): the two-month earnings forecast. */
+.earningsForecast {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.4rem;
+}
+
+.earningsForecast h4 {
+  margin: 0 0 0.5rem;
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-body) var(--font-mono, monospace);
+  letter-spacing: 0.1em;
+}
+
+.earningsForecast ol {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.earningsForecast li {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: var(--type-body);
+  color: var(--universe-cabinet-cream);
+}
+
+.earningsForecast i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.earningsForecast time {
+  color: var(--universe-cabinet-window-word);
+  font-variant-numeric: tabular-nums;
+}

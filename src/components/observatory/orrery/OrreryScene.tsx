@@ -1930,7 +1930,18 @@ export default function OrreryScene({
         projected.copy(worldPosition).project(camera);
         labelPosition
           .copy(worldPosition)
-          .addScaledVector(camera.up, -planet.mesh.scale.x * 1.45)
+          /* R7 Jul 31: "All planet labels need to be closer to the planets…
+           * NBIS shows the right distance but costo is way too far away."
+           *
+           * The offset was 1.45x the planet's own radius — purely
+           * proportional, so a large planet pushed its label roughly twice as
+           * far as a small one. NBIS is near the minimum radius and looked
+           * right; COST is half again bigger and looked wrong. Same formula,
+           * two verdicts, because the formula had no fixed part.
+           *
+           * 0.7x + 0.46 keeps NBIS within a hair of where it was (0.89 vs
+           * 0.90) and pulls COST in by ~20% and ASML by ~28%. */
+          .addScaledVector(camera.up, -(planet.mesh.scale.x * 0.7 + 0.46))
           .project(camera);
         // FB-20: a label's own offset position can still read as "on
         // screen" (see layoutOverviewLabels' edge clamp) even after its
