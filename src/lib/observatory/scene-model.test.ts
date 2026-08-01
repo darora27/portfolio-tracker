@@ -177,15 +177,23 @@ describe("pure overview scene descriptor", () => {
     expect(model.planets[0].projectedDiameterPx).toBe(
       model.planets[0].bounds.width,
     );
-    // FB-01 (§13): one more small step (gap 1.75->1.82, belt span 0.80->0.75)
-    // shrinks every projected diameter and the belt's own viewport share a
-    // little further -- these floors/ceilings are recalibrated to the new
-    // geometry, not the pre-§13 scale.
-    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(40);
-    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(44);
+    /* Recalibrated twice, and the second time has a cost worth naming.
+     *
+     * FB-01 (§13) narrowed these once. R7 Jul 31 moved ORRERY_SUN_CLEARANCE
+     * 3.4 -> 9.0 so ASML would stop crowding the sun, on his third report of
+     * it. But the camera fits the OUTER orbit, and every orbit is computed
+     * cumulatively from the sun clearance — so widening the innermost gap
+     * inflates the whole system, pulls the camera back, and shrinks every
+     * planet on screen by about 10%.
+     *
+     * These floors follow the geometry rather than the geometry being bent to
+     * keep the floors. The trade-off is real and is the owner's to accept:
+     * ASML has its room, and every planet is a tenth smaller. */
+    expect(model.planets[0].projectedDiameterPx).toBeGreaterThanOrEqual(34);
+    expect(model.planets[0].projectedDiameterPx).toBeLessThanOrEqual(40);
     expect(
       Math.min(...model.planets.map(({ projectedDiameterPx }) => projectedDiameterPx)),
-    ).toBeGreaterThanOrEqual(15);
+    ).toBeGreaterThanOrEqual(13);
     expect(model.belt.viewportSpanPct).toBeGreaterThanOrEqual(0.74);
     expect(model.belt.viewportSpanPct).toBeLessThanOrEqual(0.76);
   });
@@ -247,7 +255,8 @@ describe("pure overview scene descriptor", () => {
         expect(
           planet.projectedDiameterPx,
           `${planet.ticker} projected diameter floor`,
-        ).toBeGreaterThanOrEqual(16);
+          // 16 -> 13: same cause as above, the sun-clearance widening.
+        ).toBeGreaterThanOrEqual(13);
         expect(planet.bounds.left, `${planet.ticker} planet left`).toBeGreaterThanOrEqual(0);
         expect(planet.bounds.top, `${planet.ticker} planet top`).toBeGreaterThanOrEqual(0);
         expect(planet.bounds.right, `${planet.ticker} planet right`).toBeLessThanOrEqual(
@@ -631,13 +640,17 @@ describe("pure overview scene descriptor", () => {
       headRadians: 0,
       tailRadians: Math.PI / 3,
     });
-    // FB-03: the owner's band — "they were a lot better before" (18–30°).
+    /* FB-03 set 18-30 degrees and he confirmed it on July 29 — while HUE was
+     * still carrying magnitude. On July 31 he moved magnitude onto length and
+     * speed and made colour mean sign only, which leaves length doing work it
+     * was never sized for: 1.7x spread is not a readable signal. 12-72 is 6x.
+     * The band changed because the job changed, on his instruction. */
     expect(trailArcLengthForReturn(0.002) * 180 / Math.PI).toBeCloseTo(
-      18,
+      12,
       10,
     );
     expect(trailArcLengthForReturn(0.12) * 180 / Math.PI).toBeCloseTo(
-      30,
+      72,
       10,
     );
     const model = buildOverviewSceneModel({

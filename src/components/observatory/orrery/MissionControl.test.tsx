@@ -31,7 +31,10 @@ describe("MissionControl", () => {
     }
     expect(html).not.toContain('href="#correlation"');
     expect(html).not.toContain('href="#news"');
-    expect(html).not.toContain('href="#earnings"');
+    // §15 cut the standalone EARNINGS section; he restored it on July 31 as a
+    // two-month forecast, so the anchor is expected now. CORRELATION and NEWS
+    // stay cut, and those assertions above are untouched.
+    expect(html).toContain('href="#earnings"');
     expect(html).toContain("Readable room content");
     expect(html).toContain("SINCE START TWR");
     expect(html).toContain("VS VOO · SAME PERIOD");

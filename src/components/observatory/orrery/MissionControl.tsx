@@ -35,6 +35,10 @@ const FOLDED_CHIP_DESTINATIONS = [
   { anchor: "mix", label: "MIX" },
   { anchor: "trades", label: "ACTIVITY" },
   { anchor: "orbits", label: "ORBITS" },
+  // R7 Jul 31: the new EARNINGS section. Variant A has no tab strip, so this
+  // list IS how a section is reachable there — omitting it made EARNINGS the
+  // one destination with no route in that variant.
+  { anchor: "earnings", label: "EARNINGS" },
 ] as const;
 
 // §15 BHV-01: the single soonest upcoming-earnings entry across all
