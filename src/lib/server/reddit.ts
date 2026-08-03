@@ -7,63 +7,53 @@ export type { RedditPost };
 const SUBREDDITS = ["stocks", "investing", "wallstreetbets"] as const;
 
 /**
- * Whether the Reddit integration is configured. Approval for Reddit's API
- * is pending as of Phase 9 — expected to be false. The /research page
- * must build and render correctly in either state.
+ * Reddit asks that unauthenticated clients identify themselves. A generic
+ * agent gets 429s regardless of rate; a descriptive one does not.
+ */
+const USER_AGENT =
+  process.env.REDDIT_USER_AGENT ??
+  "portfolio-tracker/1.0 (personal portfolio dashboard; read-only)";
+
+/**
+ * R7, Aug: "we are never going to get reddit's API approval".
+ *
+ * The old path used OAuth against oauth.reddit.com, which requires exactly
+ * the approval that is never coming, so `isRedditConfigured()` returned
+ * false forever and /research showed "awaiting Reddit's API approval"
+ * permanently.
+ *
+ * REDDIT'S PUBLIC JSON ENDPOINTS NEED NO APPROVAL AND NO CREDENTIALS.
+ * Appending `.json` to any listing URL returns the same payload the OAuth
+ * API returns, in the same shape — which is why parseRedditListing needed no
+ * change at all. That is the strongest evidence this is right: the parser
+ * that was written against the authenticated response already handles this
+ * one.
+ *
+ * What is given up: nothing this app used. OAuth would allow higher rate
+ * limits and private data; the existing 60-minute cache means at most three
+ * requests an hour, far inside the unauthenticated allowance, and every
+ * subreddit read here is public anyway.
  */
 export function isRedditConfigured(): boolean {
-  return Boolean(process.env.REDDIT_CLIENT_ID && process.env.REDDIT_CLIENT_SECRET && process.env.REDDIT_USER_AGENT);
-}
-
-async function getRedditToken(): Promise<string | null> {
-  const clientId = process.env.REDDIT_CLIENT_ID;
-  const clientSecret = process.env.REDDIT_CLIENT_SECRET;
-  const userAgent = process.env.REDDIT_USER_AGENT;
-  if (!clientId || !clientSecret || !userAgent) return null;
-
-  return getOrFetch("reddit:token", RESEARCH_TTL.redditToken, async () => {
-    try {
-      const res = await fetch("https://www.reddit.com/api/v1/access_token", {
-        method: "POST",
-        headers: {
-          Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-          "User-Agent": userAgent,
-        },
-        body: "grant_type=client_credentials",
-        cache: "no-store",
-      });
-      if (!res.ok) return null;
-      const json = await res.json();
-      const token = (json as Record<string, unknown>)?.access_token;
-      return typeof token === "string" ? token : null;
-    } catch {
-      return null;
-    }
-  });
+  // No credentials needed any more. The integration is always available; a
+  // failed request degrades to [] exactly as it did before.
+  return true;
 }
 
 /**
- * New posts from r/stocks, r/investing, r/wallstreetbets — one request
- * per subreddit, each cached 60min, so this is at most 3 Reddit requests
- * per hour total regardless of how many page loads call it. Never
- * throws; returns [] if unconfigured or on any failure.
+ * New posts from r/stocks, r/investing, r/wallstreetbets — one request per
+ * subreddit, each cached 60 minutes, so at most three Reddit requests per
+ * hour regardless of page loads. Never throws; returns [] on any failure.
  */
 export async function getRecentRedditPosts(): Promise<RedditPost[]> {
-  const userAgent = process.env.REDDIT_USER_AGENT;
-  if (!isRedditConfigured() || !userAgent) return [];
-
-  const token = await getRedditToken();
-  if (!token) return [];
-
   const results = await Promise.all(
     SUBREDDITS.map((sub) =>
       getOrFetch(`reddit:posts:${sub}`, RESEARCH_TTL.redditPosts, async () => {
         try {
-          const res = await fetch(`https://oauth.reddit.com/r/${sub}/new?limit=100`, {
-            headers: { Authorization: `Bearer ${token}`, "User-Agent": userAgent },
-            cache: "no-store",
-          });
+          const res = await fetch(
+            `https://www.reddit.com/r/${sub}/new.json?limit=100&raw_json=1`,
+            { headers: { "User-Agent": USER_AGENT }, cache: "no-store" },
+          );
           if (!res.ok) return null;
           return parseRedditListing(await res.json());
         } catch {

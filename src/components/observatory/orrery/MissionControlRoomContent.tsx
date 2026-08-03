@@ -264,58 +264,6 @@ function RiskMeter({
 }
 
 /**
- * R7 Jul 31 (K1): "The graph showing the drawdown needs to be more. I also
- * dont understand what the drawdown completely means."
- *
- * Bigger, and it says what it is in one line. Drawdown answers "how far below
- * my best day am I" — the peak-to-trough fall from the highest value the book
- * has ever reached. It is always zero or negative, which is why the chart is
- * drawn hanging below a zero line rather than floating in a range.
- */
-function DrawdownChart({ points }: { points: readonly { date: string; drawdown: number }[] }) {
-  const worst = Math.min(...points.map((point) => point.drawdown), 0);
-  const floor = Math.min(worst, -0.01) * 1.12;
-  const W = 640;
-  const H = 190;
-  const x = (index: number) => 46 + (index / Math.max(1, points.length - 1)) * (W - 60);
-  const y = (value: number) => 8 + (value / floor) * (H - 46);
-  const line = points
-    .map((point, index) => `${index === 0 ? "M" : "L"}${x(index).toFixed(1)} ${y(point.drawdown).toFixed(1)}`)
-    .join(" ");
-  const worstIndex = points.findIndex((point) => point.drawdown === worst);
-  const ticks = [0, 0.5, 1].map((fraction) => floor * fraction);
-  return (
-    <>
-      <p className={styles.sectionHint}>
-        how far below its best day the book is — zero means at an all-time high
-      </p>
-      <svg viewBox={`0 0 ${W} ${H}`} className={styles.riskChart} role="img"
-        aria-label={`Drawdown since start, worst ${(worst * 100).toFixed(1)} percent`}>
-        {ticks.map((value) => (
-          <g key={value}>
-            <line x1="46" x2={W - 14} y1={y(value)} y2={y(value)}
-              className={value === 0 ? styles.riskZero : styles.returnHairline} />
-            <text x="40" y={y(value) + 4} textAnchor="end" className={styles.riskAxisLabel}>
-              {(value * 100).toFixed(0)}%
-            </text>
-          </g>
-        ))}
-        <path d={`${line} L${x(points.length - 1).toFixed(1)} 8 L46 8 Z`} className={styles.drawdownArea} />
-        <path d={line} className={styles.drawdownLine} />
-        {worstIndex >= 0 ? (
-          <>
-            <circle cx={x(worstIndex)} cy={y(worst)} r="4" className={styles.drawdownWorstDot} />
-            <text x={x(worstIndex)} y={y(worst) + 20} textAnchor="middle" className={styles.riskAxisLabel}>
-              WORST {(worst * 100).toFixed(1)}% · {compactDay(points[worstIndex].date)}
-            </text>
-          </>
-        ) : null}
-      </svg>
-    </>
-  );
-}
-
-/**
  * R7 Jul 31 (H2). Earnings gave up their column in HOLDINGS to GAIN / LOSS,
  * and land here as a two-month forecast rather than a per-row chip — which is
  * how a calendar is actually read: by month, not by scanning a table for
@@ -362,93 +310,6 @@ function compactDay(iso: string): string {
   return Number.isNaN(date.valueOf())
     ? iso
     : date.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).toUpperCase();
-}
-
-/**
- * R7 Jul 31 (K2): "The Daily Returns needs to be much larger and have dates
- * for what each day meant… I should be able to click on the bar for a labeled
- * day and see the date and percentage growth/loss."
- *
- * So: bigger, dated along the bottom, and every bar is a real button that
- * reports its own day. Keyboard reachable too — a chart whose only affordance
- * is a mouse click excludes anyone tabbing through it.
- */
-function DailyReturnBars({ points }: { points: readonly { date: string; return: number }[] }) {
-  const [selected, setSelected] = useState<number | null>(null);
-  const extent = Math.max(...points.map((point) => Math.abs(point.return)), 0.005);
-  const W = 640;
-  const H = 210;
-  const MID = 96;
-  const slot = (W - 60) / Math.max(1, points.length);
-  const chosen = selected === null ? null : points[selected] ?? null;
-  const tickEvery = Math.max(1, Math.ceil(points.length / 8));
-
-  return (
-    <>
-      <p className={styles.sectionHint} aria-live="polite">
-        {chosen
-          ? `${compactDay(chosen.date)} · ${chosen.return >= 0 ? "▲" : "▼"} ${Math.abs(chosen.return * 100).toFixed(2)}%`
-          : "each bar is one trading day — click one for its date and move"}
-      </p>
-      <svg viewBox={`0 0 ${W} ${H}`} className={styles.riskChart} role="group"
-        aria-label={`Daily returns, largest move ${(extent * 100).toFixed(1)} percent`}>
-        <line x1="46" x2={W - 14} y1={MID} y2={MID} className={styles.riskZero} />
-        <text x="40" y={MID + 4} textAnchor="end" className={styles.riskAxisLabel}>0%</text>
-        <text x="40" y="14" textAnchor="end" className={styles.riskAxisLabel}>
-          +{(extent * 100).toFixed(1)}%
-        </text>
-        {points.map((point, index) => {
-          const height = (Math.abs(point.return) / extent) * (MID - 12);
-          const up = point.return >= 0;
-          const left = 46 + index * slot;
-          return (
-            <g key={point.date}>
-              <rect
-                x={left + slot * 0.12}
-                y={up ? MID - height : MID}
-                width={Math.max(1.5, slot * 0.76)}
-                height={Math.max(1, height)}
-                data-signal={up ? "up" : "down"}
-                className={styles.dailyBar}
-                data-selected={selected === index ? "true" : "false"}
-              />
-              {/* A full-height hit target: a 2px bar on a flat day is not
-                  clickable, and the day still has a value worth reading. */}
-              <rect
-                x={left}
-                y="0"
-                width={slot}
-                height={MID * 2}
-                fill="transparent"
-                className={styles.dailyBarHit}
-                role="button"
-                tabIndex={0}
-                aria-label={`${point.date}, ${(point.return * 100).toFixed(2)} percent`}
-                onClick={() => setSelected(index === selected ? null : index)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    setSelected(index === selected ? null : index);
-                  }
-                }}
-              />
-              {index % tickEvery === 0 ? (
-                <text
-                  x={left + slot / 2}
-                  y={H - 8}
-                  textAnchor="end"
-                  className={styles.returnDateTick}
-                  transform={`rotate(-45 ${left + slot / 2} ${H - 8})`}
-                >
-                  {compactDay(point.date)}
-                </text>
-              ) : null}
-            </g>
-          );
-        })}
-      </svg>
-    </>
-  );
 }
 
 export function MissionControlRoomContent({
@@ -738,36 +599,30 @@ export function MissionControlRoomContent({
             /* A 40% fall from the high is a bear market for a whole book. */
             max={0.4}
             maxLabel="40%"
-          />
+          >
+            <RoomMetricDisclosure
+              explanation={maxDrawdownExplanation({
+                maxDrawdown: data.maxDrawdown,
+                historyDays: data.historyDays,
+                dailyChangeAsOf: data.dailyChangeAsOf,
+                pricesAsOf: data.pricesAsOf,
+              })}
+            />
+          </RiskMeter>
         </div>
-        <div className={styles.riskHistoryCharts}>
-          <div>
-            <h4>
-              DRAWDOWN · SINCE START{" "}
-              <RoomMetricDisclosure
-                explanation={maxDrawdownExplanation({
-                  maxDrawdown: data.maxDrawdown,
-                  historyDays: data.historyDays,
-                  dailyChangeAsOf: data.dailyChangeAsOf,
-                  pricesAsOf: data.pricesAsOf,
-                })}
-              />
-            </h4>
-            {data.drawdownSeries.length >= 2 ? (
-              <DrawdownChart points={data.drawdownSeries} />
-            ) : (
-              <p className={styles.mixEmpty}>NOT ENOUGH HISTORY YET</p>
-            )}
-          </div>
-          <div>
-            <h4>DAILY RETURNS · SINCE START</h4>
-            {data.dailyReturnBars.length >= 2 ? (
-              <DailyReturnBars points={data.dailyReturnBars} />
-            ) : (
-              <p className={styles.mixEmpty}>NOT ENOUGH HISTORY YET</p>
-            )}
-          </div>
-        </div>
+        {/* R7 Aug: "the graphs that are in Risk are already in the history so
+            just get rid of them from the risk category."
+
+            He is right, and it was a duplication I introduced by improving
+            them here rather than noticing they already existed. /history
+            renders DrawdownChart, DailyReturnsChart and
+            CompositionOverTimeChart from the same getHistoryData() series.
+            Two copies of one chart is two places to disagree.
+
+            RISK keeps what only RISK has: the three meters, and BY HOLDING.
+            The MetricDisclosure explaining max drawdown moves onto the OFF
+            HIGH meter, which is the drawdown figure that remains here — the
+            explanation was worth keeping even though its chart was not. */}
         <details className={styles.byHoldingDisclosure}>
           <summary>BY HOLDING ▸</summary>
           <ul>
