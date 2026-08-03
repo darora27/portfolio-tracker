@@ -1,5 +1,6 @@
 import "server-only";
-import { parseRedditListing, type RedditPost } from "@/lib/reddit-listing";
+import type { RedditPost } from "@/lib/reddit-listing";
+import { parseRedditFeed } from "@/lib/reddit-feed";
 import { getOrFetch, RESEARCH_TTL } from "./api-cache";
 
 export type { RedditPost };
@@ -22,17 +23,21 @@ const USER_AGENT =
  * false forever and /research showed "awaiting Reddit's API approval"
  * permanently.
  *
- * REDDIT'S PUBLIC JSON ENDPOINTS NEED NO APPROVAL AND NO CREDENTIALS.
- * Appending `.json` to any listing URL returns the same payload the OAuth
- * API returns, in the same shape — which is why parseRedditListing needed no
- * change at all. That is the strongest evidence this is right: the parser
- * that was written against the authenticated response already handles this
- * one.
+ * I first moved this to `www.reddit.com/r/x/new.json`, on the belief that
+ * the documented public endpoint needed no credentials. IT DOES NOT WORK —
+ * Reddit now serves the HTML web page to unauthenticated clients there, and
+ * on old.reddit.com too. He ran both and pasted back
+ * `<body class=theme-beta>`. I had asserted it from stale knowledge.
  *
- * What is given up: nothing this app used. OAuth would allow higher rate
- * limits and private data; the existing 60-minute cache means at most three
- * requests an hour, far inside the unauthenticated allowance, and every
- * subreddit read here is public anyway.
+ * THE ATOM FEED IS STILL OPEN. `/r/x/new.rss` returns real XML with no
+ * credentials — verified the same way, by running it. RSS is meant to be
+ * read by machines without auth, which is why it survived the lockdown that
+ * closed the JSON routes.
+ *
+ * What is given up: score, comment count and flair, which the feed omits.
+ * Nothing here uses them — reddit-mentions matches ticker symbols in title
+ * and body text, sentiment reads the same text. The 60-minute cache means at
+ * most three requests an hour either way.
  */
 export function isRedditConfigured(): boolean {
   // No credentials needed any more. The integration is always available; a
@@ -51,11 +56,11 @@ export async function getRecentRedditPosts(): Promise<RedditPost[]> {
       getOrFetch(`reddit:posts:${sub}`, RESEARCH_TTL.redditPosts, async () => {
         try {
           const res = await fetch(
-            `https://www.reddit.com/r/${sub}/new.json?limit=100&raw_json=1`,
+            `https://www.reddit.com/r/${sub}/new.rss?limit=100`,
             { headers: { "User-Agent": USER_AGENT }, cache: "no-store" },
           );
           if (!res.ok) return null;
-          return parseRedditListing(await res.json());
+          return parseRedditFeed(await res.text());
         } catch {
           return null;
         }
