@@ -415,6 +415,43 @@ describe("pure overview scene descriptor", () => {
     expect(moonBucketForStoryCount(6)).toBe("large");
   });
 
+  it("R7-W8(b): index craft fly outside every planet, portfolio craft inside", () => {
+    /* Two rings, two meanings. Portfolio craft encode the book's own state
+     * and sit between the sun and the first holding; index craft encode the
+     * market and sit outside everything owned. If those rings ever crossed,
+     * "the market" and "something I own" would occupy the same space and the
+     * separation the design rests on would be gone. */
+    const model = buildOverviewSceneModel({
+      holdings,
+      healthScalar: 0,
+      sunspotIntensity: 0,
+      indexBenchmarks: [
+        { label: "S&P 500", returnPct: 0.021 },
+        { label: "TOTAL MARKET", returnPct: 0.018 },
+        { label: "TECH", returnPct: null },
+      ],
+    });
+    const index = model.satellites.filter((s) => s.ring === "index");
+    const portfolio = model.satellites.filter((s) => s.ring === "portfolio");
+    const orbits = model.planets.map((p) => p.orbitRadius);
+
+    expect(portfolio).toHaveLength(3);
+    expect(index.map((s) => s.label)).toEqual(["S&P 500", "TOTAL MARKET", "TECH"]);
+    expect(index[0].orbitRadius).toBeGreaterThan(Math.max(...orbits));
+    expect(index[0].orbitRadius).toBeGreaterThan(model.belt.radius);
+    expect(portfolio[0].orbitRadius).toBeLessThan(Math.min(...orbits));
+
+    // An unavailable benchmark still gets a craft carrying null, so the ring
+    // does not silently change size when a feed is down.
+    expect(index[2].encodedValue).toBeNull();
+  });
+
+  it("R7-W8(b): no benchmarks means no index craft, not empty ones", () => {
+    const model = buildOverviewSceneModel({ holdings, healthScalar: 0, sunspotIntensity: 0 });
+    expect(model.satellites.filter((s) => s.ring === "index")).toHaveLength(0);
+    expect(model.satellites).toHaveLength(3);
+  });
+
   it("computes the satellite orbit from geometry across a rebalance", () => {
     const arrangements = [
       [0.35, 0.19, 0.01],
@@ -430,7 +467,14 @@ describe("pure overview scene descriptor", () => {
         healthScalar: 0,
         sunspotIntensity: 0,
       });
-      const satelliteRadius = model.satellites[0].orbitRadius;
+      /* R7-W8(b) added index craft to this array. This fixture passes no
+         benchmarks so [0] is still a portfolio craft and the test passed by
+         luck — selecting by ring removes a trap that would have bitten the
+         first fixture to include benchmarks, and would have looked like a
+         geometry regression rather than an indexing one. */
+      const satelliteRadius = model.satellites.find(
+        (satellite) => satellite.ring === "portfolio",
+      )!.orbitRadius;
       expect(satelliteRadius).toBe(
         satelliteRingRadius(
           model.planets[0].orbitRadius,

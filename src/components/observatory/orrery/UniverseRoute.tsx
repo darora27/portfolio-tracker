@@ -180,6 +180,19 @@ export async function UniverseRoute({
         (entry) => entry.date === todayInTimeZone("America/New_York"),
       ) ?? null}
       portfolioVolatility={data.volatilityPct}
+      /* R7-W8(b). Same-period index returns, from data already computed for
+         the RETURNS section. An unavailable benchmark still gets a craft with
+         a null value — it renders dim and reads "—" rather than vanishing,
+         so the ring does not silently change size when a feed is down. */
+      indexBenchmarks={data.benchmarkComparisons.map((comparison) => ({
+        label:
+          comparison.ticker === "VOO"
+            ? "S&P 500"
+            : comparison.ticker === "VTI"
+              ? "TOTAL MARKET"
+              : "TECH",
+        returnPct: comparison.available ? comparison.twrPct : null,
+      }))}
       portfolioBeta={data.betaVsVoo}
       sectorSystem={sectorSystem}
       selectedSystem={first(params.system) ?? null}

@@ -100,6 +100,7 @@ export function OrreryWorld({
   publicTradeLog = [],
   tradeComet = null,
   portfolioVolatility = null,
+  indexBenchmarks = [],
   portfolioBeta = null,
   sectorSystem,
   selectedSystem = null,
@@ -136,6 +137,14 @@ export function OrreryWorld({
   publicTradeLog?: readonly PublicTradeEntry[];
   tradeComet?: PublicTradeEntry | null;
   portfolioVolatility?: number | null;
+  /**
+   * R7-W8(b). Indices as outer craft — VOO, VTI and XLK, with their
+   * same-period returns. Passed in from data the page already has rather
+   * than fetched: FB-36 had just removed an 18-second first byte caused by
+   * per-render API calls, and adding SPY/DIA quotes would have walked part
+   * of that back for indices already in the payload.
+   */
+  indexBenchmarks?: readonly { label: string; returnPct: number | null }[];
   portfolioBeta?: number | null;
   sectorSystem?: SectorSystem;
   selectedSystem?: string | null;
@@ -370,6 +379,7 @@ export function OrreryWorld({
             portfolioHealth={health}
             driftExcessReturn={portfolioSummary.marketRelativePct}
             portfolioVolatility={portfolioVolatility}
+            indexBenchmarks={indexBenchmarks}
             nextEarningsDays={nextEarningsHolding?.nextEarningsDays ?? null}
             tradeComet={tradeComet}
             auroraWeeklySeries={auroraWeeklySeries}
@@ -384,7 +394,17 @@ export function OrreryWorld({
               router.push(`${orreryHoldingHref(ticker, forceNo3d, basePath)}&detail=transmissions`, { scroll: false })
             }
             onSelectSatellite={(id) => {
-              const station = id === "DRIFT" ? "scope" : id === "HAZARD" ? "hazard" : "comms";
+              /* R7-W8(b). An index craft goes to RETURNS, where benchmarks
+                 live. Without this it fell through to the `comms` default and
+                 landed on EARNINGS — the old two-branch map treated anything
+                 that was not DRIFT or HAZARD as SUPPLY. */
+              const station = id.startsWith("INDEX:")
+                ? "scope"
+                : id === "DRIFT"
+                  ? "scope"
+                  : id === "HAZARD"
+                    ? "hazard"
+                    : "comms";
               router.push(`${basePath}?focus=portfolio&camera=command&station=${station}${forceNo3d ? "&no3d=1" : ""}`, { scroll: false });
             }}
             onOpenSector={() => undefined}

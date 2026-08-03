@@ -522,6 +522,7 @@ export default function OrreryScene({
   nextEarningsDays = null,
   tradeComet = null,
   auroraWeeklySeries = [],
+  indexBenchmarks = [],
   sunTelemetryRef,
   onHover,
   onSelect,
@@ -544,13 +545,16 @@ export default function OrreryScene({
   nextEarningsDays?: number | null;
   tradeComet?: TradeCometInput | null;
   auroraWeeklySeries?: readonly number[];
+  /** R7-W8(b): index craft, built from benchmark data the payload already carries. */
+  indexBenchmarks?: readonly { label: string; returnPct: number | null }[];
   sunTelemetryRef?: RefObject<HTMLDivElement | null>;
   onHover: (ticker: string | null) => void;
   onSelect: (ticker: string) => void;
   onSelectPortfolio: () => void;
   onSelectBelt: (ticker?: string) => void;
   onSelectMoon: (ticker: string) => void;
-  onSelectSatellite: (id: "DRIFT" | "HAZARD" | "SUPPLY") => void;
+  /** Widened for R7-W8(b): index craft carry ids like "INDEX:S&P 500". */
+  onSelectSatellite: (id: string) => void;
   onOpenSector: () => void;
   onExitOverview: () => void;
 }) {
@@ -578,6 +582,7 @@ export default function OrreryScene({
     nextEarningsDays,
     tradeComet,
     auroraWeeklySeries,
+    indexBenchmarks,
   });
   const sceneKey = useMemo(
     () =>
@@ -617,6 +622,7 @@ export default function OrreryScene({
     };
     healthRef.current = portfolioHealth;
     instrumentRef.current = {
+      indexBenchmarks,
       driftExcessReturn,
       portfolioVolatility,
       nextEarningsDays,
@@ -1246,19 +1252,36 @@ export default function OrreryScene({
       fog: false,
       side: 2,
     });
+    /* R7-W8(b). Index craft are neutral silver and slightly larger; portfolio
+     * craft keep the amber they had. They are NOT holdings, so they take no
+     * identity colour — that palette means "a company I own", and lending it
+     * to the S&P would break the one rule the colour system has. */
+    const indexCraftMaterial = new MeshBasicMaterial({
+      color: "#cfd4d0",
+      fog: false,
+    });
     const satelliteRuntimes = sceneModel.satellites.map((satellite) => {
+      const isIndex = satellite.ring === "index";
       const group = new Group();
       group.visible = false;
       group.rotation.y = satellite.phase;
-      const craft = new Mesh(satelliteGeometry, satelliteMaterial);
+      const craft = new Mesh(
+        satelliteGeometry,
+        isIndex ? indexCraftMaterial : satelliteMaterial,
+      );
       craft.position.x = satellite.orbitRadius;
-      craft.scale.set(1.5, 0.55, 0.8);
+      // Index craft are longer and flatter — a probe silhouette rather than
+      // the compact portfolio craft, readable apart at a glance.
+      craft.scale.set(isIndex ? 2.4 : 1.5, isIndex ? 0.4 : 0.55, isIndex ? 0.6 : 0.8);
       craft.userData.orreryTarget = `satellite:${satellite.id}`;
       const light = new Mesh(
         new IcosahedronGeometry(0.045, 1),
         satelliteLightMaterial,
       );
-      light.position.set(satellite.orbitRadius, 0.13, 0);
+      light.position.set(satellite.orbitRadius, isIndex ? 0.3 : 0.13, 0);
+      // A slight inclination so the outer ring reads as its own plane rather
+      // than as more objects in the planets' one.
+      if (isIndex) group.rotation.z = 0.16;
       group.add(craft, light);
       scene.add(group);
       return { descriptor: satellite, group, craft, light };
@@ -1696,7 +1719,7 @@ export default function OrreryScene({
       }
       else if (target?.startsWith("satellite:")) {
         callbacksRef.current.onSelectSatellite(
-          target.slice(10) as "DRIFT" | "HAZARD" | "SUPPLY",
+          target.slice(10),
         );
       }
       else if (target) launchRocket(target);

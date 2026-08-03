@@ -225,11 +225,22 @@ export type SceneModel = {
     axialSpinRadiansPerSecond: 0;
   }>;
   satellites: Array<{
-    id: "DRIFT" | "HAZARD" | "SUPPLY";
+    id: string;
     orbitRadius: number;
     phase: number;
     encodedValue: number | null;
     blinkSeconds: number | null;
+    /**
+     * R7-W8(b). Which ring this craft flies on, and what it is about.
+     *
+     * `portfolio` — the original three, close in, encoding the book's own
+     * state: excess return, volatility, next earnings.
+     * `index` — market craft, outside every planet, encoding an index's
+     * same-period return. They are not holdings and take no identity colour.
+     */
+    ring: "portfolio" | "index";
+    /** Shown to the reader. "S&P 500" reads; "VOO" is trivia. */
+    label: string;
   }>;
   belt: {
     radius: number;
@@ -1177,6 +1188,7 @@ export function buildOverviewSceneModel({
   tradeComet = null,
   orbitalPhaseRadians = 0,
   auroraWeeklySeries = [],
+  indexBenchmarks = [],
 }: {
   holdings: readonly SceneHolding[];
   beltHoldings?: readonly PublicOrreryHolding[];
@@ -1187,6 +1199,17 @@ export function buildOverviewSceneModel({
   viewport?: { width: number; height: number };
   driftExcessReturn?: number | null;
   portfolioVolatility?: number | null;
+  /**
+   * R7-W8(b). Market indices as craft on an outer ring.
+   *
+   * Fable's order specified NEW SPY and DIA quotes. Not done, and the reason
+   * matters: that would add two Finnhub calls to every cold render, days
+   * after FB-36 cut an 18-second first byte caused by exactly that kind of
+   * call. `benchmarkComparisons` is already computed, already cached, and
+   * already carries same-period return for VOO, VTI and XLK — the same
+   * indices, at no cost. SPY would also have duplicated VOO.
+   */
+  indexBenchmarks?: readonly { label: string; returnPct: number | null }[];
   nextEarningsDays?: number | null;
   tradeComet?: TradeCometInput | null;
   orbitalPhaseRadians?: number;
@@ -1291,6 +1314,19 @@ export function buildOverviewSceneModel({
     firstPlanetRadius,
     sunRadius,
   );
+  /* Outside every planet and outside the belt, so the reader never confuses
+   * "the market" with "something I own". Evenly spaced around the ring. */
+  const indexOrbit = beltRadius * 1.16;
+  const indexSatellites = indexBenchmarks.map((benchmark, index) => ({
+    id: `INDEX:${benchmark.label}`,
+    orbitRadius: indexOrbit,
+    phase: (Math.PI * 2 * index) / Math.max(1, indexBenchmarks.length),
+    encodedValue: benchmark.returnPct,
+    blinkSeconds: null,
+    ring: "index" as const,
+    label: benchmark.label,
+  }));
+
   const beltBounds = projectedOrbitBounds(
     beltRadius,
     overviewCamera,
@@ -1385,12 +1421,15 @@ export function buildOverviewSceneModel({
       ];
     }),
     satellites: [
+      ...indexSatellites,
       {
         id: "DRIFT",
         orbitRadius: satelliteOrbit,
         phase: 0,
         encodedValue: driftExcessReturn,
         blinkSeconds: null,
+        ring: "portfolio" as const,
+        label: "VS MARKET",
       },
       {
         id: "HAZARD",
@@ -1398,6 +1437,8 @@ export function buildOverviewSceneModel({
         phase: (Math.PI * 2) / 3,
         encodedValue: portfolioVolatility,
         blinkSeconds: satelliteBlinkSeconds(portfolioVolatility),
+        ring: "portfolio" as const,
+        label: "VOLATILITY",
       },
       {
         id: "SUPPLY",
@@ -1405,6 +1446,8 @@ export function buildOverviewSceneModel({
         phase: (Math.PI * 4) / 3,
         encodedValue: nextEarningsDays,
         blinkSeconds: null,
+        ring: "portfolio" as const,
+        label: "NEXT EARNINGS",
       },
     ],
     belt: {
