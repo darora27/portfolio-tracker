@@ -95,7 +95,6 @@ export default async function StockDetailPage({ params }: { params: Promise<{ ti
             vooCloseHistory={data.vooCloseHistory}
             bookGrowthIndex={data.bookGrowthIndex}
             trades={data.trades}
-            costPerShare={data.costPerShare}
             firstTradeDate={data.firstTradeDate}
           />
 

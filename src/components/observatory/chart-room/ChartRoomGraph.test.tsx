@@ -25,7 +25,6 @@ function renderGraph(overrides: Partial<Parameters<typeof ChartRoomGraph>[0]> = 
       vooCloseHistory={vooCloseHistory}
       bookGrowthIndex={bookGrowthIndex}
       trades={trades}
-      costPerShare={95}
       firstTradeDate="2026-07-01"
       {...overrides}
     />,
@@ -87,5 +86,20 @@ describe("ChartRoomGraph", () => {
   it("renders an empty state, not a crash, when there is no history", () => {
     renderGraph({ priceHistory: [] });
     expect(screen.getByText(/Not enough history/)).toBeTruthy();
+  });
+
+  it("R7-W6: the controls he called noise are gone", () => {
+    /* "you overcomplicated the graph with buttons that don't matter like
+     * depth and cost." Nine controls above one chart is not a chart with
+     * options — it is a chart you configure before you can read it. Asserted
+     * as absence so they cannot drift back in. */
+    renderGraph();
+    expect(screen.queryByRole("button", { name: /DEPTH/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /COST/ })).toBeNull();
+    expect(screen.queryByText("OWNER")).toBeNull();
+
+    // Six controls: four windows, two modes, and the two overlays that answer
+    // a question rather than decorate one.
+    expect(screen.getAllByRole("button").length).toBeLessThanOrEqual(7);
   });
 });
