@@ -84,6 +84,4 @@ export const FINNHUB_TTL = {
 export const RESEARCH_TTL = {
   marketNews: 30 * 60 * 1000,
   insiderTransactions: 24 * 60 * 60 * 1000,
-  redditToken: 50 * 60 * 1000,
-  redditPosts: 60 * 60 * 1000,
 } as const;

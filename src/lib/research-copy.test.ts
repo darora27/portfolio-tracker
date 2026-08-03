@@ -3,7 +3,6 @@ import { containsBannedLanguage } from "./surface-copy";
 import {
   INSIDER_FILINGS_SUBTITLE,
   RESEARCH_FOOTER_LINE,
-  REDDIT_PENDING_MESSAGE,
   CROSS_SOURCE_SUBTITLE,
   RESEARCH_INTRO,
 } from "./research-copy";
@@ -20,7 +19,6 @@ describe("/research static copy", () => {
     for (const copy of [
       INSIDER_FILINGS_SUBTITLE,
       RESEARCH_FOOTER_LINE,
-      REDDIT_PENDING_MESSAGE,
       CROSS_SOURCE_SUBTITLE,
       RESEARCH_INTRO,
     ]) {

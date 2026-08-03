@@ -4,7 +4,6 @@ import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getResearchData } from "@/lib/research-data";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { UniverseNav } from "@/components/observatory/UniverseNav";
-import { Card } from "@/components/ui/Card";
 import { DataTable, DataTableHead, DataTableBody, DataTableRow, Th, Td } from "@/components/ui/DataTable";
 import { StockNews } from "@/components/stock/StockNews";
 import { InsiderFilings } from "@/components/research/InsiderFilings";
@@ -13,7 +12,6 @@ import { formatSignedNumber } from "@/lib/format";
 import {
   INSIDER_FILINGS_SUBTITLE,
   RESEARCH_FOOTER_LINE,
-  REDDIT_PENDING_MESSAGE,
   CROSS_SOURCE_SUBTITLE,
   RESEARCH_INTRO,
 } from "@/lib/research-copy";
@@ -53,15 +51,14 @@ export default async function ResearchPage() {
             <p className="mt-1 text-sm text-text-secondary">{RESEARCH_INTRO}</p>
           </div>
 
-          {!data.redditConfigured && (
-            <Card>
-              <p className="text-sm text-text-secondary">{REDDIT_PENDING_MESSAGE}</p>
-            </Card>
-          )}
-
           <section>
+            {/* R7 Aug: was "Cross-source signal", with a ring drawn when NEWS
+                lean and REDDIT lean agreed. Reddit is gone — every route in is
+                closed to server-side clients — so there is one source, and a
+                heading promising two would be describing a feature that no
+                longer exists. */}
             <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
-              Cross-source signal
+              Signal by ticker
             </h2>
             <p className="mt-1 text-xs text-text-muted">{CROSS_SOURCE_SUBTITLE}</p>
             <div className="mt-3">
@@ -69,15 +66,11 @@ export default async function ResearchPage() {
                 <DataTableHead>
                   <Th sticky>Ticker</Th>
                   <Th numeric>News (24h)</Th>
-                  <Th numeric>Reddit (24h)</Th>
                   <Th numeric>Insider net (90d)</Th>
                 </DataTableHead>
                 <DataTableBody>
                   {data.rows.map((row) => (
-                    <DataTableRow
-                      key={row.ticker}
-                      className={row.agreementRing ? "ring-1 ring-inset ring-accent" : ""}
-                    >
+                    <DataTableRow key={row.ticker}>
                       <Td sticky>
                         <span className="font-mono font-medium text-text-primary">{row.ticker}</span>
                       </Td>
@@ -86,16 +79,6 @@ export default async function ResearchPage() {
                           <span className="font-mono">{row.newsCount24h}</span>
                           <LeanIndicator lean={row.newsLean} />
                         </div>
-                      </Td>
-                      <Td numeric>
-                        {row.redditMentions24h === null || row.redditLean === null ? (
-                          <span className="text-xs text-text-muted">pending</span>
-                        ) : (
-                          <div className="flex items-center justify-end gap-2">
-                            <span className="font-mono">{row.redditMentions24h}</span>
-                            <LeanIndicator lean={row.redditLean} />
-                          </div>
-                        )}
                       </Td>
                       <Td numeric>
                         <span className="font-mono">{formatSignedNumber(row.insiderNet90d)}</span>

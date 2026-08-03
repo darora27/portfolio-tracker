@@ -158,7 +158,6 @@ beforeEach(() => {
   getDashboardData.mockResolvedValue(dashboardFixture);
   getHistoryData.mockResolvedValue({});
   getResearchData.mockResolvedValue({
-    redditConfigured: false,
     marketNews: [],
     rows: [],
   });

@@ -184,7 +184,6 @@ beforeEach(() => {
   process.env.OWNER_PASSWORD = "test-owner-password";
   getDashboardData.mockResolvedValue(publicFixture);
   getResearchData.mockResolvedValue({
-    redditConfigured: false,
     marketNews: [{
       headline: "OWNER_RESEARCH_HEADLINE",
       source: "Owner source",

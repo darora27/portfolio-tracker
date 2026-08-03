@@ -161,6 +161,38 @@ clarity of his spreadsheet. Named axes, real units, percent where a percent is
 meant, labels attached to what they label, and no chart that needs a key to be
 read.
 
+## 1f. D3 RESOLVED — Reddit is cut, August 3 2026
+
+D3 sat open as "awaiting Reddit's API approval" since Phase 9. He closed it:
+*"we are never going to get reddit's API approval."*
+
+**Every route in is closed. Measured, not assumed — he ran each one:**
+
+| Route | Result |
+|---|---|
+| `oauth.reddit.com` | needs the approval that is not coming |
+| `www.reddit.com/…/new.json` | HTTP 200, serves the HTML web page |
+| `old.reddit.com/…/new.json` | same HTML |
+| `www.reddit.com/…/new.rss` via **curl** | valid Atom feed |
+| same feed via **Node** | **HTTP 403**, then 429 |
+
+The last two lines are the finding. Same machine, same URL, same minute —
+curl succeeds and Node is refused. Six header combinations were tried one at
+a time with delays between them, including curl's exact User-Agent and a
+browser-shaped request. All refused. That rules out headers and points at TLS
+fingerprinting, which no application-level change reaches.
+
+**Cut rather than hidden**, at his direction. Removing the code removes a
+permanently empty section, and the cross-source "agreement ring" — which
+required a second source to mean anything — goes with it. `/research` keeps
+news and insider filings, both of which work.
+
+**If it is ever revisited:** the blocker is not authentication, it is that
+Reddit does not want server-side clients. A paid API, a residential proxy, or
+a different sentiment source (StockTwits has an open API and is closer to
+retail sentiment than r/investing) are the routes that exist. Patching headers
+is not one of them.
+
 ## 2. The board
 
 | ID | Item (his words, abbreviated) | Reports | Status | Design | Scheduled | Closes when |
