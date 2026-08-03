@@ -4593,3 +4593,36 @@
 .planetSpec[data-owner="true"] {
   border-top-color: var(--universe-cabinet-amber-chrome);
 }
+
+/* R7, Aug: "when i open a planet and scroll i see the white scroll bar thing
+   on the right which i dont really like".
+
+   The panel scrolls, so it gets the OS scrollbar — a bright chrome-coloured
+   strip in a room that is otherwise dark amber and green. It is the one piece
+   of the interface the design never touched, which is exactly why it stands
+   out.
+
+   Styled rather than hidden. A hidden scrollbar removes the only signal that
+   there is more to read below, and this panel now holds more than it used to
+   — a reader who cannot tell it scrolls simply misses the position block. */
+.inspector {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(213, 186, 140, 0.35) transparent;
+}
+
+.inspector::-webkit-scrollbar {
+  width: 8px;
+}
+
+.inspector::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.inspector::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(213, 186, 140, 0.3);
+}
+
+.inspector::-webkit-scrollbar-thumb:hover {
+  background: rgba(213, 186, 140, 0.5);
+}
