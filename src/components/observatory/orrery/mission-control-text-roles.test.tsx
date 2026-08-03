@@ -272,9 +272,9 @@ describe("Mission Control text roles resolve to their assigned ramp token (FB-05
   });
 
   describe("mixSectionLabel -> --type-label (§15)", () => {
-    it(".mixClassifications h4 / .riskHistoryCharts h4 (rendered): MIX and RISK's new subsection headers", () => {
+    it(".mixClassifications h4 / .earningsForecast h4 (rendered): MIX and EARNINGS subsection headers", () => {
       expectSelectorOnRole(".mixClassifications h4", "mixSectionLabel");
-      expectSelectorOnRole(".riskHistoryCharts h4", "mixSectionLabel");
+      expectSelectorOnRole(".earningsForecast h4", "mixSectionLabel");
       const data = {
         publicOrreryHoldings: [{ ticker: "MSFT", weight: 1, dayReturn: 0.01, weeklyReturn: 0.03 }],
         positionRows: [{
@@ -317,7 +317,10 @@ describe("Mission Control text roles resolve to their assigned ramp token (FB-05
         <MissionControlRoomContent data={data} basePath="/share" mode="public" />,
       );
       expect(html).toContain("SECTOR");
-      expect(html).toContain("DRAWDOWN");
+      // Was "DRAWDOWN", from the RISK charts he had removed as duplicates of
+      // /history. EARNINGS renders the same header role, and its month names
+      // are present even with no scheduled dates.
+      expect(html).toContain("AUGUST");
     });
   });
 

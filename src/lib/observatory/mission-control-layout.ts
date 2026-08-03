@@ -81,7 +81,11 @@ export const MISSION_CONTROL_TEXT_ROLES = {
   mixSectionLabel: {
     token: "--type-label",
     description: "MIX/RISK subsection headers (SECTOR, AI EXPOSURE, COMPOSITION, DRAWDOWN, DAILY RETURNS).",
-    selectors: [".mixClassifications h4", ".riskHistoryCharts h4"],
+    /* R7 Aug: .riskHistoryCharts is gone — its two charts were duplicates of
+       /history's and he asked for them removed. .earningsForecast h4 carries
+       the same subsection-header role and takes its place, so the role keeps
+       two rendered selectors rather than shrinking to one. */
+    selectors: [".mixClassifications h4", ".earningsForecast h4"],
   },
 } as const;
 

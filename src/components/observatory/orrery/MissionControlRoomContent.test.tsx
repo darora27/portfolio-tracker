@@ -258,15 +258,23 @@ describe("MissionControlRoomContent — MIX (BHV-04)", () => {
 });
 
 describe("MissionControlRoomContent — RISK (BHV-05)", () => {
-  it("retains the three gauges and adds real drawdown/daily-return history plus a BY HOLDING disclosure", () => {
+  it("keeps the three gauges and BY HOLDING, and leaves the history charts to /history", () => {
     const html = renderToStaticMarkup(
       <MissionControlRoomContent data={baseData} basePath="/share" mode="public" />,
     );
     expect(html).toContain("VOL · SINCE START");
     expect(html).toContain("BETA · SAME PERIOD VOO");
     expect(html).toContain("OFF HIGH");
-    expect(html).toContain("DRAWDOWN · SINCE START");
-    expect(html).toContain("DAILY RETURNS · SINCE START");
+    /* R7 Aug: "the graphs that are in Risk are already in the history so just
+     * get rid of them from the risk category." He was right — /history renders
+     * both from the same getHistoryData() series, and I had duplicated them
+     * here. The assertions invert: RISK must NOT carry them, so the two copies
+     * cannot quietly drift apart again. */
+    expect(html).not.toContain("DRAWDOWN · SINCE START");
+    expect(html).not.toContain("DAILY RETURNS · SINCE START");
+    // The drawdown EXPLANATION stays, attached to OFF HIGH — the drawdown
+    // figure RISK still shows.
+    expect(html).toContain("Max drawdown");
     expect(html).toContain("BY HOLDING ▸");
   });
 
