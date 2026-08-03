@@ -81,11 +81,20 @@ export const MISSION_CONTROL_TEXT_ROLES = {
   mixSectionLabel: {
     token: "--type-label",
     description: "MIX/RISK subsection headers (SECTOR, AI EXPOSURE, COMPOSITION, DRAWDOWN, DAILY RETURNS).",
-    /* R7 Aug: .riskHistoryCharts is gone — its two charts were duplicates of
-       /history's and he asked for them removed. .earningsForecast h4 carries
-       the same subsection-header role and takes its place, so the role keeps
-       two rendered selectors rather than shrinking to one. */
-    selectors: [".mixClassifications h4", ".earningsForecast h4"],
+    /* R7 Aug: .riskHistoryCharts is gone — its two charts duplicated
+       /history's and he asked for them removed, so this role lost one of its
+       two rendered selectors.
+
+       I tried to replace it with .earningsForecast h4 and the gate caught
+       me: those headers are --type-body (13px) and this role is --type-label
+       (12px). The fix would have been to SHRINK the earnings month headers to
+       match a mapping — on a project where "fonts are too small" is at seven
+       reports. The gate was right and my substitution was wrong.
+
+       So the role keeps one selector. That is a real loss — a role checked in
+       one place stops catching drift between places — but it is the honest
+       state, and inventing a second member by demoting a header is worse. */
+    selectors: [".mixClassifications h4"],
   },
 } as const;
 
