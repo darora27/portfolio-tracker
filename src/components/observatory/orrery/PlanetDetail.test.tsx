@@ -88,9 +88,14 @@ describe("PlanetDetail", () => {
     );
     const instrument = container.querySelector<HTMLElement>("[data-chart-signature]");
     const before = instrument?.dataset.chartSignature;
-    expect(screen.getByText(/30 DAYS/)).toBeTruthy();
+    /* R7-W5 renamed the spec row "30D" to "30 DAYS", which is also the chart's
+     * own title — so an unscoped query now matches two elements. Scoped to the
+     * instrument, because this test is about the CHART's title tracking its
+     * detent, not about the spec sheet. */
+    const instrumentTitle = () => instrument?.querySelector("h3")?.textContent ?? "";
+    expect(instrumentTitle()).toMatch(/30 DAYS/);
     fireEvent.click(screen.getByRole("button", { name: "7D" }));
-    expect(screen.getByText(/7 DAYS/)).toBeTruthy();
+    expect(instrumentTitle()).toMatch(/7 DAYS/);
     expect(instrument?.dataset.chartSignature).not.toBe(before);
     fireEvent.click(screen.getByRole("button", { name: "SINCE BUY" }));
     expect(screen.getByText(/^SINCE BUY ·/)).toBeTruthy();

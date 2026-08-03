@@ -123,8 +123,10 @@ describe("Portfolio Orrery remediation route", () => {
     for (const label of [
       "WEIGHT",
       "WEEK",
-      "VOL",
-      "BETA",
+      // R7-W5 spelled these out; truncations saved room the spec sheet no
+      // longer needs, on a project with seven reports of unreadable text.
+      "VOLATILITY",
+      "BETA VS VOO",
     ]) {
       expect(screen.getByText(label)).toBeTruthy();
     }

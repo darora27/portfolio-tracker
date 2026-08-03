@@ -140,7 +140,7 @@ export function PlanetDetail({
           grouped by what the reader is asking. Same information, arranged
           the way his own spreadsheet arranges it — which is the reference he
           gave us for "clear". */}
-      <dl className={styles.planetSpec}>
+      <dl className={styles.planetSpec} aria-label="Return windows">
         <div>
           <dt>WEEK</dt>
           <dd data-signal={signOf(holding.weeklyReturn)}>{signedPercent(holding.weeklyReturn)}</dd>
@@ -179,7 +179,7 @@ export function PlanetDetail({
           payload; this one keeps a future caller from rendering them by
           passing the prop without thinking. Neither alone is enough. */}
       {ownerFacts && mode === "private" ? (
-        <dl className={styles.planetSpec} data-owner="true">
+        <dl className={styles.planetSpec} data-owner="true" aria-label="Your position">
           <div>
             <dt>POSITION</dt>
             <dd>{ownerFacts.shares.toLocaleString("en-US")} SHARES</dd>
@@ -203,7 +203,7 @@ export function PlanetDetail({
         </dl>
       ) : null}
 
-      <dl className={styles.planetSpec}>
+      <dl className={styles.planetSpec} aria-label="Holding stats">
         <div>
           <dt>WEIGHT</dt>
           <dd>{plainPercent(holding.weight)}</dd>
