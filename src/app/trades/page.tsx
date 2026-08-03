@@ -5,7 +5,7 @@ import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { supabase } from "@/lib/supabase/client";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { AddTradeForm } from "@/components/trades/AddTradeForm";
-import { NavBar } from "@/components/layout/NavBar";
+import { UniverseNav } from "@/components/observatory/UniverseNav";
 import { TradeLogTable } from "@/components/trades/TradeLogTable";
 import { ShareSettingsToggle } from "@/components/trades/ShareSettingsToggle";
 
@@ -43,7 +43,14 @@ export default async function TradesPage() {
 
   return (
     <>
-      <NavBar variant="private" active="trades" />
+      {/* R7-W7. Fable's order said to REDIRECT /trades to a new equivalent. Not
+          done, deliberately: there is no new equivalent. This is the only place
+          a trade can be entered, and "OPEN TRADE DESK" in Mission Control links
+          here. Redirecting it would have removed trade entry from the app to
+          satisfy a line in a plan. The old NavBar is gone, which is what he
+          actually reported; the page stays until FB-18 (trade form style) gives
+          it a real home. */}
+      <UniverseNav active="universe" />
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="space-y-8">
           <div className="flex items-center justify-between">

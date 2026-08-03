@@ -4441,3 +4441,27 @@
   color: var(--universe-cabinet-window-word);
   font-variant-numeric: tabular-nums;
 }
+
+/* R7-W7: real page navigation, where the anchor tabs used to be. */
+.missionPageNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.missionPageNav a {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.7rem;
+  border: 1px solid rgba(213, 186, 140, 0.3);
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-label)/1.15 var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.missionPageNav a:hover {
+  color: #050b0a;
+  background: var(--universe-cabinet-amber-chrome);
+}

@@ -1,0 +1,51 @@
+/* R7-W7. The universe design system's header, replacing the old NavBar on
+   every route that is not the universe itself. Sizes come from the same five
+   ramp tokens the rest of the universe uses, so the type-ramp gate covers
+   this file too. */
+.universeNav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.22);
+  background: rgba(5, 11, 10, 0.92);
+  backdrop-filter: blur(6px);
+}
+
+.universeNav nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.universeNav nav a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.85rem;
+  border: 1px solid transparent;
+  color: var(--universe-cabinet-window-word);
+  font: 600 var(--type-body)/1.15 var(--font-mono, monospace);
+  letter-spacing: 0.09em;
+  text-decoration: none;
+}
+
+.universeNav nav a:hover {
+  color: var(--universe-cabinet-cream);
+  border-color: rgba(213, 186, 140, 0.35);
+}
+
+.universeNav nav a[aria-current="page"] {
+  color: #050b0a;
+  background: var(--universe-cabinet-amber-chrome);
+  border-color: var(--universe-cabinet-amber-chrome);
+}
+
+.universeNav nav a:focus-visible {
+  outline: 2px solid var(--universe-cabinet-amber-chrome);
+  outline-offset: 2px;
+}

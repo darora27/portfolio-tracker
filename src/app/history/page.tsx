@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getHistoryData } from "@/lib/history-data";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { NavBar } from "@/components/layout/NavBar";
+import { UniverseNav } from "@/components/observatory/UniverseNav";
 import { DailyReturnsChart } from "@/components/history/DailyReturnsChart";
 import { DrawdownChart } from "@/components/history/DrawdownChart";
 import { CompositionOverTimeChart } from "@/components/history/CompositionOverTimeChart";
@@ -43,7 +43,7 @@ export default async function HistoryPage() {
 
   return (
     <>
-      <NavBar variant="private" active="history" />
+      <UniverseNav active="history" />
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="space-y-8">
           <div className="flex items-center justify-between">

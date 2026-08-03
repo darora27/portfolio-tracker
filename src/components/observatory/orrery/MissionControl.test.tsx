@@ -24,17 +24,22 @@ describe("MissionControl", () => {
         {...shellProps}
       />,
     );
+    /* R7-W7. This asserted an anchor per section — the tab strip. He asked
+     * for it gone three times, most recently in capitals, and his reason was
+     * exact: "all of those tabs are LOCATED ON THE SAME PAGE." They were
+     * navigation in appearance and a table of contents in fact.
+     *
+     * So the assertion inverts: no same-page anchors in the strip at all.
+     * What replaces them is what he asked for — "maybe one showing history
+     * and one showing research" — as real page loads. */
     for (const anchor of [
-      "orbits", "holdings", "returns", "mix", "risk", "trades",
+      "orbits", "holdings", "returns", "mix", "risk", "trades", "earnings",
+      "correlation", "news",
     ]) {
-      expect(html).toContain(`href=\"#${anchor}\"`);
+      expect(html).not.toContain(`href=\"#${anchor}\"`);
     }
-    expect(html).not.toContain('href="#correlation"');
-    expect(html).not.toContain('href="#news"');
-    // §15 cut the standalone EARNINGS section; he restored it on July 31 as a
-    // two-month forecast, so the anchor is expected now. CORRELATION and NEWS
-    // stay cut, and those assertions above are untouched.
-    expect(html).toContain('href="#earnings"');
+    expect(html).toContain('href="/history"');
+    expect(html).toContain('href="/research"');
     expect(html).toContain("Readable room content");
     expect(html).toContain("SINCE START TWR");
     expect(html).toContain("VS VOO · SAME PERIOD");

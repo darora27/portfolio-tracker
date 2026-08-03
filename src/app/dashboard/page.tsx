@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getDashboardData } from "@/lib/dashboard-data";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { NavBar } from "@/components/layout/NavBar";
+import { UniverseNav } from "@/components/observatory/UniverseNav";
 import { LiveQuotesProvider } from "@/components/dashboard/LiveQuotesProvider";
 import { LiveHeadlineStats } from "@/components/dashboard/LiveHeadlineStats";
 import { DashboardModeSwitcher } from "@/components/dashboard/DashboardModeSwitcher";
@@ -64,7 +64,14 @@ export default async function Home({
 
   return (
     <>
-      <NavBar variant="private" active="dashboard" />
+      {/* R7-W7. /dashboard keeps its content but loses the old menu, so nothing
+          in the app links here any more — the four framing modes that live on
+          this page were explicitly left alone by MISSION_CONTROL_ARCHITECTURE
+          §5. Unlinked rather than deleted: removing the route would break nine
+          passing tests to achieve what removing the link already achieves, and
+          deleting a page is a decision worth making on purpose rather than as
+          a side effect of a nav change. */}
+      <UniverseNav active="universe" />
       <LiveQuotesProvider initialPositions={data.positionRows}>
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
           <div className="space-y-8">

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getResearchData } from "@/lib/research-data";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { NavBar } from "@/components/layout/NavBar";
+import { UniverseNav } from "@/components/observatory/UniverseNav";
 import { Card } from "@/components/ui/Card";
 import { DataTable, DataTableHead, DataTableBody, DataTableRow, Th, Td } from "@/components/ui/DataTable";
 import { StockNews } from "@/components/stock/StockNews";
@@ -45,7 +45,7 @@ export default async function ResearchPage() {
 
   return (
     <>
-      <NavBar variant="private" active="research" />
+      <UniverseNav active="research" />
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="space-y-8">
           <div>

@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { getStockDetailData } from "@/lib/stock-data";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { NavBar } from "@/components/layout/NavBar";
+import { UniverseNav } from "@/components/observatory/UniverseNav";
 import { ChartRoomHeader } from "@/components/observatory/chart-room/ChartRoomHeader";
 import { ChartRoomGraph } from "@/components/observatory/chart-room/ChartRoomGraph";
 import { DistributionBench } from "@/components/observatory/chart-room/DistributionBench";
@@ -75,7 +75,7 @@ export default async function StockDetailPage({ params }: { params: Promise<{ ti
 
   return (
     <>
-      <NavBar variant="private" />
+      <UniverseNav active="universe" />
       <div className={chartRoomStyles.chartRoom}>
         <ChartRoomHeader
           ticker={data.ticker}

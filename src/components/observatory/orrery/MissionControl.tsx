@@ -30,16 +30,11 @@ const DraftRig = dynamic(
 // FB-08 + FB-15 (§12a) variant A/C: destinations not already reachable via
 // a readout chip, folded into the strip as compact links. ORBITS is
 // deliberately last since PLOT already scrolls into view by default.
-const FOLDED_CHIP_DESTINATIONS = [
-  { anchor: "holdings", label: "HOLDINGS" },
-  { anchor: "mix", label: "MIX" },
-  { anchor: "trades", label: "ACTIVITY" },
-  { anchor: "orbits", label: "ORBITS" },
-  // R7 Jul 31: the new EARNINGS section. Variant A has no tab strip, so this
-  // list IS how a section is reachable there — omitting it made EARNINGS the
-  // one destination with no route in that variant.
-  { anchor: "earnings", label: "EARNINGS" },
-] as const;
+/* R7-W7. FOLDED_CHIP_DESTINATIONS is gone. It was the tab strip in a smaller
+   shape — same-page anchors labelled HOLDINGS / MIX / ACTIVITY / ORBITS /
+   EARNINGS, rendered in the variants that had no tab row. Removing the tabs
+   while leaving these would have kept exactly the thing he objected to and
+   only changed where it sat. */
 
 // §15 BHV-01: the single soonest upcoming-earnings entry across all
 // holdings, same daysBetween/date-formatting pattern the room's own
@@ -156,16 +151,14 @@ export function MissionControl({
         <div className={styles.missionReadoutChips}>
           {stripVariant === "a" || stripVariant === "c" ? (
             <>
-              <a href="#returns">WEEK <b>{weekReadout}</b></a>
-              <a href="#returns">SINCE START TWR <b>{twrReadout}</b></a>
-              <a href="#returns">VS VOO · SAME PERIOD <b>{marketReadout}</b></a>
-              <a href="#risk">OFF HIGH <b>{offHighReadout}</b></a>
+              {/* Readouts, not links. They pointed at #returns and #risk —
+                  same-page anchors, the same pattern as the tabs. Variant B
+                  already rendered them as plain spans; the others now match. */}
+              <span>WEEK <b>{weekReadout}</b></span>
+              <span>SINCE START TWR <b>{twrReadout}</b></span>
+              <span>VS VOO · SAME PERIOD <b>{marketReadout}</b></span>
+              <span>OFF HIGH <b>{offHighReadout}</b></span>
               {nextChip ? <span>{nextChip}</span> : null}
-              {FOLDED_CHIP_DESTINATIONS.map((destination) => (
-                <a key={destination.anchor} href={`#${destination.anchor}`} className={styles.missionFoldedChip}>
-                  {destination.label}
-                </a>
-              ))}
             </>
           ) : (
             <>
@@ -177,19 +170,22 @@ export function MissionControl({
             </>
           )}
         </div>
-        {stripVariant === "a" || stripVariant === "c" ? null : (
-          <nav aria-label="Mission Control sections">
-            {MISSION_CONTROL_PANELS.map((panel) => (
-              <a
-                key={panel.id}
-                href={`#${panel.anchor}`}
-                aria-current={panel.id === activePanel ? "page" : undefined}
-              >
-                {panel.label}
-              </a>
-            ))}
+        {/* R7-W7. The section tabs are gone, on his third report of them:
+            "all of those tabs are LOCATED ON THE SAME PAGE". They were anchor
+            links that scrolled the page you were already on — navigation in
+            appearance, a table of contents in fact. Sections are still
+            reachable by scrolling, which is all they ever were.
+
+            In their place, the two destinations he actually named: "maybe one
+            showing history and one showing research". These are real page
+            loads. Private only — both routes are owner-gated, so offering
+            them on the public share view would be offering a login wall. */}
+        {mode === "private" ? (
+          <nav aria-label="Pages" className={styles.missionPageNav}>
+            <Link href="/history">HISTORY ▸</Link>
+            <Link href="/research">RESEARCH ▸</Link>
           </nav>
-        )}
+        ) : null}
         {mode === "private" && holdings.length === 8 ? (
           <button
             type="button"

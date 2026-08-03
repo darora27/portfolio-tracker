@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MissionControl } from "./MissionControl";
 import { MISSION_CONTROL_PANELS } from "./mission-control-panels";
@@ -69,37 +69,57 @@ describe.each(["a", "b", "c"] as const)("tab-strip variant %s", (stripVariant) =
     );
     expect(consoleError).not.toHaveBeenCalled();
 
+    /* R7-W7. This walked MISSION_CONTROL_PANELS and demanded a focusable
+     * same-page anchor per section. Those anchors are gone at his request, so
+     * the check now guards the opposite: the strip must contain no
+     * scroll-to-self links pretending to be navigation.
+     *
+     * The accessibility question underneath it survives, and is what the
+     * `control.tagName` loop below still asks of the links that DO remain:
+     * every route in the strip must be a real, focusable anchor with an
+     * href — not a div with a click handler. That was the valuable half. */
     for (const panel of MISSION_CONTROL_PANELS) {
-      const controls = container.querySelectorAll(`a[href="#${panel.anchor}"]`);
-      expect(controls.length, `${stripVariant}: ${panel.label} reachable`).toBeGreaterThanOrEqual(1);
-      for (const control of controls) {
-        // A real, focusable, keyboard-operable anchor -- not a div/span with
-        // a click handler and no tab stop.
-        expect(control.tagName).toBe("A");
-        expect(control.hasAttribute("href")).toBe(true);
-      }
+      expect(
+        container.querySelectorAll(`a[href="#${panel.anchor}"]`).length,
+        `${stripVariant}: ${panel.label} must not be a same-page tab`,
+      ).toBe(0);
+    }
+    for (const control of container.querySelectorAll("nav a")) {
+      expect(control.tagName).toBe("A");
+      expect(control.hasAttribute("href")).toBe(true);
     }
   });
 
-  it.skipIf(stripVariant === "a")(
-    "keeps an active-page marker for the current panel where a tab surface exists (variant A has no tabs by design)",
-    () => {
-      render(
-        <MissionControl
-          activePanel="hazard"
-          mode="public"
-          content={<div>PUBLIC ROOM</div>}
-          closeHref="/share"
-          basePath="/share"
-          holdings={[holding]}
-          health={0.2}
-          stripVariant={stripVariant}
-        />,
-      );
-      const current = screen.getAllByText(/RISK/).filter(
-        (el) => el.closest("a")?.getAttribute("aria-current") === "page",
-      );
-      expect(current.length).toBeGreaterThanOrEqual(1);
-    },
-  );
+  /* R7-W7. This asserted an active-page marker on the current tab, and skipped
+   * itself for variant A "which has no tabs by design". No variant has tabs
+   * now — he asked for them gone three times — so the test has no subject
+   * left and asserting a marker that cannot exist would be theatre.
+   *
+   * Replaced with the question that outlived it: whatever IS in the strip must
+   * go somewhere real. A link that scrolls you to where you already are was
+   * the whole complaint, and this is the check that stops it coming back. */
+  it("offers only real destinations — no link in the strip scrolls to the page it is on", () => {
+    const { container } = render(
+      <MissionControl
+        activePanel="hazard"
+        mode="private"
+        content={<div>ROOM</div>}
+        closeHref="/"
+        basePath="/"
+        holdings={[holding]}
+        health={0.2}
+        stripVariant={stripVariant}
+      />,
+    );
+    for (const link of container.querySelectorAll("a")) {
+      const href = link.getAttribute("href") ?? "";
+      expect(
+        href.startsWith("#"),
+        `${stripVariant}: "${link.textContent}" is a same-page anchor`,
+      ).toBe(false);
+    }
+    // And the two he named by name are present and are real page loads.
+    expect(container.querySelector('a[href="/history"]')).toBeTruthy();
+    expect(container.querySelector('a[href="/research"]')).toBeTruthy();
+  });
 });
