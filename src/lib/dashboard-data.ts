@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { supabase } from "@/lib/supabase/client";
 import { getQuotes, getUpcomingEarnings, getCompanyNews } from "@/lib/finnhub";
 import type { EarningsEvent } from "@/lib/finnhub-earnings";
@@ -145,11 +146,68 @@ export type DashboardData = {
 };
 
 /**
+ * FB-36. How long the cached payload stays warm.
+ *
+ * Five minutes, at his choosing. The underlying data is daily snapshots plus
+ * live quotes; a quote five minutes old is not meaningfully staler than one
+ * fetched at page load, and the alternative was an 18-second wait for every
+ * visitor.
+ */
+const DASHBOARD_CACHE_SECONDS = 300;
+
+/**
  * All computed dashboard data, shared between the owner's private view (/)
  * and the public read-only view (/share) — both render the same numbers,
  * they just differ in whether dollar amounts are shown.
+ *
+ * ## FB-36: why the cache is here and not on the page
+ *
+ * Measured on the deployed site: 18.2 seconds to first byte, on a warm
+ * instance, every request. TTFB was 42 ms and the HTML body then took 17.3
+ * seconds — the server holding the connection open while this function
+ * awaited ~24 Finnhub calls (8 quotes + 8 earnings + 8 news).
+ *
+ * The obvious fix — `export const revalidate` on the route — cannot work.
+ * `UniverseRoute` calls `cookies()` and reads `searchParams`, and either one
+ * opts a route into dynamic rendering in the App Router, so the full route
+ * cache never engages. The expense is in the data, so the cache goes on the
+ * data.
+ *
+ * `unstable_cache` is shared across instances and across visitors, which the
+ * existing in-memory `getOrFetch` is not: that one lives on a single
+ * serverless instance and so never helps a FIRST-TIME visitor, which is the
+ * only visitor a shared link has. Both are kept — getOrFetch still collapses
+ * repeat Finnhub calls inside one render.
+ *
+ * ## Privacy
+ *
+ * The cached payload carries owner dollar figures, exactly as the uncached
+ * one did. It is not keyed by viewer, and it does not need to be: this is a
+ * single-owner application, and `/share` strips dollars at render time from
+ * the same object `/` renders in full. The public boundary is enforced where
+ * it always was — in the component, by `mode` — and caching does not move
+ * it. If this ever becomes multi-user, this cache must become per-user or be
+ * removed; that is the trap to remember.
  */
-export async function getDashboardData(): Promise<DashboardData> {
+/**
+ * The cache is bypassed under test, deliberately.
+ *
+ * dashboard-data.source.test.ts calls this function four times in one test,
+ * re-mocking Finnhub between calls and asserting the result changes. A cache
+ * would serve the first payload to all four and the test would pass for the
+ * wrong reason — worse than failing, because it would keep passing after the
+ * projection logic broke. The uncached function is what has behaviour worth
+ * asserting; the cache is transport.
+ */
+export const getDashboardData: () => Promise<DashboardData> =
+  process.env.NODE_ENV === "test"
+    ? getDashboardDataUncached
+    : unstable_cache(getDashboardDataUncached, ["dashboard-data"], {
+        revalidate: DASHBOARD_CACHE_SECONDS,
+        tags: ["dashboard-data"],
+      });
+
+async function getDashboardDataUncached(): Promise<DashboardData> {
   const [
     { data: trades, error: tradesError },
     { data: snapshots, error: snapshotsError },

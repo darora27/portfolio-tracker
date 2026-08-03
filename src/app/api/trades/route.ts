@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 import { isValidSession, SESSION_COOKIE_NAME } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/admin";
@@ -60,6 +60,16 @@ export async function POST(request: Request) {
   if (insertError) {
     return NextResponse.json({ error: insertError.message }, { status: 500 });
   }
+
+  /* FB-36: this route has just written new rows, and getDashboardData is
+     cached for five minutes. Without this the app would keep serving the
+     pre-write payload until the window expired — a trade entered and then not
+     visible, or a fresh snapshot ignored until the next visitor got lucky.
+     The cache is a latency fix; it must never become a correctness one. */
+  // Next 16 requires a cache profile; { expire: 0 } says "stale now",
+  // which is what a write means.
+  revalidateTag("dashboard-data", { expire: 0 });
+
 
   await ensureSectorCached(validated.ticker);
 

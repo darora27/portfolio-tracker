@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { getQuotes } from "@/lib/finnhub";
@@ -123,6 +124,15 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: benchmarkError.message }, { status: 500 });
     }
   }
+
+  /* FB-36: this route has just written new rows, and getDashboardData is
+     cached for five minutes. Without this the app would keep serving the
+     pre-write payload until the window expired — a trade entered and then not
+     visible, or a fresh snapshot ignored until the next visitor got lucky.
+     The cache is a latency fix; it must never become a correctness one. */
+  // Next 16 requires a cache profile; { expire: 0 } says "stale now",
+  // which is what a write means.
+  revalidateTag("dashboard-data", { expire: 0 });
 
   return NextResponse.json({
     date: today,
