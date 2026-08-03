@@ -2177,8 +2177,25 @@ export default function OrreryScene({
       moonRuntimes.forEach(({ descriptor, group }) => {
         group.rotation.y += delta * (Math.PI * 2 / descriptor.orbitPeriodSeconds);
       });
+      /* R7, Aug: "They are moving so fast i cannot click on them."
+       *
+       * 0.19 rad/s is roughly 650 degrees per minute — a full orbit every 33
+       * seconds. Planets are capped at 60 deg/min, so the craft were about
+       * eleven times faster than anything else on screen, and on the wide
+       * outer ring that is a lot of pixels per second to chase.
+       *
+       * 0.024 rad/s is about 82 deg/min: a little quicker than the fastest
+       * planet, which is right for a craft rather than a world, but inside
+       * the same visual language instead of an order of magnitude outside it.
+       * A full orbit takes about four and a half minutes.
+       *
+       * This is the fourth magnitude bug in this session and the first in the
+       * opposite direction — trails, drag and satellite size were all too
+       * SMALL to perceive; this was too FAST to use. Same root cause either
+       * way: a number chosen without asking what it feels like at the scale
+       * it actually renders. */
       satelliteRuntimes.forEach(({ descriptor, group, light }, index) => {
-        group.rotation.y += delta * (0.19 + index * 0.025);
+        if (!reducedMotion) group.rotation.y += delta * (0.024 + index * 0.003);
         light.material.opacity =
           descriptor.blinkSeconds === null
             ? 1
