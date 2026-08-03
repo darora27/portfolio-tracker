@@ -71,7 +71,7 @@ export default async function Home({
           passing tests to achieve what removing the link already achieves, and
           deleting a page is a decision worth making on purpose rather than as
           a side effect of a nav change. */}
-      <UniverseNav active="universe" />
+      <UniverseNav />
       <LiveQuotesProvider initialPositions={data.positionRows}>
         <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
           <div className="space-y-8">

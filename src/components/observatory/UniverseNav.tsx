@@ -29,7 +29,8 @@ export function UniverseNav({
   active,
   showLogout = true,
 }: {
-  active: UniverseDestination;
+  /** Omitted on pages that are none of the three — nothing is marked current. */
+  active?: UniverseDestination;
   /** The public share view has no session to end. */
   showLogout?: boolean;
 }) {

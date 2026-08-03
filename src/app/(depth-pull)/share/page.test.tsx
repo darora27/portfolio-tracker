@@ -235,7 +235,13 @@ describe("/share Stock Market Universe rendered output", () => {
 
       expect(html).toContain("Mission Control");
       expect(html).toContain('data-mode="public"');
-      expect(html).toContain(`href="#${anchor}"`);
+      /* R7-W7. This asserted the section's TAB LINK existed, using it as a
+       * stand-in for "the station rendered". The tabs are gone at his request
+       * — they scrolled to the page you were already on — so the check now
+       * looks at the section itself, which is what it was ever really about.
+       * Everything below, the owner-canary assertions, is untouched: that is
+       * the privacy half of this test and it is the half that matters. */
+      expect(html).toContain(`id="${anchor}"`);
       expect(html).not.toMatch(/\$\d[\d,]*\.\d{2}\b/);
       expect(html).not.toContain("PRIVATE_RESEARCH_MARKER");
       expect(html).not.toContain("PRIVATE_SIMULATION_MARKER");

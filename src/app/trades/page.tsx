@@ -50,7 +50,7 @@ export default async function TradesPage() {
           satisfy a line in a plan. The old NavBar is gone, which is what he
           actually reported; the page stays until FB-18 (trade form style) gives
           it a real home. */}
-      <UniverseNav active="universe" />
+      <UniverseNav />
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="space-y-8">
           <div className="flex items-center justify-between">

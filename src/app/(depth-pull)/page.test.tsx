@@ -202,7 +202,8 @@ describe("private / owner universe", () => {
     });
     expect(html).toContain('data-mode="private"');
     expect(html).toContain("Private universe / owner access");
-    expect(html).toContain('href="#risk"');
+    // R7-W7: the tab is gone; the section it pointed at is the real subject.
+    expect(html).toContain('id="risk"');
     expect(html).toContain("HOLDINGS");
     expect(html).not.toContain("Owner research station");
     expect(getResearchData).not.toHaveBeenCalled();

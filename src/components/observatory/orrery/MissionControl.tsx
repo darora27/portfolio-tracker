@@ -206,19 +206,10 @@ export function MissionControl({
         </Link>
       </header>
 
-      {stripVariant === "c" ? (
-        <nav aria-label="Mission Control sections" className={styles.missionIndexEdge}>
-          {MISSION_CONTROL_PANELS.map((panel) => (
-            <a
-              key={panel.id}
-              href={`#${panel.anchor}`}
-              aria-current={panel.id === activePanel ? "page" : undefined}
-            >
-              {panel.label}
-            </a>
-          ))}
-        </nav>
-      ) : null}
+      {/* Variant C's edge index was the tab strip a THIRD time — same
+          same-page anchors, moved to the side of the room. Removed with the
+          others. Three places was itself the tell: a control that keeps
+          reappearing in new positions is one nobody could make work. */}
 
       <div className={styles.missionDescent}>
         <h2 id="mission-control-title" tabIndex={-1}>Mission Control</h2>
