@@ -74,10 +74,27 @@
   position: absolute;
   z-index: 0;
   inset: -4%;
-  /* FB-02 (§13), move 1: the repeating dot-grid tile and ellipse washes are
-   * retired -- a performance refund, not a replacement. Only the dark base
-   * gradient and the pointer-parallax transform remain. */
-  background: linear-gradient(150deg, #010504, #04110d 55%, var(--universe-cabinet-void));
+  /* FB-02, FIFTH report, and the fix is a reversal rather than a redesign.
+   *
+   * §13 removed the two star tiles and the two colour washes, calling it "a
+   * performance refund, not a replacement". He noticed: "You removed the star
+   * grid background from before but now it looks too plane." A refund with
+   * nothing bought is just a deletion, and this is what it deleted.
+   *
+   * Restored at ~80% of the original alpha — his complaint was flatness, not
+   * dimness, and the planets have to stay the brightest things on screen.
+   *
+   * On the performance worry that motivated the removal: these are static
+   * background layers on one element, painted once. The element's only
+   * animation is translate3d, which the compositor handles without repaint.
+   * The 50 ms gate measures main-thread long tasks; CSS backgrounds do not
+   * enter it. The refund was for a cost that was not being charged. */
+  background:
+    radial-gradient(circle, rgba(228, 248, 225, 0.72) 0 1px, transparent 1.4px) 0 0 / 89px 83px,
+    radial-gradient(circle, rgba(157, 231, 178, 0.52) 0 1px, transparent 1.5px) 41px 23px / 137px 131px,
+    radial-gradient(ellipse at 50% 62%, rgba(46, 119, 77, 0.18), transparent 40%),
+    radial-gradient(ellipse at 70% 24%, rgba(114, 72, 28, 0.11), transparent 29%),
+    linear-gradient(150deg, #010504, #04110d 55%, var(--universe-cabinet-void));
   transform: translate3d(
     calc(var(--orrery-pointer-x) * -7px),
     calc(var(--orrery-pointer-y) * -5px),
@@ -4464,4 +4481,65 @@
 .missionPageNav a:hover {
   color: #050b0a;
   background: var(--universe-cabinet-amber-chrome);
+}
+
+/* R7-W8. Two layers the sky never had, both behind the planets and both
+   deliberately slow — his ask was "much more creative", not "busier", and a
+   backdrop that competes with the data is a worse failure than a flat one. */
+
+/* A dust band across the ecliptic, drifting slowly enough that you notice it
+   between visits rather than while reading. Transform-only animation, so the
+   compositor handles it and nothing repaints. */
+.dustBand {
+  position: absolute;
+  z-index: 0;
+  inset: -20% -30%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 8% at 30% 50%, rgba(157, 231, 178, 0.07), transparent 70%),
+    radial-gradient(ellipse 45% 5% at 68% 46%, rgba(214, 111, 35, 0.05), transparent 70%);
+  animation: dustDrift 240s linear infinite;
+}
+
+@keyframes dustDrift {
+  from { transform: translate3d(-3%, 0, 0); }
+  50%  { transform: translate3d(3%, -1%, 0); }
+  to   { transform: translate3d(-3%, 0, 0); }
+}
+
+/* A comet, rarely. 150s cycle with the streak visible for about three of
+   them — often enough to be a reward for looking, rare enough that it never
+   becomes wallpaper. */
+.cometStreak {
+  position: absolute;
+  z-index: 0;
+  top: 18%;
+  left: -12%;
+  width: 14%;
+  height: 2px;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(244, 240, 223, 0.75), transparent);
+  animation: cometPass 150s linear infinite;
+}
+
+@keyframes cometPass {
+  0%, 97.9% { opacity: 0; transform: translate3d(0, 0, 0); }
+  98%       { opacity: 0.9; transform: translate3d(0, 0, 0); }
+  99.9%     { opacity: 0; transform: translate3d(760%, 190%, 0); }
+  100%      { opacity: 0; transform: translate3d(0, 0, 0); }
+}
+
+/* Reduced motion stops both outright rather than slowing them. Someone who
+   asks for no motion is not asking for less of it. */
+@media (prefers-reduced-motion: reduce) {
+  .dustBand,
+  .cometStreak {
+    animation: none;
+  }
+
+  .cometStreak {
+    display: none;
+  }
 }

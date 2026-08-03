@@ -337,6 +337,11 @@ export function OrreryWorld({
       data-selected-holding={selectedTicker ?? ""}
     >
       <div className={styles.starField} aria-hidden="true" />
+      {/* R7-W8. Both sit behind the planets and carry no data — the sky is
+          the one place in this app where something is allowed to be purely
+          atmospheric. Everything in front of them still encodes a number. */}
+      <div className={styles.dustBand} aria-hidden="true" />
+      <div className={styles.cometStreak} aria-hidden="true" />
       <div className={styles.skyVignette} aria-hidden="true" />
       <div className={styles.scanlines} aria-hidden="true" />
       <header className={styles.commandBar}>

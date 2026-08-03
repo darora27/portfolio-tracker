@@ -87,7 +87,24 @@ export const MAX_TRAIL_DEGREES = 72;
 const MIN_TRAIL_RETURN = 0.002;
 const MAX_TRAIL_RETURN = 0.12;
 const TRAIL_TAPER_FLOOR = 0.85;
-const SATELLITE_RADIUS = 0.16;
+/**
+ * R7-W8, his SECOND report: "I still don't see any satelites or anything else
+ * creative that would make the solar system look better."
+ *
+ * They were there the whole time — DRIFT, HAZARD and SUPPLY, modelled,
+ * rendered, and carrying real values. They were just 0.16 units across in a
+ * system whose smallest PLANET is 0.62 and whose outer orbit now sits near
+ * 35. A quarter the size of the smallest thing on screen, parked in the
+ * sun's glow, is indistinguishable from absent.
+ *
+ * 0.42 is about two thirds of the smallest planet: unmistakably a craft
+ * rather than a world, and unmistakably present. This is the same failure as
+ * the trails and the drag-to-rotate — a feature that existed at a scale
+ * nobody could perceive. Three times now, which makes it a pattern worth
+ * naming: shipping something at an invisible magnitude reads exactly like
+ * not shipping it.
+ */
+const SATELLITE_RADIUS = 0.42;
 export const MIN_SUN_RADIUS = 2.8;
 export const SUN_TO_PLANET_RATIO = 1.6;
 const STAR_COUNT = 1_024;
@@ -909,7 +926,13 @@ export function satelliteRingRadius(
   firstPlanetRadius: number,
   sunRadius = MIN_SUN_RADIUS,
 ): number {
-  const inner = sunRadius + SATELLITE_RADIUS + ORRERY_PLANET_CLEARANCE;
+  /* The ring used to start right at the sun's edge, which put three small
+   * craft inside the corona — the one place on screen where a faint object
+   * cannot be seen at all. A clear sun-radius of margin pushes them into
+   * open space between the sun and the first orbit, which is now a wide gap
+   * thanks to the ASML clearance change. */
+  const inner =
+    sunRadius * 1.6 + SATELLITE_RADIUS + ORRERY_PLANET_CLEARANCE;
   const outer =
     firstPlanetOrbitRadius -
     firstPlanetRadius -
