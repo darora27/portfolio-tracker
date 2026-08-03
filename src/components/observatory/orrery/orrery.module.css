@@ -4543,3 +4543,53 @@
     display: none;
   }
 }
+
+/* R7-W5. The planet panel as a spec sheet.
+
+   The old layout was identical LABEL/value pills at label size, evenly
+   spaced — which is what "looks heavily designed by artificial intelligence"
+   describes: every fact given the same weight, so nothing is dominant and
+   nothing is findable. Rows with hairlines, labels left, figures
+   right-aligned on tabular numerals. His spreadsheet is the reference. */
+.planetSpec {
+  display: grid;
+  gap: 0;
+  margin: 0.7rem 0;
+  padding: 0;
+  border-top: 1px solid rgba(213, 186, 140, 0.22);
+}
+
+.planetSpec > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.42rem 0;
+  border-bottom: 1px solid rgba(213, 186, 140, 0.14);
+}
+
+.planetSpec dt {
+  color: var(--universe-cabinet-window-word);
+  font: 500 var(--type-body)/1.2 var(--font-mono, monospace);
+  letter-spacing: 0.07em;
+}
+
+.planetSpec dd {
+  margin: 0;
+  color: var(--universe-cabinet-cream);
+  font: 600 var(--type-title)/1.2 var(--font-mono, monospace);
+  font-variant-numeric: tabular-nums;
+}
+
+.planetSpec dd[data-signal="up"] {
+  color: var(--universe-signal-gain);
+}
+
+.planetSpec dd[data-signal="down"] {
+  color: var(--universe-signal-loss);
+}
+
+/* The owner block reads as its own instrument, not more of the same list. */
+.planetSpec[data-owner="true"] {
+  border-top-color: var(--universe-cabinet-amber-chrome);
+}

@@ -37,7 +37,7 @@ import {
 } from "./MissionControl";
 import type { MissionControlPanelId } from "./mission-control-panels";
 import { OrrerySceneLoader } from "./OrrerySceneLoader";
-import { PlanetDetail } from "./PlanetDetail";
+import { PlanetDetail, type PlanetOwnerFacts } from "./PlanetDetail";
 import { SectorMap } from "./SectorMap";
 import { SystemsManual } from "./SystemsManual";
 import styles from "./orrery.module.css";
@@ -101,6 +101,7 @@ export function OrreryWorld({
   tradeComet = null,
   portfolioVolatility = null,
   indexBenchmarks = [],
+  ownerFactsByTicker,
   portfolioBeta = null,
   sectorSystem,
   selectedSystem = null,
@@ -145,6 +146,16 @@ export function OrreryWorld({
    * of that back for indices already in the payload.
    */
   indexBenchmarks?: readonly { label: string; returnPct: number | null }[];
+  /**
+   * R7-W5. Owner dollars per ticker, for the planet panel.
+   *
+   * UniverseRoute passes this ONLY when missionMode is private. This
+   * component is a client component, so whatever arrives here is serialised
+   * into the HTML — an unrendered owner field would still be readable in
+   * page source on /share. Withholding it at the server is the only place
+   * the guarantee can be made.
+   */
+  ownerFactsByTicker?: Readonly<Record<string, PlanetOwnerFacts>>;
   portfolioBeta?: number | null;
   sectorSystem?: SectorSystem;
   selectedSystem?: string | null;
@@ -656,6 +667,11 @@ export function OrreryWorld({
               forceNo3d={forceNo3d}
               transmissionsFirst={transmissionsFirst}
               mode={missionMode}
+              ownerFacts={
+                missionMode === "private"
+                  ? ownerFactsByTicker?.[selected.ticker] ?? null
+                  : null
+              }
             />
           </aside>
         ) : null}

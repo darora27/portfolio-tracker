@@ -179,6 +179,28 @@ export async function UniverseRoute({
       tradeComet={(data.publicTradeLog ?? []).find(
         (entry) => entry.date === todayInTimeZone("America/New_York"),
       ) ?? null}
+      /* R7-W5. Owner dollars for the planet panel, and the guard is here on
+         purpose. OrreryWorld is a client component: anything passed to it is
+         serialised into the HTML, so an owner field withheld only at render
+         time would still be readable in page source on /share. Building the
+         map ONLY in private mode means the public payload never contains it
+         at all — the same reason PublicOrreryHolding has no dollar fields. */
+      ownerFactsByTicker={
+        missionMode === "private"
+          ? Object.fromEntries(
+              data.positionRows.map((row) => [
+                row.ticker,
+                {
+                  shares: row.shares,
+                  value: row.value,
+                  costBasis: row.costBasis,
+                  dayDollars: row.day,
+                  gainDollars: row.gain,
+                },
+              ]),
+            )
+          : undefined
+      }
       portfolioVolatility={data.volatilityPct}
       /* R7-W8(b). Same-period index returns, from data already computed for
          the RETURNS section. An unavailable benchmark still gets a craft with
