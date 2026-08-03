@@ -47,6 +47,21 @@ const source = readFileSync(path.resolve(__dirname, "dashboard-data.ts"), "utf8"
  * the test began failing on 2026-08-03 with nothing having changed in the
  * code. A literal date checked against a rolling window is a test with an
  * expiry date on it; two days before now is inside the window forever.
+ *
+ * Audited the rest of the suite for the same shape, raw epoch literals
+ * included, since the first pass only searched for `new Date(...)`:
+ *
+ *   share/page.test.tsx:153        2026-07-28, 6.8 days old
+ *   MissionControlContent.test:68  2026-07-25, 9.1 days old — already stale
+ *   PlanetDetail.test.tsx          2026-07-28, 6.8 days old
+ *
+ * None of them fail, and none of them can: each supplies already-projected
+ * `newsByHolding` data or mocks getDashboardData outright, so the rolling
+ * seven-day filter never runs over them. This file is the only one that
+ * exercises the real filter, which is why it was the only casualty. Left as
+ * they are rather than churned — but recorded, because a reader meeting
+ * "2026-07-25" in a fixture cannot tell from the date alone whether it is
+ * load-bearing.
  */
 const RECENT_NEWS_SECONDS = Math.floor(Date.now() / 1000) - 2 * 24 * 60 * 60;
 
