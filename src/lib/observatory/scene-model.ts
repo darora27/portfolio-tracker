@@ -566,7 +566,55 @@ export function trailColorForDirection(direction: OrreryDirection): string {
   return UNIVERSE_PALETTE.signal.flat;
 }
 
+/**
+ * The orbit radius the degree band above is calibrated against — the
+ * innermost orbit. Callers that pass a real radius get the same *physical*
+ * trail there and a correctly scaled one everywhere else.
+ */
+export const TRAIL_REFERENCE_RADIUS = ORRERY_SUN_CLEARANCE;
+
+/**
+ * Guard rails on the derived angle, not a second encoding.
+ *
+ * The floor is deliberately low: at 6° the clamp was BINDING on the outermost
+ * orbit, which handed a flat outer holding a longer physical trail than an
+ * inner holding having a real day — reintroducing the exact bug this change
+ * fixes, just further out. 3° clears every orbit in the current book, so the
+ * length is decided by the return everywhere. The ceiling only stops a very
+ * tight orbit from wrapping into a spiral.
+ */
+const MIN_TRAIL_RADIANS = (3 * Math.PI) / 180;
+const MAX_TRAIL_RADIANS = (100 * Math.PI) / 180;
+
+/**
+ * R7, Jul 31, reported after looking: "a couple stocks with orbits closer to
+ * the sun have trails that are not super correlated to how the stock is
+ * doing. Most notable is COST and ASML because COST has a much smaller
+ * growth change but its trail is longer."
+ *
+ * He is right, and the cause is a units error I introduced when length
+ * became the magnitude channel. This returns an ANGLE, and the renderer
+ * draws `orbitRadius × angle` — so the same return produces a physically
+ * longer ribbon the further out the planet sits. COST is outside ASML, so
+ * COST's smaller move drew the longer trail. The encoding was measuring the
+ * orbit, not the stock.
+ *
+ * With an `orbitRadius`, the angle is derived from a target arc LENGTH in
+ * world units, which is what the eye actually compares. Without one the old
+ * angular behaviour is preserved at the reference radius, so callers that do
+ * not know their radius — and the unit tests — are unaffected.
+ */
 export function trailArcLengthForReturn(
+  returnValue: number | null,
+  orbitRadius: number = TRAIL_REFERENCE_RADIUS,
+): number {
+  const referenceRadians = angularTrailBand(returnValue);
+  const worldLength = referenceRadians * TRAIL_REFERENCE_RADIUS;
+  const scaled = worldLength / Math.max(0.001, orbitRadius);
+  return Math.min(MAX_TRAIL_RADIANS, Math.max(MIN_TRAIL_RADIANS, scaled));
+}
+
+function angularTrailBand(
   returnValue: number | null,
 ): number {
   if (returnValue === null) return (MIN_TRAIL_DEGREES * Math.PI) / 180;
@@ -1249,7 +1297,14 @@ export function buildOverviewSceneModel({
     planets,
     trails: holdings.map((holding) => {
       const direction = directionForReturn(holding.dayReturn);
-      const arcRadians = trailArcLengthForReturn(holding.dayReturn);
+      /* R7 Jul 31: the arc is scaled by this planet's OWN orbit radius, so
+       * two holdings with the same move draw the same physical trail length
+       * whatever orbit they sit on. Without it, COST's smaller move drew a
+       * longer ribbon than ASML's simply because COST orbits further out. */
+      const orbitRadius =
+        planets.find(({ ticker }) => ticker === holding.ticker)?.orbitRadius ??
+        TRAIL_REFERENCE_RADIUS;
+      const arcRadians = trailArcLengthForReturn(holding.dayReturn, orbitRadius);
       return {
         ticker: holding.ticker,
         direction,

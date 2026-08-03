@@ -692,6 +692,26 @@ describe("pure overview scene descriptor", () => {
       direction: "neutral",
     });
 
+    /* R7 Jul 31, found by him on screen: trail length must encode the STOCK,
+     * not the orbit. The renderer draws orbitRadius x arcRadians, so an
+     * angular band gave an outer planet a physically longer ribbon for the
+     * same move — COST's smaller day outdrew ASML's bigger one purely because
+     * COST orbits further out. The arc is now derived from a target length in
+     * world units, so the drawn length is identical at every radius. */
+    for (const ret of [0.002, 0.01, 0.03, 0.12]) {
+      const lengths = [9, 20, 34].map(
+        (radius) => radius * trailArcLengthForReturn(ret, radius),
+      );
+      for (const length of lengths) {
+        expect(length).toBeCloseTo(lengths[0], 6);
+      }
+    }
+    // The reported case, asserted directly: a big move on an inner orbit must
+    // outdraw a small move on an outer one.
+    expect(9 * trailArcLengthForReturn(0.03, 9)).toBeGreaterThan(
+      20 * trailArcLengthForReturn(0.005, 20),
+    );
+
     /* And a loss draws the same red every loss draws, regardless of size —
      * the other half of "the color red or green be the same for all planets". */
     const down = buildOverviewSceneModel({
