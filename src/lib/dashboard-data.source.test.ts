@@ -38,6 +38,18 @@ import { getDashboardData } from "./dashboard-data";
 
 const source = readFileSync(path.resolve(__dirname, "dashboard-data.ts"), "utf8");
 
+/**
+ * A news timestamp two days old, computed from the clock rather than written
+ * as a date.
+ *
+ * This was `new Date("2026-07-27")`, and getDashboardData counts only news
+ * from the last SEVEN days — so the fixture aged out of its own window and
+ * the test began failing on 2026-08-03 with nothing having changed in the
+ * code. A literal date checked against a rolling window is a test with an
+ * expiry date on it; two days before now is inside the window forever.
+ */
+const RECENT_NEWS_SECONDS = Math.floor(Date.now() / 1000) - 2 * 24 * 60 * 60;
+
 describe("dashboard-data §8 public projection", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -169,7 +181,7 @@ describe("dashboard-data §8 public projection", () => {
           headline: "NEW reports strong quarter",
           source: "Wire",
           url: "",
-          datetime: Math.floor(new Date("2026-07-27").getTime() / 1000),
+          datetime: RECENT_NEWS_SECONDS,
         },
       ];
     });
@@ -186,7 +198,7 @@ describe("dashboard-data §8 public projection", () => {
           headline: "NEW reports strong quarter",
           source: "Wire",
           url: "https://example.test/new-earnings",
-          datetime: Math.floor(new Date("2026-07-27").getTime() / 1000),
+          datetime: RECENT_NEWS_SECONDS,
         },
       ];
     });
