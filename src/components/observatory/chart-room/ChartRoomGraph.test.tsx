@@ -75,13 +75,15 @@ describe("ChartRoomGraph", () => {
     expect(container.querySelector(`.bmk`)).toBeNull();
   });
 
-  it("disables the COST overlay when not in PRICE mode (no-op)", () => {
-    const { container } = renderGraph();
-    fireEvent.click(screen.getByRole("button", { name: /COST/ }));
-    expect(container.querySelector('[stroke-dasharray="6 4"]')).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "PRICE" }));
-    expect(container.querySelector('[stroke-dasharray="6 4"]')).toBeTruthy();
-  });
+  /* R7-W6 removed this test with the control it covered.
+   *
+   * It asserted that COST was a no-op outside PRICE mode — which is the
+   * defect he described, not a behaviour worth keeping: "you overcomplicated
+   * the graph with buttons that don't matter like depth and cost." A button
+   * that does nothing in the default mode is the thing that got cut, so a
+   * test pinning its no-op semantics is pinning the wrong half.
+   *
+   * Its replacement is the absence assertion at the bottom of this file. */
 
   it("renders an empty state, not a crash, when there is no history", () => {
     renderGraph({ priceHistory: [] });
@@ -90,7 +92,7 @@ describe("ChartRoomGraph", () => {
 
   it("R7-W6: the controls he called noise are gone", () => {
     /* "you overcomplicated the graph with buttons that don't matter like
-     * depth and cost." Nine controls above one chart is not a chart with
+     * depth and cost." Eleven controls above one chart is not a chart with
      * options — it is a chart you configure before you can read it. Asserted
      * as absence so they cannot drift back in. */
     renderGraph();
@@ -98,8 +100,20 @@ describe("ChartRoomGraph", () => {
     expect(screen.queryByRole("button", { name: /COST/ })).toBeNull();
     expect(screen.queryByText("OWNER")).toBeNull();
 
-    // Six controls: four windows, two modes, and the two overlays that answer
-    // a question rather than decorate one.
-    expect(screen.getAllByRole("button").length).toBeLessThanOrEqual(7);
+    /* Nine: four windows (7D/30D/SINCE BUY/MAX), two modes (RETURN/PRICE),
+     * three overlays (VOO/BOOK/TRADES).
+     *
+     * This number was wrong in the first draft of this test — the comment
+     * said six, the list came to eight, and the assertion said seven, none of
+     * which matched the nine the component actually renders. It failed, which
+     * is the one thing it did right. A cap is a drift guard, so it has to be
+     * the real count; a cap picked from a sentence rather than from the
+     * component is just a second bug waiting to fail.
+     *
+     * Whether nine is still too many is Devan's call, not this test's. If it
+     * is, TRADES is the next candidate — it marks his buy points, so it
+     * answers a question, but it is the only overlay that is not a
+     * same-period comparison. */
+    expect(screen.getAllByRole("button")).toHaveLength(9);
   });
 });

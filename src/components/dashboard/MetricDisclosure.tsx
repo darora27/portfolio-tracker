@@ -93,8 +93,8 @@ export function MetricDisclosure({
           )}
           {explanation.interpretation.evidence.length > 0 ? (
             <ul>
-              {explanation.interpretation.evidence.map((item) => (
-                <li key={item}>{item}</li>
+              {explanation.interpretation.evidence.map((item, index) => (
+                <li key={index}>{item}</li>
               ))}
             </ul>
           ) : null}
@@ -103,8 +103,8 @@ export function MetricDisclosure({
             <div>
               <h4>Limitations</h4>
               <ul>
-                {explanation.limitations.map((item) => (
-                  <li key={item}>{item}</li>
+                {explanation.limitations.map((item, index) => (
+                  <li key={index}>{item}</li>
                 ))}
               </ul>
             </div>

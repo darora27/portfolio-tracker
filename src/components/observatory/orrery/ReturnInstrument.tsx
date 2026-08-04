@@ -309,9 +309,17 @@ export function MultiReturnPlot({
         {/* Seven gridlines, not five: a taller axis can carry more without
             crowding, and more reference lines is what makes a small move
             readable against a number rather than just visible. */}
+        {/* R7-W9. Keyed by step, not by value.
+
+            A key of `value` duplicates the moment two gridlines carry the
+            same number, which happens whenever a series is flat: min and max
+            collapse together and all seven steps between them evaluate
+            identically. React then warns about two children with the same
+            key. Position is what identifies a gridline here; the value is
+            data that happens to sit on it. */}
         {Array.from({ length: 7 }, (_, step) => min + ((max - min) * step) / 6).map(
-          (value) => (
-            <g key={value}>
+          (value, step) => (
+            <g key={step}>
               <line
                 className={styles.returnHairline}
                 x1={PLOT.left}
@@ -544,10 +552,12 @@ export function ReturnInstrument({
           width="566"
           height={Math.max(0, 142 - baselineY)}
         />
-        {[min, (min + max) / 2, max].map((value) => {
+        {[min, (min + max) / 2, max].map((value, step) => {
           const y = 18 + ((max - value) / (max - min || 1)) * 118;
           return (
-            <g key={value}>
+            // R7-W9: index, not value — a flat series collapses min and max
+            // into the same number and duplicates the key.
+            <g key={step}>
               <line className={styles.returnHairline} x1="38" x2="604" y1={y} y2={y} />
               <text x="2" y={y + 3}>{value.toFixed(0)}</text>
             </g>

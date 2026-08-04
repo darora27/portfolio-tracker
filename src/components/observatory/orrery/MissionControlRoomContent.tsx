@@ -112,7 +112,29 @@ function CompositionPie({
 
   const CX = 300;
   const CY = 215;
-  const R = 150;
+  /* Aug 3, after seeing it: "doesnt look that great. Looks like AI. dont
+   * ened any outer ring one mark = 5 % of book stuff or these weird lines."
+   *
+   * The graduated dial, its bezel and the caption naming the unit are gone.
+   * They were defensible one at a time — a scale you can measure against, a
+   * unit stated once — and together they were three layers of chrome around
+   * a chart that needed none of it. Asked what was wrong, he said the
+   * colours were fine and it was the clutter. That is the whole note.
+   *
+   * The radius grows into the space the dial was occupying: the chart he
+   * called small gets the pixels back rather than banking them. */
+  const R = 170;
+  /* R7, Aug 3. THE HOLE. His words on Jul 31 were "Mix needs to be a much
+   * larger donut that has lines pointing to each section." The leader lines
+   * landed; the hole never did — this drew `M CX CY / L outer / A / Z`, which
+   * is a solid pie with wedges meeting at a point. Half an instruction, and
+   * it stood for three rounds.
+   *
+   * The hole is not decoration. Thirteen wedges converging on one point is
+   * thirteen slivers crowding the middle, where the eye lands first and the
+   * angles are least readable. Cutting the centre out removes the crowd and
+   * gives the readout somewhere to live. */
+  const R_INNER = 95;
   const START = -Math.PI / 2;
   const LABEL_X_LEFT = 20;
   const LABEL_X_RIGHT = 580;
@@ -133,6 +155,8 @@ function CompositionPie({
     const mid = from + sweep / 2;
     const outer = point(R, from);
     const outerEnd = point(R, to);
+    const innerEnd = point(R_INNER, to);
+    const inner = point(R_INNER, from);
     const large = sweep > Math.PI ? 1 : 0;
     return {
       ticker: slice.ticker,
@@ -140,27 +164,63 @@ function CompositionPie({
       mid,
       // Right half of the circle sends its label right, left half left.
       side: Math.cos(mid) >= 0 ? ("right" as const) : ("left" as const),
-      anchor: point(R + 12, mid),
+      // Touches its own wedge. The radial dogleg that used to follow existed
+      // only to clear the graduations; with those gone it was one more line
+      // doing nothing, so it went with them.
+      anchor: point(R + 6, mid),
+      // Annular sector: out along the start edge, around the outer arc, back
+      // in, then around the inner arc the other way (sweep flag 0).
       d: [
-        `M${CX} ${CY}`,
+        `M${inner.x.toFixed(2)} ${inner.y.toFixed(2)}`,
         `L${outer.x.toFixed(2)} ${outer.y.toFixed(2)}`,
         `A${R} ${R} 0 ${large} 1 ${outerEnd.x.toFixed(2)} ${outerEnd.y.toFixed(2)}`,
+        `L${innerEnd.x.toFixed(2)} ${innerEnd.y.toFixed(2)}`,
+        `A${R_INNER} ${R_INNER} 0 ${large} 0 ${inner.x.toFixed(2)} ${inner.y.toFixed(2)}`,
         "Z",
       ].join(" "),
     };
   });
 
-  /* Labels are stacked down each side in the order their wedges appear, then
-   * pushed apart so none overlap — the leader line keeps each attached to its
-   * own wedge, which is what lets the key go away. */
+  const largest = [...slices].sort((a, b) => b.weight - a.weight)[0];
+
+  /* Labels stack down each side in wedge order, pushed apart so none overlap
+   * — the leader line keeps each attached to its own wedge, which is what
+   * lets the key go away.
+   *
+   * "these weird lines", Aug 3. Five labels at the top left were drawn on top
+   * of each other, and lines fanning into an illegible pile is what made the
+   * whole treatment look broken. It was this function.
+   *
+   * The old rule was `max(ideal, 24 + index * ROW)` — a fixed floor per slot,
+   * which only separates labels that are ALREADY roughly evenly spread. Five
+   * thin wedges bunched near twelve o'clock all have nearly the same ideal y,
+   * and each one clears its own low floor independently, so they land within
+   * a few units of each other and overprint.
+   *
+   * A running maximum is the fix: each label is placed at least ROW below the
+   * one actually placed before it, not below an imaginary slot. Then if the
+   * column runs past the bottom of the frame, the whole thing shifts up by
+   * the overflow — never past the top, because the top is a hard edge too. */
+  const TOP = 24;
+  const BOTTOM = 406;
   const place = (side: "left" | "right") => {
     const rows = wedges.filter((wedge) => wedge.side === side);
     const sorted = [...rows].sort((a, b) => a.anchor.y - b.anchor.y);
-    return sorted.map((wedge, index) => {
-      const ideal = wedge.anchor.y;
-      const floor = 24 + index * ROW;
-      return { wedge, y: Math.max(ideal, floor) };
+
+    let previous = -Infinity;
+    const placed = sorted.map((wedge) => {
+      const y = Math.max(wedge.anchor.y, previous + ROW, TOP);
+      previous = y;
+      return { wedge, y };
     });
+
+    const overflow = (placed.at(-1)?.y ?? 0) - BOTTOM;
+    if (overflow <= 0) return placed;
+    // Shifting up cannot push the first label above TOP; if the column is
+    // genuinely taller than the frame, it stays pinned and rides the bottom
+    // rather than silently sliding off the top where it would vanish.
+    const shift = Math.min(overflow, (placed[0]?.y ?? TOP) - TOP);
+    return placed.map(({ wedge, y }) => ({ wedge, y: y - shift }));
   };
 
   const labels = [...place("left"), ...place("right")];
@@ -183,6 +243,23 @@ function CompositionPie({
             strokeWidth={1.5}
           />
         ))}
+
+        {/* The hub. A donut's hole is wasted unless it answers something, and
+            the thing a reader wants from an allocation chart after the shape
+            itself is how many bets there are and how big the biggest one is.
+            Two figures, not a paragraph — he has said twice that dense text
+            in a panel is the problem, not the cure. */}
+        <text className={styles.pieHubValue} x={CX} y={CY - 6} textAnchor="middle">
+          {slices.length}
+        </text>
+        <text className={styles.pieHubLabel} x={CX} y={CY + 14} textAnchor="middle">
+          POSITIONS
+        </text>
+        {largest ? (
+          <text className={styles.pieHubLabel} x={CX} y={CY + 34} textAnchor="middle">
+            {`TOP ${largest.ticker} ${plainPercent(largest.weight)}`}
+          </text>
+        ) : null}
         {labels.map(({ wedge, y }) => {
           const elbowX = wedge.side === "right" ? LABEL_X_RIGHT - 46 : LABEL_X_LEFT + 46;
           const textX = wedge.side === "right" ? LABEL_X_RIGHT : LABEL_X_LEFT;

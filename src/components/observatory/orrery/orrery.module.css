@@ -4261,19 +4261,38 @@
 /* R7 Jul 31 (M1): "a much larger donut that has lines pointing to each
    section… There shound not have to be a key." His own spreadsheet pie is
    the reference — labels outside, leader lines in, no legend. */
+/* "its so small" — Aug 3, and the third time this chart has been reported
+   too small. THE PREVIOUS TWO FIXES COULD NOT HAVE WORKED, and it is worth
+   writing down why, because the same shape will bite again.
+
+   This rule used to be `max-width: 1100px; margin: 0 auto`. Its parent
+   .missionDescentSection is `display: grid`. In grid, an auto inline margin
+   overrides `justify-self: stretch` — the auto margins absorb the free space
+   and the item is sized to FIT-CONTENT instead of filling the track. So the
+   div never approached 1100px, and raising that number, twice, changed a cap
+   that was never reached.
+
+   Fit-content of what? The only child is an SVG with a viewBox and no width
+   or height attribute, so it has no intrinsic width, and CSS falls back to
+   the default object size for replaced elements: 300px. That is the size in
+   his screenshot, and it is why the chart was the same size before and after
+   being "made bigger".
+
+   The proof was in the screenshot all along: .mixClassifications sits in the
+   same grid, in the same section, and spans the full width. The only
+   difference between them is this margin.
+
+   Fix: a definite width, and centring stated explicitly rather than as a
+   side effect of auto margins. */
 .compositionPie {
   display: block;
-  /* "much much bigger" — the pie is the section now, not a widget in it. */
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.compositionPie svg {
   width: 100%;
-  height: auto;
+  max-width: 1000px;
+  justify-self: center;
 }
 
 .compositionPie svg {
+  display: block;
   width: 100%;
   height: auto;
 }
@@ -4294,44 +4313,42 @@
   font: 500 var(--type-label) var(--font-mono, monospace);
 }
 
-.pieCount {
+/* REMOVED Aug 3, same day they were added: .pieBezel, .pieTickMinor,
+   .pieTickMajor, .pieCaption — the graduated dial and the caption naming its
+   unit. Shipped as "flare", reported back as "doesnt look that great. Looks
+   like AI… dont ened any outer ring one mark = 5 % of book stuff."
+
+   Worth keeping the lesson rather than just the deletion: asked what was
+   actually wrong, he said the colours were fine and it was the clutter. The
+   flare was added ON TOP of the chart instead of coming out of it. Three
+   decorative layers, each individually justifiable, reading collectively as
+   generated. The next attempt at "creativity" here should change the chart,
+   not surround it. */
+
+/* The hub. A hole that answers something. */
+.pieHubValue {
   fill: var(--universe-cabinet-cream);
   font: 600 var(--type-readout) var(--font-mono, monospace);
-}
-
-.pieCountLabel {
-  fill: var(--universe-cabinet-window-word);
-  font: 600 var(--type-label) var(--font-mono, monospace);
-}
-
-.pieLegend {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 0.3rem 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.pieLegend li {
-  display: grid;
-  grid-template-columns: 10px 1fr auto;
-  gap: 0.5rem;
-  align-items: center;
-  font-size: var(--type-body);
-  color: var(--universe-cabinet-cream);
-}
-
-.pieLegend i {
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-}
-
-.pieLegend b {
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
 }
+
+.pieHubLabel {
+  fill: var(--universe-cabinet-window-word);
+  font: 500 var(--type-label) var(--font-mono, monospace);
+  letter-spacing: 0.12em;
+}
+
+
+/* REMOVED Aug 3: .pieCount, .pieCountLabel, and the whole .pieLegend block —
+   the swatch key, its grid, and a hub readout that no component has rendered
+   for some time. Nothing in src/ referenced any of them.
+
+   The legend rules are the pointed one. The leader lines exist precisely so
+   the key could go away; the key went away and its stylesheet stayed, which
+   is how a "removed" feature quietly waits to be reintroduced by whoever
+   next sees a plausible class name sitting unused. Deleting them is the same
+   rule W6 stated and then did not apply to itself: dead rules outlive their
+   features silently. */
 
 /* One plain line under a heading whose name was not self-explanatory. */
 .sectionHint {
@@ -4340,11 +4357,9 @@
   font: 400 var(--type-body)/1.4 var(--font-mono, monospace);
 }
 
-@media (max-width: 720px) {
-  .compositionPie {
-    grid-template-columns: 1fr;
-  }
-}
+/* .compositionPie was a grid once. It is `display: block` now, so the
+   720px override below did nothing — removed with the legend it was built
+   around. The SVG scales on its own via width:100%/height:auto. */
 
 /* R7 feedback, Jul 31 — the risk section, with scales that mean something. */
 .meterScale {

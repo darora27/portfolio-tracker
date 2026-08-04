@@ -59,6 +59,10 @@ import {
   type TradeCometInput,
 } from "@/lib/observatory/scene-model";
 import { UNIVERSE_PALETTE } from "@/lib/observatory/universe-palette";
+import {
+  readTextureEnvironment,
+  shouldLoadPlanetTextures,
+} from "@/lib/observatory/texture-policy";
 import type {
   OrreryCameraState,
   PortfolioHealth,
@@ -273,7 +277,13 @@ function createStarPopulation(
       y = 6.5 + seededUnit(index, 31) * 5.5;
       x += (seededUnit(index, 32) - 0.5) * 6;
     }
-    let offset = positionOffsets[bucket];
+    // `const`: the counter that advances is positionOffsets[bucket] on the
+    // last line of this block, never this local. Pre-existing prefer-const
+    // error, unrelated to FB-37, fixed because it is in a file this change
+    // already touches. It is NOT the only one — `npx eslint` reports 15
+    // errors across the project, so lint has been red independently of any
+    // of this work and cleaning the rest is its own task.
+    const offset = positionOffsets[bucket];
     positions[bucket][offset] = x;
     positions[bucket][offset + 1] = y;
     positions[bucket][offset + 2] = z;
@@ -1466,6 +1476,33 @@ export default function OrreryScene({
       } catch {
         // Falls back to the flat colour fill if the texture fails to load.
       }
+      /* FB-37, Aug 3. The 26 MB of planet maps was reaching phones.
+       *
+       * The generator's own comment licenses a 30 MB budget on the grounds
+       * that these are "desktop-only" assets — but nothing enforced that, so
+       * a phone on cellular downloaded all of it. Requirements say family
+       * opens this on phones.
+       *
+       * Deliberately the cheapest available fix: no art touched, nothing
+       * re-encoded, no generator re-run. The bytes are simply not requested
+       * where they were never meant to go, and the planets keep their
+       * deterministic shader art — the same fallback already used for a
+       * ticker with no authored texture, so it is a travelled path.
+       *
+       * The nebula filament above is 30 KB and stays: it is the background,
+       * not eight brand plates, and withholding it would change the look of
+       * the scene rather than the sharpness of its planets.
+       *
+       * Evaluated once, at load. Resizing a phone-width window up to desktop
+       * will not fetch them retroactively; that needs a reload, and building
+       * a re-entrant texture loader to cover a rotation is not worth the
+       * failure modes it would add. */
+      const loadPlanetMaps = shouldLoadPlanetTextures(readTextureEnvironment());
+      // Readable from devtools, and the only way to tell "skipped" apart from
+      // "still downloading" without watching the network tab.
+      mount.dataset.planetTextures = loadPlanetMaps ? "loading" : "skipped";
+      if (!loadPlanetMaps) return;
+
       for (const planet of planetRuntimes) {
         const ticker = planet.holding.ticker.toLowerCase();
         const uniforms = planet.mesh.material.uniforms;

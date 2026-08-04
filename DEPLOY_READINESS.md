@@ -69,9 +69,52 @@ never helps a first-time visitor, which is the only visitor a resume link has.
 - **A pass on the 50 ms long-task gate says nothing about load time.** They are
   different budgets measuring different phases. Both are required.
 
-## 4. Open items this gate would currently fail
+## 4. Status of the blockers — updated August 3, 2026
 
-- **FB-36** — 18.2 s to first byte on `/share`, warm, every request. Fails
-  D1, D2, D3, D4, D5.
-- **FB-37** — 21.8 MB of planet textures. Fails D6; not the cause of FB-36 and
-  not to be worked before FB-36 lands and the load is re-measured.
+- **FB-36** — *fixed in source, UNMEASURED in production.* `getDashboardData`
+  is wrapped in `unstable_cache` (`src/lib/dashboard-data.ts`), so the ~24
+  Finnhub calls are shared across serverless instances and visitors rather
+  than blocking every render. The in-memory cache that preceded it lived on
+  one instance and never helped a first-time visitor. **This claim rests on a
+  source change, which §3 says is not good enough** — D1–D5 still have to be
+  taken from the live URL before the link goes anywhere.
+- **FB-37** — *closed as an owner decision, plus a real mobile fix.* The 26 MB
+  is the price he knowingly chose over the graininess of a smaller tier (see
+  the budget comment in `scripts/generate-planet-textures.mjs`, raised from
+  15 MB on 2026-07-28 by his direction). What was genuinely wrong was that the
+  generator's "desktop-only" justification was not enforced anywhere, so
+  phones downloaded all of it. `src/lib/observatory/texture-policy.ts` now
+  withholds the planet maps below 1024px and under Data Saver. **D6 should be
+  re-measured on both a wide and a narrow viewport** — the narrow case is the
+  one the old figure was wrong about.
+
+## 5. Running the gate
+
+`scripts/deploy-gate.js` is D1–D3 and D6 made runnable: paste the whole file
+into the DevTools console on the **deployed** URL and read the table.
+
+It deliberately does not cover everything:
+
+- **D4 / D5** cannot be automated from inside a single page load. The script
+  prints what to do for whichever one you did not just measure. This pair
+  matters most — a warm cache making the second render fast is not a fix.
+- **D6** is counted to `DOMContentLoaded` rather than to "the scene is
+  legible", which nothing can detect automatically. It is reported as a
+  **lower bound**, not as the whole number.
+- **D7** needs DevTools throttling, by hand.
+- **D8** stays with the public-payload tests. A console script grepping for
+  dollar signs would be a weaker check wearing the same name.
+
+### What cannot be verified from the agent sandbox
+
+Recorded so it is never assumed again. The sandbox runs linux/arm64 against
+`node_modules` installed for darwin/arm64, with no registry access:
+
+- **`npm test`** — vitest fails to load its rolldown native binding.
+- **`npm run build`** — `Failed to load SWC binary for linux/arm64`, and the
+  wasm fallback cannot be downloaded.
+
+So "typechecked and linted" is the most an agent turn can honestly claim
+about this repo. **`tsc` and `eslint` passing is not the suite passing, and
+neither is a build.** Any agent report saying "done" without Devan having run
+`npm test` and `npm run build` is overclaiming.

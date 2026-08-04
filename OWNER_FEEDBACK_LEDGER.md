@@ -193,6 +193,317 @@ a different sentiment source (StockTwits has an open API and is closer to
 retail sentiment than r/investing) are the routes that exist. Patching headers
 is not one of them.
 
+## 1i. FB-37 — measured again, and it is already an owner decision
+
+Re-measured now FB-36 is fixed, per that row's own instruction. **26 MB on
+disk**: eight base maps at 1448×724 totalling **17.9 MB**, normals 2.6 MB,
+emissives 1.3 MB. Base maps are `VK_FORMAT_R8G8B8A8_SRGB` — **uncompressed
+RGBA in a Zstd wrapper**, achieving only ~1.8:1 (4.00 MB raw → 2.22 MB
+shipped), `levels=1`, no mipmaps.
+
+**Four findings, and three of them say do not touch this.**
+
+1. **The 30 MB budget is his, set deliberately eight days ago.**
+   `scripts/generate-planet-textures.mjs` records it: raised from 15 MB on
+   2026-07-28 by owner direction, because brand marks add high-frequency edge
+   detail that compresses badly, which "forced the tier selector down from
+   2048x1024 to 1024x512 and produced visible graininess the owner rejected."
+   **The 26 MB is the price he already chose over graininess.** Cutting
+   resolution recreates exactly what he turned down.
+
+2. **The right technical fix is blocked on tooling, and that was already
+   tried.** The script carries a `BASIS_ATTEMPT` record: `basisu --version` →
+   `command not found`, `result: "unavailable"`. GPU-native block compression
+   (UASTC → BC7/ASTC) is the change that would cut this severalfold *and*
+   reduce GPU memory. It also needs `planet-texture.worker.ts` extended — it
+   currently rejects anything that is not single-level raw + Zstd.
+
+3. **Lowering the tier means re-running the generator, which re-composites
+   the mark SVGs** (`assets/planet-textures/marks/*.svg`, line 222 onward).
+   That is the precise path FB-04 burned five rounds on and that he closed by
+   decision. Not something to reopen for a byte count.
+
+4. **One justification in that comment does not hold up.** It licenses the
+   larger ceiling as *"These are desktop-only, lazy-loaded, cached assets
+   fetched after first paint."* Lazy and post-first-paint are true —
+   `loadTextures()` runs only after shader warmup. **Desktop-only is not.** I
+   can find no device gate: `forceNo3d` is a prop driven by the `no3d` query
+   parameter, and the only `matchMedia("(min-width: 1024px)")` in
+   `OrreryWorld` guards pointer parallax, not the scene. So a phone on
+   cellular downloads all 26 MB — and family opening this on phones is a
+   stated requirement.
+
+**Conclusion: FB-37 closes as an owner decision on bytes-vs-quality, not as
+work to do.** What remains genuinely open is smaller and safer, and touches
+no art: the 32×16 thumbnails in `public/textures/planets/thumbs/` are
+generated and referenced by nothing but a test — a progressive placeholder
+built and never wired — and `loadTextures()` serialises whole planets, so
+planet 8's download does not begin until planet 7 has been uploaded across
+four animation frames.
+
+The mobile exposure in finding 4 is the only part with a real user
+consequence, and it is a product question rather than an encoding one.
+
+**Resolved, same day, by owner choice: skip textures on small screens.**
+`src/lib/observatory/texture-policy.ts` withholds the eight planet map sets
+below 1024px, and also when the browser reports Data Saver — explicit user
+intent outranks window size. It **fails open**: where `matchMedia` or the
+Network Information API cannot be read (Safari and Firefox expose no
+`connection`), textures load, because a detection gap must not silently
+downgrade someone who would otherwise have had them.
+
+Planets fall back to deterministic shader art — the path already taken for a
+ticker with no authored texture, so it is travelled rather than newly
+invented. The 30 KB nebula filament still loads: it is the background, and
+withholding it changes what the scene looks like rather than how sharp its
+planets are. `mount.dataset.planetTextures` reads `loading` or `skipped` so
+the two are distinguishable in devtools without the network tab.
+
+No art was touched, nothing re-encoded, no generator re-run. The policy is a
+pure function with unit tests because `OrreryScene` is a WebGL scene behind a
+dynamic `ssr:false` import and cannot be rendered in this suite — separating
+the part with a right answer from the part that needs a GPU.
+
+Evaluated once at load: resizing a narrow window up to desktop will not fetch
+retroactively without a reload. A re-entrant texture loader to cover a device
+rotation would add more failure modes than it removes.
+
+**Unrelated finding while here:** `npx eslint` reports **15 errors** across
+the project (`prefer-const`, unused vars, hook rules). Lint has been red
+independently of any recent work — `npm test` runs vitest, not eslint, so it
+has not been visible. One in `OrreryScene.tsx` was fixed because that file
+was already being edited; the rest are their own task and are NOT done.
+
+## 1h″. The flare was wrong — removed the same day, August 3 2026
+
+Seen at full size: *"doesnt look that great. Looks like AI. dont ened any
+outer ring one mark = 5 % of book stuff or these weird lines."*
+
+Asked what specifically, he chose **"colours are fine, it's the clutter."**
+
+**Removed:** the graduated dial, its bezel, and the caption naming the unit.
+Each was individually defensible — a scale you can measure a wedge against, a
+unit stated once instead of a legend — and together they were three
+decorative layers wrapped around a chart that needed none of them. **The
+mistake was adding flare ON TOP of the chart rather than getting it out of
+the chart.** That is a reusable note for the next attempt here: change the
+thing, don't surround it.
+
+**Kept:** the donut, the hub, the leader lines. Given the choice he said keep
+the lines and fix them, so the ask was never "remove the lines" — it was
+"these are a mess."
+
+**And they were a mess, for a real reason.** Five labels at the top left were
+printed on top of each other. The stacking rule was
+`max(ideal, 24 + index * ROW)` — a fixed floor per slot, which only separates
+labels that are already roughly evenly spread. Five thin wedges bunched near
+twelve o'clock share nearly the same ideal y and each clears its own low
+floor independently, so they land a few units apart and overprint. Replaced
+with a running maximum: at least ROW below the label *actually placed*
+before it, then the column shifts up if it overruns the frame.
+
+Measured against his real thirteen weights: the old rule produced a tightest
+gap of **11.0 units between labels roughly 14 units tall**; the new one
+guarantees 26.0, and the column spans 39–389 inside a 430 frame. A
+thirteen-slice test now pins it, because the three-slice fixture cannot
+reproduce the crowding that causes it.
+
+The radius grew from 150 to 170 into the space the dial had been occupying —
+the chart he twice called small keeps those pixels rather than banking them.
+
+## 1h′. "its so small" — why the previous two fixes could not have worked
+
+Reported three times. The first two responses raised `max-width` on
+`.compositionPie`. **Neither could have changed anything**, and the reason is
+worth keeping:
+
+`.compositionPie` had `max-width: 1100px; margin: 0 auto`. Its parent
+`.missionDescentSection` is `display: grid`. **In grid, an auto inline margin
+overrides `justify-self: stretch`** — the auto margins absorb the free space
+and the item is sized to fit-content instead of filling its track. The div
+never approached 1100px, so raising that cap twice adjusted a limit that was
+never reached.
+
+Fit-content of what? The only child is an SVG with a viewBox and no `width`
+attribute, so it has no intrinsic width and CSS falls back to the default
+object size for replaced elements: **300px**. That is the width in his
+screenshot, and it is why the chart was the same size before and after being
+"made bigger", twice.
+
+**The proof was already in the screenshot.** `.mixClassifications` sits in the
+same grid, in the same section, and spans the full width. The only difference
+between the two elements is that one has an auto margin. A controlled
+comparison, sitting in the evidence, unread for two rounds — the same failure
+as FB-36, where a cause was inferred instead of measured.
+
+Fixed with a definite `width: 100%`, `max-width: 1000px`, and centring stated
+as `justify-self: center` rather than arrived at through auto margins. The
+live section measures **1398px** inner width, so the chart now renders at
+1000 × 717 rather than 300 × 215.
+
+**Guarded by a source gate**, in the style of the type-ramp and palette
+firewalls, because jsdom performs no layout and would report every width as
+zero and pass regardless. The gate reads the declaration and fails if an auto
+inline margin returns; its matcher was checked against the old rule as a
+control, so it flags the regression rather than passing vacuously.
+
+**Not verified in a browser.** The live measurement was attempted and
+abandoned: `LazyMissionSection`'s IntersectionObserver would not fire under
+programmatic scrolling, the section stayed at `data-lazy-mounted="false"`,
+and the renderer froze once under the running three.js scene. The section
+width (1398px) and grid display were confirmed live; the rendered chart width
+was not. **Closes on his eyes, not on this note.**
+
+## 1h. MIX — the donut that was never a donut, August 3 2026
+
+**Two instructions, one implemented.** Jul 31: *"Mix needs to be a much
+larger donut that has lines pointing to each section."* The leader lines
+shipped. The hole did not — `CompositionPie` drew `M300 215 / L outer / A /
+Z`, wedges converging on the centre point. A solid pie. It survived three
+rounds of review, including one where the section was specifically looked at,
+because everyone involved read the picture as a donut and nobody checked the
+path.
+
+Then Jul 31 again: *"Pie chart needs to be much much bigger. and add some
+creativity and flare."* Bigger shipped. Flare did not, and I said so at the
+time rather than pretending otherwise.
+
+**What landed now, and why the two requests turned out to be one.**
+
+- **A real donut.** Annular wedges, inner radius 84 against an outer 150.
+  Beyond following the instruction, thirteen wedges meeting at a point is
+  thirteen slivers crowding the exact spot the eye lands first and the spot
+  where angle is hardest to judge. Cutting the middle out removes the crowd.
+- **A graduated dial.** Twenty marks around the rim, one per 5% of the book,
+  every fifth one longer — quarters read the way a clock face is read. This
+  is the flare *and* it is the spreadsheet rule: a wedge can now be measured
+  against a scale instead of guessed at, which is what a concentration chart
+  is for. The two goals were the same goal.
+- **A hub that answers something.** Position count and the largest holding,
+  two figures, no paragraph.
+- **The unit named once**, in a caption. Not a legend: nothing to memorise,
+  nothing to look back at.
+
+**A design attempt that was cut.** The first version numbered the quarter
+ticks 0/25/50/75 and set the numerals in the ring — which put four numerals
+directly in the path of thirteen leader lines. Longer quarter marks carry the
+same information without the collision, and leaders now run radially out of
+the dial before turning, so they pass *between* graduations rather than
+across them. The leaders still touch their own wedges; starting them outside
+the ring would have drawn more cleanly and broken the rule they exist for.
+
+**Dead CSS removed with it.** `.pieLegend` (and its grid, swatch and value
+rules), `.pieCount`, `.pieCountLabel`, a duplicated `.compositionPie svg`
+block, and a `grid-template-columns` override on an element that is
+`display: block`. The legend rules are the pointed ones: **the leader lines
+exist so the key could go away, the key went away, and the key's stylesheet
+stayed** — which is how a removed feature waits for someone to notice a
+plausible unused class name and put it back.
+
+**Guarded.** `composition-pie.test.tsx` asserts no wedge path returns to the
+centre. The path geometry and the test's own regex were checked numerically
+against a control: a reconstructed old-style pie path is both captured by the
+matcher and flagged as a pie, so the guard fails on a regression rather than
+passing vacuously. Closes on his sentence, as ever.
+
+## 1g′. W6 shipped red — and I said it was done, August 3 2026
+
+Devan ran the suite and it failed in two places, both in W6, which had
+already been committed as `034bd5a`.
+
+**The process failure comes first, because it caused the rest.** The agent
+sandbox cannot run `vitest` — the repo's `node_modules` carry darwin-arm64
+native bindings and the sandbox is linux-arm64, so `rolldown` fails to load.
+W1–W5 were all verified by Devan running the suite and saying "green". W6 was
+not: it was typechecked, linted, and reported as complete. **`tsc` and
+`eslint` passing is not the suite passing, and reporting it as done conflated
+the two.** Standing correction: when the suite cannot be run, the report says
+"typechecked and linted, suite unrun" — never "done".
+
+What that hid:
+
+1. **A contradictory test left in place.** `disables the COST overlay when not
+   in PRICE mode (no-op)` still asserted the COST button exists, in the same
+   commit that deleted it. The test is now removed — it pinned the wrong half
+   of the behaviour anyway. A button that does nothing in the default mode is
+   what he asked to have cut; its no-op semantics were never worth keeping.
+
+2. **A count assertion that matched nothing.** The new W6 test's comment said
+   "six controls", listed eight, asserted `≤ 7`, and the component renders
+   nine. Three different numbers in one assertion. It is `toHaveLength(9)`
+   now — four windows, two modes, three overlays — because a drift guard has
+   to be the real count. *Whether nine is still too many is Devan's call;
+   `TRADES` is the next candidate if so, being the only overlay that is not a
+   same-period comparison.*
+
+3. **The one the tests did not catch, and the worst of the three.** W6
+   replaced `font-size: var(--type-label)` with hardcoded `11px` and `12px`
+   in `chart-room.module.css`, under a comment claiming *"sizes come from
+   this file's own scale, not the universe ramp, which this room has always
+   kept separate."* **That claim was invented to justify the numbers.** Every
+   other font-size in that file is a `var(--type-*)` token — `.kicker`,
+   `.idplate b`, `.hero span`, `.hero strong`, `.chips span`, `.strip nav a`,
+   `.instHead h2`, `.q`. There is no separate scale. And `11px` is *smaller*
+   than `--type-label` on a project carrying **seven** separate "the fonts are
+   too small" reports (FB-05). Both rules are back on the token.
+
+   The type-ramp gate reads `orrery.module.css` only, which is why it stayed
+   silent. **A gate that scans one stylesheet does not make hand-picked sizes
+   legal in the others.** Widening it to every universe-surface stylesheet is
+   the obvious follow-up and is not done here.
+
+## 1g. W9 — the red "1 issue" badge, August 3 2026
+
+Fable's round-7 order described this as *"MissionControl list children from
+Home"* — a missing `key` on a mapped list. **That reading was wrong, and
+saying so matters more than the fix.** Every `.map()` returning JSX under
+`MissionControl`, `OrreryWorld` and `MissionControlRoomContent` already
+carries a key; a static sweep found no exceptions. Chasing the description
+would have found nothing and closed the row as "could not reproduce".
+
+The real defect is the other half of the same React warning — a **duplicate**
+key, not a missing one. Both return plots keyed their gridlines by the value
+each line marks:
+
+```tsx
+Array.from({ length: 7 }, (_, step) => min + ((max - min) * step) / 6)
+  .map((value) => <g key={value}>…)
+```
+
+Seven distinct numbers on any ordinary series. But when a series is flat —
+one data point, a holding bought today, a weekend where nothing moved — `min`
+and `max` collapse onto each other and every step between them evaluates to
+the same figure. All seven elements then claim the same key and React logs
+"Encountered two children with the same key."
+
+The gridlines are identified by their position; the value is data that
+happens to sit on them. Keys are now the step index, in `ReturnInstrument`
+(both plots) and `DepthBench`, and the four `key={item}` string keys in
+`MetricExplain` / `MetricDisclosure` went the same way — those map over
+generated prose where two identical bullets are possible.
+
+`ScopeBay`'s `key={value}` is left alone: three hardcoded literals that
+cannot collide.
+
+**The test nearly proved nothing.** `react-keys.test.tsx` was first written
+with `renderToStaticMarkup`, copying its neighbours. That would have passed
+against the broken code: the duplicate-key warning comes from the reconciler
+walking a keyed array, and the server renderer never reconciles. It renders
+on the client now, and it opens with a positive control — a deliberately
+duplicated key that the spy must catch — because `expect([]).toEqual([])`
+also passes when the detection is silently broken.
+
+**Honest limit on this row.** The test reproduces the flat-series condition
+and would fail against the previous code, so the duplicate is provably gone.
+It does **not** prove this was the only warning behind the badge — that needs
+the dev overlay, which only Devan can read. The row closes on his sentence,
+not on the test.
+
+**Sandbox note, unrelated to the fix.** The agent's mount of this repo can
+create files under `.git/` but cannot unlink them, so `git add` left a stale
+`.git/index.lock` that blocks every subsequent git write from either side.
+`rm -f .git/index.lock` clears it. Commits for this row were made by Devan.
+
 ## 2. The board
 
 | ID | Item (his words, abbreviated) | Reports | Status | Design | Scheduled | Closes when |

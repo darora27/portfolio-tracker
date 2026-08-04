@@ -351,11 +351,24 @@
 
    Dates on the x-axis and a hover readout. Both were absent — the
    chart could be looked at but not interrogated, and no point on it could be
-   placed in time. Sizes come from this file's own scale, not the universe
-   ramp, which this room has always kept separate. */
+   placed in time.
+
+   CORRECTION, Aug 3. These two rules shipped as `font-size: 11px` and `12px`,
+   under a comment claiming "sizes come from this file's own scale, not the
+   universe ramp, which this room has always kept separate."
+
+   That claim was invented to justify the numbers. It is false: every other
+   font-size in this file — .kicker, .idplate b, .hero span, .hero strong,
+   .chips span, .strip nav a, .instHead h2, .q — is a var(--type-*) token.
+   There is no separate scale. And 11px is SMALLER than --type-label on a
+   project carrying seven separate "the fonts are too small" reports.
+
+   The type-ramp gate reads orrery.module.css only, so it never saw this. A
+   gate that scans one file does not make hand-picked sizes legal in the
+   others; it just means this one had to be caught by reading. */
 .dateTick {
   fill: rgba(244, 240, 223, 0.6);
-  font-size: 11px;
+  font-size: var(--type-label);
   font-weight: 500;
 }
 
@@ -379,6 +392,6 @@
 
 .crosshair text {
   fill: #f4f0df;
-  font-size: 12px;
+  font-size: var(--type-label);
   font-variant-numeric: tabular-nums;
 }

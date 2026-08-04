@@ -51,9 +51,12 @@ export function DepthBench({ dailyReturns }: { dailyReturns: { date: string; r: 
       <svg viewBox="0 0 300 190" role="img" aria-label="Drawdown depth gauge">
         <line x1={X} x2={X} y1={T} y2={B} stroke="rgba(213,186,140,.35)" strokeWidth={3} />
         <text x={X + 12} y={T + 4}>0 · AT HIGH</text>
-        {[-0.1, -0.2, -0.3].map((v) =>
+        {[-0.1, -0.2, -0.3].map((v, step) =>
           Math.abs(scale(v) - scale(worst)) > 12 ? (
-            <g key={v}>
+            // R7-W9: these three are distinct literals, so this one was safe —
+            // changed for consistency, since the next person adding a tick
+            // should not have to work out which of these rules applies.
+            <g key={step}>
               <line className={styles.hair} x1={X - 8} x2={X + 8} y1={scale(v)} y2={scale(v)} />
               <text x={X + 12} y={scale(v) + 4}>{`${v * 100}%`}</text>
             </g>
